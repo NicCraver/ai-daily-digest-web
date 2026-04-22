@@ -76,15 +76,20 @@ bun install
 在仓库根目录建 `.env`：
 
 ```bash
+# --- OpenAI 兼容（LongCat / DeepSeek / OpenAI 等）---
 # 推荐：LongCat（每日 5000 万 token 免费，申请 https://longcat.chat/platform）
 OPENAI_API_KEY=ak_xxxxxxxxxxxxxxxx
+OPENAI_API_BASE=https://api.longcat.chat/openai/v1
+OPENAI_MODEL=LongCat-Flash-Chat
 
-# 可选 —— 默认就是 LongCat，无需覆盖
-# OPENAI_API_BASE=https://api.longcat.chat/openai/v1
-# OPENAI_MODEL=LongCat-Flash-Chat
-
-# 也可改用 Gemini（优先级更高）
+# --- Gemini（可选；若配置则优先于 OpenAI 兼容端）---
 # GEMINI_API_KEY=xxxxx
+# 任选其一方式指定端点与模型：
+# 1) 完整 generateContent URL（优先级最高）
+# GEMINI_API_URL=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
+# 2) 或拆成 base + 模型名（与官方 REST 一致）
+# GEMINI_API_BASE=https://generativelanguage.googleapis.com/v1beta
+# GEMINI_MODEL=gemini-2.0-flash
 ```
 
 ### 3. 生成数据 → 构建 → 预览
@@ -143,13 +148,16 @@ data/digest-YYYYMMDD.md （备份 markdown）
 
 环境变量：
 
-| 变量              | 说明                                                    |
-| ----------------- | ------------------------------------------------------- |
-| `GEMINI_API_KEY`  | 可选，配了优先用 Gemini                                 |
-| `OPENAI_API_KEY`  | OpenAI 兼容 API key（LongCat / DeepSeek / OpenAI 都行） |
-| `OPENAI_API_BASE` | 默认 `https://api.longcat.chat/openai/v1`               |
-| `OPENAI_MODEL`    | 默认 `LongCat-Flash-Chat`                               |
-| `DIGEST_HTML=1`   | 同时输出旧版自包含 HTML（默认关闭）                     |
+| 变量              | 说明                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `GEMINI_API_KEY`  | 可选，配了优先用 Gemini                                                            |
+| `GEMINI_API_URL`  | 可选，完整 `generateContent` URL；不设则用 `GEMINI_API_BASE` + `GEMINI_MODEL` 拼接 |
+| `GEMINI_API_BASE` | 可选，默认 `https://generativelanguage.googleapis.com/v1beta`                      |
+| `GEMINI_MODEL`    | 可选，默认 `gemini-2.0-flash`                                                      |
+| `OPENAI_API_KEY`  | OpenAI 兼容 API key（LongCat / DeepSeek / OpenAI 都行）                            |
+| `OPENAI_API_BASE` | 可选，默认 `https://api.longcat.chat/openai/v1`                                    |
+| `OPENAI_MODEL`    | 可选，不设时按 `OPENAI_API_BASE` 推断（如 LongCat / DeepSeek），否则见代码默认     |
+| `DIGEST_HTML=1`   | 同时输出旧版自包含 HTML（默认关闭）                                                |
 
 ---
 
@@ -175,8 +183,8 @@ data/digest-YYYYMMDD.md （备份 markdown）
 
 可选（不设则用 digest 默认，见上文「环境变量」表）：
 
-- `OPENAI_API_BASE`
-- `OPENAI_MODEL`
+- `OPENAI_API_BASE`、`OPENAI_MODEL`
+- `GEMINI_API_URL` 或 `GEMINI_API_BASE` + `GEMINI_MODEL`
 
 ### 2. 启用工作流
 
@@ -236,4 +244,4 @@ data/digest-YYYYMMDD.md （备份 markdown）
 正常。Cloudflare 防爬、付费墙、JS 渲染内容都抓不到。这些文章会标记"仅摘要"，仍会显示标题和摘要的中英对照。
 
 **Q: 想换 AI 模型？**
-改 `.env` 的 `OPENAI_API_BASE` + `OPENAI_API_KEY` + `OPENAI_MODEL` 即可。已支持：LongCat（默认）、DeepSeek（自动识别）、OpenAI 官方、任何兼容协议的 endpoint。
+OpenAI 兼容端：改 `.env` 的 `OPENAI_API_BASE`、`OPENAI_API_KEY`、`OPENAI_MODEL`。Gemini：配 `GEMINI_API_KEY`，并用 `GEMINI_API_URL` 或 `GEMINI_API_BASE` + `GEMINI_MODEL` 指定端点与模型。已支持 LongCat（默认）、DeepSeek（按 base 推断）、OpenAI 官方、任何兼容协议的 endpoint。

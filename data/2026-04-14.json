@@ -1,0 +1,2164 @@
+{
+  "date": "2026-04-14",
+  "generatedAt": "2026-04-22T12:59:01.319Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 86,
+    "totalArticles": 2484,
+    "filteredArticles": 25,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：一是AI安全威胁升级，从Claude Mythos暴露的攻击能力到OpenAI推出专用防御模型GPT-5.4-Cyber，业界正加速构建AI驱动的主动网络安全体系；二是开发工具持续优化，Datasette转向Sec-Fetch-Site头部简化CSRF防护，Homebrew重写底层以提升稳定性，体现对代码简洁与健壮性的追求；三是用户体验与安全边界日益受重视，浏览器后退劫持减少、分区管理理念兴起，反映出在复杂数字环境中平衡便利性与安全性的新思路。",
+  "articles": [
+    {
+      "slug": "9b45d5003392b114",
+      "title": "Intersecting spheres and GPS",
+      "titleZh": "相交球体与GPS定位",
+      "link": "https://www.johndcook.com/blog/2026/04/14/intersecting-spheres-and-gps/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-14T14:08:36.000Z",
+      "category": "engineering",
+      "keywords": ["GPS", "spheres", "geometry", "location"],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 26
+      },
+      "summary": "文章解释了GPS定位背后的几何原理：当已知到卫星的距离d时，用户位置必然位于地球表面与该距离构成的以卫星为中心的球面的交线上，而两个球面的交集是一个圆。因此，单颗卫星的观测只能确定用户在一个圆环上，需至少三颗卫星才能实现精确定位。这一原理揭示了为什么单个GPS测量值无法唯一确定位置。",
+      "summaryEn": "The article explains the geometric principle behind GPS positioning: knowing the distance d to a satellite defines a circle of possible locations, as the user lies at the intersection of Earth's surface and a sphere centered on the satellite. Since two spheres intersect in a circle, one observation alone cannot pinpoint location—at least three satellites are needed for precise triangulation. This clarifies why a single GPS measurement yields only a range.",
+      "reason": "它用直观的球面几何解释了看似简单的GPS技术背后隐藏的关键限制，适合对定位原理感兴趣的读者快速理解核心机制。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you know the distance d to a satellite, you can compute a circle of points that passes through your location. That’s because you’re at the intersection of two spheres—the earth’s surface and a sphere of radius d centered on the satellite—and the intersection of two spheres is a circle. Said another way, one observation of a satellite determines a circle of possible locations."
+          },
+          {
+            "type": "p",
+            "text": "If you know the distance to a second satellite as well, then you can find two circles that contain your location. The two circles intersect at two points, and you know that you’re at one of two possible positions. If you know your approximate position, you may be able to rule out one of the intersection points."
+          },
+          {
+            "type": "p",
+            "text": "If you know the distance to three different satellites, now you know three circles that you’re standing on, and the third circle will only pass through one of the two points determined by the first two satellites. Now you know exactly where you are."
+          },
+          {
+            "type": "p",
+            "text": "Knowing the distance to more satellites is even better. In theory additional observations are redundant but harmless. In practice, they let you partially cancel out inevitable measurement errors."
+          },
+          {
+            "type": "p",
+            "text": "If you’re not on the earth’s surface, you’re still at the intersection of n spheres if you know the distance to n satellites. If you’re in an airplane, or on route to the moon, the same principles apply."
+          },
+          {
+            "type": "h2",
+            "text": "Errors and corrections"
+          },
+          {
+            "type": "p",
+            "text": "How do you know the distance to a satellite? The satellite can announce what time it is by its clock, then when you receive the announcement you compare it to the time by your clock. The difference between the two times tells you how long the radio signal traveled. Multiply by the speed of light and you have the distance."
+          },
+          {
+            "type": "p",
+            "text": "However, your clock will probably not be exactly synchronized with the satellite clock. Observing a fourth satellite can fix the problem of your clock not being synchronized with the satellite clocks. But it doesn’t fix the more subtle problems of special relativity and general relativity. See this post by Shri Khalpada for an accessible discussion of the physics."
+          },
+          {
+            "type": "h2",
+            "text": "Numerical computation"
+          },
+          {
+            "type": "p",
+            "text": "Each distance measurement gives you an equation:"
+          },
+          {
+            "type": "p",
+            "text": "|| x – si || = di"
+          },
+          {
+            "type": "p",
+            "text": "where si is the location of the ith satellite and di is your distance to that satellite. If you square both sides of the equation, you have a quadratic equation. You have to solve a system of nonlinear equations, and yet there is a way to transform the problem into solving linear equations, i.e. using linear algebra. See this article for details."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "The navigation triangle"
+          },
+          {
+            "type": "li",
+            "text": "Dutton’s Navigation and Piloting"
+          }
+        ],
+        "translations": [
+          "如果你知道到某颗卫星的距离d，就可以计算出经过你所在位置的一个圆。这是因为你位于两个球面的交点上——地球表面和以一个卫星为中心、半径为d的球面——而两个球面的交集是一个圆。换句话说，观测一颗卫星只能确定一个可能的地点集合（即一个圆）。",
+          "如果你还知道到第二颗卫星的距离，就能找到两个包含你所在位置的圆。这两个圆相交于两点，说明你可能位于其中任意一个位置。若已知你的大致位置，或许可以排除其中一个交点。",
+          "当你知道到三颗不同卫星的距离时，就相当于有三个圆经过你的位置。此时第三圆只会通过前两个圆确定的两个点中的一个，从而精确锁定你的位置。",
+          "知道更多卫星的距离当然更好。理论上这些额外观测是冗余的，但无害。实际上它们能帮助你部分抵消不可避免的测量误差。",
+          "即使你不在地球表面——比如在飞机上或飞向月球途中——只要知道到n颗卫星的距离，你就处于n个球面的交点上，基本原理依然适用。",
+          "误差与修正",
+          "如何获知到卫星的距离？卫星会广播其时钟显示的时间，你收到后与自己时钟对比。两者时间差即为无线电信号传播耗时，乘以光速即得距离。",
+          "然而你的时钟很可能与卫星时钟不同步。观测第四颗卫星可解决时钟不同步问题，但无法修正狭义相对论和广义相对论带来的更微妙的影响。参见Shri Khalpada撰写的这篇通俗易懂的物理讨论文章。",
+          "数值计算",
+          "每次测距都给出一个方程：",
+          "|| x – si || = di",
+          "其中si是第i颗卫星的位置，di是你到该卫星的距离。将等式两边平方后得到一个二次方程。虽然需要求解非线性方程组，但存在一种方法可将问题转化为线性方程组的求解，即使用线性代数。详见相关文章。",
+          "相关博文",
+          "导航三角形",
+          "Dutton’s Navigation and Piloting"
+        ]
+      }
+    },
+    {
+      "slug": "e9c4a395121cd6f0",
+      "title": "Back button hijacking is going away",
+      "titleZh": "后退按钮劫持正在消失",
+      "link": "https://idiallo.com/blog/back-button-hijacking-is-going-away-seo?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-04-14T12:00:00.000Z",
+      "category": "security",
+      "keywords": ["back button hijacking", "user experience", "deceptive apps", "privacy"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章指出网站滥用浏览器后退功能（back-button hijacking）的行为正逐渐减少，这类设计会激怒用户并损害品牌声誉。作者认为，随着用户体验意识提升和浏览器防护增强，恶意软件通过微妙手段（如‘温水煮青蛙’式诱导）操控用户行为的策略已难以为继。",
+      "summaryEn": "Back-button hijacking—where websites trap users by overriding the browser's back button—is declining as awareness grows. These intrusive designs frustrate users and harm brand trust; modern browsers now block such practices, making it harder for hostile software to manipulate navigation subtly over time.",
+      "reason": "揭示了现代Web开发中一个被忽视但日益改善的用户体验问题，有助于开发者避免破坏性交互设计。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When websites are blatantly hostile, users close them to never come back. Have you ever downloaded an app, realized it was deceptive, and deleted it immediately? It's a common occurrence for me. But there is truly hostile software that we still end up using daily. We don't just delete those apps because the hostility is far more subtle. It's like the boiling frog, the heat turns up so slowly that the frog enjoys a nice warm bath before it's fully cooked."
+          },
+          {
+            "type": "p",
+            "text": "With clever hostile software, they introduce one frustrating feature at a time. Every time I find myself on LinkedIn, it's not out of pleasure. Maybe it's an email about an enticing job. Maybe it's an article someone shared with me. Either way, before I click the link, I have no intention of scrolling through the feed. Yet I end up on it anyway, not because I want to, but because I've been tricked."
+          },
+          {
+            "type": "p",
+            "text": "You see, LinkedIn employs a trick called back button hijacking. You click a LinkedIn URL that a friend shared, read the article, and when you're done, you click the back button expecting to return to whatever app you were on before. But instead of going back, you're still on LinkedIn. Except now, you are on the homepage, where your feed loads with enticing posts that lure you into scrolling."
+          },
+          {
+            "type": "p",
+            "text": "How did that happen? How did you end up on the homepage when you only clicked on a single link? That's back button hijacking."
+          },
+          {
+            "type": "p",
+            "text": "Here's how it works. When you click the original LinkedIn link, you land on a page and read the article. In the background, LinkedIn secretly gets to work. Using the location.replace() JavaScript method, it swaps the page's URL to the homepage. The replace method doesn't add an entry to the browser's history. Then LinkedIn manually pushes the original URL you landed on into the history stack. This all happens so fast that the user never notices any change in the URL or the page."
+          },
+          {
+            "type": "p",
+            "text": "As far as the browser is concerned, you opened the LinkedIn homepage and then clicked on a post to read it. So when you click the back button, you're taken back to the homepage, the feed loads, and you're presented with the most engaging post to keep you on the platform."
+          },
+          {
+            "type": "p",
+            "text": "If you spent a few minutes reading the article, you probably won't even remember how you got to the site. So when you click back and see the feed, you won't question it. You'll assume nothing deceptive happened."
+          },
+          {
+            "type": "p",
+            "text": "While LinkedIn only pushes you one level down in the history state, more aggressive websites can break the back button entirely. They push a new history state every time you try to go back, effectively trapping you on their site. In those cases, your only option is to close the tab."
+          },
+          {
+            "type": "p",
+            "text": "I've also seen developers unintentionally break the back button, often when implementing a search feature. On a search box where each keystroke returns a result, an inexperienced developer might push a new history state on every keystroke, intending to let users navigate back to previous search terms. Unfortunately, this creates an excessive number of history entries. If you typed a long search query, you'd have to click the back button for every character (including spaces) just to get back to the previous page. The correct approach is to only push the history state when the user submits or leaves the search box (onblur)."
+          },
+          {
+            "type": "p",
+            "text": "As of yesterday, Google announced a new spam policy to address this issue. Their reasoning:"
+          },
+          {
+            "type": "quote",
+            "text": "People report feeling manipulated and eventually less willing to visit unfamiliar sites. As we've stated before, inserting deceptive or manipulative pages into a user's browser history has always been against our Google Search Essentials."
+          },
+          {
+            "type": "p",
+            "text": "Any website using these tactics will be demoted in search results:"
+          },
+          {
+            "type": "quote",
+            "text": "Pages that are engaging in back button hijacking may be subject to manual spam actions or automated demotions, which can impact the site's performance in Google Search results. To give site owners time to make any needed changes, we're publishing this policy two months in advance of enforcement on June 15, 2026."
+          },
+          {
+            "type": "p",
+            "text": "I'm not sure how much search rankings affect LinkedIn specifically, but in the grand scheme of things, this is a welcome change. I hope this practice is abolished entirely."
+          }
+        ],
+        "translations": [
+          "当网站明显具有攻击性时，用户会立刻关闭并永不回头。你是否曾下载过一个应用，发现它充满欺骗性后立即卸载？这对我来说很常见。但确实存在一些我们每天仍在使用的“真正具有攻击性”的软件。我们之所以不删除它们，是因为这种攻击性更加隐蔽。就像温水煮青蛙——水温慢慢升高，青蛙在完全煮熟前还享受着一池温暖的洗澡水。",
+          "这类聪明的恶意软件会一次只引入一个令人沮丧的功能。每次我打开 LinkedIn，都不是出于自愿。可能是朋友分享的一封诱人的工作机会邮件，也可能是某篇文章。无论哪种情况，在我点击链接之前，我都没有打算去浏览信息流。然而我还是会不由自主地进入信息流，不是因为我愿意，而是因为我被耍了。",
+          "你看，LinkedIn 使用了一种叫做“后退按钮劫持”的技巧。你点击朋友分享的 LinkedIn 链接，阅读文章，完成后点击后退按钮，期望返回你之前所在的应用。但你并没有回到原来的地方，仍然停留在 LinkedIn。而且现在你来到了主页，信息流加载出诱人的帖子，引诱你继续滚动。",
+          "这是怎么回事？你只点了一个链接，怎么会到主页？这就是“后退按钮劫持”。",
+          "它是这样工作的：当你点击原始的 LinkedIn 链接时，你会进入一篇文章页面。与此同时，LinkedIn 在后台悄悄运行。它使用 JavaScript 的 location.replace() 方法，将页面的 URL 替换为主页。replace 方法不会在浏览器的历史记录中添加新条目。然后 LinkedIn 手动将原始 URL 推入历史堆栈。这一切发生得非常快，以至于用户从未注意到 URL 或页面的任何变化。",
+          "就浏览器而言，你打开了 LinkedIn 主页，然后点击了一篇帖子去阅读。所以当你点击后退按钮时，你会回到主页，信息流加载，然后呈现最吸引人的帖子，让你留在平台上。",
+          "如果你花几分钟读了这篇文章，你可能甚至不记得自己是怎么来到这个网站的。所以当你点击后退看到信息流时，你不会质疑发生了什么。你会认为没有欺骗行为发生。",
+          "虽然 LinkedIn 只在历史状态中把你推进一步，但更激进的网站可以完全破坏后退按钮。它们每次你尝试后退时都会推送一个新的历史状态，有效地将你困在他们的网站上。在这种情况下，你唯一的选项是关闭标签页。",
+          "我还见过开发者无意中破坏了后退按钮，通常是在实现搜索功能时。在一个搜索框中，每次按键都返回结果，经验不足的开发者可能会在每次按键时都推送一个新的历史状态，意图让用户能够返回到之前的搜索词。不幸的是，这会创建过多的历史条目。如果你输入了一个很长的搜索查询，你需要为每个字符（包括空格）点击后退按钮才能回到上一页。正确的方法是只在用户提交或离开搜索框时（onblur）才推送历史状态。",
+          "截至昨天，Google 宣布了一项新的垃圾信息政策来解决这个问题。他们的理由是：",
+          "人们反馈称，这种操纵行为会让他们感到被操控，最终降低访问陌生网站的意愿。正如我们之前所说，在用户浏览器历史记录中插入欺骗性或操纵性页面始终违反我们的 Google Search Essentials 准则。",
+          "任何采用这些策略的网站都将在搜索结果中被降权：",
+          "实施返回按钮劫持的页面可能会受到人工垃圾信息处理或自动降权的处罚，从而影响网站在 Google 搜索结果中的表现。为了给网站所有者留出时间进行必要的调整，我们提前两个月发布本政策，将于 2026 年 6 月 15 日正式执行。",
+          "我不确定搜索排名对 LinkedIn 的具体影响有多大，但从整体来看，这是一项受欢迎的改变。我希望这种做法能够彻底废除。"
+        ]
+      }
+    },
+    {
+      "slug": "e970965350ed078a",
+      "title": "datasette PR #2689: Replace token-based CSRF with Sec-Fetch-Site header protection",
+      "titleZh": "Datasette PR #2689：用Sec-Fetch-Site头部替代基于令牌的CSRF保护",
+      "link": "https://simonwillison.net/2026/Apr/14/replace-token-based-csrf/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-14T23:58:53.000Z",
+      "category": "engineering",
+      "keywords": ["CSRF", "Sec-Fetch-Site", "ASGI", "security"],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Datasette项目计划弃用传统的CSRF令牌机制，转而采用更简洁的Sec-Fetch-Site HTTP头部进行同源策略验证。此举旨在简化模板代码，消除在每个表单中手动插入csrftoken隐藏字段的需求，同时利用浏览器内置的安全机制提升兼容性与可维护性。",
+      "summaryEn": "Datasette is replacing its token-based CSRF protection with the Sec-Fetch-Site header, leveraging browser-enforced same-origin policies instead of custom tokens. This change simplifies template code by removing the need for hidden csrftoken fields in forms, reducing boilerplate while maintaining robust security through standardized headers.",
+      "reason": "展示了如何利用现代浏览器安全特性简化Web应用的安全架构，对关注CSRF防御演进的后端开发者极具参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "14th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "datasette PR #2689: Replace token-based CSRF with Sec-Fetch-Site header protection. Datasette has long protected against CSRF attacks using CSRF tokens, implemented using my asgi-csrf Python library. These are something of a pain to work with - you need to scatter forms in templates with <input type=\"hidden\" name=\"csrftoken\" value=\"{{ csrftoken() }}\"> lines and then selectively disable CSRF protection for APIs that are intended to be called from outside the browser."
+          },
+          {
+            "type": "p",
+            "text": "I've been following Filippo Valsorda's research here with interest, described in this detailed essay from August 2025 and shipped as part of Go 1.25 that same month."
+          },
+          {
+            "type": "p",
+            "text": "I've now landed the same change in Datasette. Here's the PR description - Claude Code did much of the work (across 10 commits, closely guided by me and cross-reviewed by GPT-5.4) but I've decided to start writing these PR descriptions by hand, partly to make them more concise and also as an exercise in keeping myself honest."
+          },
+          {
+            "type": "quote",
+            "text": "New CSRF protection middleware inspired by Go 1.25 and this research by Filippo Valsorda. This replaces the old CSRF token based protection.\nRemoves all instances of <input type=\"hidden\" name=\"csrftoken\" value=\"{{ csrftoken() }}\"> in the templates - they are no longer needed.\nRemoves the def skip_csrf(datasette, scope): plugin hook defined in datasette/hookspecs.py and its documentation and tests.\nUpdated CSRF protection documentation to describe the new approach.\nUpgrade guide now describes the CSRF change."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "fc3cbf4811982398",
+      "title": "Cybersecurity Looks Like Proof of Work Now",
+      "titleZh": "网络安全如今更像工作量证明",
+      "link": "https://simonwillison.net/2026/Apr/14/cybersecurity-proof-of-work/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-14T19:41:48.000Z",
+      "category": "security",
+      "keywords": ["Claude Mythos", "AI Safety Institute", "cybersecurity", "proof of work"],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "英国AI安全研究所评估Claude Mythos时发现其具备强大的网络攻击能力，促使业界重新思考AI在攻防中的角色。文章暗示当前网络安全体系正逼近‘工作量证明’模式——即防御方需投入巨大资源构建复杂系统以对抗自动化、高智能的攻击者，形成成本不对称的博弈格局。",
+      "summaryEn": "UK AI Safety Institute's evaluation revealed Claude Mythos can execute sophisticated cyberattacks, signaling that cybersecurity has entered a 'proof-of-work' era where defenders must build increasingly complex systems just to match automated, intelligent adversaries. This creates an arms race favoring attackers with scalable AI tools.",
+      "reason": "提出了AI时代网络安全的新范式转变，警示防御者必须适应由大模型驱动的高强度自动化威胁环境。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "14th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Cybersecurity Looks Like Proof of Work Now. The UK's AI Safety Institute recently published Our evaluation of Claude Mythos Preview’s cyber capabilities, their own independent analysis of Claude Mythos which backs up Anthropic's claims that it is exceptionally effective at identifying security vulnerabilities."
+          },
+          {
+            "type": "p",
+            "text": "Drew Breunig notes that AISI's report shows that the more tokens (and hence money) they spent the better the result they got, which leads to a strong economic incentive to spend as much as possible on security reviews:"
+          },
+          {
+            "type": "quote",
+            "text": "If Mythos continues to find exploits so long as you keep throwing money at it, security is reduced to a brutally simple equation: to harden a system you need to spend more tokens discovering exploits than attackers will spend exploiting them."
+          },
+          {
+            "type": "p",
+            "text": "An interesting result of this is that open source libraries become more valuable, since the tokens spent securing them can be shared across all of their users. This directly counters the idea that the low cost of vibe-coding up a replacement for an open source library makes those open source projects less attractive."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "440970fb36b038c7",
+      "title": "Patch Tuesday, April 2026 Edition",
+      "titleZh": "2026年4月补丁星期二：微软修复167个漏洞",
+      "link": "https://krebsonsecurity.com/2026/04/patch-tuesday-april-2026-edition/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-04-14T21:47:59.000Z",
+      "category": "security",
+      "keywords": ["Patch Tuesday", "zero-day", "BlueHammer", "Microsoft"],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "微软本月发布紧急更新，修补Windows及相关软件中多达167个安全漏洞，其中包括SharePoint Server零日漏洞和代号“BlueHammer”的Windows Defender公开漏洞。谷歌Chrome同期修复了当年第四个零日漏洞，Adobe也针对可导致远程代码执行的主动利用漏洞推出应急补丁。",
+      "summaryEn": "Microsoft patched 167 vulnerabilities in Windows and related software this Patch Tuesday, including a SharePoint Server zero-day and a public Windows Defender flaw dubbed 'BlueHammer'. Separately, Google Chrome fixed its fourth zero-day of 2026, while Adobe issued an emergency update addressing an actively exploited remote code execution flaw.",
+      "reason": "提供了当月关键软件厂商的安全态势全景图，是IT运维人员判断风险优先级的重要参考依据。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Microsoft today pushed software updates to fix a staggering 167 security vulnerabilities in its Windows operating systems and related software, including a SharePoint Server zero-day and a publicly disclosed weakness in Windows Defender dubbed “BlueHammer.” Separately, Google Chrome fixed its fourth zero-day of 2026, and an emergency update for Adobe Reader nixes an actively exploited flaw that can lead to remote code execution."
+          },
+          {
+            "type": "p",
+            "text": "Redmond warns that attackers are already targeting CVE-2026-32201, a vulnerability in Microsoft SharePoint Server that allows attackers to spoof trusted content or interfaces over a network."
+          },
+          {
+            "type": "p",
+            "text": "Mike Walters, president and co-founder of Action1, said CVE-2026-32201 can be used to deceive employees, partners, or customers by presenting falsified information within trusted SharePoint environments."
+          },
+          {
+            "type": "p",
+            "text": "“This CVE can enable phishing attacks, unauthorized data manipulation, or social engineering campaigns that lead to further compromise,” Walters said. “The presence of active exploitation significantly increases organizational risk.”"
+          },
+          {
+            "type": "p",
+            "text": "Microsoft also addressed BlueHammer (CVE-2026-33825), a privilege escalation bug in Windows Defender. According to BleepingComputer, the researcher who discovered the flaw published exploit code for it after notifying Microsoft and growing exasperated with their response. Will Dormann, senior principal vulnerability analyst at Tharros, says he confirmed that the public BlueHammer exploit code no longer works after installing today’s patches."
+          },
+          {
+            "type": "p",
+            "text": "Satnam Narang, senior staff research engineer at Tenable, said April marks the second-biggest Patch Tuesday ever for Microsoft. Narang also said there are indications that a zero-day flaw Adobe patched in an emergency update on April 11 — CVE-2026-34621 — has seen active exploitation since at least November 2025."
+          },
+          {
+            "type": "p",
+            "text": "Adam Barnett, lead software engineer at Rapid7, called the patch total from Microsoft today “a new record in that category” because it includes nearly 60 browser vulnerabilities. Barnett said it might be tempting to imagine that this sudden spike was tied to the buzz around the announcement a week ago today of Project Glasswing — a much-hyped but still unreleased new AI capability from Anthropic that is reportedly quite good at finding bugs in a vast array of software."
+          },
+          {
+            "type": "p",
+            "text": "But he notes that Microsoft Edge is based on the Chromium engine, and the Chromium maintainers acknowledge a wide range of researchers for the vulnerabilities which Microsoft republished last Friday."
+          },
+          {
+            "type": "p",
+            "text": "“A safe conclusion is that this increase in volume is driven by ever-expanding AI capabilities,” Barnett said. “We should expect to see further increases in vulnerability reporting volume as the impact of AI models extend further, both in terms of capability and availability.”"
+          },
+          {
+            "type": "p",
+            "text": "Finally, no matter what browser you use to surf the web, it’s important to completely close out and restart the browser periodically. This is really easy to put off (especially if you have a bajillion tabs open at any time) but it’s the only way to ensure that any available updates get installed. For example, a Google Chrome update released earlier this month fixed 21 security holes, including the high-severity zero-day flaw CVE-2026-5281."
+          },
+          {
+            "type": "p",
+            "text": "For a clickable, per-patch breakdown, check out the SANS Internet Storm Center Patch Tuesday roundup. Running into problems applying any of these updates? Leave a note about it in the comments below and there’s a decent chance someone here will pipe in with a solution."
+          }
+        ],
+        "translations": [
+          "微软今日推送软件更新，修复了 Windows 操作系统及相关软件中多达167个安全漏洞，其中包括一个 SharePoint Server 零日漏洞，以及一个在 Windows Defender 中被公开披露的“BlueHammer”缺陷。此外，谷歌 Chrome 修复了2026年第四个零日漏洞，而 Adobe Reader 的紧急更新则修补了一个可被远程执行代码的活跃利用漏洞。",
+          "雷德蒙德方面警告称，攻击者已开始针对 CVE-2026-32201——该漏洞存在于 Microsoft SharePoint Server 中，允许攻击者通过网络伪造可信内容或接口。",
+          "Action1 公司总裁兼联合创始人迈克·沃尔特斯表示，CVE-2026-32201 可用于欺骗员工、合作伙伴或客户，通过在受信任的 SharePoint 环境中展示虚假信息。",
+          "“此 CVE 可支持钓鱼攻击、未经授权的数据篡改或社会工程活动，进而导致进一步的系统沦陷，”沃尔特斯说道。“活跃的利用行为显著提升了组织面临的风险。”",
+          "微软还修复了 BlueHammer（CVE-2026-33825），即 Windows Defender 中的一个权限提升漏洞。据 BleepingComputer 报道，发现该漏洞的研究员在通知微软后对其响应感到愈发沮丧，遂发布了相关利用代码。Tharros 高级首席漏洞分析师威尔·多尔曼确认，安装今日补丁后，公开的 BlueHammer 利用代码已失效。",
+          "Tenable 高级研究员工程师萨特南·纳朗表示，4月是微软历史上第二大 Patch Tuesday。他还指出，有迹象表明 Adobe 于4月11日紧急修补的零日漏洞 CVE-2026-34621 自2025年11月以来已被积极利用。",
+          "Rapid7 首席软件工程师亚当·巴内特称，微软今日的补丁总量“在该类别中创下新纪录”，因其包含了近60个浏览器相关漏洞。巴内特表示，人们可能会联想到一周前发布的 Anthropic 备受瞩目的 Project Glasswing 项目——尽管该项目尚未发布，但据称具备极强的软件漏洞挖掘能力——这或许解释了此次漏洞数量激增的现象。",
+          "但他指出，Microsoft Edge 基于 Chromium 引擎开发，而 Chromium 维护团队也承认了众多研究人员发现的漏洞，这些漏洞微软已于上周五重新发布。",
+          "“一个稳妥的结论是：这一数量增长源于 AI 能力的持续扩展，”巴内特说。“随着 AI 模型在能力和可用性方面的影响进一步扩大，我们预计漏洞报告量还将继续上升。”",
+          "最后，无论你使用何种浏览器上网，定期完全关闭并重启浏览器都至关重要。虽然这很容易被忽略（尤其是当你同时打开成百上千标签页时），但这是确保所有可用更新得以安装的唯一方式。例如，本月早些时候发布的 Google Chrome 更新就修复了21个安全漏洞，其中包括高严重性的零日漏洞 CVE-2026-5281。",
+          "如需查看每项补丁的详细分类说明，请访问 SANS Internet Storm Center 的 Patch Tuesday 汇总页面。若你在应用上述任何更新时遇到问题，请在下方评论区留言，很可能会有热心网友提供解决方案。"
+        ]
+      }
+    },
+    {
+      "slug": "97d9b32b2f33b20e",
+      "title": "zappa: an AI powered mitmproxy",
+      "titleZh": "Zappa：一款由AI驱动的中间人代理工具",
+      "link": "https://geohot.github.io//blog/jekyll/update/2026/04/15/zappa-mitmproxy.html",
+      "sourceName": "geohot.github.io",
+      "sourceUrl": "https://geohot.github.io",
+      "pubDate": "2026-04-14T16:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": ["AI", "MITM", "zappa", "automation"],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "geohot提出Zappa项目，旨在利用即将成熟的AI能力模拟人类与互联网的交互行为，实现智能化的中间人流量拦截与分析。他认为这不仅是技术挑战，更是解放用户注意力、对抗平台监控与广告追踪的革命性机会。",
+      "summaryEn": "Zappa is an AI-powered mitmproxy designed to interact with the Internet indistinguishably from humans, using advanced AI to analyze and manipulate traffic. Geohot frames this not just as a technical tool but as a potential liberation from attention-targeting platforms and surveillance capitalism.",
+      "reason": "构想了一个融合AI与网络嗅探的前沿工具方向，激发对隐私增强技术与去中心化互联网的兴趣。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "the singularity is nearer",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Soon, AI will be good enough to interact with the Internet in an indistinguishable way from a human. This can be an amazing opportunity for liberation from all the people who are targeting your attention."
+          },
+          {
+            "type": "p",
+            "text": "I vibe coded this zappa proxy, it is not quite there yet, but I think it points the way forward. Why should I browse the Internet or use apps when machines can do it for me? Suckers getting billed for an ad impression from a 1 cent Qwen."
+          },
+          {
+            "type": "p",
+            "text": "Instead of the source, I’ll include the prompt in this post. I used GPT-5.4 to code it."
+          },
+          {
+            "type": "p",
+            "text": "Download mitmproxy and configure Firefox to use a SOCKS5 proxy and install the required cert to proxy HTTPS traffic. Write a plugin for mitmproxy to route all website traffic through Qwen using the Cerebras API, you need to proxy HTML, JS, and CSS. Tell Qwen to remove all ads, popups, bright colors, moving things, and enshittified crap from the website and return a good version of the site. Pass this good version back to the user through the proxy. Log everything to a file. If the AI returns an error, pass that error along to the user, do not return pages without AI transformation."
+          },
+          {
+            "type": "p",
+            "text": "I disabled uBlock Origin for these tests, Chrome on the left is the default internet, Firefox on the right is using the proxy if by some crazy chance you couldn’t tell."
+          },
+          {
+            "type": "p",
+            "text": "The right way to ship this is probably a browser extension in some browser that didn’t totally nerf extensions. It should be simple with a customizable prompt, then people can share prompts like they share uBlock Origin filter lists. And it should be agentic, it shouldn’t actually return the HTML, it should use tools and keep per site state. Imagine a skilled software engineer running in 100x real time cleaning up websites for you before you view them."
+          },
+          {
+            "type": "p",
+            "text": "Don’t fall for AI browser crap that’s marketed to you, that’s just them wanting to control your attention better. You need an AI you can trust to fight back!"
+          },
+          {
+            "type": "p",
+            "text": "I hope ad people see the writing on the wall, get scared, and pivot to user aligned business model. Intelligence is about to be dirt cheap, everyone will have a full time lighting fast personal assistant to deal with the enshittified world for them."
+          },
+          {
+            "type": "p",
+            "text": "And you can say, well they will have a smarter one on the make everything bad side, but if mine is human level and aligned with me they will have to have gone so hard that no actual human in the world can deal with them so yea good luck with that."
+          },
+          {
+            "type": "p",
+            "text": "The Turing Test is over. Enjoy spending your ad dollars showing things to my Qwen."
+          }
+        ],
+        "translations": [
+          "很快，AI 就能以与人类难以区分的方式与互联网交互。这或许会成为摆脱所有试图操控你注意力的人的一次解放机会。",
+          "我用 vibe coding（灵感驱动编程）写了这个 Zappa 代理，虽然还没完全实现，但我认为它指明了未来的方向。既然机器可以代劳，我何必自己浏览网页或使用应用？结果却让那些靠 Qwen 每笔一分钱广告点击收费的人赚得盆满钵满。",
+          "本文将直接附上提示词，而不是源代码。我是用 GPT-5.4 来生成这段代码的。",
+          "下载 mitmproxy，配置 Firefox 使用 SOCKS5 代理，并安装用于代理 HTTPS 流量的证书。为 mitmproxy 编写一个插件，将所有网站流量通过 Cerebras API 路由至 Qwen，需代理 HTML、JS 和 CSS。告诉 Qwen 移除网站上的所有广告、弹窗、刺眼的颜色、动态元素以及那些“垃圾化”的内容，返回一个优化后的版本。再通过代理将这个优化版本传回用户。所有操作需记录到日志文件。如果 AI 返回错误，应将错误原样传递给用户，不得返回未经 AI 处理的页面。",
+          "测试时我禁用了 uBlock Origin。左侧是 Chrome 默认浏览的互联网，右侧是 Firefox 使用代理的情况——如果你没看出区别，那说明它确实有效。",
+          "更合理的发布方式或许是开发一个浏览器扩展，最好是那种没有全面阉割扩展功能的浏览器。它应该简单易用，支持自定义提示词，就像人们分享 uBlock Origin 过滤列表一样方便共享。而且它应该是智能体式的：不应直接返回 HTML，而应调用工具并维护各网站的上下文状态。想象一下，一个顶尖软件工程师以百倍于现实的速度实时为你清理网页，等你看到时已经干干净净。",
+          "别被那些打着 AI 浏览器旗号的产品忽悠了——它们只是想更好地控制你的注意力。你需要的是一个能为你对抗乱象、值得信任的 AI！",
+          "希望广告人能看清趋势，感到恐惧，并转向以用户为中心的新商业模式。智能即将变得极其廉价，每个人都将拥有一个全天候、超高效的个人助理，替他们应对这个日益“垃圾化”的世界。",
+          "有人可能会说，对方那边也会有更聪明的 AI 在搞破坏，但如果我的 AI 达到人类水平且与我目标一致，那他们就必须做到极致，以至于全世界没有任何真实人类能与之抗衡——所以啊，祝他们好运吧。",
+          "图灵测试的时代已经结束了。尽情花你的广告费，让我的 Qwen 帮你处理一切吧。"
+        ]
+      }
+    },
+    {
+      "slug": "8f0a7625ac379909",
+      "title": "Pluralistic: In praise of (some) compartmentalization (14 Apr 2026)",
+      "titleZh": "颂扬（某些）分区的价值",
+      "link": "https://pluralistic.net/2026/04/14/compartment/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-14T08:32:55.000Z",
+      "category": "opinion",
+      "keywords": ["compartmentalization", "multitasking", "productivity", "focus"],
+      "score": {
+        "relevance": 7,
+        "quality": 9,
+        "timeliness": 7,
+        "total": 23
+      },
+      "summary": "本文倡导在数字生活中适度分区的重要性，主张通过物理或逻辑隔离（如专用设备、独立账户）来管理不同用途的信息流，从而降低认知负荷、提升专注力并增强安全性。作者认为合理的分区策略能有效缓解多任务处理带来的效率损耗与信息污染。",
+      "summaryEn": "This essay advocates for strategic compartmentalization in digital life—using physical or logical separation (e.g., dedicated devices, separate accounts) to manage distinct tasks. It argues that thoughtful partitioning reduces cognitive load, improves focus, and enhances security by limiting cross-contamination between domains.",
+      "reason": "提供了一种实用且富有哲理的数字生活组织哲学，帮助读者优化工作流并保护隐私。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "In praise of (some) compartmentalization: Go with the flow (mostly)."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Multitasking teens; Copyrighted dirt; NZ internet disconnection x CHCH quake; Hubble cake; Churchill's booze Rx; Fraud-resistant election tech."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Toronto, San Francisco, London, Berlin, NYC, Hay-on-Wye, London."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "In praise of (some) compartmentalization (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "If there's one FAQ I get Q'ed most F'ly, it's this: \"How do you get so much done?\" The short answer is, \"I write when I'm anxious (which is how I came to write nine books during lockdown).\" The long answer is more complicated."
+          },
+          {
+            "type": "p",
+            "text": "The first complication to understand is that I have lifelong, degenerating chronic pain that makes me hurt from the base of my skull to the soles of my feet – my whole posterior chain. On a good day, it hurts. On a bad day, it hurts so bad that it's all I can think about."
+          },
+          {
+            "type": "p",
+            "text": "Unless…I work. If I can find my way into a creative project, the rest of the world just kind of fades back, including my physical body. Sometimes I can get there through entertainment, too – a really good book or movie, say, but more often I find myself squirming and needing to get up and stretch or use a theragun after a couple hours in a movie theater seat, even the kind that reclines. A good conversation can do it, too, and is better than a movie or a book. The challenge and engagement of an intense conversation – preferably one with a chewy, productive and interesting disagreement – can take me out of things."
+          },
+          {
+            "type": "p",
+            "text": "There's a degree to which ignoring my body is the right thing to do. I've come to understand a lot of my pain as being a phantom, a pathological failure of my nervous system to terminate a pain signal after it fires. Instead of fading away, my pain messages bounce back and forth, getting amplified rather than attenuated, until all my nerves are screaming at me. Where pain has no physiological correlate – in other words, where the ache is just an ache, without a strain or a tear or a bruise – it makes sense to ignore it. It's actually healthy to ignore it, because paying attention to pain is one of the things that can amplify it (though not always)."
+          },
+          {
+            "type": "p",
+            "text": "But this only gets me so far, because some of my pain does have a physiological correlate. My biomechanics suck, thanks to congenital hip defects that screwed up the way I walked and sat and lay and moved for most of my life, until eventually my wonky hips wore out and I swapped 'em for a titanium set. By that point, it was too late, because I'd made a mess of my posterior chain, all the way from my skull to my feet, and years of diligent physio, swimming, yoga, occupational therapy and physiotherapy have barely made a dent. So when I sit or stand or lie down, I'm always straining something, and I really do need to get up and move around and stretch and whatnot, or sure as hell I will pay the price later. So if I get too distracted, then I start ignoring the pain I need to be paying attention to, and that's at least as bad as paying attention to the pain I should be ignoring."
+          },
+          {
+            "type": "p",
+            "text": "Which brings me to anxiety. These are anxious times. I don't know anyone who feels good right now. Particularly this week, as the Strait of Epstein emergency gets progressively worse, and there's this January 2020 sense of the crisis on the horizon, hitting one country after another. Last week, Australia got its last shipment of fossil fuels. This week, restaurants in India are all shuttered because of gas rationing. People who understand these things better than I do tell me that even if Trump strokes out tonight and Hegseth overdoes the autoerotic asphyxiation, it'll be months, possibly years, before things get back to \"normal\" (\"normal!\")."
+          },
+          {
+            "type": "p",
+            "text": "Any time I think about this stuff for even a few minutes, I start to feel that covid-a-comin', early-2020 feeling, only it's worse this time around, because I literally couldn't imagine what covid would mean when it got here, and now I know."
+          },
+          {
+            "type": "p",
+            "text": "When I start to feel those feelings, I can just sit down and start thinking with my fingers, working on a book or a blog-post. Or working on an illustration to go with one of these posts, which is the most delicious distraction, leaving me with just enough capacity to mull over the structure of the argument that will accompany it."
+          },
+          {
+            "type": "p",
+            "text": "I can't do anything about the impending energy catastrophe, apart from being part of a network of mutual aid and political organizing, so it makes sense not to fixate on it. But there are things that upset me – problems my friends and loved ones are having – where there's such a thing as too much compartmentalization. It's one thing to lose myself in work until the heat of emotion cools so I can think rationally about an issue that's got me seeing red, and another to use work as a way to neglect a loved one who needs attention in the hope that the moment will pass before I have to do any difficult emotional labor."
+          },
+          {
+            "type": "p",
+            "text": "Compartmentalization, in other words, but not too much compartmentalization. During the lockdown years, I transformed myself into a machine for turning Talking Heads bootlegs into science fiction novels and technology criticism, and that was better than spending that time boozing or scrolling or fighting – but in retrospect, there's probably more I could have done during those hard months to support the people around me. In my defense – in all our defenses – that was an unprecedented situation and we all did the best we could."
+          },
+          {
+            "type": "p",
+            "text": "Creative work takes me away from my pain – both physical and emotional – because creative work takes me into a \"flow\" state. This useful word comes to us from Mihaly Csikszentmihalyi, who coined the term in the 1960s while he was investigating a seeming paradox: how was it that we modern people had mastered so many of the useful arts and sciences, and yet we seemed no happier than the ancients? How could we make so much progress in so many fields, and so little progress in being happy?"
+          },
+          {
+            "type": "p",
+            "text": "In his fieldwork, Csikszentmihalyi found that people reported the most happiness while they were doing difficult things well – when your \"body or mind is stretched to its limits in a voluntary effort to accomplish something difficult and worthwhile.\" He called this state \"flow.\""
+          },
+          {
+            "type": "p",
+            "text": "As Derek Thompson says, the word \"flow\" implies an effortlessness, but really, it's the effort – just enough, not too much – that defines flow-states. We aren't happiest in a frictionless world, but rather, in a world of \"achievable challenges\":"
+          },
+          {
+            "type": "p",
+            "text": "https://www.derekthompson.org/p/how-zombie-flow-took-over-culture"
+          },
+          {
+            "type": "p",
+            "text": "Thompson relates this to \"the law of familiar surprises,\" an idea he developed in his book Hit Makers, which investigated why some media, ideas and people found fame, while others languished. A \"familiar surprise\" is something that's \"familiar but not too familiar.\""
+          },
+          {
+            "type": "p",
+            "text": "He thinks that the Hollywood mania for sequels and reboots is the result of media execs chasing \"familiar surprises.\" I think there's something to this, but we shouldn't discount the effect that monopolization has on the media: as companies get larger and larger, they end up committing to larger and larger projects, and you just don't take the kinds of risks with a $500m movie that you can take with a $5m one. If you're spending $500m, you want to hedge that investment with as many safe bets as you can find – big name stars, successful IP, and familiar narrative structures. If the movie still tanks, at least no one will get fired for taking a big, bold risk."
+          },
+          {
+            "type": "p",
+            "text": "Today, we're living in a world of extremely familiar, and progressively less surprising culture. AI slop is the epitome of familiarity, since by definition, AI tries to make a future that is similar to the past, because all it can do is extrapolate from previous data. That's a fundamentally conservative, uncreative way to think about the world:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2020/05/14/everybody-poops/#homeostatic-mechanism"
+          },
+          {
+            "type": "p",
+            "text": "The tracks the Spotify algorithm picks out of the catalog are going to be as similar to the ones you've played in the past as it can make them – and the royalty-free slop tracks that Spotify generates with AI or commissions from no-name artists will be even more insipidly unsurprising:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2022/09/12/streaming-doesnt-pay/#stunt-publishing"
+          },
+          {
+            "type": "p",
+            "text": "Thompson cites Shishi Wu's dissertation on \"Passive Flow,\" a term she coined to describe how teens fall into social media scroll-trances:"
+          },
+          {
+            "type": "p",
+            "text": "https://scholarworks.umb.edu/cgi/viewcontent.cgi?article=2104&amp;context=doctoral_dissertations"
+          },
+          {
+            "type": "p",
+            "text": "Wu says it's a mistake to attribute the regretted hours of scrolling to addiction or a failure of self-control. Rather, the user is falling into \"passive flow,\" a condition arising from three factors:"
+          },
+          {
+            "type": "p",
+            "text": "I. Engagement without a clear goal;"
+          },
+          {
+            "type": "p",
+            "text": "II. A loss of self-awareness – of your body and your mental state;"
+          },
+          {
+            "type": "p",
+            "text": "III. Losing track of time."
+          },
+          {
+            "type": "p",
+            "text": "I instantly recognize II. and III. – they're the hallmarks of the flow states that abstract me away from my own pain when I'm working. The big difference here is I. – I go to work with the clearest of goals, while \"passive flow\" is undirected (Thompson also cites psychologist Paul Bloom, who calls the scroll-trance \"shitty flow.\" In shitty flow, you lose track of the world and its sensations – but in a way that you later regret.)"
+          },
+          {
+            "type": "p",
+            "text": "Thompson has his own name for this phenomenon of algorithmically induced, regret-inducing flow: he calls it \"zombie flow.\" It's flow that \"recapitulates the goal of flow while evacuating the purpose.\""
+          },
+          {
+            "type": "p",
+            "text": "Zombie flow is \"progress without pleasure\" – it's frictionless, and so it gives us nothing except that sense of the world going away, and when it stops, the world is still there. The trick is to find a way of compartmentalizing that rewards attention with some kind of productive residue that you can look back on with pride and pleasure."
+          },
+          {
+            "type": "p",
+            "text": "I wouldn't call myself a happy person. I don't think I know any happy people right now. But I'm an extremely hopeful person, because I can see so many ways that we can make things better (an admittedly very low bar), and I have mastered the trick of harnessing my unhappiness to the pursuit of things that might make the world better, and I'm gradually learning when to stop escaping the pain and confront it."
+          },
+          {
+            "type": "p",
+            "text": "(Image: marsupium photography, CC BY-SA 2.0, modified)"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Uncovering Webloc https://citizenlab.ca/research/analysis-of-penlinks-ad-based-geolocation-surveillance-tech/"
+          },
+          {
+            "type": "li",
+            "text": "The Science of Forced Perspective at Disney Parks https://www.youtube.com/watch?v=yqefjmRVLTM"
+          },
+          {
+            "type": "li",
+            "text": "The Reverse Centaur’s Guide to Life After AI: How to Think About Artificial Intelligence—Before It’s Too Late https://www.publishersweekly.com/9780374621568"
+          },
+          {
+            "type": "li",
+            "text": "EFF 🤝 HOPE: Join Us This August! https://www.eff.org/deeplinks/2026/04/eff-hope-join-us-august"
+          },
+          {
+            "type": "li",
+            "text": "Here Are the Finalists for the 2025 Locus Awards https://reactormag.com/finalists-2025-locus-awards/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Pee-Wee Herman on his career https://web.archive.org/web/20010414033156/https://ew.com/ew/report/0,6115,105857~1~0~paulreubensreturnsto,00.html"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Anxious hand-wringing about multitasking teens https://www.nytimes.com/2001/04/12/technology/teenage-overload-or-digital-dexterity.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Clever t-shirt typography spells “hate” – “love” in mirror-writing https://web.archive.org/web/20060413102804/https://accordionguy.blogware.com/blog/_archives/2006/4/12/1881414.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago New Mexico Lightning Field claims to have copyrighted dirt https://diaart.org/visit/visit-our-locations-sites/walter-de-maria-the-lightning-field#overview"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Futuristic house made of spinach protein and soy-foam https://web.archive.org/web/20060413111650/http://bfi.org/node/828"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago New Zealand to sneak in Internet disconnection copyright law with Christchurch quake emergency legislation https://www.stuff.co.nz/technology/digital-living/4882838/Law-to-fight-internet-piracy-rushed-through"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Bake: An amazing space-themed Hubble cake https://www.sprinklebakes.com/2016/04/black-velvet-nebula-cake.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Shanghai law uses credit scores to enforce filial piety https://www.caixinglobal.com/2016-04-11/shanghai-says-people-who-fail-to-visit-parents-will-have-credit-scores-lowered-101011746.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Walmart heiress donated $378,400 to Hillary Clinton campaign and PACs https://web.archive.org/web/20160414155119/https://www.alternet.org/election-2016/alice-walton-donated-353400-clintons-victory-fund"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Mass arrests at DC protest over money in politics https://www.washingtonpost.com/local/public-safety/mass-arrests-of-protesters-in-demonstration-at-capitol-against-big-money/2016/04/11/96c13df0-0037-11e6-9d36-33d198ea26c5_story.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Churchill got a doctor’s note requiring him to drink at least 8 doubles a day “for convalescence” https://web.archive.org/web/20130321054712/https://arttattler.com/archivewinstonchurchill.html"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Big Tech's secret weapon is switching costs, not network effects https://pluralistic.net/2021/04/12/tear-down-that-wall/#zucks-iron-curtain"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Fraud-resistant election-tech https://pluralistic.net/2021/04/12/tear-down-that-wall/#bmds"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Blue Cross of Louisiana doesn't give a shit about breast cancer https://pluralistic.net/2025/04/12/pre-authorization/#is-not-a-guarantee-of-payment"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Toronto: DemocracyXchange, Apr 16\nhttps://www.democracyxchange.org/news/cory-doctorow-to-open-dxc26-on-april-16"
+          },
+          {
+            "type": "li",
+            "text": "San Francisco: 2026 Berkeley Spring Forum on M&A and the Boardroom, Apr 23\nhttps://www.theberkeleyforum.com/#agenda"
+          },
+          {
+            "type": "li",
+            "text": "London: Resisting Big Tech Empires (LSBU), Apr 25\nhttps://www.tickettailor.com/events/globaljusticenow/2042691"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Enshittification at Commonweal Ventures, Apr 29\nhttps://luma.com/ssgfvqz8"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyibuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "li",
+            "text": "Launch for Cindy's Cohn's \"Privacy's Defender\" (City Lights)\nhttps://www.youtube.com/watch?v=WuVCm2PUalU"
+          },
+          {
+            "type": "li",
+            "text": "Chicken Mating Harnesses (This Week in Tech)\nhttps://twit.tv/shows/this-week-in-tech/episodes/1074"
+          },
+          {
+            "type": "li",
+            "text": "The Virtual Jewel Box (U Utah)\nhttps://tanner.utah.edu/podcast/enshittification-cory-doctorow-matthew-potolsky/"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "颂扬（部分）分区的价值：多数情况下顺其自然。",
+          "嘿，看看这个：令人愉悦的惊喜。",
+          "客体永久性：多任务处理的青少年；受版权保护的泥土；新西兰断网与基督城地震；哈勃蛋糕；丘吉尔的酒疗处方；防欺诈选举技术。",
+          "即将出席的活动：多伦多、旧金山、伦敦、柏林、纽约、海伊-昂怀亚、伦敦。",
+          "近期活动回顾：我去过的地方。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所言，我会一直写下去。",
+          "版权声明：其余内容。",
+          "颂扬（部分）分区的价值（永久链接）",
+          "如果有一个问题是我最常被人问到的，那就是：“你怎么能完成这么多事？”简短回答是：“我在焦虑时写作（这也是我在封锁期间写出九本书的原因）。”详细答案则更为复杂。",
+          "首先要理解的是，我患有终身性、逐渐恶化的慢性疼痛，从颅底到脚底——整个后链——都会感到疼痛。在好日子里，它会痛；在坏日子里，痛得厉害到让我无法思考其他任何事情。",
+          "除非……我开始工作。如果我能够进入一个创意项目，整个世界就会渐渐淡出视野，包括我的身体本身。有时通过娱乐也能达到这种状态——比如一本好书或一部电影，但更多时候，我在电影院坐了几个小时后会感到不适，需要起身伸展或使用治疗枪，即使是那种可以放倒的座椅也不例外。一场精彩的对话同样可以做到这一点，而且比看电影或读书更好。激烈对话带来的挑战和参与感——尤其是那种充满建设性、有趣且存在分歧的对话——能让我暂时脱离现实。",
+          "某种程度上忽略身体是正确的选择。我已经明白，我的许多疼痛其实是幻影，是我的神经系统在发出疼痛信号后未能终止它的一种病理性失败。这些疼痛信息来回反弹，不断放大而非减弱，直到所有神经都在向我尖叫。当疼痛没有生理上的对应物时——换句话说，这种酸痛纯粹是酸痛，没有拉伤、撕裂或淤青——那么忽略它是合理的。事实上，忽略它反而是健康的，因为关注疼痛往往是放大它的原因之一（尽管并非总是如此）。",
+          "但这只能帮到我一部分，因为我的某些疼痛确实有生理上的对应物。我的生物力学很差，这要归功于先天性髋关节缺陷，它破坏了我大部分人生中的行走、坐姿、躺姿和运动方式，直到最终我的歪斜髋关节磨损殆尽，不得不换成钛合金假体。那时已经太迟了，因为我已经把整个后链——从颅骨到脚底——都搞得一团糟，多年来坚持不懈的物理治疗、游泳、瑜伽、职业治疗和理疗几乎毫无成效。所以无论我坐着、站着还是躺着，总是在拉扯某个部位，我真的需要起来走动、伸展等等，否则肯定会付出代价。因此，如果我分心太久，就会开始忽略那些本该关注的疼痛，这和过度关注本应忽略的疼痛一样糟糕。",
+          "这让我想到焦虑。如今正是焦虑的时代。我不知道还有谁感觉良好。尤其是本周，随着爱泼斯坦海峡的紧急情况日益恶化，以及2020年1月那种迫在眉睫的危机感再次浮现，一个接一个的国家都陷入了困境。上周，澳大利亚收到了最后一船化石燃料；而本周，由于实行配给制，印度所有餐馆都关门了。比我更懂这些事的人告诉我，即便特朗普今晚中风、赫格森过度沉迷于自慰性窒息，事情也至少要过几个月——甚至几年——才能回到“正常”（“正常！”）。",
+          "只要我稍微花几分钟想想这些事情，就会立刻产生一种类似新冠疫情刚爆发时的感觉，只是这次更糟，因为那时我还无法想象疫情真正来临时会是怎样一番景象，而现在我明白了。",
+          "当我感到这种情绪时，我可以坐下来，用手指思考——写一本书或一篇博客文章。或者画一幅插图配在这篇文章旁边，这是最美味的 distraction（分心），让我在构思这篇文字所伴随的论点结构时，仍保有足够的心理空间。",
+          "除了加入互助网络和参与政治组织之外，我对即将到来的能源灾难无能为力，因此不去过度纠结是合理的。但有些事情让我不安——朋友们和亲人所面临的问题——有时候，过度 compartmentalization（区隔化/隔离）反而有害。一方面，我可以沉浸在工作中，直到情绪冷却下来，从而理性地处理那些让我怒火中烧的问题；另一方面，我却可能利用工作来 neglect（忽视）需要关注的亲人，寄望于困难的情绪劳动会在我不得不面对之前自行消散。",
+          "换句话说，就是要有 compartmentalization，但不能过度。在封锁的那些年里，我把自己的角色变成了一个将 Talking Heads 盗版录音转化为科幻小说和技术批评的机器，这总比那段时间酗酒、刷屏或争吵要好——但回顾起来，或许在那段艰难的岁月里，我能为身边的人做更多的事。为自己辩护——也为所有人辩护——那是一个前所未有的局面，我们都尽了最大努力。",
+          "创造性工作能把我从痛苦中抽离——无论是身体上的还是情感上的——因为它将我带入一种“心流”状态。这个有用的词来自 Mihaly Csikszentmihalyi，他在20世纪60年代提出这一概念，当时他正在研究一个看似矛盾的现象：为什么我们现代人掌握了如此多的实用艺术和科学，却似乎并不比古人更快乐？为什么我们在诸多领域取得了巨大进步，却在幸福感的提升上收效甚微？",
+          "在他的实地研究中，Csikszentmihalyi 发现，当人们在做一些困难但做得很好的事情时，会报告出最高的幸福感——当你“身心自愿地伸展到极限，去完成一项困难而有价值的目标”。他将这种状态称为“心流”。",
+          "正如 Derek Thompson 所说，“心流”这个词暗示了一种毫不费力，但实际上，正是由恰到好处的努力——不多不少——定义了心流状态。我们并非在最没有摩擦的世界里最快乐，而是在充满“可实现的挑战”的世界里最快乐。",
+          "https://www.derekthompson.org/p/how-zombie-flow-took-over-culture",
+          "汤普森将其与“熟悉事物的惊喜法则”联系起来，这一概念出自他在《制造爆款》一书中提出的研究，该书探讨了为何某些媒体、想法和人物能够成名，而另一些则默默无闻。“熟悉事物的惊喜”指的是“既熟悉又不至于过于熟悉”的事物。",
+          "他认为好莱坞对续集和重启的狂热正是媒体高管们追逐“熟悉事物的惊喜”的结果。我对此有一定认同，但我们也不应忽视垄断对媒体的影响：随着公司规模的不断扩大，它们最终会投入越来越大的项目，而你绝不会像投资500万美元的电影那样，在500万美元的项目上承担如此高风险。如果你要花费5亿美元，自然会尽可能多地押注稳妥的选择——知名明星、成功的IP以及熟悉的叙事结构。即便电影最终失败，至少没人会因为大胆冒险而被解雇。",
+          "如今我们生活在一个文化极度熟悉、惊喜感日益减少的世界中。AI生成内容（AI slop）正是这种熟悉性的极致体现，因为从定义上讲，AI试图创造一个与过去相似的未来，它唯一能做的只是基于已有数据进行外推。这是一种本质上保守且缺乏创造性的思维方式。",
+          "https://pluralistic.net/2020/05/14/everybody-poops/#homeostatic-mechanism",
+          "Spotify算法从曲库中选出的曲目，会尽可能与你过去听过的曲目相似；而Spotify通过AI生成或委托无名艺术家创作的免版税“平庸内容”（slop tracks），则会更加乏味、毫无新意：",
+          "https://pluralistic.net/2022/09/12/streaming-doesnt-pay/#stunt-publishing",
+          "汤普森引用了施诗·吴（Shishi Wu）关于“被动沉浸”（Passive Flow）的论文，她创造了这一术语来描述青少年陷入社交媒体无限滚动状态的现象：",
+          "https://scholarworks.umb.edu/cgi/viewcontent.cgi?article=2104&amp;context=doctoral_dissertations",
+          "吴认为，将那些令人遗憾的刷屏时间归咎于成瘾或自控力缺失是错误的。相反，用户其实是陷入了“被动沉浸”状态，这种状态由三个因素共同作用形成：",
+          "一、无明确目标的参与；",
+          "二、自我意识丧失——包括对身体状态和心理状态的觉察；",
+          "三、对时间的感知模糊。",
+          "我立刻就认出了其中的二和三——它们正是我在工作中进入心流状态时的典型特征。关键区别在于第一点：我去工作时带着最清晰的目标，而“被动沉浸”则是漫无目的的（汤普森还引用了心理学家保罗·布鲁姆的观点，他将这种刷屏状态称为“糟糕的心流”（shitty flow）。在糟糕的心流中，你会失去对世界及其感官的感知，但事后又会为此感到后悔。）",
+          "汤普森为这种由算法引发、令人后悔的沉浸现象赋予了另一个名字：他称之为“僵尸心流”（zombie flow）。这是一种“重现心流的形式却掏空其意义”的状态。",
+          "僵尸心流就是“没有愉悦感的进步”——它毫无摩擦，因此除了让世界逐渐远去的感觉之外，什么也不提供。当你停止时，世界依然存在。关键在于找到一种方式，让注意力获得某种可引以为傲的生产性成果，从而在回顾时感受到自豪与愉悦。",
+          "我算不上一个快乐的人。说实话，我现在也不认识什么真正快乐的人。但我却是个极度充满希望的人，因为我能看到许多让事情变得更好的方法（尽管这标准低得可怜），我已经学会了如何将我的不快乐转化为追求让世界变得更好的动力，并且正在逐渐学会何时该停止逃避痛苦，转而直面它。",
+          "(图片：marsupium photography，知识共享署名-相同方式共享 2.0 许可协议，已修改)",
+          "看看这个（永久链接）",
+          "揭开 webloc 的面纱 https://citizenlab.ca/research/analysis-of-penlinks-ad-based-geolocation-surveillance-tech/",
+          "迪士尼乐园的强制透视艺术 https://www.youtube.com/watch?v=yqefjmRVLTM",
+          "反向半人马的生活指南：如何在为时已晚之前思考人工智能 https://www.publishersweekly.com/9780374621568",
+          "EFF 🤝 HOPE：今年八月加入我们！https://www.eff.org/deeplinks/2026/04/eff-hope-join-us-august",
+          "2025 年 Locus 奖入围名单揭晓 https://reactormag.com/finalists-2025-locus-awards/",
+          "客体永久性（永久链接）",
+          "#25年前 小矮子·赫尔曼谈他的职业生涯 https://web.archive.org/web/20010414033156/https://ew.com/ew/report/0,6115,105857~1~0~paulreubensreturnsto,00.html",
+          "#25年前 对多任务处理青少年的焦虑担忧 https://www.nytimes.com/2001/04/12/technology/teenage-overload-or-digital-dexterity.html",
+          "#20年前 巧妙 T 恤字体以镜像书写拼写出“恨”——“爱” https://web.archive.org/web/20060413102804/https://accordionguy.blogware.com/blog/_archives/2006/4/12/1881414.html",
+          "#20年前 新墨西哥州闪电场声称拥有泥土版权 https://diaart.org/visit/visit-our-locations-sites/walter-de-maria-the-lightning-field#overview",
+          "#20年前 由菠菜蛋白和豆渣泡沫制成的未来主义房屋 https://web.archive.org/web/20060413111650/http://bfi.org/node/828",
+          "#15年前 新西兰拟借基督城地震紧急法案 sneak in 互联网断开连接版权法 https://www.stuff.co.nz/technology/digital-living/4882838/Law-to-fight-internet-piracy-rushed-through",
+          "#10年前 Bake：令人惊叹的哈勃太空主题蛋糕 https://www.sprinklebakes.com/2016/04/black-velvet-nebula-cake.html",
+          "#10年前 上海法律用信用评分来 enforcing filial piety https://www.caixinglobal.com/2016-04-11/shanghai-says-people-who-fail-to-visit-parents-will-have-credit-scores-lowered-101011746.html",
+          "#10年前 沃尔玛继承人向希拉里竞选和 PAC 捐赠了 378,400 美元 https://web.archive.org/web/20160414155119/https://www.alternet.org/election-2016/alice-walton-donated-353400-clintons-victory-fund",
+          "#10年前 因金钱政治在华盛顿特区举行的大规模抗议活动导致大规模逮捕 https://www.washingtonpost.com/local/public-safety/mass-arrests-of-protesters-in-demonstration-at-capitol-against-big-money/2016/04/11/96c13df0-0037-11e6-9d36-33d198ea26c5_story.html",
+          "#10年前 丘吉尔收到一张医生证明，要求他每天至少喝八杯双份酒“用于康复” https://web.archive.org/web/20130321054712/https://arttattler.com/archivewinstonchurchill.html",
+          "#5年前 大科技公司的秘密武器是转换成本，而非网络效应 https://pluralistic.net/2021/04/12/tear-down-that-wall/#zucks-iron-curtain",
+          "#5年前 防欺诈选举技术 https://pluralistic.net/2021/04/12/tear-down-that-wall/#bmds",
+          "#1年前 蓝十字路易斯安那州对乳腺癌毫不在意 https://pluralistic.net/2025/04/12/pre-authorization/#is-not-a-guarantee-of-payment",
+          "即将举行的演讲（永久链接）",
+          "多伦多：民主交流中心（DemocracyXchange），4月16日  \nhttps://www.democracyxchange.org/news/cory-doctorow-to-open-dxc26-on-april-16",
+          "旧金山：2026年伯克利春季并购与董事会论坛，4月23日  \nhttps://www.theberkeleyforum.com/#agenda",
+          "伦敦：抵制科技巨头帝国（LSBU），4月25日  \nhttps://www.tickettailor.com/events/globaljusticenow/2042691",
+          "纽约：共同财富风投公司“平台恶化”讨论会，4月29日  \nhttps://luma.com/ssgfvqz8",
+          "纽约：莎拉·姜（Sarah Jeong）、托奇·奥尼布丘（Tochi Onyibuchi）与阿里娅·达斯塔吉尔（Alia Dastagir）谈“科技流行病”（PEN世界之声），4月30日  \nhttps://worldvoices.pen.org/event/techidemic/",
+          "柏林：Re:publica大会，5月18日至20日  \nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：其他之地书店举办“平台恶化”讲座，5月19日  \nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-怀伊：《光如何进入》思想节，5月22日至25日  \nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW大会，6月2日  \nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "近期公开活动（永久链接）",
+          "互联网正在变糟（CBC《国家新闻》）  \nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被大科技公司坑了？（安大略今日）  \nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "辛迪·科恩《隐私卫士》新书发布（City Lights）  \nhttps://www.youtube.com/watch?v=WuVCm2PUalU",
+          "鸡用交配背带（本周科技播客）  \nhttps://twit.tv/shows/this-week-in-tech/episodes/1074",
+          "虚拟珠宝盒（犹他大学塔嫩讲座）  \nhttps://tanner.utah.edu/podcast/enshittification-cory-doctorow-matthew-potolsky/",
+          "最新著作（永久链接）",
+          "“坎尼谷”：我为Pluralistic创作的拼贴画限量珍藏版，自出版，2025年9月  \nhttps://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《平台恶化：为何一切突然变得更糟及如何应对》，Farrar, Straus, Giroux出版社，2025年10月7日  \nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《铲子与选择》：PC英雄时代的续篇，Tor Books（美国）、Head of Zeus（英国），2025年2月  \nhttps://us.macmillan.com/books/9781250865908/picksandshovels",
+          "《骗局》：继《红队蓝调》之后的小说，讲述监狱科技与各类骗局，Tor Books（美国）、Head of Zeus（英国），2024年2月（thebezzle.org）",
+          "《失落的事业》：一部在气候危机中闪耀希望的光明未来小说，Tor Books（美国）、Head of Zeus（英国），2023年11月（http://lost-cause.org）",
+          "《互联网垄断》：关于互操作性与大科技的非虚构作品（Verso出版社），2023年9月（http://seizethemeansofcomputation.org）。签名本可在Book Soup购买（https://www.booksoup.com/book/9781804291245）",
+          "《红队蓝调》：“引人入胜、令人上瘾的惊悚小说，读完你会对世界运作方式有更深的了解。” Tor Books（http://redteamblues.com）",
+          "《 chokepoint capitalism：如何击败大科技、驯服大内容，让艺术家获得应有报酬》（与丽贝卡·吉布林合著）：探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe出版社，2022年（https://chokepointcapitalism.com）",
+          "即将出版（永久链接）",
+          "《后人类AI指南：成为更优秀的AI批评者》，Farrar, Straus and Giroux出版社，2026年6月  \nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《平台恶化》（图像小说版），Firstsecond出版社，2026年",
+          "《后美帝国互联网》：一部地缘政治意义上的《平台恶化》续作，Farrar, Straus and Giroux出版社，2027年",
+          "《未经授权的面包》：一部改编自我的中篇小说的图像小说，讲述难民、烤面包机和数字版权管理（DRM）的故事，FirstSecond出版社，2027年",
+          "《梅米克方法》，法勒、斯特劳斯、吉鲁出版社，2027年",
+          "版权页（永久链接）",
+          "今日主要来源：",
+          "正在创作：《后美国互联网》，作为《去中心化》的续篇，讲述特朗普摧毁美国后我们其余人所能享有的更美好的世界。已完成第三稿，已提交编辑。",
+          "《逆向半人马AI指南》，一本面向法勒、斯特劳斯与吉鲁出版社读者的短书，旨在帮助读者成为高效的AI批评者。法律审查与文字润色已完成。",
+          "《后美国互联网》，一本关于特朗普主义时代网络政策的短书。处于规划阶段。",
+          "《小兄弟》短篇故事之一，关于DIY胰岛素。处于规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名4.0许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文与图片不在此许可范围内；它们或因版权例外条款、或基于单独许可而包含在内。请谨慎处理。",
+          "如何获取《多元主义》内容：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯订阅（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪与数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模发布，无限制，第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你SARS时，你就做蛇根草汽水”——乔伊“手风琴男”德维拉",
+          "仔细阅读：阅读即表示，你代表雇主同意，永久且无损害地解除我因与雇主及其合作伙伴、许可方、代理人及受让人签订的任何和所有非协商性协议、许可证、服务条款、密封包装、点击包装、浏览包装、保密、非披露、竞业禁止及可接受使用政策（统称“虚假协议”）而产生的所有义务与弃权声明。你进一步声明，你有权代表雇主解除任何虚假协议的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "4964fbb3b834f3ad",
+      "title": "Standing on the shoulders of Homebrew",
+      "titleZh": "站在Homebrew的肩膀上重写简单部分",
+      "link": "https://nesbitt.io/2026/04/14/standing-on-the-shoulders-of-homebrew.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-04-14T10:00:00.000Z",
+      "category": "tools",
+      "keywords": ["Homebrew", "package manager", "macOS", "open source"],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "作者着手重写Homebrew的部分基础组件，目标是简化其内部实现，使其更易维护和扩展。此举并非推翻原有架构，而是聚焦于那些‘容易出错却常被忽略’的底层细节，以提升包管理工具的稳定性与开发者体验。",
+      "summaryEn": "The author is rewriting foundational parts of Homebrew to simplify its internals and improve maintainability. The goal isn't a full rewrite but to clean up 'easy-to-break' low-level components that often cause instability, aiming for greater reliability and developer ergonomics.",
+      "reason": "展示了开源项目持续优化的典型路径——通过重构核心模块提升长期可持续性，值得包管理工具开发者借鉴。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "zerobrew and nanobrew have been doing the rounds as fast alternatives to Homebrew, one written in Rust with the tagline “uv-style architecture for Homebrew packages” and the other in Zig with a 1.2 MB static binary and a benchmark table comparing itself favourably against the first. Both are upfront, once you scroll past the speedup numbers, that they resolve dependencies against homebrew-core, download the bottles that Homebrew’s CI built and Homebrew’s bandwidth bill serves, and parse the cask definitions that Homebrew contributors maintain."
+          },
+          {
+            "type": "p",
+            "text": "They’re alternative clients for someone else’s registry, which is a perfectly reasonable thing to build, but the framing as a replacement glosses over what running a system package manager actually involves."
+          },
+          {
+            "type": "p",
+            "text": "nanobrew’s README has a “what doesn’t work yet” section listing Ruby post_install hooks, build-from-source with custom options, conditional blocks in Brewfiles, and any complex Ruby DSL, while zerobrew handles source builds by falling back to “Homebrew’s Ruby DSL”, which I read as shelling out to the thing it’s meant to be replacing."
+          },
+          {
+            "type": "p",
+            "text": "The parts of Homebrew they skip are the parts that are slow for a reason: evaluating arbitrary Ruby to discover what a package needs, running post-install hooks that touch the filesystem in package-specific ways, and handling the long tail of formulae that don’t reduce to “download this tarball and symlink it into a prefix”. Implementing only the bottle path and declaring the rest out of scope covers the easy 80% of packages and most of the benchmark wins."
+          },
+          {
+            "type": "p",
+            "text": "zerobrew’s table reports a 4.4x speedup installing ffmpeg from a warm cache, nanobrew gets the same operation down to 287 milliseconds, and I keep trying to picture the developer who installs ffmpeg, uninstalls it, and installs it again on the same machine often enough for warm-cache reinstall time to be the number they care about."
+          },
+          {
+            "type": "p",
+            "text": "A warm install is measuring how quickly you can clonefile a directory out of a content-addressable store, which is a fine thing to optimise but says almost nothing about the experience of setting up a new laptop or adding a tool you didn’t have yesterday. The cold-cache numbers are much closer together, occasionally slower than Homebrew when the bottle is large, because at that point everyone is waiting on the same CDN and there’s no clever data structure that makes bytes arrive faster."
+          },
+          {
+            "type": "p",
+            "text": "I wrote about why uv is fast a few months ago. The language rewrite was the least interesting part of that story. uv is fast because PEP 658 finally let Python resolvers fetch package metadata without executing setup.py, and because uv dropped eggs and pip.conf and a dozen other legacy paths that pip still carries. Homebrew already shipped its equivalent of PEP 658 in the formula.json API, and that’s the thing that made zerobrew and nanobrew possible in the first place, neither of them is solving the metadata-without-Ruby-evaluation problem because Homebrew already solved it for them."
+          },
+          {
+            "type": "p",
+            "text": "zerobrew’s content-addressable store and APFS clonefile tricks would work equally well from Ruby, and nanobrew’s parallel downloads have been on by default in Homebrew since 4.7.0 last November. The architectural choices are real improvements but they aren’t “we rewrote it in Zig” improvements, and a zero-startup-time binary matters a lot less when the operation behind it is a 40 MB download either way."
+          },
+          {
+            "type": "p",
+            "text": "Most of the work in a package manager is the long tail: formulae that want a specific libiconv on an old macOS release, casks with notarisation quirks, post-install scripts that edit config files in ways you can’t predict in advance. None of it benchmarks. Whether either project still has a maintainer paying attention a year from now, once those issues start piling up in the tracker, is an open question. Both also chose Apache-2.0 rather than inheriting Homebrew’s BSD-2-Clause, which is legally fine and suggests the authors see themselves as building independent projects rather than contributing to the ecosystem they depend on."
+          },
+          {
+            "type": "p",
+            "text": "The formula format is Turing-complete Ruby, which means the package definition and the client that interprets it are effectively the same artefact, and any move toward declarative package data has to either break the existing formulae or ship a Ruby evaluator as part of every client forever."
+          },
+          {
+            "type": "p",
+            "text": "The formula API currently lists 8,308 formulae in homebrew-core and the cask API another 7,617 casks, plus roughly 34,000 homebrew-* Ruby repositories on GitHub that look like third-party taps, all written against an internal DSL that was never meant to be a stable interchange format. The fast clients get to sidestep that problem by declaring it out of scope, which is a freedom the project they depend on doesn’t have."
+          },
+          {
+            "type": "p",
+            "text": "The bottleneck isn’t Rust or Ruby, it’s the absence of a stable declarative package schema. Until that exists, every fast client is fast because Homebrew already did the slow work."
+          }
+        ],
+        "translations": [
+          "zerobrew 和 nanobrew 作为 Homebrew 的快速替代品迅速流行起来，前者用 Rust 编写，宣传语为“Homebrew 包的 uv 风格架构”，后者则用 Zig 实现，提供 1.2MB 的静态二进制文件，并通过基准测试表格显示其性能优于前者。一旦你略过速度提升的数据，它们都会坦诚地说明：它们依赖 homebrew-core 解析依赖关系，下载 Homebrew CI 构建好的 bottles（预编译包），并使用 Homebrew 的带宽资源，同时解析由 Homebrew 贡献者维护的 cask 定义。",
+          "它们是别人注册表（registry）的替代客户端，这本身是完全合理的产品方向，但将其包装成“替代品”的说法，掩盖了运行系统包管理器实际上涉及的内容。",
+          "nanobrew 的 README 中有一个“尚未支持的功能”章节，列出了 Ruby post_install 钩子、自定义选项下从源码构建、Brewfile 中的条件块以及任何复杂的 Ruby DSL，而 zerobrew 通过回退到“Homebrew 的 Ruby DSL”来处理源码构建，我理解为它实际上是在调用它本应取代的那个工具。",
+          "它们跳过的部分正是那些之所以慢是有原因的环节：执行任意 Ruby 代码以确定软件包的需求、运行会按特定方式操作文件系统的 post-install 钩子，以及处理无法简化为“下载此 tarball 并链接到前缀目录”的大量公式（formulae）。仅实现 bottle 路径并将其余部分划为“不在范围内”，恰好覆盖了大多数容易处理的 80% 软件包，也解释了它们在基准测试中领先的原因。",
+          "zerobrew 的测试数据显示，在缓存已预热的情况下安装 ffmpeg 可提速 4.4 倍，nanobrew 则将同一操作压缩至 287 毫秒。我反复想象着那个频繁在同一台机器上安装又卸载 ffmpeg，以至于“缓存已预热时的重新安装速度”成为他们关注指标的开发者形象。",
+          "所谓“预热安装”，其实是在测量如何快速从一个内容寻址存储中克隆目录，这固然值得优化，但对设置新笔记本或添加昨天还不存在的工具的用户体验几乎毫无影响。冷缓存（cold-cache）情况下的数据则更接近，有时甚至比 Homebrew 更慢——尤其是当 bottle 很大时——因为这时大家都在等待同一个 CDN，没有任何巧妙的数据结构能让字节更快到达。",
+          "几个月前我曾写过关于 uv 为何如此之快的原因。语言重写并不是故事中最有趣的部分。uv 之所以快，是因为 PEP 658 终于让 Python 解析器能在不执行 setup.py 的情况下获取包元数据，还因为它舍弃了 eggs、pip.conf 以及其他十几种 pip 仍保留的遗留路径。Homebrew 早已在其 formula.json API 中实现了 PEP 658 的等效功能，而这正是 zerobrew 和 nanobrew 得以实现的基础——它们并未解决“无需 Ruby 求值即可获取元数据”的问题，因为 Homebrew 早已为它们解决了这个问题。",
+          "zerobrew 的内容寻址存储与 APFS clonefile 技巧完全可以用 Ruby 实现，nanobrew 的并行下载功能自去年 11 月 Homebrew 4.7.0 起就已默认开启。这些架构选择确实是实实在在的改进，但它们不是“我们用 Zig 重写了整个项目”那种意义上的改进；而且，无论哪种方式都要下载 40MB 的文件，一个零启动时间的二进制文件在此场景下意义就小多了。",
+          "包管理器的大部分工作都集中在长尾问题上：需要在旧版 macOS 上安装特定版本的 libiconv，处理需要公证的 cask，以及那些在预知范围之外修改配置文件的 post-install 脚本。这些都不涉及基准测试。一年后，当这些问题在追踪器中堆积如山时，这两个项目是否仍有维护者关注仍是一个未知数。此外，两者都选择了 Apache-2.0 许可证而非继承 Homebrew 的 BSD-2-Clause，这在法律上是可行的，也表明作者将自己定位为构建独立项目，而非为依赖的生态系统做出贡献。",
+          "公式格式是图灵完备的 Ruby，这意味着包定义和解释它的客户端实际上是同一个产物，任何向声明式包数据迈进的尝试，要么破坏现有公式，要么永远在每个客户端中附带一个 Ruby 解释器。",
+          "当前公式 API 列出了 homebrew-core 中的 8,308 个公式，cask API 另有 7,617 个 cask，再加上 GitHub 上约 34,000 个看起来像第三方 tap 的 homebrew-* Ruby 仓库，它们都是基于一个从未打算作为稳定交换格式的内部 DSL 编写的。快速客户端通过声明该问题不在其作用范围内来规避这个问题，这是它们所依赖的项目所不具备的自由。",
+          "瓶颈不在于 Rust 或 Ruby，而在于缺乏一个稳定的声明式包模式。在这一点实现之前，每个快速客户端之所以快，是因为 Homebrew 已经完成了缓慢的工作。"
+        ]
+      }
+    },
+    {
+      "slug": "26c8781143faee6e",
+      "title": "Trusted access for the next era of cyber defense",
+      "titleZh": "为下一代网络防御打造可信访问",
+      "link": "https://simonwillison.net/2026/Apr/14/trusted-access-openai/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-14T21:23:59.000Z",
+      "category": "ai-ml",
+      "keywords": ["GPT-5.4-Cy", "cyber defense", "AI model", "OpenAI"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "OpenAI推出GPT-5.4-Cyber模型，专门针对网络安全防御场景进行微调，以应对Claude Mythos等AI驱动的网络威胁。这表明行业正转向专用AI模型赋能主动防御，构建‘可信访问’机制来识别、阻断和响应自动化攻击。",
+      "summaryEn": "OpenAI's GPT-5.4-Cyber is a fine-tuned model designed specifically for defensive cybersecurity use cases, responding to threats like those demonstrated by Claude Mythos. This marks a shift toward purpose-built AI for cyber defense, enabling proactive detection and response to automated attacks.",
+      "reason": "揭示了AI安全领域从通用模型向垂直场景深度定制的发展趋势，预示未来网络防御将高度依赖专用AI能力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "14th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Trusted access for the next era of cyber defense (via) OpenAI's answer to Claude Mythos appears to be a new model called GPT-5.4-Cyber:"
+          },
+          {
+            "type": "quote",
+            "text": "In preparation for increasingly more capable models from OpenAI over the next few months, we are fine-tuning our models specifically to enable defensive cybersecurity use cases, starting today with a variant of GPT‑5.4 trained to be cyber-permissive: GPT‑5.4‑Cyber."
+          },
+          {
+            "type": "p",
+            "text": "They're also extending a program they launched in February (which I had missed) called Trusted Access for Cyber, where users can verify their identity (via a photo of a government-issued ID processed by Persona) to gain \"reduced friction\" access to OpenAI's models for cybersecurity work."
+          },
+          {
+            "type": "p",
+            "text": "Honestly, this OpenAI announcement is difficult to follow. Unsurprisingly they don't mention Anthropic at all, but much of the piece emphasizes their many years of existing cybersecurity work and their goal to \"democratize access\" to these tools, hence the emphasis on that self-service verification flow from February."
+          },
+          {
+            "type": "p",
+            "text": "If you want access to their best security tools you still need to go through an extra Google Form application process though, which doesn't feel particularly different to me from Anthropic's Project Glasswing."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "229e20b38c0ee492",
+      "title": "Fraudulent Cryptocurrency App in Mac App Store Stole $9.5 Million From 50-Some Users",
+      "titleZh": "假冒Ledger加密货币钱包App骗取950万美元",
+      "link": "https://www.web3isgoinggreat.com/?id=fake-ledger-app",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-14T22:06:18.000Z",
+      "category": "security",
+      "keywords": ["cryptocurrency fraud", "Mac App Store", "phishing", "Ledger"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "一款伪造的Ledger钱包应用成功上架苹果App Store，诱骗50余名用户输入助记词，导致总计950万美元被盗。受害者包括音乐人G. Love，他因误信该应用为正品而转移资产，凸显第三方应用商店审核机制的潜在风险。",
+      "summaryEn": "A fake Ledger cryptocurrency wallet app infiltrated the Apple App Store, tricking over 50 users into entering their seed phrases before draining wallets of $9.5 million total. Victims like musician G. Love highlight how even curated stores can fail against sophisticated social engineering attacks targeting crypto users.",
+      "reason": "暴露了主流应用分发渠道在防范金融类恶意软件方面的脆弱性，警示用户务必验证应用来源的真实性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Molly White",
+        "siteName": "Web3 is Going Just Great",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "April 13, 2026"
+          },
+          {
+            "type": "p",
+            "text": "After a fake version of the Ledger cryptocurrency wallet app made it onto the normally highly curated Apple App store, customers lost $9.5 million dollars to the malicious product. Believing it was a genuine Ledger product, people entered their seed phrases into the app, then discovered their wallets were immediately drained."
+          },
+          {
+            "type": "p",
+            "text": "One victim, a musician who goes by G. Love, wrote: \"I lost my retirement fund in a hack/Scam when I switched my Ledger over to my new computer and by accident downloaded a malicious ledger app from the Apple store. All my BTC gone in an instant.\" According to him, he lost 5.9 BTC (~$445,000)."
+          },
+          {
+            "type": "p",
+            "text": "Crypto sleuth zachxbt traced some of the stolen funds through Kucoin, a Chinese cryptocurrency exchange that was recently fined and forced to exit US markets over licensing and anti-money laundering failures. \"The three largest victims lost seven figures each,\" he wrote."
+          },
+          {
+            "type": "p",
+            "text": "Apple removed the malicious app from their App Store on April 13, six days after it had been added."
+          },
+          {
+            "type": "li",
+            "text": "\"A fake Ledger app on the Apple App Store drained $9.5 million in crypto\", CoinDesk [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Telegram post by zachxbt [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet thread by G. Love [archive]"
+          },
+          {
+            "type": "p",
+            "text": "April 13, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Hyperbridge exploited two weeks after April Fools' hack joke"
+          },
+          {
+            "type": "p",
+            "text": "On April Fools' Day, the Hyperbridge blockchain bridge project posted a tweet claiming that the North Korean Lazarus hacking group had drained $37 million from the project. A linked blog post contained a Rickroll GIF and an explanation of \"Why Hyperbridge can't be hacked\"."
+          },
+          {
+            "type": "p",
+            "text": "The following day, a Hyperbridge developer posted a screenshot of a blockchain transaction, writing \"Lmao the uniBTC exploiter is testing Hyperbridge. I hope you have a quantum computer bro\". Another commenter replied, \"Rule #1 dont actively provoke attackers\"."
+          },
+          {
+            "type": "p",
+            "text": "About two weeks later, an attacker was able to forge a transaction to change the admin rights for the Polkadot/Ethereum bridge contract, allowing them to mint 1 billion DOT tokens. They were able to cash out about $2,500,000 due to limited liquidity."
+          },
+          {
+            "type": "p",
+            "text": "The April Fools' posts have since been deleted."
+          },
+          {
+            "type": "li",
+            "text": "\"Hyperbridge exploited less than two weeks after April Fools’ day hack prank\", Protos [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet by 0xMarforio [archive]"
+          },
+          {
+            "type": "p",
+            "text": "April 6, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Bitcoin Depot hacked for $3.67 million"
+          },
+          {
+            "type": "p",
+            "text": "Bitcoin ATM operator Bitcoin Depot has disclosed a March 23 hack in which attackers stole 50.903 BTC (~$3.67 million) from company wallets. According to the company's disclosure with the SEC, the exploiters gained access to the company's IT systems and wallet credentials, allowing them to steal the assets."
+          },
+          {
+            "type": "p",
+            "text": "Bitcoin Depot is the largest operator of crypto ATMs globally and in the United States, with approximately 8,700 kiosks in the US and 9,200 worldwide."
+          },
+          {
+            "type": "li",
+            "text": "SEC Form 8-K filed by Bitcoin Depot Inc. on April 6, 2026"
+          },
+          {
+            "type": "li",
+            "text": "Top Crypto ATM Operators, Coin ATM Radar"
+          },
+          {
+            "type": "p",
+            "text": "April 1, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Drift exploited for $285 million"
+          },
+          {
+            "type": "p",
+            "text": "The Solana-based Drift defi perpetual futures exchange was exploited for $285 million. The project alerted the community on social media, writing: \"Drift Protocol is experiencing an active attack. ... This is not an April Fools joke.\""
+          },
+          {
+            "type": "p",
+            "text": "The project later described the exploit as \"a novel attack involving durable nonces, resulting in a rapid takeover of Drift's Security Council administrative powers.\" Once the attacker had access to admin capabilities, they quickly eliminated risk management limits on the protocol and drained huge quantities of tokens, which they swapped to USDC and then ETH. The attack was attributed to extremely sophisticated social engineering, likely by North Korean hackers."
+          },
+          {
+            "type": "p",
+            "text": "Some have criticized USDC's issuer, Circle, for not freezing the stolen funds during the six hours they were held in USDC. Unlike ETH, USDC is controlled by a centralized company that can, and regularly does, freeze assets determined to have been stolen or connected to illicit activity."
+          },
+          {
+            "type": "p",
+            "text": "The theft is among the largest in defi history."
+          },
+          {
+            "type": "li",
+            "text": "\"Drift says $280M exploit tied to 'sophisticated' admin takeover; ZachXBT criticizes Circle over USDC handling\", The Block"
+          },
+          {
+            "type": "li",
+            "text": "Tweet by Drift Protocol"
+          },
+          {
+            "type": "li",
+            "text": "Tweet thread by Drift Protocol"
+          },
+          {
+            "type": "p",
+            "text": "March 24, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Moonwell faces $1 million governance attack"
+          },
+          {
+            "type": "p",
+            "text": "The Moonwell lending protocol faced a governance attack on its deprecated Moonriver instance that could have drained $1 million from the project. Because Moonwell's MFAM governance token trades at fractions of a cent, an attacker was able to accumulate around 40 million tokens, submit a malicious proposal, and achieve quorum. Moonwell governance token holders scrambled to vote down the proposal before the voting ended on March 27."
+          },
+          {
+            "type": "p",
+            "text": "Ultimately, facing being outvoted, the attacker dumped their MFAM holdings and the proposal was canceled as their balance had fallen below the proposal threshold."
+          },
+          {
+            "type": "p",
+            "text": "This was only the most recent of Moonwell's troubles after the protocol suffered a $1.78 million loss in February due to an oracle misconfiguration and a $3.7 million loss in November 2025."
+          },
+          {
+            "type": "li",
+            "text": "Attack proposal, Moonwell governance [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet thread by Blockful [archive]"
+          },
+          {
+            "type": "p",
+            "text": "March 24, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Balancer Labs shuts down after $110 million hack"
+          },
+          {
+            "type": "p",
+            "text": "After a November 2025 exploit in which $110 million was drained from the Balancer defi protocol, the company behind the project has announced it will shut down. Besides the massive loss, the hack also caused users to flee the protocol, and Balancer's total value locked quickly plummeted from around $775 million to around $300 million. It has continued to decline since, now hovering around $150 million."
+          },
+          {
+            "type": "p",
+            "text": "Balancer co-founder Fernando Martinelli has said he strongly considered shutting down the protocol entirely, but ultimately decided to continue the project as it generates a relatively small amount of revenue. Instead, the project will move to being operated by a DAO and operating company, which Martinelli hopes will allow them to dodge \"real and ongoing legal exposure\" and \"the liability of past security incidents\"."
+          },
+          {
+            "type": "p",
+            "text": "Although another Balancer co-founder has optimistically presented this as \"the start of a better chapter\" for Balancer, it remains to be seen whether a skeleton crew will be able to revive the project."
+          },
+          {
+            "type": "li",
+            "text": "\"On the Future of Balancer: Shutting Down Balancer Labs, Supporting the Path Forward\", Balancer governance forum [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet by Marcus Hardt"
+          },
+          {
+            "type": "p",
+            "text": "March 22, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "USR stablecoin depegs in $24 million exploit"
+          },
+          {
+            "type": "p",
+            "text": "The Resolv USD stablecoin, also known as USR, lost its intended dollar peg and dropped to around $0.14 after an exploiter was able to mint and sell tens of millions of unbacked tokens. USR is an asset-backed stablecoin that uses cryptoassets like bitcoin, ETH, and other stablecoins as collateral."
+          },
+          {
+            "type": "p",
+            "text": "An exploiter took advantage of a flaw in USR's minting code to create tens of millions of USR tokens without depositing any assets to back them. The attacker then sold the unbacked USR, crashing the stablecoin's price to as low as $0.14. The attacker has profited at least 11,400 ETH (~$24 million), though they are still selling."
+          },
+          {
+            "type": "p",
+            "text": "Some defi protocols paused USR-exposed strategies to avoid downstream impacts. Resolv issued a statement that the token's collateral pool was unaffected, though this is likely little comfort for those who purchased the unbacked USR."
+          },
+          {
+            "type": "li",
+            "text": "\"Resolv Labs’ stablecoin depegs as attacker mints millions of tokens\", Cointelegraph [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet by Resolv Labs [archive]"
+          },
+          {
+            "type": "p",
+            "text": "March 17, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Venus Protocol accumulates $2.15 million in bad debt after exploit"
+          },
+          {
+            "type": "p",
+            "text": "The BNB Chain's Venus Protocol lending protocol accumulated $2.15 million in bad debt after an exploiter manipulated the price of the Thena protocol's THE token. THE had very low liquidity, and the exploiter took advantage of it to manipulate the THE price oracle by borrowing against THE, using the borrowed funds to buy more THE, and repeating — causing the price oracle to reflect higher and higher prices. The attacker was able to avoid a supply cap on Venus by \"donating\" the funds rather than depositing them in the standard way."
+          },
+          {
+            "type": "p",
+            "text": "While the exploit left the Venus Protocol with over $2 million in bad debt, it's not clear if the attacker even made money from the exploit. The exploiter's position was ultimately liquidated, collapsing the increase in THE price. However, it's possible the exploiter took advantage of the price discrepancy elsewhere to profit."
+          },
+          {
+            "type": "p",
+            "text": "The Venus Protocol has had a number of issues in the past — notably in June 2023, when the team developing the BNB Chain had to intervene when the a thief borrowed $150 million on Venus against stolen tokens and then faced liquidation."
+          },
+          {
+            "type": "li",
+            "text": "\"Venus Protocol left with roughly $2M in bad debt after exploit manipulates Thena's THE token price\", The Block"
+          },
+          {
+            "type": "p",
+            "text": "March 15, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "BlockFills goes bankrupt"
+          },
+          {
+            "type": "p",
+            "text": "Approximately a month after halting deposits and withdrawals, citing liquidity issues and \"recent market and financial conditions\", the American crypto lender BlockFills has filed for bankruptcy. Filings in Delaware bankruptcy court reveal the company has between $50 million and $100 million in assets and between $100 million and $500 million in liabilities. The list of creditors include customers like 007 Capital and Artha Investment Partners, and the firm has a $4.75 million loan outstanding to fellow crypto lender Nexo. Also on the list of creditors are the Chicago Blackhawks, with whom BlockFills signed a sponsorship deal in 2022."
+          },
+          {
+            "type": "p",
+            "text": "BlockFills was backed by investors including Susquehanna and CME Ventures."
+          },
+          {
+            "type": "li",
+            "text": "Chapter 11 Voluntary Petition, Reliz Technology Group Holdings Inc."
+          },
+          {
+            "type": "p",
+            "text": "March 12, 2026"
+          },
+          {
+            "type": "h2",
+            "text": "Trader loses almost $50 million in Aave swap gone wrong"
+          },
+          {
+            "type": "p",
+            "text": "A trader using the Aave interface attempted to swap $50 million USDT for AAVE. However, due to the enormous size of the order, the purchase had dramatic impact on the aave price. The Aave interface warned the customer about the price impact, and the trader clicked a checkbox to accept the order terms. Ultimately, they received only 324 AAVE (~$37,600) in return for their $50 million, losing 99.9% of their assets in the process."
+          },
+          {
+            "type": "p",
+            "text": "The Aave founder offered to refund the user the $600,000 in fees collected from the transaction, and acknowledged \"there are additional guardrails the industry can build to better protect users\"."
+          },
+          {
+            "type": "li",
+            "text": "Tweet by Stani Kulechov [archive]"
+          },
+          {
+            "type": "li",
+            "text": "Tweet by Martin Grabina [archive]"
+          },
+          {
+            "type": "p",
+            "text": "No JavaScript? That's cool too! Check out the Web 1.0 version of the site to see more entries."
+          }
+        ],
+        "translations": [
+          "2026年4月13日",
+          "一款伪造的Ledger加密货币钱包应用被上传到苹果App Store——这个通常审核极为严格的应用商店后，导致客户损失了950万美元。用户误以为这是正品Ledger产品，在应用中输入了自己的助记词，结果发现钱包瞬间被盗空。",
+          "一位名叫G. Love的音乐人受害者写道：“当我把Ledger转移到新电脑时，不小心从苹果商店下载了一个恶意Ledger应用，结果我的退休基金在一次黑客攻击/骗局中全部丢失。我所有的比特币瞬间化为乌有。”据他称，他损失了5.9个BTC（约合44.5万美元）。",
+          "加密货币调查员zachxbt通过KuCoin——一家近期因许可和洗钱合规问题被罚款并被迫退出美国市场的中国加密货币交易所——追踪到部分被盗资金。“三位最大受害者的损失均达七位数，”他写道。",
+          "苹果于4月13日将该恶意应用从其App Store下架，距离其上架仅六天时间。",
+          "“苹果App Store上的假冒Ledger应用盗走950万美元加密货币”，CoinDesk [存档]",
+          "zachxbt的Telegram帖子 [存档]",
+          "G. Love的推文长文 [存档]",
+          "2026年4月13日",
+          "Hyperbridge在愚人节玩笑后的两周内遭遇攻击",
+          "愚人节当天，Hyperbridge区块链桥项目发布推文称，朝鲜Lazarus黑客组织已从该项目中盗走3700万美元。附带的博客文章中包含一个Rickroll动图，并解释了“为何Hyperbridge无法被攻破”。",
+          "次日，一名Hyperbridge开发者发布了一张区块链交易截图，写道：“哈哈，uniBTC的攻击者正在测试Hyperbridge。希望你有量子计算机，兄弟。”另一位评论者回复道：“规则#1：不要主动挑衅攻击者。”",
+          "约两周后，攻击者成功伪造交易以更改Polkadot/Ethereum桥合约的管理权限，得以铸造10亿枚DOT代币。由于流动性有限，他们最终套现约250万美元。",
+          "此后，愚人节相关帖子已被删除。",
+          "“Hyperbridge在愚人节后不到两周即遭攻击”，Protos [存档]",
+          "0xMarforio的推文 [存档]",
+          "2026年4月6日",
+          "Bitcoin Depot遭黑客攻击，损失367万美元",
+          "比特币ATM运营商Bitcoin Depot披露，3月23日发生一起黑客攻击事件，攻击者从其公司钱包中窃取了50.903个BTC（约合367万美元）。根据该公司向SEC提交的声明，攻击者获取了公司的IT系统和钱包凭证，从而盗取资产。",
+          "Bitcoin Depot是全球及美国最大的加密ATM运营商，在美国拥有约8,700台 kiosk，全球总计约9,200台。",
+          "Bitcoin Depot Inc.提交的SEC Form 8-K文件，2026年4月6日",
+          "顶级加密ATM运营商，Coin ATM Radar",
+          "2026年4月1日",
+          "Drift遭攻击，损失2.85亿美元",
+          "基于Solana的DeFi永续期货交易平台Drift遭黑客攻击，损失达2.85亿美元。项目方在社交媒体上提醒社区：“Drift协议正遭受活跃攻击……这不是愚人节玩笑。”",
+          "该项目后来将此次攻击描述为“一种新颖的攻击方式，涉及持久性随机数（durable nonces），导致对 Drift 安全委员会管理权限的快速接管”。一旦攻击者获得管理员权限，他们迅速消除了协议的风险管理限制，并转移了大量代币，随后将其兑换为 USDC，再换成 ETH。此次攻击被归因于极其复杂的社会工程手段，很可能是朝鲜黑客所为。",
+          "一些人批评 USDC 的发行方 Circle 在资金被盗后长达六小时滞留于 USDC 期间未能冻结这些资产。与 ETH 不同，USDC 由一家中心化公司控制，该公司可以且经常冻结被认定为被盗或涉及非法活动的资产。",
+          "此次盗窃是 DeFi 历史上规模最大的事件之一。",
+          "“Drift 称 2.8 亿美元漏洞源于‘高度复杂’的管理员接管；ZachXBT 批评 Circle 处理 USDC 不当”，The Block",
+          "Drift Protocol 发布的推文",
+          "Drift Protocol 发布的推文长文",
+          "2026年3月24日",
+          "Moonwell 面临 100 万美元治理攻击",
+          "Moonwell 借贷协议在其已弃用的 Moonriver 实例上遭遇了一次治理攻击，可能导致项目损失 100 万美元。由于 Moonwell 的 MFAM 治理代币价格仅为几分之一美分，攻击者得以积累约 4000 万枚代币，提交恶意提案并通过法定人数要求。在 3 月 27 日投票结束前，Moonwell 治理代币持有者紧急投票否决了该提案。",
+          "最终，由于面临被多数票否决的局面，攻击者抛售了其持有的 MFAM 代币，其持仓量跌破提案门槛，导致提案被取消。",
+          "这仅是 Moonwell 近期一系列问题的最新一次——此前该协议在 2 月因预言机配置错误损失 178 万美元，2025 年 11 月又损失了 370 万美元。",
+          "攻击提案，Moonwell 治理 [存档]",
+          "Blockful 发布的推文长文 [存档]",
+          "2026年3月24日",
+          "Balancer Labs 宣布关闭，此前遭 1.1 亿美元黑客攻击",
+          "在 2025 年 11 月发生一起导致 1.1 亿美元从 Balancer DeFi 协议中被盗的事件后，该项目背后的公司已宣布即将关停。除了巨额损失外，此次攻击还导致用户纷纷撤离，Balancer 的总锁仓价值迅速从约 7.75 亿美元暴跌至约 3 亿美元，此后持续下滑，目前徘徊在 1.5 亿美元左右。",
+          "Balancer 联合创始人 Fernando Martinelli 表示，他曾强烈考虑彻底关闭该协议，但最终决定继续运营，因为该项目仍能带来相对可观的收入。相反，项目将转型为由 DAO 和运营公司共同管理，Martinelli 希望此举能帮助他们规避“持续的实质性法律风险”以及“过往安全事故带来的责任”。",
+          "尽管另一位 Balancer 联合创始人乐观地将此称为 Balancer “新篇章的开始”，但如今仅剩少数核心成员能否重振项目仍属未知。",
+          "“关于 Balancer 的未来：关闭 Balancer Labs，支持未来发展路径”，Balancer 治理论坛 [存档]",
+          "Marcus Hardt 发布的推文",
+          "2026年3月22日",
+          "USR 稳定币脱锚，涉 2400 万美元漏洞",
+          "Resolv USD 稳定币（又称 USR）在一次漏洞利用事件中失去与美元的挂钩，价格跌至约 0.14 美元。攻击者成功铸造并出售了数千万枚无抵押代币。USR 是一种抵押型稳定币，以比特币、ETH 和其他稳定币等加密资产作为抵押品。",
+          "一名攻击者利用了 USR 铸造代码中的漏洞，在不存入任何抵押资产的情况下创建了数千万个 USR 代币。随后该攻击者抛售这些无抵押的 USR，导致稳定币价格暴跌至仅 0.14 美元。尽管攻击者仍在持续抛售，但其已通过此次攻击至少获利 11,400 ETH（约合 2400 万美元）。",
+          "部分 DeFi 协议暂停了涉及 USR 的策略以规避连锁风险。Resolv 发布声明称该代币的抵押池未受影响，但对于购买了无抵押 USR 的用户而言，这或许难以提供安慰。",
+          "\"Resolv Labs 的稳定币脱锚，攻击者凭空铸造数百万枚代币\"，Cointelegraph [存档]",
+          "Resolv Labs 推文 [存档]",
+          "2026年3月17日",
+          "Venus Protocol 遭遇攻击后产生 215 万美元坏账",
+          "BNB Chain 上的 Venus Protocol 借贷协议因一名攻击者操纵 Thena 协议 THE 代币价格而累积了 215 万美元的坏账。由于 THE 流动性极低，攻击者通过反复借入 THE、用借款买入更多 THE 的方式操纵价格预言机，导致其报价不断攀升。攻击者还通过“捐赠”资金而非常规存款的方式绕过了 Venus 的供应上限。",
+          "虽然此次攻击使 Venus Protocol 背负超过 200 万美元的坏账，但目前尚不清楚攻击者是否从中获利。最终攻击者的头寸被清算，THE 价格的虚高随之崩塌。不过，攻击者仍可能利用价格差异在其他地方套利获利。",
+          "Venus Protocol 此前已多次出现问题—— notably 在 2023 年 6 月，当开发团队发现一名窃贼以被盗代币为抵押在 Venus 上借出 1.5 亿美元并面临清算时，不得不进行干预。",
+          "\"Venus Protocol 遭遇攻击后产生约 200 万美元坏账，攻击者操纵 Thena 的 THE 代币价格\"，The Block",
+          "2026年3月15日",
+          "BlockFills 申请破产",
+          "美国加密借贷平台 BlockFills 在宣布暂停存取款约一个月后正式申请破产。特拉华州破产法院的文件显示，该公司资产介于 5000 万至 1 亿美元之间，负债则在 1 亿至 5 亿美元之间。债权人名单包括 007 Capital 和 Artha Investment Partners 等客户，以及向其提供 475 万美元贷款的加密货币借贷平台 Nexo。名单中还包括芝加哥黑鹰冰球队，BlockFills 曾在 2022 年与该队签署赞助协议。",
+          "BlockFills 曾获得 Susquehanna 和 CME Ventures 等投资者的支持。",
+          "第 11 章自愿申请，Reliz Technology Group Holdings Inc.",
+          "2026年3月12日",
+          "交易员因 Aave 兑换操作失误损失近 5000 万美元",
+          "一名使用 Aave 界面的交易员试图将 5000 万美元 USDT 兑换为 AAVE，但由于订单规模巨大，导致 AAVE 价格剧烈波动。Aave 界面已向用户发出价格冲击警告，该交易员点击确认框接受了交易条款。最终他仅获得 324 枚 AAVE（约合 3.76 万美元），损失了 99.9% 的资产。",
+          "Aave 创始人表示愿意退还该用户从交易中收取的 60 万美元手续费，并承认“行业需要建立更多防护机制来更好地保护用户”。",
+          "Stani Kulechov 的推文 [存档]",
+          "Martin Grabina 的推文 [存档]",
+          "没有 JavaScript？那也没关系！查看该网站的 Web 1.0 版本，可以看到更多条目。"
+        ]
+      }
+    },
+    {
+      "slug": "aa0e82e9fb88e0fb",
+      "title": "Google Will Finally Begin Punishing Sites for Back-Button Hijacking in June",
+      "titleZh": "谷歌将于6月起对实施“后退按钮劫持”的网站进行处罚",
+      "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-14T20:25:18.000Z",
+      "category": "security",
+      "keywords": ["back button hijacking", "Google Search", "spam policy", "user deception"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "谷歌宣布将在6月更新其垃圾信息政策，将“后退按钮劫持”列为恶意行为并予以处罚。该行为通过阻止用户正常使用浏览器后退功能来误导用户，破坏浏览体验。此举旨在打击利用技术手段操纵用户行为的网站。谷歌表示这将作为垃圾信息政策中“恶意行为”的明确违规项，可能导致网站被降权或移除索引。",
+      "summaryEn": "Google announced it will update its spam policies in June to explicitly penalize 'back button hijacking,' a deceptive practice that blocks users from returning to the previous page as expected. This behavior violates user expectations and manipulates navigation, constituting a malicious practice under Google's updated guidelines. Websites engaging in this tactic may face ranking penalties or removal from search results.",
+      "reason": "这是谷歌首次明确将后退按钮劫持纳入反垃圾政策，标志着搜索引擎对用户体验操纵行为的零容忍态度，值得开发者关注合规风险。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Posted by Chris Nelson on behalf of the Google\n  Search Quality team",
+        "siteName": "Google for Developers",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "April 13, 2026"
+          },
+          {
+            "type": "p",
+            "text": "Today, we are expanding our spam policies\n  to address a deceptive practice known as \"back button hijacking\", which will become an explicit\n  violation of the \"malicious practices\"\n  of spam policies, leading to potential spam actions."
+          },
+          {
+            "type": "h2",
+            "text": "What is back button hijacking?"
+          },
+          {
+            "type": "p",
+            "text": "When a user clicks the \"back\" button in the browser, they have a clear expectation: they want to\n  return to the previous page. Back button hijacking breaks this fundamental expectation. It occurs\n  when a site interferes with a user's browser navigation and prevents them from using their back\n  button to immediately get back to the page they came from. Instead, users might be sent to pages\n  they never visited before, be presented with unsolicited recommendations or ads, or are otherwise\n  just prevented from normally browsing the web."
+          },
+          {
+            "type": "h2",
+            "text": "Why are we taking action?"
+          },
+          {
+            "type": "p",
+            "text": "We believe that the user experience comes first. Back button hijacking interferes with the\n  browser's functionality, breaks the expected user journey, and results in user frustration. People\n  report feeling manipulated and eventually less willing to visit unfamiliar sites. As we've stated before,\n  inserting deceptive or manipulative pages into a user's browser history has always been against our\n  Google Search Essentials."
+          },
+          {
+            "type": "p",
+            "text": "We've seen a rise of this type of behavior, which is why we're designating this an explicit violation\n  of our malicious practices\n  policy, which says:"
+          },
+          {
+            "type": "quote",
+            "text": "Malicious practices create a mismatch between user expectations and the actual outcome,\n  leading to a negative and deceptive user experience, or compromised user security or privacy."
+          },
+          {
+            "type": "p",
+            "text": "Pages that are engaging in back button hijacking may be subject to\n  manual spam actions\n  or automated demotions, which can impact the site's performance in Google Search results. To give\n  site owners time to make any needed changes, we're publishing this policy two months in advance of\n  enforcement on June 15, 2026."
+          },
+          {
+            "type": "h2",
+            "text": "What should site owners do?"
+          },
+          {
+            "type": "p",
+            "text": "Ensure you are not doing anything to interfere with a user's ability to navigate their browser history."
+          },
+          {
+            "type": "p",
+            "text": "If you're currently using any script or technique that inserts or replaces deceptive or\n  manipulative pages into a user's browser history that prevents them from using their back button\n  to immediately get back to the page they came from, you are expected to remove or disable it."
+          },
+          {
+            "type": "p",
+            "text": "Notably, some instances of back button hijacking may originate from the site's included libraries\n  or advertising platform. We encourage site owners to thoroughly review their technical\n  implementation and remove or disable any code, imports or any configurations that are responsible\n  for back button hijacking, to ensure a helpful and non-deceptive experience for users."
+          },
+          {
+            "type": "p",
+            "text": "If your site has been impacted by a manual action and you have fixed the issue, you can always let\n  us know by submitting a reconsideration request\n  in Search Console. For questions or feedback, feel free to reach out on\n  social media or discuss in\n  our help community."
+          }
+        ],
+        "translations": [
+          "2026年4月13日",
+          "今天，我们将扩展反垃圾邮件政策，以应对一种名为“后退按钮劫持”的欺骗性行为。该行为将被明确列为“恶意行为”政策下的违规行为，并可能导致垃圾邮件处罚。",
+          "什么是后退按钮劫持？",
+          "当用户在浏览器中点击“后退”按钮时，他们有一个明确的预期：希望返回到之前的页面。后退按钮劫持破坏了这一基本预期。它发生在网站干扰用户浏览器导航，阻止其通过后退按钮立即返回原始页面的情况下。相反，用户可能会被引导至从未访问过的页面，看到未经请求的推荐或广告，或者根本无法正常浏览网页。",
+          "我们为什么要采取行动？",
+          "我们认为用户体验应放在首位。后退按钮劫持干扰了浏览器功能，破坏了预期的用户旅程，并导致用户挫败感。人们反馈感到被操纵，最终不愿再访问不熟悉的网站。正如我们之前所述，在用户浏览器历史记录中插入欺骗性或操纵性页面始终违反我们的 Google Search Essentials 准则。",
+          "我们已经观察到此类行为的增加，因此将其明确列为违反我们的“恶意行为”政策的行为，该政策规定：",
+          "恶意行为会在用户期望与实际结果之间造成偏差，导致负面、欺骗性的用户体验，或损害用户的安全与隐私。",
+          "实施后退按钮劫持的网站可能面临人工垃圾邮件处罚或自动降权处理，这会影响其在 Google 搜索结果中的表现。为了给网站所有者留出时间进行必要的调整，我们将在执行日期（2026年6月15日）前两个月发布本政策。",
+          "网站所有者应该怎么做？",
+          "确保您不会采取任何干扰用户使用浏览器历史记录导航的措施。",
+          "如果您当前使用了任何将欺骗性或操纵性页面插入或替换到用户浏览器历史记录的脚本或技术，从而阻止用户通过后退按钮立即返回原始页面的情况，则必须移除或禁用这些内容。",
+          "值得注意的是，某些后退按钮劫持行为可能源于网站引入的第三方库或广告平台。我们鼓励网站所有者彻底审查其技术实现，移除或禁用所有负责后退按钮劫持的代码、导入项或配置项，以确保为用户提供有益且非欺骗性的体验。",
+          "如果您的网站因人工处罚受到影响并已修复问题，您可以通过在搜索控制台中提交复审请求随时告知我们。如有疑问或反馈，欢迎通过社交媒体联系我们或在帮助社区中讨论。"
+        ]
+      }
+    },
+    {
+      "slug": "5b6fd35cd7e7a29e",
+      "title": "Weekly Update 499",
+      "titleZh": "每周更新499：AI助手Bruce的新用途",
+      "link": "https://www.troyhunt.com/weekly-update-499/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-04-14T06:30:56.000Z",
+      "category": "ai-ml",
+      "keywords": ["AI assistant", "customer support", "automation", "Bruce"],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Troy Hunt在最新一期周报中分享了对AI助手Bruce的新认识——它不仅能自动回复工单，还能在人工介入时提供精准支持。这种混合式客服模式显著提升了响应质量与效率。作者认为AI不应完全取代人工，而是作为增强工具提升整体服务能力。该观点反映了当前AI应用从自动化向协作化演进的趋势。",
+      "summaryEn": "In Weekly Update 499, Troy Hunt shares his evolving appreciation for AI assistant Bruce, noting its value not just in fully autonomous ticket responses but also in providing intelligent support when human intervention is needed. This hybrid approach improves both response quality and efficiency. Hunt argues that AI should augment rather than replace humans, reflecting a broader trend toward collaborative AI-human workflows in customer service.",
+      "reason": "这篇周报揭示了AI在客户服务中的新角色定位，为企业和开发者提供了人机协同的最佳实践参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I'm starting to become pretty fond of Bruce. Actually, I've had a bit of an epiphany: an AI assistant like Bruce isn't just about auto-responding to tickets in an entirely autonomous manner; it's also pretty awesome at responding with just a little bit of human assistance. Charlotte and I both replied to some tickets today that were way too specific for Bruce to ever do on his own, but by feeding in just a little bit of additional info (such as the number of domains someone was presently monitoring), Bruce was able to construct a really good reply and \"own\" the ticket. So maybe that's the sweet spot: auto-reply to the really obvious stuff and then take just a little human input on everything else."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "296f227f1865fdc0",
+      "title": "Apple Has Hidden the Pre-Creator-Studio Versions of Keynote, Numbers, and Pages in the Mac App Store",
+      "titleZh": "苹果已从Mac App Store下架旧版Pages、Keynote和Numbers应用",
+      "link": "https://9to5mac.com/2026/04/13/apple-removes-old-pages-keynote-numbers-apps-for-macos/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-14T21:07:35.000Z",
+      "category": "tools",
+      "keywords": ["iWork", "Creator Studio", "Mac App Store", "Apple"],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "苹果正式从Mac App Store中移除了带有Creator Studio功能的旧版iWork套件（Pages、Keynote、Numbers）。此前这些应用与新版并存导致版本混乱，现在用户只能获取集成Creator Studio功能的新版本。此次调整统一了macOS与iOS/iPadOS的应用发布策略，简化了用户获取流程。",
+      "summaryEn": "Apple has removed the legacy versions of Pages, Keynote, and Numbers from the Mac App Store, ending the confusing coexistence with Creator Studio-enabled versions. Users can now only download the unified iWork apps that include Creator Studio features, aligning macOS app distribution with iOS/iPadOS. This change simplifies the user experience and streamlines software updates.",
+      "reason": "这一变更标志着苹果在跨平台应用策略上的重大整合，影响所有macOS用户的软件获取方式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ryan Christoffel",
+        "siteName": "9to5Mac",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple has just made a change to its iWork lineup on the Mac, removing the old versions of Pages, Keynote, and Numbers from the App Store and leaving just the newer builds that support Apple Creator Studio."
+          },
+          {
+            "type": "h2",
+            "text": "iWork apps now only available in Creator Studio versions on the Mac"
+          },
+          {
+            "type": "p",
+            "text": "Earlier this year, Apple Creator Studio launched as a new bundle of pro-focused apps for creatives."
+          },
+          {
+            "type": "p",
+            "text": "The bundle includes access to apps like Final Cut Pro, Pixelmator Pro, and Logic Pro, but also exclusive features in Apple’s free iWork apps: Pages, Keynote, and Numbers."
+          },
+          {
+            "type": "p",
+            "text": "On the iPhone and iPad, Apple made the new Creator Studio features available as updates to the existing App Store releases."
+          },
+          {
+            "type": "p",
+            "text": "On the Mac though, the rollout was a lot more confusing."
+          },
+          {
+            "type": "p",
+            "text": "Apple kept the old iWork apps for Mac available on the App Store and launched entirely separate iWork versions with the Creator Studio features."
+          },
+          {
+            "type": "p",
+            "text": "Starting today, though, that oddity is no more. Per Aaron Perris, Apple has officially removed the old Pages, Keynote, and Numbers apps from the App Store."
+          },
+          {
+            "type": "p",
+            "text": "If you’ve previously downloaded these apps, you’ll still find them in your download history and can re-download from there. But new users will only see one option on the App Store: the Creator Studio-compatible apps."
+          },
+          {
+            "type": "p",
+            "text": "To be clear: Pages, Keynote, and Numbers are still entirely free for download on the Mac. You don’t need to be a Creator Studio subscriber to use the vast majority of features."
+          },
+          {
+            "type": "p",
+            "text": "However, one disadvantage of the freemium versions is that they include encouragements to subscribe to Creator Studio to unlock the full feature set."
+          },
+          {
+            "type": "p",
+            "text": "Are you still using the old iWork apps, or have you moved on to the new versions? Let us know in the comments."
+          },
+          {
+            "type": "h3",
+            "text": "Best Mac accessories"
+          },
+          {
+            "type": "li",
+            "text": "AirPods Pro 3 (limited-time $199 price)"
+          },
+          {
+            "type": "li",
+            "text": "100W USB-C power adapter for fast charging"
+          },
+          {
+            "type": "li",
+            "text": "tomtoc protective MacBook sleeve bag"
+          },
+          {
+            "type": "li",
+            "text": "Twelve South aluminum laptop stand for MacBooks"
+          },
+          {
+            "type": "li",
+            "text": "Anker Docking Station USB-C with Ethernet, HDMI, SD, more"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": [
+          "苹果刚刚对 Mac 上的 iWork 套件进行了调整，将 Pages、Keynote 和 Numbers 的旧版本从 App Store 下架，仅保留支持 Apple Creator Studio 的新版本。",
+          "现在，iWork 应用仅在 Mac 的 Creator Studio 版本中提供。",
+          "今年早些时候，Apple Creator Studio 作为面向创意专业人士的新应用套装正式推出。",
+          "该套装不仅包含 Final Cut Pro、Pixelmator Pro 和 Logic Pro 等应用，还为用户提供了 Apple 免费 iWork 应用 Pages、Keynote 和 Numbers 中的独家功能。",
+          "在 iPhone 和 iPad 上，Apple 通过更新现有 App Store 版本的方式，让用户获得了 Creator Studio 的新功能。",
+          "但在 Mac 平台上，这一升级过程却显得更加混乱。",
+          "Apple 同时在 App Store 中保留了旧版 iWork 应用，并推出了带有 Creator Studio 功能的新版本，两者并行存在。",
+          "不过从今天起，这种不一致的情况终于得到解决。据 Aaron Perris 透露，苹果已正式将旧版的 Pages、Keynote 和 Numbers 应用从 App Store 中移除。",
+          "如果你之前已经下载过这些应用，它们仍会出现在你的下载历史记录中，你可以随时重新下载。但新用户现在在 App Store 上只能看到一种选择：兼容 Creator Studio 的版本。",
+          "需要说明的是：Pages、Keynote 和 Numbers 在 Mac 上依然是完全免费的。你无需成为 Creator Studio 订阅用户，即可使用绝大多数功能。",
+          "不过，免费版的一个缺点是会在界面中频繁提示你订阅 Creator Studio 以解锁全部功能。",
+          "你还在使用旧版 iWork 应用吗？还是已经切换到新版本了？欢迎在评论区留言分享。",
+          "最佳 Mac 配件推荐",
+          "AirPods Pro 3（限时 $199 优惠价）",
+          "100W USB-C 电源适配器，支持快速充电",
+          "tomtoc 防护型 MacBook 收纳包",
+          "Twelve South 铝合金笔记本支架，专为 MacBooks 设计",
+          "Anker USB-C 扩展坞，集成以太网、HDMI、SD 卡插槽等功能",
+          "FTC：我们使用收益型自动联盟链接。了解更多信息。"
+        ]
+      }
+    },
+    {
+      "slug": "7b57124a25644956",
+      "title": "Finding a parabola through two points with given slopes",
+      "titleZh": "求解过两点且给定斜率的抛物线",
+      "link": "https://www.johndcook.com/blog/2026/04/14/artz-parabola/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-14T12:19:42.000Z",
+      "category": "engineering",
+      "keywords": ["parabola", "Artzt parabolas", "conic sections", "mathematics"],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 5,
+        "total": 19
+      },
+      "summary": "John D. Cook探讨了Artzt抛物线的数学原理——这类特殊抛物线需满足两个条件：通过指定两点，且在每点处的切线方向与给定直线平行。文章推导了这类问题的通用解法，涉及二次曲线的一般形式ax² + bxy + cy²。该研究有助于理解现代三角形几何中的特殊曲线构造方法。",
+      "summaryEn": "This mathematical exploration focuses on Artzt parabolas, which pass through two specified points with tangents parallel to given lines. The solution involves solving for coefficients in the general conic equation ax² + bxy + cy² to satisfy these geometric constraints. The derivation provides insight into advanced curve-fitting techniques used in modern triangle geometry.",
+      "reason": "对于从事计算几何或数学建模的开发者来说，这是一篇难得的实用数学推导教程。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The Wikipedia article on modern triangle geometry has an image labeled “Artzt parabolas” with no explanation."
+          },
+          {
+            "type": "p",
+            "text": "A quick search didn’t turn up anything about Artzt parabolas [1], but apparently the parabolas go through pairs of vertices with tangents parallel to the sides."
+          },
+          {
+            "type": "p",
+            "text": "The general form of a conic section is"
+          },
+          {
+            "type": "p",
+            "text": "ax² + bxy + cy² + dx + ey + f = 0"
+          },
+          {
+            "type": "p",
+            "text": "and the constraint b² = 4ac means the conic will be a parabola."
+          },
+          {
+            "type": "p",
+            "text": "We have 6 parameters, each determined only up to a scaling factor; you can multiply both sides by any non-zero constant and still have the same conic. So a general conic has 5 degrees of freedom, and the parabola condition b² = 4ac takes us down to 4. Specifying two points that the parabola passes through takes up 2 more degrees of freedom, and specifying the slopes takes up the last two. So it’s plausible that there is a unique solution to the problem."
+          },
+          {
+            "type": "p",
+            "text": "There is indeed a solution, unique up to scaling the parameters. The following code finds parameters of a parabola that passes through (xi, yi) with slope mi for i = 1, 2."
+          },
+          {
+            "type": "code",
+            "text": "def solve(x1, y1, m1, x2, y2, m2):\n    \n    Δx = x2 - x1\n    Δy = y2 - y1\n    λ = 4*(Δx*m1 - Δy)*(Δx*m2 - Δy)/(m1 - m2)**2\n    k = x2*y1 - x1*y2\n\n    a = Δy**2 + λ*m1*m2\n    b = -2*Δx*Δy - λ*(m1 + m2)\n    c = Δx**2 + λ\n    d =  2*k*Δy + λ*(m1*y2 + m2*y1 - m1*m2*(x1 + x2))\n    e = -2*k*Δx + λ*(m1*x1 + m2*x2 - y1 - y2)\n    f = k**2 + λ*(m1*x1 - y1)*(m2*x2 - y2)\n\n    return (a, b, c, d, e, f)"
+          },
+          {
+            "type": "p",
+            "text": "[1] The page said “Artz” when I first looked at it, but it has since been corrected to “Artzt”. Maybe I didn’t find anything because I was looking for the wrong spelling."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a14ca8a5953092e4",
+      "title": "Amazon to Acquire Globalstar, Announces Agreement With Apple to Continue Service for iPhone and Apple Watch",
+      "titleZh": "亚马逊收购Globalstar并将为iPhone和Apple Watch提供卫星服务",
+      "link": "https://www.aboutamazon.com/news/company-news/amazon-globalstar-apple",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-14T19:34:29.000Z",
+      "category": "other",
+      "keywords": ["Amazon", "Globalstar", "direct-to-device", "satellite network"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "亚马逊宣布与Globalstar达成收购协议，计划将其低地球轨道卫星网络与直接到设备(D2D)服务整合。同时与苹果达成协议，由亚马逊Leo卫星网络为iPhone和Apple Watch提供包括紧急SOS在内的卫星通信服务。这项合作将显著扩展偏远地区的蜂窝覆盖范围。",
+      "summaryEn": "Amazon has agreed to acquire Globalstar to integrate direct-to-device (D2D) services into its low Earth orbit satellite network. In partnership with Apple, Amazon Leo will provide satellite connectivity for iPhone and Apple Watch, including Emergency SOS, extending cellular coverage to remote areas beyond terrestrial networks. This strategic move enhances global emergency communication capabilities.",
+      "reason": "这是卫星互联网与消费电子巨头深度绑定的里程碑事件，预示着下一代应急通信基础设施的发展方向。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Amazon Staff",
+        "siteName": "US About Amazon",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h3",
+            "text": "Globalstar satellites, radio frequency spectrum, and operational expertise will enable Amazon Leo to add Direct-to-Device (D2D) services to future generations of its low Earth orbit satellite network."
+          },
+          {
+            "type": "h3",
+            "text": "New Amazon Leo D2D system will help mobile network operators extend voice, text, and data services to customers beyond the reach of terrestrial cellular networks."
+          },
+          {
+            "type": "h3",
+            "text": "Amazon and Apple enter agreement for Amazon Leo to power satellite services for supported iPhone and Apple Watch models, allowing users to text emergency services, message friends and family, request roadside assistance, and more."
+          },
+          {
+            "type": "p",
+            "text": "Today Amazon.com, Inc. and Globalstar, Inc. announced that they have entered into a definitive merger agreement under which Amazon will acquire Globalstar, enabling Amazon Leo to add direct-to-device (D2D) services to its low Earth orbit satellite network and extend cellular coverage to customers beyond the reach of terrestrial networks. In addition, Amazon and Apple announced an agreement for Amazon Leo to power satellite services for iPhone and Apple Watch1, including Emergency SOS via satellite. The new capabilities are part of Amazon’s long-term vision for space-based connectivity, and Amazon plans to work with mobile network operators (MNOs) and additional partners to deliver on that vision and extend reliable, high-speed connectivity to customers, no matter where they are in the world."
+          },
+          {
+            "type": "p",
+            "text": "“There are billions of customers out there living, traveling, and operating in places beyond the reach of existing networks, and we started Amazon Leo to help bridge that divide,” said Panos Panay, Senior Vice President of Devices & Services, Amazon. “By combining Globalstar’s proven expertise and strong foundation with Amazon’s customer-obsession and innovation, customers can expect faster, more reliable service in more places—keeping them connected to the people and things that matter most. We’re excited to support Apple users through the Leo D2D system, and look forward to working with mobile network partners to help extend coverage to every corner of the planet.”"
+          },
+          {
+            "type": "h2",
+            "text": "Amazon acquires Globalstar"
+          },
+          {
+            "type": "p",
+            "text": "Globalstar is a leading mobile satellite services (MSS) operator, a pioneer in non-geostationary orbit (NGSO) satellites and D2D technology, and a provider of critical and emergency communications to customers around the world. As part of the agreement, Amazon will acquire Globalstar’s existing satellite operations, infrastructure, and assets, including MSS spectrum licenses with global authorizations. Combining Globalstar’s spectrum and established MSS capabilities with the scale, performance, and reach of Amazon Leo will enable Amazon to deliver continuous connectivity for consumer, enterprise, and government customers around the world—whether they’re living or working in remote areas or simply moving in and out of traditional cellular networks. Globalstar’s existing satellite fleet and its new satellites with expanded capabilities will operate alongside the Amazon Leo broadband system and Amazon’s planned direct-to-device satellite system."
+          },
+          {
+            "type": "p",
+            "text": "“We have long believed low Earth orbit satellite constellations offer the most effective path to truly connect users and devices anywhere and anytime,” said Paul Jacobs, CEO, Globalstar. “For more than 30 years, Globalstar has executed on this vision through sustained, long-term investment in technological innovation, operational excellence, and development of globally harmonized spectrum across both satellite and terrestrial applications. The combination with Amazon Leo will advance innovations in digital connectivity that will benefit our customers and advance us toward a more intelligent, continuously connected world.”"
+          },
+          {
+            "type": "h2",
+            "text": "Amazon Leo Direct-to-Device (D2D)"
+          },
+          {
+            "type": "p",
+            "text": "Beginning in 2028, Amazon Leo will deploy its own next-generation D2D satellite system, allowing Amazon to deliver more advanced voice, data, and messaging services to mobile phones and other cellular devices. The Leo D2D system will offer substantially higher spectrum use and efficiency than legacy direct-to-cell systems, which translates into faster speeds and better performance for customers. It will also integrate seamlessly with Amazon’s first- and second-generation Leo systems, forming a powerful, unified network that combines fixed and mobile satellite services to support a wide range of customers and use cases. The complete Amazon Leo network will include thousands of advanced satellites in low Earth orbit and have enough capacity to support hundreds of millions of customer endpoints around the world."
+          },
+          {
+            "type": "h2",
+            "text": "Amazon Leo to power Apple satellite features"
+          },
+          {
+            "type": "p",
+            "text": "In addition to the agreement with Globalstar, Amazon and Apple signed an agreement to provide satellite connectivity for current and future iPhone and Apple Watch features. Globalstar currently partners with Apple to power satellite service on iPhone 14 or later, as well as Apple Watch Ultra 3, allowing users to text emergency services, message friends and family, request roadside assistance, and share their location. With the new Amazon-Apple agreement, Amazon will continue to support iPhone and Apple Watch models currently using Globalstar’s existing and planned upcoming low Earth orbit satellite constellations, being manufactured by MDA Space, and collaborate with Apple on future satellite services using Amazon Leo's expanded satellite network."
+          },
+          {
+            "type": "p",
+            "text": "“Since launching more than three years ago, our groundbreaking safety service Emergency SOS via satellite has helped save many lives around the world—from a scout troop stranded on a winter hike in British Columbia, to a woman who was airlifted to safety in Colorado after her car rolled down a 250-foot cliff,” said Greg Joswiak, Senior Vice President of Worldwide Product Marketing, Apple. “Apple and Amazon have a long and proven track record of working together through Amazon’s core infrastructure services, and we look forward to building on that collaboration with Amazon Leo. This ensures our users will continue to have access to the vital satellite features they have come to rely on, including Emergency SOS, Messages, Find My, and Roadside Assistance via satellite, so they can stay safe and connected while off the grid.”"
+          },
+          {
+            "type": "h2",
+            "text": "Connecting more customers globally"
+          },
+          {
+            "type": "p",
+            "text": "The agreements with Globalstar and Apple will promote innovation and competition across the space, satellite, and telecommunications sector, and support efforts to close the digital divide globally:"
+          },
+          {
+            "type": "li",
+            "text": "Accelerates innovation and expands connectivity options: By combining Amazon's low Earth orbit satellite network with Globalstar's infrastructure and spectrum assets, the acquisition enables faster deployment of D2D connectivity at scale—reaching areas where terrestrial deployment is delayed, cost-prohibitive, or vulnerable to disruption. It will also mean more reliable mobile data and communications services to consumers, businesses, and governments, while setting new benchmarks for innovation and giving customers greater choice, flexibility, and value in a dynamic and highly competitive satellite communications sector."
+          },
+          {
+            "type": "li",
+            "text": "Strengthens resilience for private and public sector: D2D satellite connectivity provides critical fallback capabilities when terrestrial networks fail during hurricanes, wildfires, floods, and other disasters—and its utility extends well beyond emergency situations. Higher-capacity connectivity materially improves emergency response coordination while also enabling a broad range of everyday and mission-critical use cases, from emergency messaging, search-and-rescue, and maritime distress, to remote workforce connectivity, continuity of government operations, and rural broadband extension. In day-to-day operations, D2D service closes coverage gaps that terrestrial networks alone cannot address."
+          },
+          {
+            "type": "li",
+            "text": "Drives economic growth and closes the digital divide: Amazon's multibillion-dollar investment in Amazon Leo is already creating broad economic opportunity across the U.S., Europe, and other regions around the world. These new agreements with Globalstar and Apple expand that roadmap, supporting high-value jobs in engineering, manufacturing, and operations while extending connectivity to enterprises, IoT applications, fleets, and supply chains operating beyond terrestrial reach—enabling productivity gains, new business models, and connecting underserved populations globally."
+          },
+          {
+            "type": "p",
+            "text": "Key Transaction TermsUnder the terms of the merger agreement, prior to closing, Globalstar stockholders will elect to receive for each share of Globalstar common stock they own either (i) $90.00 in cash or (ii) 0.3210 shares of Amazon common stock with a value capped at $90.00 per share. This consideration is subject to a proration mechanism that caps aggregate cash elections to a maximum of 40% of total Globalstar shares, and automatically converts excess cash consideration into stock consideration on a pro rata basis. The total transaction consideration is also subject to a downward adjustment of a maximum $110 million in the event Globalstar does not achieve certain operational milestones."
+          },
+          {
+            "type": "p",
+            "text": "Globalstar stockholders holding approximately 58% of the combined voting power of the outstanding shares of Globalstar common stock have approved the transaction by written consent. The transaction is expected to close in 2027, subject to the satisfaction of certain closing conditions, including receipt of regulatory approvals and the achievement by Globalstar of certain HIBLEO-4 replacement satellite milestones."
+          },
+          {
+            "type": "p",
+            "text": "About AmazonAmazon is guided by four principles: customer obsession rather than competitor focus, passion for invention, commitment to operational excellence, and long-term thinking. Amazon strives to be Earth’s Most Customer-Centric Company, Earth’s Best Employer, and Earth’s Safest Place to Work. Customer reviews, 1-Click shopping, personalized recommendations, Prime, Fulfillment by Amazon, AWS, Kindle Direct Publishing, Kindle, Career Choice, Fire tablets, Fire TV, Amazon Echo, Alexa, Just Walk Out technology, Amazon Studios, and The Climate Pledge are some of the things pioneered by Amazon. For more information, visit amazon.com/about and follow @AmazonNews."
+          },
+          {
+            "type": "p",
+            "text": "About Amazon LeoAmazon Leo is Amazon’s low Earth orbit satellite network. Its mission is to deliver fast, reliable internet to customers beyond the reach of existing networks, from individual households and small businesses to large enterprise and government customers—and anyone in between. Amazon Leo is powered by an initial constellation of more than 3,000 satellites, connected to a secure, global network of ground gateway antennas and dedicated fiber, and includes a lineup of compact, high-performance antennas—Leo Nano, Leo Pro, and Leo Ultra—that communicate with satellites passing overhead. The entire system is designed, built, and operated in-house at Amazon, and aims to connect tens of millions of customers around the world. Learn more about Amazon Leo."
+          },
+          {
+            "type": "p",
+            "text": "About Globalstar, Inc.Globalstar is a global telecommunications provider connecting what matters most. Through our industry-leading low Earth orbit (LEO) satellite constellation and licensed Band 53/n53 spectrum, we deliver reliable satellite and terrestrial connectivity solutions that empower customers worldwide to connect, transmit, and communicate smarter.Our comprehensive connectivity ecosystem includes software-defined, purpose-built private wireless network platform, coupled with Globalstar Band 53™ in XCOM RAN™ and trusted GPS messengers Saved by SPOT™ for safety and personal communication for business and enterprise applications."
+          },
+          {
+            "type": "p",
+            "text": "Serving business, enterprise, and consumer markets across the globe, Globalstar supports applications that track and protect assets, enable automation, enhance operational efficiency, and safeguard lives. With unmatched reach and a relentless focus on innovation, and mission-critical performance, we're redefining what's possible for global connectivity.For more information, visit www.globalstar.com."
+          },
+          {
+            "type": "p",
+            "text": "Cautionary Statement Regarding Forward-Looking Statements"
+          },
+          {
+            "type": "p",
+            "text": "This communication includes certain “forward-looking statements” within the meaning of the federal securities laws, including, but not limited to, those statements related to the proposed transactions, including financial estimates and statements as to the expected timing, completion, and effects of the proposed transactions. These forward-looking statements are generally identified by the words “believe,” “project,” “might,” “could,” “expect,” “anticipate,” “estimate,” “intend,” “strategy,” “plan,” “may,” “should,” “will,” “would,” “will be,” “will continue,” “will likely result,” and similar expressions, although not all forward-looking statements contain these identifying words."
+          },
+          {
+            "type": "p",
+            "text": "Any statements about Amazon.com, Inc.’s (“Amazon”), Globalstar, Inc.’s (“Globalstar”) or the combined company’s plans, objectives, expectations, strategies, beliefs, or future performance or events constitute forward-looking statements. These forward-looking statements, including statements regarding the proposed transactions, are based on Amazon’s and Globalstar’s current expectations and assumptions. Because forward-looking statements relate to the future, they are subject to inherent uncertainties, risks, and changes in circumstances that may differ materially from those expressed or implied by such forward-looking statements, which are neither statements of historical fact nor guarantees or assurances of future performance. There is no assurance that these future events will occur as anticipated or that our results, estimates, or assumptions will be correct, and we caution investors and all others not to place undue reliance on such forward-looking statements. Actual results could differ materially from those currently anticipated due to a number of risks and uncertainties, many of which are beyond Amazon’s and Globalstar’s control."
+          },
+          {
+            "type": "p",
+            "text": "Important factors, risks, and uncertainties that could cause actual results to differ materially from such plans, estimates, or expectations include but are not limited to: (i) the ability to complete the proposed transactions on the anticipated terms and timing, or at all, including obtaining required regulatory approvals and the satisfaction of other conditions to the completion of the proposed transactions; (ii) potential litigation relating to the proposed transactions, including the effects of any outcomes related thereto; (iii) the risk that disruptions from the proposed transactions (such as the ability of certain customers of Globalstar to terminate or amend contracts upon a change of control, or to withhold consent to such change of control) will harm Amazon’s and/or Globalstar’s business, including current plans and operations, during the pendency, and following the completion of, the proposed transactions; (iv) the ability of Globalstar to retain and hire key personnel; (v) the diversion of management’s time and attention from ordinary course business operations to completion of the proposed transactions; (vi) potential adverse reactions or changes to business relationships resulting from the announcement or completion of the proposed transactions; (vii) legislative, regulatory, and economic developments; (viii) contractual provisions that may impact Amazon’s and/or Globalstar’s ability to pursue certain business opportunities or strategic transactions during the pendency, and/or following the completion of, the proposed transactions; (ix) unpredictability and severity of catastrophic events, including, but not limited to, acts of terrorism, outbreaks of war or hostilities, or public health issues, as well as management’s response to any of the aforementioned factors; (x) the impact of inflation, tariffs, rising interest rates, and global conflicts, including disruptions in economies as a result of ongoing or future geopolitical conflicts and trade disputes; (xi) the occurrence of any event, change, or other circumstance that could give rise to the termination of the proposed transactions, including in circumstances requiring Globalstar to pay a termination fee to Amazon; (xii) fluctuations in Amazon’s and/or Globalstar’s stock price, including the risk that the price of Amazon’s common stock payable as merger consideration may decline prior to or following the completion of the proposed transactions or the risk that Globalstar’s stock price may decline if the proposed transactions are not consummated; (xiii) liabilities that are not known, probable, or estimable at this time or unexpected costs, charges, or expenses; (xiv) potential challenges in the development, production, delivery, support, and performance of satellite-based connectivity services and products, including with respect to the combined company’s commercial relationship with certain customers, as well as other current and prospective business relationships, after the completion of the proposed transactions; (xv) those risks and uncertainties found in Amazon’s and Globalstar’s respective filings with the Securities and Exchange Commission (the “SEC”), including the risk factors discussed in Amazon’s and Globalstar’s most recent Annual Reports on Form 10-K, as updated by their Quarterly Reports on Form 10-Q and future filings with the SEC from time to time, which are available via the SEC’s website at www.sec.gov; and (xvi) those risks that will be described in the registration statement on Form S-4 that will include as a prospectus an information statement that will be filed with the SEC and available from the sources indicated below."
+          },
+          {
+            "type": "p",
+            "text": "These risks, as well as other risks related to the proposed transactions, will be more fully discussed in the registration statement on Form S-4 that will include as a prospectus an information statement that will be filed with the SEC in connection with the proposed transactions. There can be no assurance that the proposed transactions will be completed, or if completed, that they will close within the anticipated time period. These factors should not be construed as exhaustive and should be read in conjunction with the other forward-looking statements. The forward-looking statements relate only to events as of the date on which the statements are made and we undertake no obligation to update, and expressly disclaim any obligation to update, any forward-looking statements, or any other information in this communication, whether resulting from developments, circumstances, or events that arise after the date the statements are made, new information, or otherwise. If one or more of these or other risks or uncertainties materialize, or if our underlying assumptions prove to be incorrect, actual results may vary materially from what we may have expressed or implied by these forward-looking statements. Furthermore, new risks and uncertainties arise from time to time, and it is impossible for us to predict those events or how they may affect us or the transactions."
+          },
+          {
+            "type": "p",
+            "text": "Important Additional Information and Where to Find It"
+          },
+          {
+            "type": "p",
+            "text": "This communication is being made in connection with the proposed transactions. Globalstar and Amazon plan to file relevant materials with the SEC, including, among other filings, a Globalstar information statement on Schedule 14C for its stockholders with respect to the proposed transactions (which definitive information statement will be mailed to stockholders of Globalstar) and an Amazon registration statement on Form S-4 in connection with the proposed issuance of shares of Amazon common stock pursuant to the proposed transactions, in which the information statement will be included as a prospectus (and which will be mailed to stockholders of Globalstar after the registration statement is declared effective by the SEC)."
+          },
+          {
+            "type": "p",
+            "text": "No Offer or Solicitation"
+          },
+          {
+            "type": "p",
+            "text": "This communication is not intended to and shall not constitute an offer to sell or the solicitation of an offer to buy any securities or a solicitation of any vote or approval, nor shall there be any sale of securities in any jurisdiction in which such offer, solicitation, or sale would be unlawful prior to registration or qualification under the securities laws of any such jurisdiction. No offering of securities shall be made, except by means of a prospectus meeting the requirements of Section 10 of the Securities Act of 1933, as amended, and the rules and regulations promulgated thereunder."
+          },
+          {
+            "type": "p",
+            "text": "INVESTORS AND STOCKHOLDERS OF GLOBALSTAR AND AMAZON ARE URGED TO READ THE INFORMATION STATEMENT AND REGISTRATION STATEMENT AND ANY OTHER DOCUMENTS THAT ARE FILED OR WILL BE FILED WITH THE SEC (INCLUDING ANY AMENDMENTS OR SUPPLEMENTS THERETO) CAREFULLY AND IN THEIR ENTIRETY WHEN THEY BECOME AVAILABLE BECAUSE THEY WILL CONTAIN IMPORTANT INFORMATION ABOUT THE PROPOSED TRANSACTIONS."
+          },
+          {
+            "type": "p",
+            "text": "This communication is not a substitute for the information statement, registration statement, or any other document that Globalstar or Amazon may file with the SEC and send to stockholders in connection with the proposed transactions. Investors and stockholders will be able to obtain free copies of the information statement and registration statement (when available), and other documents filed with the SEC by Globalstar or Amazon, through the website maintained by the SEC at http://www.sec.gov. Copies of the documents filed with the SEC by Globalstar will be available free of charge on Globalstar’s website at https://investors.globalstar.com/financial-information/sec-filings. Copies of the documents filed with the SEC by Amazon will be available free of charge on Amazon’s website at https://ir.aboutamazon.com/sec-filings."
+          },
+          {
+            "type": "p",
+            "text": "1 Satellite features available on iPhone 14 and later, and Apple Watch Ultra 3."
+          },
+          {
+            "type": "p",
+            "text": "More Amazon News"
+          },
+          {
+            "type": "p",
+            "text": "1 / 1"
+          }
+        ],
+        "translations": [
+          "全球星卫星、射频频谱和运营专长将使亚马逊“利奥”（Amazon Leo）在其低地球轨道卫星网络的未来几代产品中增加直接到设备（D2D）服务。",
+          "新的亚马逊“利奥”D2D系统将帮助移动网络运营商向那些无法接入地面蜂窝网络的客户提供语音、文本和数据服务。",
+          "亚马逊与苹果达成协议，由亚马逊“利奥”为支持的iPhone和Apple Watch机型提供卫星服务，使用户能够通过卫星发送紧急求救信息、与亲友联系、请求 roadside assistance（道路救援）等。",
+          "今天，亚马逊公司（Amazon.com, Inc.）与全球星公司（Globalstar, Inc.）宣布已达成最终合并协议，根据该协议，亚马逊将收购全球星，使亚马逊“利奥”能够在低地球轨道卫星网络上增加直接到设备（D2D）服务，并将蜂窝网络覆盖范围扩展至地面网络无法到达的客户区域。此外，亚马逊与苹果还宣布了一项协议，由亚马逊“利奥”为iPhone和Apple Watch提供卫星服务，包括通过卫星实现的Emergency SOS（紧急求救）。这些新功能是亚马逊长期太空连接愿景的一部分，亚马逊计划与移动网络运营商（MNOs）及其他合作伙伴合作，实现这一愿景，为全球各地的客户——无论身处何地——提供可靠的高速连接。",
+          "“世界上有数十亿客户生活在、旅行于或工作在现有网络无法覆盖的地区，我们启动亚马逊‘利奥’项目正是为了帮助弥合这一差距。”亚马逊设备与服务高级副总裁潘纳·帕纳伊（Panos Panay）表示。“通过将全球星经过验证的专业知识和坚实基础与亚马逊以客户为中心的专注和创新相结合，客户将能在更多地方享受到更快、更可靠的连接服务——让他们始终与最重要的人和事物保持联系。我们很高兴通过‘利奥’D2D系统支持苹果用户，并期待与移动网络合作伙伴携手，帮助将网络覆盖拓展至地球的每一个角落。”",
+          "亚马逊收购全球星",
+          "全球星是一家领先的移动卫星服务（MSS）运营商，在非地球静止轨道（NGSO）卫星和直接到设备（D2D）技术方面处于先驱地位，并为全球客户提供关键的应急通信服务。根据该协议，亚马逊将获得全球星的现有卫星运营、基础设施和资产，包括具有全球授权许可的MSS频谱许可证。将全球星的频谱和成熟的MSS能力与亚马逊“利奥”的规模、性能和覆盖范围相结合，将使亚马逊能够为消费者、企业和政府机构客户提供持续的连接服务——无论他们是在偏远地区生活或工作，还是频繁进出传统蜂窝网络覆盖区域。全球星的现有卫星舰队及其具备增强功能的新型卫星将与亚马逊“利奥”宽带系统和亚马逊规划的直接到设备卫星系统协同运行。",
+          "“长期以来，我们始终坚信低地球轨道卫星星座是实现用户和设备随时随地真正连接的最有效路径，”Globalstar首席执行官保罗·雅各布表示。“三十多年来，Globalstar通过持续、长期的技术创新投资、卓越运营以及在全球范围内协调卫星和地面应用的频谱资源，持续推进这一愿景。与亚马逊Leo的合作将推动数字连接技术的革新，让我们的客户受益，并助力我们迈向一个更智能、持续互联的世界。”",
+          "亚马逊Leo直连设备（D2D）",
+          "自2028年起，亚马逊Leo将部署其下一代D2D卫星系统，使亚马逊能够为手机和其他蜂窝设备提供更先进的语音、数据和消息服务。Leo D2D系统的频谱利用率和效率将显著高于传统直连蜂窝系统，这意味着客户将获得更快的速度和更佳的性能表现。该系统还将与亚马逊第一代和第二代Leo系统无缝集成，形成一个强大的统一网络，融合固定和移动卫星服务，以支持广泛的客户群体和应用场景。完整的亚马逊Leo网络将包括数千颗先进低轨卫星，具备足够的容量为全球数亿个客户终端提供支持。",
+          "亚马逊Leo赋能苹果卫星功能",
+          "除了与Globalstar的合作协议外，亚马逊与苹果还签署了一项协议，为当前及未来的iPhone和Apple Watch提供卫星连接服务。目前，Globalstar已与苹果合作，为iPhone 14及后续机型以及Apple Watch Ultra 3提供卫星服务，使用户能够向紧急服务机构发送短信、与亲友联系、请求 roadside assistance（道路救援），并分享自己的位置信息。根据新的亚马逊-苹果协议，亚马逊将继续支持当前使用Globalstar现有及计划中的由MDA Space制造的低轨卫星星座的iPhone和Apple Watch机型，并与苹果共同开发基于亚马逊Leo扩展卫星网络的未来卫星服务。",
+          "“自三年前推出革命性的卫星紧急求救服务Emergency SOS via satellite以来，这项开创性服务已帮助全球无数人脱离险境——从被困在英属哥伦比亚冬季徒步路线上的童子军，到车辆滚落250英尺悬崖后被直升机救起的女子，”苹果公司全球产品营销高级副总裁格雷格·约斯维克表示。“苹果与亚马逊有着长期且经得起验证的合作历史，尤其是在亚马逊核心基础设施服务领域。我们期待通过与亚马逊Leo的合作进一步深化这种协作关系。这将确保我们的用户能够继续使用他们赖以依赖的关键卫星功能，包括通过卫星实现的Emergency SOS、Messages、Find My和Roadside Assistance，让他们在远离网络覆盖区域时也能保持安全并维持连接。”",
+          "连接更多全球客户",
+          "与Globalstar和苹果达成的协议将促进航天、卫星和电信行业的创新与竞争，并支持全球缩小数字鸿沟的努力：",
+          "加速创新并扩展连接选项：通过将亚马逊的低地球轨道卫星网络与 Globalstar 的基础设施和频谱资产相结合，此次收购能够更快地大规模部署 D2D 连接——覆盖地面网络部署延迟、成本过高或易受干扰的地区。此举还将为消费者、企业和政府提供更可靠的移动数据和通信服务，同时在卫星通信这一动态且高度竞争的行业中树立创新新标杆，为客户带来更多选择、灵活性和价值。",
+          "增强公私领域的抗灾韧性：在飓风、野火、洪水等灾害导致地面网络中断时，D2D 卫星连接可提供关键的备用能力；其用途远不止于应急场景。更高容量的连接显著提升了应急响应协调效率，并支持广泛的日常和关键任务应用，包括紧急消息传递、搜救、海上遇险通信，以及远程员工连接、政府运作连续性保障和农村宽带延伸。在日常运营中，D2D 服务填补了仅靠地面网络无法覆盖的空白区域。",
+          "推动经济增长并弥合数字鸿沟：亚马逊对“亚马逊利奥”（Amazon Leo）的数十亿美元投资已在全美、欧洲及其他地区创造了广泛的经济机遇。与 Globalstar 和苹果的新协议进一步拓展了这一发展蓝图，通过在工程、制造和运营领域创造高价值岗位，为超越地面覆盖范围的企业、物联网应用、车队和供应链提供连接支持——从而提升生产力、催生新的商业模式，并连接全球尚未充分服务的群体。",
+          "交易核心条款：根据合并协议条款，交割前，Globalstar 股东可选择为其持有的每一股 Globalstar 普通股获得以下对价之一：（i）90.00 美元现金，或（ii）价值上限为每股 90.00 美元的 0.3210 股 Amazon 普通股。该对价受制于一项按比例分配机制，即现金选择总额不得超过 Globalstar 总股份的 40%，超出部分将自动转换为股票对价。此外，若 Globalstar 未能达成特定运营里程碑，交易总对价最多可向下调整 1.1 亿美元。",
+          "持有 Globalstar 已发行普通股约 58% 表决权的股东已通过书面同意批准该交易。该交易预计将于 2027 年完成，前提是满足若干交割条件，包括获得监管审批以及 Globalstar 完成 HIBLEO-4 替换卫星的关键里程碑。",
+          "关于亚马逊 亚马逊以四大原则为指导：以客户为中心而非竞争对手导向、对发明的激情、对卓越的运营承诺以及长期思维。亚马逊致力于成为地球上以客户为中心度最高的公司、地球上最好的雇主以及地球上最安全的工作场所。亚马逊开创了许多创新产品，包括客户评论、一键购物、个性化推荐、Prime会员服务、亚马逊物流（FBA）、AWS云服务、Kindle直接出版、Kindle电子书阅读器、Career Choice职业发展计划、Fire平板电脑、Fire TV、Amazon Echo智能音箱、Alexa语音助手、Just Walk Out无感支付技术、Amazon Studios影视制作以及《气候承诺》倡议等。更多信息请访问 amazon.com/about 并关注 @AmazonNews。",
+          "关于亚马逊利奥 亚马逊利奥是亚马逊的低地球轨道卫星网络。其使命是为现有网络无法覆盖的客户群体提供快速可靠的互联网服务，服务对象涵盖从个人家庭和小微企业到大型企业和政府机构的各类用户。亚马逊利奥由初始部署的3000多颗卫星星座构成，通过全球安全地面网关天线网络和专用光纤连接，并配备了一系列紧凑型高性能天线——利奥纳米（Leo Nano）、利奥专业（Leo Pro）和利奥超高性能（Leo Ultra），可与头顶经过的卫星进行通信。整个系统均由亚马逊自主研发、制造和运营，旨在为全球数千万客户提供连接服务。了解更多关于亚马逊利奥的信息。",
+          "关于全球星公司 全球星是一家全球电信服务提供商，致力于连接最重要的事物。凭借我们行业领先的低地球轨道（LEO）卫星星座和授权的Band 53/n53频谱资源，我们为客户提供可靠的卫星与地面混合连接解决方案，助力全球客户实现更智能的连接、传输与通信。我们的综合连接生态系统包括软件定义、专为特定用途设计的私有无线网络平台，结合Globalstar Band 53™技术与XCOM RAN™架构，以及用于保障安全和商务通信的SPOT™可信GPS信使服务。",
+          "全球星服务于遍布世界各地的商业、企业和消费市场，支持资产追踪保护、自动化控制、运营效率提升以及生命安全守护等应用。凭借无与伦比的覆盖范围和持续不断的创新精神，以及对关键任务性能的执着追求，我们正在重新定义全球连接的无限可能。更多信息请访问 www.globalstar.com。",
+          "前瞻性陈述警示性声明",
+          "本通讯包含某些根据联邦证券法定义的“前瞻性陈述”，包括但不限于与拟议交易相关的陈述，涉及财务预测以及有关拟议交易预期时间、完成情况和影响的陈述。这些前瞻性陈述通常使用“相信”、“预计”、“可能”、“能够”、“期望”、“预期”、“估计”、“打算”、“战略”、“计划”、“可以”、“应该”、“将”、“将会”、“将继续”、“可能会产生结果”等词语标识，尽管并非所有前瞻性陈述都包含这些识别性词汇。",
+          "任何关于亚马逊公司（“Amazon”）、全球星公司（“Globalstar”）或合并后公司的计划、目标、预期、战略、信念或未来业绩或事件的声明均构成前瞻性陈述。这些前瞻性陈述，包括有关拟议交易的声明，均基于亚马逊和全球星的当前预期与假设。由于前瞻性陈述涉及未来，因此不可避免地会受到固有不确定性、风险及情况变化的影响，这些因素可能与此类陈述中所述或暗示的内容存在实质性差异，且这些陈述既非历史事实的表述，也不代表对未来业绩的保证或担保。无法确保这些未来事件会如预期般发生，也无法保证我们的结果、估计或假设是正确的；我们提醒投资者及其他各方不要过度依赖此类前瞻性陈述。实际结果可能与目前预期存在重大差异，原因在于多种风险和不确定性，其中许多超出了亚马逊和全球星的控制范围。",
+          "可能导致实际结果与这些计划、估计或预期产生重大差异的重要因素、风险和不确定性包括但不限于：（i）能否按预期条款和时间完成拟议交易（或根本不能完成），包括获得必要的监管批准以及满足拟议交易完成的其他条件；（ii）与拟议交易相关的潜在诉讼，以及任何相关结果的后果；（iii）拟议交易可能带来的干扰风险（例如，Globalstar 的某些客户在控制权变更时有权终止或修改合同，或拒绝同意该控制权变更），从而影响亚马逊和/或 Globalstar 的业务，包括当前计划和运营，无论是在拟议交易进行期间还是完成后；（iv）Globalstar 保留和聘用关键人员的能力；（v）管理层的时间和注意力从日常业务运营中转移至完成拟议交易；（vi）因拟议交易的宣布或完成而导致业务关系可能出现的不利反应或变化；（vii）立法、监管和经济环境的发展；（viii）可能影响亚马逊和/或 Globalstar 在拟议交易进行期间及/或完成后追求某些商业机会或战略交易能力的合同条款；（ix）不可预测且严重的灾难性事件，包括但不限于恐怖主义行为、战争或敌对行动的爆发，或公共卫生问题，以及管理层对这些前述因素的应对措施；（x）通货膨胀、关税、利率上升和全球冲突的影响，包括由于持续或未来的地缘政治冲突和贸易争端导致的经济中断；（xi）可能导致拟议交易终止的任何事件、变动或其他情况的发生，包括在需要 Globalstar 向亚马逊支付终止费的情况下；（xii）亚马逊和/或 Globalstar 股价的波动，包括作为合并对价支付的亚马逊普通股价格可能在拟议交易完成前或完成后下跌的风险，或者如果拟议交易未能完成，Globalstar 股价可能下跌的风险；（xiii）目前尚不知晓、不太可能或无法合理估计的负债，或意外成本、费用或支出；（xiv）在卫星连接服务和产品的开发、生产、交付、支持和性能方面可能面临的挑战，包括与合并后公司与某些客户的商业关系，以及其他现有和潜在客户关系的后续发展；（xv）在亚马逊和 Globalstar 分别提交给证券交易委员会（“SEC”）的文件中所载的风险和不确定性，包括亚马逊和 Globalstar 最近一期 Form 10-K 年度报告中讨论的风险因素，以及随后发布的 Form 10-Q 季度报告和不时提交给 SEC 的未来文件，这些文件可通过 SEC 网站 www.sec.gov 获取；（xvi）将在包含招股说明书的信息声明中描述的风险，该信息声明将作为 Form S-4 注册声明的一部分提交给 SEC，并可通过下文所述来源获取。",
+          "这些风险以及其他与拟议交易相关的风险将在向美国证券交易委员会（SEC）提交的包含信息声明的Form S-4登记声明中更全面地讨论。该信息声明将作为招股说明书的一部分，并与拟议交易相关联。无法保证拟议交易能够完成；即使完成，也无法保证其能在预期的时间范围内交割。这些因素不应被视为详尽无遗，而应与其他前瞻性陈述一并阅读。前瞻性陈述仅涉及作出陈述之日的相关事件，且我们不对更新任何前瞻性陈述或本通信中的任何其他信息承担义务，亦明确声明不承担此类义务，无论该更新是由于作出陈述后出现的开发、情况、事件、新信息或其他原因所致。如果其中一项或多项风险或不确定性变为现实，或者我们的基本假设被证明不正确，则实际结果可能与这些前瞻性陈述所表达或暗示的内容存在重大差异。此外，新的风险和不确定性会不时出现，我们无法预测这些事件或其对我们或交易的影响。",
+          "重要附加信息及获取方式",
+          "本通信与拟议交易相关。Globalstar和Amazon计划向美国证券交易委员会（SEC）提交相关文件，其中包括：Globalstar向其股东提交的关于拟议交易的Schedule 14C信息声明（该最终版信息声明将邮寄给Globalstar的股东），以及Amazon为根据拟议交易发行Amazon普通股而提交的Form S-4登记声明（其中包含的信息声明将作为招股说明书），该登记声明在经SEC生效后将邮寄给Globalstar的股东。",
+          "非要约或征集",
+          "本通信不构成出售任何证券的要约，也不构成购买任何证券的要约邀请，或征集任何投票或批准的邀约。在任何司法管辖区，若在该司法管辖区的法律要求注册或资格认定之前进行此类要约、征集或销售属非法行为，则不得在该司法管辖区内进行任何证券销售。除依据经修订的《1933年证券法》第10条及其项下颁布的规则和法规要求的招股说明书进行外，不得进行任何证券发售。",
+          "强烈建议Globalstar和Amazon的投资者及股东仔细阅读届时可获得的、由SEC提交或将要提交的信息声明和登记声明，以及任何其他已提交或将提交的文件（包括任何修订或补充文件），因为这些文件将包含有关拟议交易的重要信息。",
+          "本通讯文件不能替代 Globalstar 或 Amazon 就拟议交易向美国证券交易委员会（SEC）提交的信息说明书、注册声明或其他任何文件。投资者和股东可通过 SEC 维护的网站（http://www.sec.gov）免费获取信息说明书和注册声明（待发布后）以及其他由 Globalstar 或 Amazon 提交给 SEC 的文件。Globalstar 提交给 SEC 的文件将免费提供在其网站 https://investors.globalstar.com/financial-information/sec-filings 上查阅。Amazon 提交给 SEC 的文件将免费提供在其网站 https://ir.aboutamazon.com/sec-filings 上查阅。",
+          "iPhone 14 及后续机型，以及 Apple Watch Ultra 3 支持卫星功能。",
+          "更多亚马逊新闻",
+          "1 / 1"
+        ]
+      }
+    }
+  ]
+}

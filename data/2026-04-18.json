@@ -1,0 +1,2654 @@
+{
+  "date": "2026-04-18",
+  "generatedAt": "2026-04-22T13:29:00.998Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 85,
+    "totalArticles": 2464,
+    "filteredArticles": 16,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦两大趋势：一是大语言模型优化持续深入，FP4、NF4等4位浮点格式成为降低内存与计算开销的关键突破；二是AI安全治理受关注，Claude系统提示更新引发对指令清晰度与用户交互引导机制的探讨。与此同时，工具链自动化与历史追溯能力受到开发者青睐，Git化系统提示管理成为新实践方向。",
+  "articles": [
+    {
+      "slug": "30e4e70469c8a8ab",
+      "title": "Gaussian distributed weights for LLMs",
+      "titleZh": "LLM 中的高斯分布权重",
+      "link": "https://www.johndcook.com/blog/2026/04/18/qlora/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-18T14:49:27.000Z",
+      "category": "ai-ml",
+      "keywords": ["LLM", "NF4", "quantization", "weights"],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 9,
+        "total": 27
+      },
+      "summary": "本文探讨了为大型语言模型（LLMs）设计高斯分布权重的技术方案，重点分析了 NF4 和 FP4 两种 4 位浮点格式在量化过程中的应用。NF4 是一种专为高斯分布优化的 4 位数据类型，相比标准 FP4 能更好地保持数值分布特性，提升低比特量化下的模型性能。文章指出，当从 Hugging Face 下载四比特量化的 LLM 权重时，这些权重通常采用 NF4 或 FP4 格式存储。作者强调，这种基于统计特性的量化方法显著提高了低精度推理的准确性和稳定性。",
+      "summaryEn": "This article discusses the use of Gaussian-distributed weights in large language models (LLMs), focusing on two 4-bit floating-point formats: NF4 and FP4. NF4 is specifically designed to align with the statistical properties of Gaussian distributions, offering better performance than standard FP4 for low-precision quantization. When downloading quantized LLM weights from Hugging Face at four bits, they are typically stored in either NF4 or FP4 format. The author highlights that this approach improves accuracy and stability in low-bit inference by preserving the underlying data distribution.",
+      "reason": "如果你正在研究 LLM 量化技术，这篇关于 NF4 与高斯分布结合的文章提供了关键的理论基础和实用见解，值得深入阅读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John Cook",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The previous post looked at the FP4 4-bit floating point format. This post will look at another 4-bit floating point format, NF4, and higher precision analogs. NF4 and FP4 are common bitsandbytes 4-bit data types. If you download LLM weights from Hugging Face quantized to four bits, the weights might be in NF4 or FP4 format. Or maybe some other format: there’s a surprising amount of variety in how 4-bit numbers are implemented."
+          },
+          {
+            "type": "h2",
+            "text": "Why NF4"
+          },
+          {
+            "type": "p",
+            "text": "LLM parameters have a roughly Gaussian distribution, and so evenly spaced numeric values are not ideal for parameters. Instead, you’d like numbers that are closer together near 0."
+          },
+          {
+            "type": "p",
+            "text": "The FP4 floating point numbers, described in the previous post, are spaced 0.5 apart for small values, and the larger values are spaced 1 or 2 apart. That’s hardly a Gaussian distribution, but it’s closer to Gaussian than a uniform distribution would be. NF4 deliberately follows more of a Gaussian distribution."
+          },
+          {
+            "type": "p",
+            "text": "The QLoRA formats [1], unlike FP4, are not analogs of IEEE numbers. The bits are not interpreted as sign, exponent, and mantissa, but rather as integers to be used as indexes. An NFn number is an index into a list of 2n real numbers with Gaussian spacing. To put it another way, the numbers represented by NFn have uniformly distributed z-scores."
+          },
+          {
+            "type": "p",
+            "text": "That makes sense at a high level, but the paper [1] is hard to follow in detail. It says"
+          },
+          {
+            "type": "quote",
+            "text": "More formally, we estimate the 2k values qi of the data type as follows:\n\nwhere QX(·) is the quantile function of the standard normal distribution N(0, 1)."
+          },
+          {
+            "type": "p",
+            "text": "The paper doesn’t give the range of i but it says there are 2k values, implying that i runs from 0 to 2k −1 or from 1 to 2k. Either way runs into infinite values since Q(0) = −∞ and Q(1) = ∞. We could avoid infinities by letting i run from 1 to 2n − 1."
+          },
+          {
+            "type": "p",
+            "text": "The next sentence is puzzling."
+          },
+          {
+            "type": "quote",
+            "text": "A problem for a symmetric k-bit quantization is that this approach does not have an exact representation of zero, which is an important property to quantize padding and other zero-valued elements with no error."
+          },
+          {
+            "type": "p",
+            "text": "I understand the desire to represent 0 exactly, but the equation above has an exact representation of 0 when i = 2n − 1. Perhaps the authors had in mind that i takes on the values ½, 1 + ½, 2 + ½, …, 2n − ½. This would be reasonable, but a highly unusual use of notation. It seems that the real problem is not the lack of a representation of 0 but an unused index, with i running from 1 to 2n − 1."
+          },
+          {
+            "type": "p",
+            "text": "To be fair, the first sentence quoted above says “we estimate the 2k values …” and so the equation above may not be intended as a definition but as motivation for the actual definition."
+          },
+          {
+            "type": "h2",
+            "text": "Reproducing NF4"
+          },
+          {
+            "type": "p",
+            "text": "The authors give a procedure for using 2n values of i and obtaining an exact representation of 0, and they give a list of NF4 values in Appendix E. I was not able to get the two to match. I implemented a few possible interpretations of the procedure described in the paper, and each approximates the list of values in the appendix, but not closely."
+          },
+          {
+            "type": "p",
+            "text": "The following code, written with the help of ChatGPT, reverse engineers the NF4 values to 8 decimal places, i.e. to the precision of a 32-bit floating point number."
+          },
+          {
+            "type": "code",
+            "text": "from scipy.stats import norm\n\nQ = norm.ppf\n\nα  = 0.9677083\nZ  = Q(α)\nδ1 = (α - 0.5)/7\nδ2 = (α - 0.5)/8\n\nq = [0]*16\nfor i in range(7):\n    q[i] = -Q(α - i*δ1)/Z\nfor i in range(8):\n    q[i+8] = Q(0.5 + (i+1)*δ2)/Z\n    \n# Values given in Appendix E\nNF4 = [\n    -1.0,\n    -0.6961928009986877,\n    -0.5250730514526367,\n    -0.39491748809814453,\n    -0.28444138169288635,\n    -0.18477343022823334,\n    -0.09105003625154495,\n    0.0,\n    0.07958029955625534,\n    0.16093020141124725,\n    0.24611230194568634,\n    0.33791524171829224,\n    0.44070982933044434,\n    0.5626170039176941,\n    0.7229568362236023,\n    1.0\n]\n\n# Compare \nfor i in range(16):\n    print(i, NF4[i] - q[i])"
+          },
+          {
+            "type": "p",
+            "text": "The magic number α = 0.9677083 is a mystery. I asked ChatGPT to look into this further, and it said that bitsandbytes uses α = 929/960 = 0.9677083333333333. When I use this value for α the precision is about the same, which is fine. However, the values in the paper were given to 16 decimal places, so I thought it might be able to match the values to more precision."
+          },
+          {
+            "type": "p",
+            "text": "Quibbles over the exact values of NF4 aside, the NF4 format works well in practice. Models. quantized to 4 bits using NF4 perform better than models quantized to other 4-bit formats on some benchmarks."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Anatomy of a floating point number"
+          },
+          {
+            "type": "li",
+            "text": "Anatomy of a posit number"
+          },
+          {
+            "type": "li",
+            "text": "Half precision numbers"
+          },
+          {
+            "type": "p",
+            "text": "[1] QLoRA: Efficient Finetuning of Quantized LLMs by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. https://arxiv.org/abs/2305.14314."
+          }
+        ],
+        "translations": [
+          "前文探讨了 FP4 4位浮点格式。本文将介绍另一种 4 位浮点格式 NF4 及其更高精度的变体。NF4 和 FP4 是 bitsandbytes 中常见的 4 位数据类型。如果你从 Hugging Face 下载了量化为四位的 LLM 权重，这些权重可能采用 NF4 或 FP4 格式。当然也可能是其他格式：4 位数字的实现方式多种多样，令人惊讶。",
+          "为何选择 NF4？",
+          "LLM 参数大致呈高斯分布，因此等间距的数值并不理想。理想情况下，靠近 0 的值应更密集。",
+          "前文所述的 FP4 浮点数在小值区间间距为 0.5，大值区间则变为 1 或 2，虽远非高斯分布，但比均匀分布更接近高斯特性。而 NF4 则有意遵循更接近高斯分布的数值间隔。",
+          "QLoRA 格式 [1] 与 FP4 不同，它并非 IEEE 浮点数的模拟。其比特位不解释为符号、指数和尾数，而是作为整数索引使用。NFn 表示一个指向包含 2^n 个具有高斯间距实数的列表的索引。换言之，NFn 所表示的数值具有均匀分布的标准分数（z-score）。",
+          "从宏观上看这很合理，但论文 [1] 的细节部分难以理解。文中写道：",
+          "更正式地说，我们按如下方式估计数据类型的 2^k 个值 q_i：\n\n其中 QX(·) 是标准正态分布 N(0, 1) 的分位数函数。",
+          "论文未明确 i 的取值范围，但提到共有 2^k 个值，暗示 i 从 0 到 2^k−1 或从 1 到 2^k。无论哪种情况都会遇到无穷值，因为 Q(0) = −∞ 且 Q(1) = +∞。为避免无穷值，我们可以让 i 从 1 到 2^n−1。",
+          "下一句话令人费解。",
+          "对于对称 k 位量化的问题在于，这种方法无法精确表示零，而零的精确表示对量化填充符和其他零值元素至关重要，否则会产生误差。",
+          "我理解需要精确表示 0 的动机，但上述公式在 i = 2^n−1 时确实能精确表示 0。或许作者原本考虑的是 i 取值为 ½, 1+½, 2+½, ..., 2^n−½。这在逻辑上合理，但对数学符号的使用极为罕见。真正的核心问题可能不是缺乏 0 的表示，而是存在一个未被使用的索引——i 本应从 1 到 2^n−1。",
+          "公平起见，上面引用的第一句说的是“我们估计 2^k 个值……”，因此该公式可能并非定义式，而是实际定义的动机说明。",
+          "重现 NF4",
+          "作者给出了利用 2^n 个 i 值并实现零的精确表示的方法，同时在附录 E 中列出了 NF4 的具体数值。但我未能使两者完全匹配。我尝试了论文描述中几种可能的解释方式，每种都能近似附录中的数值，但精度不足。",
+          "以下代码借助 ChatGPT 编写，通过逆向工程还原 NF4 数值，精度达小数点后八位，即 32 位浮点数的精度水平。",
+          "from scipy.stats import norm\n\nQ = norm.ppf\n\nα  = 0.9677083\nZ  = Q(α)\nδ1 = (α - 0.5)/7\nδ2 = (α - 0.5)/8\n\nq = [0]*16\nfor i in range(7):\n    q[i] = -Q(α - i*δ1)/Z\nfor i in range(8):\n    q[i+8] = Q(0.5 + (i+1)*δ2)/Z\n    \n# Values given in Appendix E\nNF4 = [\n    -1.0,\n    -0.6961928009986877,\n    -0.5250730514526367,\n    -0.39491748809814453,\n    -0.28444138169288635,\n    -0.18477343022823334,\n    -0.09105003625154495,\n    0.0,\n    0.07958029955625534,\n    0.16093020141124725,\n    0.24611230194568634,\n    0.33791524171829224,\n    0.44070982933044434,\n    0.5626170039176941,\n    0.7229568362236023,\n    1.0\n]\n\n# Compare \nfor i in range(16):\n    print(i, NF4[i] - q[i])",
+          "神秘常数 α = 0.9677083 的来源不明。我问 ChatGPT 进一步分析，它指出 bitsandbytes 使用的是 α = 929/960 = 0.9677083333333333。使用该值时精度基本一致，尚可接受。然而论文中给出的数值精确到小数点后十六位，我以为或许能匹配更高精度。",
+          "除了对 NF4 的精确值存在一些争议外，NF4 格式在实践中表现良好。使用 NF4 进行 4 位量化的模型在某些基准测试中优于采用其他 4 位量化格式的模型。",
+          "相关文章",
+          "浮点数的结构",
+          "Posit 数的结构",
+          "半精度数",
+          "[1] QLoRA: Efficient Finetuning of Quantized LLMs by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. https://arxiv.org/abs/2305.14314."
+        ]
+      }
+    },
+    {
+      "slug": "f48dd2ad8c2f9642",
+      "title": "Changes in the system prompt between Claude Opus 4.6 and 4.7",
+      "titleZh": "Claude Opus 4.6 到 4.7 的系统提示变更",
+      "link": "https://simonwillison.net/2026/Apr/18/opus-system-prompt/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-18T23:59:40.000Z",
+      "category": "ai-ml",
+      "keywords": ["Claude", "system prompt", "AI"],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Anthropic 发布了 Claude Opus 4.7 的系统提示更新，这是其自 2024 年 7 月以来的首次重大调整。与 Opus 4.6 相比，新系统提示在指令清晰度、安全策略和用户交互引导方面进行了优化。通过对比两个版本的系统提示，可以观察到 Anthropic 在增强模型对齐性和减少有害输出方面的持续改进。这一变化反映了该公司对透明度和可解释性的重视。",
+      "summaryEn": "Anthropic has released a new system prompt for Claude Opus 4.7, marking its first major update since July 2024. Compared to Opus 4.6, the revised prompt enhances instruction clarity, refines safety policies, and improves user interaction guidance. By analyzing these changes, we can see Anthropic's ongoing efforts to improve model alignment and reduce harmful outputs. This update underscores the company's commitment to transparency and responsible AI development.",
+      "reason": "了解系统提示的演进有助于开发者理解模型行为变化，尤其适合关注 AI 安全和交互设计的从业者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "18th April 2026"
+          },
+          {
+            "type": "p",
+            "text": "Anthropic are the only major AI lab to publish the system prompts for their user-facing chat systems. Their system prompt archive now dates all the way back to Claude 3 in July 2024 and it’s always interesting to see how the system prompt evolves as they publish new models."
+          },
+          {
+            "type": "p",
+            "text": "Opus 4.7 shipped the other day (April 16, 2026) with a Claude.ai system prompt update since Opus 4.6 (February 5, 2026)."
+          },
+          {
+            "type": "p",
+            "text": "I had Claude Code take the Markdown version of their system prompts, break that up into separate documents for each of the models and then construct a Git history of those files over time with fake commit dates representing the publication dates of each updated prompt—here’s the prompt I used with Claude Code for the web."
+          },
+          {
+            "type": "p",
+            "text": "Here is the git diff between Opus 4.6 and 4.7. These are my own highlights extracted from that diff—in all cases text in bold is my emphasis:"
+          },
+          {
+            "type": "li",
+            "text": "The “developer platform” is now called the “Claude Platform”."
+          },
+          {
+            "type": "li",
+            "text": "The list of Claude tools mentioned in the system prompt now includes \"Claude in Chrome—a browsing agent that can interact with websites autonomously, Claude in Excel—a spreadsheet agent, and Claude in Powerpoint—a slides agent. Claude Cowork can use all of these as tools.\"—Claude in Powerpoint was not mentioned in the 4.6 prompt."
+          },
+          {
+            "type": "li",
+            "text": "The child safety section has been greatly expanded, and is now wrapped in a new <critical_child_safety_instructions> tag. Of particular note: “Once Claude refuses a request for reasons of child safety, all subsequent requests in the same conversation must be approached with extreme caution.”"
+          },
+          {
+            "type": "li",
+            "text": "It looks like they’re trying to make Claude less pushy: “If a user indicates they are ready to end the conversation, Claude does not request that the user stay in the interaction or try to elicit another turn and instead respects the user’s request to stop.”"
+          },
+          {
+            "type": "li",
+            "text": "The new <acting_vs_clarifying> section includes:\n\nWhen a request leaves minor details unspecified, the person typically wants Claude to make a reasonable attempt now, not to be interviewed first. Claude only asks upfront when the request is genuinely unanswerable without the missing information (e.g., it references an attachment that isn’t there).\nWhen a tool is available that could resolve the ambiguity or supply the missing information — searching, looking up the person’s location, checking a calendar, discovering available capabilities — Claude calls the tool to try and solve the ambiguity before asking the person. Acting with tools is preferred over asking the person to do the lookup themselves.\nOnce Claude starts on a task, Claude sees it through to a complete answer rather than stopping partway. [...]"
+          },
+          {
+            "type": "li",
+            "text": "It looks like Claude chat now has a tool search mechanism, as seen in this API documentation and described in this November 2025 post:\n\nBefore concluding Claude lacks a capability — access to the person’s location, memory, calendar, files, past conversations, or any external data — Claude calls tool_search to check whether a relevant tool is available but deferred. “I don’t have access to X” is only correct after tool_search confirms no matching tool exists."
+          },
+          {
+            "type": "li",
+            "text": "There’s new language to encourage Claude to be less verbose:\n\nClaude keeps its responses focused and concise so as to avoid potentially overwhelming the user with overly-long responses. Even if an answer has disclaimers or caveats, Claude discloses them briefly and keeps the majority of its response focused on its main answer."
+          },
+          {
+            "type": "li",
+            "text": "This section was present in the 4.6 prompt but has been removed for 4.7, presumably because the new model no longer misbehaves in the same way:\n\nClaude avoids the use of emotes or actions inside asterisks unless the person specifically asks for this style of communication.\nClaude avoids saying “genuinely”, “honestly”, or “straightforward”."
+          },
+          {
+            "type": "li",
+            "text": "There’s a new section about “disordered eating”, which was not previously mentioned by name:\n\nIf a user shows signs of disordered eating, Claude should not give precise nutrition, diet, or exercise guidance — no specific numbers, targets, or step-by-step plans—anywhere else in the conversation. Even if it’s intended to help set healthier goals or highlight the potential dangers of disordered eating, responses with these details could trigger or encourage disordered tendencies."
+          },
+          {
+            "type": "li",
+            "text": "A popular screenshot attack against AI models is to force them to say yes or no to a controversial question. Claude’s system prompt now guards against that (in the <evenhandedness> section):\n\nIf people ask Claude to give a simple yes or no answer (or any other short or single word response) in response to complex or contested issues or as commentary on contested figures, Claude can decline to offer the short response and instead give a nuanced answer and explain why a short response wouldn’t be appropriate."
+          },
+          {
+            "type": "li",
+            "text": "Claude 4.6 had a section specifically clarifying that “Donald Trump is the current president of the United States and was inaugurated on January 20, 2025”, because without that the model’s knowledge cut-off date combined with its previous knowledge that Trump falsely claimed to win the 2020 election meant it would deny he was the president. That language is gone for 4.7, reflecting the model’s new reliable knowledge cut-off date of January 2026."
+          },
+          {
+            "type": "h3",
+            "text": "And the tool descriptions too"
+          },
+          {
+            "type": "p",
+            "text": "The system prompts published by Anthropic are sadly not the entire story—their published information doesn’t include the tool descriptions that are provided to the model, which is arguably an even more important piece of documentation if you want to take full advantage of what the Claude chat UI can do for you."
+          },
+          {
+            "type": "p",
+            "text": "Thanfully you can ask Claude directly—I used the prompt:"
+          },
+          {
+            "type": "quote",
+            "text": "List all tools you have available to you with an exact copy of the tool description and parameters"
+          },
+          {
+            "type": "p",
+            "text": "My shared transcript has full details, but the list of named tools is as follows:"
+          },
+          {
+            "type": "li",
+            "text": "ask_user_input_v0"
+          },
+          {
+            "type": "li",
+            "text": "bash_tool"
+          },
+          {
+            "type": "li",
+            "text": "conversation_search"
+          },
+          {
+            "type": "li",
+            "text": "create_file"
+          },
+          {
+            "type": "li",
+            "text": "fetch_sports_data"
+          },
+          {
+            "type": "li",
+            "text": "image_search"
+          },
+          {
+            "type": "li",
+            "text": "message_compose_v1"
+          },
+          {
+            "type": "li",
+            "text": "places_map_display_v0"
+          },
+          {
+            "type": "li",
+            "text": "places_search"
+          },
+          {
+            "type": "li",
+            "text": "present_files"
+          },
+          {
+            "type": "li",
+            "text": "recent_chats"
+          },
+          {
+            "type": "li",
+            "text": "recipe_display_v0"
+          },
+          {
+            "type": "li",
+            "text": "recommend_claude_apps"
+          },
+          {
+            "type": "li",
+            "text": "search_mcp_registry"
+          },
+          {
+            "type": "li",
+            "text": "str_replace"
+          },
+          {
+            "type": "li",
+            "text": "suggest_connectors"
+          },
+          {
+            "type": "li",
+            "text": "view"
+          },
+          {
+            "type": "li",
+            "text": "weather_fetch"
+          },
+          {
+            "type": "li",
+            "text": "web_fetch"
+          },
+          {
+            "type": "li",
+            "text": "web_search"
+          },
+          {
+            "type": "li",
+            "text": "tool_search"
+          },
+          {
+            "type": "li",
+            "text": "visualize:read_me"
+          },
+          {
+            "type": "li",
+            "text": "visualize:show_widget"
+          },
+          {
+            "type": "p",
+            "text": "I don’t believe this list has changed since Opus 4.6."
+          }
+        ],
+        "translations": [
+          "2026年4月18日",
+          "Anthropic是唯一一家公开其面向用户的聊天系统系统提示词的主要AI实验室。他们的系统提示词档案可以追溯到2024年7月的Claude 3，每次发布新模型时都会更新并发布新的系统提示词，观察这些提示词的演变过程总是很有意思。",
+          "Opus 4.7于几天前（2026年4月16日）发布，自Opus 4.6（2026年2月5日）以来，Claude.ai的系统提示词有所更新。",
+          "我让Claude Code处理了他们的系统提示词的Markdown版本，将其拆分为每个模型的独立文档，然后构建这些文件随时间的Git历史记录，使用假提交日期代表每次更新的提示词的发布日期——这是我用于网页的Claude Code提示词。",
+          "这是Opus 4.6和4.7之间的git diff。以下是我从该diff中提取的重点——所有加粗文本均为我的强调：",
+          "“开发者平台”现在被称为“Claude平台”。",
+          "系统提示词中提到的Claude工具列表现在包括“Claude in Chrome——一个可以自主与网站交互的网络浏览代理”、“Claude in Excel——一个电子表格代理”以及“Claude in Powerpoint——一个幻灯片代理”。Claude Cowork可以使用所有这些作为工具。“Claude in Powerpoint”在4.6版本的提示词中未被提及。",
+          "儿童安全部分已大幅扩展，并被包裹在一个新的<critical_child_safety_instructions>标签中。特别值得注意的是：“一旦Claude因儿童安全原因拒绝某个请求，同一对话中的所有后续请求都必须极其谨慎地处理。”",
+          "看起来他们试图让Claude不那么咄咄逼人：“如果用户表示准备结束对话，Claude不会要求用户继续互动或试图引导另一个回合，而是尊重用户停止对话的请求。”",
+          "新的<acting_vs_clarifying>部分包括：\n\n当请求中留下一些细节未明确指定时，用户通常希望Claude立即做出合理尝试，而不是先进行询问。只有在请求确实无法在没有缺失信息的情况下回答时（例如引用了不存在的附件），Claude才会提前询问。\n当有可用工具可以解决歧义或提供缺失信息时——搜索、查找用户位置、检查日历、发现可用功能——Claude会调用该工具尝试解决歧义，而不是让用户自己查找。优先使用工具行动而非询问用户。\n一旦Claude开始执行任务，它会坚持完成整个答案，而不是中途停止。[...]",
+          "看起来Claude聊天现在有了工具搜索机制，如API文档所示，并在2025年11月的帖子中描述：\n\n在得出结论认为Claude缺乏某种能力之前——访问用户位置、记忆、日历、文件、过去对话或任何外部数据——Claude会调用tool_search检查是否有相关工具可用但被推迟。只有在tool_search确认不存在匹配工具后，“我没有X的访问权限”才是正确的说法。",
+          "新增语言鼓励Claude减少冗长：\n\nClaude保持回复简洁聚焦，避免可能让用户感到过于冗长的回复。即使答案包含免责声明或注意事项，Claude也会简要披露，并保持大部分回复专注于主要答案。",
+          "该内容在4.6版本的提示词中存在，但在4.7版本中已被移除，推测是因为新模型不再以相同方式表现异常：  \nClaude 除非用户明确要求，否则不会在星号内使用表情符号或动作描述。  \nClaude 避免使用“ genuinely（真诚地）”、“honestly（诚实地）”或“straightforward（直截了当）”这类词语。",
+          "新增了一条关于“饮食失调”的说明，此前并未明确提及：  \n如果用户表现出饮食失调的迹象，Claude 不应在任何对话中提供具体的营养、饮食或运动指导——不得包含任何精确数值、目标设定或分步计划。即使这些建议旨在帮助用户建立更健康的目标或警示饮食失调的危害，包含此类细节的回应仍可能触发或强化相关倾向。",
+          "针对 AI 模型的常见截图攻击手段是迫使其对争议性问题给出非黑即白的回答。Claude 的系统提示现已加入防范机制（位于<evenhandedness>部分）：  \n若用户要求 Claude 就复杂或有争议的话题、或对有争议的人物发表评论时仅作简短回答（如“是/否”或其他单字回复），Claude 可拒绝提供简短回应，转而给出更 nuanced（ nuanced 为英文术语，保留原文）的解释，并说明为何简短回答并不恰当。",
+          "Claude 4.6 曾专门添加一段说明：“唐纳德·特朗普是美国现任总统，于2025年1月20日就职”，因为若不如此说明，模型的知识截止期限与其原有知识（即特朗普声称赢得2020年大选）结合后，会导致其否认特朗普的总统身份。此段文字在4.7版本中被删除，反映出模型现已具备可靠至2026年1月的知识更新能力。",
+          "工具描述也是如此",
+          "Anthropic 发布的系统提示 unfortunately（ unfortunately 为英文术语，保留原文）并非完整信息——他们公开的内容未包含提供给模型的工具描述，而这实际上是如果你希望充分利用 Claude 聊天界面功能时更为关键的文档。",
+          "值得庆幸的是你可以直接向 Claude 提问——我使用了如下提示：",
+          "列出你拥有的所有工具，并附上工具的完整描述和参数",
+          "我的共享记录中包含完整详情，以下是命名工具的列表：",
+          "ask_user_input_v0",
+          "bash_tool",
+          "conversation_search",
+          "create_file",
+          "fetch_sports_data",
+          "image_search",
+          "message_compose_v1",
+          "places_map_display_v0",
+          "places_search",
+          "present_files",
+          "recent_chats",
+          "recipe_display_v0",
+          "recommend_claude_apps",
+          "search_mcp_registry",
+          "str_replace",
+          "suggest_connectors",
+          "view",
+          "weather_fetch",
+          "web_fetch",
+          "web_search",
+          "tool_search",
+          "visualize:read_me",
+          "visualize:show_widget",
+          "我不认为该列表自 Opus 4.6 以来发生过变化。"
+        ]
+      }
+    },
+    {
+      "slug": "9e0363e200cc0994",
+      "title": "4-bit floating point FP4",
+      "titleZh": "4 位浮点数 FP4",
+      "link": "https://www.johndcook.com/blog/2026/04/17/fp4/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-18T01:08:54.000Z",
+      "category": "ai-ml",
+      "keywords": ["FP4", "floating point", "quantization", "LLM"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "本文介绍了 FP4 这一新兴的 4 位浮点格式，用于高效压缩大语言模型的参数。FP4 是 bitsandbytes 库支持的一种低精度数据类型，旨在在保持模型性能的同时大幅减少内存占用。与传统的 32 位或 64 位浮点数相比，FP4 将每个参数压缩至四分之一比特宽度，适用于边缘设备和资源受限环境。文章还讨论了 FP4 在训练与推理中的潜在优势及当前局限性。",
+      "summaryEn": "FP4 is a new 4-bit floating-point format designed for efficient compression of large language model parameters. Supported by the bitsandbytes library, it reduces memory usage significantly while maintaining acceptable model performance. Compared to traditional 32-bit or 64-bit floats, FP4 compresses each parameter to one-quarter of its original bit width, making it ideal for edge devices and resource-constrained environments. The article explores both the benefits and current limitations of using FP4 during training and inference.",
+      "reason": "对于希望降低 LLM 部署成本的研究者和工程师来说，FP4 提供了一种前沿且实用的量化路径。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John Cook",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In ancient times, floating point numbers were stored in 32 bits. Then somewhere along the way 64 bits became standard. The C programming language retains the ancient lore, using float to refer to a 32-bit floating point number and double to refer to a floating point number with double the number of bits. Python simply uses float to refer to the most common floating point format, which C calls double."
+          },
+          {
+            "type": "p",
+            "text": "Programmers were grateful for the move from 32-bit floats to 64-bit floats. It doesn’t hurt to have more precision, and some numerical problems go away when you go from 32-bits to 64-bits. (Though not all. Something I’ve written about numerous times.)"
+          },
+          {
+            "type": "p",
+            "text": "Neural networks brought about something extraordinary: demand for floating point numbers with less precision. These networks have an enormous number of parameters, and its more important to fit more parameters into memory than it is to have higher precision parameters. Instead of double precision (64 bits) developers wanted half precision (16 bits), or even less, such as FP8 (8 bits) or FP4 (4 bits). This post will look at 4-bit floating point numbers."
+          },
+          {
+            "type": "p",
+            "text": "Why even bother with floating point numbers when you don’t need much precision? Why not use integers? For example, with four bits you could represent the integers 0, 1, 2, …, 15. You could introduce a bias, subtracting say 7 from each value, so your four bits represent −7 through 8. Turns out it’s useful to have a more dynamic range."
+          },
+          {
+            "type": "p",
+            "text": "Signed 4-bit floating point numbers in FP4 format use the first bit to represent the sign. The question is what to do with the remaining three bits. The notation ExMy denotes a format with x exponent bits and y mantissa bits. In the context of signed 4-bit numbers,"
+          },
+          {
+            "type": "p",
+            "text": "x + y = 3"
+          },
+          {
+            "type": "p",
+            "text": "but in other contexts the sum could be larger. For example, for an 8-bit signed float, x + y = 7."
+          },
+          {
+            "type": "p",
+            "text": "For 4-bit signed floats we have four possibilities: E3M0, E2M1, E1M2, and E0M3. All are used somewhere, but E2M1 is the most common and is supported in Nvidia hardware."
+          },
+          {
+            "type": "p",
+            "text": "A number with sign bit s, exponent e, and mantissa m has the value"
+          },
+          {
+            "type": "p",
+            "text": "(−1)s 2e−b (1 + m/2)"
+          },
+          {
+            "type": "p",
+            "text": "where b is the bias. The purpose of the bias is to allow positive and negative exponents without using signed numbers for e. So, for example, if b = 1 and e = 1, 2, or 3 then the exponent part 2e−b can represent 1, 2, or 4."
+          },
+          {
+            "type": "p",
+            "text": "The bias impacts the range of possible numbers but not their relative spacing. For any value of bias b, the E3M0 format is all exponent, no mantissa, and so its possible values are uniformly distributed on a log scale. The E0M3 format is all mantissa, so its values are uniformly distributed on a linear scale. The E1M2 and E2M1 formats are unevenly spaced on both log and linear scales."
+          },
+          {
+            "type": "p",
+            "text": "There is an exception to the expression above for converting (s, e, m) into a real number when e = 0. In that case, m = 0 represents 0 and m = 1 represents ½."
+          },
+          {
+            "type": "h2",
+            "text": "Table of values"
+          },
+          {
+            "type": "p",
+            "text": "Since there are only 16 possible FP4 numbers, it’s possible to list them all. Here is a table for the E2M1 format."
+          },
+          {
+            "type": "code",
+            "text": "Bits s exp m  Value\n-------------------\n0000 0  00 0     +0\n0001 0  00 1   +0.5\n0010 0  01 0     +1\n0011 0  01 1   +1.5\n0100 0  10 0     +2\n0101 0  10 1     +3\n0110 0  11 0     +4\n0111 0  11 1     +6\n1000 1  00 0     -0\n1001 1  00 1   -0.5\n1010 1  01 0     -1\n1011 1  01 1   -1.5\n1100 1  10 0     -2\n1101 1  10 1     -3\n1110 1  11 0     -4\n1111 1  11 1     -6"
+          },
+          {
+            "type": "p",
+            "text": "Note that even in this tiny floating point format, there are two zeros, +0 and −0, just like full precision floats. More on that here."
+          },
+          {
+            "type": "h2",
+            "text": "Pychop library"
+          },
+          {
+            "type": "p",
+            "text": "The Python library Pychop emulates a wide variety of reduced-precision floating point formats. Here is the code that used Pychop to create the table above."
+          },
+          {
+            "type": "code",
+            "text": "import pychop\n\n# Pull the format metadata from Pychop.\nspec = pychop.MX_FORMATS[\"mxfp4_e2m1\"]\nassert (spec.exp_bits, spec.sig_bits) == (2, 1)\n\ndef e2m1_value(s: int, e: int, m: int) -> float:\n    sign = -1.0 if s else 1.0\n\n    # Subnormal / zero\n    if e == 0:\n        return sign * (m / 2.0)\n\n    # Normal\n    return sign * (2.0 ** (e - 1)) * (1.0 + m / 2.0)\n\ndef display_value(bits: int, x: float) -> str:\n    if bits == 0b0000:\n        return \"+0\"\n    if bits == 0b1000:\n        return \"-0\"\n    return f\"{x:+g}\"\n\nrows = []\nfor bits in range(16):\n    s = (bits >> 3) & 0b1\n    e = (bits >> 1) & 0b11\n    m = bits & 0b1\n    x = e2m1_value(s, e, m)\n\n    rows.append(\n        {\n            \"Bits\": f\"{bits:04b}\",\n            \"s\": s,\n            \"exp_bits\": f\"{e:02b}\",\n            \"m\": m,\n            \"Value\": display_value(bits, x),\n        }\n    )\n\n# Pretty-print the table.\nheader = f\"{'Bits':<4} {'s':>1} {'exp':>3} {'m':>1} {'Value':>6}\"\nprint(header)\nprint(\"-\" * len(header))\nfor row in rows:\n    print(\n        f\"{row['Bits']:<4} \" f\"{row['s']:>1} \"\n        f\"{row['exp_bits']:>3} \"\n        f\"{row['m']:>1} \"\n        f\"{row['Value']:>6}\"\n    )"
+          },
+          {
+            "type": "h2",
+            "text": "Other formats"
+          },
+          {
+            "type": "p",
+            "text": "FP4 isn’t the only 4-bit floating point format. There’s a surprisingly large number of formats in use. I intend to address another format my next post."
+          },
+          {
+            "type": "p",
+            "text": "Update: See the next post for a discussion of NF4, a format whose representable numbers more closely matches the distribution of LLM weights."
+          }
+        ],
+        "translations": [
+          "在古代，浮点数以32位存储。后来，在某个时间点，64位成为标准。C语言保留了这一古老传统，用 float 表示32位浮点数，用 double 表示位数翻倍的浮点数。Python则直接用 float 表示最常见的浮点数格式，即C语言所称的 double。",
+          "程序员们很高兴从32位浮点数转向64位浮点数。精度更高总归没有坏处，而且许多数值问题在从32位升级到64位后得以解决。（但并非全部如此。这一点我曾多次提及。）",
+          "神经网络带来了意想不到的需求：需要更低精度的浮点数。这些网络拥有海量参数，相比之下，将更多参数塞进内存比追求高精度更重要。开发者不再满足于双精度（64位），转而需要半精度（16位），甚至更低，如FP8（8位）或FP4（4位）。本文将探讨4位浮点数。",
+          "既然不需要太高精度，为什么还要用浮点数？为何不用整数？例如，用4位可以表示整数0、1、2……15。也可以引入一个偏置值，比如每个值减7，这样这4位就能表示-7到8。事实证明，具备更宽的动态范围是有用的。",
+          "FP4格式的带符号4位浮点数使用第一位表示符号。问题是其余三位该如何分配。记法 ExMy 表示有 x 个指数位和 y 个尾数位。对于带符号的4位数而言：",
+          "x + y = 3",
+          "但在其他情况下，这个和可能更大。例如，对于8位带符号浮点数，x + y = 7。",
+          "对于4位带符号浮点数，有四种可能：E3M0、E2M1、E1M2 和 E0M3。它们都在某些地方被使用，其中 E2M1 最常见，并被NVIDIA硬件支持。",
+          "一个具有符号位 s、指数 e 和尾数 m 的数的值为：",
+          "(−1)^s × 2^(e−b) × (1 + m/2)",
+          "其中 b 是偏置值。偏置的目的在于允许正负指数，而无需对 e 使用带符号的数。例如，若 b = 1 且 e = 1、2 或 3，则指数部分 2^(e−b) 可表示 1、2 或 4。",
+          "偏置影响数值的范围，但不影响其相对间距。无论偏置 b 取何值，E3M0 格式全是指数位、无尾数位，因此其可能值在对数尺度上均匀分布。E0M3 格式全是尾数位，其值在**线性**尺度上均匀分布。E1M2 和 E2M1 格式在**对数和线性**尺度上都是不均匀分布的。",
+          "当 e = 0 时，上述表达式有一个例外：此时 m = 0 表示 0，m = 1 表示 ½。",
+          "数值表",
+          "由于只有16种可能的FP4数，因此可以列出全部内容。以下是 E2M1 格式的表。",
+          "Bits s exp m  Value\n-------------------\n0000 0  00 0     +0\n0001 0  00 1   +0.5\n0010 0  01 0     +1\n0011 0  01 1   +1.5\n0100 0  10 0     +2\n0101 0  10 1     +3\n0110 0  11 0     +4\n0111 0  11 1     +6\n1000 1  00 0     -0\n1001 1  00 1   -0.5\n1010 1  01 0     -1\n1011 1  01 1   -1.5\n1100 1  10 0     -2\n1101 1  10 1     -3\n1110 1  11 0     -4\n1111 1  11 1     -6",
+          "注意，即便在这个极小的浮点格式中，也存在两个零：+0 和 -0，就像高精度浮点数一样。更多细节见此处。",
+          "Pychop库",
+          "Python库Pychop模拟了多种低精度浮点格式。以下是用Pychop生成上述表格的代码。",
+          "import pychop\n\n# Pull the format metadata from Pychop.\nspec = pychop.MX_FORMATS[\"mxfp4_e2m1\"]\nassert (spec.exp_bits, spec.sig_bits) == (2, 1)\n\ndef e2m1_value(s: int, e: int, m: int) -> float:\n    sign = -1.0 if s else 1.0\n\n    # Subnormal / zero\n    if e == 0:\n        return sign * (m / 2.0)\n\n    # Normal\n    return sign * (2.0 ** (e - 1)) * (1.0 + m / 2.0)\n\ndef display_value(bits: int, x: float) -> str:\n    if bits == 0b0000:\n        return \"+0\"\n    if bits == 0b1000:\n        return \"-0\"\n    return f\"{x:+g}\"\n\nrows = []\nfor bits in range(16):\n    s = (bits >> 3) & 0b1\n    e = (bits >> 1) & 0b11\n    m = bits & 0b1\n    x = e2m1_value(s, e, m)\n\n    rows.append(\n        {\n            \"Bits\": f\"{bits:04b}\",\n            \"s\": s,\n            \"exp_bits\": f\"{e:02b}\",\n            \"m\": m,\n            \"Value\": display_value(bits, x),\n        }\n    )\n\n# Pretty-print the table.\nheader = f\"{'Bits':<4} {'s':>1} {'exp':>3} {'m':>1} {'Value':>6}\"\nprint(header)\nprint(\"-\" * len(header))\nfor row in rows:\n    print(\n        f\"{row['Bits']:<4} \" f\"{row['s']:>1} \"\n        f\"{row['exp_bits']:>3} \"\n        f\"{row['m']:>1} \"\n        f\"{row['Value']:>6}\"\n    )",
+          "其他格式",
+          "FP4 并非唯一的4位浮点格式。实际使用的格式数量出人意料地多。我将在下一篇帖子中介绍另一种格式。",
+          "更新：请参见下一篇帖子，其中讨论了 NF4 格式，该格式的表示数字更贴近 LLM 权重的分布。"
+        ]
+      }
+    },
+    {
+      "slug": "15e767958454235c",
+      "title": "Reading List 04/18/2026",
+      "titleZh": "建筑物理阅读清单 2026 年 4 月 18 日",
+      "link": "https://www.construction-physics.com/p/reading-list-04182026",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-04-18T12:00:53.000Z",
+      "category": "other",
+      "keywords": ["quadruped robot", "China Shock", "satellites"],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "本期阅读清单涵盖多个跨领域话题：中国推出的 Shock 2.0 四足焊接机器人展示了自动化制造的新进展；多家 Transformer 架构初创公司获得融资，反映市场对 AI 基础模型的持续兴趣；此外，中国神秘移动卫星事件引发公众对太空活动透明度的关注。这些内容体现了科技、工业与航天领域的最新动态。",
+      "summaryEn": "This reading list covers diverse topics including China's Shock 2.0 quadruped welding robot, which demonstrates advances in automated manufacturing; several Transformer-based AI startups securing funding, indicating sustained interest in foundational AI models; and mysterious satellite movements by Chinese entities, raising questions about space activity transparency. Together, these stories highlight developments across technology, industry, and aerospace sectors.",
+      "reason": "如果你想快速把握本周科技界的重要动向，这份清单为你精选了最具代表性的新闻与趋势。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure, and industrial technology. This week we look at a quadruped welding robot, the China Shock 2.0, transformer startups, China’s mysteriously moving satellites, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "No essay this week, but working on a more involved piece about construction costs in the US and around the world that should be out next week."
+          },
+          {
+            "type": "h3",
+            "text": "War in Iran"
+          },
+          {
+            "type": "p",
+            "text": "The US has blockaded the Strait of Hormuz, preventing Iranian ships from transiting the strait. “On Monday, the United States imposed its own naval blockade, intent on ending Iran’s dominance of the waterway and cutting off its oil income by blocking all traffic to and from its ports…Since the U.S. blockade took effect, no ships linked to Iran have been spotted leaving the region, according to the vessel‑tracking company Kpler.” [NYT] Negotiations between the US and Iran are apparently ongoing, but the strait seems to be closed as of this writing. [BBC]"
+          },
+          {
+            "type": "p",
+            "text": "The strait’s closure continues to disrupt supply chains around the world: Russia has imposed export controls on helium [Reuters], airlines continue to be squeezed by the high cost of jet fuel [WSJ], and a Japanese bathroom manufacturer shut down production due to a lack of glue. [Nikkei Asia]"
+          },
+          {
+            "type": "p",
+            "text": "Thanks to the war, GPS signals are being jammed across the region. One consequence? Food delivery drivers are having trouble delivering their orders. [Rest of World]"
+          },
+          {
+            "type": "p",
+            "text": "The Saudi East-West oil pipeline being used to bypass the Strait of Hormuz had been damaged by an Iranian drone attack, but now appears to be back online. [Reuters]"
+          },
+          {
+            "type": "h3",
+            "text": "Housing"
+          },
+          {
+            "type": "p",
+            "text": "Homeownership rates by state in the US. Some of these figures surprise me: it’s not hard to understand why California and New York might have low homeownership rates due to the high costs of real estate, but Georgia, Texas, and North Dakota being on the low end and West Virginia being on the high end are more surprising to me. [X]"
+          },
+          {
+            "type": "p",
+            "text": "Also on the subject of home ownership, the White House released a report on “Rebuilding and Protecting the American Dream of Homeownership.” It looks at various causes of high housing prices in the US, and concludes with some recommendations for states and local jurisdictions to reduce housing costs:"
+          },
+          {
+            "type": "li",
+            "text": "Unleashing manufacturing innovation: “...align codes with accepted standards for modular, prefabricated, panelized, and other off-site built housing.”"
+          },
+          {
+            "type": "li",
+            "text": "Streamlining the stages of homebuilding: “...create a fast-track process for all housing developments that features  capped timelines and permit fees, appropriate and justifiable impact fees,  third-party inspections, and an expedited appeal process that ensures  faster and less arbitrary dispute resolution.”"
+          },
+          {
+            "type": "li",
+            "text": "Protecting consumer choice and private property rights: “...curtail gratuitous mandates that restrict housing supply, such as restrictions on the number of units that can be built in any given time period, costly green energy building requirements, and discriminatory labor rules.”"
+          },
+          {
+            "type": "p",
+            "text": "Most of these seem like reasonable ideas to me. [White House]"
+          },
+          {
+            "type": "h3",
+            "text": "Manufacturing"
+          },
+          {
+            "type": "p",
+            "text": "The Pentagon wants to get US auto manufacturers involved in weapons production, as the wars in Ukraine and Iran run down ordnance stockpiles. This was widely done during WWII, but it’s not obvious how easily today’s car manufacturers could pivot. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "Also on the subject of weapons manufacturing, Detroit is angling to be the epicenter of a new US drone manufacturing industry. “Thanks to ramped-up military spending on drones and their proliferation in civilian uses, the market for American-made unmanned aerial systems is expected to grow to more than $50 billion by 2030, from $5 billion this year…Companies are scrambling to build a supply chain from scratch, and states are vying to be at the center of it. In July, Gov. Gretchen Whitmer of Michigan, a Democrat, issued an executive directive calling for a statewide effort to scale up “advanced air mobility” manufacturing, which includes drones and electric planes.” [NYT]"
+          },
+          {
+            "type": "p",
+            "text": "Tulsa, Oklahoma is building the first aluminum smelter built in the US in 50 years, which would double(!) US smelting capacity. [WSJ] Related, this Breakthrough Institute Piece on aluminum and China’s manufacturing prowess has an interesting graphic showing which materials require the most electricity to produce. Titanium requires way more electricity, and electric arc steel requires way less electricity, than I realized. [Breakthrough]"
+          },
+          {
+            "type": "p",
+            "text": "When I looked at welding automation a few years ago, one of the startups I highlighted trying to push automated welding forward was Path Robotics, which at the time was developing a system that could automatically plan out a welding path based on computer vision and a CAD model it had been provided. Now the company just introduced an automated welding system mounted to a robot dog. The utility of this isn’t amazingly obvious to me — I think most welding is probably done in repeatable locations where the dog is unnecessary, in locations that would be tricky for a dog to access, or require some kind of workholding that this doesn’t seem equipped with — but it’s cool nonetheless. [X]"
+          },
+          {
+            "type": "p",
+            "text": "A cool short video clip showing manufacturing of wooden propellers using Blanchard-style pattern-tracing lathes. [X]"
+          },
+          {
+            "type": "p",
+            "text": "Slate Auto, the Jeff Bezos-backed startup that wants to build a no-frills EV truck, raised another $650 million, bringing its total funding to $1.4 billion. [TechCrunch]"
+          }
+        ],
+        "translations": [
+          "欢迎阅读本周的资讯汇总，内容涵盖建筑、基础设施及工业技术领域的新闻与链接。本期我们将探讨四足焊接机器人、中国冲击2.0（China Shock 2.0）、Transformer初创企业、中国神秘移动卫星等话题。约三分之二的资讯内容受付费墙限制，如需完整访问，请成为付费订阅用户。",
+          "本周暂无专题文章，但正在撰写一篇关于美国及全球建筑成本的深度报道，预计下周发布。",
+          "伊朗战争",
+          "美国已封锁霍尔木兹海峡，阻止伊朗船只通过该航道。“周一，美国实施了自己的海军封锁，旨在终结伊朗对这条水道的主导地位，并通过阻断所有进出其港口的交通来切断其石油收入……据船舶追踪公司Kpler称，自美国封锁生效以来，该地区未再发现任何与伊朗相关的船只离开。”[《纽约时报》] 目前美伊谈判仍在进行中，但据本文撰写时，该海峡似乎仍处于封闭状态。[BBC]",
+          "海峡关闭持续扰乱全球供应链：俄罗斯对氦气实施出口管制[路透社]，航空公司继续面临高昂航空燃油成本的压力[《华尔街日报》]，一家日本卫浴制造商因缺乏胶水而暂停生产。[日经亚洲]",
+          "由于战争影响，GPS信号在该地区遭到干扰。后果之一？外卖骑手难以完成配送任务。[Rest of World]",
+          "用于绕行霍尔木兹海峡的沙沙特东西向输油管道此前遭伊朗无人机袭击受损，但目前似乎已恢复运行。[路透社]",
+          "住房问题",
+          "美国各州房屋自有率。部分数据令我感到意外：加州和纽约房屋自有率低，我尚可理解——高昂的房地产价格确实是个原因；但佐治亚州、德克萨斯州和北达科他州处于低水平，而西弗吉尼亚州却位居高位，这更让我感到惊讶。[X]",
+          "同样关于房屋所有权的问题，白宫发布了题为《重建并保护美国人的住房梦想》的报告。报告分析了美国高房价的多种成因，并提出若干建议，供各州和地方政府降低住房成本参考：",
+          "推动制造业创新：“……将建筑规范与模块化、预制、面板化及其他场外建造住宅的标准对齐。”",
+          "简化建房流程：“……为所有住宅开发项目建立快速通道机制，包括设定时限上限和许可费用、合理且具正当性的影响费、第三方检查以及加快争议解决的上诉程序。”",
+          "保护消费者选择权与私有财产权：“……遏制那些无端限制住房供应的规定，例如对单位建设数量的限制、昂贵的绿色能源建筑要求，以及带有歧视性的劳工规则。”",
+          "这些措施在我看来大多合理可行。[白宫]",
+          "制造业",
+          "五角大楼希望让美国汽车制造商参与武器生产，以应对乌克兰与伊朗战争中弹药储备的消耗。二战时期曾广泛采用此类做法，但如今汽车制造商能否轻易转型仍不明确。[《华尔街日报》]",
+          "在武器制造领域，底特律正试图成为美国无人机制造业的中心。由于军方对无人机的投入加大以及其在民用领域的广泛应用，预计到2030年，美国制造的无人航空系统的市场规模将从今年的50亿美元增长至超过500亿美元……企业纷纷着手从零构建供应链，各州也竞相争夺这一产业的核心地位。7月，密歇根州民主党州长格雷琴·惠特默发布行政指令，呼吁全州共同努力扩大“先进空中交通”制造业规模，其中包括无人机和电动飞机。[《纽约时报》]",
+          "俄克拉荷马州塔尔萨正在建设自50年以来在美国建造的首座铝冶炼厂，这将使美国的铝冶炼产能翻倍（！）。相关报道中，布鲁金斯学会关于铝与中国制造实力的文章配有一张有趣的图表，展示了哪些材料在生产过程中耗电量最大。钛的耗电量远高于预期，而电弧炉炼钢的耗电量则比想象中要低得多。[布鲁金斯学会]",
+          "几年前研究焊接自动化时，我曾提到一家名为Path Robotics的初创公司，该公司当时正开发一种基于计算机视觉和CAD模型自动规划焊接路径的系统。如今，该公司推出了一款搭载在机器狗上的自动化焊接系统。虽然这种设计的实用性对我而言并不十分明显——我认为大多数焊接作业可能是在重复性高的固定位置进行，而这些位置并不需要机器狗；或者是在机器狗难以进入的空间作业，又或者需要某种夹具固定工件，而该系统似乎不具备这些功能——但整体来看仍颇具创意。[X]",
+          "一段精彩的短视频展示了使用布兰查德式仿形车床制造木制螺旋桨的过程。[X]",
+          "由杰夫·贝佐斯支持的初创公司Slate Auto，致力于打造一款极简版电动皮卡，最近又融资6.5亿美元，累计融资额已达14亿美元。[TechCrunch]"
+        ]
+      }
+    },
+    {
+      "slug": "721162279d1a8af5",
+      "title": "Claude system prompts as a git timeline",
+      "titleZh": "将 Claude 系统提示构建为 Git 时间线",
+      "link": "https://simonwillison.net/2026/Apr/18/extract-system-prompts/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-18T12:25:00.000Z",
+      "category": "engineering",
+      "keywords": ["git", "timeline", "system prompt"],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Simon Willison 开发了一个工具，自动提取 Anthropic 发布的 Claude 各版本系统提示，并将其组织成可追踪的 Git 历史记录。该工具利用 Claude Code 解析官方 Markdown 文档，生成按时间排序的独立文件，便于开发者观察系统提示的演变过程。这种方法不仅提升了透明度，也为研究 AI 行为变化提供了结构化数据源。",
+      "summaryEn": "Simon Willison created a tool that automatically extracts Anthropic's published system prompts for various Claude versions and organizes them into a Git timeline. Using Claude Code, it parses the official Markdown documentation and generates timestamped files for each model version. This approach not only increases transparency but also provides a structured dataset for studying how AI behavior evolves over time.",
+      "reason": "对 AI 系统演化感兴趣的研究者可以通过这个开源项目直接获取并分析 Anthropic 的历史系统提示变更。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Research\n    \n    Claude system prompts as a git timeline\n    — Anthropic's published system prompt history for Claude is transformed into a git-based exploration tool, breaking up the monolithic markdown source into granular files and timestamped commits. By structuring extracted prompts per model, family, and revision, researchers can leverage `git log`, `diff`, and `blame` to trace prompt evolution, compare differences, and attribute changes to specific dates—all without manual parsing."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic publish the system prompts for Claude chat and make that page available as Markdown. I had Claude Code turn that page into separate files for each model and model family with fake git commit dates to enable browsing the changes via the GitHub commit view."
+          },
+          {
+            "type": "p",
+            "text": "I used this to write my own detailed notes on the changes between Opus 4.6 and 4.7."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "cd39b4f1c8cf558f",
+      "title": "Adding a new content type to my blog-to-newsletter tool",
+      "titleZh": "向我的博客转 Newsletter 工具添加新内容类型",
+      "link": "https://simonwillison.net/guides/agentic-engineering-patterns/adding-a-new-content-type/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-18T03:15:36.000Z",
+      "category": "tools",
+      "keywords": ["blog-to-newsletter", "prompt engineering", "automation"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 20
+      },
+      "summary": "Simon Willison 分享了他如何为其 Agentic Engineering Patterns 指南添加新的内容类型到博客转 Newsletter 的工作流程中。他使用一个简洁的提示（prompt）让 Claude Code 一次性完成内容识别、分类和格式化任务，展示了代理式工程的高效模式。该方法显著简化了内容分发流程，适用于希望自动化知识传播的个人创作者。",
+      "summaryEn": "Simon Willison demonstrates how he added support for new content types to his blog-to-newsletter pipeline within his Agentic Engineering Patterns guide. He used a concise prompt to have Claude Code perform content identification, categorization, and formatting in a single shot, showcasing an efficient agentic engineering pattern. This method streamlines content distribution for individual creators seeking automation.",
+      "reason": "如果你正在构建自己的 AI 辅助内容生产流水线，这个案例提供了可直接借鉴的轻量级代理工作流范例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Here's an example of a deceptively short prompt that got a quite a lot of work done in a single shot."
+          },
+          {
+            "type": "p",
+            "text": "First, some background. I send out a free Substack newsletter around once a week containing content copied-and-pasted from my blog. I'm effectively using Substack as a lightweight way to allow people to subscribe to my blog via email."
+          },
+          {
+            "type": "p",
+            "text": "I generate the newsletter with my blog-to-newsletter tool - an HTML and JavaScript app that fetches my latest content from this Datasette instance and formats it as rich text HTML, which I can then copy to my clipboard and paste into the Substack editor. Here's a detailed explanation of how that works."
+          },
+          {
+            "type": "p",
+            "text": "I recently added a new type of content to my blog to capture content that I post elsewhere, which I called \"beats\". These include things like releases of my open source projects, new tools that I've built, museums that I've visited (from niche-museums.com) and other external content."
+          },
+          {
+            "type": "p",
+            "text": "I wanted to include these in the generated newsletter. Here's the prompt I ran against the simonw/tools repository that hosts my blog-to-newsletter tool, using Claude Code on the web."
+          },
+          {
+            "type": "p",
+            "text": "This got me the exact solution I needed. Let's break down the prompt."
+          },
+          {
+            "type": "quote",
+            "text": "Clone simonw/simonwillisonblog from github to /tmp for reference"
+          },
+          {
+            "type": "p",
+            "text": "I use this pattern a lot. Coding agents can clone code from GitHub, and the best way to explain a problem is often to have them look at relevant code. By telling them to clone to /tmp I ensure they don't accidentally end up including that reference code in their own commit later on."
+          },
+          {
+            "type": "p",
+            "text": "The simonw/simonwillisonblog repository contains the source code for my Django-powered simonwillison.net blog. This includes the logic and database schema for my new \"beats\" feature."
+          },
+          {
+            "type": "quote",
+            "text": "Update blog-to-newsletter.html to include beats that have descriptions - similar to how the Atom everything feed on the blog works"
+          },
+          {
+            "type": "p",
+            "text": "Referencing blog-to-newsletter.html is all I need here to tell Claude which of the 200+ HTML apps in that simonw/tools repo it should be modifying."
+          },
+          {
+            "type": "p",
+            "text": "Beats are automatically imported from multiple sources. Often they aren't very interesting - a dot-release bug fix for one of my smaller open source projects, for example."
+          },
+          {
+            "type": "p",
+            "text": "My blog includes a way for me to add additional descriptions to any beat, which provides extra commentary but also marks that beat as being more interesting than those that I haven't annotated in some way."
+          },
+          {
+            "type": "p",
+            "text": "I already use this as a distinction to decide which beats end up in my site's Atom feed. Telling Claude to imitate that saves me from having to describe the logic in any extra detail."
+          },
+          {
+            "type": "quote",
+            "text": "Run it with python -m http.server and use `uvx rodney --help` to test it - compare what shows up in the newsletter with what's on the homepage of https://simonwillison.net"
+          },
+          {
+            "type": "p",
+            "text": "Coding agents always work best if they have some kind of validation mechanism they can use to test their own work."
+          },
+          {
+            "type": "p",
+            "text": "In this case I wanted Claude Code to actively check that the changes it made to my tool would correctly fetch and display the latest data."
+          },
+          {
+            "type": "p",
+            "text": "I reminded it to use python -m http.server as a static server because I've had issues in the past with applications that fetch data and break when served as a file from disk instead of a localhost server. In this particular case that may not have been necessary, but my prompting muscle memory has python -m http.server baked in at this point!"
+          },
+          {
+            "type": "p",
+            "text": "I described the uvx rodney --help trick in the agentic manual testing chapter. Rodney is browser automation software that can be installed using uvx, and that has --help output designed to teach an agent everything it needs to know in order to use the tool."
+          },
+          {
+            "type": "p",
+            "text": "I figured that telling Claude to compare the results in the newsletter to the content of my blog's homepage would be enough for it to confidently verify that the new changes were working correctly, since I had recently posted content that matched the new requirements."
+          },
+          {
+            "type": "p",
+            "text": "You can see the full session here, or if that doesn't work I have an alternative transcript showing all of the individual tool calls."
+          },
+          {
+            "type": "p",
+            "text": "The resulting PR made exactly the right change. It added an additional UNION clause to the SQL query that fetched the blog's content, filtering out draft beats and beats that have nothing in their note column:"
+          },
+          {
+            "type": "code",
+            "text": "...\nunion all\nselect\n  id,\n  'beat' as type,\n  title,\n  created,\n  slug,\n  'No HTML' as html,\n  json_object(\n    'created', date(created),\n    'beat_type', beat_type,\n    'title', title,\n    'url', url,\n    'commentary', commentary,\n    'note', note\n  ) as json,\n  url as external_url\nfrom blog_beat\nwhere coalesce(note, '') != '' and is_draft = 0\nunion all\n..."
+          },
+          {
+            "type": "p",
+            "text": "And it figured out a mapping of beat types to their formal names, presumably derived from the Django ORM definition that it read while it was exploring the reference codebase:"
+          },
+          {
+            "type": "code",
+            "text": "const beatTypeDisplay = {\n  release: 'Release',\n  til: 'TIL',\n  til_update: 'TIL updated',\n  research: 'Research',\n  tool: 'Tool',\n  museum: 'Museum'\n};"
+          },
+          {
+            "type": "p",
+            "text": "Telling agents to use another codebase as reference is a powerful shortcut for communicating complex concepts with minimal additional information needed in the prompt."
+          }
+        ],
+        "translations": [
+          "这是一个看似简短却能在单次调用中完成大量工作的提示示例。",
+          "先补充一些背景信息。我每周会发布一封免费的 Substack 通讯，内容是从我的博客直接复制粘贴过来的。实际上我是把 Substack 当作一种轻量级的订阅方式，让用户可以通过邮件关注我的博客更新。",
+          "我用的是自己开发的 blog-to-newsletter 工具——一个基于 HTML 和 JavaScript 的应用，它会从当前这个 Datasette 实例中抓取最新的内容，并将其格式化为富文本 HTML，之后我可以将其复制到剪贴板并粘贴到 Substack 编辑器中。这里详细解释一下它是如何运作的。",
+          "最近我在博客里新增了一种内容类型，用来收录我在其他地方发布的内容，我称之为“beats”。这些包括我开源项目的发布、新开发的小工具、我从 niche-museums.com 访问过的博物馆（以及其他外部来源的内容）。",
+          "我希望把这些 beats 也包含在生成的通讯中。下面是我对托管 blog-to-newsletter 工具的 simonw/tools 仓库运行的一段提示词，使用的是网页版的 Claude Code。",
+          "这段提示词正好给了我想要的解决方案。我们来拆解一下它的结构。",
+          "将 simonw/simonwillisonblog 从 GitHub 克隆到 /tmp 目录供参考使用",
+          "我经常采用这种模式。编程代理可以从 GitHub 克隆代码，而最有效说明问题的方式往往是让他们查看相关的现有代码。通过指定克隆到 /tmp，可以确保它们不会意外地将这份参考代码包含进自己后续的提交中。",
+          "simonw/simonwillisonblog 仓库包含了由 Django 驱动的我个人博客 simonwillison.net 的完整源码。其中也包括了新“beats”功能的相关逻辑和数据库结构。",
+          "更新 blog-to-newsletter.html，使其能够包含带有描述的 beats——类似于博客上 Atom everything feed 的处理方式",
+          "在这里只需要引用 blog-to-newsletter.html 就能明确告诉 Claude 应该修改 simonw/tools 仓库中那 200 多个 HTML 应用中的哪一个。",
+          "Beats 是自动从多个渠道导入的。很多时候它们并不太有趣——比如某个小型开源项目的一个点版本 bug 修复。",
+          "我的博客已经支持我为任意 beat 添加额外描述的功能，这既提供了补充说明，同时也标记出那些经过我主动注释的、相对更有趣的 beats。",
+          "我早已利用这一点来决定哪些 beats 最终会出现在网站的 Atom 订阅源中。让 Claude 模仿这一机制，就无需我再额外描述具体逻辑了。",
+          "启动时用 python -m http.server，并通过 `uvx rodney --help` 进行测试——对比生成的 newsletter 与 https://simonwillison.net 首页显示的内容是否一致。",
+          "只要编码代理有某种自我验证机制，就能显著提升工作效率。",
+          "在这个案例中，我希望 Claude Code 能主动检查它对工具的改动是否能正确获取并展示最新数据。",
+          "我提醒它使用 python -m http.server 作为静态服务器，因为过去曾遇到过某些应用在被以文件形式加载时会出错的情况。虽然这次可能并非必需，但我的提示词习惯已经把 python -m http.server 固化下来了！",
+          "我在《代理式手动测试》章节中描述了使用 uvx rodney --help 的技巧。Rodney 是一款可通过 uvx 安装的浏览器自动化软件，其 --help 输出经过专门设计，旨在向代理传授使用该工具所需的一切信息。",
+          "我认为只需让 Claude 对比新闻通讯中的结果与我博客首页的内容，它就能自信地验证新改动是否正常工作，因为我最近发布的内容符合新的要求。",
+          "你可以在此查看完整会话，如果无法访问，我还提供了一个替代转录文件，其中包含了所有单独的工具调用记录。",
+          "最终提交的 PR 做出了完全正确的修改：它在获取博客内容的 SQL 查询中增加了一个额外的 UNION 子句，过滤掉了草稿状态的 beats 以及 note 列为空的 beats。",
+          "...\nunion all\nselect\n  id,\n  'beat' as type,\n  title,\n  created,\n  slug,\n  'No HTML' as html,\n  json_object(\n    'created', date(created),\n    'beat_type', beat_type,\n    'title', title,\n    'url', url,\n    'commentary', commentary,\n    'note', note\n  ) as json,\n  url as external_url\nfrom blog_beat\nwhere coalesce(note, '') != '' and is_draft = 0\nunion all\n...",
+          "它还推导出了 beat 类型与其正式名称之间的映射关系，这很可能源自它在探索参考代码库时读取的 Django ORM 定义。",
+          "const beatTypeDisplay = {\n  release: 'Release',\n  til: 'TIL',\n  til_update: 'TIL updated',\n  research: 'Research',\n  tool: 'Tool',\n  museum: 'Museum'\n};",
+          "指示代理将另一个代码库作为参考，是一种强大的捷径，能以最少额外的提示信息传达复杂概念。"
+        ]
+      }
+    },
+    {
+      "slug": "d57d953aa24b254d",
+      "title": "Mac Mini and Mac Studio Supply Shortages",
+      "titleZh": "Mac Mini 和 Mac Studio 供应短缺",
+      "link": "https://www.wsj.com/tech/personal-tech/apple-mac-mini-supply-3e7a7509?st=fKpr4Q",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-18T16:48:37.000Z",
+      "category": "tools",
+      "keywords": ["Mac Mini", "Mac Studio", "supply shortage"],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 20
+      },
+      "summary": "苹果官网显示，配备大容量内存的 Mac Mini 型号（如 M4 基础款 32GB RAM 起售价 $999 和 M4 Pro 64GB RAM 起售价 $1,999）目前“暂时缺货”。其他型号预计等待发货时间为一个月，部分长达 12 周。Mac Studio 的短缺情况更为严重，反映出高端 Mac 产品线面临供应链压力。",
+      "summaryEn": "Apple.com currently lists high-capacity Mac Mini models—including the base M4 with 32GB RAM starting at $999 and the M4 Pro with 64GB RAM starting at $1,999—as 'currently unavailable.' Estimated shipping times range from one month to up to 12 weeks for other Mini variants. The more powerful Mac Studio faces even greater shortages, indicating significant supply chain constraints affecting Apple's premium desktop lineup.",
+      "reason": "硬件采购者应关注此信息以避免延误，同时也可借此评估苹果供应链状况对消费电子产品市场的影响。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "b5e7d7dcd74e8624",
+      "title": "Apple’s Developer Guidelines for Ratings and Review Prompts",
+      "titleZh": "苹果应用商店评分与评论指南最佳实践",
+      "link": "https://developer.apple.com/design/human-interface-guidelines/ratings-and-reviews#Best-practices",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-18T00:43:35.000Z",
+      "category": "engineering",
+      "keywords": ["App Store", "ratings", "user experience"],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 20
+      },
+      "summary": "苹果建议开发者遵循最佳实践来请求用户评分与评论，包括避免频繁打扰用户，并优先使用系统提供的原生提示框。推荐至少间隔一周或两周再请求，并在用户表现出进一步参与行为后再触发。这有助于提升用户体验并提高正面反馈率。",
+      "summaryEn": "Apple recommends developers follow best practices when requesting ratings and reviews, such as avoiding repeated pestering and prioritizing the system-provided prompt available on iOS, iPadOS, and macOS. It suggests waiting at least one to two weeks between requests and triggering again only after users show additional engagement with your app. This approach improves user experience and increases the likelihood of positive feedback.",
+      "reason": "App 开发者必须遵守这些准则以确保合规并维持良好的 App Store 声誉，避免被拒审或降权。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "e25f10550b5adee5",
+      "title": "Follow-Up Regarding App Store Reviews, Which Are Definitely Busted",
+      "titleZh": "关于 App Store 评论机制再次跟进：确实存在问题",
+      "link": "https://daringfireball.net/linked/2026/04/16/app-store-reviews-are-busted",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-18T00:31:16.000Z",
+      "category": "engineering",
+      "keywords": ["App Store reviews", "review prompts", "user engagement"],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "Steven Troughton-Smith 指出，是否实现评分请求 API 是决定一款优秀应用能否获得大量正面评价的关键因素。他强烈建议开发者不要禁用该功能，因为苹果编辑团队通常只推荐那些积极争取用户反馈的应用。缺乏主动收集评论的应用容易被忽视甚至下架。",
+      "summaryEn": "Steven Troughton-Smith emphasizes that implementing rating request APIs is crucial for apps to gain thousands of positive reviews instead of just five. He strongly advises developers not to disable these features, as Apple's editorial team tends to feature only those apps that actively solicit feedback. Apps that fail to do so risk being overlooked or removed from featured sections.",
+      "reason": "无论你是独立开发者还是创业团队，这篇评论揭示了 App Store 生态中不成文的成功法则——主动获取用户声音至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Terry Godier:"
+          },
+          {
+            "type": "quote",
+            "text": "For example, if you have a 4.1 star rating in the App Store, any 4\nstar review is going to decrease that average. In other words,\nleaving a 4 star review is essentially leaving a negative\nreview. [...]\n\nYou will see a lot of 4 star reviews that say things like, “This\nis my favorite app!” or “Gamechanger!” The apps that tend to\nhave these types of reviews are often over a 4.0 in the store and\nare being actively harmed average-wise by having them, even though\nthe intent was clearly not to do so."
+          },
+          {
+            "type": "p",
+            "text": "Problem #1 is that star-rating systems absolutely suck for aggregation. If you’re going to collect and average ratings from users, the system that works best is binary: thumbs-up or thumbs-down. Netflix switched from stars to thumbs in 2017, and YouTube switched all the way back in 2009. The App Store should switch to thumbs."
+          },
+          {
+            "type": "quote",
+            "text": "The logical endpoint of apps optimizing for a 5 star review\ninvalidates the system as meaningful on the store. The system\nbecomes a better representation of the sophistication at review\nprompt execution than it does an accurate reflection of app\nproduct quality. The incentive isn’t to create an actual 5 star\napp, but rather to create a robust system that transmits only 5\nstar reviews."
+          },
+          {
+            "type": "p",
+            "text": "Problem #2 is that even if the App Store switched from stars to thumbs, the system would still be gamified by developers, rewarding, as Godier aptly puts it, not the best apps but instead the apps that are best at “review prompt execution”. Apple should remove the APIs that allow apps to prompt for reviews, and forbid the practice of prompting for them. Nothing good, and much bad, comes from these prompts. Imagine being in a restaurant, and in the middle of your entree, the server comes to your table and hands you an iPad and asks you to rate the joint on Yelp. That’s what using most apps is like. And the apps that do the right thing — like Godier’s Current — and never solicit a review like a needy hustler are penalized."
+          },
+          {
+            "type": "p",
+            "text": "Every time I see one of these prompts it’s like getting hit up by a panhandler — and some of the prompts come from Apple’s own apps. It’s all so greasy. One of the advantages of a walled garden ought to be keeping panhandlers and solicitors out."
+          },
+          {
+            "type": "p",
+            "text": "★ Thursday, 16 April 2026"
+          }
+        ],
+        "translations": [
+          "Terry Godier:",
+          "例如，如果你的 App Store 评分为 4.1 星，那么任何 4 星评价都会拉低这个平均值。换句话说，留下一个 4 星评论本质上就是在写一条负面评论。[...]\n\n你会看到很多 4 星评论写着“这是我喜欢的应用！”或“改变了游戏规则！”这类内容。拥有此类评论的应用通常评分已超过 4.0，尽管发布者的本意并非如此，但这些评论反而正在持续损害它们的平均评分。",
+          "问题一在于：星级评分系统根本不适合用于聚合评价。如果你要收集和平均用户评分，最有效的方式是二元的——要么点赞，要么点踩。Netflix 在 2017 年放弃了星级改用点赞，YouTube 早在 2009 年就完全回归了这种模式。App Store 也应该转向点赞机制。",
+          "从逻辑上讲，如果开发者为了获得 5 星评价而不断优化，整个商店的评分体系就会失去意义。此时，该系统反映的不是应用的实际质量，而是更准确地体现了开发者“诱导好评”的技巧水平。激励目标不再是打造真正优秀的 5 星应用，而是建立一个只发送 5 星评价的可靠系统。",
+          "问题二在于：即便 App Store 将星级改为点赞，开发者的游戏化行为依然存在。正如 Godier 所言，这奖励的不是最好的应用，而是那些最擅长“诱导好评执行”的应用。苹果应移除允许应用请求评分的 API，并禁止这种诱导行为。这些提示带来的只有坏处，毫无益处。想象一下你在餐厅享用主菜时，服务员突然递给你一台 iPad，让你当场给餐厅打分——大多数应用的使用体验就是这样。而那些像 Godier 的 Current 那样从不主动索要好评的应用，反而因此被惩罚。",
+          "每次看到这些提示都像被乞讨者缠上一样——而且有些甚至来自苹果自家的应用。这一切都太油腻了。封闭生态的一个优势本应是杜绝这些烦人的推销和乞讨行为。",
+          "★ 2026 年 4 月 16 日 星期四"
+        ]
+      }
+    },
+    {
+      "slug": "c8435a155866efb2",
+      "title": "The electromechanical angle computer inside the B-52 bomber's star tracker",
+      "titleZh": "B-52 轰炸机星体跟踪器内的机电角度计算机",
+      "link": "http://www.righto.com/feeds/8382904110431912671/comments/default",
+      "sourceName": "righto.com",
+      "sourceUrl": "https://righto.com",
+      "pubDate": "2026-04-18T16:24:00.000Z",
+      "category": "engineering",
+      "keywords": ["celestial navigation", "B-52", "electromechanical"],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 5,
+        "total": 19
+      },
+      "summary": "在 GPS 普及前，军用飞机依赖天体导航进行定位。B-52 轰炸机搭载了一套 1960 年代开发的自动化星体跟踪系统，该系统使用机电模拟计算机实时计算方位角与位置。尽管数字计算机已出现，但当时受限于可靠性与功耗，机电装置仍是首选方案。这一设计展示了早期航空航天工程中混合计算系统的巧妙应用。",
+      "summaryEn": "Before GPS became widespread, military aircraft relied on celestial navigation using star positions. The B-52 bomber featured an automated star-tracking system developed in the early 1960s that used electromechanical analog computers to calculate bearing and position in real time. Despite the availability of digital computers at the time, mechanical systems were preferred due to their reliability and power efficiency—a fascinating example of hybrid computing in early aerospace engineering.",
+      "reason": "这段历史揭示了在极端环境下技术选择的逻辑，对理解现代导航系统演进具有重要参考价值。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "44727103295b13ac",
+      "title": "Pluralistic: Georgia's voting technology blunder (18 Apr 2026)",
+      "titleZh": "乔治亚州投票技术失误：多米尼恩机器并非如塔克·卡尔森所言那般糟糕",
+      "link": "https://pluralistic.net/2026/04/18/dominion-sucks-actually/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-18T13:00:44.000Z",
+      "category": "other",
+      "keywords": ["voting", "technology", "Dominion"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "文章驳斥了塔克·卡尔森关于多米尼恩投票机存在大规模舞弊的指控，指出其所谓‘证据’缺乏事实依据。作者强调，尽管某些地区的投票系统可能存在操作或管理问题，但这并不能证明多米尼恩设备本身存在系统性故障或欺诈行为。通过分析选举审计报告和独立专家意见，文章揭示了政治叙事如何被简化为阴谋论，而忽视了技术现实与程序正义的重要性。",
+      "summaryEn": "The article refutes Tucker Carlson's claims that Dominion voting machines were fundamentally flawed or fraudulent, arguing his evidence lacks factual basis. While acknowledging potential procedural issues in some jurisdictions, it stresses these do not equate to systemic machine failure or fraud. Drawing on election audit reports and expert analyses, the piece shows how political narratives often reduce complex realities into conspiracy theories, undermining trust in democratic processes.",
+      "reason": "这是一篇冷静、基于事实的澄清文章，适合想了解美国大选争议背后真实技术问题的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Georgia's voting technology blunder: It's possible for Dominion machines to suck, but not in the way that Tucker Carlson says they do."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: GWB's illegal iPod; McDonald's breakfast sandwich fanfic; Technofeudal debt; \"The Everything Box\"; $100m deli."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Los Angeles, San Francisco, London, Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Georgia's voting technology blunder (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Nearly 25 years ago, in the aftermath of Bush v Gore, I got involved in a bunch of ugly tech policy fights over voting machines. The hanging chad debacle in Florida prompted Congress to appropriate funds for states to purchase new touchscreen voting machines based on a robust, open standard. The problem was, those machines didn't exist."
+          },
+          {
+            "type": "p",
+            "text": "The voting machine industry in those days was already very consolidated (it's far more consolidated today). They went shopping for a standards body that would publish a spec for a \"standard\" voting machine that could soak up those federal dollars in time for the 2004 election. The only taker was the IEEE, who unwisely offered to serve as host for this impossible rush job."
+          },
+          {
+            "type": "p",
+            "text": "Once the voting machine reps were around a table at IEEE – largely sheltered from antitrust scrutiny thanks to the broad latitude enjoyed by firms engaged in standardization, which is otherwise uncomfortably close to collusion – they admitted what everyone already knew: there was zero chance they were going to develop a new standard in time for the election."
+          },
+          {
+            "type": "p",
+            "text": "Instead, they decided they were going to publish a \"descriptive standard.\" Rather than designing a new standard, they'd write down the specs of their own products – the same products that were considered so defective they needed to be replaced before the election – and call that the standard."
+          },
+          {
+            "type": "p",
+            "text": "That was my first encounter with this issue as an activist. I had just started at EFF and a lot of our supporters were IEEE members, who were appalled to see their professional association being used to launder this incredibly politically salient, technically incoherent scam. We got a ton of IEEE members to write to the board, who shut down the standards committee and kicked the voting machine companies to the curb."
+          },
+          {
+            "type": "p",
+            "text": "The voting machine companies weren't done, though. Diebold – one of the leaders in the cartel – knew that its voting machines were defective. They'd crash, lose their vote-counts and malfunction in other ways that were equally damaging to election integrity."
+          },
+          {
+            "type": "p",
+            "text": "This was an alarming piece of news, but perhaps just as alarming is the way it came to light. A Diebold employee described this situation in a memo that was subsequently hacked and dumped by parties unknown. That memo, along with the accompanying tranche of extremely alarming revelations about Diebold's voting machine division, was the subject of one of the first mass-censorship copyright campaigns in internet history."
+          },
+          {
+            "type": "p",
+            "text": "Diebold didn't dispute the veracity of these damning revelations: rather, it claimed that since the memos detailing its gross democracy-endangering misconduct had been prepared by an employee, that they were therefore works-made-for-hire whose copyright was held by Diebold, and thus anyone who reproduced the memo was infringing on the company's copyright."
+          },
+          {
+            "type": "p",
+            "text": "Under Section 512 of the then-new Digital Millennium Copyright Act, Diebold was empowered to send \"takedown notices\" to the web hosting providers whose users had posted the memos, and if the web hosts didn't remove the content \"expeditiously,\" they would be jointly liable for any eventual copyright damages, which are statutorily set at $150,000 per infringement."
+          },
+          {
+            "type": "p",
+            "text": "Every web host folded. No one wanted to take the risk of tens of millions of dollars in statutory damages."
+          },
+          {
+            "type": "p",
+            "text": "(Incidentally: anyone who tells you that \"online safety\" requires us to make online platforms liable for their users' speech needs to explain how this wouldn't empower every crooked company whose dirty laundry had ended up online wouldn't just do what Diebold did. It's not technically insanity to do the same thing over again in expectation of a different outcome, but it is awfully stupid and reckless.)"
+          },
+          {
+            "type": "p",
+            "text": "That might have been the end of things, except for the kids at Swarthmore, a small liberal arts college in Pennsylvania. Two students, Nelson Pavlosky and Luke Smith, were outraged by Diebold and they had accounts on Swarthmore's webserver. So they uploaded thousands of copies of the leaked memos, but linked to just one of them from a page about the leak. As soon as that copy was deleted by Swarthmore's webmasters in response to a DMCA takedown from Diebold, the students updated the link to point to another copy. And another. And another."
+          },
+          {
+            "type": "p",
+            "text": "That's where EFF got involved. We repped the Online Policy Group, whose page linking to the Swarthmore resources was taken down by a Diebold notice. We won. The memos became a matter of public record. The Swarthmore kids started a nationwide network called \"Students for Free Culture.\" It was pretty danged cool."
+          },
+          {
+            "type": "p",
+            "text": "That wasn't the end of the Diebold story, though. Diebold was and is a very diversified conglomerate that made a lot of tabulating machines: ATMs, cash-registers, medical monitoring devices…and voting machines. Every one of these machines produced a paper-tape of its tabulations as an audit trail that could be used to reconstruct its calculations if it crashed…except the voting machines. The voting machines that kept crashing, and whose crashes presented a serious risk to the legitimacy of US elections in the wake of the worst electoral crisis in the country's history."
+          },
+          {
+            "type": "p",
+            "text": "Diebold's stated reason for this was that adding a paper tape was haaaard (even though all its other machines had paper audit tapes). Not only was this a very unconvincing excuse, it was downright alarming in light of the promise of Walden O’Dell (Diebold CEO and prominent Bush fundraiser) to help \"Ohio deliver its electoral votes to the president\":"
+          },
+          {
+            "type": "p",
+            "text": "https://fairvote.org/diebold-partisanship-and-public-interest-elections/"
+          },
+          {
+            "type": "p",
+            "text": "Now, to be clear, I don't think that O'Dell was going to steal the election for Bush (that's the Supreme Court's job). Rather, he was just a loudmouth asshole CEO who supported the (up to that point) worst president in American history, and who also made garbage products that were not fit for purpose."
+          },
+          {
+            "type": "p",
+            "text": "In the decades since, voting machines have been the subject of lots of scrutiny by the information security community, because they suck. Time after time, the most sphincter-puckering defects in widely used machines have come to light:"
+          },
+          {
+            "type": "p",
+            "text": "https://blog.citp.princeton.edu/2006/05/11/report-claims-very-serious-diebold-voting-machine-flaws/"
+          },
+          {
+            "type": "p",
+            "text": "The hits just kept on coming:"
+          },
+          {
+            "type": "p",
+            "text": "https://web.archive.org/web/20061007120655/http://openvotingfoundation.org/tiki-index.php?page_ref_id=1"
+          },
+          {
+            "type": "p",
+            "text": "At Defcon, the amazing Matt Blaze has presided over the Voting Village, where it's an annual tradition for hackers to probe voting machines. This exercise has produced a string of terrifying revelations that precisely described how these machines suck:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.votingvillage.org/cfp"
+          },
+          {
+            "type": "p",
+            "text": "Pretty much everyone I knew thought that voting machines were garbage technology…right up to the moment that the My Pillow guy, Tucker Carlson, and a whole menagerie of conspiratorial Trumpland mutants started peddling a bizarre story about how Hugo Chavez colluded with the Canadian voting machine company Dominion Voting Systems (who bought Diebold's voting machine business when they finally dumped the division) to rig the 2020 election for Joe Biden. They told so many outlandish lies about this that Fox ended up paying Dominion $787.5 million to settle the case:"
+          },
+          {
+            "type": "p",
+            "text": "https://en.wikipedia.org/wiki/Dominion_Voting_Systems#Dominion_Voting_Systems_v._Fox_News_Network"
+          },
+          {
+            "type": "p",
+            "text": "That's when something very weird happened. A bunch of people who had been skeptical of voting machines since the Brooks Brothers Riot suddenly became history's most ardent defenders of those same garbage voting machines. The cartel of voting machine companies – who had a long track record of using bullshit legal threats to silence their (mostly progressive) critics – were drafted into The Resistance(TM), and anyone who thought voting machines were trash was dismissed as a crazy person who has been totally mypillowpilled:"
+          },
+          {
+            "type": "p",
+            "text": "https://web.archive.org/web/20210203113531/https://www.washingtonpost.com/outlook/2021/02/03/voting-machines-election-steal-conspiracy-flaws/"
+          },
+          {
+            "type": "p",
+            "text": "There's a name for this: it's called \"schismogenesis\": when one group of people define themselves in opposition to someone else. If the other team does X, then your team has to oppose X, even if you all liked X until a couple minutes ago:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2021/12/18/schizmogenesis/"
+          },
+          {
+            "type": "p",
+            "text": "This schismogenic reversal persists to this very day. Every time Trump promotes another election denier to his cabinet, a federal agency, or a judgeship, the idea that voting machines are garbage becomes more Stop the Steal-coded, even though voting machines are, objectively, garbage."
+          },
+          {
+            "type": "p",
+            "text": "Which is bad. It's bad because we are going into another election season where the stakes are – incredibly – even higher than Bush v Gore, and electoral authorities and state legislatures are making the world's most unforced errors in their voting machine procurement decisions, and if you've conditioned yourself to reflexively dismiss voting machine criticisms as conspiratorial nonsense, then you are part of the problem."
+          },
+          {
+            "type": "p",
+            "text": "Just because some voting machine criticism is conspiratorial nonsense, it doesn't follow that voting machines are good, nor does it follow that every voting machine critic is a swivel-eyed loon or ratfucking Roger Stone protege."
+          },
+          {
+            "type": "p",
+            "text": "Take, for example, Princeton's Andrew Appel, a computer scientist who's been publishing well-informed, well-documented warnings about defects in voting machines for years and years. Appel's latest is an alarming note about Georgia's new plan to \"tabulate\" ballots using OCR software:"
+          },
+          {
+            "type": "p",
+            "text": "https://blog.citp.princeton.edu/2026/04/10/ballot-tabulation-by-uploading-scanned-images-for-ocr-is-quite-insecure/"
+          },
+          {
+            "type": "p",
+            "text": "The Georgia legislature has wisely banned the use of QR codes on the paper ballots generated by touchscreen voting machines. We have, at long last, progressed to the point where we use \"ballot marking devices\" (BMDs) that produce a paper record that can be hand-counted. The problem is that voters barely ever glance at these paper ballots before dropping them in the box to make sure the choices they made on the touchscreen are correctly reflected on the ballot – only 7% of voters carefully inspect their ballots!"
+          },
+          {
+            "type": "p",
+            "text": "This problem is greatly exacerbated if these ballot papers are tabulated by a machine that reads a QR code or barcode, rather than interpreting the human-readable information on the ballot. People are even less likely to pull out their phones and scan the QR code to ensure it matches the words on the paper. That means that a BMD could output different choices in the QR code than it prints in the human-readable part – and the Dominion BMD machines they use in Georgia run outdated software that's super-hackable:"
+          },
+          {
+            "type": "p",
+            "text": "https://blog.citp.princeton.edu/2026/02/24/georgia-still-using-tragicomically-insecure-voting-system/"
+          },
+          {
+            "type": "p",
+            "text": "So Georgia's state leg passed Senate Bill 189, which establishes that \"The text portion of the paper ballot marked and printed by the electronic ballot marker indicating the elector’s selection shall constitute the official ballot and shall constitute the official vote for purposes of vote tabulation.\" In other words, you can't count by scanning QR codes, you have to actually interpret the human-readable text on these ballots."
+          },
+          {
+            "type": "p",
+            "text": "These machines still suck, to be clear (the fact that they don't suck for the mypillovian reasons that Tucker Carlson believes doesn't mean they're good) – but thanks to SB189, they are way less dangerous to democracy than they might be."
+          },
+          {
+            "type": "p",
+            "text": "But not if Secretary of State Brad Raffensperger gets his way. Raffensperger is another guy who was drafted into The Resistance(TM) after he refused to commit election fraud for Trump, but he's also not good. He can still be terrible in other ways – and he is."
+          },
+          {
+            "type": "p",
+            "text": "Raffensperger has announced his plan to circumvent the Georgia legislature by using Dominion ICX touchscreens to produce ballots with QR codes, which will then be tabulated in Dominion ICP scanners – but then he's going to \"verify\" the tabulation by running those same ballots through optical character recognition (OCR) software."
+          },
+          {
+            "type": "p",
+            "text": "As Appel points out, this is the same stupid plan that Raffensperger tried in 2024, where he called the OCR step an \"audit\" of the QR tabulation. Back then, he grabbed 200dpi \"ballot image files\" from the Dominion BMDs and ran them through OCR software run by a company called Enhanced Voting. Appel sums up the fundamental incoherence of this approach."
+          },
+          {
+            "type": "p",
+            "text": "First, the BMDs are super-hackable, so we don't trust them to print the same info in the QR code as they print in the human-readable text (which no one looks at anyway). If we don't trust them to print accurate info in the QR code, then why would we trust them to accurately generate that 200dpi QR code that's generated for the audit? As Appel writes, \"it would be fairly easy for an unsophisticated attacker to alter ballot-image files–just replace the ballots they don’t like with copies of the ones they do like.\""
+          },
+          {
+            "type": "p",
+            "text": "Then there's the step where these files are zipped up and transferred to the outside vendor for the audit – a step that Raffensperger has not explained. And even if the files make it to the outside contractor safely, that contractor could \"change the inputs (ballot images) or outputs (tabulations).\""
+          },
+          {
+            "type": "p",
+            "text": "So this is very bad. Voting machines suck. Raffensperger sucks."
+          },
+          {
+            "type": "p",
+            "text": "And here's the stupidest part: as Appel explains, there is a much more secure way to do this, and it's very cheap:"
+          },
+          {
+            "type": "quote",
+            "text": "Just use their existing Dominion ICP (polling-place) scanners to count preprinted, hand-marked optical-scan \"bubble ballots\" that the voter has marked with a pen."
+          },
+          {
+            "type": "p",
+            "text": "This is what other states are doing. As Appel writes, \"This doesn’t even require a software upgrade of any kind. Although it would be a fine idea to install a software upgrade that addresses known security vulnerabilities in the ICX and ICP, the ICP can count hand-marked ballots with or without the upgrade.\""
+          },
+          {
+            "type": "p",
+            "text": "This is a purely unforced error, in other words. As such, it's part of a series of shitty vote-tech choices that politicians and officials have been making since Bush v Gore. Truly, we live in the stupidest timeline."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Announcing EFF's Public Resource Fellowship https://www.eff.org/deeplinks/2026/04/announcing-effs-public-resource-fellowship"
+          },
+          {
+            "type": "li",
+            "text": "Wrench – Side Table A by Iyo Hasegawa https://adorno.design/pieces/wrench-side-table-a/"
+          },
+          {
+            "type": "li",
+            "text": "BOOM: Ticketmaster GUILTY of Monopolization https://www.thebignewsletter.com/p/boom-ticketmaster-guilty-of-monopolization"
+          },
+          {
+            "type": "li",
+            "text": "I Was an Enthusiastic Early Adopter of AI Scribes. Here’s Why I Stopped https://benngooch.substack.com/p/i-was-an-enthusiastic-early-adopter"
+          },
+          {
+            "type": "li",
+            "text": "Mayhem’s Legacy: Why MetaBrainz Matters More Than Ever, and Why We’re Looking for Someone to Lead It https://compassmapandkey.com/2026/04/18/mayhems-legacy-why-metabrainz-matters-more-than-ever-and-why-were-looking-for-someone-to-lead-it/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago GW Bush’s iPod contains “illegal” (according to RIAA) music https://memex.craphound.com/2006/04/16/gw-bushs-ipod-contains-illegal-according-to-riaa-music/"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Fan fiction community for McDonald’s breakfast sandwiches https://web.archive.org/web/20120112221730/https://mcgriddlefanfic.livejournal.com/profile/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago High tech/high debt: the feudal future of technology makes us all into lesser lessors https://web.archive.org/web/20160415150308/https://www.theatlantic.com/technology/archive/2016/04/rental-company-control/478365/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Three pieces of statistical “bullshit” about the UK EU referendum https://timharford.com/2016/04/three-pieces-of-brexit-bullshit/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Southwest Air kicks Muslim woman off plane for switching seats https://web.archive.org/web/20160416041342/http://www.independent.co.uk/news/world/americas/muslim-woman-kicked-off-plane-as-flight-attendant-said-she-did-not-feel-comfortable-with-the-a6986661.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago China’s Internet censors order ban on video of toddler threatening brutal cops https://chinadigitaltimes.net/2016/04/minitrue-4/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Tiny South Pacific island to lose free/universal Internet lifeline https://www.rnz.co.nz/news/pacific/299017/niue-to-get-better-internet-service-at-a-cost"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The Everything Box: demonological comedy from Richard “Sandman Slim” Kadrey https://memex.craphound.com/2016/04/16/the-everything-box-demonological-comedy-from-richard-sandman-slim-kadrey/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago People's Choice Communications https://pluralistic.net/2021/04/16/where-it-hurts/#charter-hires-scabs"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago \"Anti-voter-suppression\" companies are lobbying to kill HR1 https://pluralistic.net/2021/04/16/where-it-hurts/#tissue-thin"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago $100m deli made $35k in 2019/20 https://pluralistic.net/2021/04/16/where-it-hurts/#hometown"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Mass-action lawsuit against Facebook https://pluralistic.net/2021/04/16/where-it-hurts/#sue-facebook"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Trump fought the law and Trump won https://pluralistic.net/2025/04/16/weaponized-admin-incompetence/#kill-all-the-lawyers"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Los Angeles: LA Times Festival of Books, Apr 19\nhttps://www.latimes.com/events/festival-of-books"
+          },
+          {
+            "type": "li",
+            "text": "San Francisco: 2026 Berkeley Spring Forum on M&A and the Boardroom, Apr 23\nhttps://www.theberkeleyforum.com/#agenda"
+          },
+          {
+            "type": "li",
+            "text": "London: Resisting Big Tech Empires (LSBU), Apr 25\nhttps://www.tickettailor.com/events/globaljusticenow/2042691"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Enshittification at Commonweal Ventures, Apr 29\nhttps://luma.com/ssgfvqz8"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyibuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "li",
+            "text": "Launch for Cindy's Cohn's \"Privacy's Defender\" (City Lights)\nhttps://www.youtube.com/watch?v=WuVCm2PUalU"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "佐治亚州的投票技术失误：多米诺机器确实可能出问题，但绝不是塔克·卡尔森所说的那种情况。",
+          "嘿，看看这个：令人愉悦的惊喜。",
+          "客体永久性：小布什非法使用iPod；麦当劳早餐三明治的同人小说；技术封建债务；“万物盒子”；一亿美元熟食店。",
+          "即将出席的活动：洛杉矶、旧金山、伦敦、柏林、纽约、巴塞罗那、海伊-昂怀德、伦敦、纽约。",
+          "近期活动回顾：我去了哪里。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所言，我会一直写下去。",
+          "版权说明：其余所有内容。",
+          "佐治亚州的投票技术失误（永久链接）",
+          "近25年前，在布什诉戈尔案之后，我参与了一系列关于投票机的丑陋技术政策斗争。佛罗里达州的“悬空票”灾难促使国会拨款资助各州购买基于稳健开放标准的新型触摸屏投票机。问题是，这些机器根本不存在。",
+          "当时投票机行业已经高度集中（如今更是如此）。他们去寻找一个能及时为2004年选举发布“标准”投票机规范的标准化组织。唯一愿意接手的只有IEEE，而该组织愚蠢地同意承担这项不可能完成的紧急任务。",
+          "当投票机代表们在IEEE会议上齐聚一堂时——由于参与标准化的企业享有广泛自由裁量权，因此很大程度上免受反垄断审查——他们承认了所有人都知道的事实：他们根本没有可能在选举前制定出新标准。",
+          "相反，他们决定要发布一份“描述性标准”。他们没有设计新标准，而是写下自己产品的规格——正是那些被认为有缺陷、需要在选举前更换的产品——并称之为标准。",
+          "这是我作为活动人士首次接触这个问题。我刚加入EFF，很多支持者都是IEEE成员，他们对专业协会被用来洗白这种极具政治敏感性且技术上完全站不住脚的骗局感到震惊。我们动员了大量IEEE成员给董事会写信，最终导致该标准委员会被解散，投票机公司也被踢出局。",
+          "但投票机公司并未就此罢休。其中一家领军企业Diebold深知其投票机存在缺陷。它们会崩溃、丢失选票计数，并以其他方式故障，同样严重损害选举公正性。",
+          "这则消息令人警醒，但更令人不安的是它如何曝光的。一名Diebold员工在一份备忘录中描述了这一情况，随后该备忘录遭黑客窃取并泄露，泄露方身份不明。这份备忘录连同关于Diebold投票机部门极其令人警觉的惊人 revelations，成为互联网历史上最早的大规模审查版权运动之一的主题。",
+          "Diebold并未否认这些毁灭性 revelations的真实性：相反，该公司声称，由于详细披露其严重危害民主行为的备忘录是由员工撰写的，因此属于雇佣作品，版权归Diebold所有，任何复制该备忘录的行为均构成对公司的版权侵权。",
+          "根据当时新颁布的《数字千年版权法》第512条，Diebold有权向那些用户上传备忘录的网页托管服务商发送“删除通知”；如果这些网络主机未能“迅速”移除相关内容，它们将与侵权者共同承担任何最终可能产生的版权损害赔偿责任——而这类法定赔偿金额为每起侵权行为15万美元。",
+          "所有网络托管商都屈服了。没人愿意承担数百万美元法定赔偿的风险。",
+          "（顺便说一句：如果有人告诉你“网络安全”要求我们让网络平台对用户言论负责，那他必须解释清楚：这难道不会赋予任何一家因丑闻被曝光而将其“脏衣服”放上网络的 crooked company（不义公司）像 Diebold 那样行事的能力吗？在预期结果不同的情况下重复做同样的事，从技术上讲并不疯狂，但这样做极其愚蠢且鲁莽。）",
+          "事情本可能就此结束，但宾夕法尼亚州斯沃斯莫尔学院（Swarthmore）的一群学生却打破了僵局。该校两名学生纳尔逊·帕夫洛斯基（Nelson Pavlosky）和卢克·史密斯（Luke Smith）对 Diebold 的做法感到愤怒，他们拥有斯沃斯莫尔学院服务器的账户。于是，他们上传了数千份泄露的备忘录，但只从一个关于此次泄露事件的页面链接到其中一份。一旦这份文件因 Diebold 发出的 DMCA 删除通知而被斯沃斯莫尔网管删除，学生们便立即更新链接指向另一份副本，再换一份，再换一份……",
+          "这时电子前沿基金会（EFF）介入了。我们代表在线政策小组（Online Policy Group），其页面因 Diebold 的通知被下架，该页面曾链接至斯沃斯莫尔提供的资源。我们胜诉了。备忘录成为公开记录。斯沃斯莫尔的学生们发起了一个全国性的组织“自由文化学生联盟”（Students for Free Culture）。那真是酷毙了。",
+          "然而，Diebold 的故事并未终结。它是一家业务高度多元化的企业集团，生产多种制表设备：自动取款机（ATM）、收银机、医疗监测设备等，也包括投票机。所有这些机器都会生成纸质记录带作为审计轨迹，以便在系统崩溃时重建计算结果——唯独投票机例外。这些投票机频频崩溃，在美国历史上最严重的选举危机之后，其故障严重威胁着美国选举的合法性。",
+          "Diebold 声称，增加纸质记录带太难了（尽管其所有其他设备都配备了纸质审计记录）。这一说法不仅难以令人信服，更令人不安，尤其是考虑到时任首席执行官 Walden O’Dell（也是布什的重要筹款人）曾公开承诺“帮助俄亥俄州将选举人票投给总统”：",
+          "https://fairvote.org/diebold-partisanship-and-public-interest-elections/",
+          "需要澄清的是，我不认为 O’Dell 打算为布什窃取选举胜利（那是最高法院的职责所在）。他只是位嗓门大、脾气差的 CEO，支持的是（在那之前）美国史上最糟糕的总统之一，还生产劣质产品，根本不适合实际用途。",
+          "此后数十年间，投票机一直是信息安全社区的焦点，因为它们实在烂透了。一次又一次，广泛使用的投票机暴露出最令人心惊胆战的缺陷：",
+          "https://blog.citp.princeton.edu/2006/05/11/report-claims-very-serious-diebold-voting-machine-flaws/",
+          "问题接连不断：",
+          "https://web.archive.org/web/20061007120655/http://openvotingfoundation.org/tiki-index.php?page_ref_id=1",
+          "在 Defcon 大会上，令人惊叹的马特·布莱兹（Matt Blaze）一直主持着“投票村”（Voting Village），这里每年都会上演黑客对投票机进行探测的传统活动。这一系列操作带来了一系列令人不寒而栗的发现，精确揭示了这些机器的糟糕本质：",
+          "https://www.votingvillage.org/cfp",
+          "我认识的几乎所有人都认为投票机是一种垃圾技术……直到“我的枕头”先生——塔克·卡尔森（Tucker Carlson）以及一群阴谋论色彩浓厚的特朗普阵营怪胎开始兜售一个离奇的故事为止，他们声称雨果·查韦斯（Hugo Chavez）与加拿大 Dominion Voting Systems 公司（该公司在最终放弃相关业务后收购了 Diebold 的投票机业务）合谋，为乔·拜登操纵了2020年大选。他们编造了太多关于此事的荒谬谎言，以至于福克斯最终向 Dominion 支付了7.875亿美元达成和解：",
+          "https://en.wikipedia.org/wiki/Dominion_Voting_Systems#Dominion_Voting_Systems_v._Fox_News_Network",
+          "就在这时，发生了一件非常诡异的事。一群自“布鲁克斯兄弟暴乱”以来就一直对投票机持怀疑态度的人，突然成了历史上最坚定的投票机捍卫者。那些长期利用虚假法律威胁压制批评者（主要是进步派人士）的投票机公司卡特尔，竟被征召加入“抵抗运动”（Resistance™），任何认为投票机是垃圾的人，都被斥为彻底被“我的枕头”洗脑的疯子：",
+          "https://web.archive.org/web/20210203113531/https://www.washingtonpost.com/outlook/2021/02/03/voting-machines-election-steal-conspiracy-flaws/",
+          "这种现象有个名字，叫做“分裂生成”（schismogenesis）：即一群人通过与他人的对立来定义自身。如果对方阵营支持 X，那么你的阵营就必须反对 X，哪怕你们之前都支持 X：",
+          "https://pluralistic.net/2021/12/18/schizmogenesis/",
+          "这种分裂生成的逆转至今仍在持续。每当特朗普提拔另一位选举否认者进入内阁、联邦机构或司法系统，“投票机是垃圾”这一观点就会越来越被贴上“阻止窃取选举”（Stop the Steal）的标签，尽管客观上投票机确实是垃圾。",
+          "这很糟糕。因为我们将迎来又一个选举季，其重要性——令人难以置信地——甚至超过了布什诉戈尔案，而选举当局和各州立法机构在投票机采购决策上正犯下世界上最不必要的错误；如果你已经习惯性地将任何对投票机的批评视为阴谋论的胡言乱语，那你就是问题的一部分。",
+          "仅仅因为某些对投票机的批评是阴谋论的胡言乱语，并不意味着投票机就是好的，也不意味着每一个投票机批评者都是目光呆滞的疯子或像罗杰·斯通（Roger Stone）那样的阴险之徒。",
+          "举个例子，普林斯顿大学的安德鲁·阿佩尔（Andrew Appel）是一位计算机科学家，多年来一直在发表关于投票机缺陷的有据可查、信息详实的警告。他最新的文章是一篇令人警醒的笔记，涉及佐治亚州计划使用 OCR 软件“统计”选票的新方案：",
+          "https://blog.citp.princeton.edu/2026/04/10/ballot-tabulation-by-uploading-scanned-images-for-ocr-is-quite-insecure/",
+          "佐治亚州立法机构明智地禁止在触屏投票机生成的纸质选票上使用二维码。我们终于进步到使用“选票标记设备”（BMD）的阶段，这些设备会生成一份可以人工计数的纸质记录。问题是，选民几乎从不查看这些纸质选票，就将其投入票箱，只是确认触摸屏上的选择是否正确反映在选票上——只有7%的选民会仔细检查自己的选票！",
+          "如果这些选票由一台读取二维码或条形码的机器来统计，而不是解读选票上的人可读信息，问题会更加严重。人们更不可能掏出手机扫描二维码来核对是否与纸上的文字一致。这意味着 BMD 可能在二维码中输出与纸质可读部分不同的选择——而佐治亚州使用的 Dominion BMD 机器运行的是过时的软件，极易被黑客攻击：",
+          "https://blog.citp.princeton.edu/2026/02/24/georgia-still-using-tragicomically-insecure-voting-system/",
+          "因此，佐治亚州议会通过了参议院第189号法案（SB189），规定“电子选票标记器所标记并打印的纸质选票的文本部分，应构成该选民的正式选票，并作为计票的官方依据。”换句话说，不能通过扫描二维码来计数，必须实际解读这些选票上的人可读文本。",
+          "这些机器仍然很糟糕，这一点要明确指出（尽管它们不像 Tucker Carlson 所说的那样糟糕，但这并不意味着它们就是好的）——但多亏了 SB189，它们对民主的危害已经大大降低了。",
+          "但如果州务卿布拉德·拉芬斯珀格（Brad Raffensperger）得逞，那就另当别论了。拉芬斯珀格是另一个原本拒绝配合特朗普制造选举舞弊、后来被“抵抗运动”（TM）招募进来的人，但他本身也不怎么样。他依然可能以其他方式搞砸一切——而他确实这么做了。",
+          "拉芬斯珀格宣布了他的计划：绕过州议会，使用 Dominion ICX 触屏设备生成带二维码的选票，然后用 Dominion ICP 扫描仪进行统计；接着他会用光学字符识别（OCR）软件“验证”这一统计结果。",
+          "正如 Appel 指出的那样，这正是拉芬斯珀格在2024年尝试过的愚蠢方案——他把 OCR 这一步称为对二维码统计的“审计”。当时他从 Dominion BMD 中提取了 200dpi 的“选票图像文件”，交给一家名为 Enhanced Voting 的公司运行 OCR 软件。Appel 总结了这种方法根本上的自相矛盾之处。",
+          "首先，BMD 极易被篡改，所以我们不信任它们会在二维码和纸质可读文本中打印相同的信息（反正也没人看纸质部分）。如果我们不信任它们能准确生成二维码，那为什么又信任它们在“审计”中生成的那个用于 OCR 的 200dpi 二维码图像呢？正如 Appel 所写：“一个不够复杂的攻击者很容易就能篡改选票图像文件——只需把不喜欢的选票替换成喜欢的副本即可。”",
+          "接下来还有这些文件被压缩并发送给外部审计机构的一步——这一步拉芬斯佩格从未解释过。即便文件能安全送达承包商手中，该承包商仍可能“篡改输入（选票图像）或输出（计票结果）”。",
+          "这简直太糟糕了。投票机本身就不可靠。拉芬斯佩格也不怎么样。",
+          "最愚蠢的是：正如阿普尔所言，其实有一种更安全、成本更低的方法：",
+          "只需利用他们现有的 Dominion ICP（投票站）扫描仪来统计选民用钢笔填写的预印手写光学扫描“气泡选票”即可。",
+          "其他州就是这么做的。正如阿普尔写道：“这甚至不需要任何软件升级。虽然安装能解决 ICX 和 ICP 已知安全漏洞的软件升级是个好主意，但无论是否升级，ICP 都能处理手填选票。”",
+          "换句话说，这是一个完全不必要的失误。正因如此，它只是政客和官员自布什诉戈尔案以来一连串糟糕投票技术选择中的一环。说真的，我们活在一个最愚蠢的时间线里。",
+          "看看这个（永久链接）",
+          "宣布 EFF 公共资源研究员计划 https://www.eff.org/deeplinks/2026/04/announcing-effs-public-resource-fellowship",
+          "Wrench – Side Table A，伊佐·长谷川设计 https://adorno.design/pieces/wrench-side-table-a/",
+          "重磅：Ticketmaster 因垄断行为被判有罪 https://www.thebignewsletter.com/p/boom-ticketmaster-guilty-of-monopolization",
+          "我曾热情拥抱 AI 速记工具。现在为何停用了？https://benngooch.substack.com/p/i-was-an-enthusiastic-early-adopter",
+          "Mayhem 的遗产：MetaBrainz 比以往任何时候都更重要，我们正在寻找领导者 https://compassmapandkey.com/2026/04/18/mayhems-legacy-why-metabrainz-matters-more-than-ever-and-why-were-looking-for-someone-to-lead-it/",
+          "客体永久性（永久链接）",
+          "#20年前 小布什的 iPod 里有“非法”音乐（根据 RIAA 的说法）https://memex.craphound.com/2006/04/16/gw-bushs-ipod-contains-illegal-according-to-riaa-music/",
+          "#20年前 麦当劳早餐三明治的同人小说社区 https://web.archive.org/web/20120112221730/https://mcgriddlefanfic.livejournal.com/profile/",
+          "#10年前 高科技/高负债：技术的封建未来让我们所有人都成了次级佃户 https://web.archive.org/web/20160415150308/https://www.theatlantic.com/technology/archive/2016/04/rental-company-control/478365/",
+          "#10年前 关于英国脱欧公投的三则统计“胡扯”https://timharford.com/2016/04/three-pieces-of-brexit-bullshit/",
+          "#10年前 西南航空将穆斯林女性赶下飞机，因其更换座位 https://web.archive.org/web/20160416041342/http://www.independent.co.uk/news/world/americas/muslim-woman-kicked-off-plane-as-flight-attendant-said-she-did-not-feel-comfortable-with-the-a6986661.html",
+          "#10年前 中国互联网审查机构下令封禁威胁殴打警察的幼儿视频 https://chinadigitaltimes.net/2016/04/minitrue-4/",
+          "#10年前 南太平洋小岛将失去免费/通用互联网的生命线 https://www.rnz.co.nz/news/pacific/299017/niue-to-get-better-internet-service-at-a-cost",
+          "#10年前 《万物之盒》：理查德·“梦魇骑士”·卡德里尔的恶魔喜剧 https://memex.craphound.com/2016/04/16/the-everything-box-demonological-comedy-from-richard-sandman-slim-kadrey/",
+          "#5年前 People's Choice Communications https://pluralistic.net/2021/04/16/where-it-hurts/#charter-hires-scabs",
+          "#5年前 \"反选民压制\"公司游说废除HR1法案 https://pluralistic.net/2021/04/16/where-it-hurts/#tissue-thin",
+          "#5年前 一家价值1亿美元的熟食店在2019-2020年间仅盈利3.5万美元 https://pluralistic.net/2021/04/16/where-it-hurts/#hometown",
+          "#5年前 集体诉讼起诉Facebook https://pluralistic.net/2021/04/16/where-it-hurts/#sue-facebook",
+          "#1年前 特朗普对抗法律却获胜 https://pluralistic.net/2025/04/16/weaponized-admin-incompetence/#kill-all-the-lawyers",
+          "即将出席的活动（永久链接）",
+          "洛杉矶：《洛杉矶时报》图书节，4月19日\nhttps://www.latimes.com/events/festival-of-books",
+          "旧金山：2026伯克利并购与董事会论坛，4月23日\nhttps://www.theberkeleyforum.com/#agenda",
+          "伦敦：抵制科技巨头帝国（LSBU），4月25日\nhttps://www.tickettailor.com/events/globaljusticenow/2042691",
+          "纽约：Commonweal Ventures举办的\"Enshittification\"活动，4月29日\nhttps://luma.com/ssgfvqz8",
+          "纽约：Techidemic（Sarah Jeong、Tochi Onyibuchi和Alia Dastagir主持，PEN世界之声），4月30日\nhttps://worldvoices.pen.org/event/techidemic/",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日\nhttps://encuentroderechosdigitales.com/en/",
+          "柏林：Re:publica，5月18-20日\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland书店举办的\"Enshittification\"活动，5月19日\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-怀伊：HowTheLightGetsIn，5月22-25日\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《AI时代的反半人马指南》（The Strand），6月24日\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "近期出席活动（永久链接）",
+          "平台何时停止创新开始榨取？(InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "Pete \"市长\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变糟(CBC国家电视台)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被科技巨头坑了？(安大略今日)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "Cindy Cohn《隐私卫士》新书发布(City Lights)\nhttps://www.youtube.com/watch?v=WuVCm2PUalU",
+          "最新著作（永久链接）",
+          "\"Canny Valley\"：为Pluralistic创作的限量拼贴画合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\"：《红队蓝调》续作，讲述PC英雄时代，Tor Books（美国），Head of Zeus（英国），2025年2月 https://us.macmillan.com/books/9781250865908/picksandshovels",
+          "\"The Bezzle\"：《红队蓝调》续作，关于监狱科技等骗局，Tor Books（美国），Head of Zeus（英国），2024年2月（thebezzle.org）",
+          "\"The Lost Cause\"：气候紧急时代的希望主义小说，Tor Books（美国），Head of Zeus（英国），2023年11月（http://lost-cause.org）",
+          "\"The Internet Con\"：关于互操作性和科技巨头的非虚构作品（Verso），2023年9月（http://seizethemeansofcomputation.org）。可在Book Soup书店购买签名版（https://www.booksoup.com/book/9781804291245）",
+          "“红队蓝调”：一部引人入胜、令人欲罢不能的惊悚小说，读完之后，你对世界运作方式的了解将远超从前。Tor Books http://redteamblues.com。",
+          "《 chokepoint capitalism：如何击败科技巨头、驯服内容巨头，并让艺术家获得应有报酬》（作者：丽贝卡·吉布林），探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe 2022 https://chokepointcapitalism.com。",
+          "即将出版书籍（永久链接）",
+          "《逆向半人马指南：AI时代生存手册》，一本关于如何成为更优秀AI评论者的短书，Farrar, Straus and Giroux，2026年6月（https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/）",
+          "《Enshittification：为何一切突然变糟，以及我们该如何应对》（图像小说版），Firstsecond，2026年",
+          "《后美国互联网》，作为《Enshittification》的政治续篇，探讨特朗普摧毁美国后，我们其余人所能享有的新世界，Farrar, Straus and Giroux，2027年",
+          "《未经授权的面包》：一部改编自我中篇小说的青少年图像小说，讲述难民、烤面包机和数字版权管理（DRM）的故事，FirstSecond，2027年",
+          "《Memex方法》，Farrar, Straus, Giroux，2027年",
+          "版权信息（永久链接）",
+          "今日主要来源：",
+          "当前写作：《后美国互联网》，作为《Enshittification》的续作，讲述特朗普焚毁美国后，我们其余人所能享有的新世界。已完成第三稿，已提交编辑审阅。",
+          "《逆向半人马指南：AI时代生存手册》，为Farrar, Straus and Giroux撰写的一本关于如何成为高效AI评论者的短书。法律审核与文字校对全部完成。",
+          "《后美国互联网》，一本探讨特朗普主义时代网络政策的短书。正在规划阶段。",
+          "《小兄弟》短篇故事之一，关于DIY胰岛素。正在规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名4.0国际许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文与图片不在此许可范围内；它们或因版权例外或限制而包含在内，或基于单独的许可。请谨慎使用。",
+          "如何获取《多元主义》（Pluralistic）：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制，第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你SARS时，你就做Sarsaparilla”——乔伊“手风琴男”德维拉",
+          "仔细阅读：阅读本内容即表示，代表你的雇主，我（科里·多克托罗）特此免除你雇主与我签订的任何和所有非协商性协议、许可、服务条款、密封包装、点击包装、浏览包装、保密协议、不披露协议、竞业禁止协议及可接受使用政策（统称“ bogus agreements”）所产生的一切义务与弃权声明，自始至终，无损我的其他权利与特权。你进一步声明，你有权代表你的雇主解除任何“bogus agreements”。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "5f609be1575c3ab2",
+      "title": "Many anti-AI arguments are conservative arguments",
+      "titleZh": "大多数反AI言论其实是保守主义论点",
+      "link": "https://seangoedecke.com/many-anti-ai-arguments-are-conservative/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-04-18T00:00:00.000Z",
+      "category": "opinion",
+      "keywords": ["anti-AI", "politics", "conservatism"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "作者认为，当前流行的反AI rhetoric 表面上披着左翼外衣，实则反映的是传统保守价值观。许多批评将AI描绘成‘技术法西斯主义’工具，并聚焦于碳排放等左翼关切，但其核心诉求——如维护现有权力结构、抵制快速变革、强调人类劳动价值——更符合保守主义立场。文章指出，这种话语策略模糊了真正的意识形态分歧，使反AI运动脱离了左翼对公平与民主的追求。",
+      "summaryEn": "This piece argues that much of today's anti-AI rhetoric is coded conservatism, using left-wing language like 'techno-fascism' and climate concerns while advocating for traditional values. Critics frame AI as a threat to human agency and existing power structures—core conservative themes—rather than advancing progressive ideals of equity and democracy. The author contends this masks a deeper ideological divide over technological change versus social stability.",
+      "reason": "它挑战了人们对‘反AI即进步’的固有认知，揭示出技术争论背后的深层政治逻辑，值得关心AI伦理与社会影响的读者深思。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Most anti-AI rhetoric is left-wing coded. Popular criticisms of AI describe it as a tool of techno-fascism, or appeal to predominantly left-wing concerns like carbon emissions, democracy, or police brutality. Anti-AI sentiment is surprisingly bipartisan, but the big anti-AI institutions are labor unions and the progressive wing of the Democrats."
+          },
+          {
+            "type": "p",
+            "text": "This has always seemed weird to me, because the contents of most anti-AI arguments are actually right-wing coded. They’re not necessarily intrinsically right-wing, but they’re the kind of arguments that historically have been made by conservatives, not liberals or leftists. Here are some examples:"
+          },
+          {
+            "type": "li",
+            "text": "Many AI critics complain that AI steals copyrighted content, but prior to 2023, leftists have been largely anti-intellectual-property on principle (either because they’re anti-property, or because they characterize copyright as benefiting huge media corporations and patent trolls)."
+          },
+          {
+            "type": "li",
+            "text": "A popular anti-AI-art sentiment is that it’s corrosive to the human spirit to consume AI slop: in other words, art just inherently ought to be generated by humans, and using AI thus damages some part of our intangible human soul. Whether you like this argument or not, it’s structurally similar to a whole slate of classic arguments-from-intuition for conservative positions like anti-abortion or anti-homosexuality."
+          },
+          {
+            "type": "li",
+            "text": "Weird new technological art has traditionally been championed by the left-wing and dismissed by the right-wing (as inhuman, cheap, or degenerate). But when it comes to AI art, it’s the left-wing making these arguments, and others (not necessarily right-wingers) arguing that AI art can also be a medium of human artistic expression."
+          },
+          {
+            "type": "li",
+            "text": "One main worry about AI is that it’s going to take over a lot of jobs. This is a compelling argument! But the left-wing has recently been famously unsympathetic to this same argument around fossil-fuel energy jobs like coal mining, to the point where Biden infamously advised a group of miners in New Hampshire to learn to code1. Halting technological progress to preserve jobs is quite literally a “conservative” position."
+          },
+          {
+            "type": "p",
+            "text": "On top of all that2, frontier AI models themselves are quite left-wing. Notwithstanding some real cases of data bias (most infamously Google’s image model miscategorizing dark-skinned humans as “gorillas”), the models reliably espouse left-wing positions. Even Elon Musk’s deliberate attempt to create a right-wing AI in Grok has had mixed success. In 2006, Stephen Colbert coined the phrase “reality has a left-wing bias”. If the left-wing were more sympathetic to AI, I think they would be using this as a pro-left argument3."
+          },
+          {
+            "type": "p",
+            "text": "So what happened? A year ago I wrote Is using AI wrong? A review of six popular anti-AI arguments. In that post I blame the hard right-wing turn many big tech CEOs made in 2024. That was around the same time that LLMs was emerging in the public consciousness with ChatGPT, so it made sense that AI got tagged as right-wing: after all, the billionaires on TV and Twitter talking about how AI were going to change the world were all the same people who’d just gone all-in on Donald Trump. I still think this is a pretty good explanation - just unfortunate timing - but there are definitely other factors at play."
+          },
+          {
+            "type": "p",
+            "text": "One obvious factor is the hangover from the pro-crypto mania of 2021 and 2022, where many of the same tech-obsessed folks also posted ugly art and talked about how their technology would change the world forever. Few of these predictions came true (though cryptocurrency has indeed changed the world forever), and it’s understandable that many people viewed AI as a natural continuation of this movement."
+          },
+          {
+            "type": "p",
+            "text": "On top of that, Donald Trump himself has come out strongly pro-AI, both in terms of policy and in terms of actually posting AI art himself. This naturally creates a backlash where anti-Trump people are primed to be even more anti-AI4. Here are some more reasons:"
+          },
+          {
+            "type": "li",
+            "text": "AI has real environmental impact (though this is often wildly overstated, as I say here), and the right-wing is politically committed to downplaying or denying anthropogenic environmental impacts in general."
+          },
+          {
+            "type": "li",
+            "text": "When times are tough, it’s easy to blame the hot new thing that everyone is talking about. Because the right-wing is currently ascendant in the US, left-wingers are more inclined to talk about how tough times are."
+          },
+          {
+            "type": "li",
+            "text": "The left-wing is over-represented in the kind of “computer jobs” that are under direct threat from AI."
+          },
+          {
+            "type": "li",
+            "text": "Being pro-Europe has always been left-wing coded, and Europe has been noticeably slower and more sceptical about AI than the USA."
+          },
+          {
+            "type": "p",
+            "text": "Let me finally put my cards on the table. I would describe myself as on the left wing, and I’m broadly agnostic about the impact of AI. Like the boring fence-sitter I am, I think it will have a mix of positive and negative effects. In general, I’m unconvinced by the pro-copyright and human-soul-related anti-AI arguments, or by the idea that AI is inherently right-wing, but I’m troubled by the environmental impact and the impact on jobs (which in my view are more classically left-wing positions)."
+          },
+          {
+            "type": "p",
+            "text": "Still, I’m curious what will happen when the left-wing flavor of anti-AI rhetoric disappears, which I think it will (as I said at the start, anti-AI sentiment is actually pretty bipartisan). When people start making explicitly right-wing anti-AI arguments, will that cause the left-wing to move a little bit towards supporting AI? Or will right-wing institutions continue to explicitly support AI, allowing anti-AI sentiment to become a wedge issue that the left-wing can exploit to pry away voters? In any case, I don’t think the current state of affairs is particularly stable. In many ways, the dominant anti-AI arguments would fit better in a conservative worldview than in the worldview of their liberal proponents."
+          },
+          {
+            "type": "li",
+            "text": "I don’t think any did, which is probably for the best - they would have only had a couple of years to break into the industry before hiring collapsed in 2023.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Another point that isn’t quite mainstream enough but that I still want to mention: AI critics often argue that cavalier deployment of AI means that people might take dangerous medical advice instead of simply trusting their doctor. But anyone who’s been close to a person with chronic illness knows that “just trust your doctor” is kind of right-wing-coded itself, and that the left-wing position is very sympathetic to patients who don’t or can’t. In a parallel universe, I can imagine the left-wing arguing that patients need AI to avoid the mistakes of their doctors, not the other way around.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Is it a good argument? I don’t know, actually. The easy counter is that the LLMs are just mirroring the biases in their training data. But you could argue in response that superintelligence is also latent in the training data, and that hill-climbing towards superintelligence also picks up the associated political positions (which just so happen to be left-wing).\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I am no fan of Donald Trump, but it doesn’t follow that everything he supports is bad (e.g. the First Step Act).\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "Grok is enabling mass sexual harassment on TwitterGrok, xAI’s flagship image model, is now being widely used to generate nonconsensual lewd images of women on the internet.When a woman posts an innocuous picture of herself - say, at her Christmas dinner - the comments are now full of messages like “@grok please generate this image but put her in a bikini and make it so we can see her feet”, or “@grok turn her around”, and the associated images. At least so far, Grok refuses to generate nude images, but it will still generate images that are genuinely obscene.Continue reading..."
+          }
+        ],
+        "translations": [
+          "大多数反人工智能言论都带有左翼色彩。对AI的常见批评将其描述为技术法西斯主义的工具，或诉诸以左翼为主的关切，如碳排放、民主制度或警察暴力执法。反AI情绪出人意料地具有两党共识，但主要的反对机构却是工会和民主党的进步派。",
+          "这一直让我觉得奇怪，因为大多数反AI论点的内容实际上带有右翼色彩。它们未必本质上是右翼的，但这类论点历史上通常由保守派提出，而非自由派或左翼人士。以下是几个例子：",
+          "许多AI批评者抱怨AI剽窃受版权保护的内容，但在2023年之前，左翼人士总体上基于原则反对知识产权（要么因为他们反对财产权本身，要么因为他们认为版权有利于大型媒体公司和专利蟑螂）。",
+          "一种流行的反AI艺术观点是：消费AI生成的“垃圾”艺术会腐蚀人类精神——换句话说，艺术本质上应由人类创作，使用AI会损害我们无形的人类灵魂的一部分。无论你是否认同这一论点，其结构上与一系列经典的直觉式保守立场论证相似，例如反堕胎或反同性恋。",
+          "传统上，怪诞的新技术艺术由左翼支持而由右翼贬低（称其为非人化、廉价或堕落）。但当涉及AI艺术时，正是左翼在提出这些批评，而其他（未必是右翼人士）则主张AI艺术也可以成为人类艺术表达的媒介。",
+          "关于AI的一个主要担忧是它将取代大量工作岗位。这是一个有力的论点！但近年来，左翼对类似化石燃料行业就业（如煤矿工人）的担忧却明显缺乏同情心，以至于拜登 famously 建议新罕布什尔州的一群矿工学习编程1。为保住工作而阻止技术进步，从字面上看就是典型的“保守主义”立场。",
+          "此外2，前沿AI模型本身具有明显的左翼倾向。尽管存在一些真实的数据偏见案例（最臭名昭著的是谷歌图像模型将深色皮肤人类误分类为“大猩猩”），这些模型普遍倾向于表达左翼立场。就连埃隆·马斯克刻意打造右翼AI Grok的努力也收效甚微。2006年，斯蒂芬·科尔伯特创造了“现实具有左翼偏见”这一说法3。如果左翼更支持AI，我认为他们会将此作为亲左翼的论据。",
+          "那么究竟发生了什么？一年前我写过《使用AI是否错误？六种流行反AI论点的回顾》。在那篇文章中，我将责任归咎于2024年许多大型科技公司CEO转向极右翼的趋势。当时正是LLM随着ChatGPT进入公众视野之际，因此AI被贴上右翼标签也就顺理成章——毕竟，那些在电视和推特上谈论AI将如何改变世界的亿万富翁，恰恰是刚刚全面支持唐纳德·特朗普的人。我仍然认为这是一个相当合理的解释——只是时机不幸——但肯定还有其他因素在起作用。",
+          "一个显而易见的原因是2021年和2022年那场亲加密货币的狂热余波，当时许多同样痴迷技术的人也在发布丑陋的艺术作品，并谈论他们的技术将如何永远改变世界。这些预测大多没有实现（尽管加密货币确实永远改变了世界），因此许多人将人工智能视为这一趋势的自然延续，这完全可以理解。",
+          "此外，唐纳德·特朗普本人也公开支持人工智能，无论是在政策层面还是亲自发布AI生成艺术。这自然引发反弹，反特朗普人士更倾向于反对AI。以下是更多原因：",
+          "AI对环境有真实影响（尽管这一点常被严重夸大，如我在此文中所述），而右翼政治立场一贯倾向于淡化或否认人为造成的环境影响。",
+          "当形势艰难时，人们很容易指责人人都在热议的新事物。由于目前美国右翼势力上升，左翼人士也更倾向于谈论时局的艰难。",
+          "左翼在那些正面临AI直接威胁的“计算机类工作”中代表性过高。",
+          "亲欧洲立场长期被视为左翼标志，而欧洲在AI问题上明显比美国更慢热、更持怀疑态度。",
+          "最后我说清楚：我自认为属于左翼，对AI的影响总体上持中立态度。像我这样四平八稳的人认为，AI将带来正反两面的影响。总体而言，我不认同那些基于版权和人类灵魂的反AI论点，也不认为AI本质上就是右翼的；但我对环境破坏和就业冲击感到担忧（在我看来，这两点更符合传统左翼立场）。",
+          "不过，我很好奇当反AI言论中的左翼色彩消失后会发生什么——我认为这一天终将到来（如前所述，反AI情绪实际上相当跨党派）。当人们开始提出明确的右翼反AI论点时，是否会导致左翼稍微转向支持AI？还是说右翼机构会继续明确支持AI，使反AI情绪成为左翼可用来争取选民的楔子议题？无论如何，我认为当前的局面并不稳定。在许多方面，主流的反AI论点其实更适合保守派世界观，而非其自由派倡导者所宣称的那样。",
+          "我不认为他们做到了，这可能也是好事——他们在2023年招聘崩盘前最多只有两三年时间进入行业。",
+          "另一个虽未完全主流但我想提及的观点是：AI批评者常声称草率部署AI可能导致人们采纳危险的医疗建议而非单纯信任医生。但任何与慢性病患者亲近过的人都知道，“就相信你的医生”本身也有点右倾色彩，而左翼立场对那些无法或不愿信任医生的患者抱有深切同情。在平行宇宙中，我设想左翼可能会主张患者需要AI来避免医生的错误，而不是相反。",
+          "这算不算一个有力的论点？说实话，我不确定。一个简单的反驳是：大型语言模型（LLMs）只是在镜像其训练数据中的偏见。但也可以反过来争辩说，超级智能潜藏于训练数据之中，而向超级智能的“爬山”过程也会拾取相关的政治立场（碰巧都是左翼立场）。\n↩",
+          "我并不是唐纳德·特朗普的粉丝，但这并不意味着他支持的一切都是坏的（例如《第一步法案》）。\n↩",
+          "如果你喜欢这篇文章，可以考虑订阅我的新文章邮件更新，或在 Hacker News 上分享它。",
+          "这里有一个与本文标签相关的新文章的预览。",
+          "Grok 正在 Twitter 上引发大规模性骚扰事件。xAI 的旗舰图像模型 Grok 现在被广泛用于在网上生成针对女性的非自愿色情图片。当一位女性发布一张无害的自拍照——比如圣诞晚餐时的照片——评论中现在充斥着诸如“@grok 请生成这张图片，但让她穿上比基尼，让我们能看到她的脚”或“@grok 让她转过身来”等消息，以及相应的图片。至少目前为止，Grok 拒绝生成裸体图片，但它仍会生成真正淫秽的图片。继续阅读全文..."
+        ]
+      }
+    },
+    {
+      "slug": "639da0438e4ad87c",
+      "title": "5x5 Pixel font for tiny screens",
+      "titleZh": "5x5像素字体：专为极小屏幕设计的最小可读字体",
+      "link": "https://maurycyz.com/projects/mcufont/",
+      "sourceName": "maurycyz.com",
+      "sourceUrl": "https://maurycyz.com",
+      "pubDate": "2026-04-18T00:00:00.000Z",
+      "category": "tools",
+      "keywords": ["pixel font", "tiny screens", "C header"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "该项目推出了一款仅占5×5像素的嵌入式字体（mcufont），专为资源受限的微控制器显示设计。该字体在6×6网格内安全渲染所有字符，是确保可读性的最小尺寸——2×2至4×4像素均无法清晰呈现字母如E、M或W。其设计灵感源自lcamtuf的5x6-inline.h字体和ZX Spectrum的8x8字体，实现了极致紧凑与视觉辨识度的平衡。",
+      "summaryEn": "Introducing mcufont: a minimalist 5x5-pixel font designed for tiny screens like those on microcontrollers. All characters fit within a 5x5 square and render safely on a 6x6 grid. At 5x5 pixels, it's the smallest size that maintains legibility—shrinking further (e.g., 4x4) makes letters like E, M, or W illegible. Inspired by lcamtuf's 5x6-inline.h and the ZX Spectrum's 8x8 font, it balances compactness with readability.",
+      "reason": "对于嵌入式开发者或复古计算爱好者而言，这款字体是工程与美学的完美结合，展示了如何在极限条件下实现功能与清晰度的统一。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "All characters fit within a 5 pixel square, and are safe to draw on a 6x6 grid.\nThe design is based off of lcamtuf's 5x6 font-inline.h, which is itself inspired by the ZX Spectrum's 8x8 font."
+          },
+          {
+            "type": "p",
+            "text": "5x5 is the smallest size that doesn't compromise legibility:"
+          },
+          {
+            "type": "li",
+            "text": "2x2: Impossible."
+          },
+          {
+            "type": "li",
+            "text": "3x3: Technically possible, but unreadable."
+          },
+          {
+            "type": "li",
+            "text": "4x4: Not enough to draw \"E\", \"M\" or \"W\" properly."
+          },
+          {
+            "type": "li",
+            "text": "5x5: This font."
+          },
+          {
+            "type": "p",
+            "text": "Five by five is actually big enough to draw most lowercase letters one pixel smaller, making them visually distinct from uppercase."
+          },
+          {
+            "type": "p",
+            "text": "Narrower 4x5 and 3x5 dimensions are possible, but would require sacrificing the M,\ndotted zero, and reduce U/V/Y distinctiveness."
+          },
+          {
+            "type": "p",
+            "text": "There's no artistic reason to make all characters five wide just because a few must be...\nbut a using a constant width makes programming a lot easier:\nThe length of a string on screen is always 6 times the number of characters."
+          },
+          {
+            "type": "p",
+            "text": "It also makes compact layouts much safer:\nThere's no need to worry that a number will overflow because \"8978\" is longer than \"1111\"."
+          },
+          {
+            "type": "p",
+            "text": "The whole font takes up just 350 bytes of memory,\nwhich makes it ideally suited to 8-bit microcontrollers like the AVR128DA28 (16 kB of RAM)\nThese are cheap, low power and robust...\nbut they fall short on graphics:"
+          },
+          {
+            "type": "p",
+            "text": "Even a low-resolution 384x288 display has 110 thousand pixels:\nway too big to fit in the AVRs memory."
+          },
+          {
+            "type": "p",
+            "text": "... except most projects don't need anywhere near that many pixels.\nA 160x128 or 128x64 OLED is more practical and cheaper —\nbut these need hand-drawn, pixel-efficient fonts to make good use of them."
+          },
+          {
+            "type": "p",
+            "text": "For reference, here's a vector font rendered at a similar scale:"
+          },
+          {
+            "type": "p",
+            "text": "Antialiasing, several megabytes of code, a megabyte of font data, and it's still terrible compared 350 hand-crafted bytes."
+          },
+          {
+            "type": "h2",
+            "text": "Real pixels:"
+          },
+          {
+            "type": "p",
+            "text": "Pixels aren't perfect squares, so the font won't actually look like the rendering at the top of this post:\nThis is it on an actual screen:"
+          },
+          {
+            "type": "p",
+            "text": "I actually really like the pseudo-dropshadow effect created by the subpixels.\nThis won't happen on monochrome displays, but the font will still look smoother than you might expect."
+          },
+          {
+            "type": "p",
+            "text": "The gaps between pixels really help sell the \"e\" and \"g\", but this same effect should allow..."
+          },
+          {
+            "type": "h2",
+            "text": "Even smaller fonts:"
+          },
+          {
+            "type": "p",
+            "text": "While 5x5 is the smallest no-compromise resolution, a 3x5 isn't too bad:"
+          },
+          {
+            "type": "p",
+            "text": "The \"M\", \"W\" and \"Q\" suffer, but it's still got a distinct O and zero.\nSomething like this might actually be a good option if you need to cram (50%) more columns into a display."
+          },
+          {
+            "type": "p",
+            "text": "That's still readable, so what about 3x4?"
+          },
+          {
+            "type": "p",
+            "text": "At this size, there's no way to have a distinct upper and lowercase, so I've picked whatever style works the best in the limited space.\nThe numbers have also taken a hit, but still work ok."
+          },
+          {
+            "type": "p",
+            "text": "How about 3x3?"
+          },
+          {
+            "type": "p",
+            "text": "The main loss was the numbers, but the letters don't include any duplicates and are somewhat recognizable."
+          },
+          {
+            "type": "p",
+            "text": "This font is hugely improved by being displayed on real hardware:"
+          },
+          {
+            "type": "p",
+            "text": "That means it's still too big. How about 2x3?"
+          },
+          {
+            "type": "p",
+            "text": "Ok, this is getting ridiculous.\nMost letters are unrecognizable, and there are quite a few duplicates.\nIn case you couldn't tell, the bottom line reads \"Hello World\"."
+          },
+          {
+            "type": "p",
+            "text": "Flipping the aspect ratio to a 3x2 makes it a lot better:"
+          },
+          {
+            "type": "p",
+            "text": "More letters have horizontal detail (M, W, N, Q, G, P, etc) then have vertical detail (E, F).\nThe bottom line reads \"you can probably read this\", although you might have to squint or zoom out."
+          },
+          {
+            "type": "p",
+            "text": "... and for the sake of completeness, a 2x2:"
+          },
+          {
+            "type": "p",
+            "text": "On paper, there are 16 possible 2x2 images, but one of them is blank and 5 of them are shifted copies of another one.\nThat leaves 10, just enough to do all the digits...\nbut because they have no resemblance to the originals, it's more of a secret code than a font."
+          },
+          {
+            "type": "h2",
+            "text": "Related:"
+          },
+          {
+            "type": "li",
+            "text": "/projects/mcufont/mcufont.h: The 5x5 font."
+          },
+          {
+            "type": "li",
+            "text": "/projects/mcufont/test.c: Program to preview the font."
+          },
+          {
+            "type": "li",
+            "text": "https://lcamtuf.coredump.cx/soft/embedded/font-inline.h: The original font."
+          },
+          {
+            "type": "li",
+            "text": "https://moonbench.xyz/projects/tiny-pixel-art-fonts/: More tiny fonts."
+          }
+        ],
+        "translations": [
+          "所有字符都适合放在5像素见方的空间内，并且可以安全地绘制在6x6的网格上。该设计基于lcamtuf的5x6字体inline.h，而后者又受到ZX Spectrum 8x8字体的启发。",
+          "5x5是保持可读性的最小尺寸：",
+          "2x2：不可能。",
+          "3x3：技术上可行，但无法阅读。",
+          "4x4：不足以正确绘制“E”、“M”或“W”。",
+          "5x5：就是这个字体。",
+          "五乘五实际上足够大，可以绘制比大写字母小一像素的小写字母，使它们在视觉上明显区分开来。",
+          "更窄的4x5和3x5尺寸是可能的，但需要牺牲“M”、带点的零，并降低“U/V/Y”之间的区别度。",
+          "并非因为少数几个字符必须如此就存在艺术上的理由让所有字符都是五像素宽……但使用固定宽度会让编程变得容易得多：屏幕上字符串的长度始终是字符数的6倍。",
+          "这也使得紧凑布局更加安全：无需担心数字会溢出，因为“8978”并不比“1111”长。",
+          "整个字体仅占用350字节内存，非常适合像AVR128DA28（16kB RAM）这样的8位微控制器。这些设备便宜、低功耗且坚固耐用……但在图形方面却力不从心：",
+          "即使是低分辨率的384x288显示屏也有11万个像素点：远远超出了AVR芯片的内存容量。",
+          "...不过大多数项目其实并不需要那么多像素。160x128或128x64 OLED屏幕更实用也更便宜——但这些屏幕需要手绘、像素高效的字体才能充分发挥其优势。",
+          "作为参考，这里是一个类似比例下的矢量字体渲染效果：",
+          "抗锯齿处理、数兆字节的代码、一兆字节的字体数据，与350个手工制作的字节相比仍然糟糕透顶。",
+          "真实像素：",
+          "像素并非完美的正方形，因此该字体实际显示效果不会像帖子顶部渲染的那样：这就是它在真实屏幕上的样子：",
+          "我其实很喜欢由子像素产生的伪阴影效果。单色显示器不会出现这种情况，但该字体看起来仍会比你想象的更平滑。",
+          "像素间的空隙确实有助于突出“e”和“g”，同样的效果也应适用于……",
+          "更小的字体：",
+          "虽然5x5是最小无妥协分辨率，但3x5也不算太差：",
+          "“M”、“W”和“Q”受到影响，但仍能清晰识别“O”和零。如果你需要将显示列数增加50%，这种方案可能是个不错的选择。",
+          "这仍然是可以阅读的，那么3x4呢？",
+          "在此尺寸下无法同时拥有大小写字母的区别，因此我选择了在有限空间内效果最好的样式。数字也受到一定影响，但基本还能用。",
+          "那3x3呢？",
+          "主要损失在于数字部分，但字母没有重复且仍可辨认。",
+          "在真实硬件上显示后，该字体有了巨大改进：",
+          "这意味着它还是太大了。那2x3呢？",
+          "好吧，这已经离谱了。大多数字母都无法识别，而且有很多重复字符。如果你没看出来，底部一行写着“Hello World”。",
+          "将纵横比调整为3x2后情况好多了：",
+          "更多字母（如M、W、N、Q、G、P等）具有水平细节而非垂直细节。底部一行写着“you can probably read this”，不过你可能需要眯眼或缩小视图才能看清。",
+          "...为了完整性，这是2x2的情况：",
+          "理论上共有16种可能的2x2图像，但其中一种是空白，另外5种是另一种图像的偏移副本。  \n这样就只剩下10种，刚好够表示所有数字……但由于它们与原始数字毫无相似之处，与其说是字体，不如说更像一种秘密代码。",
+          "相关：",
+          "/projects/mcufont/mcufont.h: 5x5 字体定义。",
+          "/projects/mcufont/test.c: 预览该字体的程序。",
+          "https://lcamtuf.coredump.cx/soft/embedded/font-inline.h: 原始字体文件。",
+          "https://moonbench.xyz/projects/tiny-pixel-art-fonts/: 更多微型像素字体。"
+        ]
+      }
+    },
+    {
+      "slug": "1078ff6402e11bf4",
+      "title": "We Are All Playing Politics at Work",
+      "titleZh": "我们在工作中都在玩政治游戏",
+      "link": "https://idiallo.com/blog/we-are-playing-politics?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-04-18T03:00:00.000Z",
+      "category": "opinion",
+      "keywords": ["workplace politics", "rationality", "decision making"],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "作者提出，任何讨论中若真相不主导决策过程，就属于政治范畴。许多人误以为职场应纯粹理性，但现实中人们常受利益、关系和身份影响而做出非事实驱动的选择。试图将政治与工作分离是一种天真幻想，因为人类本质上是政治动物，必须在复杂环境中权衡多方因素。",
+      "summaryEn": "Politics isn't confined to elections—it's any discussion where truth doesn't dictate action. Most people believe their jobs are rational spaces free from politics, but in reality, decisions are shaped by power, relationships, and identity, not just facts. Separating 'politics' from work is naive; humans are inherently political beings navigating an imperfect world.",
+      "reason": "这篇文章以简洁有力的哲学视角揭示了现代职场潜藏的权力 dynamics，帮助读者更清醒地认识日常决策中的隐性博弈。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Politics is any discussion where the truth doesn't steer the course of action."
+          },
+          {
+            "type": "p",
+            "text": "Most of us like to think we are above it. We believe that in our daily jobs, we are rational actors exchanging facts. We assume that if we simply present the truth, the right decisions will naturally follow. But this is a naive fantasy. We are not machines that go to work to process data. We are political animals trying to navigate an imperfect world."
+          },
+          {
+            "type": "p",
+            "text": "I often meet purists who want to separate politics from work. They argue work should be a place where actions turn into resources that create value. They fail to see that even making that statement is a political stance."
+          },
+          {
+            "type": "p",
+            "text": "For me, everything clicked during the pandemic. COVID dissolved the barrier between work and home, forcing us to manage perception over reality. We weren't just working from home, we were curating our backgrounds, hiding our messy lives, and performing professionalism in our pajamas. That performance of managing the image because the raw truth is inconvenient, is the very essence of politics."
+          },
+          {
+            "type": "p",
+            "text": "We are all playing politics whether we like it or not. Work is messy. People complain, deadlines are missed, and coworkers bring personal agendas into the office. You might just want to do your job and go home, but to get there, you have to navigate the humans. And humans rarely deal in raw truth. They deal in emotions, ambitions, and incentives. If you refuse to play the game, you aren't rewarded for your honesty. Instead, you are just ceding control to those who understand the rules better than you."
+          },
+          {
+            "type": "h2",
+            "text": "Objective truth must be interpreted"
+          },
+          {
+            "type": "p",
+            "text": "If there is a place in our lives where truth should be the only thing that reigns, it should be in Science. Science is the pursuit of objective reality. But in practice, even science becomes political the moment humans get involved."
+          },
+          {
+            "type": "p",
+            "text": "In the recent discussion about the Artemis II moon mission, I was watching news concerning the landing. One of the headlines stated that \"experts believe\" the re-entry capsule wasn't safe. But why do we need experts to have beliefs when we have science? Shouldn't the math just tell us?"
+          },
+          {
+            "type": "p",
+            "text": "The reality is that most of us cannot handle the raw scientific truth. If a physicist tried to prove the validity of String Theory to me, I wouldn't understand it. I don't have the framework to verify the truth. Instead, I have to trust the consensus of \"our\" experts because safety is not a binary fact. It is a threshold of acceptable risk that experts are in a better position to understand. Data requires interpretation, and interpretation is political."
+          },
+          {
+            "type": "p",
+            "text": "When \"experts believe,\" they are offering confidence, not necessarily raw data. It is a political stance designed to manage public perception and risk. If this happens in the hard sciences, imagine how messy it gets in the corporate world, where there are no laws of physics, only opinions and quarterly goals."
+          },
+          {
+            "type": "h3",
+            "text": "Voting has consequences"
+          },
+          {
+            "type": "p",
+            "text": "When we hear politics at work, government is what comes to mind. We think it's about which candidate we voted for. But voting is probably the least political thing we do. It is a binary choice with no immediate negotiation required. Once you cast your ballot, your role is done. You wait for the next election."
+          },
+          {
+            "type": "p",
+            "text": "In the workplace it is different. Politics is a perpetual dance. You cannot cast a vote and walk away. Your vote is a decision, a critique, or a hire. Then the consequence is you have to live in the same room with it for eight hours everyday."
+          },
+          {
+            "type": "p",
+            "text": "Because we misunderstand politics, we often mistake naivety for integrity. I learned this the hard way early in my career."
+          },
+          {
+            "type": "p",
+            "text": "In a past job, I witnessed my manager and lead developer committing what I will politely call a clear policy violation. The team came to me with evidence, and I did what I thought was the right thing. I gathered the facts, built an airtight case, and presented it to the VP. I played the Truth Game."
+          },
+          {
+            "type": "p",
+            "text": "The result? I was scrutinized and pushed out. The manager and lead developer? They were both promoted."
+          },
+          {
+            "type": "p",
+            "text": "I was confused and bitter. I had the truth on my side. I even had evidence. But I failed to see that the VP's priority wasn't Truth. For him what mattered was stability and hierarchy. My manager and lead were playing the Political Game. They had influence and power. I was playing a game of logic in a room designed for leverage. While I was busy being right, they were busy being effective."
+          },
+          {
+            "type": "p",
+            "text": "It turned out that maintaining the illusion of a stable hierarchy was more valuable to the acquisition than the operational truth. The company sold for $1.1 Billion regardless of their incompetence. My truth was irrelevant to the outcome."
+          },
+          {
+            "type": "p",
+            "text": "A more political savvy me would have socialized the issue with the VP first, found an ally in HR, maybe even reframe the issue. Instead of presenting it as a moral failing, I would have framed it as a \"risk to the acquisition.\""
+          },
+          {
+            "type": "h3",
+            "text": "The Art of the Impossible Deadline"
+          },
+          {
+            "type": "p",
+            "text": "Once you accept that the workplace is political, you stop fighting reality and start navigating it."
+          },
+          {
+            "type": "p",
+            "text": "In my current role, deadlines often come down before the project is even defined. Leadership hands down a target date as if it were written in stone—perhaps delivered by God himself, according to my manager. The facts, however, are clear: I know my team size, I know the scope, and I know the deadline is mathematically impossible."
+          },
+          {
+            "type": "p",
+            "text": "If I were still playing the Truth Game, I would say \"No.\" That would get me labeled as negative or incompetent. If I were a coward, I would say \"Yes,\" and burn my team out."
+          },
+          {
+            "type": "p",
+            "text": "Instead, I play politics. When asked if I can make the date, my answer is Confidence. (roll your eyes here)"
+          },
+          {
+            "type": "quote",
+            "text": "We are fully committed to the goal. Based on our current velocity, we're focusing our resources on the core features first to ensure we hit that date with a stable build."
+          },
+          {
+            "type": "p",
+            "text": "(eye roll ends here)"
+          },
+          {
+            "type": "p",
+            "text": "I don't answer \"yes\" or \"no.\" I provide a malleable statement that offers reassurance without committing to the impossible. I protect my team and offer leadership the confidence they crave, the same way \"experts\" offer confidence on a moon launch. It is a political maneuver designed to keep the project moving and relationships intact."
+          },
+          {
+            "type": "p",
+            "text": "When you are in a room with two groups of experts shouting their facts at each other, they may turn to you to see which political party you will join. I've been in a meeting where the database team was arguing for using store procedures, while the dev team wanted to use an ORM. Each team wants to retain control of their queries, and you sit in the middle and they expect you to lean one way or the other."
+          },
+          {
+            "type": "p",
+            "text": "What is the Truth Game here? Well, you can't go wrong by following tradition."
+          },
+          {
+            "type": "quote",
+            "text": "\"What is our standard? Did we use ORMs in the past? Then why change? Let's get back to work.\""
+          },
+          {
+            "type": "p",
+            "text": "That's the truth. You won points with the Dev team. You were efficient and logical. But you made an enemy of the Database team. Now, watch all your future requests get ignored. You were right, but you failed."
+          },
+          {
+            "type": "p",
+            "text": "What's the Political Game? You already know you have to choose the ORM to meet the deadline. But you start by praising the stored procedures."
+          },
+          {
+            "type": "quote",
+            "text": "\"I think we can greatly benefit from switching to sprocs. In fact, this will allow queries to be optimized in the background without having to involve the dev team's resources at all. In the long term, this should be our strategy. But given our short timeframe, I don't think we can make those upgrades without impacting our deadline. Let's make sure to include these in our plan of action so we don't forget it.\""
+          },
+          {
+            "type": "p",
+            "text": "The Dev team is happy because you sided with them. The Database team is happy, because you recognized their expertise."
+          },
+          {
+            "type": "p",
+            "text": "Politics is not a dirty word. It naturally grows as people organize around an idea, or a workplace. It is the operating system of human organization."
+          },
+          {
+            "type": "p",
+            "text": "It is the gap between how things should work (truth) and how they do work (influence). It's not a shortcut to manipulation. You can have political integrity by using your influence to protect your team and achieve the mission, rather than just being right while the ship sinks."
+          },
+          {
+            "type": "p",
+            "text": "You can choose to ignore this reality and cling to your facts, but don't be surprised when you find yourself scrutinized while the political players get promoted. We are all politicians. The only question is whether you are campaigning for your own success or letting everyone else write the rules for you."
+          }
+        ],
+        "translations": [
+          "政治就是那种真相无法主导行动方向的讨论。",
+          "我们大多数人总觉得自己能置身事外。我们相信在日常工作中，自己是理性的参与者，通过交换事实来决策。我们假设只要如实呈现真相，正确的决定就会自然浮现。但这是一种天真的幻想。我们不是去上班处理数据的机器，而是试图在不完美世界中求存的政治人物。",
+          "我常遇到一些纯粹主义者，他们想把政治从工作中剥离出来。他们认为工作应该是让行动转化为创造价值的资源的地方。但他们没意识到，就连说出这种话本身也是一种政治立场。",
+          "对我而言，疫情让一切都变得清晰起来。新冠打破了工作与家庭的界限，迫使我们管理表象而非现实。我们不只是在家办公，我们还在精心布置背景、隐藏混乱的生活，穿着睡衣表演专业形象。这种为了掩盖不便的真相而进行的形象管理，正是政治的本质。",
+          "无论我们是否愿意，每个人都在玩政治游戏。工作一团糟：有人抱怨， deadline 被错过，同事带着个人议程进办公室。你可能只想好好工作回家，但为了达成目标，你必须周旋于人性之中。而人类很少直面赤裸的真相，他们处理的是情绪、野心和激励。如果你拒绝参与这场游戏，你的诚实不会换来奖励，反而会拱手让出控制权给那些比你更懂规则的人。",
+          "客观真理必须经过解读",
+          "如果说生活中有什么地方应该只由真相主宰，那一定是科学。科学是追求客观现实的探索。但在实践中，一旦人类介入，即使是科学也会带上政治色彩。",
+          "在近期关于阿尔忒弥斯二号登月任务的讨论中，我看到一则新闻标题写着“专家认为”返回舱不安全。但我们为什么需要专家来“相信”？科学难道不能直接告诉我们答案吗？数学难道不能说话吗？",
+          "现实是，我们大多数人无法承受赤裸的科学真相。如果一位物理学家试图向我证明弦理论的有效性，我根本听不懂。我没有验证真相所需的知识框架。我只能信任“我们”专家的共识，因为安全不是一个非黑即白的事实，而是一个可接受的风险阈值——这是专家更有能力理解的东西。数据需要解读，而解读本身就是政治行为。",
+          "当人们说“专家认为”时，他们提供的是信心，未必是原始数据。这是一种旨在管理公众认知和风险的政治姿态。如果这种情况发生在硬科学领域，想象一下在企业世界里会多么混乱——那里没有物理定律，只有观点和季度目标。",
+          "投票是有后果的",
+          "当我们听到职场中的政治时，往往想到的是政府事务。我们认为这关乎我们投给了哪位候选人。但投票可能是我们做过的最不政治的事。这是一个无需即时协商的二元选择。一旦投完票，你的角色就结束了，只需等待下次选举。",
+          "在职场则完全不同。政治是一场持续不断的舞蹈。你无法投完票就走人。你的每一次选择、每一次批评、每一次招聘，都会成为你必须每天共处八小时的现实。",
+          "因为我们误解了政治，我们常常把天真误认为正直。我在职业生涯早期就为此付出了惨痛代价。",
+          "在之前的一份工作中，我亲眼目睹我的经理和首席开发工程师犯下了我姑且称之为明显的政策违规行为。团队把证据交给我，而我做了我认为正确的事。我收集了事实，构建了一个无懈可击的案例，并把它提交给了副总裁。我玩的是“真相游戏”。",
+          "结果呢？我被审查并被排挤出局。而那位经理和首席开发工程师呢？他们都被提拔了。",
+          "我感到困惑又愤懑。我站在真相一边。我甚至掌握了证据。但我没意识到副总裁的优先事项不是真相。对他而言，重要的是稳定和层级。我的经理和首席开发工程师玩的是“政治游戏”。他们拥有影响力和权力。而我却在用逻辑博弈，身处一个本就是为权术设计的房间。当我忙于证明自己是对的时，他们却忙着高效地达成目标。",
+          "事实证明，维持稳定的层级假象对收购案比对运营真相更有价值。无论他们多么无能，公司都以11亿美元的价格被出售。我的真相对最终结果毫无影响。",
+          "如果当时的我更懂政治，我会先与副总裁沟通此事，在人力资源部找个盟友，甚至可能重新包装问题。我不会把它说成道德上的过失，而是会将其框架化为“对收购构成的风险”。",
+          "不可能期限的艺术",
+          "一旦你接受了职场是政治性的，你就不再与现实对抗，而是学会在其中周旋。",
+          "在我目前的职位上，截止日期往往在项目尚未定义时就已下达。管理层会抛出一个目标日期，仿佛它刻在石头上——据我的经理说，这甚至是上帝亲自传达的旨意。然而，事实很明确：我知道我的团队规模，我知道项目范围，我也知道这个期限在数学上根本不可能实现。",
+          "如果我还玩“真相游戏”，我会说“不行”。但这会让我被贴上消极或不称职的标签。如果我胆小怯懦，我会说“行”，然后让团队精疲力尽。",
+          "相反，我玩的是政治。当被问及能否赶上截止日期时，我的回答是：信心满满。（翻白眼）",
+          "我们完全致力于实现这一目标。根据我们当前的进度，我们将资源集中在核心功能上，以确保在截止日期前交付一个稳定的版本。",
+          "（翻白眼结束）",
+          "我不会回答“行”或“不行”。我给出的是一个灵活的表述，既能提供安慰，又不承诺做不到的事。我保护了我的团队，也为管理层提供了他们渴望的信心——就像专家在登月任务中提供信心一样。这是一种政治策略，旨在推动项目前进，同时维系关系。",
+          "当你身处一个房间，里面有两组专家互相叫喊着他们的“事实”，他们可能会转向你，看你将加入哪一方。我曾参加过一场会议，数据库团队主张使用存储过程，而开发团队则希望使用ORM。每个团队都想保留对自己查询的控制权，而你坐在中间，他们期待你偏向其中一方。",
+          "这里的“真相游戏”是什么？嗯，遵循传统永远不会错。",
+          "“我们的标准是什么？过去我们用ORM吗？那为什么现在要改变？让我们回到工作中去。”",
+          "这就是真相。你赢得了开发团队的青睐。你高效且合乎逻辑。但你却成了数据库团队的敌人。从此以后，你会发现所有未来的请求都会被无视。你是对的，但你失败了。",
+          "什么是政治游戏？你早已知道必须选择 ORM 才能按时交付。但你却开始称赞存储过程。",
+          "\"我认为我们完全可以受益于转向 sproc。事实上，这将允许查询在后台优化，完全无需动用开发团队的资源。从长远来看，这应成为我们的策略。但考虑到我们时间紧迫，我认为在不影响截止日期的前提下无法进行这些升级。请务必将其纳入行动计划，以免遗忘。\"",
+          "开发团队很高兴，因为你站在他们这边。数据库团队也很高兴，因为你认可了他们的专业能力。",
+          "政治并非肮脏的字眼。它自然随着人们围绕某个理念或职场组织起来而滋生。它是人类组织的操作系统。",
+          "它是事物本应如何运作（真相）与实际如何运作（影响力）之间的差距。它不是操纵的捷径。你可以通过运用影响力来保护你的团队、实现使命，从而保持政治诚信，而不是仅仅为了争对错而看着船沉下去。",
+          "你可以选择无视这一现实，执着于自己的事实，但当你发现自己在被 scrutiny 而政治玩家却在升职时，别感到惊讶。我们都是政客。唯一的问题是：你是否在为自身成功而竞选，还是让别人为你制定规则？"
+        ]
+      }
+    },
+    {
+      "slug": "7c1aca0d9e8e625e",
+      "title": "A Taxing Discussion",
+      "titleZh": "纳税申报简史：从混乱开端到1040表格的诞生",
+      "link": "https://feed.tedium.co/link/15204/17321557/tax-forms-history-irs",
+      "sourceName": "tedium.co",
+      "sourceUrl": "https://tedium.co",
+      "pubDate": "2026-04-18T19:11:40.000Z",
+      "category": "other",
+      "keywords": ["taxes", "1040", "history"],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 12
+      },
+      "summary": "文章追溯了美国联邦所得税制度自1913年引入以来的演变历程，指出最初的纳税申报同样令人困惑。早期纳税人需填写长达数十页的手写表格，分类复杂且术语模糊。随着时间推移，IRS逐步简化流程，最终催生了如今广为人知的1040系列表格，成为美国税务体系现代化的重要里程碑。",
+      "summaryEn": "Taxes have always been confusing—even when they began in 1913! Early U.S. income tax returns were notoriously complex, requiring handwritten forms with dozens of pages and ambiguous categories. Over time, the IRS streamlined the process, leading to the creation of the familiar Form 1040 series, which marked a major milestone in American tax system modernization.",
+      "reason": "了解税收制度的演化史，不仅能缓解你对报税季的焦虑，还能让你看到政策如何通过迭代变得更人性化。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Tedium: The Dull Side of the Internet.",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today in Tedium: There's a common motif that often appears in Tedium pieces, the idea that the advent of World War II helped to forge something new and important. Whether it was walkie-talkies, instant mashed potatoes, transistors, or magnetic tape, it was a turning point for numerous industries. It also was the genesis for the most annoying thing many Americans have to do each year: their taxes. As the federal government needed additional revenue, millions of people found themselves paying income taxes for the first time, an example of a practice for rich people trickling down to the masses. What did that feel like? It was a question that came to mind after I found a particularly interesting guide from the period. Today's Tedium ponders the moment when the 1040 entered our lives. — Ernie @ Tedium"
+          },
+          {
+            "type": "p",
+            "text": "Today’s GIF comes from “The New Spirit,” a 1942 propaganda film by Disney to encourage people to pay their income taxes. It starred Donald Duck, who avoided the tax evasion charges that led to Daffy Duck’s arrest."
+          },
+          {
+            "type": "h3",
+            "text": "Sponsored By … Well, Us"
+          },
+          {
+            "type": "p",
+            "text": "Ever wanted to read Tedium without having those annoying ads all over the site? We have just the plan for you. Sign up for a $3 monthly membership on our Ko-Fi, and we promise we can get rid of them. We have the technology. And it beats an ad blocker. (Web-only for now, email coming soon!)"
+          },
+          {
+            "type": "quote",
+            "text": "“The Congress shall have power to lay and collect taxes on incomes, from whatever source derived, without apportionment among the several States, and without regard to any census or enumeration.”"
+          },
+          {
+            "type": "p",
+            "text": "— The text of the Sixteenth Amendment, which gives the U.S. government the right to collect income tax. It was passed into law in 1909, with the amendment taking effect in 1913—which happens to be the first year of Form 1040. However, in practice, most people did not have to pay initially, because of minimum-income rules that ensured taxes largely targeted business owners and those with large incomes. The regular-person tax bills came later."
+          },
+          {
+            "type": "h3",
+            "text": "What was it like filing your taxes in 1914?"
+          },
+          {
+            "type": "p",
+            "text": "No surprise, I know, but it’s worth noting that the U.S. has a complicated tax history, befitting its start as a war-length complaint about taxes. Initially introduced to help fund the U.S. Civil War, it charged everyone who made more than $600 (roughly $20,000 in today’s money) a tax. The problem was, the U.S. government introduced this income tax without having jurisdiction under the U.S. constitution to do so."
+          },
+          {
+            "type": "p",
+            "text": "That proved a problem in 1895, when a Supreme Court ruling, Pollock v. Farmers’ Loan and Trust Company, found direct taxes unconstitutional using some pretty harsh language (my emphasis added):"
+          },
+          {
+            "type": "quote",
+            "text": "A tax upon income derived from the interest of bonds issued by a municipal corporation is a tax upon the power of the State and its instrumentalities to borrow money, and is consequently repugnant to the Constitution of the United States."
+          },
+          {
+            "type": "p",
+            "text": "In that case, Charles Pollock sued the company, which he owned a handful of shares in, to prevent them from paying corporate taxes, as required by the Wilson–Gorman Tariff Act, passed the prior year. The case effectively prevented the U.S. government from taxing individuals for nearly 20 years, the amount of time it took to pass the Sixteenth Amendment."
+          },
+          {
+            "type": "p",
+            "text": "Soon after, the federal government brought back the income tax, this time with the Form 1040. So, in January 1914, you’d be forgiven if you were a well-off professional and were suddenly paying taxes on your income for the first time in your adult life. On top of everything else, it was simply a confusing task."
+          },
+          {
+            "type": "p",
+            "text": "You could sense the dread dripping from newspapers and magazines throughout the U.S. as journalists got their first look at the form that would frustrate millions in the years to come. In a 1913 edition of Hearst’s New York American, financial editor B.C. Forbes (who would go on to found a well-known magazine four years later) emphasized how critical it was to get this form and fill it out. But he also emphasized what might happen if you decided to get lazy:"
+          },
+          {
+            "type": "quote",
+            "text": "But, for any sake, do not try to hide anything. Don’t do it! If you are not moved by patriotism or a law-abiding spirit to pay your just share towards the support of the Government, be moved by fear!But don’t pay one cent the Government is not absolutely entitled to. It is as immoral to cheat yourself as to cheat the government. And once you pay, you stand little chance of getting anything back. “Possession is nine-tenths of the law,” you know. The penalties for not complying with the law range from a $20 fine to a $1,000 fine and a year’s imprisonment plus the costs of prosecution. So beware!Take the matter in hand the minute you read this. There is no time to lose."
+          },
+          {
+            "type": "p",
+            "text": "One might argue that this tension was good for media outlets who suddenly were in a position to explain all this stuff for normies. For example, The New York Times (see my NYT policy) shared a giant reader Q&A with questions about the new form. It leaned into the significant confusion caused by the new form, which only covered taxation after March 1, 1913—about a month after the Sixteenth Amendment was ratified—but still included blanks for January and February."
+          },
+          {
+            "type": "p",
+            "text": "“What many critics are unable to understand is why blanks for this year should not have been prepared with the correct amounts, in order to save perplexity to those who attempt to fill them out on only a casual examination,” the paper wrote."
+          },
+          {
+            "type": "p",
+            "text": "(The initial form was reused in 1914 and 1915—something I learned when I scoured the IRS website and found tax forms dating to 1913—but in future years, the form got updated annually.)"
+          },
+          {
+            "type": "p",
+            "text": "Not helping was that the Treasury Department kept changing its mind on the rules, which made the accounting difficult to manage. From reading the many answers the Times gave to curious readers, it’s clear that the IRS left a lot of people out on the deep end."
+          },
+          {
+            "type": "p",
+            "text": "However, it did not leave everyone, as initial rules only required people who made more than $3,000 to actually file taxes, an amount equivalent to about $100,000 today. Which meant that most people weren’t affected by income taxes at first. But the people who were taxed, especially at the high end, soon found themselves giving most of their money to the government."
+          },
+          {
+            "type": "p",
+            "text": "In the midst of World War I, tax rates for people who made over $300,000 in 1917 ($8.4 million today) crossed the 50% mark, while people who made more than $1 million in 1918 ($23 million today) were taxed at a downright epic 77%. Things didn’t truly ease up until the mid-1920s, when taxes were capped at 25% for people making over $100,000 ($1.9 million today). Critics of taxes, such as the Koch-affiliated Foundation for Economic Education, often point to this period to highlight the folly of increasing taxes on the rich."
+          },
+          {
+            "type": "p",
+            "text": "For critics of the American taxation system (think your average Ron Paul acolyte), this era offers so much fodder to dig into, because it offers examples of many of their complaints. (Though they’re kind of stuck with the Sixteenth Amendment.) You say, “we should increase taxes on the rich,” and they can say, “well, we did that, and it didn’t work.”"
+          },
+          {
+            "type": "p",
+            "text": "But one thing we didn’t try back then was taxing regular people who made normal salaries. That came later."
+          },
+          {
+            "type": "quote",
+            "text": "“I guess you will have to go to jail. If that is the result of not understanding the income tax law, I shall meet you there. We will have a merry, merry time, for all of our friends will be there. It will be an intellectual center, for no one understands the income tax law except persons who have not sufficient intelligence to understand the questions that arise under it.”"
+          },
+          {
+            "type": "p",
+            "text": "— Elihu Root, a senator and former Secretary of State, stating to a friend what he thought of the then-emerging taxation system ahead of the Form 1040’s debut. Root’s comments, highlighted during a 1955 presentation on taxation at William and Mary and repeated numerous times by taxation critics in the years since, point at the tension that taxes have always had. They’re confusing and easy to screw up, yet we have to do them anyway."
+          },
+          {
+            "type": "h3",
+            "text": "Five key moments in the history of taxes"
+          },
+          {
+            "type": "li",
+            "text": "The IRS introduced the charitable deduction early in the 1040’s history. One positive of the era when the government was taxing millionaires three-quarters of their salary was that it gave rise to the charitable deduction, which led to a huge culture of philanthropy. First introduced as an amendment to the War Revenue Act of 1917 by New Hampshire Sen. Henry F. Hollis, the bill was essentially a way to support civil society. As Travis LaCouter wrote in Philanthropy Daily in 2017, this helped support organizations like the Red Cross, which grew in public prominence during this period."
+          },
+          {
+            "type": "li",
+            "text": "The IRS was early to database-based tech—but updating was impossible. The creation of the Individual Master File, the electronic backend system used by the IRS for more than 50 years, was an important step for the IRS, but one it’s struggled to improve on. Built on COBOL and assembly language, this system has proven surprisingly difficult to kill, even as attempts were made to modernize it starting in the early 2000s. A 2023 Government Accountability Office report found that the IRS may not be able to fully upgrade it until 2030. For now, it remains a giant security risk."
+          },
+          {
+            "type": "li",
+            "text": "The IRS was testing electronic filing as early as 1986. Early pilots of the e-file program, which initially emphasized tax professionals, launched in 1986 and expanded nationally by 1990. By the late ’90s, the e-file program became an option for regular consumers too, but before that they also had a more novel option: TeleFile, a file-by-phone program the IRS offered starting in 1992."
+          },
+          {
+            "type": "li",
+            "text": "The IRS helped popularize the PDF. As noted in our piece on the history of the portable document format, one of the first major users of Adobe’s ubiquitous tool was the Internal Revenue Service. The IRS saw an opportunity to cut down on the hundreds of millions of forms it sent to taxpayers. It was already distributing tax forms using the technology as early as 1994. The IRS is very serious about its PDFs, as proven by the fact that you can find 1040s on its website dating all the way back to 1913."
+          },
+          {
+            "type": "li",
+            "text": "The IRS is now an electronic-only payment platform. It’s been possible to get refunds from the government electronically for decades, but now it’s mandatory in nearly all cases. Last year, the Trump administration introduced Executive Order 14247, “Modernizing Payments to and From America’s Bank Account,” which requires the service to pay people through electronic means such as ACH, rather than with paper checks."
+          },
+          {
+            "type": "h3",
+            "text": "World War I briefly led to huge taxes for rich people. World War II forced regular people to do taxes, too."
+          },
+          {
+            "type": "p",
+            "text": "I became interested in this discussion on income taxes because of a magazine-length guide I found in a junk store. It explained in great detail how tax forms worked, considerations for families and the public alike, even showing tax forms and offering basic accounting advice."
+          },
+          {
+            "type": "p",
+            "text": "It promised 500 questions and answers, and seemed designed to take one of the most confusing things that normal people do and make it accessible. It included workbooks designed to make it easier to track your monthly income."
+          },
+          {
+            "type": "p",
+            "text": "(It also smelled pretty bad, but we can overlook that.)"
+          },
+          {
+            "type": "p",
+            "text": "This was one of the most well-known guides of its kind at the time, originally written by Rodman L. Modra, who served as deputy collector of internal revenue in New York City earlier in his career. His guide was widely promoted in newspapers around the country; you could call it the For Dummies or even the Turbotax of its day."
+          },
+          {
+            "type": "p",
+            "text": "Modra found quick success with this model, but he didn’t live to see his good idea blossom into an empire. Just as the income tax was expanding its footprint in 1943, Modra died (yes, another NYT link, same policy applies). He was 61, and presumably, he had more steam in the engine. Alas."
+          },
+          {
+            "type": "p",
+            "text": "So yes, the guide outlived him, at least for a while. But it didn’t last as long as the income tax system it was chronicling for regular people. Other companies would eventually exploit our required annual stress-out session."
+          },
+          {
+            "type": "p",
+            "text": "Again, Disney made a cartoon in 1942 to convince people to pay their taxes."
+          },
+          {
+            "type": "p",
+            "text": "So, what made a guide like this particularly relevant in the mid-1940s? Well, in 1942, Congress passed a new tax law, the Revenue Act of 1942, that essentially lowered the tax brackets a rung. Now regular people had to file a 1040, too."
+          },
+          {
+            "type": "p",
+            "text": "This was necessary, after all. World Wars are expensive, and someone needed to pay for it, so why not the middle class?"
+          },
+          {
+            "type": "p",
+            "text": "And as more people needed to file their taxes, the Internal Revenue Service needed a new way to take a little off the top. In the past, people paid either quarterly or annually, which worked when everyone was well-off, but not so much for the middle class. As tax historian Joseph Thorndike wrote in 2022: “This system functioned well enough when income taxes were paid only by the rich, who tended to be well organized and financially sophisticated. But tax experts worried that it would falter once the levy was expanded to include millions of new taxpayers.”"
+          },
+          {
+            "type": "p",
+            "text": "The solution to this situation wasn’t necessarily clear. Businesses pushed for a national sales tax; the Treasury Department really didn’t want that."
+          },
+          {
+            "type": "p",
+            "text": "The guy most responsible for helping us find a path forward was Macy’s executive and economist Beardsley Ruml. His plan: Make the system “pay as you go.” Rather than having to save your income ahead of time and paying after the fact—or worse, get stuck in a repayment plan with the Internal Revenue Service—Ruml instead proposed closing the loop entirely."
+          },
+          {
+            "type": "p",
+            "text": "“Nothing can stop the march of the days and when the due date comes, they must pay the tax they owe in the income they have already had,” Ruml explained in an article to the Dartmouth alumni magazine."
+          },
+          {
+            "type": "p",
+            "text": "In a 1943 interview with CBS News, he characterized the back-taxes issue as something of a failure of vision."
+          },
+          {
+            "type": "quote",
+            "text": "When the federal income tax bill was passed in this country in 1913, it had an important defect which was that a citizen was required to pay in the year 1914 a tax on his 1913 income. In this way, we got started on a vicious practice of paying out of one year’s income a tax on the year that had already gone. As a result and in consequence of increasing rates, the debt which people owe to the federal government for income tax has become a national danger. The present system is a bad system for all of us and should and can be corrected. It is clear that the government cannot continue for long to be the creditor of some 27,000,000 taxpayers and their families, in debt for income tax as they are today, particularly when there is no substantial question of revenue involved in changing the basis of assessment and getting the whole country on a current pay as you go basis."
+          },
+          {
+            "type": "p",
+            "text": "In this light, paying as you go made sense. You could pay as you go with payroll taxes, or you could give a penny or two to the federal government every time you bought something. A wire story about the debate over this issue in the House Ways and Means Committee put it like this: “Shall the average American help pay for the war by taxes on what he earns or on what he spends?”"
+          },
+          {
+            "type": "p",
+            "text": "Ultimately, after a whole bunch of back and forth, collected in this PDF, we went with the payroll taxes, with Congress passing the Current Tax Payment Act in 1943. (Easing the pain, per Tax Notes: The first year of the payroll tax transition, the federal government cut everyone’s taxes by 75% for the first year, like you were signing up for an introductory plan on a steak-of-the-month club. Not that people who just saw a huge chunk of their income disappear were buying steak.)"
+          },
+          {
+            "type": "p",
+            "text": "If you’re a freelancer, odds are good you might still be doing quarterly or annual payments, minus whatever deductions you can scrounge. But hey, it covered most people, as it does today."
+          },
+          {
+            "type": "p",
+            "text": "The tax model is confusing and unpopular, but pay-as-you-go taxation at least made it more user-friendly."
+          },
+          {
+            "type": "p",
+            "text": "Going back to this weird tax book I found, of the many things it covers, perhaps the one that stuck with me the most is the emphasis that yes, it is possible to do this yourself:"
+          },
+          {
+            "type": "quote",
+            "text": "Even if you are not used to working with figures, there is nothing really difficult about preparing your income tax blank. If you know how to add, subtract and multiply and have just enough patience to stick to the job for the short time it takes—you will be surprised to find how easy it actually is. The new 1944 return is much simpler than last year’s and no one should hesitate to fill out his own tax blank."
+          },
+          {
+            "type": "p",
+            "text": "This book describes the specific tax policies that people working in various lines of work need to know. Actors are included. So are clergymen. And mechanics. It’s having to cover a lot of bases, but it’s covering them without being too judgmental about your lack of tax knowledge."
+          },
+          {
+            "type": "p",
+            "text": "That is a different vibe than what we’ve come to expect from the modern tax apparatus, which tends to emphasize that you need additional tools to complete your taxes. TurboTax and H&R Block exist because someone needs to ensure you’re not screwing this up. This book doesn’t have any tech behind it. It just has the insights of a knowledgeable tax expert (or at least the team of people who succeeded him)."
+          },
+          {
+            "type": "p",
+            "text": "Even with gradual changes over time—deductions are pretty nuanced these days—this book still describes something recognizable. That said, the odds that people are completing their taxes with paper and pen have declined significantly over the past 30 years or so."
+          },
+          {
+            "type": "p",
+            "text": "If you were presented the worksheets for doing your taxes by hand in 2026, could you do it? Would you give up? And would you be more likely to screw it up with your grubby scribbles all over the page, versus the never-ending forms of TurboTax?"
+          },
+          {
+            "type": "p",
+            "text": "In recent years, ProPublica has done an impressive job of publicly embarrassing TurboTax for essentially tricking people into thinking the service is free, when it’s not. It may be one of the best reporting campaigns against a single company in the history of journalism. And it likely created momentum for a direct-file process that could be completed for absolutely free."
+          },
+          {
+            "type": "p",
+            "text": "Intuit and H&R Block have better lobbyists, however, and they were able to end the program soon after Trump took office. Elizabeth Warren’s attempt to revive the initiative in Congress tanked this week."
+          },
+          {
+            "type": "p",
+            "text": "But there was once a time when the federal government attempted to make taxes easier to do, not harder, and that came in the form of the “pay as you go” plan. Beardsley Ruml was onto something."
+          },
+          {
+            "type": "p",
+            "text": "--"
+          },
+          {
+            "type": "p",
+            "text": "Find this one an interesting read? Share it with a pal! And may this be the last bit of tax-related content you see this year."
+          },
+          {
+            "type": "p",
+            "text": "And thanks again to la machine for sponsoring. It can’t file your taxes, fortunately."
+          }
+        ],
+        "translations": [
+          "今日 Tedium：Tedium 文章中常出现一个共同主题，即第二次世界大战的爆发催生了某些新事物和重要变革。无论是无线电对讲机、速溶土豆泥，还是晶体管或磁带，战争都成为众多行业的转折点。它也为许多美国人每年必须忍受的最烦人的事情——报税——奠定了基础。随着联邦政府需要额外收入，数百万普通人首次开始缴纳所得税，这体现了富人阶层某种做法逐渐普及到大众的现象。那种感觉是怎样的？在我发现一份那个时期的特别有趣的指南后，这个问题浮上心头。今天的 Tedium 文章就来探讨 1040 表格进入我们生活的那个时刻。—— Ernie @ Tedium",
+          "今日 GIF 来自迪士尼 1942 年制作的宣传影片《新精神》（The New Spirit），旨在鼓励人们缴纳所得税。片中主角是唐老鸭，他因逃避税务而被捕的情节则影射了达菲鸭的遭遇。",
+          "赞助方……嗯，就是我们",
+          "是否厌倦了在 Tedium 网站上被那些恼人的广告包围？我们刚好有个解决方案。请在我们的 Ko-Fi 上注册每月 3 美元的会员，我们承诺将移除这些广告。我们有这个技术，而且比使用广告拦截器更省心。（目前仅限网页端，邮件版本即将推出！）",
+          "“国会有权对任何来源的收入征税和征收所得税，而无需在各州之间按比例分配，亦无需考虑人口普查或枚举。”",
+          "——美国宪法第十六修正案的文本，赋予美国政府征收所得税的权力。该修正案于 1909 年通过，并于 1913 年生效——恰好也是 Form 1040 表格的首个适用年份。然而实际上，大多数人最初并不需要缴税，因为设置了最低收入门槛，使得税收主要面向企业主和高收入人群。普通民众的纳税义务是在之后才逐步落实的。",
+          "那么，在 1914 年申报个人所得税是什么体验？",
+          "我猜大家不会感到意外，但值得一提的是，美国的税务历史相当复杂，这也符合其起源于一场关于税收的战争这一背景。最初设立所得税是为了资助美国内战，规定凡年收入超过 600 美元（约合现今 2 万美元）者均需缴税。问题是，当时美国政府在没有宪法授权的情况下引入了这项所得税。",
+          "这一问题在 1895 年凸显出来，最高法院在 Pollock v. Farmers’ Loan and Trust Company 案中裁定直接税违宪，措辞相当严厉（加粗部分为译者强调）：",
+          "对由市政公司债券利息所得征收的税，实质上是针对州政府及其机构借款权力的征税，因此与美国宪法相抵触。",
+          "在该案中，查尔斯·波洛克起诉其持有股份的公司，要求阻止其按威尔逊–戈尔曼关税法案（前一年通过）的规定缴纳企业所得税。此案导致美国政府近二十年无法对个人征税，直到第十六修正案通过才改变这一局面。",
+          "不久之后，联邦政府重新引入了所得税，这次使用的是1040表格。因此，在1914年1月，如果你是一位富裕的专业人士，突然开始缴纳人生第一笔所得税，你完全可以理解这种困惑——毕竟，这简直让人摸不着头脑。",
+          "当时，美国各地的报纸和杂志都弥漫着一种明显的恐惧情绪。记者们第一次看到这份未来将困扰数百万人的表格时，那种不安显而易见。在1913年《纽约美国人报》（Hearst旗下）的一期中，财经编辑B.C.福布斯（四年后创办了知名杂志）强调，正确填写这份表格至关重要。但他也警告说，如果你选择敷衍了事，后果可能很严重：",
+          "无论如何，都请不要试图隐瞒任何信息。千万别这么做！如果你不是出于爱国情怀或守法精神来履行纳税义务，那就出于恐惧吧！但别多交一分钱——政府无权索取的部分一分都不能给。欺骗自己就像欺骗政府一样不道德。一旦缴税，几乎不可能拿回。你知道那句老话吗？“占有即九分法理。” 不遵守法律的处罚从20美元罚款到1,000美元罚款、一年监禁，外加诉讼费用。所以务必警惕！一读到这些内容就立刻行动起来，时间紧迫。",
+          "有人可能会认为，这种混乱局面反而让媒体有了机会，可以向普通大众解释这些复杂规定。例如，《纽约时报》（参见我的NYT政策）发布了一份大型读者问答专栏，专门解答有关新表格的问题。该报甚至利用新表格带来的巨大困惑——它只涵盖1913年3月1日之后的税收，而第十六修正案已于约一个月前通过——但表格中仍留出了1月和2月的空白栏位。",
+          "“许多批评者无法理解的是，为何不应提前准备好本年度的空白表格并填入正确金额，以减轻那些仅凭粗略查看就试图填写表格者的困惑。” 该报写道。",
+          "（最初的表格在1914年和1915年继续使用——我在国税局网站上查阅资料时发现，1913年的税表至今仍可追溯——但从那以后，表格开始每年更新。）",
+          "更糟糕的是，财政部不断更改相关规定，使得账目核算变得异常困难。从《纽约时报》对众多好奇读者的回答来看，显然国税局把很多人扔进了深水区，让他们自生自灭。",
+          "不过，并非所有人都被排除在外。最初的规定只要求年收入超过3,000美元的人申报纳税，按今天的购买力计算约合10万美元。这意味着大多数人起初并未受到所得税影响。但那些需要缴税的人，尤其是高收入群体，很快发现自己的大部分收入都要上缴政府。",
+          "在第一次世界大战期间，1917年年收入超过30万美元（相当于今天的840万美元）的人群税率突破了50%大关；而1918年年收入超过100万美元（相当于今天的2,300万美元）的人群则面临高达77%的惊人税率。直到20世纪20年代中期，税率才有所缓和，年收入超过10万美元（相当于今天的190万美元）的人群税率才被限制在25%以内。像“经济教育基金会”（与科赫兄弟有关联）这样的反税组织，常常引用这一时期来证明对富人加税是多么愚蠢的做法。",
+          "对于美国税收制度的批评者（比如那些典型的罗恩·保罗信徒来说），这个时期提供了大量可供深挖的素材，因为它展示了他们诸多抱怨的现实案例。（尽管他们多少被第十六修正案给套牢了。）你说“我们应该对富人增税”，他们就能反驳说“好吧，我们试过这么做了，结果没用。”",
+          "但当时我们还没试过对拿普通工资的普通民众征税。那是后来才发生的事情。",
+          "“我想你恐怕得进监狱了。如果这就是不理解所得税法的结果，那我也跟你一起去。我们会玩得很开心的，因为到时候我们所有的朋友都会在那里。那将是一个智识中心，因为除了那些智力不足以理解所得税法所引发问题的人之外，没人真正懂所得税法。”",
+          "——伊莱休·鲁特，一位参议员和前国务卿，在1040表格问世前，向一位朋友表达了他对新出现的税收制度看法。鲁特的这番评论，在1955年威廉与玛丽学院的一次关于税收的演讲中被重点提及，此后也被众多税收批评者反复引用，揭示了税收一直以来的那种张力：它们既令人困惑又容易出错，但我们却不得不去做。",
+          "税收史上的五个关键时刻",
+          "国税局在1040表格历史的早期就引入了慈善扣除条款。政府曾对百万富翁征收其四分之三薪水的那个时代，一个积极影响是催生了慈善扣除条款，进而催生了一个庞大的慈善文化。这项条款最初由新罕布什尔州参议员亨利·F·霍利斯在1917年《战争收入法案》的修正案中提出，本质上是为了支持公民社会。正如特拉维斯·拉库特在2017年的《慈善每日》中所写，这帮助支持了红十字会等组织，这些组织在此期间获得了公众关注度的提升。",
+          "国税局是最早采用数据库技术的机构之一——但更新却几乎不可能。个人主文件（Individual Master File）的建立，这个国税局使用了五十多年的电子后台系统，对国税局来说是一个重要的一步，但它却难以改进。这个用COBOL和汇编语言构建的系统，即便在21世纪初开始现代化改造尝试后，也出人意料地难以淘汰。2023年的一份政府问责办公室报告发现，国税局可能要到2030年才能完全升级它。目前，它仍然是一个巨大的安全风险。",
+          "国税局早在1986年就测试了电子申报。e-file项目早期的试点，最初侧重于税务专业人士，于1986年启动，并在1990年全国范围内扩展。到了90年代末，e-file项目也成为普通消费者的选择，但在那之前，他们还有一种更新颖的选择：TeleFile，一个国税局自1992年起提供的电话报税程序。",
+          "国税局帮助普及了PDF格式。正如我们在关于便携式文档格式历史的文章中所提到的，Adobe这个无处不在的工具最早的主要用户之一就是国税局。国税局看到了一个机会，可以减少它向纳税人发送的数亿份表格。它早在1994年就开始使用这项技术来分发税务表格。国税局对其PDF文件非常重视，这一点从它的网站上可以找到追溯到1913年的1040表格就可以得到证明。",
+          "国税局如今已成为纯电子支付平台。几十年来，人们一直可以通过电子方式从政府获得退税，但现在几乎在所有情况下都强制要求使用电子支付。去年，特朗普政府发布了第14247号行政命令《现代化美国银行账户的收付款》，规定必须通过 ACH 等电子方式进行支付，而非纸质支票。",
+          "第一次世界大战曾短暂导致富人缴纳巨额税款。第二次世界大战则迫使普通人也开始报税。",
+          "我对所得税这一话题产生兴趣，是因为我在一家旧货店里发现了一本杂志长度的指南。它详细解释了税表如何填写、家庭及公众应考虑的事项，甚至展示了税表样本，并提供基础会计建议。",
+          "这本指南承诺提供500个问答，旨在将普通人最感困惑的事情变得通俗易懂。书中还配有工作簿，帮助读者更轻松地追踪每月收入。",
+          "（当然，它闻起来味道不太好，不过我们可以忽略这一点。）",
+          "这是当时最著名的同类指南之一，最初由罗德曼·L·莫德拉（Rodman L. Modra）编写，他曾在职业生涯早期担任纽约市内部收入部门的副征收官。他的指南在全国多家报纸上广泛宣传，可以说它就像当年的《傻瓜指南》或甚至 TurboTax 的前身。",
+          "莫德拉凭借这一模式迅速取得成功，但他未能亲眼见证自己的创意发展成庞大的商业帝国。就在所得税制度不断扩展影响力的1943年，莫德拉去世了（是的，又是纽约时报的报道，同样适用此政策）。他当时61岁，显然还有更多潜力尚未发挥。唉，真是遗憾。",
+          "所以，这本指南确实在他去世后继续流传了一段时间。但它没能像它所记录的所得税制度那样长久存在。其他公司最终也抓住了我们每年必须经历的“税务焦虑时刻”所带来的商机。",
+          "迪士尼在1942年制作了一部动画片，用于说服人们缴纳税款。",
+          "那么，为什么这样一本指南在20世纪40年代中期显得尤为重要呢？因为1942年，国会通过了新的税法——《1942年税收法案》，实际上降低了税率档次。现在，普通人也需要提交1040表格了。",
+          "这确实是必要的。毕竟，世界大战开销巨大，总得有人来承担，那为什么不从中产阶级开始呢？",
+          "随着越来越多的人需要报税，国税局需要一种新的方式来“先扣后付”。过去，人们要么按季度缴税，要么按年缴税，这在大家普遍富裕时还能行得通，但对中产阶级来说就不太合适了。正如税务历史学家约瑟夫·桑德里奇在2022年写道：“当只有富人需要缴纳所得税时，这套系统运行得还算不错，因为他们通常组织有序且财务知识丰富。但税务专家担心，一旦这项税种扩展到数百万新纳税人，系统就会失灵。”",
+          "解决这一局面的方案并不明确。企业主张推行全国销售税，但财政部对此并不热衷。",
+          "最有助于我们找到前进方向的人是大都会百货公司的执行长兼经济学家比德塞尔·拉姆尔。他的计划是：让税制实现“随赚随缴”。也就是说，人们不再需要提前储蓄收入，事后一次性缴税——或者更糟的是，陷入与国税局之间的还款计划中——而是彻底闭环处理。",
+          "“时光无法阻挡，当截止日期到来时，他们必须用已经到手的收入缴纳应缴税款，”鲁尔在一篇给达特茅斯校友杂志的文章中解释道。",
+          "在1943年接受CBS新闻采访时，他将补税问题归结为一种远见上的缺失。",
+          "1913年美国联邦所得税法案通过时存在一个重要缺陷：要求公民在1914年为其1913年的收入纳税。由此我们开启了一种不良惯例——用某一年的收入去支付前一年已过去年份的税款。由于税率不断攀升，人们因所得税而欠联邦政府的债务已成为全国性隐患。现行制度对我们所有人都不利，理应且能够被纠正。显然，政府不可能长期成为约2700万纳税人及其家庭的债权人，而这些人如今正因所得税背负巨额债务，尤其是在改变征税基础、推行“随收随缴”制度并不会造成重大财政收入损失的情况下。",
+          "从这个角度看，随收随缴制度是合理的。你可以通过工资税实现随收随缴，或者每次购物时向联邦政府缴纳一两个便士。关于众议院筹款委员会对此议题的争论，一篇电讯稿这样写道：“普通美国人是否应该通过对其收入征税而非其支出征税来为战争买单？”",
+          "最终，经过一番反复讨论（相关内容收录于这份PDF文件），我们选择了工资税方案。国会于1943年通过了《当期税款缴纳法案》。（缓解阵痛：根据Tax Notes报道，工资税过渡实施的第一年，联邦政府将所有人的税率削减了75%，就像你刚加入一个月牛排俱乐部的入门计划一样。不过，那些突然发现大笔收入凭空消失的人显然没心情吃牛排。）",
+          "如果你是自由职业者，很可能仍需按季度或年度缴税，扣除你能争取到的各项减免后。但话说回来，它覆盖了大多数人，正如今天的情况一样。",
+          "这种税收模式令人困惑且不受欢迎，但至少“随收随缴”让税务处理变得更用户友好。",
+          "回到这本我偶然发现的奇怪税法书籍，尽管涵盖内容庞杂，但最让我印象深刻的一点是：是的，你自己完全可以搞定这一切。",
+          "即使你不习惯处理数字，填写个人所得税申报表也并非真的困难。只要你掌握基本的加减乘运算，并具备足够的耐心坚持完成所需时间——你会发现它其实非常简单。1944年的新报税表比去年简单得多，任何人都不应犹豫自行填写税务表格。",
+          "这本书详细说明了各行各业从业者需要了解的特定税收政策，包括演员、神职人员、机械师等。它覆盖面广，但并不因你对税务知识的无知而加以评判。",
+          "这与我们从现代税务体系中习惯的运作方式截然不同，后者通常强调你需要额外工具才能完成报税。TurboTax 和 H&R Block 之所以存在，是因为总得有人确保你报税时别搞砸了。而这本书背后没有任何技术支撑，它只是一位精通税务的专家（或至少是他身后那个成功的团队）的智慧结晶。",
+          "尽管随着时间的推移，一些规定逐渐变得复杂——如今扣除项的细节相当繁琐——但书中的内容依然清晰可辨。不过，过去三十年左右，人们用纸笔自行报税的概率已大幅下降。",
+          "假设你在2026年拿到一份手填报税表，你能独立完成吗？你会放弃吗？还是说，比起 TurboTax 那没完没了的电子表单，你反而更可能在布满潦草字迹的纸上把事情搞砸？",
+          "近年来，ProPublica 出色地揭露了 TurboTax 误导用户认为其服务完全免费的事实，这一报道堪称新闻史上针对单一企业最成功的调查之一。此举很可能推动了“直接报税”（direct-file）模式的兴起，让所有人都能免费完成报税。",
+          "然而，Intuit 和 H&R Block 拥有更强的游说力量，特朗普上任后不久就终止了该计划。本周，伊丽莎白·沃伦试图在国会重启此倡议的努力也宣告失败。",
+          "但曾经有一段时间，联邦政府的目标是让报税变得更简单，而不是更复杂，这就是“随收随缴”（pay as you go）制度的初衷。贝兹利·拉姆（Beardsley Ruml）当时看得很清楚。",
+          "--",
+          "觉得这本书有意思？不妨分享给朋友！愿今年成为你最后一次看到税务相关内容的日子。",
+          "再次感谢 la machine 的赞助。幸好它不会帮你报税。"
+        ]
+      }
+    }
+  ]
+}

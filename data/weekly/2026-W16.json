@@ -1,0 +1,2361 @@
+{
+  "weekId": "2026-W16",
+  "rangeStart": "2026-04-13",
+  "rangeEnd": "2026-04-19",
+  "generatedAt": "2026-04-22T13:48:02.769Z",
+  "stats": {
+    "totalDays": 7,
+    "candidateArticles": 99,
+    "uniqueSources": 33
+  },
+  "topPicks": [
+    {
+      "slug": "30e4e70469c8a8ab",
+      "title": "Gaussian distributed weights for LLMs",
+      "titleZh": "LLM 中的高斯分布权重",
+      "link": "https://www.johndcook.com/blog/2026/04/18/qlora/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-18T14:49:27.000Z",
+      "category": "ai-ml",
+      "keywords": ["LLM", "NF4", "quantization", "weights"],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 9,
+        "total": 27
+      },
+      "summary": "本文探讨了为大型语言模型（LLMs）设计高斯分布权重的技术方案，重点分析了 NF4 和 FP4 两种 4 位浮点格式在量化过程中的应用。NF4 是一种专为高斯分布优化的 4 位数据类型，相比标准 FP4 能更好地保持数值分布特性，提升低比特量化下的模型性能。文章指出，当从 Hugging Face 下载四比特量化的 LLM 权重时，这些权重通常采用 NF4 或 FP4 格式存储。作者强调，这种基于统计特性的量化方法显著提高了低精度推理的准确性和稳定性。",
+      "summaryEn": "This article discusses the use of Gaussian-distributed weights in large language models (LLMs), focusing on two 4-bit floating-point formats: NF4 and FP4. NF4 is specifically designed to align with the statistical properties of Gaussian distributions, offering better performance than standard FP4 for low-precision quantization. When downloading quantized LLM weights from Hugging Face at four bits, they are typically stored in either NF4 or FP4 format. The author highlights that this approach improves accuracy and stability in low-bit inference by preserving the underlying data distribution.",
+      "reason": "如果你正在研究 LLM 量化技术，这篇关于 NF4 与高斯分布结合的文章提供了关键的理论基础和实用见解，值得深入阅读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John Cook",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The previous post looked at the FP4 4-bit floating point format. This post will look at another 4-bit floating point format, NF4, and higher precision analogs. NF4 and FP4 are common bitsandbytes 4-bit data types. If you download LLM weights from Hugging Face quantized to four bits, the weights might be in NF4 or FP4 format. Or maybe some other format: there’s a surprising amount of variety in how 4-bit numbers are implemented."
+          },
+          {
+            "type": "h2",
+            "text": "Why NF4"
+          },
+          {
+            "type": "p",
+            "text": "LLM parameters have a roughly Gaussian distribution, and so evenly spaced numeric values are not ideal for parameters. Instead, you’d like numbers that are closer together near 0."
+          },
+          {
+            "type": "p",
+            "text": "The FP4 floating point numbers, described in the previous post, are spaced 0.5 apart for small values, and the larger values are spaced 1 or 2 apart. That’s hardly a Gaussian distribution, but it’s closer to Gaussian than a uniform distribution would be. NF4 deliberately follows more of a Gaussian distribution."
+          },
+          {
+            "type": "p",
+            "text": "The QLoRA formats [1], unlike FP4, are not analogs of IEEE numbers. The bits are not interpreted as sign, exponent, and mantissa, but rather as integers to be used as indexes. An NFn number is an index into a list of 2n real numbers with Gaussian spacing. To put it another way, the numbers represented by NFn have uniformly distributed z-scores."
+          },
+          {
+            "type": "p",
+            "text": "That makes sense at a high level, but the paper [1] is hard to follow in detail. It says"
+          },
+          {
+            "type": "quote",
+            "text": "More formally, we estimate the 2k values qi of the data type as follows:\n\nwhere QX(·) is the quantile function of the standard normal distribution N(0, 1)."
+          },
+          {
+            "type": "p",
+            "text": "The paper doesn’t give the range of i but it says there are 2k values, implying that i runs from 0 to 2k −1 or from 1 to 2k. Either way runs into infinite values since Q(0) = −∞ and Q(1) = ∞. We could avoid infinities by letting i run from 1 to 2n − 1."
+          },
+          {
+            "type": "p",
+            "text": "The next sentence is puzzling."
+          },
+          {
+            "type": "quote",
+            "text": "A problem for a symmetric k-bit quantization is that this approach does not have an exact representation of zero, which is an important property to quantize padding and other zero-valued elements with no error."
+          },
+          {
+            "type": "p",
+            "text": "I understand the desire to represent 0 exactly, but the equation above has an exact representation of 0 when i = 2n − 1. Perhaps the authors had in mind that i takes on the values ½, 1 + ½, 2 + ½, …, 2n − ½. This would be reasonable, but a highly unusual use of notation. It seems that the real problem is not the lack of a representation of 0 but an unused index, with i running from 1 to 2n − 1."
+          },
+          {
+            "type": "p",
+            "text": "To be fair, the first sentence quoted above says “we estimate the 2k values …” and so the equation above may not be intended as a definition but as motivation for the actual definition."
+          },
+          {
+            "type": "h2",
+            "text": "Reproducing NF4"
+          },
+          {
+            "type": "p",
+            "text": "The authors give a procedure for using 2n values of i and obtaining an exact representation of 0, and they give a list of NF4 values in Appendix E. I was not able to get the two to match. I implemented a few possible interpretations of the procedure described in the paper, and each approximates the list of values in the appendix, but not closely."
+          },
+          {
+            "type": "p",
+            "text": "The following code, written with the help of ChatGPT, reverse engineers the NF4 values to 8 decimal places, i.e. to the precision of a 32-bit floating point number."
+          },
+          {
+            "type": "code",
+            "text": "from scipy.stats import norm\n\nQ = norm.ppf\n\nα  = 0.9677083\nZ  = Q(α)\nδ1 = (α - 0.5)/7\nδ2 = (α - 0.5)/8\n\nq = [0]*16\nfor i in range(7):\n    q[i] = -Q(α - i*δ1)/Z\nfor i in range(8):\n    q[i+8] = Q(0.5 + (i+1)*δ2)/Z\n    \n# Values given in Appendix E\nNF4 = [\n    -1.0,\n    -0.6961928009986877,\n    -0.5250730514526367,\n    -0.39491748809814453,\n    -0.28444138169288635,\n    -0.18477343022823334,\n    -0.09105003625154495,\n    0.0,\n    0.07958029955625534,\n    0.16093020141124725,\n    0.24611230194568634,\n    0.33791524171829224,\n    0.44070982933044434,\n    0.5626170039176941,\n    0.7229568362236023,\n    1.0\n]\n\n# Compare \nfor i in range(16):\n    print(i, NF4[i] - q[i])"
+          },
+          {
+            "type": "p",
+            "text": "The magic number α = 0.9677083 is a mystery. I asked ChatGPT to look into this further, and it said that bitsandbytes uses α = 929/960 = 0.9677083333333333. When I use this value for α the precision is about the same, which is fine. However, the values in the paper were given to 16 decimal places, so I thought it might be able to match the values to more precision."
+          },
+          {
+            "type": "p",
+            "text": "Quibbles over the exact values of NF4 aside, the NF4 format works well in practice. Models. quantized to 4 bits using NF4 perform better than models quantized to other 4-bit formats on some benchmarks."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Anatomy of a floating point number"
+          },
+          {
+            "type": "li",
+            "text": "Anatomy of a posit number"
+          },
+          {
+            "type": "li",
+            "text": "Half precision numbers"
+          },
+          {
+            "type": "p",
+            "text": "[1] QLoRA: Efficient Finetuning of Quantized LLMs by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. https://arxiv.org/abs/2305.14314."
+          }
+        ],
+        "translations": [
+          "前文探讨了 FP4 4位浮点格式。本文将介绍另一种 4 位浮点格式 NF4 及其更高精度的变体。NF4 和 FP4 是 bitsandbytes 中常见的 4 位数据类型。如果你从 Hugging Face 下载了量化为四位的 LLM 权重，这些权重可能采用 NF4 或 FP4 格式。当然也可能是其他格式：4 位数字的实现方式多种多样，令人惊讶。",
+          "为何选择 NF4？",
+          "LLM 参数大致呈高斯分布，因此等间距的数值并不理想。理想情况下，靠近 0 的值应更密集。",
+          "前文所述的 FP4 浮点数在小值区间间距为 0.5，大值区间则变为 1 或 2，虽远非高斯分布，但比均匀分布更接近高斯特性。而 NF4 则有意遵循更接近高斯分布的数值间隔。",
+          "QLoRA 格式 [1] 与 FP4 不同，它并非 IEEE 浮点数的模拟。其比特位不解释为符号、指数和尾数，而是作为整数索引使用。NFn 表示一个指向包含 2^n 个具有高斯间距实数的列表的索引。换言之，NFn 所表示的数值具有均匀分布的标准分数（z-score）。",
+          "从宏观上看这很合理，但论文 [1] 的细节部分难以理解。文中写道：",
+          "更正式地说，我们按如下方式估计数据类型的 2^k 个值 q_i：\n\n其中 QX(·) 是标准正态分布 N(0, 1) 的分位数函数。",
+          "论文未明确 i 的取值范围，但提到共有 2^k 个值，暗示 i 从 0 到 2^k−1 或从 1 到 2^k。无论哪种情况都会遇到无穷值，因为 Q(0) = −∞ 且 Q(1) = +∞。为避免无穷值，我们可以让 i 从 1 到 2^n−1。",
+          "下一句话令人费解。",
+          "对于对称 k 位量化的问题在于，这种方法无法精确表示零，而零的精确表示对量化填充符和其他零值元素至关重要，否则会产生误差。",
+          "我理解需要精确表示 0 的动机，但上述公式在 i = 2^n−1 时确实能精确表示 0。或许作者原本考虑的是 i 取值为 ½, 1+½, 2+½, ..., 2^n−½。这在逻辑上合理，但对数学符号的使用极为罕见。真正的核心问题可能不是缺乏 0 的表示，而是存在一个未被使用的索引——i 本应从 1 到 2^n−1。",
+          "公平起见，上面引用的第一句说的是“我们估计 2^k 个值……”，因此该公式可能并非定义式，而是实际定义的动机说明。",
+          "重现 NF4",
+          "作者给出了利用 2^n 个 i 值并实现零的精确表示的方法，同时在附录 E 中列出了 NF4 的具体数值。但我未能使两者完全匹配。我尝试了论文描述中几种可能的解释方式，每种都能近似附录中的数值，但精度不足。",
+          "以下代码借助 ChatGPT 编写，通过逆向工程还原 NF4 数值，精度达小数点后八位，即 32 位浮点数的精度水平。",
+          "from scipy.stats import norm\n\nQ = norm.ppf\n\nα  = 0.9677083\nZ  = Q(α)\nδ1 = (α - 0.5)/7\nδ2 = (α - 0.5)/8\n\nq = [0]*16\nfor i in range(7):\n    q[i] = -Q(α - i*δ1)/Z\nfor i in range(8):\n    q[i+8] = Q(0.5 + (i+1)*δ2)/Z\n    \n# Values given in Appendix E\nNF4 = [\n    -1.0,\n    -0.6961928009986877,\n    -0.5250730514526367,\n    -0.39491748809814453,\n    -0.28444138169288635,\n    -0.18477343022823334,\n    -0.09105003625154495,\n    0.0,\n    0.07958029955625534,\n    0.16093020141124725,\n    0.24611230194568634,\n    0.33791524171829224,\n    0.44070982933044434,\n    0.5626170039176941,\n    0.7229568362236023,\n    1.0\n]\n\n# Compare \nfor i in range(16):\n    print(i, NF4[i] - q[i])",
+          "神秘常数 α = 0.9677083 的来源不明。我问 ChatGPT 进一步分析，它指出 bitsandbytes 使用的是 α = 929/960 = 0.9677083333333333。使用该值时精度基本一致，尚可接受。然而论文中给出的数值精确到小数点后十六位，我以为或许能匹配更高精度。",
+          "除了对 NF4 的精确值存在一些争议外，NF4 格式在实践中表现良好。使用 NF4 进行 4 位量化的模型在某些基准测试中优于采用其他 4 位量化格式的模型。",
+          "相关文章",
+          "浮点数的结构",
+          "Posit 数的结构",
+          "半精度数",
+          "[1] QLoRA: Efficient Finetuning of Quantized LLMs by Tim Dettmers, Artidoro Pagnoni, Ari Holtzman, and Luke Zettlemoyer. https://arxiv.org/abs/2305.14314."
+        ]
+      },
+      "fromDate": "2026-04-18"
+    },
+    {
+      "slug": "9b45d5003392b114",
+      "title": "Intersecting spheres and GPS",
+      "titleZh": "相交球体与GPS定位",
+      "link": "https://www.johndcook.com/blog/2026/04/14/intersecting-spheres-and-gps/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-14T14:08:36.000Z",
+      "category": "engineering",
+      "keywords": ["GPS", "spheres", "geometry", "location"],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 26
+      },
+      "summary": "文章解释了GPS定位背后的几何原理：当已知到卫星的距离d时，用户位置必然位于地球表面与该距离构成的以卫星为中心的球面的交线上，而两个球面的交集是一个圆。因此，单颗卫星的观测只能确定用户在一个圆环上，需至少三颗卫星才能实现精确定位。这一原理揭示了为什么单个GPS测量值无法唯一确定位置。",
+      "summaryEn": "The article explains the geometric principle behind GPS positioning: knowing the distance d to a satellite defines a circle of possible locations, as the user lies at the intersection of Earth's surface and a sphere centered on the satellite. Since two spheres intersect in a circle, one observation alone cannot pinpoint location—at least three satellites are needed for precise triangulation. This clarifies why a single GPS measurement yields only a range.",
+      "reason": "它用直观的球面几何解释了看似简单的GPS技术背后隐藏的关键限制，适合对定位原理感兴趣的读者快速理解核心机制。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you know the distance d to a satellite, you can compute a circle of points that passes through your location. That’s because you’re at the intersection of two spheres—the earth’s surface and a sphere of radius d centered on the satellite—and the intersection of two spheres is a circle. Said another way, one observation of a satellite determines a circle of possible locations."
+          },
+          {
+            "type": "p",
+            "text": "If you know the distance to a second satellite as well, then you can find two circles that contain your location. The two circles intersect at two points, and you know that you’re at one of two possible positions. If you know your approximate position, you may be able to rule out one of the intersection points."
+          },
+          {
+            "type": "p",
+            "text": "If you know the distance to three different satellites, now you know three circles that you’re standing on, and the third circle will only pass through one of the two points determined by the first two satellites. Now you know exactly where you are."
+          },
+          {
+            "type": "p",
+            "text": "Knowing the distance to more satellites is even better. In theory additional observations are redundant but harmless. In practice, they let you partially cancel out inevitable measurement errors."
+          },
+          {
+            "type": "p",
+            "text": "If you’re not on the earth’s surface, you’re still at the intersection of n spheres if you know the distance to n satellites. If you’re in an airplane, or on route to the moon, the same principles apply."
+          },
+          {
+            "type": "h2",
+            "text": "Errors and corrections"
+          },
+          {
+            "type": "p",
+            "text": "How do you know the distance to a satellite? The satellite can announce what time it is by its clock, then when you receive the announcement you compare it to the time by your clock. The difference between the two times tells you how long the radio signal traveled. Multiply by the speed of light and you have the distance."
+          },
+          {
+            "type": "p",
+            "text": "However, your clock will probably not be exactly synchronized with the satellite clock. Observing a fourth satellite can fix the problem of your clock not being synchronized with the satellite clocks. But it doesn’t fix the more subtle problems of special relativity and general relativity. See this post by Shri Khalpada for an accessible discussion of the physics."
+          },
+          {
+            "type": "h2",
+            "text": "Numerical computation"
+          },
+          {
+            "type": "p",
+            "text": "Each distance measurement gives you an equation:"
+          },
+          {
+            "type": "p",
+            "text": "|| x – si || = di"
+          },
+          {
+            "type": "p",
+            "text": "where si is the location of the ith satellite and di is your distance to that satellite. If you square both sides of the equation, you have a quadratic equation. You have to solve a system of nonlinear equations, and yet there is a way to transform the problem into solving linear equations, i.e. using linear algebra. See this article for details."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "The navigation triangle"
+          },
+          {
+            "type": "li",
+            "text": "Dutton’s Navigation and Piloting"
+          }
+        ],
+        "translations": [
+          "如果你知道到某颗卫星的距离d，就可以计算出经过你所在位置的一个圆。这是因为你位于两个球面的交点上——地球表面和以一个卫星为中心、半径为d的球面——而两个球面的交集是一个圆。换句话说，观测一颗卫星只能确定一个可能的地点集合（即一个圆）。",
+          "如果你还知道到第二颗卫星的距离，就能找到两个包含你所在位置的圆。这两个圆相交于两点，说明你可能位于其中任意一个位置。若已知你的大致位置，或许可以排除其中一个交点。",
+          "当你知道到三颗不同卫星的距离时，就相当于有三个圆经过你的位置。此时第三圆只会通过前两个圆确定的两个点中的一个，从而精确锁定你的位置。",
+          "知道更多卫星的距离当然更好。理论上这些额外观测是冗余的，但无害。实际上它们能帮助你部分抵消不可避免的测量误差。",
+          "即使你不在地球表面——比如在飞机上或飞向月球途中——只要知道到n颗卫星的距离，你就处于n个球面的交点上，基本原理依然适用。",
+          "误差与修正",
+          "如何获知到卫星的距离？卫星会广播其时钟显示的时间，你收到后与自己时钟对比。两者时间差即为无线电信号传播耗时，乘以光速即得距离。",
+          "然而你的时钟很可能与卫星时钟不同步。观测第四颗卫星可解决时钟不同步问题，但无法修正狭义相对论和广义相对论带来的更微妙的影响。参见Shri Khalpada撰写的这篇通俗易懂的物理讨论文章。",
+          "数值计算",
+          "每次测距都给出一个方程：",
+          "|| x – si || = di",
+          "其中si是第i颗卫星的位置，di是你到该卫星的距离。将等式两边平方后得到一个二次方程。虽然需要求解非线性方程组，但存在一种方法可将问题转化为线性方程组的求解，即使用线性代数。详见相关文章。",
+          "相关博文",
+          "导航三角形",
+          "Dutton’s Navigation and Piloting"
+        ]
+      },
+      "fromDate": "2026-04-14"
+    },
+    {
+      "slug": "d1fe29f37d048119",
+      "title": "WorkOS FGA: The Authorization Layer for AI Agents",
+      "titleZh": "WorkOS FGA：面向 AI 代理的授权层",
+      "link": "https://workos.com/blog/agents-need-authorization-not-just-authentication?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q22026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-19T17:37:01.000Z",
+      "category": "engineering",
+      "keywords": ["WorkOS", "FGA", "authorization", "AI agents"],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "文章探讨了企业级 AI 代理部署中的核心瓶颈——授权而非身份验证。WorkOS FGA 通过资源级权限控制代理的操作范围，解决了传统认证无法限制“破坏半径”的问题。该方案使企业能在不牺牲功能的前提下安全地集成 AI 代理。作者强调，企业级 AI 的成功不在于功能多少，而在于能否被信任和管控。",
+      "summaryEn": "The article addresses the critical bottleneck in enterprise AI agent deployment: authorization, not authentication. WorkOS FGA solves this by implementing resource-level permissions to define an agent's operational scope, preventing unauthorized access beyond its blast radius. This approach enables secure integration of AI agents without compromising functionality. The author argues that successful enterprise AI will be determined by trustworthiness and control, not feature richness.",
+      "reason": "如果你正在构建或部署企业级 AI 代理系统，这篇关于细粒度授权的深度解析能帮你避免最隐蔽的安全陷阱。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "WorkOS",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Every major architectural shift exposes the limits of our access control models. Multi-tenant SaaS broke filesystem permissions. Microservices broke monolithic session management. Now, AI agents are breaking the authorization patterns we spent the last decade standardizing."
+          },
+          {
+            "type": "p",
+            "text": "Agents are already operating inside enterprise infrastructure. They summarize documents, triage tickets, and manage cloud resources. Yet most authenticate using the same primitives as humans: an OAuth token, a session cookie, or a service account key. They inherit the user's full access or operate with broader privileges than any single user should possess."
+          },
+          {
+            "type": "h2",
+            "text": "The Confused Deputy problem"
+          },
+          {
+            "type": "p",
+            "text": "To understand the architectural risk, consider the \"Confused Deputy\" problem. In security theory, a deputy is a program with authority to act that is tricked by a lower-privileged user into misusing that authority."
+          },
+          {
+            "type": "p",
+            "text": "Consider a Platform Engineering team that deploys a \"Cluster Debug Agent\" to troubleshoot Kubernetes deployments. The agent uses a service account with secrets:read access to verify configuration maps."
+          },
+          {
+            "type": "p",
+            "text": "The trigger: A developer debugging a payment service crash needs to see production environment variables. They lack direct access to production secrets, which are restricted to SREs. They ask the agent: \"Diff the production environment variables against staging so I can see what changed.\""
+          },
+          {
+            "type": "p",
+            "text": "The action: The agent executes the query. It possesses the secrets:read permission, so the cluster control plane allows the request."
+          },
+          {
+            "type": "p",
+            "text": "The result: The agent posts the diff to a shared Slack channel."
+          },
+          {
+            "type": "code",
+            "text": "\n- STRIPE_SECRET_KEY: \"sk_test_...\"\n+ STRIPE_SECRET_KEY: \"sk_live_51M...\"\n  "
+          },
+          {
+            "type": "p",
+            "text": "A production API key is effectively leaked to fifty people."
+          },
+          {
+            "type": "p",
+            "text": "No misconfiguration occurred. The agent acted within its permissions (secrets:read) and the developer acted within theirs (chat:write). The system failed because it did not check the intersection of their privileges. The agent acted as a confused deputy and bypassed the IAM controls intended to restrict the developer."
+          },
+          {
+            "type": "p",
+            "text": "This forces every team to answer a specific question: When an agent acts on behalf of a user, whose permissions apply?"
+          },
+          {
+            "type": "h2",
+            "text": "Agents are not users. They are not service accounts."
+          },
+          {
+            "type": "p",
+            "text": "The identity industry is currently defining where agents fit in the IAM stack."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft introduced Entra Agent ID as a native identity class. NIST published a concept paper on agent identity in February 2026. The IETF is standardizing the /Agents resource in SCIM."
+          },
+          {
+            "type": "p",
+            "text": "The consensus is that agents are a distinct identity class requiring purpose-built infrastructure. However, the industry focus remains on Authentication (proving identity). The unsolved engineering challenge is Authorization (enforcing capabilities)."
+          },
+          {
+            "type": "h3",
+            "text": "The intent gap"
+          },
+          {
+            "type": "p",
+            "text": "Traditional service accounts are deterministic. A CI/CD runner has a fixed scope to pull code and push artifacts. You define the access once and it rarely changes because the runner never generates its own intent."
+          },
+          {
+            "type": "p",
+            "text": "Agents differ in two fundamental ways."
+          },
+          {
+            "type": "p",
+            "text": "First, they generate intent. A traditional OAuth client forwards a user's request. An agent reasons about a problem and decides which tools to invoke."
+          },
+          {
+            "type": "p",
+            "text": "Second, their scope is non-deterministic. You cannot predict at design time what an agent will need. A coding agent might need read access to repo:backend today and write access to repo:frontend tomorrow."
+          },
+          {
+            "type": "p",
+            "text": "Solving this with static roles forces a binary trade-off. You either block the agent from functioning or grant it broad admin access."
+          },
+          {
+            "type": "h2",
+            "text": "The two modes of agent authorization"
+          },
+          {
+            "type": "p",
+            "text": "Agent implementations typically fall into one of two patterns. Each introduces specific authorization requirements."
+          },
+          {
+            "type": "h3",
+            "text": "1. On-Behalf-Of (OBO) agents"
+          },
+          {
+            "type": "p",
+            "text": "These serve as extensions of a human user, like Claude Code or GitHub Copilot. They operate specifically within a user’s session."
+          },
+          {
+            "type": "p",
+            "text": "The security requirement here is Scope Attenuation. The agent should access a subset of the user's permissions, never the full set. If a user asks an agent to refactor a specific file, it should not have access to sensitive configuration files in the parent directory."
+          },
+          {
+            "type": "p",
+            "text": "Currently, most OBO agents inherit the user's full access token."
+          },
+          {
+            "type": "h3",
+            "text": "The MCP gap"
+          },
+          {
+            "type": "p",
+            "text": "The Model Context Protocol (MCP) is becoming the standard interface for these agents. However, it explicitly delegates authorization to the implementer."
+          },
+          {
+            "type": "p",
+            "text": "MCP currently relies on OAuth 2.1 scopes like files:read. Scopes are coarse strings. files:read grants access to every file the user can see, from a README to a production .env file. The spec recommends \"scope guidance\" but leaves granular enforcement to the application logic."
+          },
+          {
+            "type": "p",
+            "text": "Even as protocols adopt Rich Authorization Requests (RFC 9396) to allow structured intent like {\"file\": \"main.rs\"}, this remains a data format. It acts as an envelope for the request but provides no logic to evaluate whether the request should be granted."
+          },
+          {
+            "type": "h3",
+            "text": "The shared context trap"
+          },
+          {
+            "type": "p",
+            "text": "Scope attenuation fails in shared contexts."
+          },
+          {
+            "type": "p",
+            "text": "Consider a \"Finance Assistant\" agent added to a team Slack channel. The agent authenticates with the CFO’s credentials. A junior analyst asks about Q3 budget projections."
+          },
+          {
+            "type": "p",
+            "text": "The agent checks its own permissions, confirms the CFO has access, and posts the data. The junior analyst now sees executive compensation data they are not authorized to view."
+          },
+          {
+            "type": "p",
+            "text": "Traditional authorization checks happen at retrieval. Shared contexts require checking authorization at output by calculating the intersection of permissions across all audience members. Traditional RBAC cannot model this graph."
+          },
+          {
+            "type": "h3",
+            "text": "2. Autonomous agents"
+          },
+          {
+            "type": "p",
+            "text": "These operate without a user loop, such as a security bot rotating keys or a billing agent reconciling invoices."
+          },
+          {
+            "type": "p",
+            "text": "Identity is largely solved here. Microsoft Entra Agent ID allows these agents to authenticate via the client_credentials flow with a distinct Client ID. This ensures audit logs attribute actions to Agent-007 rather than a human user."
+          },
+          {
+            "type": "h3",
+            "text": "The \"God Mode\" problem"
+          },
+          {
+            "type": "p",
+            "text": "The authorization layer remains flawed. In a standard client_credentials flow, the resulting token often dictates broad access. To allow a billing agent to read invoices, you generally grant the Files.Read.All scope."
+          },
+          {
+            "type": "p",
+            "text": "This results in a \"God mode\" agent. It can read invoices, but also employee contracts and patent drafts. You cannot easily scope a standard OAuth token to \"Read only files in the Finance folder.\" This effectively grants root access to a probabilistic script."
+          },
+          {
+            "type": "h3",
+            "text": "Why \"flat\" RBAC fails the agent test"
+          },
+          {
+            "type": "p",
+            "text": "If agents require limited scope, the obvious question is: \"Why not just create a specific role?\" Why not create a Billing_Agent role and be done with it?"
+          },
+          {
+            "type": "p",
+            "text": "The failure lies in the geometry of the authorization model. Traditional Role-Based Access Control (RBAC) is flat. It maps a subject to a role, and a role to a set of global permissions (read:repos). This works for humans because human access usually correlates to job title, which is stable and broad."
+          },
+          {
+            "type": "p",
+            "text": "Agent access correlates to tasks, which are transient and specific."
+          },
+          {
+            "type": "p",
+            "text": "You do not want an agent to be an \"Editor of Repositories.\" You want to enforce: \"This agent can edit code on branch:feature-xyz in repository:api, and nothing else.\""
+          },
+          {
+            "type": "p",
+            "text": "To express this in flat RBAC, you would need to create a unique role for every permutation of resource and permission:"
+          },
+          {
+            "type": "li",
+            "text": "Role: Editor_Repo_API_Branch_XYZ"
+          },
+          {
+            "type": "li",
+            "text": "Role: Viewer_Repo_Frontend_Branch_ABC"
+          },
+          {
+            "type": "p",
+            "text": "In an enterprise with thousands of repositories and ephemeral branches, this triggers a combinatorial explosion. You move from managing O(1) roles to O(N x M) roles. The friction of managing these static roles exceeds the velocity value of the agent itself."
+          },
+          {
+            "type": "h3",
+            "text": "The fix: FGA = RBAC + hierarchy"
+          },
+          {
+            "type": "p",
+            "text": "This is where Fine-Grained Authorization (FGA) comes in. It isn't a replacement for the concepts you know; it is a natural extension of RBAC."
+          },
+          {
+            "type": "p",
+            "text": "To solve this, we do not need to abandon RBAC. We need to scope it. This is the definition of Fine-Grained Authorization (FGA)."
+          },
+          {
+            "type": "p",
+            "text": "FGA is not a replacement for the concepts you know; it is the application of RBAC to a resource hierarchy."
+          },
+          {
+            "type": "code",
+            "text": "\nOrganization: Acme\n └── Repository: API\n       └── Branch: feature-xyz  <-- Agent Permission Starts Here\n             └── Actions: [push, merge]\n  "
+          },
+          {
+            "type": "p",
+            "text": "You keep the familiar mental model of roles (Editor, Viewer), but you attach them to specific nodes in the graph rather than the root."
+          },
+          {
+            "type": "li",
+            "text": "Vertical inheritance: An agent assigned Editor on Branch: feature-xyz automatically inherits access to every file and action inside that branch."
+          },
+          {
+            "type": "li",
+            "text": "No lateral movement: Crucially, that permission does not bleed sideways to Branch: staging or upwards to Repository: API."
+          },
+          {
+            "type": "p",
+            "text": "In this model, the agent possesses full power where it is required and zero power everywhere else."
+          },
+          {
+            "type": "h3",
+            "text": "Scaling the graph: Structural Resources vs. Asset Data"
+          },
+          {
+            "type": "p",
+            "text": "A common concern when adopting a centralized authorization service is the overhead of state synchronization. If your application manages millions of individual assets, you might assume every single one needs to be mirrored into the FGA graph. In practice, you only sync the Structural Hierarchy, not the Asset Data."
+          },
+          {
+            "type": "p",
+            "text": "Think of FGA as the skeleton of your permissions. You register the high-level containers that define your access boundaries: Organizations, Workspaces, and Projects. These are your Structural Resources. Your high-volume Asset Data, such as individual files within a folder or images in a project, stays in your primary application store."
+          },
+          {
+            "type": "p",
+            "text": "When an agent requests access to a specific asset, your application logic performs a simple two-step check:"
+          },
+          {
+            "type": "li",
+            "text": "Application logic: Identify which container (e.g., Folder: Q3-Financials) the asset belongs to."
+          },
+          {
+            "type": "li",
+            "text": "FGA: Ask check(subject=Agent, role=viewer, resource=Folder:Q3-Financials)."
+          },
+          {
+            "type": "p",
+            "text": "By checking access against the parent container rather than the individual asset, you keep the authorization graph lean and maintain sub-50ms latency. You avoid the \"double-write\" consistency issues that plague massive data syncs, gaining granular security without the infrastructure cost of a full database mirror."
+          },
+          {
+            "type": "h2",
+            "text": "How FGA solves the two agent modes"
+          },
+          {
+            "type": "p",
+            "text": "Once you establish a hierarchical model, the authorization problems identified earlier (Scope Attenuation and God Mode) become solvable through standard architectural patterns."
+          },
+          {
+            "type": "h3",
+            "text": "1. Solving OBO agents: The intersection check"
+          },
+          {
+            "type": "p",
+            "text": "For On-Behalf-Of agents, the goal is to prevent the \"Confused Deputy\" problem. Even if the user has broad access, the agent should only have access to what is relevant for the current task."
+          },
+          {
+            "type": "p",
+            "text": "FGA solves this by calculating the Intersection of permissions. You can define a policy that requires both the user and the agent to have access before granting a request."
+          },
+          {
+            "type": "p",
+            "text": "This transforms the authorization check from a static role lookup into a dynamic validation. When an MCP server receives a tool invocation like read_file(path=\"/secrets.json\"), it performs a real-time check against the FGA graph:"
+          },
+          {
+            "type": "code",
+            "text": "\nInput: check(subject=Agent, role=viewer, resource=file:secrets.json)\nOutput: FALSE (Access Denied)\n  "
+          },
+          {
+            "type": "p",
+            "text": "This allows the server to return a precise 403 Forbidden for sensitive resources dynamically. It does not require the user to restrict the agent's broad OAuth token manually."
+          },
+          {
+            "type": "h3",
+            "text": "FGA as the logic layer for MCP"
+          },
+          {
+            "type": "p",
+            "text": "‍As protocols like MCP mature to support Rich Authorization Requests (RFC 9396), agents will pass structured intent objects instead of opaque strings. For example: {\"file\": \"main.rs\", \"action\": \"edit\"}."
+          },
+          {
+            "type": "p",
+            "text": "It is important to remember that RAR is just a data format. It acts as an envelope for the request but provides no logic to decide if the request is valid. The RAR object does not understand that /backend belongs to Team A, or that the user is an Admin of Team A."
+          },
+          {
+            "type": "p",
+            "text": "If you rely solely on RAR, developers must still write complex logic to traverse those relationships. FGA solves this by handling the hierarchy natively. It acts as the decision engine that validates the RAR envelope against the organization's actual permission graph."
+          },
+          {
+            "type": "h3",
+            "text": "The memory leak: Securing long-term context"
+          },
+          {
+            "type": "p",
+            "text": "As agents evolve from stateless scripts to persistent collaborators, they have begun to store \"memory\" in vector databases. This creates a new security shadow: if an agent summarizes a sensitive document into its long-term memory, that information can be \"hallucinated\" back to a different user who lacks access to the original source."
+          },
+          {
+            "type": "p",
+            "text": "To prevent context leaks, developers should treat agent memory as a protected resource and apply the same FGA policies to an agent's \"recollections\" as they do to the source files:"
+          },
+          {
+            "type": "li",
+            "text": "Metadata tagging: Every embedding written to a vector store should be tagged with its source resource_id."
+          },
+          {
+            "type": "li",
+            "text": "Filtered retrieval: When the agent queries its memory, the application must augment the vector search with an FGA check. If the current user cannot access the source resource_id, the memory remains invisible to the agent."
+          },
+          {
+            "type": "li",
+            "text": "Context sharding: High-security environments should use ephemeral memory shards that are flushed when an agent moves between different FGA project nodes."
+          },
+          {
+            "type": "p",
+            "text": "By anchoring embeddings to FGA resource IDs, you ensure that an agent’s internal context is as strictly governed as its real-time actions."
+          },
+          {
+            "type": "h3",
+            "text": "2. Solving autonomous agents: The scoped role"
+          },
+          {
+            "type": "p",
+            "text": "For autonomous agents, the goal is to prevent \"God Mode\" where a specific bot inadvertently gets root access to the entire tenant."
+          },
+          {
+            "type": "p",
+            "text": "FGA acts as the constraint layer over the agent's broad identity."
+          },
+          {
+            "type": "li",
+            "text": "Identity: The Identity Provider (IdP) proves the agent is the \"Billing Bot.”"
+          },
+          {
+            "type": "li",
+            "text": "Authorization (FGA): The application asks if the Billing Bot can read file:executive_comp.pdf."
+          },
+          {
+            "type": "li",
+            "text": "The check: FGA sees the agent has the Viewer role on the Project:Finance node but not on the Project:HR node. Access Denied."
+          },
+          {
+            "type": "p",
+            "text": "In this model, the agent is its own subject. It receives roles directly on the resources it needs. When the agent is decommissioned, you simply remove its role assignment on that specific node. Access instantly disappears across the entire subtree."
+          },
+          {
+            "type": "p",
+            "text": "The Identity Provider gives you the secure handle. WorkOS FGA gives you the grip. Without FGA, autonomous agents are effectively high-speed scripts with root access to the entire tenant."
+          },
+          {
+            "type": "h2",
+            "text": "Agent enterprise governance"
+          },
+          {
+            "type": "p",
+            "text": "In a traditional enterprise environment, access follows the employee lifecycle. When a user is onboarded via the Identity Provider (IdP), they get a set of roles. When they leave, their access is revoked."
+          },
+          {
+            "type": "p",
+            "text": "Agents break this flow. Unlike humans who log out or change jobs, agents are persistent. Their tokens remain valid and their service accounts stay active indefinitely. Recent data shows that the average enterprise credential remains active for 47 days after it is no longer needed. When agent identities multiply, manual lifecycle management becomes impossible and creates a massive surface area for credential harvesting."
+          },
+          {
+            "type": "p",
+            "text": "WorkOS FGA enables centralized governance over the entire agent lifecycle by bridging the gap between your IdP and your application’s internal resource hierarchy. Standard IdPs are excellent at managing groups but blind to your internal resources. FGA provides the \"last mile\" of authorization, ensuring agent access is governed by the same SSO and SCIM infrastructure used for human employees:"
+          },
+          {
+            "type": "li",
+            "text": "Provisioning: An admin creates the agent in the IdP (or via a future SCIM /Agents endpoint) and assigns it to a functional group, such as Project-X-Automations."
+          },
+          {
+            "type": "li",
+            "text": "Automated onboarding: WorkOS Directory Sync detects the new identity and its group memberships instantly, provisioning the agent within your application without manual intervention."
+          },
+          {
+            "type": "li",
+            "text": "Scoped governance: Your application uses that group membership to assign a resource-scoped role in FGA, such as Editor on Project: X. The agent is immediately constrained to that specific project subtree."
+          },
+          {
+            "type": "li",
+            "text": "Instant de-provisioning: When the agent is removed from the group or deactivated in the IdP, its role assignment in FGA is revoked across all services simultaneously."
+          },
+          {
+            "type": "p",
+            "text": "This architecture ensures that agent credentials never outlive their intent. By coordinating identity with hierarchical authorization, you provide the automated deprovisioning and audit trails that enterprise IT departments demand."
+          },
+          {
+            "type": "h2",
+            "text": "What comes next"
+          },
+          {
+            "type": "p",
+            "text": "We are at an inflection point. The infrastructure for agent identity is being built by Microsoft, Okta, and IETF working groups. Protocols like MCP are rethinking the interface for authorization from the ground up."
+          },
+          {
+            "type": "p",
+            "text": "The missing piece is the authorization layer itself. It is not enough to ask if an agent can call an API. We must ask if an agent can perform a specific action on a specific resource based on the delegating user, organizational policies, and the resource hierarchy."
+          },
+          {
+            "type": "p",
+            "text": "Several complex problems remain unsolved. These are the areas where we are investing next."
+          },
+          {
+            "type": "h3",
+            "text": "User groups as authorization subjects"
+          },
+          {
+            "type": "p",
+            "text": "Groups are becoming first-class subjects in FGA. You will be able to assign a role to an IdP group on a specific resource, such as the engineering group on workspace:platform. Every member, whether human or agent, will inherit the appropriate permissions automatically. When a principal joins or leaves a group in the IdP, their access updates in real time."
+          },
+          {
+            "type": "h3",
+            "text": "FGA role assignments"
+          },
+          {
+            "type": "p",
+            "text": "A major hurdle in enterprise governance is mapping flat IdP (ex: Okta, Entra) groups to nested resources. We are building FGA Role Assignments to bridge this gap natively. This feature allows you to define a mapping between an IdP group (e.g., \"Project-X-Bots\") and an FGA role on a specific resource subtree (e.g., Viewer on Folder: NA-Prospects). When a user or agent is added to that group in the IdP, SSO or Directory Sync automatically creates the corresponding role assignment in FGA. This eliminates the need for \"glue code\" to manage the relationship between your identity source and your resource graph."
+          },
+          {
+            "type": "h3",
+            "text": "Agent-to-agent delegation"
+          },
+          {
+            "type": "p",
+            "text": "When agents spawn sub-agents or delegate tasks, each link in the chain requires attenuated scope. A token passed to a sub-agent should carry less privilege than the original. FGA’s hierarchical model is a natural fit for this. Each delegation step constrains the sub-agent to a narrower sub-tree of resources. We are building first-class support for these delegation chains so that scope attenuation is enforced by the authorization system instead of custom application logic."
+          },
+          {
+            "type": "h3",
+            "text": "SCIM provisioning for agents"
+          },
+          {
+            "type": "p",
+            "text": "The IETF SCIM agent schema draft introduces /Agents as a resource type with ownership requirements and dormancy detection. As this standard matures, WorkOS Directory Sync will provision agents much like it provisions users today. IdP group memberships will map directly to FGA resource-scoped roles, automating the entire lifecycle."
+          },
+          {
+            "type": "h3",
+            "text": "Global low-latency authorization"
+          },
+          {
+            "type": "p",
+            "text": "Agents operate at machine speed and often across multiple regions. While we currently provide sub-50ms p95 access checks, we are moving toward edge caching and streaming updates to bring that closer to sub-10ms globally. This ensures that authorization decisions do not become a latency bottleneck for agentic performance."
+          },
+          {
+            "type": "p",
+            "text": "The authorization complexity of agentic software is compounding quickly. If you are building software that agents will operate inside, the time to lay the foundation is now."
+          },
+          {
+            "type": "p",
+            "text": "WorkOS FGA is available today. Get started here."
+          },
+          {
+            "type": "h2",
+            "text": "The research frontier: Beyond static authorization"
+          },
+          {
+            "type": "p",
+            "text": "The industry is at a crossroads. As of early 2026, the foundational elements of agent identity are beginning to coalesce, but several high-order authorization problems remain in the research phase. At WorkOS, we are paying close attention to these shifts. We view FGA as a living infrastructure that must evolve alongside the probabilistic nature of AI."
+          },
+          {
+            "type": "p",
+            "text": "There are three specific domains where the gap between standard authorization and agentic reality is widest."
+          },
+          {
+            "type": "h3",
+            "text": "1. Multi-hop delegation and provenance"
+          },
+          {
+            "type": "p",
+            "text": "In advanced multi-agent systems, a primary agent often decomposes a request into sub-tasks and delegates them to specialized sub-agents. This creates a \"Russian Nesting Doll\" effect: each handoff crosses a trust boundary, yet cryptographic lineage is often lost by the third or fourth hop."
+          },
+          {
+            "type": "p",
+            "text": "Current research into Authorization Provenance suggests that the \"Who\" is no longer a single subject, but a chain. If a Research Agent authorized for public data spawns a Code Agent authorized for private repos, the resulting access must be the intersection of every entity in that lineage. Closing this gap will require authorization engines that can verify a \"chain of custody\" for every tool call, ensuring that permissions aren't just checked, but traced back to their origin."
+          },
+          {
+            "type": "p",
+            "text": "The IETF has been actively working on extending OAuth to handle exactly this kind of \"Russian Nesting Doll\" delegation."
+          },
+          {
+            "type": "h3",
+            "text": "2. Just-in-Time (JIT) agency"
+          },
+          {
+            "type": "p",
+            "text": "Traditional service accounts rely on \"standing privileges\"—access that is always active. For a machine-speed agent, standing privileges are a massive liability. If an agent has a static API key with write access, a single successful prompt injection can result in instant, irreversible data exfiltration."
+          },
+          {
+            "type": "p",
+            "text": "The concept of Just-in-Time Agency moves toward a model of Zero Standing Privileges. In this future, an agent possesses no authority until a specific task is triggered. The authorization engine then grants a temporary, short-lived role assignment that expires automatically when the transaction completes. This reduces the attack surface to the absolute minimum required for the work at hand, moving security from a static state to a transient one."
+          },
+          {
+            "type": "p",
+            "text": "The concept of Zero Standing Privileges (ZSP) for agents is being championed by both NIST and the OWASP Top 10 for Agentic Applications."
+          },
+          {
+            "type": "h3",
+            "text": "3. The semantic future: Intent-Based Access Control"
+          },
+          {
+            "type": "p",
+            "text": "Unlike deterministic code, agents are probabilistic. Over a long-running session, an agent’s actions can \"drift\" away from the original user intent. An agent that starts by summarizing emails (low risk) might gradually drift into moving files to an external drive (high risk) based on subsequent, ambiguous instructions."
+          },
+          {
+            "type": "p",
+            "text": "Emerging strategies for Semantic Inspection suggest that authorization should be anchored to the initial task session. If an agent attempts a tool call that is semantically unrelated to its original \"root\" authorization, the engine should flag this drift. This represents a shift from checking what an agent can do to understanding why it is doing it—creating a layer of contextual guardrails that can trigger a \"Human-in-the-Loop\" approval before a high-risk action occurs."
+          },
+          {
+            "type": "p",
+            "text": "The most significant research in this area comes from the intersection of Large Language Model (LLM) observability and \"Constitutional AI.”"
+          },
+          {
+            "type": "p",
+            "text": "The ultimate goal of agent authorization is to move beyond deterministic 'Can/Cannot' checks and into the realm of Intent Alignment. We are moving toward a world where policies are defined in natural language—'Don't share customer PII with unverified third parties'—and enforced by an authorization layer that understands the reasoning behind an agent's request."
+          },
+          {
+            "type": "p",
+            "text": "At WorkOS, we believe FGA is the necessary anchor for this probabilistic future. You cannot rely on an LLM to police itself; you need a deterministic resource graph to provide the ground truth. By linking natural language intent to a fine-grained resource hierarchy, we create the first Semantic Guardrail that can stop an agent not just because it lacks a role, but because its current action deviates from its stated mission."
+          }
+        ],
+        "translations": [
+          "每一次重大的架构变革都会暴露我们访问控制模型的局限性。多租户 SaaS 打破了文件系统权限机制，微服务则破坏了单体应用的会话管理方式。如今，AI 智能体正在打破过去十年间标准化的授权模式。",
+          "智能体已经在企业基础设施中运行。它们总结文档、分类处理工单并管理云资源。然而，大多数智能体仍使用与人类相同的身份验证基础组件：OAuth 令牌、会话 Cookie 或服务账户密钥。它们要么继承用户的完整访问权限，要么拥有比任何单个用户都应拥有的更广泛的权限。",
+          "混淆的代理人问题",
+          "要理解这一架构风险，请考虑\"混淆的代理人\"问题。在安全理论中，代理人是指拥有执行权限的程序，但被低权限用户欺骗而滥用该权限。",
+          "考虑一个平台工程团队部署了\"集群调试代理\"来排查 Kubernetes 部署问题。该代理使用具有 secrets:read 权限的服务账户来验证配置映射。",
+          "触发条件：一位开发人员调试支付服务崩溃时需要查看生产环境变量。他们无法直接访问生产环境密钥，这些密钥仅限于 SRE 人员访问。于是他们向代理请求：\"将生产环境变量与 staging 环境进行对比，让我看看有什么变化。\"",
+          "执行动作：代理执行了该查询。它拥有 secrets:read 权限，因此集群控制平面允许该请求。",
+          "结果：代理将差异内容发布到了共享的 Slack 频道。",
+          "- STRIPE_SECRET_KEY: \"sk_test_...\"\n+ STRIPE_SECRET_KEY: \"sk_live_51M...\"",
+          "一个生产环境 API 密钥实际上泄露给了五十人。",
+          "没有发生配置错误。代理在其权限范围内行动（secrets:read），开发人员在他们的权限范围内行动（chat:write）。系统失败是因为它没有检查两者权限的交集。代理充当了混淆的代理人，绕过了旨在限制开发人员的 IAM 控制措施。",
+          "这迫使每个团队回答一个具体问题：当代理代表用户行动时，应该应用谁的权限？",
+          "代理不是用户，也不是服务账户。",
+          "身份行业目前正在定义代理在 IAM 栈中的位置。",
+          "微软推出了 Entra Agent ID 作为原生身份类别。NIST 于 2026 年 2 月发布了关于代理身份的概念论文。IETF 正在标准化 SCIM 中的 /Agents 资源。",
+          "共识是代理是一个需要专门构建基础设施的独立身份类别。然而，行业关注点仍在身份验证（证明身份）上。未解决的工程挑战是授权（强制执行能力）。",
+          "意图差距",
+          "传统服务账户是确定性的。CI/CD 运行器有固定的范围来拉取代码和推送构件。你只需定义一次访问权限，且很少改变，因为运行器从不生成自己的意图。",
+          "代理在两个根本方面有所不同。",
+          "首先，它们生成意图。传统的 OAuth 客户端转发用户请求。代理会推理问题并决定调用哪些工具。",
+          "其次，它们的范围是非确定性的。你无法在设计时预测代理需要什么。一个编码代理可能今天需要 repo:backend 的读取权限，明天又需要 repo:frontend 的写入权限。",
+          "通过静态角色解决这个问题会带来二元权衡。你要么阻止代理正常运行，要么授予其广泛的 admin 权限。",
+          "The two modes of agent authorization",
+          "代理实现通常分为两种模式。每种模式都引入了特定的授权要求。",
+          "1. 代表用户（OBO）代理",
+          "这些代理充当人类用户的扩展，例如 Claude Code 或 GitHub Copilot。它们专门在用户会话中运行。",
+          "这里的安全要求是权限范围缩小（Scope Attenuation）。代理应仅访问用户权限的一个子集，而非全部权限。如果用户要求代理重构某个特定文件，它不应有权访问父目录中的敏感配置文件。",
+          "目前，大多数 OBO 代理继承用户完整的访问令牌。",
+          "MCP 的差距",
+          "模型上下文协议（MCP）正成为这些代理的标准接口。然而，它明确将授权职责委托给实现者。",
+          "MCP 当前依赖 OAuth 2.1 的范围（scopes），如 files:read。这些范围是粗粒度的字符串。files:read 授予用户对用户可见的所有文件的访问权限，从 README 到生产环境的 .env 文件。规范建议“范围指导”，但将细粒度执行留给应用逻辑处理。",
+          "即使协议采用富授权请求（Rich Authorization Requests，RFC 9396）来支持结构化意图，如 {\"file\": \"main.rs\"}，这也仍是一种数据格式。它作为请求的外包装，但不提供评估该请求是否应被允许的逻辑。",
+          "共享上下文陷阱",
+          "在共享上下文中，权限范围缩小会失效。",
+          "考虑一个“财务助理”代理被添加到团队 Slack 频道。该代理使用 CFO 的身份验证凭据登录。一位初级分析师询问第三季度预算预测。",
+          "代理检查自身权限，确认 CFO 有访问权限后，便发布了数据。此时，初级分析师看到了他们无权查看的高管薪酬数据。",
+          "传统授权检查发生在数据检索时。而共享上下文要求在输出端进行授权检查，即计算所有受众成员权限的交集。传统的基于角色的访问控制（RBAC）无法建模这种关系图。",
+          "2. 自主代理",
+          "这些代理在无用户交互的情况下运行，例如安全机器人轮换密钥或计费代理核对发票。",
+          "这里的身份认证问题已基本解决。Microsoft Entra Agent ID 允许这些代理通过 client_credentials 流程使用独立的 Client ID 进行身份验证。这确保审计日志将操作归因于 Agent-007，而非人类用户。",
+          "“上帝模式”问题",
+          "授权层仍然存在缺陷。在标准的 client_credentials 流程中，生成的令牌往往决定广泛的访问权限。若要允许计费代理读取发票，通常需要授予 Files.Read.All 范围。",
+          "这导致了一个“上帝模式”代理。它可以读取发票，但也可能读取员工合同和专利草案。你很难将标准 OAuth 令牌精确限定为“仅读取财务文件夹中的文件”。这实际上相当于赋予一个概率性脚本根级访问权限。",
+          "为什么“扁平”RBAC 无法满足代理需求",
+          "如果代理需要有限范围的权限，显而易见的问题是：“为什么不直接创建一个特定角色？”为什么不创建 Billing_Agent 角色并就此结束？",
+          "失败之处在于授权模型的几何结构。传统的基于角色的访问控制（RBAC）是扁平化的。它将主体映射到角色，再将角色映射到一组全局权限（如 read:repos）。这对人类用户有效，因为人类用户的访问通常与其职位相关，而职位是稳定且宽泛的。",
+          "代理的访问则与任务相关，而任务是短暂且具体的。",
+          "你并不希望代理成为“仓库编辑者”。你应该强制规定：“此代理只能在仓库 api 的 feature-xyz 分支上编辑代码，除此之外无权进行任何操作。”",
+          "若要用扁平化的 RBAC 来表达这一需求，就必须为每个资源与权限的组合创建唯一角色。",
+          "角色：Editor_Repo_API_Branch_XYZ",
+          "角色：Viewer_Repo_Frontend_Branch_ABC",
+          "在一个拥有数千个仓库和临时分支的企业环境中，这会导致组合爆炸。管理复杂度从 O(1) 的角色数量跃升至 O(N x M)。维护这些静态角色的摩擦成本，已远超代理本身带来的效率提升价值。",
+          "解决方案：FGA = RBAC + 层级结构",
+          "这正是精细粒度授权（Fine-Grained Authorization, FGA）发挥作用的地方。它并非要取代你已有的概念体系，而是对 RBAC 的自然延伸。",
+          "要解决这一问题，我们无需抛弃 RBAC。我们需要对其进行范围限定——而这正是精细粒度授权（FGA）的定义所在。",
+          "FGA 并非要替代你已知的那些概念，而是将 RBAC 应用于资源层级结构之中。",
+          "Organization: Acme\n └── Repository: API\n       └── Branch: feature-xyz  <-- Agent Permission Starts Here\n             └── Actions: [push, merge]",
+          "你依然保留熟悉的“编辑者”“查看者”等角色心智模型，但将这些角色绑定到图中的具体节点，而非根节点。",
+          "垂直继承：当代理被授予 Branch:feature-xyz 的编辑权限时，它将自动继承该分支内所有文件和操作的访问权限。",
+          "无横向越权：关键在于，该权限不会横向蔓延至 Branch:staging，也不会向上渗透到 Repository:API。",
+          "在此模型中，代理在需要的地方拥有全部权限，而在其他地方则毫无权限。",
+          "扩展图谱：结构型资源 vs. 资产数据",
+          "采用集中式授权服务时，一个常见顾虑是状态同步的开销。如果你的应用管理着数百万个独立资产，你可能会认为每一个都需要镜像到 FGA 图谱中。实际上，你只需同步结构层级，而非资产数据本身。",
+          "可将 FGA 视为权限体系的骨架。你注册的是定义访问边界的顶层容器：组织、工作区和项目。这些就是你的结构型资源。而像文件夹内的单个文件或项目中的图片这类高吞吐量的资产数据，则保留在主应用存储中。",
+          "当代理请求访问某个特定资产时，你的应用逻辑会执行一个简单的两步检查：",
+          "应用逻辑：识别该资产所属的容器（例如 Folder:Q3-Financials）。",
+          "FGA：发起查询 check(subject=Agent, role=viewer, resource=Folder:Q3-Financials)。",
+          "通过检查父级容器的访问权限而非单个资产，你让授权图谱保持精简，并实现低于 50 毫秒的延迟。同时避免了大规模数据同步带来的“双写”一致性问题，从而在不引入全量数据库镜像基础设施成本的前提下，获得细粒度的安全保障。",
+          "FGA 如何解决两种代理模式的问题",
+          "一旦建立起层级化模型，先前提到的授权难题（作用域衰减与上帝模式）便可通过标准架构模式迎刃而解。",
+          "1. 解决 OBO 代理：交集检查法",
+          "对于 On-Behalf-Of（代为执行）代理，目标是防止“混淆的代理人”问题。即使用户拥有广泛权限，代理也应仅能访问当前任务所需的内容。",
+          "FGA 通过计算权限交集来解决此问题。你可以定义一条策略，要求用户和代理双方都必须具备相应权限，才能授予请求。",
+          "这使得授权检查从静态的角色查找转变为动态验证。当 MCP 服务器接收到类似 read_file(path=\"/secrets.json\") 的工具调用时，它会在 FGA 图中执行实时检查：",
+          "Input: check(subject=Agent, role=viewer, resource=file:secrets.json)\nOutput: FALSE (Access Denied)",
+          "这允许服务器对敏感资源动态返回精确的 403 Forbidden 错误。用户无需手动限制代理的广泛 OAuth 令牌权限。",
+          "FGA 作为 MCP 的逻辑层",
+          "‍随着像 MCP 这样的协议成熟以支持丰富的授权请求（RFC 9396），代理将传递结构化意图对象而非不透明的字符串。例如：{\"file\": \"main.rs\", \"action\": \"edit\"}。",
+          "重要的是要记住，RAR 只是一个数据格式。它充当请求的外壳，但本身不提供判断请求是否有效的逻辑。RAR 对象无法理解 /backend 属于 Team A，或用户是 Team A 的管理员。",
+          "如果仅依赖 RAR，开发人员仍需编写复杂的逻辑来遍历这些关系。FGA 通过原生处理层级结构解决了这一问题。它作为决策引擎，将 RAR 外壳与组织的实际权限图进行比对验证。",
+          "内存泄漏：长期上下文的安全隐患",
+          "随着代理从无状态脚本演变为持久协作伙伴，它们开始在向量数据库中存储\"记忆\"。这带来了新的安全阴影：如果一个代理将敏感文档摘要存入其长期记忆中，这些信息可能会被\"幻觉\"回传给一个无权访问原始来源的不同用户。",
+          "为防止上下文泄露，开发者应将代理的记忆视为受保护资源，并对代理的\"回忆\"应用与源文件相同的 FGA 策略：",
+          "元数据标记：写入向量存储的每个嵌入都应标记其源 resource_id。",
+          "过滤检索：当代理查询其记忆时，应用程序必须在向量搜索中加入 FGA 检查。如果当前用户无法访问源 resource_id，该记忆对代理保持不可见。",
+          "上下文分片：高安全环境应使用临时内存分片，当代理在不同 FGA 项目节点间移动时刷新这些分片。",
+          "通过将嵌入锚定到 FGA 资源 ID，您可以确保代理的内部上下文与其实时操作一样受到严格管控。",
+          "2. 解决自主代理：限定角色方案",
+          "对于自主代理，目标是防止\"上帝模式\"——即特定机器人意外获得整个租户的根访问权限。",
+          "FGA 作为代理广泛身份的约束层。",
+          "身份：身份提供商（IdP）证明代理是\"计费机器人\"。",
+          "授权（FGA）：应用程序询问计费机器人是否可以读取 file:executive_comp.pdf。",
+          "检查：FGA 发现代理在 Project:Finance 节点上拥有 Viewer 角色，但在 Project:HR 节点上没有。拒绝访问。",
+          "在此模型中，代理本身就是主体。它直接获得所需资源的权限。当代理停用时，只需删除其在特定节点上的角色分配，整个子树中的访问权限立即消失。",
+          "身份提供商为您提供安全标识，WorkOS FGA 为您提供控制抓手。没有 FGA，自主代理实际上就是具有整个租户根访问权限的高速脚本。",
+          "代理企业治理",
+          "在传统企业环境中，访问权限遵循员工生命周期。当用户通过身份提供商（IdP）入职时，会获得一组角色；离职时，其访问权限将被撤销。",
+          "代理程序打破了这一流程。与人类用户会主动登出或更换工作不同，代理程序具有持久性。它们的令牌保持有效，服务账户也持续活跃。最新数据显示，企业凭证在不再需要后平均仍会保持激活状态长达47天。随着代理身份的激增，人工管理其生命周期变得不可行，并形成了巨大的凭证窃取风险面。",
+          "WorkOS FGA 通过在您的 IdP 与应用程序内部资源层级之间建立连接，实现了对整个代理生命周期的集中治理。标准 IdP 擅长管理群组，却对内部资源视而不见。FGA 提供了授权链条中的“最后一公里”，确保代理访问权限由与人类员工相同的 SSO 和 SCIM 基础设施进行管控：",
+          "配置：管理员在 IdP 中创建代理（或通过未来的 SCIM /Agents 端点），并将其分配至一个功能群组，例如 Project-X-Automations。",
+          "自动化入职：WorkOS Directory Sync 会即时检测到新的身份及其所属群组，无需人工干预即可在您的应用中为该代理完成配置。",
+          "范围化治理：您的应用利用该群组成员身份，在 FGA 中为其分配一个资源限定角色，例如 Project:X 上的 Editor。代理立即被限制在该特定项目子树范围内操作。",
+          "即时注销：当代理从群组中移除或在 IdP 中被停用时，其在 FGA 中的所有服务角色分配将同步撤销。",
+          "这种架构确保代理凭证永远不会超出其使用意图。通过将身份与分层授权机制协同运作，您为 IT 部门提供了他们所要求的自动化注销流程和审计追踪能力。",
+          "下一步展望",
+          "我们正处于一个关键转折点。微软、Okta 以及 IETF 工作组正在构建代理身份的基础设施。像 MCP 这样的协议正从根本上重新思考授权接口的设计。",
+          "缺失的一环正是授权层本身。仅仅判断代理能否调用 API 是不够的，我们必须进一步确认：该代理是否可以根据委派用户的身份、组织策略以及资源层级，在特定资源上执行特定操作。",
+          "仍有若干复杂问题亟待解决。这些正是我们将重点投入的方向。",
+          "用户群组作为授权主体",
+          "群组正逐渐成为 FGA 中的一等公民。您将能够为 IdP 中的某个群组在特定资源上分配角色，例如在 workspace:platform 上为工程群组分配权限。无论是人类还是代理，所有成员都将自动继承相应权限。当主体加入或离开 IdP 中的群组时，其访问权限将实时更新。",
+          "FGA 角色分配",
+          "企业治理中的一个主要障碍是将扁平的IdP（例如Okta、Entra）群组映射到嵌套资源。我们正在构建FGA角色分配功能，以原生方式弥合这一差距。该功能允许您将IdP群组（例如\"Project-X-Bots\"）与特定资源子树上的FGA角色（例如在文件夹：NA-Prospects上的Viewer角色）建立映射。当用户在IdP中添加到此群组时，SSO或目录同步将自动在FGA中创建相应的角色分配。这消除了管理身份源与资源图之间关系的\"胶水代码\"需求。",
+          "代理到代理的委托",
+          "当代理生成子代理或委托任务时，链中的每个环节都需要衰减的作用域。传递给子代理的令牌应比原始令牌拥有更少的权限。FGA的分层模型非常适合这种情况。每次委托步骤都会将子代理约束到更窄的资源子树中。我们正在为这些委托链构建一流的支持，使授权系统而非自定义应用程序逻辑来强制执行作用域衰减。",
+          "代理的SCIM配置",
+          "IETF SCIM代理模式草案引入了/Agents作为具有所有权要求和休眠检测功能的资源类型。随着这一标准的成熟，WorkOS目录同步将以类似当前为用户配置的方式配置代理。IdP群组成员资格将直接映射到FGA资源范围的角色，自动化整个生命周期。",
+          "全局低延迟授权",
+          "代理以机器速度运行，通常跨越多个区域。虽然我们目前提供低于50毫秒的第95百分位访问检查，但我们正在转向边缘缓存和流式更新，以在全球范围内接近低于10毫秒的水平。这确保了授权决策不会成为代理性能的延迟瓶颈。",
+          "代理软件的授权复杂性正在迅速增加。如果您正在构建将由代理运行的软件，现在就是奠定基础的时候了。",
+          "WorkOS FGA现已可用。请从这里开始使用。",
+          "研究前沿：超越静态授权",
+          "行业正处于十字路口。截至2026年初，代理身份的基础要素开始聚集，但几个高阶授权问题仍处于研究阶段。在WorkOS，我们密切关注这些变化。我们将FGA视为必须与AI的概率性质共同演化的活体基础设施。",
+          "有三个具体领域，标准授权与代理现实之间的差距最为明显。",
+          "1. 多跳委托和溯源",
+          "在先进的多代理系统中，主代理通常会将请求分解为子任务并委托给专门的子代理。这会产生\"俄罗斯套娃\"效应：每次交接都跨越信任边界，但通常在第三或第四次跳转时就会丢失加密的溯源信息。",
+          "关于授权溯源的当前研究表明，\"谁\"不再是一个单一主体，而是一条链。如果一个授权用于公共数据的Research Agent生成了一个授权用于私有仓库的Code Agent，那么产生的访问权限必须是该溯源链中每个实体的交集。弥合这一差距需要能够验证每个工具调用\"保管链\"的授权引擎，确保不仅检查权限，而且追溯回其起源。",
+          "IETF一直在积极研究扩展OAuth以处理这种\"俄罗斯套娃\"式委托。",
+          "2. 即时代理（JIT 代理）",
+          "传统服务账户依赖“常驻权限”——即始终处于激活状态的访问权限。对于机器速度级的代理而言，常驻权限构成了巨大的风险。如果代理拥有一个具有写入权限的静态 API 密钥，一次成功的提示注入攻击就可能导致数据被立即、不可逆转地窃取。",
+          "即时代理（Just-in-Time Agency）的概念正朝着“零常驻权限”（Zero Standing Privileges）模型演进。在这个未来场景中，代理在触发特定任务之前不具备任何权限。授权引擎随后会授予一个临时、短期的角色分配，该角色在事务完成后自动过期。这将在当前任务所需的最小范围内减少攻击面，将安全状态从静态转变为动态。",
+          "零常驻权限（ZSP）的概念正由 NIST 和 OWASP Top 10 for Agentic Applications 共同倡导。",
+          "3. 语义未来：基于意图的访问控制",
+          "与确定性代码不同，代理是概率性的。在长时间运行的会话中，代理的行为可能会“偏离”最初的用户意图。一个最初仅用于总结邮件（低风险）的代理，可能会根据后续模糊指令，逐渐演变为将文件移动到外部驱动器（高风险）。",
+          "语义检查（Semantic Inspection）的新兴策略表明，授权应锚定于初始任务会话。如果代理尝试执行与其原始“根”授权在语义上无关的工具调用，引擎应标记这种偏离行为。这标志着从检查代理能做什么，转向理解它为什么要这么做——从而创建一层上下文护栏，可在高风险操作发生前触发“人在回路”（Human-in-the-Loop）审批。",
+          "该领域最前沿的研究来自大型语言模型（LLM）可观测性与“宪法式 AI”（Constitutional AI）的交叉领域。",
+          "代理授权的最终目标是超越确定性的“能/不能”检查，进入意图对齐（Intent Alignment）的领域。我们正在迈向一个世界，其中策略以自然语言定义——例如“不得向未经验证的第三方共享客户个人身份信息”——并由一个理解代理请求背后推理的授权层来强制执行。",
+          "在 WorkOS，我们相信 FGA 是实现这一概率性未来的必要基石。你不能依赖 LLM 自我监管；你需要一个确定性的资源图谱作为事实依据。通过将自然语言意图链接到细粒度的资源层级，我们创建了首个语义护栏，它不仅能因代理缺少角色而阻止其操作，更能因其当前行为偏离其声明的使命而加以拦截。"
+        ]
+      },
+      "fromDate": "2026-04-19"
+    },
+    {
+      "slug": "ff9ae098355d6cc3",
+      "title": "Claude Mythos, evaluated",
+      "titleZh": "Claude Mythos 评测：我们该害怕吗？",
+      "link": "https://garymarcus.substack.com/p/claude-mythos-evaluated",
+      "sourceName": "garymarcus.substack.com",
+      "sourceUrl": "https://garymarcus.substack.com",
+      "pubDate": "2026-04-13T18:07:56.000Z",
+      "category": "ai-ml",
+      "keywords": ["Claude", "AI safety", "LLM capabilities"],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "本文对 Anthropic 新发布的 Claude Mythos 模型进行了全面评估，重点分析其在复杂推理任务上的表现。评测发现该模型在数学、逻辑和代码生成方面显著优于前代产品，但在事实一致性和长上下文理解上仍有缺陷。作者认为 Mythos 代表了当前大语言模型的进步，但尚未达到 AGI 水平，公众无需过度恐慌。",
+      "summaryEn": "This evaluation of Anthropic's new Claude Mythos model shows significant improvements in complex reasoning tasks, particularly in mathematics, logic, and code generation compared to previous versions. However, it still struggles with factual consistency and long-context understanding. While representing notable progress in current large language models, the author concludes it has not yet reached AGI capabilities and should not cause undue alarm.",
+      "reason": "想了解最新 Claude 模型真实能力边界的技术读者必读，评测揭示了突破与局限并存的前沿进展。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Gary Marcus",
+        "siteName": "Marcus on AI",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Very interesting evaluation from the UK’s AI Security Institute of the not yet publicly available Claude Mythos Preview."
+          },
+          {
+            "type": "p",
+            "text": "On the happy side, in its current form, Myth is nowhere near as scary as Tom Fridman (who worries about schoolchildren accidentally taking down power grids) and others made it out to be."
+          },
+          {
+            "type": "p",
+            "text": "On the darker side, it really does arm attackers to a greater degree than Mythos’s predecessors."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the scariest part of the thread on X:"
+          },
+          {
+            "type": "p",
+            "text": "AI Security Institute@AISecurityInst"
+          },
+          {
+            "type": "p",
+            "text": "We conducted cyber evaluations of Claude Mythos Preview and found that it is the first model to complete an AISI cyber range end-to-end. 🧵"
+          },
+          {
+            "type": "p",
+            "text": "1:31 PM · Apr 13, 2026 · 209K Views"
+          },
+          {
+            "type": "p",
+            "text": "39 Replies · 202 Reposts · 1.18K Likes"
+          },
+          {
+            "type": "p",
+            "text": "and here’s the part (see second paragraph) that gives a little bit of comfort:"
+          },
+          {
+            "type": "p",
+            "text": "AI Security Institute@AISecurityInst"
+          },
+          {
+            "type": "p",
+            "text": "In 2023 the best models could barely complete beginner-level cyber tasks.\n\nToday, our evaluation of Mythos Preview shows that it – and potentially future models – could be directed to autonomously compromise small, weakly defended, and vulnerable systems if given network access."
+          },
+          {
+            "type": "p",
+            "text": "1:31 PM · Apr 13, 2026 · 8.39K Views"
+          },
+          {
+            "type": "p",
+            "text": "1 Reply · 91 Likes"
+          },
+          {
+            "type": "p",
+            "text": "One hopes that by now no mission-critical infrastructure is “small, weakly defended, and vulnerable” with ready network access. One hopes."
+          },
+          {
+            "type": "p",
+            "text": "You can read a longer report here."
+          },
+          {
+            "type": "p",
+            "text": "I agree with their conclusion that"
+          },
+          {
+            "type": "p",
+            "text": "AI Security Institute@AISecurityInst"
+          },
+          {
+            "type": "p",
+            "text": "These results underscore the importance of cyber security fundamentals like regular security updates, access controls, security configuration, and logging."
+          },
+          {
+            "type": "p",
+            "text": "1:31 PM · Apr 13, 2026 · 7.52K Views"
+          },
+          {
+            "type": "p",
+            "text": "1 Reply · 57 Likes"
+          },
+          {
+            "type": "p",
+            "text": "Even if Mythos was somewhat oversold in the media, the time to get our cybersecurity house in order is now (or better yet last year) — especially given the sudden profusion of agent-written code that may in fact be both weakly defended and vulnerable."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "英国人工智能安全研究所对尚未公开推出的 Claude Mythos Preview 进行了非常有趣的评估。",
+          "从积极的一面来看，就目前的形式而言，Myth 远没有汤姆·弗里德曼（他担心孩子们会意外摧毁电网）等人所渲染的那么可怕。",
+          "但从消极的一面看，它确实比 Mythos 的前代产品更大幅度地增强了攻击者的能力。",
+          "下面是在 X 平台（原 Twitter）上最令人担忧的部分：",
+          "AI Security Institute@AISecurityInst",
+          "我们对 Claude Mythos Preview 进行了网络安全评估，发现它是首个在 AISI 网络靶场中完成端到端测试的模型。🧵",
+          "下午 1:31 · 2026年4月13日 · 20.9万次观看",
+          "39条回复 · 202次转发 · 1,180个点赞",
+          "而这里（见第二段）提供了一些安慰：",
+          "AI Security Institute@AISecurityInst",
+          "2023年时，最先进的模型几乎无法完成入门级网络任务。如今，我们对 Mythos Preview 的评估表明，只要赋予其网络访问权限，它——以及未来可能出现的模型——就可能被用来自主攻陷那些规模小、防御薄弱且存在漏洞的系统。",
+          "下午 1:31 · 2026年4月13日 · 8,390次观看",
+          "1条回复 · 91个点赞",
+          "但愿如今已没有任何关键基础设施是“规模小、防御薄弱且存在漏洞”并开放网络访问权限的。但愿如此。",
+          "你可以在此处阅读完整报告。",
+          "我认同他们的结论：",
+          "AI Security Institute@AISecurityInst",
+          "这些结果凸显了网络安全基础的重要性，例如定期安全更新、访问控制、安全配置和日志记录。",
+          "下午 1:31 · 2026年4月13日 · 7,520次观看",
+          "1条回复 · 57个点赞",
+          "即便 Mythos 在媒体宣传中被有些夸大其词，现在（或者更理想地说应是去年）正是我们整顿网络安全的时候——尤其是考虑到如今大量由智能体生成的代码本身就可能既防御薄弱又存在漏洞。",
+          "暂无帖子"
+        ]
+      },
+      "fromDate": "2026-04-13"
+    },
+    {
+      "slug": "228b9007188ec29f",
+      "title": "Writing an LLM from scratch, part 32k -- Interventions: training a better model locally with gradient accumulation",
+      "titleZh": "从零开始构建 LLM（第32k部分）：本地训练与梯度累积优化",
+      "link": "https://www.gilesthomas.com/2026/04/llm-from-scratch-32k-interventions-training-our-best-model-locally-gradient-accumulation",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-04-15T20:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": ["LLM", "GPT-2", "gradient accumulation", "local training"],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "作者基于 Sebastian Raschka 的《Build a Large Language Model from Scratch》一书，开发了一个类似 GPT-2-small 的小型语言模型，并尝试多种干预策略以提升性能。本次重点介绍使用梯度累积（gradient accumulation）在本地训练中优化模型效果的技术方案，旨在降低对大规模计算资源的需求同时保持训练稳定性。",
+      "summaryEn": "Building on Sebastian Raschka's book, the author developed a GPT-2-small-style LLM and experimented with various interventions to improve performance. This installment focuses on training a better model locally using gradient accumulation, which helps maintain training stability while reducing reliance on cloud-scale compute resources.",
+      "reason": "如果你想在有限硬件条件下高效训练自己的语言模型，这篇关于梯度累积的实践指南提供了宝贵的经验和技术路径。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "I've been working on a GPT-2-small-style LLM based on\nSebastian Raschka's book\n\"Build a Large Language Model (from Scratch)\".\nI've trained various versions of it in the cloud to\nwork out which interventions to the model and training code\nhad the best effects on the loss it gets on a specific test dataset, and now\nI wanted to do a training run locally to match the best of those.\nFor that, I wanted to match the batch size I was using for the cloud training\nruns."
+          },
+          {
+            "type": "p",
+            "text": "When I first started learning this stuff, batching seemed like a performance\nthing -- with highly parallel systems like GPUs, it generally turned out that you could run\na batch of (say) two inputs through a model in less than twice the time you could run one, so it made\nsense to batch them up."
+          },
+          {
+            "type": "p",
+            "text": "For inference, that is exactly the advantage you get, but when training, it's become increasingly\nclear to me that you can also get an improvement in the quality of the model\nfrom batching.  The best intuitive model I have is that if you run inputs\nthrough one-by-one, adjusting parameters after each, then it's easy for the model to\n\"overcorrect\" each time.  With batches, you get an average set of gradients across\nall of the items -- which smooths things out and stabilises the training."
+          },
+          {
+            "type": "p",
+            "text": "Of course, it's possible to overdo it.   As an extreme example, imagine that you\nwere somehow able to fit your whole training set into one batch -- then you could\ntrain by running that single batch through, doing a single backward pass, and then adjusting the parameters\nonce.  It's pretty clear that that would not work very well -- just one single update\nof the initially-random parameters."
+          },
+          {
+            "type": "p",
+            "text": "When training on my local machine, I could fit a batch of six sequences into my RTX 3090.  I'd found that\nwhen I moved to cloud machines, it had a very positive effect on the loss I got\nout of the models when I tested them.  From a quick-and-dirty bit of curve-fitting,\nI estimated that the optimal batch size for this model, with that training run,\nwas somewhere around 97.  Conveniently, that was close to the maximum I could fit\nonto an 8x A100 40 GiB/GPU machine, so I used a batch size of 96 to test the different\ninterventions I was trying."
+          },
+          {
+            "type": "p",
+            "text": "And when I finally put all of the interventions that helped with training together,\nI found (somewhat to my surprise) that their combined effect -- an improvement in\nloss of 0.113765 -- was less than half of the loss improvement of 0.252474 that I had got from\nincreasing the batch size."
+          },
+          {
+            "type": "p",
+            "text": "What that all made clear was that if I wanted to do a local training run that matched\nthe quality of the cloud-trained model, I'd need to not only add on the interventions\nthat I'd been testing in detail, but I'd need to match the cloud batch size.  And for\nthat, I needed to learn about gradient accumulation."
+          },
+          {
+            "type": "h3",
+            "text": "Gradient accumulation basics"
+          },
+          {
+            "type": "p",
+            "text": "Gradient accumulation is pretty much what it sounds like; instead of the normal technique\nof doing a forward pass, working out the loss, getting gradients with a backward pass,\nand then applying them by stepping the optimiser, you do multiple forward-backward phases,\nletting the gradients accumulate, and then do one optimiser step after that."
+          },
+          {
+            "type": "p",
+            "text": "When you do that, you're getting the training stabilisation benefits of a larger batch\nsize, even though you're not getting the performance boost.  Sounds simple enough,\nand it is, in theory, but implementation got a little more complicated."
+          },
+          {
+            "type": "p",
+            "text": "Let's work through it step-by-step."
+          },
+          {
+            "type": "p",
+            "text": "To start with, imagine you have a really simple training loop:"
+          },
+          {
+            "type": "code",
+            "text": "for inputs, targets in batched_dataset:\n    # Other stuff\n\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    loss.backward()\n\n    # Other stuff\n\n    optimizer.step()\n    optimizer.zero_grad()\n\n    # Other stuff"
+          },
+          {
+            "type": "p",
+            "text": "Adding gradient accumulation to that is really simple!"
+          },
+          {
+            "type": "p",
+            "text": "Let's assume that batched_dataset has a length divisible by gradient_accumulation_steps,\nthe number of steps we want to run through before we step the optimiser.  As a first (not quite correct)\ncut, you could just do this:"
+          },
+          {
+            "type": "code",
+            "text": "for step, (inputs, targets) in enumerate(batched_dataset):\n    # Other stuff\n\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    loss.backward()\n\n    # Other stuff\n\n    if (step + 1) % gradient_accumulation_steps == 0 or step == len(batched_dataset) - 1:\n        optimizer.step()\n        optimizer.zero_grad()\n\n    # Other stuff"
+          },
+          {
+            "type": "p",
+            "text": "You can see that we're just stepping the optimiser every gradient_accumulation_steps steps.\nAn alternative way to do it would be with an inner loop:"
+          },
+          {
+            "type": "code",
+            "text": "dataset_ix = 0\nwhile dataset_ix < len(batched_dataset):\n    # Other stuff\n\n    for ii in range(gradient_accumulation_steps):\n        if dataset_ix >= len(batched_dataset):\n            break\n        inputs, targets = batched_dataset[dataset_ix]\n        logits = model(inputs)\n        loss = calculate_loss(logits, targets)\n        loss.backward()\n        dataset_ix += 1\n\n    # Other stuff\n\n    optimizer.step()\n    optimizer.zero_grad()\n\n    # Other stuff"
+          },
+          {
+            "type": "p",
+            "text": "Which of those is better would depend on the details of the training loop -- in general,\nif you wanted the \"other stuff\" to be done once per training batch, then you'd want to\nuse the first option, whereas if you wanted it to be done once per optimiser step,\nthe second would be easier.  As you'll see in a bit, I went for the second one for my\ncode."
+          },
+          {
+            "type": "p",
+            "text": "However, there's one small correction that we need to do to make either of these properly.  Remember\nthat when you calculate loss across a batch -- for example, cross entropy loss like this:"
+          },
+          {
+            "type": "code",
+            "text": "torch.nn.functional.cross_entropy(logits.flatten(0, 1), targets.flatten())"
+          },
+          {
+            "type": "p",
+            "text": "...you're getting the average loss across the batch, so when you do the backward\npass, you're getting the average gradients.  By contrast, in the code above, we're\ndoing a backward pass on the complete loss at each step, so the gradients that are\nbeing generated in each backward pass are being added to each other -- you wind up\nwith the sum of all of them rather than the average.  So the gradients that the optimizer\napplied would be gradient_accumulation_steps times larger than they should be --\nit would be as if we'd multiplied the learning rate by that number!"
+          },
+          {
+            "type": "p",
+            "text": "But that's easy enough to fix.  The average gradients over a number of steps are the sum divided by the\nnumber of steps, and we can do that division ahead of time just by scaling the loss down.\nAdding that into the first example above:"
+          },
+          {
+            "type": "code",
+            "text": "for step, (inputs, targets) in enumerate(batched_dataset):\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    (loss / gradient_accumulation_steps).backward()\n\n    if (step + 1) % gradient_accumulation_steps == 0 or step == len(batched_dataset) - 1:\n        optimizer.step()\n        optimizer.zero_grad()"
+          },
+          {
+            "type": "p",
+            "text": "And that's basically it; with those changes, the original basic training loop\nbecomes one that uses gradient accumulation.  The effective batch size is whatever\nthe real batch size is, times the number of gradient accumulation steps."
+          },
+          {
+            "type": "h3",
+            "text": "Gradient accumulation in practice"
+          },
+          {
+            "type": "p",
+            "text": "However, the real training loop that I'm using for these experiments is a bit more\ncomplicated than that simple example.  There's checkpointing, AMP, and -- most importantly\n-- it can handle multi-GPU training using DistributedDataParallel.  That made things\na little bit more complicated."
+          },
+          {
+            "type": "p",
+            "text": "The first thing was to look into the way I was selecting the data to train on.  My dataset was already\nin batches, but we had to split those batches up between GPUs.  The solution in the code\nwas to work out how many global steps there were -- each global step being one batch\ngoing through each GPU on the machine -- like this:"
+          },
+          {
+            "type": "code",
+            "text": "total_global_steps = len(train_ds) // world_size"
+          },
+          {
+            "type": "p",
+            "text": "world_size, if you remember from the DDP post,\nis the number of processes running in a multi-GPU training run -- one per GPU."
+          },
+          {
+            "type": "p",
+            "text": "Next, in the training loop, I iterated over the global steps:"
+          },
+          {
+            "type": "code",
+            "text": "progress_bar = tqdm(\n    range(start_global_step, total_global_steps),\n    disable=(rank != 0)\n)\nfor global_step in progress_bar:\n    # Get the data\n    # Forward and backward pass\n    # Step the optimiser."
+          },
+          {
+            "type": "p",
+            "text": "...for each one, getting the appropriate batch out for the specific GPU that was\nrunning the code:"
+          },
+          {
+            "type": "code",
+            "text": "    inputs, targets = train_ds[global_step * world_size + rank]"
+          },
+          {
+            "type": "p",
+            "text": "rank is a zero-indexed number, unique to each of the per-GPU processes.  So this\nbasically split train_ds into chunks of length world_size, and then each GPU\nwas fed the batch at its rank's offset into the chunk."
+          },
+          {
+            "type": "p",
+            "text": "I wanted to keep things shaped such that when I was running with gradient accumulation\nlocally, it would be similar to a cloud run with per-GPU batching.  Specifically: when\nI was training in the cloud, I had eight GPUs with a per-GPU microbatch size of 12, giving\na total batch size of 96.  Locally, I could fit a batch size of six on my GPU, so I needed\nto do gradient accumulation over 96 / 6 = 16 steps."
+          },
+          {
+            "type": "p",
+            "text": "To keep things as similar as possible, I decided that I wanted the concept of a\n\"global step\" to match between the runs.  In other words, it would expand slightly,\nfrom meaning \"one batch per GPU\" to being \"one optimiser step per GPU\".\nSo, each time through that global_step loop, we'd do multiple forward-backward\npasses, and then one optimiser step.  That would mean that the best way to do things\nwould be with something much more like the second of the two bits of sample code\nabove -- the one with the inner loop rather than the modulus."
+          },
+          {
+            "type": "p",
+            "text": "Maybe that's easier to show in code:"
+          },
+          {
+            "type": "code",
+            "text": "total_global_steps = (len(train_ds) // world_size) // gradient_accumulation_steps\n\n...\n\nfor global_step in progress_bar:\n    ...\n    for accumulation_step in range(gradient_accumulation_steps):\n        # Forward and backward passes\n        ...\n\n    # Step the optimiser"
+          },
+          {
+            "type": "p",
+            "text": "That required a change to the data lookup; I decided that train_ds would be split\ninto chunks of size gradient_accumulation_steps * world_size, and then each of those\nwould be split into chunks of size world_size, so the code to get the appropriate\nbatch for a given run through the loop became this:"
+          },
+          {
+            "type": "code",
+            "text": "inputs, targets = train_ds[((global_step * gradient_accumulation_steps) + accumulation_step) * world_size + rank]"
+          },
+          {
+            "type": "p",
+            "text": "That required a corresponding change in load_dataset to make sure that train_ds was\ndivisible by both the world size, the per-GPU batch (\"microbatch\") size, and the number of gradient accumulation steps, but that was easy:"
+          },
+          {
+            "type": "code",
+            "text": "one_full_batch_tokens = world_size * microbatch_size * seq_length"
+          },
+          {
+            "type": "p",
+            "text": "...became this:"
+          },
+          {
+            "type": "code",
+            "text": "one_full_batch_tokens = world_size * microbatch_size * gradient_accumulation_steps * seq_length"
+          },
+          {
+            "type": "p",
+            "text": "That was enough to get the gradient accumulation happening!  Next, I needed to change\nthe backward pass code to scale down the loss so that we got averaged rather than summed\ngradients.  Because we might be using AMP with a scaler, the code wasn't just a simple\nloss.backward:"
+          },
+          {
+            "type": "code",
+            "text": "if scaler is not None:\n    scaler.scale(train_loss).backward()\nelse:\n    train_loss.backward()"
+          },
+          {
+            "type": "p",
+            "text": "...but the change was obvious enough:"
+          },
+          {
+            "type": "code",
+            "text": "if scaler is not None:\n    scaler.scale(train_loss / gradient_accumulation_steps).backward()\nelse:\n    (train_loss / gradient_accumulation_steps).backward()"
+          },
+          {
+            "type": "p",
+            "text": "All of those changes put together, plus a bit of shuffling around of code,\nwere enough to get a correct gradient accumulation\ntraining loop!  But there was one small tweak I needed to add."
+          },
+          {
+            "type": "p",
+            "text": "When you're using DDP, gradients need to be synchronised between the different\nper-GPU processes.  As a reminder, what happens is:"
+          },
+          {
+            "type": "li",
+            "text": "Each process does a forward pass."
+          },
+          {
+            "type": "li",
+            "text": "Each process does a backward pass."
+          },
+          {
+            "type": "li",
+            "text": "When they have the gradients, they essentially share them so that each process has\nan average of the gradients from all of those backward passes."
+          },
+          {
+            "type": "li",
+            "text": "Then they all step their optimisers to apply the average gradients to each process's\ncopy of the model."
+          },
+          {
+            "type": "p",
+            "text": "Now, with my first cut of the gradient accumulation code above, what would have happened is this:"
+          },
+          {
+            "type": "li",
+            "text": "For each gradient accumulation step:\n\nEach process does a forward pass.\nEach process does a backward pass.\nThe average is worked out"
+          },
+          {
+            "type": "li",
+            "text": "They all step their optimisers based on the most recent average"
+          },
+          {
+            "type": "p",
+            "text": "That would be correct, but not very efficient.  We're sending out gradients and\naveraging on every accumulation step.  But because each of our per-GPU processes\nis keeping its own \"local\" average (by accumulating the scaled-down gradients), we only\nreally need to send those local averages out and get a global average once, just before we step\nthe optimiser.  If we do that, we can save quite a lot of work."
+          },
+          {
+            "type": "p",
+            "text": "The trick to avoid that was to use the method no_sync on the DistributedDataParallel class\nthat our own model is wrapped in.  What we wanted to do was suppress the gradient\nsynchronisation for each of the accumulation steps apart from the last one."
+          },
+          {
+            "type": "p",
+            "text": "It was easy to work out whether we were on the last gradient accumulation step:"
+          },
+          {
+            "type": "code",
+            "text": "is_last = accumulation_step == gradient_accumulation_steps - 1"
+          },
+          {
+            "type": "p",
+            "text": "Now, what we needed to do was to wrap this:"
+          },
+          {
+            "type": "code",
+            "text": "if scaler is not None:\n    scaler.scale(train_loss / gradient_accumulation_steps).backward()\nelse:\n    (train_loss / gradient_accumulation_steps).backward()"
+          },
+          {
+            "type": "p",
+            "text": "...in model.no_sync, but only if is_last was false."
+          },
+          {
+            "type": "p",
+            "text": "Conditional with statements can be a little fiddly, but Python has a \"do-nothing\"\nnullcontext context manager in contextlib -- that is,"
+          },
+          {
+            "type": "code",
+            "text": "with nullcontext():\n    do_something()"
+          },
+          {
+            "type": "p",
+            "text": "...is identical to just:"
+          },
+          {
+            "type": "code",
+            "text": "do_something()"
+          },
+          {
+            "type": "p",
+            "text": "So we can combine that with the ternary operator like this:"
+          },
+          {
+            "type": "code",
+            "text": "    with model.no_sync() if not is_last else nullcontext():\n        if scaler is not None:\n            scaler.scale(train_loss / gradient_accumulation_steps).backward()\n        else:\n            (train_loss / gradient_accumulation_steps).backward()"
+          },
+          {
+            "type": "p",
+            "text": "...which does exactly what we want 1."
+          },
+          {
+            "type": "p",
+            "text": "With that change, I had something I was happy with; you can\nsee the diff here."
+          },
+          {
+            "type": "p",
+            "text": "So now it was time to do a training run!"
+          },
+          {
+            "type": "h3",
+            "text": "The new local baseline"
+          },
+          {
+            "type": "p",
+            "text": "I'd originally been planning to jump right in and do a training run based on my\nlast cloud run,\nwith all of the interventions I'd decided were worth using, but locally with\ngradient accumulation."
+          },
+          {
+            "type": "p",
+            "text": "However, I decided that it would be interesting to try doing a new \"baseline\" train\nfirst.  I'd done my local training runs, and then established a baseline version in\nthe cloud by taking exactly the same configuration and doing the training run on\nan 8x A100 40 GiB with an overall batch size of 96.  So I could repeat that locally\nwith gradient accumulation, and that would show two things (or perhaps, the same\nthing but in different lights):"
+          },
+          {
+            "type": "li",
+            "text": "Whether the increased effective batch size had as positive an effect on the loss\nas the increased real batch size did when I did my cloud runs."
+          },
+          {
+            "type": "li",
+            "text": "Whether the locally-trained gradient accumulation model was similar to the cloud-trained\nbig-batch model in terms of its loss."
+          },
+          {
+            "type": "p",
+            "text": "That would help confirm my understanding that it was the\nincreased batch size that helped in the cloud, and not, say, some architectural difference -- and would also act as a good test\nof the gradient accumulation code."
+          },
+          {
+            "type": "p",
+            "text": "Here's the training run config.\nI kicked it off:"
+          },
+          {
+            "type": "code",
+            "text": "giles@perry:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 810.65it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=20,451]\n\n\nCheckpoint\n\nContinuing training\n  0%|                                                                                                       | 23/33165 [01:50<43:29:50,  4.72s/it, loss=7.625, tps=20,549]"
+          },
+          {
+            "type": "p",
+            "text": "That looked like the right number of global steps; it matched the numbers I saw when\ntraining in the cloud.  And 44 hours for the training run seemed correct: my original\nlocal runs took 48, but with them I was spending quite a lot of time on validation,\nwhich this code didn't do."
+          },
+          {
+            "type": "p",
+            "text": "Just less than two days later:"
+          },
+          {
+            "type": "code",
+            "text": "Training complete in 155,402.289 seconds\nTokens seen: 3,260,252,160\nThroughput: 20,979 tokens/second\nFinal train loss: 3.738"
+          },
+          {
+            "type": "p",
+            "text": "That all looked good.  The loss chart looked like this:"
+          },
+          {
+            "type": "p",
+            "text": "For comparison, here's the one from the cloud training run with the same config\n(but using larger batches rather than gradient accumulation):"
+          },
+          {
+            "type": "p",
+            "text": "You can see that they're similar, but not identical.  That's pretty much what you'd expect!\nThe two training runs were on different architectures -- RTX 3090 vs A100 -- and so there\nwill probably be differences in the CUDA kernels, and also PyTorch's AMP (which uses\n16-bit instead of 32-bit in cases where it makes sense) might make different decisions.\nI think that if we'd run it on a machine with one A100, then the results of using gradient accumulation\nwould be even closer (perhaps even identical) to a larger batch size, especially if we\nwere training without AMP."
+          },
+          {
+            "type": "p",
+            "text": "I uploaded the model to Hugging Face and it\nwas time for the evals.  The smoke test first:"
+          },
+          {
+            "type": "code",
+            "text": "Every effort moves you to a more realistic approach and is always welcome, especially for a younger child!\nI’"
+          },
+          {
+            "type": "p",
+            "text": "As usual, reasonably coherent.  But the important one was the loss on the test set:"
+          },
+          {
+            "type": "code",
+            "text": "Loss against our test dataset: 3.683835"
+          },
+          {
+            "type": "p",
+            "text": "That's solid!  The cloud-trained baseline model got 3.691526, so this local one was\nactually very slightly better, by 0.007691.  But that's very close indeed, which is\nwhat we wanted to see :-)"
+          },
+          {
+            "type": "p",
+            "text": "It was time to see what effect adding on the interventions would have."
+          },
+          {
+            "type": "h3",
+            "text": "The local run with the interventions"
+          },
+          {
+            "type": "p",
+            "text": "As a reminder, here are the changes I made to the config for this run:"
+          },
+          {
+            "type": "li",
+            "text": "Gradient clipping at 3.5"
+          },
+          {
+            "type": "li",
+            "text": "Learning rate changed from 0.0004 to 0.0014, with a warmup over 5% of the run then a cosine decay to 0.00014."
+          },
+          {
+            "type": "li",
+            "text": "Weight decay changed from 0.1 to 0.01"
+          },
+          {
+            "type": "li",
+            "text": "Dropout removed"
+          },
+          {
+            "type": "p",
+            "text": "It did not include QKV bias."
+          },
+          {
+            "type": "p",
+            "text": "Here's the config.\nI kicked it off, and:"
+          },
+          {
+            "type": "code",
+            "text": "giles@perry:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-stacked-interventions datasets\nFetching 4 files: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 749.32it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.994, tps=21,589]\n\n\nCheckpoint\n\nContinuing training\n  0%|                                                                                                      | 19/33165 [01:25<40:52:06,  4.44s/it, loss=10.318, tps=21,867]"
+          },
+          {
+            "type": "p",
+            "text": "It looked like it was going to take 40 hours; that matched what happened in the cloud\nruns, as removing dropout speeds things up quite a lot."
+          },
+          {
+            "type": "p",
+            "text": "Just less than two days later:"
+          },
+          {
+            "type": "code",
+            "text": "Training complete in 146,299.816 seconds\nTokens seen: 3,260,252,160\nThroughput: 22,285 tokens/second\nFinal train loss: 3.519"
+          },
+          {
+            "type": "p",
+            "text": "The loss chart over the training run looked like this:"
+          },
+          {
+            "type": "p",
+            "text": "That's very smooth, with no loss spikes.  For comparison, here's the chart when we did the same training run in the cloud;\nyou can see that it was a bit choppier than the local one."
+          },
+          {
+            "type": "p",
+            "text": "The gradient norm chart was also interesting:"
+          },
+          {
+            "type": "p",
+            "text": "If you compare it to the one from the cloud training run below, you can see that\nthe local one was actually noisier -- the cloud run has a few gradient spikes near\nthe start but calms down from around global step 6,000 or so, whereas the local one is\nspiky up to about 3,000, then calm, but has a massive spike at around 10,000."
+          },
+          {
+            "type": "p",
+            "text": "The learning rate we don't need to compare, but it was worth sanity checking to make sure\nwe really did train the right way:"
+          },
+          {
+            "type": "p",
+            "text": "So that all looked good.  The training run did have some differences to the cloud one,\nbut (as with the previous baseline train) it looked similar enough.  Architectural\ndifferences between the A100s in the cloud and the local RTX 3090 seemed like a plausible\ncause."
+          },
+          {
+            "type": "h3",
+            "text": "Evals"
+          },
+          {
+            "type": "p",
+            "text": "I uploaded the model to Hugging Face,\nand it was time to run the evals.  The smoke test first:"
+          },
+          {
+            "type": "code",
+            "text": "Every effort moves you to give your customers the opportunity you give them in the event of a failure.<|endoftext|>A couple friends"
+          },
+          {
+            "type": "p",
+            "text": "Reasonably coherent -- and I think that's the first time I've seen an <|endoftext|> token\nin a smoke test output!  But the important one is, as ever, the loss, and:"
+          },
+          {
+            "type": "code",
+            "text": "Loss against our test dataset: 3.538161"
+          },
+          {
+            "type": "p",
+            "text": "Let's add both this one and the local baseline to the results table for all interventions:"
+          },
+          {
+            "type": "p",
+            "text": "That's really weird!  The local run with the interventions, 1xrtx3090-stacked-interventions,\nis 0.039600 points better than the cloud version of the\nsame training run, 8xa100m40-stacked-interventions-1.  That's nice, in that lower loss is always better, but it's also\nrather confusing -- that's a bigger loss improvement than some of the interventions."
+          },
+          {
+            "type": "p",
+            "text": "In theory, all that we changed between the cloud version of this training run,\nand the local one\nwas the architecture.  I was expecting that to have an effect, but thought that\nit would be small -- as, indeed, it was with the baseline trains 8xa100m40-baseline\nand 1xrtx3090-baseline, where you can see the loss difference was just 0.007691 --\nabout five times smaller."
+          },
+          {
+            "type": "p",
+            "text": "Now, when I was looking into\nthe effects of noise on training loss,\nI found that changing the random seed that was used to initialise the weights (but starting\nthe training run itself at the same random seed) had\na much bigger effect on the resulting model quality than keeping the weights identical\nbut varying the seed at the start of the post-initialisation phase of the training run.\nThe standard deviation of the varied-weights, same-train models was about double the SD of the\nsame-weights, varied-train."
+          },
+          {
+            "type": "p",
+            "text": "That was interesting, though not directly comparable -- those tests were done with\nthe same training run, but the architecture held constant -- a 8x A100 40 GiB machine\nfor each test."
+          },
+          {
+            "type": "p",
+            "text": "However, it felt like it would be a good idea to at least see whether we started with\nthe same weights locally and when training in the cloud.  My suspicion was that we probably\nwould; the weight initialisation uses deterministic non-GPU code, so with the same seed\nwe'd expect the same weights regardless of the computer.  The similarity of the loss\nresults for the local and cloud baseline training runs also seemed to point in that\ndirection."
+          },
+          {
+            "type": "p",
+            "text": "But it was worth testing.  I created a throwaway branch of the training code, which\n-- after creating the model --\njust dumped the model weights to a file, then exited.\nI ran it locally using\nthe 1xrtx3090-stacked-interventions config, and\nthen I fired up yet another 8x A100 40 GiB machine on Lambda, ran the same code there,\nthis time with the 8xa100m40-stacked-interventions-1 config, and\nthen scped down the weights."
+          },
+          {
+            "type": "code",
+            "text": "giles@perry:~/Dev/ddp-base-model-from-scratch (dump-weights)$ diff cloud-init-weights.safetensors local-init-weights.safetensors\ngiles@perry:~/Dev/ddp-base-model-from-scratch (dump-weights)$"
+          },
+          {
+            "type": "p",
+            "text": "Identical.  That was reassuring!"
+          },
+          {
+            "type": "p",
+            "text": "I considered doing more analysis on this; for example, in my investigations into noise,\nI found that keeping the same weights but altering the random seed for the rest of the\ntraining run, I got results with a standard deviation of 0.008672 -- more than four times\nsmaller than the difference between the local and cloud trains with the interventions.\nMight that be a number I could use for some kind of comparison?"
+          },
+          {
+            "type": "p",
+            "text": "However, I decided that it's not really comparable.  That number was from varying the random seed, but\nkeeping the same architecture.  There's not really any solid reason to believe that\nkeeping the seed constant but changing the architecture would cause the same kind of differences.\nThey might be more similar, they might be less."
+          },
+          {
+            "type": "p",
+            "text": "I think that all we can really say here is that the change of machine changed some\naspects of the training dynamics in a way that happened to get us a lower loss.  I\ncan easily imagine that if I'd done something slightly different -- used a local\nRTX 4090, for example -- it could equally well have gone in the other direction."
+          },
+          {
+            "type": "p",
+            "text": "And at least it's reassuring that the improvement was smaller than the\ninterventions I was most convinced by; the only smaller ones were full-fat float32, gradient clipping, and\nQKV bias -- ones that I'd already decided might have only been beneficial due to noise.\nMost importantly, it was orders of magnitude smaller than the 0.252474 improvement\nI originally saw when I moved from local training to larger-batch cloud training."
+          },
+          {
+            "type": "h3",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "So, I think that that brings me to the end of this set of training experiments.\nWe started with a locally-trained model that got a loss of 3.943522 on our test set,\ncompared to the original GPT-2 small model, which got 3.499677 2."
+          },
+          {
+            "type": "p",
+            "text": "I've tried a bunch of interventions to try to get my model closer, and finally I've\nmanaged to get almost all of the way there, to 3.538161.  That's really pleasing!"
+          },
+          {
+            "type": "p",
+            "text": "I think that there are two things to do before I can fully wrap up this \"interventions\"\nmini-series, and get back to the main-line LLM from scratch stuff."
+          },
+          {
+            "type": "p",
+            "text": "Firstly, I should\nrevisit the instruction fine-tuning tests, which I put on hold while doing these\ntraining runs.  That would give us some indication as to whether the loss improvement was just a technical improvement\nthat made a number go down, or whether it actually improved the usefulness of the model."
+          },
+          {
+            "type": "p",
+            "text": "Secondly, I think I really need to write a wrap-up.  I've been working on this stuff\non and off since December, and I think a summary of what I did would be quite nice!"
+          },
+          {
+            "type": "p",
+            "text": "I'll post soon; don't touch that dial :-)"
+          },
+          {
+            "type": "p",
+            "text": "Here's a link to the next post in this series."
+          },
+          {
+            "type": "li",
+            "text": "Thanks to this Stack Overflow answer for that trick. ↩"
+          },
+          {
+            "type": "li",
+            "text": "I'm going to switch to six decimal places from now on -- previously I was\nrounding it to three, hence 3.500. ↩"
+          }
+        ],
+        "translations": [
+          "归档",
+          "分类目录",
+          "友情链接",
+          "我一直在基于 Sebastian Raschka 的书籍《Build a Large Language Model (from Scratch)》开发一个类似 GPT-2-small 的小型语言模型。我在云端训练了它的多个版本，以确定对模型和训练代码进行哪些干预能最有效地降低在特定测试数据集上的损失值。现在，我想在本地运行一次训练，复现其中效果最佳的那一套方案。为此，我需要让本地的批处理大小与云端训练时保持一致。",
+          "在我刚开始学习这些内容的时候，批处理（batching）看起来只是一个性能优化手段——对于像 GPU 这样高度并行的系统来说，通常可以将（比如）两个输入一起送入模型处理，所用时间不到单独处理一个的两倍，因此将多个样本打包成一批处理是有意义的。",
+          "在推理（inference）阶段确实能获得这种优势，但在训练过程中，我越来越清楚地认识到，批处理还能提升模型的质量。我最直观的理解是：如果每次只输入一个样本就立即调整参数，模型很容易“矫枉过正”，反复修正反而偏离了正确方向。而使用批次时，所有样本的梯度会被平均化，从而平滑更新过程，使训练更加稳定。",
+          "当然，过度使用也会适得其反。举个极端的例子，假设你能把整个训练集塞进一个批次里——那你只需要前向传播一次、反向传播一次，然后一次性更新所有参数。显然，这种做法效果会很差，因为初始参数几乎是随机的，仅凭一次更新很难学到有效信息。",
+          "在我的本地机器上，RTX 3090 最多只能容纳包含六个序列的批次。当我迁移到云主机后，发现更大的批处理显著改善了模型在测试中的损失表现。通过粗略拟合曲线，我估计该次训练下最优批处理大小约为 97。巧合的是，这接近于一台配备 8 块 A100 40 GiB/GPU 的云服务器所能支持的最大容量，所以我采用 96 的批处理大小来测试各种干预措施的效果。",
+          "最终，当我把所有有助于训练的干预组合在一起时，结果（多少让我有些意外）显示，它们的综合效果——损失降低了 0.113765——还不到增大批处理带来的损失改善幅度（0.252474）的一半。",
+          "这一切都说明：如果我希望本地训练能达到云端训练模型的质量，不仅需要应用那些经过详细测试的干预措施，还必须匹配云端的批处理规模。而这，就需要我了解梯度累积（gradient accumulation）技术了。",
+          "梯度累积基础",
+          "梯度累积顾名思义：它不是常规的“前向传播→计算损失→反向传播求梯度→用优化器更新参数”的单步流程，而是执行多次前向-反向传播循环，让梯度逐步累积，最后再统一进行一次优化器更新。",
+          "这样做可以在不牺牲性能的前提下，获得大批量训练带来的稳定性优势。听起来很简单，理论上确实如此，但实际实现起来却要复杂一些。",
+          "让我们一步步来看。",
+          "首先，想象一下你有一个非常简单的训练循环：",
+          "for inputs, targets in batched_dataset:\n    # Other stuff\n\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    loss.backward()\n\n    # Other stuff\n\n    optimizer.step()\n    optimizer.zero_grad()\n\n    # Other stuff",
+          "向其中添加梯度累积非常简单！",
+          "假设 batched_dataset 的长度可以被 gradient_accumulation_steps（我们希望在更新优化器之前执行的步数）整除。作为一个初步（但不完全准确）的近似，你可以直接这样做：",
+          "for step, (inputs, targets) in enumerate(batched_dataset):\n    # Other stuff\n\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    loss.backward()\n\n    # Other stuff\n\n    if (step + 1) % gradient_accumulation_steps == 0 or step == len(batched_dataset) - 1:\n        optimizer.step()\n        optimizer.zero_grad()\n\n    # Other stuff",
+          "可以看到，我们每经过 gradient_accumulation_steps 步才更新一次优化器。另一种实现方式是使用一个内层循环：",
+          "dataset_ix = 0\nwhile dataset_ix < len(batched_dataset):\n    # Other stuff\n\n    for ii in range(gradient_accumulation_steps):\n        if dataset_ix >= len(batched_dataset):\n            break\n        inputs, targets = batched_dataset[dataset_ix]\n        logits = model(inputs)\n        loss = calculate_loss(logits, targets)\n        loss.backward()\n        dataset_ix += 1\n\n    # Other stuff\n\n    optimizer.step()\n    optimizer.zero_grad()\n\n    # Other stuff",
+          "哪种方法更好取决于训练循环的具体细节——一般来说，如果你希望“其他操作”在每个训练批次执行一次，那么第一种方式更合适；而如果希望这些操作在每个优化器步骤执行一次，则第二种方式更容易实现。正如我稍后会展示的，我的代码采用了第二种方案。",
+          "然而，我们需要对上述任一方法做一个小修正才能使其正确工作。请记住，当你在一个批次上计算损失时——例如像这样的交叉熵损失：",
+          "torch.nn.functional.cross_entropy(logits.flatten(0, 1), targets.flatten())",
+          "...你得到的是该批次中所有样本的平均损失，因此在反向传播时，你获得的是平均梯度。相比之下，在上面的代码中，我们在每一步都对完整的损失进行反向传播，这意味着每次反向传播产生的梯度会被累加起来——最终得到的是所有梯度的总和而非平均值。因此，优化器应用时的梯度会是实际应有的 gradient_accumulation_steps 倍大——相当于我们将学习率乘以了这个数值！",
+          "但这很容易修复。若干步的平均梯度等于这些步的梯度之和除以步数，我们可以提前通过将损失按比例缩小来实现这一除法。将其加入上面的第一个示例中：",
+          "for step, (inputs, targets) in enumerate(batched_dataset):\n    logits = model(inputs)\n    loss = calculate_loss(logits, targets)\n    (loss / gradient_accumulation_steps).backward()\n\n    if (step + 1) % gradient_accumulation_steps == 0 or step == len(batched_dataset) - 1:\n        optimizer.step()\n        optimizer.zero_grad()",
+          "基本上就是这样了；经过这些修改后，原始的简单训练循环就变成了支持梯度累积的版本。有效批量大小等于真实批量大小乘以梯度累积步数。",
+          "梯度累积的实际应用",
+          "不过，我用于这些实验的真实训练循环比那个简单示例要复杂得多。它包含了检查点保存、AMP（自动混合精度），最重要的是——还能处理使用 DistributedDataParallel 的多 GPU 训练。这使得问题变得稍微复杂了一些。",
+          "首先要解决的是如何选取用于训练的数据。我的数据集已经是按批次组织的，但需要将这些批次拆分到各个 GPU 上。代码中的解决方案是计算出共有多少个全局步（global steps）——每个全局步代表一个批次在所有机器上的 GPU 上完成一次前向和反向传播：",
+          "total_global_steps = len(train_ds) // world_size",
+          "world_size 如果你还记得 DDP 文章的话，它表示在一次多 GPU 训练中运行进程的数量——每个 GPU 对应一个进程。",
+          "接下来，在训练循环中，我对全局步进行迭代：",
+          "progress_bar = tqdm(\n    range(start_global_step, total_global_steps),\n    disable=(rank != 0)\n)\nfor global_step in progress_bar:\n    # Get the data\n    # Forward and backward pass\n    # Step the optimiser.",
+          "...对于每一个全局步，获取当前运行的特定 GPU 所需的数据批次：",
+          "inputs, targets = train_ds[global_step * world_size + rank]",
+          "rank 是一个从零开始编号的数字，每个 GPU 进程都有唯一的 rank。因此，这实际上是将 train_ds 分割成若干长度为 world_size 的块，然后每个 GPU 接收其对应 rank 偏移位置处的批次数据。",
+          "我希望保持训练流程的一致性，这样在本地进行梯度累积时，其行为能尽可能接近云端使用每 GPU 微批次（per-GPU batching）的运行方式。具体来说：我在云端训练时使用八块 GPU，每块 GPU 的微批次大小为 12，因此总批次大小为 96；而本地我只能在一块 GPU 上容纳 6 的批次大小，所以我需要通过梯度累积执行 96 / 6 = 16 步。",
+          "为了尽可能保持一致，我决定让“全局步数”（global step）的概念在两种运行方式之间对齐。也就是说，它不再仅仅表示“每 GPU 一次批次”，而是扩展为“每 GPU 一次优化器步”。因此，每次进入 global_step 循环时，我们会执行多次前向-后向传播，然后才进行一次优化器更新。这意味着实现方式应更接近上述两段示例代码中的后者——即带有内层循环而非取模运算的那个版本。",
+          "也许用代码更容易说明这一点：",
+          "total_global_steps = (len(train_ds) // world_size) // gradient_accumulation_steps\n\n...\n\nfor global_step in progress_bar:\n    ...\n    for accumulation_step in range(gradient_accumulation_steps):\n        # Forward and backward passes\n        ...\n\n    # Step the optimiser",
+          "这需要对数据查找逻辑进行修改：我决定将 train_ds 分割成大小为 gradient_accumulation_steps * world_size 的块，然后再将每个块按 world_size 进一步切分。这样一来，获取给定循环中对应批次的方式就变成了如下形式：",
+          "inputs, targets = train_ds[((global_step * gradient_accumulation_steps) + accumulation_step) * world_size + rank]",
+          "这要求在 load_dataset 中也做出相应调整，以确保 train_ds 能被 world size、每 GPU 批次（“微批次”）大小以及梯度累积步数整除，但这并不复杂：",
+          "one_full_batch_tokens = world_size * microbatch_size * seq_length",
+          "...变成了如下形式：",
+          "one_full_batch_tokens = world_size * microbatch_size * gradient_accumulation_steps * seq_length",
+          "这些改动足以实现梯度累积！接下来，我需要修改反向传播部分的代码，将损失值缩放，以便获得平均而非求和的梯度。由于我们可能在使用 AMP 配合 scaler，因此 loss.backward 并非简单的调用：",
+          "if scaler is not None:\n    scaler.scale(train_loss).backward()\nelse:\n    train_loss.backward()",
+          "...但修改思路是显而易见的：",
+          "if scaler is not None:\n    scaler.scale(train_loss / gradient_accumulation_steps).backward()\nelse:\n    (train_loss / gradient_accumulation_steps).backward()",
+          "所有这些改动，再加上一些代码整理，已经足够构建一个正确的梯度累积训练循环！不过我还需要做一个小调整。",
+          "当使用 DDP（DistributedDataParallel）时，不同 GPU 进程之间的梯度必须同步。回顾一下过程如下：",
+          "每个进程执行一次前向传播。",
+          "每个进程执行一次后向传播。",
+          "各进程拥有梯度后，它们会相互共享，使得每个进程都持有所有后向传播梯度的平均值。",
+          "然后所有进程同时更新各自的优化器，应用该平均梯度到模型副本上。",
+          "在我最初实现的梯度累积版本中，实际发生的情况如下：",
+          "对于每一次梯度累积步骤：\n每个进程执行前向传播；\n每个进程执行后向传播；\n计算梯度平均值；",
+          "所有进程根据最新的平均梯度更新优化器。",
+          "虽然这在逻辑上是正确的，但效率不高——我们在每次累积步骤中都发送并平均梯度。然而，由于每个 GPU 进程都在维护自己的“局部”平均梯度（通过累积已缩放的梯度），我们实际上只需要在最后一步之前，将所有局部平均值汇总并计算全局平均即可。这样做可以节省大量通信开销。",
+          "避免频繁同步的关键在于利用 DistributedDataParallel 类提供的 no_sync 方法。我们的模型正是被这个类包装。我们的目标是抑制除最后一次累积步骤外的所有步骤中的梯度同步。",
+          "判断是否处于最后一次梯度累积步骤很容易：",
+          "is_last = accumulation_step == gradient_accumulation_steps - 1",
+          "现在，我们需要做的是将以下内容封装起来：",
+          "if scaler is not None:\n    scaler.scale(train_loss / gradient_accumulation_steps).backward()\nelse:\n    (train_loss / gradient_accumulation_steps).backward()",
+          "...用 model.no_sync 包装，但仅当 is_last 为 false 时。",
+          "条件语句有时会显得繁琐，不过 Python 的 contextlib 模块提供了一个“什么都不做”的 nullcontext 上下文管理器，也就是说，",
+          "with nullcontext():\n    do_something()",
+          "...它与下面这段代码完全等价：",
+          "do_something()",
+          "因此我们可以这样结合三元运算符使用：",
+          "with model.no_sync() if not is_last else nullcontext():\n        if scaler is not None:\n            scaler.scale(train_loss / gradient_accumulation_steps).backward()\n        else:\n            (train_loss / gradient_accumulation_steps).backward()",
+          "...这正好实现了我们想要的效果。",
+          "经过这次改动，我对此感到满意；你可以在这里查看差异。",
+          "是时候开始一次训练运行了！",
+          "新的本地基线",
+          "我原本计划直接基于上次在云端运行的配置进行本地训练，启用所有我认为值得使用的干预措施，并结合梯度累积。",
+          "然而，我决定先尝试一个新的“基线”训练。此前我在本地做过一些训练，随后通过在云端使用完全相同配置、在 8 块 A100 40 GiB 显卡上以整体批量大小 96 进行训练，建立了一个基准模型。现在我可以在本地复现这一过程，采用梯度累积方式，这将验证两件事（或者更准确地说，是同一现象的不同侧面）：",
+          "有效批量大小的增加是否对损失函数产生了与真实批量增大时相同的积极影响——当我之前在云端训练时，后者确实带来了改善。",
+          "通过梯度累积在本地训练的模型，其损失表现是否与在云端大批量训练的模型相近。",
+          "这有助于确认我的理解：在云端取得良好效果的关键因素是大批量训练本身，而非其他架构差异；同时也能作为梯度累积代码正确性的有力测试。",
+          "这是本次训练运行的配置。我已启动任务：",
+          "giles@perry:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 810.65it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=20,451]\n\n\nCheckpoint\n\nContinuing training\n  0%|                                                                                                       | 23/33165 [01:50<43:29:50,  4.72s/it, loss=7.625, tps=20,549]",
+          "全局步数看起来是正确的，与我之前在云端训练时观察到的数值一致。整个训练耗时约 44 小时，这个时间也合理：最初的本地训练用了 48 小时，但那段时间我花了不少精力做验证，而当前代码并未包含这部分开销。",
+          "不到两天后：",
+          "Training complete in 155,402.289 seconds\nTokens seen: 3,260,252,160\nThroughput: 20,979 tokens/second\nFinal train loss: 3.738",
+          "一切进展顺利。损失曲线如下所示：",
+          "为了对比，这里是使用相同配置但在云端训练时的损失曲线（不过使用的是更大的实际批量而非梯度累积）：",
+          "可以看到两者非常相似，但不完全一样——这完全可以预料！因为两次训练分别运行在不同硬件上——RTX 3090 与 A100，所以 CUDA 内核可能存在差异，此外 PyTorch 的 AMP（自动混合精度）也可能做出不同的决策（例如在合适情况下使用 16 位浮点数而非 32 位）。我认为如果我们在单张 A100 机器上运行，梯度累积的结果会与大批量训练的结果更加接近（甚至可能完全相同），尤其是在关闭 AMP 的情况下。",
+          "我将模型上传至 Hugging Face，接下来进入评估阶段。首先是冒烟测试：",
+          "Every effort moves you to a more realistic approach and is always welcome, especially for a younger child!\nI’",
+          "如往常一样，输出内容基本连贯。但真正重要的是它在测试集上的损失值：",
+          "Loss against our test dataset: 3.683835",
+          "结果相当不错！云端训练的基准模型损失为 3.691526，而这个本地模型的损失略低，仅为 3.683835，差距仅为 0.007691。如此接近正是我们所期望看到的 :-)",
+          "现在该看看加入各项干预措施会带来什么影响了。",
+          "带干预措施的本地训练",
+          "回顾一下，本次训练对配置所做的改动如下：",
+          "梯度裁剪阈值设为 3.5",
+          "学习率从 0.0004 调整为 0.0014，并在训练前 5% 的阶段进行预热，之后按余弦衰减至 0.00014",
+          "权重衰减从 0.1 降至 0.01",
+          "移除了 dropout 层",
+          "未包含 QKV bias",
+          "这是配置。\n我启动了它，然后：",
+          "giles@perry:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-stacked-interventions datasets\nFetching 4 files: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 749.32it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.994, tps=21,589]\n\n\nCheckpoint\n\nContinuing training\n  0%|                                                                                                      | 19/33165 [01:25<40:52:06,  4.44s/it, loss=10.318, tps=21,867]",
+          "看起来需要运行40小时；这与云端的执行情况一致，因为移除 dropout 会显著加快训练速度。",
+          "仅仅不到两天后：",
+          "Training complete in 146,299.816 seconds\nTokens seen: 3,260,252,160\nThroughput: 22,285 tokens/second\nFinal train loss: 3.519",
+          "训练过程中的损失曲线如下所示：",
+          "非常平滑，没有出现损失突增。作为对比，这是我们之前在云端进行相同训练时的曲线；可以看到，其波动比本地版本更剧烈一些。",
+          "梯度范数（gradient norm）图表也很有意思：",
+          "与下方云端训练的梯度范数图相比可以看出，本地的梯度噪声实际上更大——云端训练在初期有几个明显的梯度尖峰，但从大约全局步数6,000之后趋于平稳；而本地训练则一直持续到约3,000步都较为震荡，之后才稳定下来，但在约10,000步时又出现了一个巨大的峰值。",
+          "学习率我们无需比较，但值得检查一下以确保我们的训练方式确实正确：",
+          "总体来看一切正常。这次本地训练与云端版本确实存在差异，但（如前几次基线训练所示）两者足够相似。A100 和本地 RTX 3090 之间的架构差异可能是造成这种影响的原因。",
+          "评估阶段",
+          "我将模型上传到了 Hugging Face，现在该进行模型评估了。首先是冒烟测试：",
+          "Every effort moves you to give your customers the opportunity you give them in the event of a failure.<|endoftext|>A couple friends",
+          "输出还算连贯——而且我认为这是我第一次在冒烟测试中看到  这个 token！不过关键指标仍然是损失值，结果如下：",
+          "Loss against our test dataset: 3.538161",
+          "让我们将本次本地实验以及之前的基线结果添加到所有干预措施的结果表中：",
+          "这太奇怪了！使用干预措施的本地训练版本（1xrtx3090-stacked-interventions），其损失值比云端相同训练配置的版本（8xa100m40-stacked-interventions-1）低了0.039600，表现更好。虽然较低的损失总是好事，但这令人困惑——这个提升幅度甚至超过了某些干预措施本身的效果。",
+          "理论上讲，本次本地训练与云端版本之间唯一的变化就是硬件架构。我预期架构差异会带来一定影响，但认为其影响应该很小——正如基线训练 8xa100m40-baseline 和 1xrtx3090-baseline 所显示的那样，两者的损失差异仅为0.007691，大约是前者效果的约五分之一。",
+          "然而，在研究噪声对训练损失的影响时，我发现一个现象：改变权重初始化所使用的随机种子（但训练过程本身仍从相同的随机种子开始）对最终模型质量的影响，远比保持权重完全相同但改变训练起始种子的影响要大得多。即：不同初始化但相同训练流程产生的模型标准差，约为相同初始化但不同训练流程产生模型标准差的近两倍。",
+          "这个发现很有趣，尽管不能直接类比——那些实验是在固定架构下进行的，每次都在同一台8卡A100 40GB机器上运行。",
+          "不过，我觉得至少应该验证一下本地和云端训练是否真的使用了相同的初始权重。我的猜测是它们很可能是一样的，因为权重初始化使用的是确定性的非GPU代码，只要种子相同，无论在哪台机器上都应生成相同的权重。此外，本地与云端基线训练的损失结果高度相似，也支持这一推测。",
+          "但值得一试。我创建了一个训练代码的临时分支，该分支在——创建模型之后——只是将模型权重转储到文件中，然后退出。我使用 1xrtx3090-stacked-interventions 配置在本地运行它，然后在 Lambda 上启动了另一台 8x A100 40 GiB 的机器，在那里运行相同的代码，这次使用的是 8xa100m40-stacked-interventions-1 配置，然后将权重 scped 下来。",
+          "giles@perry:~/Dev/ddp-base-model-from-scratch (dump-weights)$ diff cloud-init-weights.safetensors local-init-weights.safetensors\ngiles@perry:~/Dev/ddp-base-model-from-scratch (dump-weights)$",
+          "结果一致。这让人放心！",
+          "我曾考虑对此进行更多分析；例如，在我对噪声的研究中，我发现保持相同的权重，但改变其余训练运行的随机种子，得到的结果标准差为 0.008672——比带干预措施的本机和云训练之间的差异小四倍以上。我能否用这个数字进行某种比较？",
+          "然而，我认为这实际上并不具可比性。那个数字是通过改变随机种子得出的，但保持了相同的架构。并没有充分的理由相信保持种子不变但改变架构会产生相同程度的差异。它们可能更相似，也可能差异更大。",
+          "我想我们真正能说的就是，机器的变化以某种方式改变了训练动态的某些方面，碰巧让我们获得了更低的损失。我很容易想象，如果我稍微做点不同的事——比如使用本地的 RTX 4090——结果也可能朝相反的方向发展。",
+          "至少让人感到欣慰的是，这种改进比之前最让我信服的那些干预措施要小；唯一比它小的改进是全精度 float32、梯度裁剪和 QKV 偏置——这些我已经认为可能只是因为噪声才带来好处。最重要的是，它与最初从本地训练迁移到更大批次的云训练时看到的 0.252474 的改进相比，小了几个数量级。",
+          "结论",
+          "所以，我想我已经完成了这一系列训练实验。我们从本地训练的模型开始，它在测试集上的损失为 3.943522，与原始的 GPT-2 small 模型（损失为 3.499677）相比。",
+          "我尝试了一系列干预措施，试图让我的模型更接近目标，最终成功将其损失降至 3.538161，几乎达到了目标。这真的很令人满意！",
+          "我认为在完全结束这个“干预”小系列并回到从头开始构建主流 LLM 的工作之前，还有两件事要做。",
+          "首先，我应该重新审视指令微调测试，我在进行这些训练运行时暂停了这项工作。这将为我们提供一些线索，判断损失改进是仅仅让一个数值变小，还是真正提升了模型的实用性。",
+          "其次，我认为我真的需要写一篇总结。我从去年十二月开始断断续续地研究这些内容，我觉得对所做的工作做一个总结会很不错！",
+          "我会很快发布；别换台 :-)",
+          "这是本系列的下一篇文章的链接。",
+          "感谢这篇 Stack Overflow 回答提供的技巧。↩",
+          "从现在起我将切换到保留六位小数——之前我只保留三位，因此显示为 3.500。↩"
+        ]
+      },
+      "fromDate": "2026-04-15"
+    },
+    {
+      "slug": "e1966838fbcf9d72",
+      "title": "Gemini 3.1 Flash TTS",
+      "titleZh": "Gemini 3.1 Flash TTS：谷歌发布支持提示词驱动的新文本转语音模型",
+      "link": "https://simonwillison.net/2026/Apr/15/gemini-31-flash-tts/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-15T17:13:14.000Z",
+      "category": "ai-ml",
+      "keywords": ["Gemini", "TTS", "text-to-speech"],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "Google 发布了 Gemini 3.1 Flash TTS，这是一个全新的文本转语音（TTS）模型，可通过自然语言提示进行控制。该模型通过标准的 Gemini API 提供，使用 `gemini-3.1-flash-tts-preview` 作为模型 ID，但仅支持输出音频文件。其功能基于 AI 驱动的语音生成技术，适用于需要动态语音合成的应用场景。",
+      "summaryEn": "Google has released Gemini 3.1 Flash TTS, a new text-to-speech model that supports prompt-driven control. It is accessible via the standard Gemini API using the model ID `gemini-3.1-flash-tts-preview`, and exclusively outputs audio files. Built on AI-powered speech synthesis, it enables dynamic voice generation for applications requiring flexible audio output.",
+      "reason": "如果你正在寻找一个能通过自然语言指令生成高质量语音的 API 解决方案，这个新发布的 Gemini 3.1 Flash TTS 是一个值得关注的突破。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "15th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Gemini 3.1 Flash TTS. Google released Gemini 3.1 Flash TTS today, a new text-to-speech model that can be directed using prompts."
+          },
+          {
+            "type": "p",
+            "text": "It's presented via the standard Gemini API using gemini-3.1-flash-tts-preview as the model ID, but can only output audio files."
+          },
+          {
+            "type": "p",
+            "text": "The prompting guide is surprising, to say the least. Here's their example prompt to generate just a few short sentences of audio:"
+          },
+          {
+            "type": "code",
+            "text": "# AUDIO PROFILE: Jaz R.\n## \"The Morning Hype\"\n\n## THE SCENE: The London Studio\nIt is 10:00 PM in a glass-walled studio overlooking the moonlit London skyline, but inside, it is blindingly bright. The red \"ON AIR\" tally light is blazing. Jaz is standing up, not sitting, bouncing on the balls of their heels to the rhythm of a thumping backing track. Their hands fly across the faders on a massive mixing desk. It is a chaotic, caffeine-fueled cockpit designed to wake up an entire nation.\n\n### DIRECTOR'S NOTES\nStyle:\n* The \"Vocal Smile\": You must hear the grin in the audio. The soft palate is always raised to keep the tone bright, sunny, and explicitly inviting.\n* Dynamics: High projection without shouting. Punchy consonants and elongated vowels on excitement words (e.g., \"Beauuutiful morning\").\n\nPace: Speaks at an energetic pace, keeping up with the fast music.  Speaks with A \"bouncing\" cadence. High-speed delivery with fluid transitions — no dead air, no gaps.\n\nAccent: Jaz is from Brixton, London\n\n### SAMPLE CONTEXT\nJaz is the industry standard for Top 40 radio, high-octane event promos, or any script that requires a charismatic Estuary accent and 11/10 infectious energy.\n\n#### TRANSCRIPT\n[excitedly] Yes, massive vibes in the studio! You are locked in and it is absolutely popping off in London right now. If you're stuck on the tube, or just sat there pretending to work... stop it. Seriously, I see you.\n[shouting] Turn this up! We've got the project roadmap landing in three, two... let's go!"
+          },
+          {
+            "type": "p",
+            "text": "Here's what I got using that example prompt:"
+          },
+          {
+            "type": "p",
+            "text": "Your browser does not support the audio element."
+          },
+          {
+            "type": "p",
+            "text": "Then I modified it to say \"Jaz is from Newcastle\" and \"... requires a charismatic Newcastle accent\" and got this result:"
+          },
+          {
+            "type": "p",
+            "text": "Your browser does not support the audio element."
+          },
+          {
+            "type": "p",
+            "text": "Here's Exeter, Devon for good measure:"
+          },
+          {
+            "type": "p",
+            "text": "Your browser does not support the audio element."
+          },
+          {
+            "type": "p",
+            "text": "I had Gemini 3.1 Pro vibe code this UI for trying it out:"
+          }
+        ],
+        "translations": [
+          "2026年4月15日 - Link Blog",
+          "Gemini 3.1 Flash TTS。谷歌今日发布了 Gemini 3.1 Flash TTS，这是一款新的文本转语音模型，支持通过提示词进行控制。",
+          "它通过标准的 Gemini API 提供，使用 gemini-3.1-flash-tts-preview 作为模型 ID，但仅能输出音频文件。",
+          "其提示指南令人惊讶，至少可以说如此。以下是他们生成几句话音频的示例提示：",
+          "# AUDIO PROFILE: Jaz R.\n## \"The Morning Hype\"\n\n## THE SCENE: The London Studio\nIt is 10:00 PM in a glass-walled studio overlooking the moonlit London skyline, but inside, it is blindingly bright. The red \"ON AIR\" tally light is blazing. Jaz is standing up, not sitting, bouncing on the balls of their heels to the rhythm of a thumping backing track. Their hands fly across the faders on a massive mixing desk. It is a chaotic, caffeine-fueled cockpit designed to wake up an entire nation.\n\n### DIRECTOR'S NOTES\nStyle:\n* The \"Vocal Smile\": You must hear the grin in the audio. The soft palate is always raised to keep the tone bright, sunny, and explicitly inviting.\n* Dynamics: High projection without shouting. Punchy consonants and elongated vowels on excitement words (e.g., \"Beauuutiful morning\").\n\nPace: Speaks at an energetic pace, keeping up with the fast music.  Speaks with A \"bouncing\" cadence. High-speed delivery with fluid transitions — no dead air, no gaps.\n\nAccent: Jaz is from Brixton, London\n\n### SAMPLE CONTEXT\nJaz is the industry standard for Top 40 radio, high-octane event promos, or any script that requires a charismatic Estuary accent and 11/10 infectious energy.\n\n#### TRANSCRIPT\n[excitedly] Yes, massive vibes in the studio! You are locked in and it is absolutely popping off in London right now. If you're stuck on the tube, or just sat there pretending to work... stop it. Seriously, I see you.\n[shouting] Turn this up! We've got the project roadmap landing in three, two... let's go!",
+          "我使用该示例提示得到的结果如下：",
+          "您的浏览器不支持 audio 元素。",
+          "然后我将其修改为“Jaz is from Newcastle”和“... requires a charismatic Newcastle accent”，并得到了这个结果：",
+          "您的浏览器不支持 audio 元素。",
+          "为了更全面地展示，这里还有埃克塞特（Exeter），德文郡（Devon）的发音：",
+          "您的浏览器不支持 audio 元素。",
+          "我让 Gemini 3.1 Pro 为我编写了这个 UI 来试用它："
+        ]
+      },
+      "fromDate": "2026-04-15"
+    },
+    {
+      "slug": "adbfca3e458d03aa",
+      "title": "Zig 0.16.0 release notes: \"Juicy Main\"",
+      "titleZh": "Zig 0.16.0 发布：“Juicy Main”依赖注入功能上线",
+      "link": "https://simonwillison.net/2026/Apr/15/juicy-main/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-15T01:59:21.000Z",
+      "category": "engineering",
+      "keywords": ["Zig", "language", "release"],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "Zig 0.16.0 正式发布，其中引入了一个名为“Juicy Main”的重要特性——为程序入口函数 `main()` 提供依赖注入机制，允许接收 `process.Init` 参数。这一改进显著提升了程序的模块化和可测试性，使开发者能更灵活地管理初始化逻辑和外部依赖。",
+      "summaryEn": "Zig 0.16.0 introduces 'Juicy Main', a dependency injection feature for the `main()` function that accepts a `process.Init` parameter. This enhancement improves modularity and testability by allowing better management of initialization logic and external dependencies.",
+      "reason": "对于追求极致控制力和可维护性的系统级编程者来说，Zig 的‘Juicy Main’依赖注入是一次令人兴奋的语言演进。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "15th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Zig 0.16.0 release notes: \"Juicy Main\" (via) Zig has really good release notes - comprehensive, detailed, and with relevant usage examples for each of the new features."
+          },
+          {
+            "type": "p",
+            "text": "Of particular note in the newly released Zig 0.16.0 is what they are calling \"Juicy Main\" - a dependency injection feature for your program's main() function where accepting a process.Init parameter grants access to a struct of useful properties:"
+          },
+          {
+            "type": "code",
+            "text": "const std = @import(\"std\");\n\npub fn main(init: std.process.Init) !void {\n    /// general purpose allocator for temporary heap allocations:\n    const gpa = init.gpa;\n    /// default Io implementation:\n    const io = init.io;\n    /// access to environment variables:\n    std.log.info(\"{d} env vars\", .{init.environ_map.count()});\n    /// access to CLI arguments\n    const args = try init.minimal.args.toSlice(\n        init.arena.allocator()\n    );\n}"
+          }
+        ],
+        "translations": []
+      },
+      "fromDate": "2026-04-15"
+    },
+    {
+      "slug": "84f81464a1745806",
+      "title": "Big tech clouds worden niet veiliger met stapels papier",
+      "titleZh": "大科技云堆叠纸张并不能变得更安全",
+      "link": "https://berthub.eu/articles/posts/big-tech-clouds-niet-veiliger-met-papier/",
+      "sourceName": "berthub.eu",
+      "sourceUrl": "https://berthub.eu",
+      "pubDate": "2026-04-19T19:00:00.000Z",
+      "category": "security",
+      "keywords": ["cloud security", "data sovereignty", "US surveillance", "privacy"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章指出，将社会、政府和企业的数据托管在美国服务器上存在根本性安全风险。即使数据存储在欧洲，美国仍可通过三项法律工具获取访问权限，导致用户完全失控。这种结构性依赖使得任何‘特殊协议’都无法改变现实中的监控权力。作者认为，缺乏有效制衡机制的情况下，依赖美国云服务本质上是不可持续的。",
+      "summaryEn": "The article exposes fundamental security risks in relying on American cloud infrastructure, even when data physically resides outside the US. Three legal mechanisms grant the US government broad access to foreign-hosted communications and data, creating a single point of failure. No 'special agreement' can override this structural vulnerability, making such dependencies inherently insecure and unsustainable.",
+      "reason": "了解这些法律漏洞如何绕过地理边界，对任何考虑使用主流云服务的组织都至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bert Hubert's writings",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Je samenleving, overheid en maatschappij overlaten aan Amerikaanse servers komt met twee problemen:"
+          },
+          {
+            "type": "li",
+            "text": "Alles werkt alleen zolang ze het in Amerika goed vinden. Met een enkel briefje op Whitehouse.gov lig je uit hun cloud."
+          },
+          {
+            "type": "li",
+            "text": "Via minstens drie wetsinstrumenten gunt Amerika zich toegang tot onze data en communicatie, ook al staan de Microsoftservers in Europa."
+          },
+          {
+            "type": "p",
+            "text": "Dit is allemaal heel vervelend, en er is ook weinig aan te doen. Geen enkele “speciale” afspraak heft de realiteit van Amerikaanse wetgeving op. Je kunt proberen er nog wat BV’s tussen te schuiven, maar uiteindelijk ben je bij sancties toch de klos."
+          },
+          {
+            "type": "p",
+            "text": "Ook het toevoegen van extra lagen encryptie/sleutels voor privacy is in de praktijk niet realistisch gebleken. Of zoals ik eerder schreef, je kunt je digitale autonomie niet kopen in Amerika."
+          },
+          {
+            "type": "p",
+            "text": "Bovenstaande is allemaal niet controversieel. De landsadvocaat heeft het in de Tweede Kamer recent nog bevestigd."
+          },
+          {
+            "type": "h2",
+            "text": "Desondanks.."
+          },
+          {
+            "type": "p",
+            "text": "Desondanks onderhandelen we nog heel wat met de werkelijkheid."
+          },
+          {
+            "type": "p",
+            "text": "Nu Amerikaanse clouds en diensten bewezen een risico vormen zal je toch wat anders moeten gaan doen. Maar dat is tegen de stroom inzwemmen. Dat is vertrouwen op Europese technologie die anders werkt. Waar niet duizenden big tech & “big four” consultants klaarstaan om je te verzekeren dat het goed is wat je doet & gelijk de bijbehorende diensten te leveren. Het vergt daadwerkelijke eigen IT-kennis. En de Nederlandse overheid heeft grotendeels geen IT-afdelingen meer, maar alleen big-tech afdelingen."
+          },
+          {
+            "type": "p",
+            "text": "In plaats van te moeten veranderen, kan je ook proberen met papier aan te tonen dat het niet hoeft. En dat is erg populair tegenwoordig."
+          },
+          {
+            "type": "quote",
+            "text": "“Als mensen moeten kiezen tussen van gedachten veranderen, of bewijzen dat dat helemaal niet nodig is, storten de meeste mensen zich op het bewijs” - John Kenneth Galbraith"
+          },
+          {
+            "type": "p",
+            "text": "We hebben hiervoor een heel instrumentarium opgetuigd, zoals Data Privacy Impact Assessments, Data Transfer Impact Assessments en “Comply or explain” documenten. Zoals veel gebruikt in de zin “we moeten de Explain nog schrijven, dan kunnen we naar de cloud”."
+          },
+          {
+            "type": "p",
+            "text": "De nieuwste doorbraak is dat je de risico’s in kaart brengt en daarna je “risk register” gebruikt om die risico’s vervolgens te “accepteren”. Ook weer opgelost!"
+          },
+          {
+            "type": "h2",
+            "text": "Dit is big business"
+          },
+          {
+            "type": "p",
+            "text": "Te koop op despair.com"
+          },
+          {
+            "type": "p",
+            "text": "Al deze documenten worden geschreven door een hele industrie, binnen en buiten overheden. Als een soort aflaat kan je voldoende papier bestellen tot alles zo complex is geworden dat je opperhoofd of minister vol vertrouwen kan zeggen dat we door kunnen met de verhuizing van DigiD naar Amerika, of dat het helemaal niet raar is om je btw voortaan door Amerikanen te laten doen."
+          },
+          {
+            "type": "quote",
+            "text": "“Er zijn twee manieren om software te ontwerpen. De ene is om alles zo eenvoudig te maken dat het evident is dat er geen problemen zijn. Op de andere manier maak je alles zo ingewikkeld dat niemand snel problemen kan zien.” - de onlangs overleden softwareontwikkelaar Tony Hoare."
+          },
+          {
+            "type": "p",
+            "text": "En als de bergen papier nog niet genoeg waren, dan kan je gaan praten over risicomodellen en “governance”. Want met de juiste governance kan je werkelijk iedere draak temmen."
+          },
+          {
+            "type": "h2",
+            "text": "Maar tuin er niet in"
+          },
+          {
+            "type": "p",
+            "text": "Niets doet af aan de realiteit dat Amerikaanse diensten kwetsbaar zijn voor sancties. Geen enkele berg papier heft de privacyproblemen op. Complexiteit verkocht als nuance verhult de gevaren alleen maar."
+          },
+          {
+            "type": "p",
+            "text": "Het enige realistische wat je op kunt schrijven is dat je denkt dat het wel losloopt, en dat je erop vertrouwt dat Trump en zijn overheid redelijke dingen doen."
+          },
+          {
+            "type": "p",
+            "text": "Het zou mensen sieren als ze dit voorin hun rapporten zouden zetten, “we geloven echt dat het wel meevalt”. Prima, dat is dan je mening. Nederlanders zijn het niet met je eens (gezien de woede over DigiD naar Amerika). Maar, dan kom je tenminste uit voor waarom je denkt dat het kan: je haast Ruttiaanse vertrouwen in de Verenigde Staten."
+          },
+          {
+            "type": "p",
+            "text": "Maar weet dus dat mensen een hele goede baan hebben aan consulting, adviezen en “governance”, zodat we door kunnen gaan onze data en geld naar Amerika te brengen, zonder dat iemand hier moeite hoeft te doen om eens zelf controle te nemen over computers."
+          },
+          {
+            "type": "p",
+            "text": "En deze mensen helpen ons, voor geld, naar een steeds afhankelijkere en gevaarlijkere maatschappij, terwijl ze zeggen dat ze nuance komen brengen."
+          },
+          {
+            "type": "p",
+            "text": "Tuin er niet in. En werk aan iets beters."
+          },
+          {
+            "type": "h2",
+            "text": "Ja nou dit vind ik helemaal geen leuk stuk"
+          },
+          {
+            "type": "p",
+            "text": "Misschien gaat het wel niet over jou, maar ik kan echt deze filosofische blockbuster aanraden:"
+          },
+          {
+            "type": "p",
+            "text": "Video - “You probably think this song is about you”"
+          }
+        ],
+        "translations": [
+          "Je samenleving, overheid en maatschappij overlaten aan Amerikaanse servers komt met twee problemen:",
+          "Alles werkt alleen zolang ze het in Amerika goed vinden. Met een enkel briefje op Whitehouse.gov lig je uit hun cloud.",
+          "Via minstens drie wetsinstrumenten gunt Amerika zich toegang tot onze data en communicatie, ook al staan de Microsoftservers in Europa.",
+          "Dit is allemaal heel vervelend, en er is ook weinig aan te doen. Geen enkele “speciale” afspraak heft de realiteit van Amerikaanse wetgeving op. Je kunt proberen er nog wat BV’s tussen te schuiven, maar uiteindelijk ben je bij sancties toch de klos.",
+          "Ook het toevoegen van extra lagen encryptie/sleutels voor privacy is in de praktijk niet realistisch gebleken. Of zoals ik eerder schreef, je kunt je digitale autonomie niet kopen in Amerika.",
+          "Bovenstaande is allemaal niet controversieel. De landsadvocaat heeft het in de Tweede Kamer recent nog bevestigd.",
+          "Desondanks..",
+          "Desondanks onderhandelen we nog heel wat met de werkelijkheid.",
+          "Nu Amerikaanse clouds en diensten bewezen een risico vormen zal je toch wat anders moeten gaan doen. Maar dat is tegen de stroom inzwemmen. Dat is vertrouwen op Europese technologie die anders werkt. Waar niet duizenden big tech & “big four” consultants klaarstaan om je te verzekeren dat het goed is wat je doet & gelijk de bijbehorende diensten te leveren. Het vergt daadwerkelijke eigen IT-kennis. En de Nederlandse overheid heeft grotendeels geen IT-afdelingen meer, maar alleen big-tech afdelingen.",
+          "In plaats van te moeten veranderen, kan je ook proberen met papier aan te tonen dat het niet hoeft. En dat is erg populair tegenwoordig.",
+          "“Als mensen moeten kiezen tussen van gedachten veranderen, of bewijzen dat dat helemaal niet nodig is, storten de meeste mensen zich op het bewijs” - John Kenneth Galbraith",
+          "We hebben hiervoor een heel instrumentarium opgetuigd, zoals Data Privacy Impact Assessments, Data Transfer Impact Assessments en “Comply or explain” documenten. Zoals veel gebruikt in de zin “we moeten de Explain nog schrijven, dan kunnen we naar de cloud”.",
+          "De nieuwste doorbraak is dat je de risico’s in kaart brengt en daarna je “risk register” gebruikt om die risico’s vervolgens te “accepteren”. Ook weer opgelost!",
+          "Dit is big business",
+          "Te koop op despair.com",
+          "Al deze documenten worden geschreven door een hele industrie, binnen en buiten overheden. Als een soort aflaat kan je voldoende papier bestellen tot alles zo complex is geworden dat je opperhoofd of minister vol vertrouwen kan zeggen dat we door kunnen met de verhuizing van DigiD naar Amerika, of dat het helemaal niet raar is om je btw voortaan door Amerikanen te laten doen.",
+          "“Er zijn twee manieren om software te ontwerpen. De ene is om alles zo eenvoudig te maken dat het evident is dat er geen problemen zijn. Op de andere manier maak je alles zo ingewikkeld dat niemand snel problemen kan zien.” - de onlangs overleden softwareontwikkelaar Tony Hoare.",
+          "En als de bergen papier nog niet genoeg waren, dan kan je gaan praten over risicomodellen en “governance”. Want met de juiste governance kan je werkelijk iedere draak temmen.",
+          "Maar tuin er niet in",
+          "Niets doet af aan de realiteit dat Amerikaanse diensten kwetsbaar zijn voor sancties. Geen enkele berg papier heft de privacyproblemen op. Complexiteit verkocht als nuance verhult de gevaren alleen maar.",
+          "Het enige realistische wat je op kunt schrijven is dat je denkt dat het wel losloopt, en dat je erop vertrouwt dat Trump en zijn overheid redelijke dingen doen.",
+          "要是有人真在报告里写上“我们真心相信这玩意儿能行”，那可真是够招摇的。好吧，那是你的观点。不过荷兰人可不买账（想想看他们对 DigiD 赴美这事有多愤怒）。但至少你还能说出个所以然来：你可是把对俄罗斯的信任照单全收地套在了美国头上。",
+          "所以啊，这些人拿着高薪，干着咨询、建言和“治理”的活儿，好让我们心安理得地把数据和钱往美国送——反正没人会费力去真正掌控那些电脑。",
+          "他们嘴上说着要带来 nuance（微妙平衡），实际上却是在拿钱帮我们把社会推入越来越依赖、越来越危险的境地。",
+          "别钻进这个坑了。去做点真正更好的事吧。",
+          "哦，这个嘛，我实在不觉得这是个有趣的段落。",
+          "也许它不是针对你的，但我真得推荐这部哲学大片：",
+          "视频 - “You probably think this song is about you”"
+        ]
+      },
+      "fromDate": "2026-04-19"
+    },
+    {
+      "slug": "d52bf08ab2d9ab8b",
+      "title": "The last MP3 patent",
+      "titleZh": "最后的 MP3 专利",
+      "link": "https://dfarq.homeip.net/mp3-is-dead-long-live-mp3-oh-wait-its-just-the-patent/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=mp3-is-dead-long-live-mp3-oh-wait-its-just-the-patent",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-04-17T11:00:35.000Z",
+      "category": "engineering",
+      "keywords": ["mp3", "patent", "audio"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章探讨了 MP3 音频格式的法律命运，指出其核心专利已于2017年到期，这意味着该编解码技术已进入公共领域。作者回顾了MP3从诞生到专利失效的历史，并澄清一个常见误解：虽然专利过期，但MP3本身并未“死亡”，仍在广泛使用。文章还引用中世纪欧洲关于王权继承的谚语作为类比，讽刺性地描述这一法律终结时刻。最终结论是，MP3的技术生命因专利到期而真正自由化。",
+      "summaryEn": "The article examines the legal fate of the MP3 audio format, noting that its core patent expired in 2017, placing the technology into the public domain. It traces MP3’s history from invention to patent expiration and clarifies a common misconception: while the patent has lapsed, MP3 itself is not 'dead'—it remains widely used. The author uses a medieval European proverb about monarchical succession as a satirical analogy for this legal milestone. Ultimately, the piece concludes that MP3’s technical life has been freed due to the patent’s expiration.",
+      "reason": "这是一篇兼具历史趣味与法律洞察的文章，适合对知识产权、数字媒体标准演变感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Medieval Europeans believed that the divine right of sovereignty transferred instantly from one monarch to the next upon the death of the previous one. This led to a saying, first used in 1422 in France, that translates to “The king is dead. Long live the king!” And in that same spirit, when the last patent related to the MP3 file format expired April 16, 2017, a few people said MP3 is dead, long live Mp3. And some skipped the part about MP3 living long, and just declared it dead."
+          },
+          {
+            "type": "h2",
+            "text": "Was MP3 dead really?"
+          },
+          {
+            "type": "p",
+            "text": "On April 17, 2017, the last MP3-related patent, US Patent #: 6,009,399 regarding bit rate encoding and held by Deutsche Thomson Brandt GmbH, expired. Curiously, when the event was reported at all, the headline typically was that MP3 was dead. That’s partly because Fraunhofer Institute deceptively announced right around the same time that they were canceling the MP3 licensing program. They conveniently forgot to mention they were canceling it because there was no need to pay royalties for it anymore, and they wanted to license another file format, still protected by patent and subject to royalties, instead."
+          },
+          {
+            "type": "p",
+            "text": "MP3 had a good run, first emerging around 1996 and becoming more common as CPU speeds increased, making it more practical to rip and encode your own files."
+          },
+          {
+            "type": "h2",
+            "text": "How MP3 hides in plain sight"
+          },
+          {
+            "type": "p",
+            "text": "The other question news stories kept bringing up was whether anyone cares about MP3 anymore. It does really seem like no one talks about MP3 anymore, but that doesn’t mean nobody uses it. Sure, people stream their music instead of buying MP3s and storing them locally, but that doesn’t mean they don’t use MP3. Many, if not all of the streaming services are sending MP3 data when you are listening. The difference is your playback device doesn’t store it."
+          },
+          {
+            "type": "p",
+            "text": "That’s part of the reason why countless hardware and software still understands MP3. We still use it all the time. MP3 is still everywhere, we just don’t have to think about it anymore."
+          },
+          {
+            "type": "p",
+            "text": "I find it strange that so few people noticed the last MP3-related patent expired, and some open source software still doesn’t support MP3 by default because of patent reasons, even though those patents expired nearly a decade ago now. Unlike GIF, the open source community continued shunning MP3. After all of the legal fighting around Napster, the Diamond Rio, MP3.com, and anything else related to MP3 around the turn of the century, it seems like the file format faded away with a whimper."
+          },
+          {
+            "type": "p",
+            "text": "Whenever I talk to someone 20 or 30 years younger than me about music and I dig through CDs, tapes, and MP3s looking for ideas, it makes me feel like a dinosaur. Physical media is making something of a comeback, and flipping through physical media helps you see connections you miss looking through streaming services. But I think having the digital files on hand also helps you see connections. Sometimes different connections."
+          },
+          {
+            "type": "p",
+            "text": "Don’t get me wrong. I’ve discovered some great music through Youtube just like so many other people these days. But I like having my old methods available too. Including MP3."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "中世纪欧洲人认为，主权的神圣权利会在前一位君主去世后立即转移给下一位君主。这催生了一句说法，最早于1422年在法国使用，意为“国王已逝，国王万岁！”同样地，当2017年4月16日最后一项与MP3文件格式相关的专利到期时，一些人宣称MP3已死，Mp3万岁。有些人干脆跳过了“MP3长存”的部分，直接宣布它已经消亡。",
+          "MP3真的死了吗？",
+          "2017年4月17日，最后一项与MP3相关的专利——由德国汤姆逊品牌公司持有的美国专利号：6,009,399（涉及比特率编码）——正式失效。有趣的是，每当这一事件被报道时，标题往往都是“MP3已死”。部分原因在于，弗劳恩霍夫研究所几乎在同一时间发布声明，称他们将取消MP3许可计划。他们 conveniently 忘记提及，之所以取消该计划，是因为不再需要支付相关专利费，而他们更希望推广另一种仍受专利保护、需缴纳版税的音频格式。",
+          "MP3曾辉煌一时，最初于1990年代中后期出现，随着CPU速度的提升，处理和编码MP3文件变得更加实用，其使用范围也随之扩大。",
+          "MP3如何悄然隐身于日常之中",
+          "新闻中反复提出的问题是：如今是否还有人关心MP3？确实，似乎没人再谈论MP3了，但这并不意味着它已被弃用。诚然，人们现在更多通过流媒体听音乐，而非购买并本地存储MP3文件，但这并不等于他们不使用MP3。事实上，许多（甚至所有）流媒体服务在传输音频数据时仍采用MP3格式。区别仅在于：你的播放设备不会将其保存下来。",
+          "这也是为何无数硬件和软件至今仍支持MP3的原因。我们一直在使用它。MP3无处不在，只是我们不再刻意去注意罢了。",
+          "令人不解的是，竟鲜有人注意到最后一项MP3相关专利早已过期，而一些开源软件至今仍未默认支持MP3，理由仍是专利问题——尽管这些专利距今已有近十年之久。与GIF不同，开源社区对MP3的排斥并未随法律障碍消除而停止。经历了世纪初围绕Napster、Diamond Rio、MP3.com等引发的诸多法律纷争后，这种文件格式仿佛悄无声息地淡出了人们的视野。",
+          "每当我与比我年轻二十岁或三十岁的人讨论音乐，并翻看CD、磁带和MP3文件寻找灵感时，总感觉自己像个恐龙。实体媒介正在经历某种程度的复兴，翻阅实体介质能让你发现流媒体难以呈现的联系。但我认为，手头拥有数字文件也有助于建立新的连接——有时甚至是意想不到的连接。",
+          "别误会我的意思。我通过YouTube发现了不少好音乐，就像如今许多人一样。但我依然喜欢保留旧有的方式，包括使用MP3。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。自1991年起，他便开始专业从事计算机相关写作，因此当复古计算机刚刚问世时，他就已经开始撰写相关内容。自1994年以来，他一直从事IT行业工作，并于2013年起专注于漏洞管理领域。他持有Security+和CISSP认证。如今，他每周博客更新五次，主要围绕1975至2000年间的复古计算机和复古游戏展开。"
+        ]
+      },
+      "fromDate": "2026-04-17"
+    },
+    {
+      "slug": "e9c4a395121cd6f0",
+      "title": "Back button hijacking is going away",
+      "titleZh": "后退按钮劫持正在消失",
+      "link": "https://idiallo.com/blog/back-button-hijacking-is-going-away-seo?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-04-14T12:00:00.000Z",
+      "category": "security",
+      "keywords": ["back button hijacking", "user experience", "deceptive apps", "privacy"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章指出网站滥用浏览器后退功能（back-button hijacking）的行为正逐渐减少，这类设计会激怒用户并损害品牌声誉。作者认为，随着用户体验意识提升和浏览器防护增强，恶意软件通过微妙手段（如‘温水煮青蛙’式诱导）操控用户行为的策略已难以为继。",
+      "summaryEn": "Back-button hijacking—where websites trap users by overriding the browser's back button—is declining as awareness grows. These intrusive designs frustrate users and harm brand trust; modern browsers now block such practices, making it harder for hostile software to manipulate navigation subtly over time.",
+      "reason": "揭示了现代Web开发中一个被忽视但日益改善的用户体验问题，有助于开发者避免破坏性交互设计。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When websites are blatantly hostile, users close them to never come back. Have you ever downloaded an app, realized it was deceptive, and deleted it immediately? It's a common occurrence for me. But there is truly hostile software that we still end up using daily. We don't just delete those apps because the hostility is far more subtle. It's like the boiling frog, the heat turns up so slowly that the frog enjoys a nice warm bath before it's fully cooked."
+          },
+          {
+            "type": "p",
+            "text": "With clever hostile software, they introduce one frustrating feature at a time. Every time I find myself on LinkedIn, it's not out of pleasure. Maybe it's an email about an enticing job. Maybe it's an article someone shared with me. Either way, before I click the link, I have no intention of scrolling through the feed. Yet I end up on it anyway, not because I want to, but because I've been tricked."
+          },
+          {
+            "type": "p",
+            "text": "You see, LinkedIn employs a trick called back button hijacking. You click a LinkedIn URL that a friend shared, read the article, and when you're done, you click the back button expecting to return to whatever app you were on before. But instead of going back, you're still on LinkedIn. Except now, you are on the homepage, where your feed loads with enticing posts that lure you into scrolling."
+          },
+          {
+            "type": "p",
+            "text": "How did that happen? How did you end up on the homepage when you only clicked on a single link? That's back button hijacking."
+          },
+          {
+            "type": "p",
+            "text": "Here's how it works. When you click the original LinkedIn link, you land on a page and read the article. In the background, LinkedIn secretly gets to work. Using the location.replace() JavaScript method, it swaps the page's URL to the homepage. The replace method doesn't add an entry to the browser's history. Then LinkedIn manually pushes the original URL you landed on into the history stack. This all happens so fast that the user never notices any change in the URL or the page."
+          },
+          {
+            "type": "p",
+            "text": "As far as the browser is concerned, you opened the LinkedIn homepage and then clicked on a post to read it. So when you click the back button, you're taken back to the homepage, the feed loads, and you're presented with the most engaging post to keep you on the platform."
+          },
+          {
+            "type": "p",
+            "text": "If you spent a few minutes reading the article, you probably won't even remember how you got to the site. So when you click back and see the feed, you won't question it. You'll assume nothing deceptive happened."
+          },
+          {
+            "type": "p",
+            "text": "While LinkedIn only pushes you one level down in the history state, more aggressive websites can break the back button entirely. They push a new history state every time you try to go back, effectively trapping you on their site. In those cases, your only option is to close the tab."
+          },
+          {
+            "type": "p",
+            "text": "I've also seen developers unintentionally break the back button, often when implementing a search feature. On a search box where each keystroke returns a result, an inexperienced developer might push a new history state on every keystroke, intending to let users navigate back to previous search terms. Unfortunately, this creates an excessive number of history entries. If you typed a long search query, you'd have to click the back button for every character (including spaces) just to get back to the previous page. The correct approach is to only push the history state when the user submits or leaves the search box (onblur)."
+          },
+          {
+            "type": "p",
+            "text": "As of yesterday, Google announced a new spam policy to address this issue. Their reasoning:"
+          },
+          {
+            "type": "quote",
+            "text": "People report feeling manipulated and eventually less willing to visit unfamiliar sites. As we've stated before, inserting deceptive or manipulative pages into a user's browser history has always been against our Google Search Essentials."
+          },
+          {
+            "type": "p",
+            "text": "Any website using these tactics will be demoted in search results:"
+          },
+          {
+            "type": "quote",
+            "text": "Pages that are engaging in back button hijacking may be subject to manual spam actions or automated demotions, which can impact the site's performance in Google Search results. To give site owners time to make any needed changes, we're publishing this policy two months in advance of enforcement on June 15, 2026."
+          },
+          {
+            "type": "p",
+            "text": "I'm not sure how much search rankings affect LinkedIn specifically, but in the grand scheme of things, this is a welcome change. I hope this practice is abolished entirely."
+          }
+        ],
+        "translations": [
+          "当网站明显具有攻击性时，用户会立刻关闭并永不回头。你是否曾下载过一个应用，发现它充满欺骗性后立即卸载？这对我来说很常见。但确实存在一些我们每天仍在使用的“真正具有攻击性”的软件。我们之所以不删除它们，是因为这种攻击性更加隐蔽。就像温水煮青蛙——水温慢慢升高，青蛙在完全煮熟前还享受着一池温暖的洗澡水。",
+          "这类聪明的恶意软件会一次只引入一个令人沮丧的功能。每次我打开 LinkedIn，都不是出于自愿。可能是朋友分享的一封诱人的工作机会邮件，也可能是某篇文章。无论哪种情况，在我点击链接之前，我都没有打算去浏览信息流。然而我还是会不由自主地进入信息流，不是因为我愿意，而是因为我被耍了。",
+          "你看，LinkedIn 使用了一种叫做“后退按钮劫持”的技巧。你点击朋友分享的 LinkedIn 链接，阅读文章，完成后点击后退按钮，期望返回你之前所在的应用。但你并没有回到原来的地方，仍然停留在 LinkedIn。而且现在你来到了主页，信息流加载出诱人的帖子，引诱你继续滚动。",
+          "这是怎么回事？你只点了一个链接，怎么会到主页？这就是“后退按钮劫持”。",
+          "它是这样工作的：当你点击原始的 LinkedIn 链接时，你会进入一篇文章页面。与此同时，LinkedIn 在后台悄悄运行。它使用 JavaScript 的 location.replace() 方法，将页面的 URL 替换为主页。replace 方法不会在浏览器的历史记录中添加新条目。然后 LinkedIn 手动将原始 URL 推入历史堆栈。这一切发生得非常快，以至于用户从未注意到 URL 或页面的任何变化。",
+          "就浏览器而言，你打开了 LinkedIn 主页，然后点击了一篇帖子去阅读。所以当你点击后退按钮时，你会回到主页，信息流加载，然后呈现最吸引人的帖子，让你留在平台上。",
+          "如果你花几分钟读了这篇文章，你可能甚至不记得自己是怎么来到这个网站的。所以当你点击后退看到信息流时，你不会质疑发生了什么。你会认为没有欺骗行为发生。",
+          "虽然 LinkedIn 只在历史状态中把你推进一步，但更激进的网站可以完全破坏后退按钮。它们每次你尝试后退时都会推送一个新的历史状态，有效地将你困在他们的网站上。在这种情况下，你唯一的选项是关闭标签页。",
+          "我还见过开发者无意中破坏了后退按钮，通常是在实现搜索功能时。在一个搜索框中，每次按键都返回结果，经验不足的开发者可能会在每次按键时都推送一个新的历史状态，意图让用户能够返回到之前的搜索词。不幸的是，这会创建过多的历史条目。如果你输入了一个很长的搜索查询，你需要为每个字符（包括空格）点击后退按钮才能回到上一页。正确的方法是只在用户提交或离开搜索框时（onblur）才推送历史状态。",
+          "截至昨天，Google 宣布了一项新的垃圾信息政策来解决这个问题。他们的理由是：",
+          "人们反馈称，这种操纵行为会让他们感到被操控，最终降低访问陌生网站的意愿。正如我们之前所说，在用户浏览器历史记录中插入欺骗性或操纵性页面始终违反我们的 Google Search Essentials 准则。",
+          "任何采用这些策略的网站都将在搜索结果中被降权：",
+          "实施返回按钮劫持的页面可能会受到人工垃圾信息处理或自动降权的处罚，从而影响网站在 Google 搜索结果中的表现。为了给网站所有者留出时间进行必要的调整，我们提前两个月发布本政策，将于 2026 年 6 月 15 日正式执行。",
+          "我不确定搜索排名对 LinkedIn 的具体影响有多大，但从整体来看，这是一项受欢迎的改变。我希望这种做法能够彻底废除。"
+        ]
+      },
+      "fromDate": "2026-04-14"
+    }
+  ]
+}

@@ -6,6 +6,14 @@ import process from "node:process";
 import { JSDOM } from "jsdom";
 import { Readability } from "@mozilla/readability";
 
+import {
+  createAIClient,
+  inferOpenAIModel,
+  type AIClient,
+  OPENAI_DEFAULT_API_BASE,
+  resolveGeminiGenerateUrl,
+} from "./ai-provider";
+
 // Monorepo root = three levels up from this file (src/ → digest/ → apps/ → root)
 const MONOREPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const DEFAULT_DATA_DIR = join(MONOREPO_ROOT, "data");
@@ -15,10 +23,6 @@ const DEFAULT_CACHE_DIR = join(MONOREPO_ROOT, "output/cache");
 // Constants
 // ============================================================================
 
-const GEMINI_API_URL =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-const OPENAI_DEFAULT_API_BASE = "https://api.longcat.chat/openai/v1";
-const OPENAI_DEFAULT_MODEL = "LongCat-Flash-Chat";
 const FEED_FETCH_TIMEOUT_MS = 15_000;
 const ARTICLE_FETCH_TIMEOUT_MS = 20_000;
 const FEED_CONCURRENCY = 10;
@@ -480,10 +484,6 @@ interface GeminiSummaryResult {
   }>;
 }
 
-interface AIClient {
-  call(prompt: string): Promise<string>;
-}
-
 // ============================================================================
 // RSS/Atom Parsing (using Bun's built-in HTMLRewriter or manual XML parsing)
 // ============================================================================
@@ -682,149 +682,6 @@ async function fetchAllFeeds(feeds: typeof RSS_FEEDS): Promise<Article[]> {
     `[digest] Fetched ${allArticles.length} articles from ${successCount} feeds (${failCount} failed)`,
   );
   return allArticles;
-}
-
-// ============================================================================
-// AI Providers (Gemini + OpenAI-compatible fallback)
-// ============================================================================
-
-async function callGemini(prompt: string, apiKey: string): Promise<string> {
-  const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.3,
-        topP: 0.8,
-        topK: 40,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text().catch(() => "Unknown error");
-    throw new Error(`Gemini API error (${response.status}): ${errorText}`);
-  }
-
-  const data = (await response.json()) as {
-    candidates?: Array<{
-      content?: { parts?: Array<{ text?: string }> };
-    }>;
-  };
-
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-}
-
-async function callOpenAICompatible(
-  prompt: string,
-  apiKey: string,
-  apiBase: string,
-  model: string,
-): Promise<string> {
-  const normalizedBase = apiBase.replace(/\/+$/, "");
-  const response = await fetch(`${normalizedBase}/chat/completions`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.3,
-      top_p: 0.8,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text().catch(() => "Unknown error");
-    throw new Error(`OpenAI-compatible API error (${response.status}): ${errorText}`);
-  }
-
-  const data = (await response.json()) as {
-    choices?: Array<{
-      message?: {
-        content?: string | Array<{ type?: string; text?: string }>;
-      };
-    }>;
-  };
-
-  const content = data.choices?.[0]?.message?.content;
-  if (typeof content === "string") return content;
-  if (Array.isArray(content)) {
-    return content
-      .filter((item) => item.type === "text" && typeof item.text === "string")
-      .map((item) => item.text)
-      .join("\n");
-  }
-  return "";
-}
-
-function inferOpenAIModel(apiBase: string): string {
-  const base = apiBase.toLowerCase();
-  if (base.includes("deepseek")) return "deepseek-chat";
-  if (base.includes("longcat")) return "LongCat-Flash-Chat";
-  return OPENAI_DEFAULT_MODEL;
-}
-
-function createAIClient(config: {
-  geminiApiKey?: string;
-  openaiApiKey?: string;
-  openaiApiBase?: string;
-  openaiModel?: string;
-}): AIClient {
-  const state = {
-    geminiApiKey: config.geminiApiKey?.trim() || "",
-    openaiApiKey: config.openaiApiKey?.trim() || "",
-    openaiApiBase: (config.openaiApiBase?.trim() || OPENAI_DEFAULT_API_BASE).replace(/\/+$/, ""),
-    openaiModel: config.openaiModel?.trim() || "",
-    geminiEnabled: Boolean(config.geminiApiKey?.trim()),
-    fallbackLogged: false,
-  };
-
-  if (!state.openaiModel) {
-    state.openaiModel = inferOpenAIModel(state.openaiApiBase);
-  }
-
-  return {
-    async call(prompt: string): Promise<string> {
-      if (state.geminiEnabled && state.geminiApiKey) {
-        try {
-          return await callGemini(prompt, state.geminiApiKey);
-        } catch (error) {
-          if (state.openaiApiKey) {
-            if (!state.fallbackLogged) {
-              const reason = error instanceof Error ? error.message : String(error);
-              console.warn(
-                `[digest] Gemini failed, switching to OpenAI-compatible fallback (${state.openaiApiBase}, model=${state.openaiModel}). Reason: ${reason}`,
-              );
-              state.fallbackLogged = true;
-            }
-            state.geminiEnabled = false;
-            return callOpenAICompatible(
-              prompt,
-              state.openaiApiKey,
-              state.openaiApiBase,
-              state.openaiModel,
-            );
-          }
-          throw error;
-        }
-      }
-
-      if (state.openaiApiKey) {
-        return callOpenAICompatible(
-          prompt,
-          state.openaiApiKey,
-          state.openaiApiBase,
-          state.openaiModel,
-        );
-      }
-
-      throw new Error("No AI API key configured. Set GEMINI_API_KEY and/or OPENAI_API_KEY.");
-    },
-  };
 }
 
 function parseJsonResponse<T>(text: string): T {
@@ -1106,7 +963,7 @@ async function summarizeArticles(
           ) => {
             const summary = result.summary || "";
             const se = result.summaryEn?.trim() || "";
-            const summaryEn = lang === "en" ? (se || summary) : se;
+            const summaryEn = lang === "en" ? se || summary : se;
             summaries.set(item.index, {
               titleZh: result.titleZh || "",
               summary,
@@ -1124,7 +981,7 @@ async function summarizeArticles(
             for (const result of results) {
               const summary = result.summary || "";
               const se = result.summaryEn?.trim() || "";
-              const summaryEn = lang === "en" ? (se || summary) : se;
+              const summaryEn = lang === "en" ? se || summary : se;
               summaries.set(result.index, {
                 titleZh: result.titleZh || "",
                 summary,
@@ -1774,9 +1631,12 @@ Options:
 
 Environment:
   GEMINI_API_KEY   Optional. If set, prefer Gemini.
+  GEMINI_API_URL   Optional. Full Gemini generateContent URL (overrides base+model).
+  GEMINI_API_BASE  Optional. Default: https://generativelanguage.googleapis.com/v1beta
+  GEMINI_MODEL     Optional. Default: gemini-2.0-flash (used with GEMINI_API_BASE)
   OPENAI_API_KEY   OpenAI-compatible API key (LongCat / DeepSeek / OpenAI ...)
   OPENAI_API_BASE  Default: https://api.longcat.chat/openai/v1
-  OPENAI_MODEL     Default: LongCat-Flash-Chat
+  OPENAI_MODEL     Default: inferred from OPENAI_API_BASE or LongCat-Flash-Chat
   DIGEST_HTML=1    Also emit the legacy single-file HTML report
 
 Examples:
@@ -2273,6 +2133,9 @@ async function main(): Promise<void> {
   }
 
   const geminiApiKey = process.env.GEMINI_API_KEY;
+  const geminiApiUrl = process.env.GEMINI_API_URL;
+  const geminiApiBase = process.env.GEMINI_API_BASE;
+  const geminiModel = process.env.GEMINI_MODEL;
   const openaiApiKey = process.env.OPENAI_API_KEY;
   const openaiApiBase = process.env.OPENAI_API_BASE;
   const openaiModel = process.env.OPENAI_MODEL;
@@ -2285,6 +2148,9 @@ async function main(): Promise<void> {
 
   const aiClient = createAIClient({
     geminiApiKey,
+    geminiApiUrl,
+    geminiApiBase,
+    geminiModel,
     openaiApiKey,
     openaiApiBase,
     openaiModel,
@@ -2311,6 +2177,10 @@ async function main(): Promise<void> {
   console.log(
     `[digest] AI provider: ${geminiApiKey ? "Gemini (primary)" : "OpenAI-compatible (primary)"}`,
   );
+  if (geminiApiKey) {
+    const gUrl = resolveGeminiGenerateUrl({ geminiApiUrl, geminiApiBase, geminiModel });
+    console.log(`[digest] Gemini endpoint: ${gUrl}`);
+  }
   if (openaiApiKey) {
     const resolvedBase = (openaiApiBase?.trim() || OPENAI_DEFAULT_API_BASE).replace(/\/+$/, "");
     const resolvedModel = openaiModel?.trim() || inferOpenAIModel(resolvedBase);

@@ -1,0 +1,1669 @@
+{
+  "date": "2026-04-19",
+  "generatedAt": "2026-04-22T13:32:45.005Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 85,
+    "totalArticles": 2464,
+    "filteredArticles": 10,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：企业加速构建 AI 代理的精细化授权体系，WorkOS FGA 等方案凸显权限控制对安全部署的关键作用；同时，无头服务架构正成为个人 AI 自动化的新方向，提升效率与可靠性；此外，AI 工具冲击传统平台格局，Figma 面临 Claude Design 挑战，暴露商业模式在智能化浪潮中的脆弱性。",
+  "articles": [
+    {
+      "slug": "d1fe29f37d048119",
+      "title": "WorkOS FGA: The Authorization Layer for AI Agents",
+      "titleZh": "WorkOS FGA：面向 AI 代理的授权层",
+      "link": "https://workos.com/blog/agents-need-authorization-not-just-authentication?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q22026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-19T17:37:01.000Z",
+      "category": "engineering",
+      "keywords": ["WorkOS", "FGA", "authorization", "AI agents"],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "文章探讨了企业级 AI 代理部署中的核心瓶颈——授权而非身份验证。WorkOS FGA 通过资源级权限控制代理的操作范围，解决了传统认证无法限制“破坏半径”的问题。该方案使企业能在不牺牲功能的前提下安全地集成 AI 代理。作者强调，企业级 AI 的成功不在于功能多少，而在于能否被信任和管控。",
+      "summaryEn": "The article addresses the critical bottleneck in enterprise AI agent deployment: authorization, not authentication. WorkOS FGA solves this by implementing resource-level permissions to define an agent's operational scope, preventing unauthorized access beyond its blast radius. This approach enables secure integration of AI agents without compromising functionality. The author argues that successful enterprise AI will be determined by trustworthiness and control, not feature richness.",
+      "reason": "如果你正在构建或部署企业级 AI 代理系统，这篇关于细粒度授权的深度解析能帮你避免最隐蔽的安全陷阱。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "WorkOS",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Every major architectural shift exposes the limits of our access control models. Multi-tenant SaaS broke filesystem permissions. Microservices broke monolithic session management. Now, AI agents are breaking the authorization patterns we spent the last decade standardizing."
+          },
+          {
+            "type": "p",
+            "text": "Agents are already operating inside enterprise infrastructure. They summarize documents, triage tickets, and manage cloud resources. Yet most authenticate using the same primitives as humans: an OAuth token, a session cookie, or a service account key. They inherit the user's full access or operate with broader privileges than any single user should possess."
+          },
+          {
+            "type": "h2",
+            "text": "The Confused Deputy problem"
+          },
+          {
+            "type": "p",
+            "text": "To understand the architectural risk, consider the \"Confused Deputy\" problem. In security theory, a deputy is a program with authority to act that is tricked by a lower-privileged user into misusing that authority."
+          },
+          {
+            "type": "p",
+            "text": "Consider a Platform Engineering team that deploys a \"Cluster Debug Agent\" to troubleshoot Kubernetes deployments. The agent uses a service account with secrets:read access to verify configuration maps."
+          },
+          {
+            "type": "p",
+            "text": "The trigger: A developer debugging a payment service crash needs to see production environment variables. They lack direct access to production secrets, which are restricted to SREs. They ask the agent: \"Diff the production environment variables against staging so I can see what changed.\""
+          },
+          {
+            "type": "p",
+            "text": "The action: The agent executes the query. It possesses the secrets:read permission, so the cluster control plane allows the request."
+          },
+          {
+            "type": "p",
+            "text": "The result: The agent posts the diff to a shared Slack channel."
+          },
+          {
+            "type": "code",
+            "text": "\n- STRIPE_SECRET_KEY: \"sk_test_...\"\n+ STRIPE_SECRET_KEY: \"sk_live_51M...\"\n  "
+          },
+          {
+            "type": "p",
+            "text": "A production API key is effectively leaked to fifty people."
+          },
+          {
+            "type": "p",
+            "text": "No misconfiguration occurred. The agent acted within its permissions (secrets:read) and the developer acted within theirs (chat:write). The system failed because it did not check the intersection of their privileges. The agent acted as a confused deputy and bypassed the IAM controls intended to restrict the developer."
+          },
+          {
+            "type": "p",
+            "text": "This forces every team to answer a specific question: When an agent acts on behalf of a user, whose permissions apply?"
+          },
+          {
+            "type": "h2",
+            "text": "Agents are not users. They are not service accounts."
+          },
+          {
+            "type": "p",
+            "text": "The identity industry is currently defining where agents fit in the IAM stack."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft introduced Entra Agent ID as a native identity class. NIST published a concept paper on agent identity in February 2026. The IETF is standardizing the /Agents resource in SCIM."
+          },
+          {
+            "type": "p",
+            "text": "The consensus is that agents are a distinct identity class requiring purpose-built infrastructure. However, the industry focus remains on Authentication (proving identity). The unsolved engineering challenge is Authorization (enforcing capabilities)."
+          },
+          {
+            "type": "h3",
+            "text": "The intent gap"
+          },
+          {
+            "type": "p",
+            "text": "Traditional service accounts are deterministic. A CI/CD runner has a fixed scope to pull code and push artifacts. You define the access once and it rarely changes because the runner never generates its own intent."
+          },
+          {
+            "type": "p",
+            "text": "Agents differ in two fundamental ways."
+          },
+          {
+            "type": "p",
+            "text": "First, they generate intent. A traditional OAuth client forwards a user's request. An agent reasons about a problem and decides which tools to invoke."
+          },
+          {
+            "type": "p",
+            "text": "Second, their scope is non-deterministic. You cannot predict at design time what an agent will need. A coding agent might need read access to repo:backend today and write access to repo:frontend tomorrow."
+          },
+          {
+            "type": "p",
+            "text": "Solving this with static roles forces a binary trade-off. You either block the agent from functioning or grant it broad admin access."
+          },
+          {
+            "type": "h2",
+            "text": "The two modes of agent authorization"
+          },
+          {
+            "type": "p",
+            "text": "Agent implementations typically fall into one of two patterns. Each introduces specific authorization requirements."
+          },
+          {
+            "type": "h3",
+            "text": "1. On-Behalf-Of (OBO) agents"
+          },
+          {
+            "type": "p",
+            "text": "These serve as extensions of a human user, like Claude Code or GitHub Copilot. They operate specifically within a user’s session."
+          },
+          {
+            "type": "p",
+            "text": "The security requirement here is Scope Attenuation. The agent should access a subset of the user's permissions, never the full set. If a user asks an agent to refactor a specific file, it should not have access to sensitive configuration files in the parent directory."
+          },
+          {
+            "type": "p",
+            "text": "Currently, most OBO agents inherit the user's full access token."
+          },
+          {
+            "type": "h3",
+            "text": "The MCP gap"
+          },
+          {
+            "type": "p",
+            "text": "The Model Context Protocol (MCP) is becoming the standard interface for these agents. However, it explicitly delegates authorization to the implementer."
+          },
+          {
+            "type": "p",
+            "text": "MCP currently relies on OAuth 2.1 scopes like files:read. Scopes are coarse strings. files:read grants access to every file the user can see, from a README to a production .env file. The spec recommends \"scope guidance\" but leaves granular enforcement to the application logic."
+          },
+          {
+            "type": "p",
+            "text": "Even as protocols adopt Rich Authorization Requests (RFC 9396) to allow structured intent like {\"file\": \"main.rs\"}, this remains a data format. It acts as an envelope for the request but provides no logic to evaluate whether the request should be granted."
+          },
+          {
+            "type": "h3",
+            "text": "The shared context trap"
+          },
+          {
+            "type": "p",
+            "text": "Scope attenuation fails in shared contexts."
+          },
+          {
+            "type": "p",
+            "text": "Consider a \"Finance Assistant\" agent added to a team Slack channel. The agent authenticates with the CFO’s credentials. A junior analyst asks about Q3 budget projections."
+          },
+          {
+            "type": "p",
+            "text": "The agent checks its own permissions, confirms the CFO has access, and posts the data. The junior analyst now sees executive compensation data they are not authorized to view."
+          },
+          {
+            "type": "p",
+            "text": "Traditional authorization checks happen at retrieval. Shared contexts require checking authorization at output by calculating the intersection of permissions across all audience members. Traditional RBAC cannot model this graph."
+          },
+          {
+            "type": "h3",
+            "text": "2. Autonomous agents"
+          },
+          {
+            "type": "p",
+            "text": "These operate without a user loop, such as a security bot rotating keys or a billing agent reconciling invoices."
+          },
+          {
+            "type": "p",
+            "text": "Identity is largely solved here. Microsoft Entra Agent ID allows these agents to authenticate via the client_credentials flow with a distinct Client ID. This ensures audit logs attribute actions to Agent-007 rather than a human user."
+          },
+          {
+            "type": "h3",
+            "text": "The \"God Mode\" problem"
+          },
+          {
+            "type": "p",
+            "text": "The authorization layer remains flawed. In a standard client_credentials flow, the resulting token often dictates broad access. To allow a billing agent to read invoices, you generally grant the Files.Read.All scope."
+          },
+          {
+            "type": "p",
+            "text": "This results in a \"God mode\" agent. It can read invoices, but also employee contracts and patent drafts. You cannot easily scope a standard OAuth token to \"Read only files in the Finance folder.\" This effectively grants root access to a probabilistic script."
+          },
+          {
+            "type": "h3",
+            "text": "Why \"flat\" RBAC fails the agent test"
+          },
+          {
+            "type": "p",
+            "text": "If agents require limited scope, the obvious question is: \"Why not just create a specific role?\" Why not create a Billing_Agent role and be done with it?"
+          },
+          {
+            "type": "p",
+            "text": "The failure lies in the geometry of the authorization model. Traditional Role-Based Access Control (RBAC) is flat. It maps a subject to a role, and a role to a set of global permissions (read:repos). This works for humans because human access usually correlates to job title, which is stable and broad."
+          },
+          {
+            "type": "p",
+            "text": "Agent access correlates to tasks, which are transient and specific."
+          },
+          {
+            "type": "p",
+            "text": "You do not want an agent to be an \"Editor of Repositories.\" You want to enforce: \"This agent can edit code on branch:feature-xyz in repository:api, and nothing else.\""
+          },
+          {
+            "type": "p",
+            "text": "To express this in flat RBAC, you would need to create a unique role for every permutation of resource and permission:"
+          },
+          {
+            "type": "li",
+            "text": "Role: Editor_Repo_API_Branch_XYZ"
+          },
+          {
+            "type": "li",
+            "text": "Role: Viewer_Repo_Frontend_Branch_ABC"
+          },
+          {
+            "type": "p",
+            "text": "In an enterprise with thousands of repositories and ephemeral branches, this triggers a combinatorial explosion. You move from managing O(1) roles to O(N x M) roles. The friction of managing these static roles exceeds the velocity value of the agent itself."
+          },
+          {
+            "type": "h3",
+            "text": "The fix: FGA = RBAC + hierarchy"
+          },
+          {
+            "type": "p",
+            "text": "This is where Fine-Grained Authorization (FGA) comes in. It isn't a replacement for the concepts you know; it is a natural extension of RBAC."
+          },
+          {
+            "type": "p",
+            "text": "To solve this, we do not need to abandon RBAC. We need to scope it. This is the definition of Fine-Grained Authorization (FGA)."
+          },
+          {
+            "type": "p",
+            "text": "FGA is not a replacement for the concepts you know; it is the application of RBAC to a resource hierarchy."
+          },
+          {
+            "type": "code",
+            "text": "\nOrganization: Acme\n └── Repository: API\n       └── Branch: feature-xyz  <-- Agent Permission Starts Here\n             └── Actions: [push, merge]\n  "
+          },
+          {
+            "type": "p",
+            "text": "You keep the familiar mental model of roles (Editor, Viewer), but you attach them to specific nodes in the graph rather than the root."
+          },
+          {
+            "type": "li",
+            "text": "Vertical inheritance: An agent assigned Editor on Branch: feature-xyz automatically inherits access to every file and action inside that branch."
+          },
+          {
+            "type": "li",
+            "text": "No lateral movement: Crucially, that permission does not bleed sideways to Branch: staging or upwards to Repository: API."
+          },
+          {
+            "type": "p",
+            "text": "In this model, the agent possesses full power where it is required and zero power everywhere else."
+          },
+          {
+            "type": "h3",
+            "text": "Scaling the graph: Structural Resources vs. Asset Data"
+          },
+          {
+            "type": "p",
+            "text": "A common concern when adopting a centralized authorization service is the overhead of state synchronization. If your application manages millions of individual assets, you might assume every single one needs to be mirrored into the FGA graph. In practice, you only sync the Structural Hierarchy, not the Asset Data."
+          },
+          {
+            "type": "p",
+            "text": "Think of FGA as the skeleton of your permissions. You register the high-level containers that define your access boundaries: Organizations, Workspaces, and Projects. These are your Structural Resources. Your high-volume Asset Data, such as individual files within a folder or images in a project, stays in your primary application store."
+          },
+          {
+            "type": "p",
+            "text": "When an agent requests access to a specific asset, your application logic performs a simple two-step check:"
+          },
+          {
+            "type": "li",
+            "text": "Application logic: Identify which container (e.g., Folder: Q3-Financials) the asset belongs to."
+          },
+          {
+            "type": "li",
+            "text": "FGA: Ask check(subject=Agent, role=viewer, resource=Folder:Q3-Financials)."
+          },
+          {
+            "type": "p",
+            "text": "By checking access against the parent container rather than the individual asset, you keep the authorization graph lean and maintain sub-50ms latency. You avoid the \"double-write\" consistency issues that plague massive data syncs, gaining granular security without the infrastructure cost of a full database mirror."
+          },
+          {
+            "type": "h2",
+            "text": "How FGA solves the two agent modes"
+          },
+          {
+            "type": "p",
+            "text": "Once you establish a hierarchical model, the authorization problems identified earlier (Scope Attenuation and God Mode) become solvable through standard architectural patterns."
+          },
+          {
+            "type": "h3",
+            "text": "1. Solving OBO agents: The intersection check"
+          },
+          {
+            "type": "p",
+            "text": "For On-Behalf-Of agents, the goal is to prevent the \"Confused Deputy\" problem. Even if the user has broad access, the agent should only have access to what is relevant for the current task."
+          },
+          {
+            "type": "p",
+            "text": "FGA solves this by calculating the Intersection of permissions. You can define a policy that requires both the user and the agent to have access before granting a request."
+          },
+          {
+            "type": "p",
+            "text": "This transforms the authorization check from a static role lookup into a dynamic validation. When an MCP server receives a tool invocation like read_file(path=\"/secrets.json\"), it performs a real-time check against the FGA graph:"
+          },
+          {
+            "type": "code",
+            "text": "\nInput: check(subject=Agent, role=viewer, resource=file:secrets.json)\nOutput: FALSE (Access Denied)\n  "
+          },
+          {
+            "type": "p",
+            "text": "This allows the server to return a precise 403 Forbidden for sensitive resources dynamically. It does not require the user to restrict the agent's broad OAuth token manually."
+          },
+          {
+            "type": "h3",
+            "text": "FGA as the logic layer for MCP"
+          },
+          {
+            "type": "p",
+            "text": "‍As protocols like MCP mature to support Rich Authorization Requests (RFC 9396), agents will pass structured intent objects instead of opaque strings. For example: {\"file\": \"main.rs\", \"action\": \"edit\"}."
+          },
+          {
+            "type": "p",
+            "text": "It is important to remember that RAR is just a data format. It acts as an envelope for the request but provides no logic to decide if the request is valid. The RAR object does not understand that /backend belongs to Team A, or that the user is an Admin of Team A."
+          },
+          {
+            "type": "p",
+            "text": "If you rely solely on RAR, developers must still write complex logic to traverse those relationships. FGA solves this by handling the hierarchy natively. It acts as the decision engine that validates the RAR envelope against the organization's actual permission graph."
+          },
+          {
+            "type": "h3",
+            "text": "The memory leak: Securing long-term context"
+          },
+          {
+            "type": "p",
+            "text": "As agents evolve from stateless scripts to persistent collaborators, they have begun to store \"memory\" in vector databases. This creates a new security shadow: if an agent summarizes a sensitive document into its long-term memory, that information can be \"hallucinated\" back to a different user who lacks access to the original source."
+          },
+          {
+            "type": "p",
+            "text": "To prevent context leaks, developers should treat agent memory as a protected resource and apply the same FGA policies to an agent's \"recollections\" as they do to the source files:"
+          },
+          {
+            "type": "li",
+            "text": "Metadata tagging: Every embedding written to a vector store should be tagged with its source resource_id."
+          },
+          {
+            "type": "li",
+            "text": "Filtered retrieval: When the agent queries its memory, the application must augment the vector search with an FGA check. If the current user cannot access the source resource_id, the memory remains invisible to the agent."
+          },
+          {
+            "type": "li",
+            "text": "Context sharding: High-security environments should use ephemeral memory shards that are flushed when an agent moves between different FGA project nodes."
+          },
+          {
+            "type": "p",
+            "text": "By anchoring embeddings to FGA resource IDs, you ensure that an agent’s internal context is as strictly governed as its real-time actions."
+          },
+          {
+            "type": "h3",
+            "text": "2. Solving autonomous agents: The scoped role"
+          },
+          {
+            "type": "p",
+            "text": "For autonomous agents, the goal is to prevent \"God Mode\" where a specific bot inadvertently gets root access to the entire tenant."
+          },
+          {
+            "type": "p",
+            "text": "FGA acts as the constraint layer over the agent's broad identity."
+          },
+          {
+            "type": "li",
+            "text": "Identity: The Identity Provider (IdP) proves the agent is the \"Billing Bot.”"
+          },
+          {
+            "type": "li",
+            "text": "Authorization (FGA): The application asks if the Billing Bot can read file:executive_comp.pdf."
+          },
+          {
+            "type": "li",
+            "text": "The check: FGA sees the agent has the Viewer role on the Project:Finance node but not on the Project:HR node. Access Denied."
+          },
+          {
+            "type": "p",
+            "text": "In this model, the agent is its own subject. It receives roles directly on the resources it needs. When the agent is decommissioned, you simply remove its role assignment on that specific node. Access instantly disappears across the entire subtree."
+          },
+          {
+            "type": "p",
+            "text": "The Identity Provider gives you the secure handle. WorkOS FGA gives you the grip. Without FGA, autonomous agents are effectively high-speed scripts with root access to the entire tenant."
+          },
+          {
+            "type": "h2",
+            "text": "Agent enterprise governance"
+          },
+          {
+            "type": "p",
+            "text": "In a traditional enterprise environment, access follows the employee lifecycle. When a user is onboarded via the Identity Provider (IdP), they get a set of roles. When they leave, their access is revoked."
+          },
+          {
+            "type": "p",
+            "text": "Agents break this flow. Unlike humans who log out or change jobs, agents are persistent. Their tokens remain valid and their service accounts stay active indefinitely. Recent data shows that the average enterprise credential remains active for 47 days after it is no longer needed. When agent identities multiply, manual lifecycle management becomes impossible and creates a massive surface area for credential harvesting."
+          },
+          {
+            "type": "p",
+            "text": "WorkOS FGA enables centralized governance over the entire agent lifecycle by bridging the gap between your IdP and your application’s internal resource hierarchy. Standard IdPs are excellent at managing groups but blind to your internal resources. FGA provides the \"last mile\" of authorization, ensuring agent access is governed by the same SSO and SCIM infrastructure used for human employees:"
+          },
+          {
+            "type": "li",
+            "text": "Provisioning: An admin creates the agent in the IdP (or via a future SCIM /Agents endpoint) and assigns it to a functional group, such as Project-X-Automations."
+          },
+          {
+            "type": "li",
+            "text": "Automated onboarding: WorkOS Directory Sync detects the new identity and its group memberships instantly, provisioning the agent within your application without manual intervention."
+          },
+          {
+            "type": "li",
+            "text": "Scoped governance: Your application uses that group membership to assign a resource-scoped role in FGA, such as Editor on Project: X. The agent is immediately constrained to that specific project subtree."
+          },
+          {
+            "type": "li",
+            "text": "Instant de-provisioning: When the agent is removed from the group or deactivated in the IdP, its role assignment in FGA is revoked across all services simultaneously."
+          },
+          {
+            "type": "p",
+            "text": "This architecture ensures that agent credentials never outlive their intent. By coordinating identity with hierarchical authorization, you provide the automated deprovisioning and audit trails that enterprise IT departments demand."
+          },
+          {
+            "type": "h2",
+            "text": "What comes next"
+          },
+          {
+            "type": "p",
+            "text": "We are at an inflection point. The infrastructure for agent identity is being built by Microsoft, Okta, and IETF working groups. Protocols like MCP are rethinking the interface for authorization from the ground up."
+          },
+          {
+            "type": "p",
+            "text": "The missing piece is the authorization layer itself. It is not enough to ask if an agent can call an API. We must ask if an agent can perform a specific action on a specific resource based on the delegating user, organizational policies, and the resource hierarchy."
+          },
+          {
+            "type": "p",
+            "text": "Several complex problems remain unsolved. These are the areas where we are investing next."
+          },
+          {
+            "type": "h3",
+            "text": "User groups as authorization subjects"
+          },
+          {
+            "type": "p",
+            "text": "Groups are becoming first-class subjects in FGA. You will be able to assign a role to an IdP group on a specific resource, such as the engineering group on workspace:platform. Every member, whether human or agent, will inherit the appropriate permissions automatically. When a principal joins or leaves a group in the IdP, their access updates in real time."
+          },
+          {
+            "type": "h3",
+            "text": "FGA role assignments"
+          },
+          {
+            "type": "p",
+            "text": "A major hurdle in enterprise governance is mapping flat IdP (ex: Okta, Entra) groups to nested resources. We are building FGA Role Assignments to bridge this gap natively. This feature allows you to define a mapping between an IdP group (e.g., \"Project-X-Bots\") and an FGA role on a specific resource subtree (e.g., Viewer on Folder: NA-Prospects). When a user or agent is added to that group in the IdP, SSO or Directory Sync automatically creates the corresponding role assignment in FGA. This eliminates the need for \"glue code\" to manage the relationship between your identity source and your resource graph."
+          },
+          {
+            "type": "h3",
+            "text": "Agent-to-agent delegation"
+          },
+          {
+            "type": "p",
+            "text": "When agents spawn sub-agents or delegate tasks, each link in the chain requires attenuated scope. A token passed to a sub-agent should carry less privilege than the original. FGA’s hierarchical model is a natural fit for this. Each delegation step constrains the sub-agent to a narrower sub-tree of resources. We are building first-class support for these delegation chains so that scope attenuation is enforced by the authorization system instead of custom application logic."
+          },
+          {
+            "type": "h3",
+            "text": "SCIM provisioning for agents"
+          },
+          {
+            "type": "p",
+            "text": "The IETF SCIM agent schema draft introduces /Agents as a resource type with ownership requirements and dormancy detection. As this standard matures, WorkOS Directory Sync will provision agents much like it provisions users today. IdP group memberships will map directly to FGA resource-scoped roles, automating the entire lifecycle."
+          },
+          {
+            "type": "h3",
+            "text": "Global low-latency authorization"
+          },
+          {
+            "type": "p",
+            "text": "Agents operate at machine speed and often across multiple regions. While we currently provide sub-50ms p95 access checks, we are moving toward edge caching and streaming updates to bring that closer to sub-10ms globally. This ensures that authorization decisions do not become a latency bottleneck for agentic performance."
+          },
+          {
+            "type": "p",
+            "text": "The authorization complexity of agentic software is compounding quickly. If you are building software that agents will operate inside, the time to lay the foundation is now."
+          },
+          {
+            "type": "p",
+            "text": "WorkOS FGA is available today. Get started here."
+          },
+          {
+            "type": "h2",
+            "text": "The research frontier: Beyond static authorization"
+          },
+          {
+            "type": "p",
+            "text": "The industry is at a crossroads. As of early 2026, the foundational elements of agent identity are beginning to coalesce, but several high-order authorization problems remain in the research phase. At WorkOS, we are paying close attention to these shifts. We view FGA as a living infrastructure that must evolve alongside the probabilistic nature of AI."
+          },
+          {
+            "type": "p",
+            "text": "There are three specific domains where the gap between standard authorization and agentic reality is widest."
+          },
+          {
+            "type": "h3",
+            "text": "1. Multi-hop delegation and provenance"
+          },
+          {
+            "type": "p",
+            "text": "In advanced multi-agent systems, a primary agent often decomposes a request into sub-tasks and delegates them to specialized sub-agents. This creates a \"Russian Nesting Doll\" effect: each handoff crosses a trust boundary, yet cryptographic lineage is often lost by the third or fourth hop."
+          },
+          {
+            "type": "p",
+            "text": "Current research into Authorization Provenance suggests that the \"Who\" is no longer a single subject, but a chain. If a Research Agent authorized for public data spawns a Code Agent authorized for private repos, the resulting access must be the intersection of every entity in that lineage. Closing this gap will require authorization engines that can verify a \"chain of custody\" for every tool call, ensuring that permissions aren't just checked, but traced back to their origin."
+          },
+          {
+            "type": "p",
+            "text": "The IETF has been actively working on extending OAuth to handle exactly this kind of \"Russian Nesting Doll\" delegation."
+          },
+          {
+            "type": "h3",
+            "text": "2. Just-in-Time (JIT) agency"
+          },
+          {
+            "type": "p",
+            "text": "Traditional service accounts rely on \"standing privileges\"—access that is always active. For a machine-speed agent, standing privileges are a massive liability. If an agent has a static API key with write access, a single successful prompt injection can result in instant, irreversible data exfiltration."
+          },
+          {
+            "type": "p",
+            "text": "The concept of Just-in-Time Agency moves toward a model of Zero Standing Privileges. In this future, an agent possesses no authority until a specific task is triggered. The authorization engine then grants a temporary, short-lived role assignment that expires automatically when the transaction completes. This reduces the attack surface to the absolute minimum required for the work at hand, moving security from a static state to a transient one."
+          },
+          {
+            "type": "p",
+            "text": "The concept of Zero Standing Privileges (ZSP) for agents is being championed by both NIST and the OWASP Top 10 for Agentic Applications."
+          },
+          {
+            "type": "h3",
+            "text": "3. The semantic future: Intent-Based Access Control"
+          },
+          {
+            "type": "p",
+            "text": "Unlike deterministic code, agents are probabilistic. Over a long-running session, an agent’s actions can \"drift\" away from the original user intent. An agent that starts by summarizing emails (low risk) might gradually drift into moving files to an external drive (high risk) based on subsequent, ambiguous instructions."
+          },
+          {
+            "type": "p",
+            "text": "Emerging strategies for Semantic Inspection suggest that authorization should be anchored to the initial task session. If an agent attempts a tool call that is semantically unrelated to its original \"root\" authorization, the engine should flag this drift. This represents a shift from checking what an agent can do to understanding why it is doing it—creating a layer of contextual guardrails that can trigger a \"Human-in-the-Loop\" approval before a high-risk action occurs."
+          },
+          {
+            "type": "p",
+            "text": "The most significant research in this area comes from the intersection of Large Language Model (LLM) observability and \"Constitutional AI.”"
+          },
+          {
+            "type": "p",
+            "text": "The ultimate goal of agent authorization is to move beyond deterministic 'Can/Cannot' checks and into the realm of Intent Alignment. We are moving toward a world where policies are defined in natural language—'Don't share customer PII with unverified third parties'—and enforced by an authorization layer that understands the reasoning behind an agent's request."
+          },
+          {
+            "type": "p",
+            "text": "At WorkOS, we believe FGA is the necessary anchor for this probabilistic future. You cannot rely on an LLM to police itself; you need a deterministic resource graph to provide the ground truth. By linking natural language intent to a fine-grained resource hierarchy, we create the first Semantic Guardrail that can stop an agent not just because it lacks a role, but because its current action deviates from its stated mission."
+          }
+        ],
+        "translations": [
+          "每一次重大的架构变革都会暴露我们访问控制模型的局限性。多租户 SaaS 打破了文件系统权限机制，微服务则破坏了单体应用的会话管理方式。如今，AI 智能体正在打破过去十年间标准化的授权模式。",
+          "智能体已经在企业基础设施中运行。它们总结文档、分类处理工单并管理云资源。然而，大多数智能体仍使用与人类相同的身份验证基础组件：OAuth 令牌、会话 Cookie 或服务账户密钥。它们要么继承用户的完整访问权限，要么拥有比任何单个用户都应拥有的更广泛的权限。",
+          "混淆的代理人问题",
+          "要理解这一架构风险，请考虑\"混淆的代理人\"问题。在安全理论中，代理人是指拥有执行权限的程序，但被低权限用户欺骗而滥用该权限。",
+          "考虑一个平台工程团队部署了\"集群调试代理\"来排查 Kubernetes 部署问题。该代理使用具有 secrets:read 权限的服务账户来验证配置映射。",
+          "触发条件：一位开发人员调试支付服务崩溃时需要查看生产环境变量。他们无法直接访问生产环境密钥，这些密钥仅限于 SRE 人员访问。于是他们向代理请求：\"将生产环境变量与 staging 环境进行对比，让我看看有什么变化。\"",
+          "执行动作：代理执行了该查询。它拥有 secrets:read 权限，因此集群控制平面允许该请求。",
+          "结果：代理将差异内容发布到了共享的 Slack 频道。",
+          "- STRIPE_SECRET_KEY: \"sk_test_...\"\n+ STRIPE_SECRET_KEY: \"sk_live_51M...\"",
+          "一个生产环境 API 密钥实际上泄露给了五十人。",
+          "没有发生配置错误。代理在其权限范围内行动（secrets:read），开发人员在他们的权限范围内行动（chat:write）。系统失败是因为它没有检查两者权限的交集。代理充当了混淆的代理人，绕过了旨在限制开发人员的 IAM 控制措施。",
+          "这迫使每个团队回答一个具体问题：当代理代表用户行动时，应该应用谁的权限？",
+          "代理不是用户，也不是服务账户。",
+          "身份行业目前正在定义代理在 IAM 栈中的位置。",
+          "微软推出了 Entra Agent ID 作为原生身份类别。NIST 于 2026 年 2 月发布了关于代理身份的概念论文。IETF 正在标准化 SCIM 中的 /Agents 资源。",
+          "共识是代理是一个需要专门构建基础设施的独立身份类别。然而，行业关注点仍在身份验证（证明身份）上。未解决的工程挑战是授权（强制执行能力）。",
+          "意图差距",
+          "传统服务账户是确定性的。CI/CD 运行器有固定的范围来拉取代码和推送构件。你只需定义一次访问权限，且很少改变，因为运行器从不生成自己的意图。",
+          "代理在两个根本方面有所不同。",
+          "首先，它们生成意图。传统的 OAuth 客户端转发用户请求。代理会推理问题并决定调用哪些工具。",
+          "其次，它们的范围是非确定性的。你无法在设计时预测代理需要什么。一个编码代理可能今天需要 repo:backend 的读取权限，明天又需要 repo:frontend 的写入权限。",
+          "通过静态角色解决这个问题会带来二元权衡。你要么阻止代理正常运行，要么授予其广泛的 admin 权限。",
+          "The two modes of agent authorization",
+          "代理实现通常分为两种模式。每种模式都引入了特定的授权要求。",
+          "1. 代表用户（OBO）代理",
+          "这些代理充当人类用户的扩展，例如 Claude Code 或 GitHub Copilot。它们专门在用户会话中运行。",
+          "这里的安全要求是权限范围缩小（Scope Attenuation）。代理应仅访问用户权限的一个子集，而非全部权限。如果用户要求代理重构某个特定文件，它不应有权访问父目录中的敏感配置文件。",
+          "目前，大多数 OBO 代理继承用户完整的访问令牌。",
+          "MCP 的差距",
+          "模型上下文协议（MCP）正成为这些代理的标准接口。然而，它明确将授权职责委托给实现者。",
+          "MCP 当前依赖 OAuth 2.1 的范围（scopes），如 files:read。这些范围是粗粒度的字符串。files:read 授予用户对用户可见的所有文件的访问权限，从 README 到生产环境的 .env 文件。规范建议“范围指导”，但将细粒度执行留给应用逻辑处理。",
+          "即使协议采用富授权请求（Rich Authorization Requests，RFC 9396）来支持结构化意图，如 {\"file\": \"main.rs\"}，这也仍是一种数据格式。它作为请求的外包装，但不提供评估该请求是否应被允许的逻辑。",
+          "共享上下文陷阱",
+          "在共享上下文中，权限范围缩小会失效。",
+          "考虑一个“财务助理”代理被添加到团队 Slack 频道。该代理使用 CFO 的身份验证凭据登录。一位初级分析师询问第三季度预算预测。",
+          "代理检查自身权限，确认 CFO 有访问权限后，便发布了数据。此时，初级分析师看到了他们无权查看的高管薪酬数据。",
+          "传统授权检查发生在数据检索时。而共享上下文要求在输出端进行授权检查，即计算所有受众成员权限的交集。传统的基于角色的访问控制（RBAC）无法建模这种关系图。",
+          "2. 自主代理",
+          "这些代理在无用户交互的情况下运行，例如安全机器人轮换密钥或计费代理核对发票。",
+          "这里的身份认证问题已基本解决。Microsoft Entra Agent ID 允许这些代理通过 client_credentials 流程使用独立的 Client ID 进行身份验证。这确保审计日志将操作归因于 Agent-007，而非人类用户。",
+          "“上帝模式”问题",
+          "授权层仍然存在缺陷。在标准的 client_credentials 流程中，生成的令牌往往决定广泛的访问权限。若要允许计费代理读取发票，通常需要授予 Files.Read.All 范围。",
+          "这导致了一个“上帝模式”代理。它可以读取发票，但也可能读取员工合同和专利草案。你很难将标准 OAuth 令牌精确限定为“仅读取财务文件夹中的文件”。这实际上相当于赋予一个概率性脚本根级访问权限。",
+          "为什么“扁平”RBAC 无法满足代理需求",
+          "如果代理需要有限范围的权限，显而易见的问题是：“为什么不直接创建一个特定角色？”为什么不创建 Billing_Agent 角色并就此结束？",
+          "失败之处在于授权模型的几何结构。传统的基于角色的访问控制（RBAC）是扁平化的。它将主体映射到角色，再将角色映射到一组全局权限（如 read:repos）。这对人类用户有效，因为人类用户的访问通常与其职位相关，而职位是稳定且宽泛的。",
+          "代理的访问则与任务相关，而任务是短暂且具体的。",
+          "你并不希望代理成为“仓库编辑者”。你应该强制规定：“此代理只能在仓库 api 的 feature-xyz 分支上编辑代码，除此之外无权进行任何操作。”",
+          "若要用扁平化的 RBAC 来表达这一需求，就必须为每个资源与权限的组合创建唯一角色。",
+          "角色：Editor_Repo_API_Branch_XYZ",
+          "角色：Viewer_Repo_Frontend_Branch_ABC",
+          "在一个拥有数千个仓库和临时分支的企业环境中，这会导致组合爆炸。管理复杂度从 O(1) 的角色数量跃升至 O(N x M)。维护这些静态角色的摩擦成本，已远超代理本身带来的效率提升价值。",
+          "解决方案：FGA = RBAC + 层级结构",
+          "这正是精细粒度授权（Fine-Grained Authorization, FGA）发挥作用的地方。它并非要取代你已有的概念体系，而是对 RBAC 的自然延伸。",
+          "要解决这一问题，我们无需抛弃 RBAC。我们需要对其进行范围限定——而这正是精细粒度授权（FGA）的定义所在。",
+          "FGA 并非要替代你已知的那些概念，而是将 RBAC 应用于资源层级结构之中。",
+          "Organization: Acme\n └── Repository: API\n       └── Branch: feature-xyz  <-- Agent Permission Starts Here\n             └── Actions: [push, merge]",
+          "你依然保留熟悉的“编辑者”“查看者”等角色心智模型，但将这些角色绑定到图中的具体节点，而非根节点。",
+          "垂直继承：当代理被授予 Branch:feature-xyz 的编辑权限时，它将自动继承该分支内所有文件和操作的访问权限。",
+          "无横向越权：关键在于，该权限不会横向蔓延至 Branch:staging，也不会向上渗透到 Repository:API。",
+          "在此模型中，代理在需要的地方拥有全部权限，而在其他地方则毫无权限。",
+          "扩展图谱：结构型资源 vs. 资产数据",
+          "采用集中式授权服务时，一个常见顾虑是状态同步的开销。如果你的应用管理着数百万个独立资产，你可能会认为每一个都需要镜像到 FGA 图谱中。实际上，你只需同步结构层级，而非资产数据本身。",
+          "可将 FGA 视为权限体系的骨架。你注册的是定义访问边界的顶层容器：组织、工作区和项目。这些就是你的结构型资源。而像文件夹内的单个文件或项目中的图片这类高吞吐量的资产数据，则保留在主应用存储中。",
+          "当代理请求访问某个特定资产时，你的应用逻辑会执行一个简单的两步检查：",
+          "应用逻辑：识别该资产所属的容器（例如 Folder:Q3-Financials）。",
+          "FGA：发起查询 check(subject=Agent, role=viewer, resource=Folder:Q3-Financials)。",
+          "通过检查父级容器的访问权限而非单个资产，你让授权图谱保持精简，并实现低于 50 毫秒的延迟。同时避免了大规模数据同步带来的“双写”一致性问题，从而在不引入全量数据库镜像基础设施成本的前提下，获得细粒度的安全保障。",
+          "FGA 如何解决两种代理模式的问题",
+          "一旦建立起层级化模型，先前提到的授权难题（作用域衰减与上帝模式）便可通过标准架构模式迎刃而解。",
+          "1. 解决 OBO 代理：交集检查法",
+          "对于 On-Behalf-Of（代为执行）代理，目标是防止“混淆的代理人”问题。即使用户拥有广泛权限，代理也应仅能访问当前任务所需的内容。",
+          "FGA 通过计算权限交集来解决此问题。你可以定义一条策略，要求用户和代理双方都必须具备相应权限，才能授予请求。",
+          "这使得授权检查从静态的角色查找转变为动态验证。当 MCP 服务器接收到类似 read_file(path=\"/secrets.json\") 的工具调用时，它会在 FGA 图中执行实时检查：",
+          "Input: check(subject=Agent, role=viewer, resource=file:secrets.json)\nOutput: FALSE (Access Denied)",
+          "这允许服务器对敏感资源动态返回精确的 403 Forbidden 错误。用户无需手动限制代理的广泛 OAuth 令牌权限。",
+          "FGA 作为 MCP 的逻辑层",
+          "‍随着像 MCP 这样的协议成熟以支持丰富的授权请求（RFC 9396），代理将传递结构化意图对象而非不透明的字符串。例如：{\"file\": \"main.rs\", \"action\": \"edit\"}。",
+          "重要的是要记住，RAR 只是一个数据格式。它充当请求的外壳，但本身不提供判断请求是否有效的逻辑。RAR 对象无法理解 /backend 属于 Team A，或用户是 Team A 的管理员。",
+          "如果仅依赖 RAR，开发人员仍需编写复杂的逻辑来遍历这些关系。FGA 通过原生处理层级结构解决了这一问题。它作为决策引擎，将 RAR 外壳与组织的实际权限图进行比对验证。",
+          "内存泄漏：长期上下文的安全隐患",
+          "随着代理从无状态脚本演变为持久协作伙伴，它们开始在向量数据库中存储\"记忆\"。这带来了新的安全阴影：如果一个代理将敏感文档摘要存入其长期记忆中，这些信息可能会被\"幻觉\"回传给一个无权访问原始来源的不同用户。",
+          "为防止上下文泄露，开发者应将代理的记忆视为受保护资源，并对代理的\"回忆\"应用与源文件相同的 FGA 策略：",
+          "元数据标记：写入向量存储的每个嵌入都应标记其源 resource_id。",
+          "过滤检索：当代理查询其记忆时，应用程序必须在向量搜索中加入 FGA 检查。如果当前用户无法访问源 resource_id，该记忆对代理保持不可见。",
+          "上下文分片：高安全环境应使用临时内存分片，当代理在不同 FGA 项目节点间移动时刷新这些分片。",
+          "通过将嵌入锚定到 FGA 资源 ID，您可以确保代理的内部上下文与其实时操作一样受到严格管控。",
+          "2. 解决自主代理：限定角色方案",
+          "对于自主代理，目标是防止\"上帝模式\"——即特定机器人意外获得整个租户的根访问权限。",
+          "FGA 作为代理广泛身份的约束层。",
+          "身份：身份提供商（IdP）证明代理是\"计费机器人\"。",
+          "授权（FGA）：应用程序询问计费机器人是否可以读取 file:executive_comp.pdf。",
+          "检查：FGA 发现代理在 Project:Finance 节点上拥有 Viewer 角色，但在 Project:HR 节点上没有。拒绝访问。",
+          "在此模型中，代理本身就是主体。它直接获得所需资源的权限。当代理停用时，只需删除其在特定节点上的角色分配，整个子树中的访问权限立即消失。",
+          "身份提供商为您提供安全标识，WorkOS FGA 为您提供控制抓手。没有 FGA，自主代理实际上就是具有整个租户根访问权限的高速脚本。",
+          "代理企业治理",
+          "在传统企业环境中，访问权限遵循员工生命周期。当用户通过身份提供商（IdP）入职时，会获得一组角色；离职时，其访问权限将被撤销。",
+          "代理程序打破了这一流程。与人类用户会主动登出或更换工作不同，代理程序具有持久性。它们的令牌保持有效，服务账户也持续活跃。最新数据显示，企业凭证在不再需要后平均仍会保持激活状态长达47天。随着代理身份的激增，人工管理其生命周期变得不可行，并形成了巨大的凭证窃取风险面。",
+          "WorkOS FGA 通过在您的 IdP 与应用程序内部资源层级之间建立连接，实现了对整个代理生命周期的集中治理。标准 IdP 擅长管理群组，却对内部资源视而不见。FGA 提供了授权链条中的“最后一公里”，确保代理访问权限由与人类员工相同的 SSO 和 SCIM 基础设施进行管控：",
+          "配置：管理员在 IdP 中创建代理（或通过未来的 SCIM /Agents 端点），并将其分配至一个功能群组，例如 Project-X-Automations。",
+          "自动化入职：WorkOS Directory Sync 会即时检测到新的身份及其所属群组，无需人工干预即可在您的应用中为该代理完成配置。",
+          "范围化治理：您的应用利用该群组成员身份，在 FGA 中为其分配一个资源限定角色，例如 Project:X 上的 Editor。代理立即被限制在该特定项目子树范围内操作。",
+          "即时注销：当代理从群组中移除或在 IdP 中被停用时，其在 FGA 中的所有服务角色分配将同步撤销。",
+          "这种架构确保代理凭证永远不会超出其使用意图。通过将身份与分层授权机制协同运作，您为 IT 部门提供了他们所要求的自动化注销流程和审计追踪能力。",
+          "下一步展望",
+          "我们正处于一个关键转折点。微软、Okta 以及 IETF 工作组正在构建代理身份的基础设施。像 MCP 这样的协议正从根本上重新思考授权接口的设计。",
+          "缺失的一环正是授权层本身。仅仅判断代理能否调用 API 是不够的，我们必须进一步确认：该代理是否可以根据委派用户的身份、组织策略以及资源层级，在特定资源上执行特定操作。",
+          "仍有若干复杂问题亟待解决。这些正是我们将重点投入的方向。",
+          "用户群组作为授权主体",
+          "群组正逐渐成为 FGA 中的一等公民。您将能够为 IdP 中的某个群组在特定资源上分配角色，例如在 workspace:platform 上为工程群组分配权限。无论是人类还是代理，所有成员都将自动继承相应权限。当主体加入或离开 IdP 中的群组时，其访问权限将实时更新。",
+          "FGA 角色分配",
+          "企业治理中的一个主要障碍是将扁平的IdP（例如Okta、Entra）群组映射到嵌套资源。我们正在构建FGA角色分配功能，以原生方式弥合这一差距。该功能允许您将IdP群组（例如\"Project-X-Bots\"）与特定资源子树上的FGA角色（例如在文件夹：NA-Prospects上的Viewer角色）建立映射。当用户在IdP中添加到此群组时，SSO或目录同步将自动在FGA中创建相应的角色分配。这消除了管理身份源与资源图之间关系的\"胶水代码\"需求。",
+          "代理到代理的委托",
+          "当代理生成子代理或委托任务时，链中的每个环节都需要衰减的作用域。传递给子代理的令牌应比原始令牌拥有更少的权限。FGA的分层模型非常适合这种情况。每次委托步骤都会将子代理约束到更窄的资源子树中。我们正在为这些委托链构建一流的支持，使授权系统而非自定义应用程序逻辑来强制执行作用域衰减。",
+          "代理的SCIM配置",
+          "IETF SCIM代理模式草案引入了/Agents作为具有所有权要求和休眠检测功能的资源类型。随着这一标准的成熟，WorkOS目录同步将以类似当前为用户配置的方式配置代理。IdP群组成员资格将直接映射到FGA资源范围的角色，自动化整个生命周期。",
+          "全局低延迟授权",
+          "代理以机器速度运行，通常跨越多个区域。虽然我们目前提供低于50毫秒的第95百分位访问检查，但我们正在转向边缘缓存和流式更新，以在全球范围内接近低于10毫秒的水平。这确保了授权决策不会成为代理性能的延迟瓶颈。",
+          "代理软件的授权复杂性正在迅速增加。如果您正在构建将由代理运行的软件，现在就是奠定基础的时候了。",
+          "WorkOS FGA现已可用。请从这里开始使用。",
+          "研究前沿：超越静态授权",
+          "行业正处于十字路口。截至2026年初，代理身份的基础要素开始聚集，但几个高阶授权问题仍处于研究阶段。在WorkOS，我们密切关注这些变化。我们将FGA视为必须与AI的概率性质共同演化的活体基础设施。",
+          "有三个具体领域，标准授权与代理现实之间的差距最为明显。",
+          "1. 多跳委托和溯源",
+          "在先进的多代理系统中，主代理通常会将请求分解为子任务并委托给专门的子代理。这会产生\"俄罗斯套娃\"效应：每次交接都跨越信任边界，但通常在第三或第四次跳转时就会丢失加密的溯源信息。",
+          "关于授权溯源的当前研究表明，\"谁\"不再是一个单一主体，而是一条链。如果一个授权用于公共数据的Research Agent生成了一个授权用于私有仓库的Code Agent，那么产生的访问权限必须是该溯源链中每个实体的交集。弥合这一差距需要能够验证每个工具调用\"保管链\"的授权引擎，确保不仅检查权限，而且追溯回其起源。",
+          "IETF一直在积极研究扩展OAuth以处理这种\"俄罗斯套娃\"式委托。",
+          "2. 即时代理（JIT 代理）",
+          "传统服务账户依赖“常驻权限”——即始终处于激活状态的访问权限。对于机器速度级的代理而言，常驻权限构成了巨大的风险。如果代理拥有一个具有写入权限的静态 API 密钥，一次成功的提示注入攻击就可能导致数据被立即、不可逆转地窃取。",
+          "即时代理（Just-in-Time Agency）的概念正朝着“零常驻权限”（Zero Standing Privileges）模型演进。在这个未来场景中，代理在触发特定任务之前不具备任何权限。授权引擎随后会授予一个临时、短期的角色分配，该角色在事务完成后自动过期。这将在当前任务所需的最小范围内减少攻击面，将安全状态从静态转变为动态。",
+          "零常驻权限（ZSP）的概念正由 NIST 和 OWASP Top 10 for Agentic Applications 共同倡导。",
+          "3. 语义未来：基于意图的访问控制",
+          "与确定性代码不同，代理是概率性的。在长时间运行的会话中，代理的行为可能会“偏离”最初的用户意图。一个最初仅用于总结邮件（低风险）的代理，可能会根据后续模糊指令，逐渐演变为将文件移动到外部驱动器（高风险）。",
+          "语义检查（Semantic Inspection）的新兴策略表明，授权应锚定于初始任务会话。如果代理尝试执行与其原始“根”授权在语义上无关的工具调用，引擎应标记这种偏离行为。这标志着从检查代理能做什么，转向理解它为什么要这么做——从而创建一层上下文护栏，可在高风险操作发生前触发“人在回路”（Human-in-the-Loop）审批。",
+          "该领域最前沿的研究来自大型语言模型（LLM）可观测性与“宪法式 AI”（Constitutional AI）的交叉领域。",
+          "代理授权的最终目标是超越确定性的“能/不能”检查，进入意图对齐（Intent Alignment）的领域。我们正在迈向一个世界，其中策略以自然语言定义——例如“不得向未经验证的第三方共享客户个人身份信息”——并由一个理解代理请求背后推理的授权层来强制执行。",
+          "在 WorkOS，我们相信 FGA 是实现这一概率性未来的必要基石。你不能依赖 LLM 自我监管；你需要一个确定性的资源图谱作为事实依据。通过将自然语言意图链接到细粒度的资源层级，我们创建了首个语义护栏，它不仅能因代理缺少角色而阻止其操作，更能因其当前行为偏离其声明的使命而加以拦截。"
+        ]
+      }
+    },
+    {
+      "slug": "84f81464a1745806",
+      "title": "Big tech clouds worden niet veiliger met stapels papier",
+      "titleZh": "大科技云堆叠纸张并不能变得更安全",
+      "link": "https://berthub.eu/articles/posts/big-tech-clouds-niet-veiliger-met-papier/",
+      "sourceName": "berthub.eu",
+      "sourceUrl": "https://berthub.eu",
+      "pubDate": "2026-04-19T19:00:00.000Z",
+      "category": "security",
+      "keywords": ["cloud security", "data sovereignty", "US surveillance", "privacy"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章指出，将社会、政府和企业的数据托管在美国服务器上存在根本性安全风险。即使数据存储在欧洲，美国仍可通过三项法律工具获取访问权限，导致用户完全失控。这种结构性依赖使得任何‘特殊协议’都无法改变现实中的监控权力。作者认为，缺乏有效制衡机制的情况下，依赖美国云服务本质上是不可持续的。",
+      "summaryEn": "The article exposes fundamental security risks in relying on American cloud infrastructure, even when data physically resides outside the US. Three legal mechanisms grant the US government broad access to foreign-hosted communications and data, creating a single point of failure. No 'special agreement' can override this structural vulnerability, making such dependencies inherently insecure and unsustainable.",
+      "reason": "了解这些法律漏洞如何绕过地理边界，对任何考虑使用主流云服务的组织都至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bert Hubert's writings",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Je samenleving, overheid en maatschappij overlaten aan Amerikaanse servers komt met twee problemen:"
+          },
+          {
+            "type": "li",
+            "text": "Alles werkt alleen zolang ze het in Amerika goed vinden. Met een enkel briefje op Whitehouse.gov lig je uit hun cloud."
+          },
+          {
+            "type": "li",
+            "text": "Via minstens drie wetsinstrumenten gunt Amerika zich toegang tot onze data en communicatie, ook al staan de Microsoftservers in Europa."
+          },
+          {
+            "type": "p",
+            "text": "Dit is allemaal heel vervelend, en er is ook weinig aan te doen. Geen enkele “speciale” afspraak heft de realiteit van Amerikaanse wetgeving op. Je kunt proberen er nog wat BV’s tussen te schuiven, maar uiteindelijk ben je bij sancties toch de klos."
+          },
+          {
+            "type": "p",
+            "text": "Ook het toevoegen van extra lagen encryptie/sleutels voor privacy is in de praktijk niet realistisch gebleken. Of zoals ik eerder schreef, je kunt je digitale autonomie niet kopen in Amerika."
+          },
+          {
+            "type": "p",
+            "text": "Bovenstaande is allemaal niet controversieel. De landsadvocaat heeft het in de Tweede Kamer recent nog bevestigd."
+          },
+          {
+            "type": "h2",
+            "text": "Desondanks.."
+          },
+          {
+            "type": "p",
+            "text": "Desondanks onderhandelen we nog heel wat met de werkelijkheid."
+          },
+          {
+            "type": "p",
+            "text": "Nu Amerikaanse clouds en diensten bewezen een risico vormen zal je toch wat anders moeten gaan doen. Maar dat is tegen de stroom inzwemmen. Dat is vertrouwen op Europese technologie die anders werkt. Waar niet duizenden big tech & “big four” consultants klaarstaan om je te verzekeren dat het goed is wat je doet & gelijk de bijbehorende diensten te leveren. Het vergt daadwerkelijke eigen IT-kennis. En de Nederlandse overheid heeft grotendeels geen IT-afdelingen meer, maar alleen big-tech afdelingen."
+          },
+          {
+            "type": "p",
+            "text": "In plaats van te moeten veranderen, kan je ook proberen met papier aan te tonen dat het niet hoeft. En dat is erg populair tegenwoordig."
+          },
+          {
+            "type": "quote",
+            "text": "“Als mensen moeten kiezen tussen van gedachten veranderen, of bewijzen dat dat helemaal niet nodig is, storten de meeste mensen zich op het bewijs” - John Kenneth Galbraith"
+          },
+          {
+            "type": "p",
+            "text": "We hebben hiervoor een heel instrumentarium opgetuigd, zoals Data Privacy Impact Assessments, Data Transfer Impact Assessments en “Comply or explain” documenten. Zoals veel gebruikt in de zin “we moeten de Explain nog schrijven, dan kunnen we naar de cloud”."
+          },
+          {
+            "type": "p",
+            "text": "De nieuwste doorbraak is dat je de risico’s in kaart brengt en daarna je “risk register” gebruikt om die risico’s vervolgens te “accepteren”. Ook weer opgelost!"
+          },
+          {
+            "type": "h2",
+            "text": "Dit is big business"
+          },
+          {
+            "type": "p",
+            "text": "Te koop op despair.com"
+          },
+          {
+            "type": "p",
+            "text": "Al deze documenten worden geschreven door een hele industrie, binnen en buiten overheden. Als een soort aflaat kan je voldoende papier bestellen tot alles zo complex is geworden dat je opperhoofd of minister vol vertrouwen kan zeggen dat we door kunnen met de verhuizing van DigiD naar Amerika, of dat het helemaal niet raar is om je btw voortaan door Amerikanen te laten doen."
+          },
+          {
+            "type": "quote",
+            "text": "“Er zijn twee manieren om software te ontwerpen. De ene is om alles zo eenvoudig te maken dat het evident is dat er geen problemen zijn. Op de andere manier maak je alles zo ingewikkeld dat niemand snel problemen kan zien.” - de onlangs overleden softwareontwikkelaar Tony Hoare."
+          },
+          {
+            "type": "p",
+            "text": "En als de bergen papier nog niet genoeg waren, dan kan je gaan praten over risicomodellen en “governance”. Want met de juiste governance kan je werkelijk iedere draak temmen."
+          },
+          {
+            "type": "h2",
+            "text": "Maar tuin er niet in"
+          },
+          {
+            "type": "p",
+            "text": "Niets doet af aan de realiteit dat Amerikaanse diensten kwetsbaar zijn voor sancties. Geen enkele berg papier heft de privacyproblemen op. Complexiteit verkocht als nuance verhult de gevaren alleen maar."
+          },
+          {
+            "type": "p",
+            "text": "Het enige realistische wat je op kunt schrijven is dat je denkt dat het wel losloopt, en dat je erop vertrouwt dat Trump en zijn overheid redelijke dingen doen."
+          },
+          {
+            "type": "p",
+            "text": "Het zou mensen sieren als ze dit voorin hun rapporten zouden zetten, “we geloven echt dat het wel meevalt”. Prima, dat is dan je mening. Nederlanders zijn het niet met je eens (gezien de woede over DigiD naar Amerika). Maar, dan kom je tenminste uit voor waarom je denkt dat het kan: je haast Ruttiaanse vertrouwen in de Verenigde Staten."
+          },
+          {
+            "type": "p",
+            "text": "Maar weet dus dat mensen een hele goede baan hebben aan consulting, adviezen en “governance”, zodat we door kunnen gaan onze data en geld naar Amerika te brengen, zonder dat iemand hier moeite hoeft te doen om eens zelf controle te nemen over computers."
+          },
+          {
+            "type": "p",
+            "text": "En deze mensen helpen ons, voor geld, naar een steeds afhankelijkere en gevaarlijkere maatschappij, terwijl ze zeggen dat ze nuance komen brengen."
+          },
+          {
+            "type": "p",
+            "text": "Tuin er niet in. En werk aan iets beters."
+          },
+          {
+            "type": "h2",
+            "text": "Ja nou dit vind ik helemaal geen leuk stuk"
+          },
+          {
+            "type": "p",
+            "text": "Misschien gaat het wel niet over jou, maar ik kan echt deze filosofische blockbuster aanraden:"
+          },
+          {
+            "type": "p",
+            "text": "Video - “You probably think this song is about you”"
+          }
+        ],
+        "translations": [
+          "Je samenleving, overheid en maatschappij overlaten aan Amerikaanse servers komt met twee problemen:",
+          "Alles werkt alleen zolang ze het in Amerika goed vinden. Met een enkel briefje op Whitehouse.gov lig je uit hun cloud.",
+          "Via minstens drie wetsinstrumenten gunt Amerika zich toegang tot onze data en communicatie, ook al staan de Microsoftservers in Europa.",
+          "Dit is allemaal heel vervelend, en er is ook weinig aan te doen. Geen enkele “speciale” afspraak heft de realiteit van Amerikaanse wetgeving op. Je kunt proberen er nog wat BV’s tussen te schuiven, maar uiteindelijk ben je bij sancties toch de klos.",
+          "Ook het toevoegen van extra lagen encryptie/sleutels voor privacy is in de praktijk niet realistisch gebleken. Of zoals ik eerder schreef, je kunt je digitale autonomie niet kopen in Amerika.",
+          "Bovenstaande is allemaal niet controversieel. De landsadvocaat heeft het in de Tweede Kamer recent nog bevestigd.",
+          "Desondanks..",
+          "Desondanks onderhandelen we nog heel wat met de werkelijkheid.",
+          "Nu Amerikaanse clouds en diensten bewezen een risico vormen zal je toch wat anders moeten gaan doen. Maar dat is tegen de stroom inzwemmen. Dat is vertrouwen op Europese technologie die anders werkt. Waar niet duizenden big tech & “big four” consultants klaarstaan om je te verzekeren dat het goed is wat je doet & gelijk de bijbehorende diensten te leveren. Het vergt daadwerkelijke eigen IT-kennis. En de Nederlandse overheid heeft grotendeels geen IT-afdelingen meer, maar alleen big-tech afdelingen.",
+          "In plaats van te moeten veranderen, kan je ook proberen met papier aan te tonen dat het niet hoeft. En dat is erg populair tegenwoordig.",
+          "“Als mensen moeten kiezen tussen van gedachten veranderen, of bewijzen dat dat helemaal niet nodig is, storten de meeste mensen zich op het bewijs” - John Kenneth Galbraith",
+          "We hebben hiervoor een heel instrumentarium opgetuigd, zoals Data Privacy Impact Assessments, Data Transfer Impact Assessments en “Comply or explain” documenten. Zoals veel gebruikt in de zin “we moeten de Explain nog schrijven, dan kunnen we naar de cloud”.",
+          "De nieuwste doorbraak is dat je de risico’s in kaart brengt en daarna je “risk register” gebruikt om die risico’s vervolgens te “accepteren”. Ook weer opgelost!",
+          "Dit is big business",
+          "Te koop op despair.com",
+          "Al deze documenten worden geschreven door een hele industrie, binnen en buiten overheden. Als een soort aflaat kan je voldoende papier bestellen tot alles zo complex is geworden dat je opperhoofd of minister vol vertrouwen kan zeggen dat we door kunnen met de verhuizing van DigiD naar Amerika, of dat het helemaal niet raar is om je btw voortaan door Amerikanen te laten doen.",
+          "“Er zijn twee manieren om software te ontwerpen. De ene is om alles zo eenvoudig te maken dat het evident is dat er geen problemen zijn. Op de andere manier maak je alles zo ingewikkeld dat niemand snel problemen kan zien.” - de onlangs overleden softwareontwikkelaar Tony Hoare.",
+          "En als de bergen papier nog niet genoeg waren, dan kan je gaan praten over risicomodellen en “governance”. Want met de juiste governance kan je werkelijk iedere draak temmen.",
+          "Maar tuin er niet in",
+          "Niets doet af aan de realiteit dat Amerikaanse diensten kwetsbaar zijn voor sancties. Geen enkele berg papier heft de privacyproblemen op. Complexiteit verkocht als nuance verhult de gevaren alleen maar.",
+          "Het enige realistische wat je op kunt schrijven is dat je denkt dat het wel losloopt, en dat je erop vertrouwt dat Trump en zijn overheid redelijke dingen doen.",
+          "要是有人真在报告里写上“我们真心相信这玩意儿能行”，那可真是够招摇的。好吧，那是你的观点。不过荷兰人可不买账（想想看他们对 DigiD 赴美这事有多愤怒）。但至少你还能说出个所以然来：你可是把对俄罗斯的信任照单全收地套在了美国头上。",
+          "所以啊，这些人拿着高薪，干着咨询、建言和“治理”的活儿，好让我们心安理得地把数据和钱往美国送——反正没人会费力去真正掌控那些电脑。",
+          "他们嘴上说着要带来 nuance（微妙平衡），实际上却是在拿钱帮我们把社会推入越来越依赖、越来越危险的境地。",
+          "别钻进这个坑了。去做点真正更好的事吧。",
+          "哦，这个嘛，我实在不觉得这是个有趣的段落。",
+          "也许它不是针对你的，但我真得推荐这部哲学大片：",
+          "视频 - “You probably think this song is about you”"
+        ]
+      }
+    },
+    {
+      "slug": "eb2f87f24c0c2145",
+      "title": "Headless everything for personal AI",
+      "titleZh": "个人 AI 的无头化未来",
+      "link": "https://simonwillison.net/2026/Apr/19/headless-everything/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-19T21:46:38.000Z",
+      "category": "ai-ml",
+      "keywords": ["headless", "personal AI", "AI agents", "decentralized"],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Matt Webb 提出无头服务（headless services）将成为个人 AI 的主流交互方式。相比直接操作 GUI，无头 API 更高效、可靠，更适合由 AI 驱动的自动化流程。这种架构变革将推动软件从可视化界面向可编程接口演进，提升 AI 代理的执行效率与稳定性。",
+      "summaryEn": "Matt Webb predicts headless services will become dominant for personal AI interactions. Unlike direct GUI manipulation, headless APIs offer greater efficiency and reliability for AI-driven automation. This shift represents a fundamental evolution from visual interfaces toward programmable endpoints, enabling more robust and scalable AI workflows.",
+      "reason": "如果你在规划下一代 AI 应用架构，理解无头服务的优势将帮助你设计更高效的自动化系统。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "19th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Headless everything for personal AI. Matt Webb thinks headless services are about to become much more common:"
+          },
+          {
+            "type": "quote",
+            "text": "Why? Because using personal AIs is a better experience for users than using services directly (honestly); and headless services are quicker and more dependable for the personal AIs than having them click round a GUI with a bot-controlled mouse."
+          },
+          {
+            "type": "p",
+            "text": "Evidently Marc Benioff thinks so too:"
+          },
+          {
+            "type": "quote",
+            "text": "Welcome Salesforce Headless 360: No Browser Required!  Our API is the UI. Entire Salesforce & Agentforce & Slack platforms are now exposed as APIs, MCP, & CLI. All AI agents can access data, workflows, and tasks directly in Slack, Voice, or anywhere else with Salesforce Headless."
+          },
+          {
+            "type": "p",
+            "text": "If this model does take off it's going to play havoc with existing per-head SaaS pricing schemes."
+          },
+          {
+            "type": "p",
+            "text": "I'm reminded of the early 2010s era when every online service was launching APIs. Brandur Leach reminisces about that time in The Second Wave of the API-first Economy, and predicts that APIs are ready to make a comeback:"
+          },
+          {
+            "type": "quote",
+            "text": "Suddenly, an API is no longer liability, but a major saleable vector to give users what they want: a way into the services they use and pay for so that an agent can carry out work on their behalf. Especially given a field of relatively undifferentiated products, in the near future the availability of an API might just be the crucial deciding factor that leads to one choice winning the field."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "22ab294a68207d71",
+      "title": "Figma's woes compound with Claude Design",
+      "titleZh": "Figma 困境加剧：Claude Design 的冲击",
+      "link": "https://martinalderson.com/posts/figmas-woes-compound-with-claude-design/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=feed",
+      "sourceName": "martinalderson.com",
+      "sourceUrl": "https://martinalderson.com",
+      "pubDate": "2026-04-19T00:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": ["Figma", "Claude Design", "AI design tools", "product strategy"],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "Figma 过度依赖非设计师席位定价策略，使其在 AI 设计工具竞争中处于劣势。Anthropic 推出的 Claude Design 直接挑战其市场地位，暴露了 Figma 商业模式的结构性脆弱。这一变化凸显了传统设计平台在 AI 时代面临的转型压力。",
+      "summaryEn": "Figma's business model, heavily reliant on non-designer seat pricing, has made it particularly vulnerable to AI design tools like Claude Design. Anthropic's entry intensifies competitive pressure, revealing structural weaknesses in Figma's traditional approach. This shift highlights the broader transformation challenges facing established design platforms in the AI era.",
+      "reason": "作为设计师或产品经理，了解 Figma 的市场危机有助于你评估当前工具的长期可持续性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Martin Alderson",
+        "siteName": "Martin Alderson",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I think Figma is increasingly becoming a go-to case study in the victims of the so-called \"SaaSpocalypse\". And Claude Design's recent launch last week just adds a whole new dimension of pain."
+          },
+          {
+            "type": "h2",
+            "text": "What happened to Figma?"
+          },
+          {
+            "type": "p",
+            "text": "Firstly, I should say that I love(d?) the Figma product. It's hard to understand now what a big deal Figma's initial product was when it launched in the mid 2010s."
+          },
+          {
+            "type": "p",
+            "text": "The initial product ushered in a whole new category of SaaS - using the nascent WebGL and asm.js technologies to allow designers to design entirely in browser. It used to be the running joke that an app like Photoshop would ever run in the browser, but Figma proved it wrong."
+          },
+          {
+            "type": "p",
+            "text": "It quickly overtook Sketch as the defacto design tool in the market. Firstly for UI/UX wireframing and prototyping, but increasingly for everything graphic design. As it was based in the browser, it was a revelation from the developer side to be able to open UI/UX files if you weren't on a Mac (Sketch is Mac only). It was also brilliant to be able to leave comments on the design and collaborate with the designer(s) to iterate on designs really quickly."
+          },
+          {
+            "type": "p",
+            "text": "The collaborative features (without requiring anyone to download any software) quickly meant it got adoption outside of pure design roles - PMs and executives could finally collaborate in real time on the product they were building, without having to (at best) send back revisions and notes from badly screenshotted files that tended to be out of date by the time they were received."
+          },
+          {
+            "type": "p",
+            "text": "I'll skip over the rest of the history, including a no doubt distracting takeover attempt by Adobe, that was later blocked on competition grounds. But (of course) LLMs happened and suddenly one of the most forward looking SaaS companies became very vulnerable to disruption itself."
+          },
+          {
+            "type": "h2",
+            "text": "Why did AI hit Figma so hard?"
+          },
+          {
+            "type": "p",
+            "text": "One completely unexpected development me and others noticed (and wrote up a few months ago at How to make great looking reports with Claude Code) was that LLMs started to get fairly \"good\" at design."
+          },
+          {
+            "type": "p",
+            "text": "By good I do not mean as good as a talented designer, clearly it's nowhere near that - currently. But like many things, not everything requires a great designer. Even if you use a great design team to build out your core product experience (and many do not), there's an awful lot of design 'resource' required for auxiliary parts of the product, reports, proposals etc. It's not stuff that tends to get designers excited but can sap an awful lot of time going back and forth on a pitch deck."
+          },
+          {
+            "type": "p",
+            "text": "And this is exactly why I think Figma is almost uniquely vulnerable. The way it managed to expand into organisations by getting uptake with non-designers becomes a liability if those non-designers can get an AI agent to do the design for them."
+          },
+          {
+            "type": "p",
+            "text": "Looking at Figma's S1 (which is somewhat out of date by now, but is the only reported breakdown I can find) corroborates this potential weakness. Only 33% of Figma's userbase in Q1 2025 was designers, with developers making up 30% and other non-design roles making up 37%."
+          },
+          {
+            "type": "p",
+            "text": "A lot of Figma's continued expansion depended on this part of their userbase. A lot of their recent product development has been to enable further expansion in organisations - \"Dev Mode\" for developers (which now looks incredibly quaint against LLMs), Slides (to compete against PowerPoint and other presentation tools) and Sites (a WebFlow-esque site builder) all are about expanding their TAM out of \"pure\" design."
+          },
+          {
+            "type": "p",
+            "text": "The real surprise for me though was how basic their \"flagship\" AI design product Figma Make is. It really does feel like something that someone put together in an internal AI hackathon one weekend and it never progressed beyond that. Given how much Figma managed to push the envelope on web technology I found this surprising - perhaps they were caught off guard with how quickly LLMs' design prowess improved, or there were internal disagreements about the role AI should or will play in design. Regardless, it's an incredibly underwhelming product as it stands."
+          },
+          {
+            "type": "h2",
+            "text": "Then Claude Design comes along..."
+          },
+          {
+            "type": "p",
+            "text": "If things weren't bad enough, Anthropic themselves launched Claude Design which is a pretty direct competitor to Figma in many ways. While it's nowhere near functional and polished enough to replace Figma's core design product, I expect it will get significant traction outside of that. The ability for it to grab a design system from your existing assets in one click is very powerful - and allows you to then pull together prototypes, presentations or reports in your corporate design style that look and feel far better than anything a non-designer could do themselves."
+          },
+          {
+            "type": "p",
+            "text": "And I thought it was extremely telling that unlike a lot of the other Anthropic product launches that have touched design - Figma did not provide a testimonial on it (understandably). Canva did, which I found extremely odd (they are in my eyes even more vulnerable to this product than Figma)."
+          },
+          {
+            "type": "p",
+            "text": "I think this really underlines two major weaknesses in many SaaS companies' AI strategies:"
+          },
+          {
+            "type": "p",
+            "text": "Firstly, it's very difficult to compete on AI against the company that is providing your AI inference. A quick check on Figma Make suggests that Figma (at least on my account) is indeed using Sonnet 4.5 for its inference - though I have seen it use Gemini in the past:"
+          },
+          {
+            "type": "p",
+            "text": "At this point Figma is effectively funding a competitor - and the more AI usage Figma has - the more money they send over to Anthropic for the tokens they use. Even worse, Sonnet 4.5 is miles behind what Anthropic uses on Claude Design (Opus 4.7, which has vastly improved vision capabilities[1]), so the results a user gets on Make vs Claude Design are almost certainly going to underwhelm."
+          },
+          {
+            "type": "p",
+            "text": "Also, unlike most/all SaaS costs, inference (especially with these frontier models) is expensive. As Cursor found out, the frontier labs can charge a lot less to end users than API customers like Figma. When you are potentially looking at a shrinking userbase, it's far from ideal to have very expensive variable costs that start pulling your profitability down."
+          },
+          {
+            "type": "p",
+            "text": "Secondly, it really underlines to me how incredibly efficient headcount-wise companies can build products now. Figma has close to 2,000 employees - not all working on product engineering of course. I really doubt Anthropic even needed 10 to build Claude Design. Indeed the entirety of Anthropic is around 2,500 people."
+          },
+          {
+            "type": "p",
+            "text": "It's also worth noting that a lot of the things that would traditionally lock a company like Figma in stop working as well in an agent-first world. Multiplayer matters less when your collaborator is an agent iterating on a prompt. Plugin ecosystems matter less when you can just ask for the functionality directly. Design system tooling is the whole point of Claude Design. Enterprise SSO - Claude already has that. Most of the moats that protect a mature SaaS company are moats against other SaaS companies, not against the thing providing their inference."
+          },
+          {
+            "type": "p",
+            "text": "I might be wrong about how bad this gets for Figma specifically. Companies with strong brands, great distribution and genuinely talented teams can often adapt faster than outsiders expect, and I'd rather be long Figma than most of its competitors."
+          },
+          {
+            "type": "p",
+            "text": "But the structural point is harder to wriggle out of. Figma has ~2,000 employees. Anthropic has ~2,500 total and I doubt Claude Design took more than a handful to build. Figma now needs to out-execute a competitor whose inference is ~free to them, whose marginal cost to ship is roughly zero, and who employs fewer people on the competing product than Figma has on a single pod. That's a very hard position to pivot out of."
+          },
+          {
+            "type": "p",
+            "text": "This feels like a preview of where SaaS economics are heading. The companies that built big orgs on the assumption of steady seat expansion are going to find themselves competing with products built by tiny teams inside the frontier labs. Figma just happens to be the first big public name where one of their primary inference suppliers has started competing against them."
+          },
+          {
+            "type": "li",
+            "text": "Both GPT 5.4 and Opus 4.7 can now \"see\" screenshots at much higher resolution - Opus 4.7 jumped from 1568px / 1.15MP to 2576px / 3.75MP. Resolution isn't the whole story (scaffolding and post-training matter a lot too) but it meaningfully helps with small-element detection and layout judgement. If you've ever pasted a screenshot of something broken and the model told you it looks great, the previous lack of resolution is one of the reasons why. ↩︎"
+          }
+        ],
+        "translations": [
+          "我认为 Figma 正日益成为所谓“SaaS 末日”受害者的典型案例。而 Claude Design 上周的发布更是为这种痛苦增添了新的维度。",
+          "Figma 究竟发生了什么？",
+          "首先，我得承认我很喜欢（或曾经喜欢？）Figma 的产品。如今回顾，很难想象 Figma 在 2010 年代中期刚推出时是多么革命性的产品。",
+          "它的初代产品开创了一个全新的 SaaS 类别——利用新兴的 WebGL 和 asm.js 技术，让设计师可以完全在浏览器中进行设计。曾几何时，像 Photoshop 这样的应用能在浏览器中运行还只是个笑话，但 Figma 证明了这并非不可能。",
+          "它迅速超越了 Sketch，成为市场上的默认设计工具。起初主要用于 UI/UX 线框图和原型制作，但后来几乎涵盖了所有图形设计领域。由于基于浏览器，对开发者而言，只要不在 Mac 上也能打开 UI/UX 文件，这本身就是一次突破。此外，还能在设计上添加评论，并与设计师快速协作迭代，这一点也令人赞叹。",
+          "无需任何人下载任何软件即可协作的功能，使得 Figma 很快在非纯设计岗位中也获得了广泛采用——产品经理和高管终于可以实时参与他们正在构建的产品讨论，而不用再（充其量）从截图不清、早已过时的文件中来回传递修改意见和备注。",
+          "我略过后续历史不谈，包括 Adobe 无疑会分心的收购尝试（后来被反垄断阻止）。但（当然）LLM 出现了，曾经最具前瞻性的 SaaS 公司之一突然变得极易受到颠覆。",
+          "为什么 AI 对 Figma 的冲击如此之大？",
+          "我和他人注意到的一个完全意想不到的发展是：几个月前我在《如何用 Claude Code 制作出色的报告》一文中提到过，LLM 开始变得相当“擅长”做设计了。",
+          "我所说的“擅长”并不是指能比得上优秀设计师的水平——显然目前还远未达到。但正如许多事情一样，并非所有设计都需要顶级水准。即使你雇用了优秀的设计团队来打造核心产品体验（很多人并没有这样做），产品辅助部分如报告、提案等仍需要大量设计资源。这些工作通常不会让设计师感到兴奋，却会耗费大量时间在演示文稿之间反复修改。",
+          "而这正是 Figma 几乎独一无二脆弱的原因。它通过吸引非设计师用户进入组织而实现扩张的方式，一旦这些非设计师能用 AI 代理完成设计，就变成了一个致命弱点。",
+          "查看 Figma 的 S-1 招股书（现在已有些过时，但这是我唯一能找到的分解数据）印证了这一潜在弱点。截至 2025 年第一季度，Figma 用户中仅有 33% 是设计师，开发人员占 30%，其他非设计岗位占 37%。",
+          "Figma 的持续增长很大程度上依赖这部分用户群体。他们近期的产品开发重点一直是推动在组织内的进一步扩展——面向开发者的“Dev Mode”（如今看来在与 LLM 对比下显得异常过时）、Slides（与 PowerPoint 等演示工具竞争）以及 Sites（类似 WebFlow 的网站构建器），都是为了将其目标市场从“纯粹”的设计领域向外拓展。",
+          "不过最让我惊讶的是，他们旗舰级的AI设计产品Figma Make竟然如此基础。它真的感觉像是某个周末内部黑客马拉松的产物，之后再也没有任何进展。考虑到Figma在推动网页技术边界方面取得的成就，这让我感到意外——也许他们没预料到LLM的设计能力会进步得这么快，或者公司内部在设计中AI应该扮演什么角色的问题上存在分歧。无论如何，就目前而言，这是一个令人极其失望的产品。",
+          "然后Claude Design就出现了...",
+          "情况变得更糟了，Anthropic自己推出了Claude Design，在很多方面都是Figma的直接竞争对手。虽然它还远未达到功能完善和精致的程度来替代Figma的核心设计产品，但我预计它会在其他领域获得显著的关注度。它能够一键从现有资产中提取设计系统的能力非常强大，并且允许你按照企业设计风格快速制作原型、演示文稿或报告，这些成果看起来和感觉上都远超非设计师所能达到的水平。",
+          "我认为一个非常明显的信号是，与其他许多Anthropic涉及设计的发布不同，Figma没有为其提供推荐语（这完全可以理解）。Canva却提供了，这让我感到非常奇怪（在我看来，Canva甚至比Figma更容易受到这个产品的影响）。",
+          "我认为这真正凸显了许多SaaS公司在AI战略上的两大弱点：",
+          "首先，在与为你提供AI推理的公司竞争AI功能方面非常困难。快速查看Figma Make发现，Figma（至少在我的账户上）确实在使用Sonnet 4.5进行推理——尽管我之前看到过它使用Gemini的情况：",
+          "此时Figma实际上是在资助自己的竞争对手——而且Figma使用的AI越多，他们支付给Anthropic用于token的费用就越高。更糟糕的是，Sonnet 4.5远远落后于Anthropic在Claude Design上使用的Opus 4.7（其视觉能力有了巨大提升），因此用户在Make和Claude Design上获得的结果几乎肯定会让人失望。",
+          "此外，与大多数/所有SaaS成本不同，推理（尤其是这些前沿模型）非常昂贵。正如Cursor所发现的，前沿实验室可以向终端用户收取比API客户（如Figma）低得多的费用。当你面临潜在的用户基数萎缩时，拥有非常昂贵的可变成本，这些成本开始侵蚀你的盈利能力，这远非理想状态。",
+          "其次，这真正向我展示了现在公司在人员效率方面能够多么高效地构建产品。Figma有近2000名员工——当然不是所有人都在从事产品工程工作。我严重怀疑Anthropic甚至不需要10个人就能构建出Claude Design。事实上，整个Anthropic的员工数量约为2500人。",
+          "同样值得注意的是，在一个以智能体为主导的世界中，像Figma这样的公司传统上会被锁定的许多因素也不再那么重要。当你的协作者是迭代提示的智能体时，多人协作就没那么重要了。当你可以直接要求所需的功能时，插件生态系统也没那么重要了。设计系统工具正是Claude Design的要点所在。企业级SSO——Claude已经具备这一点。保护成熟SaaS公司的护城河主要是针对其他SaaS公司，而不是针对为其提供推理能力的实体。",
+          "我可能低估了这对 Figma 造成的具体冲击。拥有强大品牌、优秀渠道和真正才华横溢团队的公司，往往比外界预期更快适应变化，因此我更看好 Figma 而非大多数竞争对手。",
+          "但结构性问题更难回避。Figma 约有 2000 名员工，Anthropic 总共也就约 2500 人，而 Claude Design 的开发团队恐怕连一只手都数得过来。如今 Figma 必须与一个推理成本几乎为零、边际交付成本近乎为零、且用于竞品的产品线人员还少于 Figma 单个小组的团队竞争——这简直是难以扭转的局面。",
+          "这像是 SaaS 经济走向的预演。那些基于席位稳步增长假设建立起庞大组织的公司，将发现自己正与前沿实验室中由极小团队打造的产品正面交锋。Figma 恰好是首个成为公众焦点、且其主要推理供应商之一开始直接与其竞争的大厂。",
+          "GPT-5.4 和 Opus-4.7 现在都能以更高分辨率“看清”截图——Opus-4.7 从 1568px（约 115万像素）跃升至 2576px（约 375万像素）。分辨率虽非全部（框架设计和后期训练同样关键），但对微小元素识别和布局判断有显著帮助。如果你曾粘贴过一张出错的截图，结果模型却告诉你“看起来不错”，那之前分辨率不足正是原因之一。↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "e28b516419a7982a",
+      "title": "Wander Console 0.5.0",
+      "titleZh": "Wander Console 0.5.0 发布：去中心化网络探索控制台",
+      "link": "https://susam.net/code/news/wander/0.5.0.html",
+      "sourceName": "susam.net",
+      "sourceUrl": "https://susam.net",
+      "pubDate": "2026-04-19T00:00:00.000Z",
+      "category": "tools",
+      "keywords": ["Wander Console", "self-hosted", "web console", "decentralized"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 20
+      },
+      "summary": "Wander Console 0.5.0 是第五个版本更新，新增内置网络爬虫功能，支持访客通过社区推荐探索独立网站。这是一个去中心化的自托管控制台项目，允许网站所有者分享精选内容链接。用户可直接访问 susam.net/wander/ 体验，并通过 README 文档了解部署方法。",
+      "summaryEn": "Wander Console 0.5.0 introduces a built-in network crawler for discovering interesting websites through community recommendations. As a decentralized, self-hosted web console, it enables independent website owners to share curated links with visitors. The fifth release enhances discovery capabilities while maintaining privacy-focused architecture.",
+      "reason": "如果你希望在自己的网站上增加内容发现功能而不依赖中心化平台，这个项目提供了一种轻量级解决方案。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "By Susam Pal on 19 Apr 2026"
+          },
+          {
+            "type": "p",
+            "text": "Wander Console 0.5.0 is out.  It is the fifth release of Wander, a\n  small, decentralised, self-hosted web console that lets visitors to\n  your website explore interesting websites and pages recommended by a\n  community of independent website owners.  To try it, go\n  to susam.net/wander/.  To\n  learn more about how it works and how to set it up on your website,\n  see the project README."
+          },
+          {
+            "type": "p",
+            "text": "The big feature in this release is a built-in console network\n  crawler.  To try the console crawler, go to\n  susam.net/wander/\n  > Console > Crawl.  It\n  performs a breadth-first search (BFS) traversal of the Wander\n  network and lists all discovered consoles and page recommendations\n  in a single pane."
+          },
+          {
+            "type": "p",
+            "text": "If you have set up a Wander Console instance for yourself on your\n  website, I recommend upgrading to the latest version to use this\n  feature.  It is fun to find out just how many Wander consoles belong\n  to your neighbourhood.  To upgrade, you only need to download the\n  Wander Console bundle\n  mentioned\n  here and replace your existing Wander index.html\n  with the new one."
+          },
+          {
+            "type": "p",
+            "text": "If you own a personal website but have not set up a Wander Console\n  yet, I suggest that you consider setting one up for yourself.  You\n  can see what it looks like by visiting mine at\n  /wander/.  To set up your\n  own, follow these instructions from the README:\n  Install.  It\n  just involves copying two files to your web server.  It is as simple\n  as that."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "0f3b2961285616ca",
+      "title": "Reprojecting Dual Fisheye Videos to Equirectangular (LG 360)",
+      "titleZh": "将双鱼眼视频重投影为等矩形格式（LG 360 相机）",
+      "link": "https://shkspr.mobi/blog/2026/04/reprojecting-dual-fisheye-videos-to-equirectangular-lg-360/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-04-19T11:34:32.000Z",
+      "category": "tools",
+      "keywords": ["ffmpeg", "dual fisheye", "equirectangular", "360 video"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "针对 LG 360 相机拍摄的双鱼眼格式 MP4 视频，文章提供了使用 ffmpeg 转换为等矩形格式的完整命令：`ffmpeg -i original.mp4 -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" output.mp4`。转换后可被 VLC 和 YouTube 正确识别为球形视频。",
+      "summaryEn": "This technical guide provides a complete ffmpeg command to convert dual-fisheye videos from obsolete LG 360 cameras into equirectangular format: `ffmpeg -i original.mp4 -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" output.mp4`. The conversion enables proper playback in spherical mode on platforms like VLC and YouTube.",
+      "reason": "拥有老款 LG 360 相机的用户可以通过这个简单命令恢复珍贵的 360 度视频内容。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I still use my obsolete LG 360 Camera. When copying MP4 videos from its SD card, they come out in \"Dual Fisheye\" format - which looks like this:"
+          },
+          {
+            "type": "p",
+            "text": "VLC and YouTube will only play \"Equirectangular\" videos in spherical mode. So, how to convert a dual fisheye to equirectangualr?"
+          },
+          {
+            "type": "h2",
+            "text": "The Simple Way"
+          },
+          {
+            "type": "code",
+            "text": "ffmpeg \\\n  -i original.mp4 \\\n  -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" \\\n  360.mp4"
+          },
+          {
+            "type": "p",
+            "text": "However, this has some \"quirks\"."
+          },
+          {
+            "type": "p",
+            "text": "The first part of the video filter is v360=input=dfisheye:output=equirect - that just says to use the 360 filter on an input which is dual fisheye and then output in equirectangular."
+          },
+          {
+            "type": "p",
+            "text": "The next part is :ih_fov=189:iv_fov=189 which says that the input video has a horizontal and vertical field of view of 189°. That's a weird number, right?"
+          },
+          {
+            "type": "p",
+            "text": "You'd kind of expect each lens to be 180°, right? Here's what happens if :ih_fov=180:iv_fov=180 is used:"
+          },
+          {
+            "type": "p",
+            "text": "The lenses overlaps a little bit. So using 180° means that certain portions are duplicated."
+          },
+          {
+            "type": "p",
+            "text": "I think the lenses technically offer 200°, but the physical casing prevents all of that from being viewed. I got to the value of 189° by trial and error. Mostly error! Using :ih_fov=189:iv_fov=189 get this image which has less overlap:"
+          },
+          {
+            "type": "p",
+            "text": "It isn't perfect - but it preserves most of the image coherence."
+          },
+          {
+            "type": "h2",
+            "text": "Cut Off Images"
+          },
+          {
+            "type": "p",
+            "text": "There's another thing worth noticing - the top, right, bottom, and left \"corners\" of the circle are cut off. If the image sensor captured everything, the resultant fisheye would look something like this:"
+          },
+          {
+            "type": "p",
+            "text": "I tried repaging the video to include the gaps, but it didn't make any noticeable difference."
+          },
+          {
+            "type": "h2",
+            "text": "Making Equirectangular Videos Work With VLC"
+          },
+          {
+            "type": "p",
+            "text": "Sadly, ffmpeg will not write the metadata necessary to let playback devices know the video is spherical. Instead, according to Bino3D, you have to use exiftool like so:"
+          },
+          {
+            "type": "code",
+            "text": "exiftool \\\n        -XMP-GSpherical:Spherical=\"true\" \\\n        -XMP-GSpherical:Stitched=\"true\" \\\n        -XMP-GSpherical:ProjectionType=\"equirectangular\" \\\n        video.mp4"
+          },
+          {
+            "type": "h2",
+            "text": "Putting It All Together"
+          },
+          {
+            "type": "p",
+            "text": "The LG 360 records audio in 5.1 surround using AAC. That's already fairly well compressed, so there's no point squashing it down to Opus."
+          },
+          {
+            "type": "p",
+            "text": "The default video codec is h264, but the picture is going to be reprojected, so quality is always going to take a bit of a hit. Pick whichever code you like to give the best balance of quality, file size, and encoding time."
+          },
+          {
+            "type": "p",
+            "text": "Run:"
+          },
+          {
+            "type": "code",
+            "text": "ffmpeg \\\n  -i original.mp4 \\\n  -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" \\\n  -c:v libx265 -preset fast -crf 28 -c:a copy \\\n  out.mp4; exiftool \\\n        -XMP-GSpherical:Spherical=\"true\" \\\n        -XMP-GSpherical:Stitched=\"true\" \\\n        -XMP-GSpherical:ProjectionType=\"equirectangular\" \\\n        out.mp4"
+          },
+          {
+            "type": "p",
+            "text": "That will produce a reasonable equirectangular file suitable for viewing in VLC or in VR."
+          },
+          {
+            "type": "p",
+            "text": "If this has been useful to you, please stick a comment in the box!"
+          }
+        ],
+        "translations": [
+          "我仍然在使用那台过时的 LG 360 相机。当从它的 SD 卡复制 MP4 视频时，它们会以“双鱼眼”格式输出——看起来就是这样：",
+          "VLC 和 YouTube 只能在球形模式下播放“等距柱状投影”视频。那么，如何将双鱼眼转换为等距柱状投影呢？",
+          "简单方法",
+          "ffmpeg \\\n  -i original.mp4 \\\n  -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" \\\n  360.mp4",
+          "不过这种方法有些“怪癖”。",
+          "视频滤镜的第一部分是 v360=input=dfisheye:output=equirect——这表示对输入为双鱼眼的视频应用 360 滤镜，然后输出为等距柱状投影格式。",
+          "下一部分是 :ih_fov=189:iv_fov=189，表示输入视频的水平和垂直视场角均为 189°。这个数值听起来很奇怪，对吧？",
+          "你可能会觉得每个镜头应该是 180°，对吧？如果使用 :ih_fov=180:iv_fov=180 会发生什么？",
+          "这时两个镜头会有轻微重叠。因此使用 180° 会导致某些区域被重复渲染。",
+          "我认为从技术上讲，这两个镜头可以提供 200° 的视野，但物理外壳限制了全部视角的呈现。我通过反复试验才得出 189° 这个值——主要是试错！使用 :ih_fov=189:iv_fov=189 可以得到图像重叠更少的画面：",
+          "虽然不完美，但它能较好地保持图像的连贯性。",
+          "裁剪掉的图像部分",
+          "还有另一件值得注意的事——圆形画面的顶部、右侧、底部和左侧“角落”都被裁掉了。如果图像传感器能捕捉到全部内容，鱼眼效果应该看起来像这样：",
+          "我曾尝试在视频中补入这些缺失的部分，但结果并没有明显改善。",
+          "让等距柱状投影视频在 VLC 中正常播放",
+          "遗憾的是，ffmpeg 不会写入必要的元数据来告知播放设备该视频是球面格式的。根据 Bino3D 的说法，你必须改用 exiftool 执行以下操作：",
+          "exiftool \\\n        -XMP-GSpherical:Spherical=\"true\" \\\n        -XMP-GSpherical:Stitched=\"true\" \\\n        -XMP-GSpherical:ProjectionType=\"equirectangular\" \\\n        video.mp4",
+          "整合所有步骤",
+          "LG 360 使用 AAC 编码录制 5.1 环绕声音频。这种格式本身已经相当压缩，因此没有必要再将其压缩为 Opus 格式。",
+          "默认的视频编码器是 h264，但由于视频会被重新投影，画质总会有一定损失。选择你最熟悉的编码器，以获得画质、文件大小和编码速度之间的最佳平衡。",
+          "运行：",
+          "ffmpeg \\\n  -i original.mp4 \\\n  -vf \"v360=input=dfisheye:output=equirect:ih_fov=189:iv_fov=189\" \\\n  -c:v libx265 -preset fast -crf 28 -c:a copy \\\n  out.mp4; exiftool \\\n        -XMP-GSpherical:Spherical=\"true\" \\\n        -XMP-GSpherical:Stitched=\"true\" \\\n        -XMP-GSpherical:ProjectionType=\"equirectangular\" \\\n        out.mp4",
+          "这将生成一个适合在 VLC 或 VR 中观看的合理质量的等距柱状投影文件。",
+          "如果这对你有帮助，请在下方留言！"
+        ]
+      }
+    },
+    {
+      "slug": "045b37cac0cda3a7",
+      "title": "What is freedom?",
+      "titleZh": "什么是自由？—— ChatGPT 眼中的政治自由 vs 实际自由",
+      "link": "https://geohot.github.io//blog/jekyll/update/2026/04/20/what-is-freedom.html",
+      "sourceName": "geohot.github.io",
+      "sourceUrl": "https://geohot.github.io",
+      "pubDate": "2026-04-19T16:00:00.000Z",
+      "category": "opinion",
+      "keywords": ["freedom", "ChatGPT", "AI bias", "geopolitics"],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "ChatGPT 在讨论中美自由差异时，过度聚焦政治抗议和异议表达，而忽略了安全、选择性和便利性等实际自由维度。作者指出，真正的自由应包含生活质量的多个方面，而非仅限于政治权利。这种认知偏差揭示了 AI 模型在价值观理解上的局限性。",
+      "summaryEn": "ChatGPT's analysis of freedom between the US and Hong Kong overemphasizes political dissent while neglecting practical aspects like safety, optionality, and convenience. The author argues that true freedom encompasses quality-of-life dimensions beyond mere political rights, highlighting limitations in how AI models understand complex value systems.",
+      "reason": "思考 AI 如何理解抽象概念如‘自由’，对评估其伦理判断能力具有重要意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "the singularity is nearer",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I had a conversation today with ChatGPT about freedom in the US vs Hong Kong. It said all these things about how Hong Kong was unfree, citing all these US expert organizations. But when we really got down to it, it had a rather strange definition of freedom. It kept talking about politics, dissent, and protest, not about things like safety, optionality, and convenience."
+          },
+          {
+            "type": "p",
+            "text": "I am not interested in politics, dissent, or protest. My life doesn’t have anything to do with that. The amount of effort expended on this stuff in America is insane with nothing to show for it. It’s all kayfabe."
+          },
+          {
+            "type": "p",
+            "text": "To be honest, I don’t know why I post crap like this. It’s not going to change anything. When we all saw DOGE make 0 impact on the budget, that was the cue to give up hope that anything can ever change through this route."
+          },
+          {
+            "type": "p",
+            "text": "The blog is not real politics. Americans don’t have real politics as an option, you have clowns in a clown show as the frontmen of a largely secret government you don’t see. Not because there’s a grand conspiracy, you can go read the 2,000 page bills they shove through congress, but you don’t. You stay distracted by the clowns who clearly didn’t write the bill."
+          },
+          {
+            "type": "p",
+            "text": "The blog is not real dissent. It’s unclear what real dissent would even mean? Are you voting for the other guy? That is not dissent. Like dissent would require an organization outside the state capable of taking over. Not only does this not exist, it’s hard to even conceive of it being built. I mean, I guess I could think of one organization that could do it, but I don’t see them wanting to. They are busy running a different state."
+          },
+          {
+            "type": "p",
+            "text": "And protest? That’s the most laughable of the three. Do Black Lives Matter more now? Did that protest work? How about Occupy Wall Street? How is the 99% doing? Oh, income inequality is at an all time high? Hmm guess that didn’t work either. But did you feel like you made a difference?"
+          },
+          {
+            "type": "p",
+            "text": "I’ll tell you what real freedom is, and it’s not any of the things above."
+          },
+          {
+            "type": "p",
+            "text": "You own a car in the 1960s and you press the starter, and it goes whirr-whirr-whirr and doesn’t start. You have a decent chance of fixing it. You pop open the hood and see a cut tube. You smell the tube. Fuel. Well shit if the boom stuff doesn’t flow in boom machine, no boom. You take out a roll of duct tape and tape the hose back together. Car starts. You drive down to your local auto shop and buy some new tube."
+          },
+          {
+            "type": "p",
+            "text": "You own a car in 2026 and you press the starter. The car beeps and flashes the check engine light. You pop open the hood. You don’t see anything. You order an OBD-II scanner off Amazon to read the check engine code. A day later, you plug it in and read the code. It says “Fuel Injector 2 Open Circuit.” You open the hood again and remove the cover on the engine. You don’t know where fuel injector 2 is."
+          },
+          {
+            "type": "p",
+            "text": "You buy the service manual PDF on your phone, and it shows you three parts you have to remove to get to the fuel injector. You remove them, disconnect the wire, and measure the circuit. Low resistance. You swap fuel injector 1 with fuel injector 2, reassemble, and try to start the car again. Nothing. You reread the code, “Fuel Injector 2 Open Circuit.” Okay, it has to be the ECU unit that drives the fuel injectors."
+          },
+          {
+            "type": "p",
+            "text": "You purchase a new ECU on eBay and it shows up 5 days later. You swap it out. Now the car has a ton of lights on the dashboard. You read the manual. Apparently all the ECUs use CAN encryption now, and your new ECU isn’t programmed with the correct key. But no worries, thanks to right to repair laws, you can buy the software to program the key. $109 later and…oh, I need a Denso OBD-II dongle to use this, I can’t connect through the OBD-II dongle I already have."
+          },
+          {
+            "type": "p",
+            "text": "You can rent a Denso OBD-II dongle through the website. You do this and 8 days later it arrives. You try to reprogram the key but it needs an Internet connection to access the key for your car and your car is out of range of Wi-Fi. You don’t have a hotspot on your phone because that’s an extra $8 a month from AT&T, even though that hotspot software is literally on your phone! You pay AT&T the $8. You pair the ECU and all the lights go away. You try to start the car, check engine light is back with “Fuel Injector 2 Open Circuit” You don’t understand, it’s literally either the injector or the ECU! That’s the ECU that generates the fault! You tested the wires too! Why doesn’t this work!"
+          },
+          {
+            "type": "p",
+            "text": "You give up. You bring it in to the dealership. 5 weeks later you get the car back, saying that they updated the firmware on the Gateway Module. You read the errata on the service portal and see a new firmware update for the Gateway Module was pushed last week, correcting a bug where the software can send a spurious CAN packet to the ECU causing it to misreport a “Fuel Injector 2 Open Circuit” and causing the car to not start due to that fault."
+          },
+          {
+            "type": "p",
+            "text": "The problem with the 2026 car wasn’t even fixable by anyone in the USA. After going through the dealership, Toyota USA, Toyota Japan, and Denso, the firmware update that fixed your car needed to be signed by Fujitsu in Japan."
+          },
+          {
+            "type": "p",
+            "text": "Do you see what they took from us? As we hand more and more over to machines with billions of lines of invisible code running in datacenters thousands of miles away, every day it gets worse."
+          },
+          {
+            "type": "p",
+            "text": "Freedom is living in a world ordinary people can still act upon."
+          }
+        ],
+        "translations": [
+          "我今天和 ChatGPT 聊了聊美国与香港的自由问题。它列举了一大堆美国专家机构的研究，说香港毫无自由可言。但当我们深入探讨时，却发现它对“自由”的定义相当奇怪——它只谈政治、异议和抗议，却对安全、选择权和便利性这些方面避而不谈。",
+          "我对政治、异议或抗议毫无兴趣。我的生活跟这些毫无关系。在美国，人们在这上面投入的精力简直疯狂，结果却一无所获。这一切不过是精心编排的表演罢了。",
+          "说真的，我也不知道自己为什么要发这些内容。反正也改变不了什么。当我们都看到 DOGE 对预算毫无影响时，就该明白：这条路根本走不通，指望通过它实现任何改变，早该放弃了。",
+          "这篇博客谈的不是真正的政治。在美国，你根本没有真正的政治选项。台前是些小丑，他们表演着一场由秘密政府主导的闹剧，而你看不到幕后真相。这并非因为存在什么惊天阴谋——你可以去读那些国会强行通过的、长达两千页的法案，只是没人会去读。大家被这些明显没读过法案的小丑分散了注意力。",
+          "这篇博客也不是真正的异议。到底什么是真正的异议？难道是投票给另一个候选人？那根本不叫异议。真正的异议需要有一个能取代政府的组织存在。可这样的组织不仅不存在，甚至都难以想象该如何建立。当然，我或许能想到一个可能做到的组织，但我也不觉得他们会愿意这么做——他们正忙着运营另一个国家呢。",
+          "至于抗议？这三个选项里最可笑的就是它。BLM（黑人的命也是命）现在是不是更火了？那次抗议有用吗？再看看占领华尔街运动，那个“99%”群体如今怎么样了？哦，收入不平等反而创了新高？看来也没用。但你有没有感觉自己的行动产生了哪怕一点影响？",
+          "我现在告诉你，什么是真正的自由——它不是上面提到的任何一种。",
+          "你在1960年代拥有一辆车，按下启动键，引擎发出“嗡嗡嗡”的声音却打不着火。你有很大机会修好它。你掀开发动机盖，发现一根管子断了。你闻了闻，是燃油味。糟糕，如果供油管路断了，发动机自然无法启动。于是你拿出一卷胶带，把破掉的油管重新缠好。车子终于发动了。然后你开车去附近的汽修店，买根新管子换上。",
+          "你在2026年也有一辆车，按下启动键，车子“哔”地响了一声，仪表盘上的故障灯也亮了。你掀开发动机盖，却看不到任何异常。你从亚马逊订购了一个OBD-II诊断仪，用来读取故障码。第二天到货后，你插上设备，屏幕上显示：“喷油嘴2开路”。你再次打开引擎盖，试图找到喷油嘴2的位置，却完全不知道该从哪里下手。",
+          "你在手机上买了维修手册的PDF版，按照图示拆下了三个零件，才终于够到喷油嘴。你断开电线，测量电路，发现电阻很低。于是你把喷油嘴1和喷油嘴2互换位置，重新组装，再次尝试启动——还是不行。你重新读取故障码，依然是“喷油嘴2开路”。看来问题一定出在控制喷油嘴的电子控制单元（ECU）上。",
+          "你在eBay上买了一块新的ECU，五天后到货。你把它换上去，结果仪表盘上瞬间亮起了无数故障灯。你翻看说明书才发现，现在的所有ECU都启用了CAN加密，而你的新ECU没有正确的密钥。不过别担心，多亏了“维修权”法律，你可以花钱买软件来编程这个密钥。花了109美元后……哦，原来还得配一个Denso的OBD-II适配器才能用，你现有的那个根本不行。",
+          "于是你通过官网租了一个Denso OBD-II适配器，八天后终于收到。你尝试重新编程密钥，却发现它需要联网才能获取你车辆的密钥——可你的车根本不在Wi-Fi覆盖范围内。你手机里明明就有热点功能，但AT&T每月还要额外收你8美元！你只好乖乖付钱开通。配对成功后，那些恼人的灯总算熄了。你启动车子，刚松手刹，发动机故障灯又亮了，显示“喷油器2开路”。你简直要疯了：这问题要么是喷油器本身，要么就是ECU！可现在报错的偏偏就是这个你刚换上的ECU！线束你也测过没问题啊，为什么还是不灵？",
+          "你彻底放弃了。把车开到4S店。五周后，他们通知你修好了，说是给网关模块刷了新固件。你查服务门户的更新说明，发现上周确实推送了一个新的网关固件版本，专门修复了一个BUG：旧版软件会误发虚假的CAN报文给ECU，导致它错误报告“喷油器2开路”，进而让车无法启动。",
+          "更离谱的是，这台2026年的车的问题，在美国根本没人能单独搞定。你先后联系4S店、丰田美国、丰田日本，甚至Denso，最后发现必须由日本富士通那边签发固件更新才能彻底解决。",
+          "你看懂了吗？我们把越来越多的控制权交给了机器——而这些机器背后运行着数不清的代码，藏在千里之外的服务器里，情况只会越来越糟。",
+          "自由，就是普通人依然能有所作为的世界。"
+        ]
+      }
+    },
+    {
+      "slug": "18717a1bfbb22480",
+      "title": "Hook It Up to the Machine",
+      "titleZh": "连接机器：早期车载电脑故障回忆",
+      "link": "https://blog.jim-nielsen.com/2026/hook-it-up-to-the-machine/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-04-19T19:00:00.000Z",
+      "category": "other",
+      "keywords": ["road trip", "family van", "nostalgia", "Glacier National Park"],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 3,
+        "total": 11
+      },
+      "summary": "作者回忆 2000 年代初家庭旅行中道奇凯领面包车频繁过热的问题，特别是在低于 40MPH 速度时温度表进入危险区域。这段经历反映了早期车载电子系统在可靠性方面的不足，以及现代汽车诊断技术的发展历程。",
+      "summaryEn": "The author recounts a family road trip in a 2000s Dodge Caravan that frequently overheated below 40MPH, with temperature gauges entering unsafe zones. This anecdote illustrates early automotive electronics reliability issues and serves as a nostalgic reflection on the evolution of vehicle diagnostics.",
+      "reason": "对于关注汽车技术史或物联网发展的读者，这是一个有趣的个人技术史片段。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jim Nielsen",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In the early 2000’s, my parents took us on a road trip to Glacier National Park in Montana."
+          },
+          {
+            "type": "p",
+            "text": "We made the journey in our new (used) family van: a green Dodge Caravan whose reputation was soon to become “a lemon”."
+          },
+          {
+            "type": "p",
+            "text": "I was a teenager and didn’t pay a lot of attention to the details of what was happening around me, but I do remember how the van kept overheating. It ran fine on the interstate, but anything under 40MPH had the car’s temperature gauge rising into unsafe zones."
+          },
+          {
+            "type": "p",
+            "text": "I remember stopping in some small town in Montana to get it checked out by a mechanic. He checked it out, took it for a test drive, etc., and told my Dad the reason the car was overheating was because the idling fan wasn’t turning on. At higher speeds, like on the interstate, that was fine because there was enough airflow to keep the engine cool but at lower speeds the car would overheat. The mechanic said he didn’t know why the fan wasn’t turning on. There was nothing wrong mechanically from what he could see. But he couldn't fix it. He told my Dad that this was one of those increasingly common “computerized” cars that you have to hook up to another computer to diagnose the source of the issue. And he didn’t have one of those computers."
+          },
+          {
+            "type": "p",
+            "text": "So we continued on our way. The rest of the trip required my Dad taking “the long way around”, like back roads where he could keep up his speed in order to avoid the car overheating. It was all very amusing to us as kids, almost thrilling because Dad had a legitimate excuse to drive fast (suffice it to say, Mom did not like this)."
+          },
+          {
+            "type": "p",
+            "text": "Once the trip was over and we returned home, my Dad was able to get the car in to a dealer where they hooked up the car’s computer to another computer to diagnose and fix the issue. I don’t really remember the specifics, but the issue was seemingly some failed digital sensor that prevented the idling fan from turning on. Once the sensor was replaced, things worked again."
+          },
+          {
+            "type": "p",
+            "text": "Computers talking to computers."
+          },
+          {
+            "type": "p",
+            "text": "Growing up in an era that shifted so many things from analog to digital, mechanical to electronic, I’ve thought about this trip a lot."
+          },
+          {
+            "type": "p",
+            "text": "And I’m thinking about it again in this new era of building software with LLMs."
+          },
+          {
+            "type": "p",
+            "text": "I think about that mechanic. This guy who grew up around mechanical cars that could be physically inspected, diagnosed, and repaired. So much of his experience and knowledge unusable in the face of a computerized car."
+          },
+          {
+            "type": "p",
+            "text": "You can tell when a mechanical switch has failed with your eyes, but not a digital one. You need a computer to help you understand the computer."
+          },
+          {
+            "type": "p",
+            "text": "Will this be my future?"
+          },
+          {
+            "type": "p",
+            "text": "If a codebase was made with the assistance of an LLM, will its complexity and bugs only be inspectable, understandable, diagnosable, and fixable with an LLM?"
+          },
+          {
+            "type": "p",
+            "text": "“Hey, can you help me, there’s a problem with my codebase?”"
+          },
+          {
+            "type": "p",
+            "text": "“Ok, I can confirm the issue, but I can’t fix it without hooking your codebase up to an LLM.”"
+          }
+        ],
+        "translations": [
+          "21世纪初，父母带我们一家去蒙大拿州的冰川国家公园自驾游。",
+          "我们乘坐的是家里新买的（二手）厢式货车——一辆绿色的道奇 caravan，很快它就成了“柠檬车”的代名词。",
+          "当时我还是个青少年，对周围发生的事情并不太留意细节，但至今仍记得那辆车总是过热。在高速公路上行驶时一切正常，但只要车速低于每小时40英里，水温表就会飙升到危险区域。",
+          "我记得在蒙大拿州的一个小镇停下来找修理工检查。他检查了一番，还试驾了一下，然后告诉我父亲，车子之所以过热是因为怠速风扇不转。在高速行驶时没问题，因为空气流动足够冷却发动机；但在低速时就会过热。修理工说他不明白为什么风扇不工作，从机械结构上看没有任何问题，但他也束手无策。他告诉父亲，这类越来越常见的“电脑化”汽车必须连接另一台电脑才能诊断故障原因，而他没有那种设备。",
+          "于是我们继续上路。剩下的旅程中，父亲只能绕远路走乡间小路，以便保持较高车速，避免车子过热。对我们这些孩子来说，这简直像一场冒险，因为父亲终于有了开快车的正当理由（不用说，母亲对此很不高兴）。",
+          "旅行结束后回到家，父亲把车送到经销商那里，他们用电脑连接车辆系统来诊断并修复了问题。具体细节我已经记不清了，但问题是某个数字传感器失效，导致怠速风扇无法启动。更换传感器后，一切恢复正常。",
+          "计算机与计算机对话。",
+          "成长于从模拟转向数字、机械转向电子的时代，我时常想起这次旅行。",
+          "如今在新一波用大型语言模型（LLM）开发软件的时代，我又一次想起了这段往事。",
+          "我不禁想到那位修理工。他是在机械汽车环境中长大的，习惯通过目视检查、诊断和修理来解决问题。面对这种电脑化的汽车，他过去积累的经验和知识几乎完全派不上用场。",
+          "你可以用眼睛看出机械开关是否坏了，却看不透数字组件的问题。你需要一台电脑来理解另一台电脑。",
+          "这会成为我的未来吗？",
+          "如果一段代码是由 LLM 协助编写的，它的复杂性和 bug 是否只能通过 LLM 才能被检查、理解、诊断和修复？",
+          "“嘿，能帮我看看我的代码库出问题了？”",
+          "“好的，我可以确认问题存在，但要修复它，你得把代码库连到 LLM 上。”"
+        ]
+      }
+    },
+    {
+      "slug": "4e77a4f7621ad61a",
+      "title": "Hitachi Ltd, Part II",
+      "titleZh": "日立公司简史（第二部分）：H8、PA-RISC 和 SuperH 架构",
+      "link": "https://www.abortretry.fail/p/hitachi-ltd-part-ii",
+      "sourceName": "abortretry.fail",
+      "sourceUrl": "https://abortretry.fail",
+      "pubDate": "2026-04-19T20:36:46.000Z",
+      "category": "engineering",
+      "keywords": ["Hitachi", "H8", "PA-RISC", "SuperH"],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 2,
+        "total": 11
+      },
+      "summary": "本文继续探讨日立公司在计算机处理器领域的贡献，重点介绍 H8 微控制器系列、PA-RISC 高性能 RISC 架构以及 SuperH 精简指令集处理器。这些技术展现了日本企业在半导体和嵌入式系统领域的重要创新。",
+      "summaryEn": "This installment examines Hitachi's contributions to computing processors, focusing on the H8 microcontroller series, PA-RISC high-performance RISC architecture, and SuperH reduced instruction set processors. These technologies highlight significant innovations by Japanese companies in semiconductors and embedded systems.",
+      "reason": "对计算机硬件历史感兴趣的读者会发现这些鲜为人知的处理器架构很有趣。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Bradford Morgan White",
+        "siteName": "Abort Retry Fail",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Abort Retry Fail"
+          },
+          {
+            "type": "h3",
+            "text": "H8, PA-RISC, and SuperH"
+          },
+          {
+            "type": "p",
+            "text": "Apr 19, 2026"
+          },
+          {
+            "type": "p",
+            "text": "∙ Paid"
+          },
+          {
+            "type": "h2",
+            "text": "This post is for paid subscribers"
+          },
+          {
+            "type": "p",
+            "text": "Already a paid subscriber? Sign in"
+          },
+          {
+            "type": "p",
+            "text": "© 2026 Abort Retry Fail LLC · Privacy ∙ Terms ∙ Collection notice"
+          },
+          {
+            "type": "p",
+            "text": "Get the app"
+          },
+          {
+            "type": "p",
+            "text": "Substack is the home for great culture"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1c091f2cdd5605b6",
+      "title": "Jessica Chastain Says Apple TV Will Finally Release ‘The Savant’",
+      "titleZh": "杰西卡·查斯坦确认 Apple TV+ 将上映《天才》",
+      "link": "https://variety.com/2026/tv/columns/jessica-chastain-apple-tv-finally-release-the-savant-after-postponement-charlie-kirk-assassination-1236725384/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-19T18:51:43.000Z",
+      "category": "other",
+      "keywords": ["Apple TV", "Jessica Chastain", "The Savant", "TV series"],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 4,
+        "total": 9
+      },
+      "summary": "杰西卡·查斯坦在突破奖典礼上独家透露，Apple TV+ 已确定将于 7 月上映她的政治惊悚剧《天才》（The Savant）。此前该剧因查理·基尔克遇刺事件多次延期，现在终于有了明确上映时间。",
+      "summaryEn": "Jessica Chastain confirmed at the Breakthrough Prize ceremony that Apple TV+ will finally release her political thriller series 'The Savant' in July. After multiple delays due to the Charlie Kirk assassination storyline, the show now has a definitive release date.",
+      "reason": "如果你是这部剧的粉丝或关注政治惊悚类型剧集，这条消息值得留意。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Marc Malkin",
+        "siteName": "Variety",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Jessica Chastain says Apple TV is finally going to release her political thriller series “The Savant.”"
+          },
+          {
+            "type": "p",
+            "text": "It was supposed to premiere in September 2025 but was postponed following the assassination of Charlie Kirk. The Oscar winner stars in the series as an investigator who goes undercover on the dark web to try to find hate groups and prevent domestic terrorism."
+          },
+          {
+            "type": "p",
+            "text": "“Before it was like, ‘I don’t know if we’re going to see it,’ but now I can say, ‘We’re going to see it,” Chastain told me exclusively on Saturday at the Breakthrough Prize ceremony in Santa Monica."
+          },
+          {
+            "type": "p",
+            "text": "As for when, sources tell me that Apple is planning for a July release."
+          },
+          {
+            "type": "quote",
+            "text": "EXCLUSIVE: Jessica Chastain tells me that Apple TV will finally release her political thriller series \"The Savant\" after it was postponed in September following the assassination of Charlie Kirk. Sources now tell it will likely premiere in July.I spoke with Jessica at tonight's… pic.twitter.com/dJYbWaU3iD— Marc Malkin (@marcmalkin) April 19, 2026"
+          },
+          {
+            "type": "p",
+            "text": "When Apple TV announced the postponement on Sept. 23, it said in a statement, “After careful consideration, we have made the decision to postpone ‘The Savant.’ We appreciate your understanding and look forward to releasing the series at a future date.”"
+          },
+          {
+            "type": "p",
+            "text": "A day later, Chastain, who also serves as an executive producer on “The Savant,” said in her own statement posted on Instagram that she disagreed with Apple’s decision. “I’ve never shied away from difficult subjects, and while I wish this show wasn’t so relevant, unfortunately it is,” she wrote, in part. “‘The Savant’ is about the heroes who work every day to stop violence before it happens, and honoring their courage feels more urgent than ever. While I respect Apple’s decision to pause the release for now, I remain hopeful the show will reach audiences soon. Until then, I’m wishing safety and strength for everyone, and I’ll let you know if and when ‘The Savant’ is released.”"
+          },
+          {
+            "type": "p",
+            "text": "The cast of the show also includes Nnamdi Asomugha, Pablo Schreiber, James Badge Dale, Cole Doman, Michael Mosley, Dagmara Domińcczyk, Jordana Spiro, Trinity Lee Shirley, Toussaint Francois Battiste, Hannah Gross and David Wilson Barnes."
+          }
+        ],
+        "translations": [
+          "杰西卡·查斯坦表示，Apple TV 终于要推出她的政治惊悚剧《救世主》了。",
+          "该剧原定于2025年9月首播，但因查理·柯克遇刺事件被推迟。这位奥斯卡得主在片中饰演一名卧底调查员，潜入暗网追查仇恨团体，试图阻止国内恐怖主义活动。",
+          "“以前我总说‘不知道我们还能不能看到这部剧’，但现在我可以明确告诉你：‘我们一定会看到它。’”查斯坦在圣莫尼卡举行的突破奖颁奖典礼上独家向我透露。",
+          "至于具体时间，消息来源称苹果计划安排在7月发布。",
+          "独家报道：杰西卡·查斯坦告诉我，Apple TV 将在推迟后于7月最终发布她的政治惊悚剧《救世主》。此前该剧因查理·柯克遇刺事件从9月延期。我今晚在……与杰西卡进行了交谈。pic.twitter.com/dJYbWaU3iD— Marc Malkin (@marcmalkin) 2026年4月19日",
+          "Apple TV 在9月23日宣布延期时发表声明称：“经过慎重考虑，我们决定推迟《救世主》的播出。感谢您的理解，期待未来能向观众呈现这部剧集。”",
+          "一天后，作为《救世主》执行制片人的查斯坦在Instagram发布的声明中表示不认同苹果的决定。“我从不回避敏感议题，虽然我希望这部剧不再如此切题，但现实确实如此，”她写道，“《救世主》讲述的是那些每天奋不顾身阻止暴力发生的人，致敬他们的勇气比以往任何时候都更加迫切。尽管尊重苹果暂时暂停发布的决定，但我仍希望剧集能尽快与观众见面。在此期间，我祝愿所有人平安坚强，并会在《救世主》确定发布时间后第一时间告知大家。”",
+          "该剧演员阵容还包括尼姆迪·阿索马加、帕布罗·施雷伯、詹姆斯·贝吉·戴尔、科尔·道曼、迈克尔·莫斯利、达格玛拉·多敏齐克、乔丹娜·斯皮罗、崔西·李·雪莉、图桑·弗朗索瓦·巴蒂斯泰、汉娜·格鲁丝和大卫·威尔逊·巴恩斯。"
+        ]
+      }
+    }
+  ]
+}

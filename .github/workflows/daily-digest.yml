@@ -49,6 +49,9 @@ jobs:
           OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_URL: ${{ secrets.GEMINI_API_URL }}
+          GEMINI_API_BASE: ${{ secrets.GEMINI_API_BASE }}
+          GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
         run: |
           if [ -z "$OPENAI_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
             echo "Set repository secret OPENAI_API_KEY and/or GEMINI_API_KEY" >&2
