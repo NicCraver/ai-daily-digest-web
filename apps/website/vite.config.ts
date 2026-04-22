@@ -8,8 +8,9 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-// website/vite.config.ts → website → apps → monorepo root → data
-const DATA_DIR = resolve(__dirname, "../../data");
+const REPO_ROOT = resolve(__dirname, "../..");
+// website → apps → monorepo root → data
+const DATA_DIR = resolve(REPO_ROOT, "data");
 const WEEKLY_DIR = resolve(DATA_DIR, "weekly");
 
 async function listDigestDates(): Promise<string[]> {
@@ -67,6 +68,11 @@ async function listWeekIds(): Promise<string[]> {
 }
 
 export default defineConfig({
+  // 构建到 monorepo 根 dist/，供 Cloudflare Pages 等以仓库根为 cwd 的部署使用
+  build: {
+    outDir: resolve(REPO_ROOT, "dist"),
+    emptyOutDir: true,
+  },
   plugins: [
     codeInspectorPlugin({
       bundler: "vite",

@@ -124,7 +124,7 @@ data/index.json         （日期索引）
 data/digest-YYYYMMDD.md （备份 markdown）
 ```
 
-构建产物在 `apps/website/dist/`，每个日期一个 HTML。
+构建产物在仓库根目录 `dist/`（由 `apps/website` 的 Vite 配置输出），每个日期一个 HTML。
 
 ---
 
@@ -193,7 +193,7 @@ data/digest-YYYYMMDD.md （备份 markdown）
 2. 选中本仓库，构建设置建议：
    - **Root directory**：仓库根（`.`）
    - **Build command**：`bun install && bun run build`
-   - **Build output directory**：`apps/website/dist`
+   - **Build output directory**：`dist`
 3. 生产分支选 `main`（或你的默认分支）。环境变量在 Pages 里一般**不必**放 AI Key（key 只用在 GitHub Actions）。
 
 4. **Bun 版本**（可选）：Cloudflare Pages 新版构建镜像已预装 Bun。若与本地不一致，可在 Pages 项目 **Environment variables** 中设置 `BUN_VERSION=1.3.13`，与 `packageManager` 对齐。
