@@ -1048,6 +1048,8 @@ ${langInstruction}
 
 ${articlesList}
 
+【顺序与对应 — 必须遵守】本批共 ${articles.length} 篇。返回的 \`results\` 数组必须恰好 ${articles.length} 条，且**从上到下的顺序与上面文章列表完全一致**：\`results[0]\` 只概括列表中的第 1 篇（Index ${articles[0]?.index ?? 0}），\`results[1]\` 只概括第 2 篇，以此类推。每条里的 \`index\` 数字必须等于该条所概括那篇的 Index。**禁止**把一篇的标题翻译或摘要写到另一篇上（例如不能把「CLI 工具」类摘要套到定价/Claude 类标题上）。
+
 请严格按 JSON 格式返回${needSummaryEn ? "（其中 summary 为中文、summaryEn 为对应英文，二者缺一不可）" : "（各字段为英文；无需单独 summaryEn，程序会将 summary 作为英文稿）"}：
 {
   "results": [
@@ -1097,16 +1099,39 @@ async function summarizeArticles(
         const parsed = parseJsonResponse<GeminiSummaryResult>(responseText);
 
         if (parsed.results && Array.isArray(parsed.results)) {
-          for (const result of parsed.results) {
+          const results = parsed.results;
+          const apply = (
+            item: (typeof batch)[number],
+            result: GeminiSummaryResult["results"][number],
+          ) => {
             const summary = result.summary || "";
             const se = result.summaryEn?.trim() || "";
             const summaryEn = lang === "en" ? (se || summary) : se;
-            summaries.set(result.index, {
+            summaries.set(item.index, {
               titleZh: result.titleZh || "",
               summary,
               summaryEn,
               reason: result.reason || "",
             });
+          };
+          // Prefer positional alignment: models often return wrong `index` but preserve order.
+          if (results.length === batch.length) {
+            for (let j = 0; j < batch.length; j++) apply(batch[j], results[j]);
+          } else {
+            console.warn(
+              `[digest] Summary batch length mismatch (${results.length} vs ${batch.length}), falling back to index field`,
+            );
+            for (const result of results) {
+              const summary = result.summary || "";
+              const se = result.summaryEn?.trim() || "";
+              const summaryEn = lang === "en" ? (se || summary) : se;
+              summaries.set(result.index, {
+                titleZh: result.titleZh || "",
+                summary,
+                summaryEn,
+                reason: result.reason || "",
+              });
+            }
           }
         }
       } catch (error) {
