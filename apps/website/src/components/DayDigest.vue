@@ -51,22 +51,22 @@ const subtitleZh = computed(
 </script>
 
 <template>
-  <article class="mx-auto max-w-[1440px] px-12 pb-16">
+  <article class="mx-auto max-w-[1440px] px-4 md:px-12 pb-16">
     <!-- Masthead -->
-    <header class="pt-10 pb-8 grid grid-cols-12 gap-8 items-start">
-      <div class="col-span-4">
-        <h1 class="font-serif text-4xl font-semibold text-ink-900 leading-tight">
+    <header class="pt-10 pb-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+      <div class="md:col-span-4">
+        <h1 class="font-serif text-2xl md:text-4xl font-semibold text-ink-900 leading-tight">
           {{ dateLabel }}
         </h1>
-        <p class="mt-3 font-serif italic text-lg text-ink-500">
+        <p class="mt-2 md:mt-3 font-serif italic text-base md:text-lg text-ink-500">
           {{ weekday }}
         </p>
-        <p class="mt-3 text-xs uppercase tracking-widest text-ink-500">
+        <p class="mt-2 md:mt-3 text-xs uppercase tracking-widest text-ink-500">
           {{ subtitleZh }}
         </p>
       </div>
 
-      <div class="col-span-8 border border-ink-200 p-6">
+      <div class="md:col-span-8 border border-ink-200 p-4 md:p-6">
         <div class="flex items-center justify-between">
           <h2 class="font-serif text-lg font-semibold text-ink-900 inline-flex items-center gap-2">
             <FileText class="w-5 h-5 text-ink-700" stroke-width="2" aria-hidden="true" />
@@ -100,7 +100,7 @@ const subtitleZh = computed(
           >查看全部 {{ digest.articles.length }} 篇 →</a
         >
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         <ArticleCard
           v-for="(article, idx) in top3"
           :key="article.link"
@@ -113,8 +113,12 @@ const subtitleZh = computed(
     </section>
 
     <!-- All articles by category -->
-    <section v-if="categoryGroups.length" id="all" class="mt-16 grid grid-cols-12 gap-8">
-      <div class="col-span-12 lg:col-span-8 space-y-12">
+    <section
+      v-if="categoryGroups.length"
+      id="all"
+      class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8"
+    >
+      <div class="lg:col-span-8 space-y-12">
         <div v-for="group in categoryGroups" :key="group.catId">
           <h3
             class="font-serif text-xl font-semibold text-ink-900 mb-4 border-b border-ink-200 pb-2"
@@ -134,8 +138,8 @@ const subtitleZh = computed(
       </div>
 
       <!-- Sidebar: recent archive -->
-      <aside class="col-span-12 lg:col-span-4">
-        <div class="sticky top-6 border border-ink-200 p-6">
+      <aside class="lg:col-span-4">
+        <div class="md:sticky md:top-6 border border-ink-200 p-4 md:p-6">
           <h3 class="font-serif text-base font-semibold text-ink-900 mb-3">最近几期</h3>
           <ul class="space-y-3">
             <li v-for="r in recent" :key="r.date">

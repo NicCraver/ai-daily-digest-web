@@ -63,9 +63,9 @@ const groups = computed<WeekGroup[]>(() => {
 </script>
 
 <template>
-  <section class="mx-auto max-w-[1200px] px-12 py-12">
+  <section class="mx-auto max-w-[1200px] px-4 md:px-12 py-12">
     <header class="mb-10">
-      <h1 class="font-serif text-4xl font-semibold text-ink-900">归档</h1>
+      <h1 class="font-serif text-2xl md:text-4xl font-semibold text-ink-900">归档</h1>
       <p class="mt-2 text-sm text-ink-500">
         共 {{ digestIndex.dates.length }} 期日报 · {{ weeklyIndex.weeks.length }} 期周报 · 按 ISO
         周倒序排列

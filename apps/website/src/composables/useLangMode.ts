@@ -1,19 +1,19 @@
 import { ref, watchEffect } from "vue";
 
-export type LangMode = "zh" | "en" | "both";
+export type LangMode = "zh" | "en";
 
 const STORAGE_KEY = "aidd-lang-mode";
 const isClient = typeof window !== "undefined";
 
 const initial: LangMode = (() => {
-  if (!isClient) return "both";
+  if (!isClient) return "zh";
   try {
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "zh" || saved === "en" || saved === "both") return saved;
+    if (saved === "zh" || saved === "en") return saved;
   } catch {
     /* ignore */
   }
-  return "both";
+  return "zh";
 })();
 
 const langMode = ref<LangMode>(initial);

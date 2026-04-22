@@ -49,21 +49,21 @@ function formatRange(start: string, end: string): string {
 
 <template>
   <div v-if="latest && !dismissed" class="bg-ink-900 text-paper text-sm">
-    <div class="mx-auto max-w-[1440px] px-12 h-9 flex items-center justify-between gap-4">
+    <div class="mx-auto max-w-[1440px] px-4 md:px-12 h-9 flex items-center justify-between gap-4">
       <RouterLink
         :to="`/w/${latest.weekId}`"
-        class="flex items-center gap-2 no-underline text-paper hover:opacity-80 transition-opacity"
+        class="flex items-center gap-2 no-underline text-paper hover:opacity-80 transition-opacity min-w-0"
       >
         <Calendar class="w-4 h-4 shrink-0 opacity-90" stroke-width="2" aria-hidden="true" />
-        <span class="font-medium">本周精选已更新</span>
-        <span class="opacity-60">·</span>
-        <span class="font-mono text-xs opacity-80">{{ latest.weekId }}</span>
-        <span class="opacity-60">·</span>
-        <span class="text-xs opacity-80">
+        <span class="font-medium truncate">本周精选已更新</span>
+        <span class="hidden md:inline opacity-60">·</span>
+        <span class="hidden md:inline font-mono text-xs opacity-80">{{ latest.weekId }}</span>
+        <span class="hidden md:inline opacity-60">·</span>
+        <span class="hidden md:inline text-xs opacity-80">
           {{ formatRange(latest.rangeStart, latest.rangeEnd) }}
         </span>
-        <span class="opacity-60">·</span>
-        <span class="opacity-80">{{ latest.pickCount }} 篇</span>
+        <span class="hidden md:inline opacity-60">·</span>
+        <span class="hidden md:inline opacity-80">{{ latest.pickCount }} 篇</span>
         <ChevronRight
           class="w-4 h-4 ml-0.5 shrink-0 opacity-80"
           stroke-width="2"

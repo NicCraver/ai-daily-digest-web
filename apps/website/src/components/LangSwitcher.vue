@@ -6,7 +6,6 @@ const { langMode, setLang } = useLangMode();
 const options: Array<{ key: LangMode; label: string }> = [
   { key: "zh", label: "中" },
   { key: "en", label: "EN" },
-  { key: "both", label: "双语" },
 ];
 </script>
 

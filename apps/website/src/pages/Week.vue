@@ -23,20 +23,22 @@ function formatRange(start: string, end: string): string {
 </script>
 
 <template>
-  <article v-if="weekly" class="mx-auto max-w-[1200px] px-12 pb-16">
+  <article v-if="weekly" class="mx-auto max-w-[1200px] px-4 md:px-12 pb-16">
     <!-- Masthead -->
-    <header class="pt-10 pb-8 grid grid-cols-12 gap-8 items-start">
-      <div class="col-span-5">
+    <header class="pt-10 pb-8 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+      <div class="md:col-span-5">
         <p class="text-[10px] uppercase tracking-[2px] text-ink-400 mb-2">
           WEEKLY DIGEST · {{ weekly.weekId }}
         </p>
-        <h1 class="font-serif text-4xl font-semibold text-ink-900 leading-tight">本周精选</h1>
-        <p class="mt-3 font-serif italic text-lg text-ink-500">
+        <h1 class="font-serif text-2xl md:text-4xl font-semibold text-ink-900 leading-tight">
+          本周精选
+        </h1>
+        <p class="mt-2 md:mt-3 font-serif italic text-base md:text-lg text-ink-500">
           {{ formatRange(weekly.rangeStart, weekly.rangeEnd) }}
         </p>
       </div>
 
-      <div class="col-span-7 border border-ink-200 p-6">
+      <div class="md:col-span-7 border border-ink-200 p-4 md:p-6">
         <div class="flex items-center justify-between mb-3">
           <h2 class="font-serif text-lg font-semibold text-ink-900 inline-flex items-center gap-2">
             <BarChart3 class="w-5 h-5 text-ink-700" stroke-width="2" aria-hidden="true" />
@@ -86,9 +88,9 @@ function formatRange(start: string, end: string): string {
         <div
           v-for="(pick, idx) in weekly.topPicks"
           :key="pick.link"
-          class="grid grid-cols-12 gap-4 items-start"
+          class="grid grid-cols-[2rem_1fr] md:grid-cols-12 gap-3 md:gap-4 items-start"
         >
-          <div class="col-span-1 pt-2">
+          <div class="md:col-span-1 pt-2">
             <div class="font-serif text-2xl text-ink-900">
               {{ idx + 1 }}
             </div>
@@ -99,7 +101,7 @@ function formatRange(start: string, end: string): string {
               {{ pick.fromDate.slice(5) }}
             </RouterLink>
           </div>
-          <div class="col-span-11">
+          <div class="md:col-span-11">
             <ArticleCard :article="pick" :digest-date="pick.fromDate" variant="list" />
           </div>
         </div>
@@ -107,7 +109,7 @@ function formatRange(start: string, end: string): string {
     </section>
   </article>
 
-  <div v-else class="mx-auto max-w-[720px] px-12 py-32 text-center">
+  <div v-else class="mx-auto max-w-[720px] px-4 md:px-12 py-32 text-center">
     <h1 class="font-serif text-3xl font-semibold mb-4">未找到 {{ weekId }} 的周报</h1>
     <p class="text-ink-500">
       <RouterLink to="/" class="underline">回到首页</RouterLink>

@@ -9,11 +9,11 @@ import WeeklyBanner from "./components/WeeklyBanner.vue";
   <div class="min-h-screen bg-paper">
     <WeeklyBanner />
     <header class="border-b border-ink-200">
-      <div class="mx-auto max-w-[1440px] px-12 h-[60px] flex items-center justify-between">
-        <div class="flex items-center gap-6 min-w-0">
+      <div class="mx-auto max-w-[1440px] px-4 md:px-12 h-[60px] flex items-center justify-between">
+        <div class="flex items-center gap-3 md:gap-6 min-w-0">
           <RouterLink
             to="/"
-            class="font-serif text-xl font-semibold text-ink-900 no-underline tracking-tight truncate"
+            class="font-serif text-base md:text-xl font-semibold text-ink-900 no-underline tracking-tight truncate"
           >
             AI Daily · 博客每日精选
           </RouterLink>
@@ -32,12 +32,5 @@ import WeeklyBanner from "./components/WeeklyBanner.vue";
     <main>
       <RouterView />
     </main>
-
-    <footer class="border-t border-ink-200 mt-16">
-      <div class="mx-auto max-w-[1440px] px-12 py-8 text-xs text-ink-400 flex justify-between">
-        <span>由「懂点儿AI」制作 · 数据每日 AI 精选</span>
-        <span>Powered by LongCat · Vue3 SSG</span>
-      </div>
-    </footer>
   </div>
 </template>

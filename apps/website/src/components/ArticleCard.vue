@@ -82,7 +82,7 @@ const showReadActions = computed(
     <h3
       :class="[
         'bilingual-title font-serif font-semibold text-ink-900 leading-tight',
-        variant === 'featured' ? 'text-[22px]' : 'text-lg',
+        variant === 'featured' ? 'text-lg md:text-[22px]' : 'text-base md:text-lg',
       ]"
     >
       <RouterLink :to="readPath" class="no-underline hover:underline text-inherit">

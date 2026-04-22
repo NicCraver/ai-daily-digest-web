@@ -45,32 +45,34 @@ const topKeywords = computed(() => {
 
 <template>
   <section class="border-y border-ink-200">
-    <div class="grid grid-cols-2 md:grid-cols-5 divide-x divide-ink-200">
-      <div class="px-4 py-5 text-center">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-px bg-ink-200">
+      <div class="bg-paper px-3 py-4 md:px-4 md:py-5 text-center">
         <div class="text-[10px] uppercase tracking-widest text-ink-400">扫描源</div>
-        <div class="font-serif text-2xl text-ink-900 mt-1">
+        <div class="font-serif text-xl md:text-2xl text-ink-900 mt-1 tabular-nums">
           {{ digest.stats.successFeeds }}/{{ digest.stats.totalFeeds }}
         </div>
       </div>
-      <div class="px-4 py-5 text-center">
+      <div class="bg-paper px-3 py-4 md:px-4 md:py-5 text-center">
         <div class="text-[10px] uppercase tracking-widest text-ink-400">抓取文章</div>
-        <div class="font-serif text-2xl text-ink-900 mt-1">
+        <div class="font-serif text-xl md:text-2xl text-ink-900 mt-1 tabular-nums">
           {{ digest.stats.totalArticles }}
         </div>
       </div>
-      <div class="px-4 py-5 text-center">
+      <div class="bg-paper px-3 py-4 md:px-4 md:py-5 text-center">
         <div class="text-[10px] uppercase tracking-widest text-ink-400">时间范围</div>
-        <div class="font-serif text-2xl text-ink-900 mt-1">{{ digest.stats.hours }}h</div>
+        <div class="font-serif text-xl md:text-2xl text-ink-900 mt-1 tabular-nums">
+          {{ digest.stats.hours }}h
+        </div>
       </div>
-      <div class="px-4 py-5 text-center">
+      <div class="bg-paper px-3 py-4 md:px-4 md:py-5 text-center">
         <div class="text-[10px] uppercase tracking-widest text-ink-400">精选</div>
-        <div class="font-serif text-2xl text-ink-900 mt-1">
+        <div class="font-serif text-xl md:text-2xl text-ink-900 mt-1 tabular-nums">
           {{ digest.articles.length }}
         </div>
       </div>
-      <div class="px-4 py-5 text-center">
+      <div class="bg-paper col-span-2 md:col-span-1 px-3 py-4 md:px-4 md:py-5 text-center">
         <div class="text-[10px] uppercase tracking-widest text-ink-400">完整全文</div>
-        <div class="font-serif text-2xl text-ink-900 mt-1">
+        <div class="font-serif text-xl md:text-2xl text-ink-900 mt-1 tabular-nums">
           {{ completeFullText }}/{{ digest.articles.length }}
         </div>
         <div v-if="partialFullText > 0" class="text-[11px] text-ink-400 mt-1">

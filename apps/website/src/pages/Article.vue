@@ -51,7 +51,7 @@ const displaySummary = computed(() => {
 </script>
 
 <template>
-  <article v-if="article && digest" class="mx-auto max-w-[720px] px-12 pb-20 pt-10">
+  <article v-if="article && digest" class="mx-auto max-w-[720px] px-4 md:px-12 pb-20 pt-10">
     <a
       :href="`/d/${date}`"
       class="inline-flex items-center gap-1.5 text-sm text-ink-700 hover:text-ink-900 no-underline mb-8 cursor-pointer"
@@ -65,9 +65,11 @@ const displaySummary = computed(() => {
       <div v-if="cat" class="text-[11px] font-semibold tracking-wider text-ink-900 uppercase mb-2">
         {{ cat.emoji }} {{ cat.label }}
       </div>
-      <h1 class="bilingual-title font-serif text-3xl font-semibold text-ink-900 leading-tight">
+      <h1
+        class="bilingual-title font-serif text-2xl md:text-3xl font-semibold text-ink-900 leading-tight"
+      >
         <span class="lang-zh block">{{ titleZh }}</span>
-        <span class="lang-en block text-lg font-normal italic text-ink-500 mt-2">
+        <span class="lang-en block text-base md:text-lg font-normal italic text-ink-500 mt-2">
           {{ article.title }}
         </span>
       </h1>
@@ -121,7 +123,7 @@ const displaySummary = computed(() => {
     <ArticleFullText v-else-if="article.fullText" :article="article" />
   </article>
 
-  <div v-else class="mx-auto max-w-[720px] px-12 py-32 text-center">
+  <div v-else class="mx-auto max-w-[720px] px-4 md:px-12 py-32 text-center">
     <h1 class="font-serif text-3xl font-semibold mb-4">未找到文章</h1>
     <p class="text-ink-500 mb-6">该链接可能无效或内容已更新。</p>
     <a
