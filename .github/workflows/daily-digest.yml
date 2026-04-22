@@ -1,0 +1,67 @@
+# 定时生成 RSS digest → 提交 data/ → 若已连接 Cloudflare Pages 与本仓库，将在 push 后自动构建并部署
+name: Daily digest
+
+on:
+  # 每天 UTC 00:00 = 北京时间 08:00（可按需改 cron）
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.13
+
+      - name: Cache digest (全文 / 翻译)
+        uses: actions/cache@v4
+        with:
+          path: output/cache
+          # 每次新 key 才能写入；restore-keys 取同 digest 版本下最近一次
+          key: digest-cache-${{ runner.os }}-${{ hashFiles('apps/digest/src/digest.ts', 'bun.lock') }}-${{ github.run_id }}
+          restore-keys: |
+            digest-cache-${{ runner.os }}-${{ hashFiles('apps/digest/src/digest.ts', 'bun.lock') }}-
+            digest-cache-${{ runner.os }}-
+
+      - name: Install
+        run: bun install
+
+      - name: Run digest (24h, top 15)
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
+            echo "Set repository secret OPENAI_API_KEY and/or GEMINI_API_KEY" >&2
+            exit 1
+          fi
+          cd apps/digest && bun src/digest.ts --hours 24 --top-n 15
+
+      - name: Build site (verify data 可被 vite-ssg 消费)
+        run: bun run build
+
+      - name: Commit data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "data: daily digest ${{ github.run_id }}"
+          file_pattern: "data/*"
+          add_options: "-u"

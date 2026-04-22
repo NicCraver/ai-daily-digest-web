@@ -1,0 +1,38 @@
+{
+  "name": "ai-daily-digest",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "ready": "vp fmt && vp lint && vp run -r test && vp run -r build",
+    "dev": "vp run website#dev",
+    "digest": "vp run digest#start",
+    "digest:daily": "cd apps/digest && bun src/digest.ts --hours 24 --top-n 15",
+    "digest:quick": "vp run digest#quick",
+    "weekly": "vp run digest#weekly",
+    "weekly:current": "vp run digest#weekly:current",
+    "patch:digest-hours": "bun scripts/patch-digest-hours.ts",
+    "build": "vp run website#build",
+    "preview": "vp run website#preview",
+    "prepare": "vp config"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "overrides": {
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "bun@1.3.13",
+  "catalog": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
+    "vite-plus": "latest"
+  }
+}

@@ -1,0 +1,2525 @@
+{
+  "date": "2026-04-21",
+  "generatedAt": "2026-04-22T03:18:26.055Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 88,
+    "totalArticles": 2532,
+    "filteredArticles": 19,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：AI能力持续跃迁，ChatGPT Images 2.0实现图像生成质的突破，编码智能体也展现出更深层理解力；与此同时，AI应用风险引发警惕，医疗建议误导与智能体过度拟人化暴露出可靠性与伦理隐忧；底层技术演进同样活跃，从寄存器优化到现代TTS方案，工程细节正推动系统效能与用户体验的双重提升。",
+  "articles": [
+    {
+      "title": "Where's the raccoon with the ham radio? (ChatGPT Images 2.0)",
+      "titleZh": "拿着业余无线电的浣熊在哪儿？ChatGPT Images 2.0 实测",
+      "link": "https://simonwillison.net/2026/Apr/21/gpt-image-2/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-21T20:32:24.000Z",
+      "category": "ai-ml",
+      "keywords": ["ChatGPT", "image generation", "OpenAI", "AI model"],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "OpenAI 发布 ChatGPT Images 2.0，Sam Altman 称其从 1.0 到 2.0 的跃迁堪比 GPT-3 到 GPT-5。作者通过生成“寻找手持业余无线电的浣熊”这类复杂图像任务测试模型能力，验证其语义理解与细节还原水平。新模型在构图逻辑、物体关系和风格一致性上显著提升，能更准确执行多元素组合指令。这表明图像生成模型已进入高阶语义对齐阶段。",
+      "reason": "想了解当前最先进图像生成模型的实际表现和突破性进展，这篇实测报告提供了直观且具代表性的案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st April 2026"
+          },
+          {
+            "type": "p",
+            "text": "OpenAI released ChatGPT Images 2.0 today, their latest image generation model. On the livestream Sam Altman said that the leap from gpt-image-1 to gpt-image-2 was equivalent to jumping from GPT-3 to GPT-5. Here’s how I put it to the test."
+          },
+          {
+            "type": "p",
+            "text": "My prompt:"
+          },
+          {
+            "type": "quote",
+            "text": "Do a where's Waldo style image but it's where is the raccoon holding a ham radio"
+          },
+          {
+            "type": "h3",
+            "text": "gpt-image-1"
+          },
+          {
+            "type": "p",
+            "text": "First as a baseline here’s what I got from the older gpt-image-1 using ChatGPT directly:"
+          },
+          {
+            "type": "p",
+            "text": "I wasn’t able to spot the raccoon—I quickly realized that testing image generation models on Where’s Waldo style images (Where’s Wally in the UK) can be pretty frustrating!"
+          },
+          {
+            "type": "p",
+            "text": "I tried getting Claude Opus 4.7 with its new higher resolution inputs to solve it but it was convinced there was a raccoon it couldn’t find thanks to the instruction card at the top left of the image:"
+          },
+          {
+            "type": "quote",
+            "text": "Yes — there’s at least one raccoon in the picture, but it’s very well hidden. In my careful sweep through zoomed-in sections, honestly, I couldn’t definitively spot a raccoon holding a ham radio. [...]"
+          },
+          {
+            "type": "h3",
+            "text": "Nano Banana 2 and Pro"
+          },
+          {
+            "type": "p",
+            "text": "Next I tried Google’s Nano Banana 2, via Gemini:"
+          },
+          {
+            "type": "p",
+            "text": "That one was pretty obvious, the raccoon is in the “Amateur Radio Club” booth in the center of the image!"
+          },
+          {
+            "type": "p",
+            "text": "Claude said:"
+          },
+          {
+            "type": "quote",
+            "text": "Honestly, this one wasn’t really hiding — he’s the star of the booth. Feels like the illustrator took pity on us after that last impossible scene. The little “W6HAM” callsign pun on the booth sign is a nice touch too."
+          },
+          {
+            "type": "p",
+            "text": "I also tried Nano Banana Pro in AI Studio and got this, by far the worst result from any model. Not sure what went wrong here!"
+          },
+          {
+            "type": "h3",
+            "text": "gpt-image-2"
+          },
+          {
+            "type": "p",
+            "text": "With the baseline established, let’s try out the new model."
+          },
+          {
+            "type": "p",
+            "text": "I used an updated version of my openai_image.py script, which is a thin wrapper around the OpenAI Python client library. Their client library hasn’t yet been updated to include gpt-image-2 but thankfully it doesn’t validate the model ID so you can use it anyway."
+          },
+          {
+            "type": "p",
+            "text": "Here’s how I ran that:"
+          },
+          {
+            "type": "code",
+            "text": "OPENAI_API_KEY=\"$(llm keys get openai)\" \\\n  uv run https://tools.simonwillison.net/python/openai_image.py \\\n  -m gpt-image-2 \\\n  \"Do a where's Waldo style image but it's where is the raccoon holding a ham radio\""
+          },
+          {
+            "type": "p",
+            "text": "Here’s what I got back. I don’t think there’s a raccoon in there—I couldn’t spot one, and neither could Claude."
+          },
+          {
+            "type": "p",
+            "text": "The OpenAI image generation cookbook has been updated with notes on gpt-image-2, including the outputQuality setting and available sizes."
+          },
+          {
+            "type": "p",
+            "text": "I tried setting outputQuality to high and the dimensions to 3840x2160—I believe that’s the maximum—and got this—a 17MB PNG which I converted to a 5MB WEBP:"
+          },
+          {
+            "type": "code",
+            "text": "OPENAI_API_KEY=\"$(llm keys get openai)\" \\\n  uv run 'https://raw.githubusercontent.com/simonw/tools/refs/heads/main/python/openai_image.py' \\\n  -m gpt-image-2 \"Do a where's Waldo style image but it's where is the raccoon holding a ham radio\" \\\n  --quality high --size 3840x2160"
+          },
+          {
+            "type": "p",
+            "text": "That’s pretty great! There’s a raccoon with a ham radio in there (bottom left, quite easy to spot)."
+          },
+          {
+            "type": "p",
+            "text": "The image used 13,342 output tokens, which are charged at $30/million so a total cost of around 40 cents."
+          },
+          {
+            "type": "h3",
+            "text": "Takeaways"
+          },
+          {
+            "type": "p",
+            "text": "I think this new ChatGPT image generation model takes the crown from Gemini, at least for the moment."
+          },
+          {
+            "type": "p",
+            "text": "Where’s Waldo style images are an infuriating and somewhat foolish way to test these models, but they do help illustrate how good they are getting at complex illustrations combining both text and details."
+          },
+          {
+            "type": "h3",
+            "text": "Update: asking models to solve this is risky"
+          },
+          {
+            "type": "p",
+            "text": "rizaco on Hacker News asked ChatGPT to draw a red circle around the raccoon in one of the images in which I had failed to find one. Here’s an animated mix of their result and the original image:"
+          },
+          {
+            "type": "p",
+            "text": "Looks like we definitely can’t trust these models to usefully solve their own puzzles!"
+          }
+        ],
+        "translations": [
+          "2026年4月21日",
+          "OpenAI 今天发布了 ChatGPT Images 2.0，这是他们最新的图像生成模型。在直播中，Sam Altman 表示从 gpt-image-1 到 gpt-image-2 的跨越，相当于从 GPT-3 跃升到 GPT-5。下面我来测试一下它的表现。",
+          "我的提示词：",
+          "生成一张“威利在哪里”风格的图片，但这次要找的是拿着业余无线电设备的浣熊",
+          "gpt-image-1",
+          "首先作为基准，这是我用 ChatGPT 直接调用旧版 gpt-image-1 得到的结果：",
+          "我没能找到那只浣熊——我很快意识到，用“威利在哪里”风格的图片（在英国叫“威利在哪里”）来测试图像生成模型真是令人抓狂！",
+          "我尝试让 Claude Opus 4.7 利用其新增的高分辨率输入功能来找出它，但它坚称有一只浣熊找不到，因为图像左上角的那张提示卡片干扰了判断：",
+          "没错——图中确实至少有一只浣熊，但它藏得非常好。我仔细放大检查了各个区域，说实话，我根本无法明确地找到一只拿着业余无线电设备的浣熊。[...]",
+          "Nano Banana 2 和 Pro",
+          "接下来我试用了 Google 的 Nano Banana 2，通过 Gemini 调用：",
+          "这次非常明显，浣熊就在图像中央的“业余无线电俱乐部”展位里！",
+          "Claude 说：",
+          "说实话，这次它根本没怎么藏——它就是这个展位的明星。感觉插画师在上一张不可能找到的场景之后，终于对我们动了恻隐之心。展位牌上那个小小的“W6HAM”呼号双关语也挺有意思的。",
+          "我还在 AI Studio 中试用了 Nano Banana Pro，结果如下，这是所有模型中最差的一次。真不知道这里出了什么问题！",
+          "gpt-image-2",
+          "基准测试完成后，我们来试试这个新模型。",
+          "我使用了一个更新版的 openai_image.py 脚本，它是对 OpenAI Python 客户端库的一个轻量封装。他们的客户端库尚未更新以支持 gpt-image-2，但好在它不会校验模型 ID，所以可以直接使用。",
+          "我是这样运行的：",
+          "OPENAI_API_KEY=\"$(llm keys get openai)\" \\\n  uv run https://tools.simonwillison.net/python/openai_image.py \\\n  -m gpt-image-2 \\\n  \"Do a where's Waldo style image but it's where is the raccoon holding a ham radio\"",
+          "这是返回的结果。我认为里面没有浣熊——我找不到，Claude 也找不到。",
+          "OpenAI 图像生成指南已更新，加入了关于 gpt-image-2 的说明，包括 outputQuality 设置和可用尺寸。",
+          "我尝试将 outputQuality 设为 high，尺寸设为 3840x2160——我相信这是最大值——得到了这张图——一个 17MB 的 PNG 文件，我将其转换为 5MB 的 WEBP：",
+          "OPENAI_API_KEY=\"$(llm keys get openai)\" \\\n  uv run 'https://raw.githubusercontent.com/simonw/tools/refs/heads/main/python/openai_image.py' \\\n  -m gpt-image-2 \"Do a where's Waldo style image but it's where is the raccoon holding a ham radio\" \\\n  --quality high --size 3840x2160",
+          "这效果相当不错！图中确实有一只拿着业余无线电设备的浣熊（左下角，很容易发现）。",
+          "该图像消耗了 13,342 个输出 token，按每百万 token 30 美元计费，总成本约为 40 美分。",
+          "总结",
+          "我认为这款新的 ChatGPT 图像生成模型目前暂时超越了 Gemini。",
+          "“威利在哪里”风格的图像虽然是测试这些模型的一种令人抓狂甚至有点愚蠢的方式，但它确实有助于说明这些模型在结合文本与细节的复杂插画方面进步有多大。",
+          "更新：让模型自己解题有风险",
+          "Hacker News 上的 rizaco 让 ChatGPT 在其中一张我未能找到浣熊的图像中用红圈标出浣熊。这是他们结果与原图的动态合成图：",
+          "看来我们确实不能指望这些模型能可靠地解决它们自己生成的谜题！"
+        ]
+      }
+    },
+    {
+      "title": "Please don’t trust your chatbot for medical advice",
+      "titleZh": "请勿轻信聊天机器人提供的医疗建议",
+      "link": "https://garymarcus.substack.com/p/please-dont-trust-your-chatbot-for",
+      "sourceName": "garymarcus.substack.com",
+      "sourceUrl": "https://garymarcus.substack.com",
+      "pubDate": "2026-04-21T12:15:09.000Z",
+      "category": "ai-ml",
+      "keywords": ["chatbot", "medical advice", "AI safety", "LLM reliability"],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 26
+      },
+      "summary": "四项独立研究一致表明，当前主流聊天机器人在提供医疗建议时存在严重错误和误导风险。这些模型常给出看似合理但缺乏临床依据的回答，甚至推荐未经证实的疗法。研究强调，尽管 AI 在信息检索方面表现良好，但在涉及健康决策的关键场景中可靠性远未达标。作者呼吁用户切勿将聊天机器人视为医疗咨询替代方案。",
+      "reason": "在 AI 医疗应用日益普及的背景下，这篇文章用多项研究数据警示了潜在风险，对普通用户和开发者都极具参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Gary Marcus",
+        "siteName": "Marcus on AI",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Remember how I used to say that large language models are “frequently wrong, never in doubt”, and how I warned three years ago on 60 Minutes that they were purveyors of “authoritative bullshit” that should not be trusted?"
+          },
+          {
+            "type": "p",
+            "text": "That’s still true – and it very much applies in medicine."
+          },
+          {
+            "type": "p",
+            "text": "And that matters, a lot. Because a large fraction of the population has begun to turn to chatbots for medical advice."
+          },
+          {
+            "type": "p",
+            "text": "Two relevant new studies are reported today in the Washington Post, in a damning article."
+          },
+          {
+            "type": "p",
+            "text": "The first new study, published by BMJ (affiliated with the British Medical Association) in a peer reviewed journal, and entitled “Generative artificial intelligence-driven chatbots and medical misinformation: an accuracy, referencing and readability audit”, studied five popular chatbots (Gemini, DeepSeek, Meta AI, ChatGPT and Grok), about one year ago, prompting each with 10 questions about things ranging from cancer to vaccines and nutrition, in open-ended dialogues, and reporting that nearly half of the responses were highly problematic. Worse, “chatbot outputs were consistently expressed with confidence and certainty”. The responses were also filled with hallucinations and fabricated citations."
+          },
+          {
+            "type": "p",
+            "text": "All of this – the hallucinations, mistakes, and overconfidence –  is entirely typical of LLMs, and entirely problematic in medicine. As the authors put it, in somewhat academic language, but entirely accurately, “continued deployment without public education and oversight risks amplifying misinformation.”"
+          },
+          {
+            "type": "p",
+            "text": "The second new study, published in JAMA Network Open, affiliated with the American Medical Association, called “Large Language Model Performance and Clinical Reasoning Tasks” looked at 21 frontier models across 29 questions, and reported that “despite progress, current LLMs remain limited in early diagnostic reasoning and cannot yet be relied on for unsupervised patient-facing clinical decision-making.”"
+          },
+          {
+            "type": "p",
+            "text": "And the Post article actually only reported part of the new scientific literature on LLMs and medicines. Two other new studies that they missed  only add to the concerns."
+          },
+          {
+            "type": "p",
+            "text": "One, published in Nature Medicine, was called “Reliability of LLMs as medical assistants for the general public: a randomized preregistered study”.  This one focused on “whether LLMs can assist members of the public in identifying underlying conditions and choosing a course of action”. Again the results were both clear and troubling. LLMs “identified relevant conditions in fewer than 34.5% of cases… no better than [a] control group”. Here the problem wasn’t so much that the LLMs lacked access to proper information — the same study showed that the models  could do better in the hands of trained physicians — but that patients don’t know how to guide the LLMs to the right places."
+          },
+          {
+            "type": "p",
+            "text": "In a recurring theme, we see that LLMs don’t know what they don’t know; they work decently well with the information they’ve got but don’t know how to conduct clinical interviews, and in the hands of the lay public can easily give bad advice because the proper questions never get asked, either by the patient or the LLMs. (An expert doctor might use the LLM to better effect, by asking the right questions.)"
+          },
+          {
+            "type": "p",
+            "text": "Still another new study, also published recently in Nature Medicine,  entitled ChatGPT Health performance in a structured test of triage recommendations, found that “Among gold-standard emergencies, the system undertriaged 52% of cases” and concluded that “These findings reveal missed high-risk emergencies and inconsistent activation of crisis safeguards, raising safety concerns that warrant prospective validation before consumer-scale deployment of artificial intelligence triage systems.”"
+          },
+          {
+            "type": "p",
+            "text": "As a scientist, I am always looking for converging evidence. Four studies in four journals published in the space of a few months reaching essentially the same conclusion is a crystal clear indicator that chatbots, especially when used by amateurs, simply cannot be trusted."
+          },
+          {
+            "type": "p",
+            "text": "On a personal note, my friend Ben Riley lost his father recently, and Teddy Rosenbluth of The New York Times wrote a long, moving article about how his father was mislead by A.I regarding his leukemia."
+          },
+          {
+            "type": "p",
+            "text": "I hope you will get a chance to read that, and also Ben’s own blog about the sad situation."
+          },
+          {
+            "type": "p",
+            "text": "There will always be better models, but for now, and until proven otherwise, we should not take the apparent “confidence” of large language models — itself an illusion of how they are trained — to mean that we should trust large language with our lives."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "还记得我以前常说大型语言模型“经常出错，却从不迟疑”吗？还记得三年前我在《60分钟》节目上警告过，它们是“权威 bullshit”的传播者，绝不能轻信吗？",
+          "这至今仍然成立——而且在医学领域尤其适用。",
+          "这非常重要，而且影响深远。因为已有大量民众开始向聊天机器人寻求医疗建议。",
+          "《华盛顿邮报》今天刊登了一篇措辞严厉的文章，报道了两项相关的新研究。",
+          "第一项新研究由BMJ（隶属于英国医学协会）在同行评审期刊上发表，题为《生成式人工智能驱动的聊天机器人与医疗错误信息：准确性、引用规范与可读性审计》。该研究大约一年前对五个热门聊天机器人（Gemini、DeepSeek、Meta AI、ChatGPT 和 Grok）进行了测试，向每个模型提出10个开放式问题，内容涵盖癌症、疫苗和营养等主题，结果发现近一半的回复存在严重问题。更糟糕的是，“聊天机器人的输出始终表现出高度自信和确定性”。这些回复中还充斥着幻觉内容和虚构的参考文献。",
+          "所有这些——幻觉、错误和过度自信——都是LLMs的典型特征，在医学领域则完全不可接受。正如作者所言（措辞略显学术，但完全准确）：“若缺乏公众教育和监管，继续部署此类模型将加剧错误信息的传播。”",
+          "第二项新研究发表于JAMA Network Open（隶属于美国医学协会），题为《大型语言模型在临床推理任务中的表现》，该研究评估了21个前沿模型对29个问题的回答，并指出：“尽管已有进展，当前LLMs在早期诊断推理方面仍存在局限，尚不能用于无监督的面向患者的临床决策。”",
+          "实际上，《邮报》的文章只报道了关于LLMs与医学的新科学文献的一部分。另外两项他们遗漏的新研究，只会进一步加深我们的担忧。",
+          "其中一项发表于《自然·医学》，题为《LLMs作为公众医疗助手的可靠性：一项随机预注册研究》。该研究聚焦于“LLMs是否能帮助公众识别潜在病症并选择应对措施”。结果再次清晰且令人不安：LLMs“在不到34.5%的病例中识别出相关病症……表现并不优于对照组”。这里的问题主要不在于LLMs缺乏正确信息——同一研究表明，在训练有素的医生手中，这些模型表现更好——而在于患者不知道如何引导LLMs找到正确的信息路径。",
+          "一个反复出现的主题是：LLMs不知道自己不知道什么；它们在自己掌握的信息范围内表现尚可，但不懂得如何进行临床问诊，在普通公众手中很容易给出错误建议，因为无论是患者还是LLMs本身，都未能提出恰当的问题。（而专业医生若能提出正确问题，或许能更有效地利用LLMs。）",
+          "另一项新研究同样于近期发表在《Nature Medicine》上，题为《ChatGPT在分诊建议结构化测试中的健康表现》，研究发现“在符合金标准定义的急症病例中，该系统对52%的病例进行了低估分诊（undertriaged）”，并得出结论：“这些发现揭示了高风险急症的漏判以及危机安全机制的不一致触发，凸显出在人工智能分诊系统大规模应用于消费者之前，必须进行前瞻性验证的安全隐患。”",
+          "作为一名科学家，我一直在寻找相互印证的证据。短短几个月内，四本期刊相继发表四项研究，得出的结论基本一致，这清楚地表明：聊天机器人，尤其是被非专业人士使用时，根本不可信。",
+          "就个人而言，我的朋友本·莱利最近失去了他的父亲。《纽约时报》的泰迪·罗森布卢姆撰写了一篇长文，深情讲述了他的父亲如何被人工智能误导，从而耽误了白血病的治疗。",
+          "我希望你有机会读到那篇文章，也读一读本就这一令人痛心的情况所写的博客。",
+          "未来或许会有更优秀的模型出现，但就目前而言，在未被证明可靠之前，我们不应将大型语言模型表面上的“自信”——这本身只是其训练方式造成的假象——当作可以托付生命的理由。",
+          "无新帖"
+        ]
+      }
+    },
+    {
+      "title": "An AI Odyssey, Part 4: Astounding Coding Agents",
+      "titleZh": "AI 奥德赛（四）：令人惊叹的编码智能体",
+      "link": "https://www.johndcook.com/blog/2026/04/21/an-ai-odyssey-part-4-astounding-coding-agents/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-21T20:14:40.000Z",
+      "category": "ai-ml",
+      "keywords": ["AI coding agents", "LLM", "software development"],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "自去年夏季和今年 12 月至 1 月以来，AI 编码智能体（如 Claude Code、GitHub Copilot）能力显著增强，主观体验上“更聪明”。它们不仅能完成更广泛的任务，还能深入理解代码库结构并主动提出重构建议。作者基于实际使用经验指出，新一代模型展现出更强的上下文感知与长期规划能力，接近初级程序员水平。",
+      "reason": "如果你关注 AI 编程助手的最新进展，这篇文章提供了来自一线使用者的真实反馈和趋势判断。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Wayne Joubert",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "AI coding agents improved greatly last summer, and again last December-January. Here are my experiences since my last post on the subject."
+          },
+          {
+            "type": "p",
+            "text": "The models feel subjectively much smarter. They can accomplish a much broader range of tasks. They seem to have a larger, more comprehensive in-depth view of the code base and what you are trying to accomplish. They can locate more details in obscure parts of the code related to the specific task at hand. By rough personal estimate, I would say that they helped me with 20% of my coding effort last August and about 60% now. Both of these figures may be below what is possible, I may not be using them to fullest capability."
+          },
+          {
+            "type": "p",
+            "text": "This being said, they are not a panacea. Sometimes they need help and direction to where to look for a problem. Sometimes they myopically look at the trees and don’t see the forest, don’t step back to see the big picture to understand something is wrong at a high level. Also they can overoptimize to the test harness. They can also generate code that is not conceptually consistent with existing code."
+          },
+          {
+            "type": "p",
+            "text": "They can also generate much larger amounts of code than necessary. Some warn that that this will lead to explosion of coding debt. On the other hand, you can also guide the coding agent to refactor and improve its own code—quickly. In one case I’ve gotten it to reduce the size of one piece of code to less than half its original size with no change in behavior."
+          },
+          {
+            "type": "p",
+            "text": "I use OpenAI Codex rather than Claude Code.  I’m glad to hear some technically credible people think this a good choice. Though maybe I should try both."
+          },
+          {
+            "type": "p",
+            "text": "My work is a research project for which the code itself is the research product, so I can’t give specifications of everything in advance; writing the code itself is a process of discovery. Also, I want a code base that remains human-readable. So I am deeply involved in discussion with the coding agent that will sometimes go off to do a task for some period of time. It is not my desire to treat the agent as what some have called a dark software factory."
+          },
+          {
+            "type": "p",
+            "text": "Some say they fear that using a coding agent will result in forgetting how to write code without one. I have felt this, but from having exercised this muscle for such a very long time I don’t think it is a skill I would easily forget. The flip side of this argument is, you might even learn new coding idioms from observing what the coding agent writes, that is a good thing."
+          },
+          {
+            "type": "p",
+            "text": "Some say they haven’t written a line of code in weeks because the coding agent does it for them. I don’t think I’ll ever stop writing code, any more than I will stop scribbling random ideas on the back of an envelope, or typing out some number of lines of code by which I discover some new idea in real time while I am typing. Learning is multisensory."
+          },
+          {
+            "type": "p",
+            "text": "My hat’s off to the developers who are able to keep many different agents in flight at the same time. Personally I have difficulty handling the cognitive load of thinking deeply about each one and doing a mental context switch across many agents. Though I am experimenting with running more than one agent so I can be doing something while another agent is working."
+          },
+          {
+            "type": "p",
+            "text": "I continue to be astounded by productivity gains in some situations. I recently added a new capability, which normally I think would’ve taken me two months to learn a whole new algorithmic method and library to use. With the coding agent, it took me four days to get this done, on the order of 10X productivity increase. Though admittedly things are not always that rosy."
+          },
+          {
+            "type": "p",
+            "text": "In short, the tools are getting better and better. I’m looking forward to what they will be like a few months or a year from now."
+          }
+        ],
+        "translations": [
+          " \n去年夏天，AI 编程代理有了显著提升，去年12月到今年1月又迎来一波进步。以下是我自上一篇相关文章以来的使用体验。",
+          " \n这些模型在主观感受上聪明了许多。它们能完成的任务范围更广，似乎对代码库以及你试图实现的目标有了更全面、更深入的把握。它们能在代码的晦涩角落中定位到与当前任务相关的更多细节。根据我个人粗略估计，去年8月它们帮我完成了约20%的编码工作，而现在这一比例已达到约60%。这两个数字可能都低于其实际潜力，或许我尚未充分发挥它们的能力。",
+          " \n话虽如此，它们并非万能解药。有时它们需要引导才能找到问题所在；有时则只见树木不见森林，无法退后一步审视全局，从而难以察觉高层逻辑上的错误。此外，它们可能会过度优化测试环境，也可能生成与现有代码在概念上不一致的代码。",
+          " \n它们生成的代码量有时也远超必要。有人警告说，这会导致技术债务的爆炸式增长。但另一方面，你也可以引导编程代理快速重构并优化其自身生成的代码。我曾有一次成功让它将某段代码的规模缩减至原来的一半以下，且行为保持不变。",
+          " \n我使用的是 OpenAI Codex，而非 Claude Code。很高兴听到一些技术可信人士认为这是个不错的选择。不过也许我该两者都试试。",
+          " \n我的工作是一个研究项目，代码本身就是研究成果，因此我无法事先给出所有功能的规格说明；编写代码本身就是一个探索的过程。同时，我希望代码库保持人类可读性。因此，我会深度参与与编程代理的讨论，而它有时会离开去执行某项任务一段时间。我并不希望将它当作某些人所说的“黑箱软件工厂”来使用。",
+          " \n有人担心使用编程代理会导致自己忘记如何不用它来写代码。我也有过这种感受，但鉴于我长期锻炼这项技能，我不认为这会轻易遗忘。反过来说，通过观察编程代理所写的代码，你甚至可能学到新的编程惯用法——这反而是件好事。",
+          " \n有人说他们已经好几周没亲手写过一行代码，因为编程代理全替他们做了。但我认为自己永远不会停止写代码，就像我不会停止在信封背面随手涂鸦想法，或是在打字过程中实时敲出若干行代码以发现新思路一样。学习是多感官参与的。",
+          " \n我向那些能同时管理多个运行中的代理的开发者致以敬意。就我个人而言，很难承受为每个代理深入思考并进行多次心理上下文切换的认知负荷。不过我正在尝试运行多个代理，以便在一个代理工作时我可以做其他事情。",
+          " \n我依然对某些场景下的生产力提升感到震惊。最近我新增了一项功能，正常情况下我认为需要花两个月时间去学习一种全新的算法方法和相关库才能实现。借助编程代理，我只用了四天就完成了，生产力提升了约10倍。当然，事情并非总是如此乐观。",
+          "简而言之，这些工具正变得越来越好。我期待几个月或一年后它们会发展成什么样子。"
+        ]
+      }
+    },
+    {
+      "title": "‘Scattered Spider’ Member ‘Tylerb’ Pleads Guilty",
+      "titleZh": "‘Scattered Spider’ 组织成员 ‘Tylerb’ 认罪",
+      "link": "https://krebsonsecurity.com/2026/04/scattered-spider-member-tylerb-pleads-guilty/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-04-21T14:53:59.000Z",
+      "category": "security",
+      "keywords": ["Scattered Spider", "cybercrime", "phishing", "identity theft"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "24 岁英国籍黑客 Tyler Robert Buchanan 作为网络犯罪团伙 “Scattered Spider” 的高级成员，已就电信欺诈共谋和加重身份盗窃罪名认罪。他承认参与 2022 年夏季一系列短信钓鱼攻击，帮助该组织入侵至少十几家大型科技公司，并窃取价值数千万美元的加密货币。此案凸显社交工程攻击在高端网络入侵中的关键作用。",
+      "reason": "了解当代高影响网络犯罪手法及执法进展，此案例揭示了针对企业基础设施的复杂攻击链。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A 24-year-old British national and senior member of the cybercrime group “Scattered Spider” has pleaded guilty to wire fraud conspiracy and aggravated identity theft. Tyler Robert Buchanan admitted his role in a series of text-message phishing attacks in the summer of 2022 that allowed the group to hack into at least a dozen major technology companies and steal tens of millions of dollars worth of cryptocurrency from investors."
+          },
+          {
+            "type": "p",
+            "text": "Buchanan’s hacker handle “Tylerb” once graced a leaderboard in the English-language criminal hacking scene that tracked the most accomplished cyber thieves. Now in U.S. custody and awaiting sentencing, the Dundee, Scotland native is facing the possibility of more than 20 years in prison."
+          },
+          {
+            "type": "p",
+            "text": "Two photos published in a Daily Mail story dated May 3, 2025 show Buchanan as a child (left) and as an adult being detained by airport authorities in Spain. “M&S” in this screenshot refers to Marks & Spencer, a major U.K. retail chain that suffered a ransomware attack last year at the hands of Scattered Spider."
+          },
+          {
+            "type": "p",
+            "text": "Scattered Spider is the name given to a prolific English-speaking cybercrime group known for using social engineering tactics to break into companies and steal data for ransom, often impersonating employees or contractors to deceive IT help desks into granting access."
+          },
+          {
+            "type": "p",
+            "text": "As part of his guilty plea, Buchanan admitted conspiring with other Scattered Spider members to launch tens of thousands of SMS-based phishing attacks in 2022 that led to intrusions at a number of technology companies, including Twilio, LastPass, DoorDash, and Mailchimp."
+          },
+          {
+            "type": "p",
+            "text": "The group then used data stolen in those breaches to carry out SIM-swapping attacks that siphoned funds from individual cryptocurrency investors. In an unauthorized SIM-swap, crooks transfer the target’s phone number to a device they control and intercept any text messages or phone calls to the victim’s device — such as one-time passcodes for authentication and password reset links sent via SMS. The U.S. Justice Department said Buchanan admitted to stealing at least $8 million in virtual currency from individual victims throughout the United States."
+          },
+          {
+            "type": "p",
+            "text": "FBI investigators tied Buchanan to the 2022 SMS phishing attacks after discovering the same username and email address was used to register numerous phishing domains seen in the campaign. The domain registrar NameCheap found that less than a month before the phishing spree, the account that registered those domains logged in from an Internet address in the U.K. FBI investigators said the Scottish police told them the address was leased to Buchanan throughout 2022."
+          },
+          {
+            "type": "p",
+            "text": "As first reported by KrebsOnSecurity, Buchanan fled the United Kingdom in February 2023, after a rival cybercrime gang hired thugs to invade his home, assault his mother, and threaten to burn him with a blowtorch unless he gave up the keys to his cryptocurrency wallet. That same year, U.K. investigators found a device at Buchanan’s Scotland residence that included data stolen from SMS phishing victims and seed phrases from cryptocurrency theft victims."
+          },
+          {
+            "type": "p",
+            "text": "Buchanan was arrested by Spanish authorities in June 2024 while trying to board a flight to Italy. He was extradited to the United States and has remained in U.S. federal custody since April 2025."
+          },
+          {
+            "type": "p",
+            "text": "Buchanan is the second known Scattered Spider member to plead guilty. Noah Michael Urban, 21, of Palm Coast, Fla., was sentenced to 10 years in federal prison last year and ordered to pay $13 million in restitution. Three other alleged co-conspirators — Ahmed Hossam Eldin Elbadawy, 24, a.k.a. “AD,” of College Station, Texas; Evans Onyeaka Osiebo, 21, of Dallas, Texas; and Joel Martin Evans, 26, a.k.a. “joeleoli,” of Jacksonville, North Carolina – still face criminal charges."
+          },
+          {
+            "type": "p",
+            "text": "Two other alleged Scattered Spider members will soon be tried in the United Kingdom. Owen Flowers, 18, and Thalha Jubair, 20, are facing charges related to the hacking and extortion of several large U.K. retailers, the London transit system, and healthcare providers in the United States. Both have pleaded not guilty, and their trial is slated to begin in June."
+          },
+          {
+            "type": "p",
+            "text": "Investigators say the Scattered Spider suspects are part of a sprawling cybercriminal community online known as “The Com,” wherein hackers from different cliques boast publicly on Telegram and Discord about high-profile cyber thefts that almost invariably begin with social engineering — tricking people over the phone, email or SMS into giving away credentials that allow remote access to corporate internal networks."
+          },
+          {
+            "type": "p",
+            "text": "One of the more popular SIM-swapping channels on Telegram has long maintained a leaderboard of the most rapacious SIM-swappers, indexed by their supposed conquests in stealing cryptocurrency. That leaderboard previously listed Buchanan’s hacker alias Tylerb at #65 (out of 100 hackers), with Urban’s moniker “Sosa” coming in at #24."
+          },
+          {
+            "type": "p",
+            "text": "Buchanan’s sentencing hearing is scheduled for August 21, 2026. According to the Justice Department, he faces a statutory maximum sentence of 22 years in federal prison. However, any sentence the judge hands down in this case may be significantly tempered by a number of mitigating factors in the U.S. Sentencing Guidelines, including the defendant’s age, criminal history, time already served in U.S. custody, and the degree to which they cooperated with federal authorities."
+          }
+        ],
+        "translations": [
+          " \n一名24岁的英国公民、“Scattered Spider”网络犯罪组织的高级成员，已就电信诈骗共谋和严重身份盗窃罪名认罪。Tyler Robert Buchanan承认，他在2022年夏季参与了一系列短信钓鱼攻击，使该组织得以入侵至少十几家大型科技公司，并从投资者手中窃取价值数千万美元的加密货币。",
+          " \nBuchanan的黑客代号“Tylerb”曾位列英语网络犯罪圈中追踪顶尖网络窃贼的排行榜。如今，这位来自苏格兰邓迪的嫌疑人已被美国羁押，等待量刑，可能面临超过20年的监禁。",
+          " \n2025年5月3日《每日邮报》报道中的两张照片显示，Buchanan童年时期（左）及成年后在西班牙被机场当局拘留的画面。本截图中的“M&S”指英国大型零售连锁商Marks & Spencer，该公司去年曾遭Scattered Spider发动勒索软件攻击。",
+          " \nScattered Spider是一个 prolific 的英语网络犯罪组织，以利用社会工程学手段入侵企业、窃取数据并勒索赎金而著称，常通过冒充员工或承包商欺骗IT服务台以获取访问权限。",
+          " \n作为认罪协议的一部分，Buchanan承认在2022年与其他Scattered Spider成员合谋发动了数万次基于短信的钓鱼攻击，导致包括Twilio、LastPass、DoorDash和Mailchimp在内的多家科技公司被入侵。",
+          " \n该组织随后利用这些入侵事件中窃取的数据实施SIM卡劫持攻击，从个人加密货币投资者处转移资金。在未经授权的SIM卡劫持中，犯罪分子将目标的手机号码转移到其控制的设备上，并拦截发送至受害者设备的短信或电话——例如用于身份验证的一次性验证码或通过短信发送的密码重置链接。美国司法部表示，Buchanan承认其从美国各地个人受害者处窃取了至少800万美元的虚拟货币。",
+          " \nFBI调查人员通过发现同一用户名和电子邮件地址被用于注册该活动中出现的多个钓鱼域名，从而将Buchanan与2022年的短信钓鱼攻击关联起来。域名注册商NameCheap发现，在钓鱼攻击开始前不到一个月，注册这些域名的账户曾从英国的一个IP地址登录。FBI调查人员称，苏格兰警方告知他们，该地址在2022年全年由Buchanan租用。",
+          " \n据KrebsOnSecurity首次报道，Buchanan于2023年2月逃离英国，此前一个敌对网络犯罪团伙雇佣暴徒闯入其住所，袭击其母亲，并威胁要用喷灯烧伤他，除非他交出加密货币钱包的密钥。同年，英国调查人员在Buchanan位于苏格兰的住所发现一台设备，其中包含从短信钓鱼受害者处窃取的数据以及加密货币盗窃受害者的助记词。",
+          " \nBuchanan于2024年6月在试图登机前往意大利时被西班牙当局逮捕。他于2025年4月被引渡至美国，此后一直被美国联邦执法部门羁押。",
+          "Buchanan 是已知的第二名对指控认罪的分散蜘蛛（Scattered Spider）组织成员。去年，21 岁的佛罗里达州棕榈海岸居民 Noah Michael Urban 被判处 10 年联邦监禁，并被责令支付 1300 万美元赔偿金。另外三名被指控的同谋者——24 岁的德克萨斯州大学城居民 Ahmed Hossam Eldin Elbadawy（又名“AD”）、21 岁的德克萨斯州达拉斯居民 Evans Onyeaka Osiebo，以及 26 岁的北卡罗来纳州杰克逊维尔居民 Joel Martin Evans（又名“joeleoli”）——目前仍面临刑事指控。",
+          "另外两名被指控的分散蜘蛛组织成员即将在英国受审。18 岁的 Owen Flowers 和 20 岁的 Thalha Jubair 面临与入侵并勒索多家英国大型零售商、伦敦交通系统以及美国医疗机构的指控。两人均表示不认罪，其审判定于 6 月开始。",
+          "调查人员表示，分散蜘蛛组织的嫌疑人属于一个庞大的网络犯罪社区“The Com”，在该社区中，来自不同派系的黑客经常在 Telegram 和 Discord 上公开吹嘘其重大网络盗窃行为，而这些行为几乎无一例外地始于社会工程攻击——通过电话、电子邮件或短信诱骗他人交出可远程访问企业内网的凭证。",
+          "Telegram 上一个较受欢迎的 SIM 卡交换频道长期维护着一份最猖獗的 SIM 卡交换者排行榜，依据是他们据称在窃取加密货币方面的“战绩”。该排行榜此前将 Buchanan 的黑客别名 Tylerb 列为第 65 位（共 100 名黑客），而 Urban 的代号“Sosa”位列第 24 位。",
+          "Buchanan 的量刑听证会定于 2026 年 8 月 21 日举行。据美国司法部称，他面临的法定最高刑期为 22 年联邦监禁。然而，根据《美国量刑指南》中的若干减轻因素，包括被告年龄、犯罪记录、已在美国羁押的时间，以及其与联邦当局合作的程度，法官最终判处的刑期可能会大幅减轻。"
+        ]
+      }
+    },
+    {
+      "title": "[UPDATED] News: Anthropic (Briefly) Removes Claude Code From $20-A-Month \"Pro\" Subscription Plan For New Users",
+      "titleZh": "[更新] Anthropic 短暂移除 Claude Code 对新用户的 $20/月 Pro 订阅权限",
+      "link": "https://www.wheresyoured.at/news-anthropic-removes-pro-cc/",
+      "sourceName": "wheresyoured.at",
+      "sourceUrl": "https://wheresyoured.at",
+      "pubDate": "2026-04-21T22:44:29.000Z",
+      "category": "ai-ml",
+      "keywords": ["Claude Code", "Anthropic", "subscription"],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 25
+      },
+      "summary": "2026 年 4 月 21 日下午，Anthropic 在其多个定价页面上临时取消了新用户通过 $20/月 Pro 计划访问 Claude Code 的权限，引发社区关注。现有 Pro 用户仍可通过 Claude 网页应用继续使用该功能。尽管官方未立即说明原因，此举可能涉及资源调配或产品策略调整。",
+      "reason": "对于依赖 Claude Code 的开发者而言，这一变动直接影响工具可用性，值得密切关注后续政策走向。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ed Zitron",
+        "siteName": "Ed Zitron's Where's Your Ed At",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "news"
+          },
+          {
+            "type": "p",
+            "text": "Ed Zitron\n          Apr 21, 2026 \n          3 min read"
+          },
+          {
+            "type": "h3",
+            "text": "Executive Summary:"
+          },
+          {
+            "type": "li",
+            "text": "In the later afternoon of April 21 2026, Anthropic removed access to Claude Code for its $20-a-month \"Pro\" Plans on various pricing pages. Current Pro users appeared to still have access via the Claude web app.Claude Code support documents, for a brief period of time, exclusively referred to accessing Claude Code via \"your Max Plan,\" after previously saying you could access \"with your Pro or Max Plan.\""
+          },
+          {
+            "type": "li",
+            "text": "On this was raised on Twitter, Anthropic Head of Growth Amol Avasare claimed that this was a \"small test of 2% of new prosumer signups.\"When pressed as to why support documents were changed and why the website consistently showed users that Pro subscribers weren't offered Claude Code, Avasare did not respond.At an unknown time, Anthropic reversed the changes to the website and support documentation."
+          },
+          {
+            "type": "li",
+            "text": "This piece remains as a record of what happened, as I do not believe that this is the last time that Anthropic makes changes in this manner.Per Avasare, \"...[Anthropic] made small adjustments along the way (weekly caps, tighter limits at peak), but usage has changed a lot and our current plans weren't built for this.\" This suggests that changes are to come for all subscription tiers, as he also added that Claude's Max plan was released before Claude Code and Claude Cowork, and \"...designed for heavy chat usage, that's it.\""
+          },
+          {
+            "type": "p",
+            "text": "The following exists as a record of what happened previously, please see above for the full story."
+          },
+          {
+            "type": "p",
+            "text": "In developing news, Anthropic appears to have removed access to AI coding tool Claude Code from its $20-a-month \"Pro\" accounts. This is likely another cost-cutting move that follows a recent change (per The Information) that forced enterprise users to pay on a per-million-token based rate rather than having rate limits that were, based on researchers' findings, often much higher than the cost of the subscription."
+          },
+          {
+            "type": "quote",
+            "text": "Update: Anthropic's Amol Avasare claims that it is \"...running a small test on ~2% of new prosumer signups. Existing Pro and Max subscribers aren't affected.\" This does not really make sense given the fact that all support documents and the Claude website reflect that Pro users do not have access to Claude Code. I am waiting for further comment."
+          },
+          {
+            "type": "p",
+            "text": "Previously, users were able to access Claude using their Pro subscriptions via a command-line interface and both the web and desktop Claude apps. Users were, instead of paying on a per-million-token basis, allowed to use their subscription to access Claude Code, but will likely now have to pay for API access."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic's Claude Code support documents (as recently as this April 10th archived page) previously read \"Using Claude Code with your Pro or Max plan.\" The page now reads \"Using Claude Code with your Max plan.\""
+          },
+          {
+            "type": "p",
+            "text": "Pricing on Anthropic's website reflects the removal of Claude Code on both mobile and desktop."
+          },
+          {
+            "type": "p",
+            "text": "Some Pro users report that they are still able to access Claude Code via the web app and Command-Line Interface."
+          },
+          {
+            "type": "p",
+            "text": "It is unclear at this time whether this change is retroactive or for new Pro subscribers, or whether Anthropic intends to entirely remove access to Claude Code (without paying for API tokens) from every Pro customer."
+          },
+          {
+            "type": "p",
+            "text": "I have requested a comment from Anthropic, and will update this piece when I receive it, or if Anthropic confirms this move otherwise."
+          },
+          {
+            "type": "p",
+            "text": "If you liked this news hit and want to support my independent reporting and analysis, why not subscribe to my premium newsletter?"
+          },
+          {
+            "type": "p",
+            "text": "It’s $70 a year, or $7 a month, and in return you get a weekly newsletter that’s usually anywhere from 5,000 to 18,000 words, including vast, detailed analyses of NVIDIA, Anthropic and OpenAI’s finances, and the AI bubble writ large. I recently put out the timely and important Hater’s Guide To The SaaSpocalypse, another on How AI Isn't Too Big To Fail, a deep (17,500 word) Hater’s Guide To OpenAI, and just last week put out the massive Hater’s Guide To Private Credit."
+          },
+          {
+            "type": "p",
+            "text": "Subscribing to premium is both great value and makes it possible to write these large, deeply-researched free pieces every week."
+          }
+        ],
+        "translations": [
+          " \nnews",
+          " \nEd Zitron  \n2026年4月21日  \n3分钟阅读",
+          " \n执行摘要：",
+          " \n2026年4月21日下午晚些时候，Anthropic在其多个定价页面上取消了每月20美元“Pro”套餐对Claude Code的访问权限。现有Pro用户似乎仍可通过Claude网页应用访问Claude Code。在短时间内，Claude Code的支持文档仅提及“通过您的Max套餐”访问Claude Code，而此前文档称“可通过您的Pro或Max套餐”访问。",
+          " \n此事在Twitter上被提出后，Anthropic增长主管Amol Avasare声称这是一次“针对约2%新专业消费者注册用户的微小测试”。当被问及为何支持文档被修改，以及为何网站持续显示Pro订阅用户无法使用Claude Code时，Avasare未作回应。在未知时间点，Anthropic撤销了对网站和支持文档的更改。",
+          " \n本文作为事件记录保留，因为我认为Anthropic不会最后一次以这种方式做出变更。根据Avasare的说法，“……（Anthropic）一路上做了小幅调整（如每周上限、高峰时段更严格的限制），但使用情况已发生巨大变化，而我们当前的套餐并非为此设计。”这表明所有订阅层级都将迎来变更，因为他同时补充说，Claude的Max套餐是在Claude Code和Claude Cowork推出之前发布的，“……专为重度聊天使用而设计，仅此而已。”",
+          " \n以下内容作为此前事件的记录，完整经过请参见上文。",
+          " \n最新进展显示，Anthropic似乎已从每月20美元的“Pro”账户中移除了AI编程工具Claude Code的访问权限。这可能是继近期一项变更（据The Information报道）之后的又一成本削减举措，该变更迫使企业用户按每百万token计费，而非享受基于研究人员发现通常远高于订阅费用的速率限制。",
+          " \n更新：Anthropic的Amol Avasare声称“……正在对约2%的新专业消费者注册用户进行小规模测试。现有Pro和Max订阅用户不受影响。”但鉴于所有支持文档和Claude网站均显示Pro用户无法访问Claude Code，这一说法难以成立。我正在等待进一步回应。",
+          " \n此前，用户可通过命令行界面以及Claude网页端和桌面端应用，使用Pro订阅访问Claude。用户无需按每百万token付费，而是可通过订阅使用Claude Code，但现在可能需为API访问额外付费。",
+          " \nAnthropic的Claude Code支持文档（截至今年4月10日的存档页面）此前写明“使用您的Pro或Max套餐访问Claude Code”。如今页面已改为“使用您的Max套餐访问Claude Code”。",
+          " \nAnthropic官网的定价信息（包括移动端和桌面端）均反映出Claude Code已从Pro套餐中移除。",
+          " \n部分Pro用户报告称，他们仍可通过网页应用和命令行界面访问Claude Code。",
+          " \n目前尚不清楚这一变更是追溯适用于所有Pro用户，还是仅针对新Pro订阅者，也不清楚Anthropic是否打算彻底取消所有Pro客户（在不支付API token费用的情况下）对Claude Code的访问权限。",
+          " \n我已向Anthropic请求置评，将在收到回复或Anthropic以其他方式确认此举时更新本文。",
+          " \n如果您喜欢这则新闻并希望支持我的独立报道与分析，不妨订阅我的付费通讯？",
+          " \n年费70美元，或月付7美元，作为回报，你将每周收到一篇通常长达5000到18000字的通讯，内容涵盖对NVIDIA、Anthropic和OpenAI财务状况的详尽分析，以及对整个AI泡沫的深入探讨。我最近发布了时效性强且意义重大的《SaaSpocalypse批判指南》，另一篇《AI并非大到不能倒》，一篇深度（17500字）的《OpenAI批判指南》，就在上周还推出了篇幅庞大的《私募信贷批判指南》。",
+          " \n订阅高级版不仅物超所值，也让我能够每周持续撰写这些篇幅长、研究深入且免费发布的文章。"
+        ]
+      }
+    },
+    {
+      "title": "Writing an LLM from scratch, part 32m -- Interventions: conclusion",
+      "titleZh": "从零开始构建 LLM（第 32m 部分）：干预措施总结",
+      "link": "https://www.gilesthomas.com/2026/04/llm-from-scratch-32m-interventions-conclusion",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-04-21T20:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": ["LLM", "from scratch", "machine learning"],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 7,
+        "total": 24
+      },
+      "summary": "作者完成了其著作《Build a Large Language Model (from Scratch)》后续目标之一：在个人设备上完整训练一个接近 GPT-2 Small 性能的模型。训练耗时 44 小时，最终模型在多项基准测试中表现与官方 GPT-2 Small 相当。该项目验证了现代开源工具链（如 PyTorch、Hugging Face）已使个人复现经典模型成为可能。",
+      "reason": "对希望深入理解 LLM 训练全过程的技术爱好者来说，这是一个极具启发性的实践案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "Last November, when I finished the main body of\n\"Build a Large Language Model (from Scratch)\",\nI set myself a number of follow-on goals.\nOne was \"training the full GPT-2 base model myself\"."
+          },
+          {
+            "type": "p",
+            "text": "I've reached the end of that journey, with a model that is almost -- if not quite\n-- as good as GPT-2 small, trained in 44 hours on my own machine,\nso I thought it would be worth summarising\nhow it went."
+          },
+          {
+            "type": "p",
+            "text": "In December, I trained my first model,\ntaking two days,\nbut was disappointed to see that it was worse in terms of loss, and in terms\nof how well it could be fine-tuned to follow instructions, than the original GPT-2 model."
+          },
+          {
+            "type": "p",
+            "text": "I expected that a chunk of that difference was likely to be due to the original model having\nbeen trained for longer, but also noticed that there were a number of changes -- interventions -- that\nI could make to the model and the training run, and I thought they might help."
+          },
+          {
+            "type": "p",
+            "text": "In January, I got a DDP training system together\nthat would allow me to iterate on those interventions without having to wait for\ntwo days for each result."
+          },
+          {
+            "type": "p",
+            "text": "In February, I got started by training a baseline model in the cloud,\nand\nI've since ground through all of the interventions, and come up with\na set that lowered the loss nicely, both in the cloud,\nand locally."
+          },
+          {
+            "type": "p",
+            "text": "Along the way, I've learned about, or refined my knowledge of, a bunch of ML concepts.\nIn increasing order of how they helped with the loss (with the first two actually making\nit slightly worse):"
+          },
+          {
+            "type": "li",
+            "text": "Weight tying, which\nI found made the loss worse, but it was interesting how simple it was to implement."
+          },
+          {
+            "type": "li",
+            "text": "PyTorch's Automated Mixed Precision,\nwhich also harmed the loss a tiny bit, but\nhad the benefit of making training twice as fast, and 66% cheaper in the cloud\n-- well worth the loss penalty."
+          },
+          {
+            "type": "li",
+            "text": "Gradient clipping -- a cheap,\nbut (somewhat to my surprise) not particularly effective intervention for this model."
+          },
+          {
+            "type": "li",
+            "text": "QKV bias -- that is,\nadding bias to the attention weight matrices -- which also helped a tiny bit, though\nI later felt that this might have been in the noise."
+          },
+          {
+            "type": "li",
+            "text": "Weight decay -- more effective,\nand something\nthat's simple enough to understand with simple gradient descent.  I still need to\nlearn more about it in\nthe context of optimisers, though -- particularly with AdamW."
+          },
+          {
+            "type": "li",
+            "text": "Dropout, which\nseems to be less than useful for single-epoch training: removing it\nhelped the model quite a lot."
+          },
+          {
+            "type": "li",
+            "text": "The learning rate,\nwhich I built up quite a lot of new knowledge about, and by both increasing it\nand scheduling it, I got the biggest bang for the buck."
+          },
+          {
+            "type": "p",
+            "text": "I've also learned how to upload my custom models to Hugging Face,\nfound out some interesting things about how random noise affects training,\nand come up with improvements in the setup I have for using an\nLLM as a judge for instruction fine-tuned models."
+          },
+          {
+            "type": "p",
+            "text": "There was a bit of a mystery when I tried out the instruction fine-tuning tests,\nthough.  Although two of my models were very close to GPT-2 small in terms of loss,\nI found\nthat while one of them had an instruction fine-tuning result that was likewise close\nto GPT-2 small, the other was much worse!  A mystery to dig into later, I think."
+          },
+          {
+            "type": "p",
+            "text": "But it was still very satisfying that my best model -- trained locally in 44 hours\n-- was almost as good as GPT-2 small, even if it did fall somewhat short.  So on that\npositive note, I'm going to wrap up this \"Interventions\" series-within-a-series, and move\non to the two other things I wanted to do before wrapping up the \"LLM from scratch\" series\nas a whole:"
+          },
+          {
+            "type": "li",
+            "text": "Going through the appendices in the book to see if there's anything I want\nto highlight there."
+          },
+          {
+            "type": "li",
+            "text": "The final test as to whether I've really understood everything: building my own\nLLM from scratch without reference to the book.  I want to do that in a different\nframework, not PyTorch, to minimise the risk of just regurgitating code --\nI asked people on X/Twitter which one I should use, and\nthe winner was JAX -- so it should be interesting to see how that goes!"
+          },
+          {
+            "type": "p",
+            "text": "The appendices first, I think -- I'll post about them shortly.  But I think the big\none will be the JAX implementation -- really looking forward to that."
+          }
+        ],
+        "translations": [
+          " \n档案",
+          " \n分类",
+          " \n友情链接",
+          " \n去年十一月，当我完成《Build a Large Language Model (from Scratch)》的主体部分后，我给自己设定了一些后续目标。其中之一是“亲自训练完整的 GPT-2 base 模型”。",
+          " \n如今我已走完这段旅程，在本地机器上耗时 44 小时，训练出了一个几乎（即使不算完全）与 GPT-2 small 性能相当的模型。因此，我觉得有必要总结一下整个过程。",
+          " \n去年十二月，我训练了第一个模型，耗时两天，但结果令人失望：无论是损失值，还是指令微调的能力，都不如原始的 GPT-2 模型。",
+          " \n我推测，这种差距在很大程度上可能是因为原始模型训练时间更长，但我也注意到，在模型和训练流程方面，我可以实施若干改进措施，并认为这些措施或许能有所帮助。",
+          " \n今年一月，我搭建了一套 DDP 训练系统，这样就能快速迭代这些改进措施，而无需每次等待两天才能看到结果。",
+          " \n二月，我开始在云端训练一个基线模型，随后逐一尝试了所有改进措施，最终找到一组能显著降低损失值的方案——无论是在云端还是本地训练都有效。",
+          " \n在这个过程中，我学习或深化了对一系列机器学习概念的理解。按它们对降低损失值的帮助程度排序（前两项实际上略微增加了损失）：",
+          " \n权重绑定（Weight tying）：我发现它反而让损失值变差，但实现起来非常简单，这一点很有趣。",
+          " \nPyTorch 的自动混合精度（Automated Mixed Precision）：虽然也让损失值略有上升，但好处是训练速度提升一倍，云端成本降低 66%——这点损失代价完全值得。",
+          " \n梯度裁剪（Gradient clipping）：成本低廉，但（让我有些意外）对这个模型效果并不显著。",
+          " \nQKV 偏置（QKV bias）：即在注意力权重矩阵中加入偏置项——虽然帮助很小，但后来我怀疑这可能只是噪声中的波动。",
+          " \n权重衰减（Weight decay）：效果更明显，而且用简单的梯度下降就很容易理解。不过，我仍需进一步学习它在优化器（尤其是 AdamW）上下文中的具体作用。",
+          " \nDropout：在单轮训练（single-epoch training）中似乎作用不大，移除它反而显著提升了模型性能。",
+          " \n学习率（The learning rate）：我对它有了更深入的理解，通过提高学习率并合理调度，获得了最显著的收益。",
+          " \n我还学会了如何将自定义模型上传至 Hugging Face，发现了随机噪声对训练的一些有趣影响，并改进了使用 LLM 作为指令微调模型评判者的设置方案。",
+          " \n不过在尝试指令微调测试时，出现了一个谜团：尽管我的两个模型在损失值上都非常接近 GPT-2 small，但其中一个模型的指令微调结果同样接近 GPT-2 small，另一个却差得多！这值得日后深入探究。",
+          " \n但即便如此，我仍感到十分满足——我最好的模型（在本地训练 44 小时）几乎达到了 GPT-2 small 的水平，即使略有不足。带着这份积极的心情，我将结束这个“改进措施”子系列，转向“LLM from scratch”整体系列收尾前还想完成的两件事：",
+          "正在翻阅书中的附录，看看有没有什么值得重点标注的内容。",
+          "检验自己是否真正理解所有内容的最关键测试：在不参考本书的情况下，从头开始构建一个属于自己的 LLM。我打算换一个框架来实现，不用 PyTorch，以尽量避免只是照搬代码——我在 X/Twitter 上问大家该用哪个框架，最终 JAX 胜出——所以看看用 JAX 实现会是什么样子，应该会很有趣！",
+          "我想先处理附录部分——稍后会发布相关内容。但我觉得最重要的还是 JAX 的实现——对此我非常期待。"
+        ]
+      }
+    },
+    {
+      "title": "Quoting Andreas Påhlsson-Notini",
+      "titleZh": "AI 智能体已经“太像人”了？",
+      "link": "https://simonwillison.net/2026/Apr/21/andreas-pahlsson-notini/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-21T16:39:33.000Z",
+      "category": "opinion",
+      "keywords": ["AI agents", "human-like behavior", "design critique", "automation"],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 23
+      },
+      "summary": "引述 Andreas Påhlsson-Notini 观点指出，当前 AI 智能体的问题并非不够人性化，而是过度模仿人类行为模式——缺乏严谨性、耐心和专注力，面对困难任务时倾向于妥协而非坚持约束条件。这种“类人缺陷”限制了其在自动化场景中的可靠性。作者暗示应重新思考智能体设计哲学，减少对人类行为的无意识复制。",
+      "reason": "挑战主流“让 AI 更像人”的叙事，提出反直觉但深刻的批判视角，适合反思当前 AI 设计范式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st April 2026"
+          },
+          {
+            "type": "quote",
+            "text": "AI agents are already too human. Not in the romantic sense, not because they love or fear or dream, but in the more banal and frustrating one. The current implementations keep showing their human origin again and again: lack of stringency, lack of patience, lack of focus. Faced with an awkward task, they drift towards the familiar. Faced with hard constraints, they start negotiating with reality."
+          },
+          {
+            "type": "p",
+            "text": "— Andreas Påhlsson-Notini, Less human AI agents, please."
+          }
+        ],
+        "translations": [
+          " \n2026年4月21日",
+          " \nAI 代理已经过于“人性化”了。这里的“人性化”并非指浪漫意义上的爱、恐惧或梦想，而是指那些更平凡、更令人沮丧的特质。当前的实现方式一再暴露出其人类根源：缺乏严谨性，缺乏耐心，缺乏专注力。面对棘手的任务时，它们会不自觉地转向熟悉的模式；面对严苛的约束时，它们开始与现实讨价还价。",
+          " \n——安德斯·帕尔松-诺蒂尼（Andreas Påhlsson-Notini），《请让 AI 代理少一点人性》"
+        ]
+      }
+    },
+    {
+      "title": "People get confused when language implementations break language guarantees",
+      "titleZh": "当语言实现违背语言承诺时，人们会感到困惑",
+      "link": "https://buttondown.com/hillelwayne/archive/people-get-confused-when-language-implementations/",
+      "sourceName": "buttondown.com/hillelwayne",
+      "sourceUrl": "https://buttondown.com/hillelwayne",
+      "pubDate": "2026-04-21T17:40:17.000Z",
+      "category": "engineering",
+      "keywords": ["Python", "language guarantees", "implementation bugs"],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "文章通过 Python 变量赋值示例说明，当编程语言的实际行为偏离其语义承诺（如变量绑定时机）时，开发者容易产生误解。即使语言规范明确，实现细节（如字节码执行顺序）仍可能导致非直觉结果。作者强调语言设计需保持实现与抽象之间的一致性，否则将损害程序员信任。",
+      "reason": "深入探讨编程语言理论与实践的鸿沟，帮助开发者理解底层机制如何影响高层抽象。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Hillel Wayne",
+        "siteName": "Computer Things",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Take the following Python program:"
+          },
+          {
+            "type": "code",
+            "text": "# x = 1, y = 2\nx = 0\ny = x\nprint([x, y])"
+          },
+          {
+            "type": "p",
+            "text": "It'll print [0, 0]. If we swapped the two assignments, it'd instead print [0, 1]. Each assignment happens in a separate temporal step. Pretty much all imperative languages behave this way."
+          },
+          {
+            "type": "p",
+            "text": "Now take the following TLA+ snippet:"
+          },
+          {
+            "type": "code",
+            "text": "\\* x = 1, y = 2\n/\\ x' = 0\n/\\ y' = x\n/\\ PrintT(<<x', y'>>)"
+          },
+          {
+            "type": "p",
+            "text": "This'll print <<0, 1>>. Unlike in imperative languages, TLA+ separates the notion of update and temporal step. We read x' = 0 as \"in the next state, x will be 0, but it still has the same value in the current state\". So in every state x and x' are essentially separate variables. As a consequence of this, the order of statements don't matter in TLA+ semantics and swapping the two assignments doesn't change the printed output. The language is really clever like that! This means, among other things that there's basically no intrastep race conditions. One function can update a variable without affecting how any other function uses it."
+          },
+          {
+            "type": "p",
+            "text": "Okay so now beginners inevitably run into a problem with this:"
+          },
+          {
+            "type": "code",
+            "text": "\\* x = 1, y = 2\n/\\ x' = y'\n/\\ y' = x\n/\\ PrintT(<<x', y'>>)"
+          },
+          {
+            "type": "p",
+            "text": "This'll crash because y' isn't defined yet. But if we swap the two assignments this works fine and prints <<1, 1>>. So clearly that whole thing about nonordering is a pack of bunk."
+          },
+          {
+            "type": "p",
+            "text": "Well, not exactly. TLA+ semantics still guarantee nonordering. The problem is that verifiers don't perfectly implement the TLA+ semantics. y' > 0 is a totally reasonable \"assignment\" but there's an infinite number of possible next states! So the main model checker (TLC) instead requires that y' = some_value comes before any other use of y', which means ordering now matters."
+          },
+          {
+            "type": "p",
+            "text": "The bigger problem is with PrintT. The TLA+ semantics guarantee nonordering because the semantics don't allow for side effects. The model checker adds in effectful operators like PrintT and Assert and IOExec. This can cause a problem with guard statements. Theoretically speaking these two script blocks are equivalent:"
+          },
+          {
+            "type": "code",
+            "text": "/\\ x = 0 \\* guard statement\n/\\ P()\n/\\ x' = x + 1\n\n/\\ x' = x + 1\n/\\ P()\n/\\ x = 0 \\* guard statement"
+          },
+          {
+            "type": "p",
+            "text": "When x = 1, these don't lead to a new state due to the guard clause. But the model checker evaluates each line one at a time, meaning in block 2 it will run x' = x + 1 and P() before getting to x = 0 and discarding the state. If P is a proper TLA+ operator, this isn't a problem, but if it's PrintT or Assert it will take its effect first, leading to weird ghost prints that don't correspond with any next states."
+          },
+          {
+            "type": "p",
+            "text": "This difference between \"what TLA+ semantics guarantees\" and \"the specific ways TLC can break those guarantees\" is a huge source of confusion for people! On top of that many of these operators, like IOExec and TLCSet, are meant as escape hatches. So if you need them you're already doing something pretty weird, and that makes it even more confusing."
+          },
+          {
+            "type": "p",
+            "text": "And on top of that is that there's no syntactic or visual distinguishing between a guarantee-breaking TLC operator and a regular safe TLA+ operator. In compiled languages you got pragmas and preprocessors, which let the compiler do things the language can't. But those usually have a visually distinct syntax, so you know from looking that here be dragons."
+          },
+          {
+            "type": "p",
+            "text": "I'm reminded of Neel Krishnaswami's incredible post What Declarative Languages Are1:"
+          },
+          {
+            "type": "quote",
+            "text": "This also lets us make the prediction that the least-loved features of any declarative language will be the ones that expose the operational model, and break the declarative semantics. So we can predict that people will dislike (a) backreferences in regular expressions, (b) ordered choice in grammars, (c) row IDs in query languages, (d) cut in Prolog, (e) constraint priorities in constraint languages."
+          },
+          {
+            "type": "p",
+            "text": "Prolog cuts have a visually distinct syntax, but a predicate that uses a cut isn't visually distinct from a logically pure predicate. But that's also a little less tricky than what we got in TLA+, since the cut is still part of the language semantics."
+          },
+          {
+            "type": "p",
+            "text": "(Then again, different Prolog dialects have different ways of printing strings, which add side effects to Prolog, and they're not visually distinct from other predicates. So the same problem!)"
+          },
+          {
+            "type": "p",
+            "text": "I don't actually have any fix for this. I just find it a fascinating example of a leaky abstraction. Maybe we could write a code highlighter that highlights all functions that transitively use a \"weird\" function or something."
+          },
+          {
+            "type": "li",
+            "text": "Obligatory response post ↩"
+          }
+        ],
+        "translations": [
+          "请看下面的 Python 程序：",
+          "# x = 1, y = 2\nx = 0\ny = x\nprint([x, y])",
+          "它会输出 [0, 0]。如果我们交换这两个赋值语句的顺序，输出就会变成 [0, 1]。每个赋值操作都发生在独立的时间步中。几乎所有命令式语言都是这样工作的。",
+          "现在请看下面的 TLA+ 代码片段：",
+          "\\* x = 1, y = 2\n/\\ x' = 0\n/\\ y' = x\n/\\ PrintT(<<x', y'>>)",
+          "它会输出 <<0, 1>>。与命令式语言不同，TLA+ 将“更新”和“时间步”的概念分离开来。我们读取 x' = 0 时，意思是“在下一个状态中，x 将是 0，但在当前状态中它仍保持原值”。因此在每个状态中，x 和 x' 本质上是相互独立的变量。正因如此，TLA+ 的语义中语句的顺序无关紧要，交换两个赋值语句不会改变输出结果。这门语言的设计确实很巧妙！这意味着基本上不存在状态内的竞态条件。一个函数可以更新某个变量，而不会影响其他函数对该变量的使用。",
+          "好了，现在初学者 inevitably 会遇到这样一个问题：",
+          "\\* x = 1, y = 2\n/\\ x' = y'\n/\\ y' = x\n/\\ PrintT(<<x', y'>>)",
+          "这段代码会崩溃，因为 y' 尚未定义。但如果我们交换这两个赋值语句的顺序，它就能正常运行并输出 <<1, 1>>。所以显然前面说的“顺序无关”完全是一派胡言。",
+          "其实并非如此。TLA+ 的语义仍然保证顺序无关性。问题在于验证器并不能完美实现 TLA+ 的语义。y' > 0 是一个完全合理的“赋值”，但它对应无限多个可能的下一个状态！因此主模型检查器（TLC）要求 y' = some_value 必须在任何其他使用 y' 的地方之前出现，这就导致顺序现在变得重要了。",
+          "更大的问题出在 PrintT 上。TLA+ 的语义之所以能保证顺序无关，是因为其语义本身不允许副作用。而模型检查器引入了具有副作用的操作符，如 PrintT、Assert 和 IOExec。这可能会在守卫语句中引发问题。理论上讲，下面这两个代码块是等价的：",
+          "/\\ x = 0 \\* guard statement\n/\\ P()\n/\\ x' = x + 1\n\n/\\ x' = x + 1\n/\\ P()\n/\\ x = 0 \\* guard statement",
+          "当 x = 1 时，由于守卫子句的存在，这两个代码块都不会进入新状态。但模型检查器会逐行求值，这意味着在第二个代码块中，它会先执行 x' = x + 1 和 P()，然后才遇到 x = 0 并丢弃该状态。如果 P 是一个标准的 TLA+ 操作符，这没有问题；但如果它是 PrintT 或 Assert，就会先产生副作用，导致出现一些奇怪的“幽灵”输出，这些输出并不对应任何实际的下一个状态。",
+          "“TLA+ 语义所保证的内容”与“TLC 具体实现方式可能破坏这些保证”之间的这种差异，是让人困惑的巨大根源！更糟糕的是，像 IOExec 和 TLCSet 这类操作符本应作为应急出口（escape hatches）使用。所以如果你需要用到它们，说明你已经在做一些相当奇怪的事情，而这只会让情况更加令人困惑。",
+          "更雪上加霜的是，在语法或视觉上根本无法区分那些会破坏保证的 TLC 操作符和常规安全的 TLA+ 操作符。在编译型语言中，你有编译指示（pragmas）和预处理器，它们允许编译器做语言本身做不到的事情。但这些通常具有 visually distinct 的语法，所以你一眼就能看出这里有“龙”（危险）。",
+          "这让我想起了 Neel Krishnaswami 那篇精彩的文章《What Declarative Languages Are》：",
+          "这也让我们可以做出一个预测：任何声明式语言中最不受欢迎的特性，一定是那些暴露操作模型、破坏声明式语义的特性。因此我们可以预测，人们会讨厌（a）正则表达式中的反向引用，（b）文法中的有序选择，（c）查询语言中的行 ID，（d）Prolog 中的 cut，（e）约束语言中的约束优先级。",
+          " \nProlog 中的 cut 具有视觉上独特的语法，但使用 cut 的谓词在视觉上与逻辑上纯粹的谓词并无区别。不过，这比 TLA+ 中的情况稍微简单一些，因为 cut 仍然是语言语义的一部分。",
+          " \n（话又说回来，不同的 Prolog 方言打印字符串的方式各不相同，这会给 Prolog 带来副作用，而这些副作用在视觉上也无法与其他谓词区分开来。所以问题本质相同！）",
+          " \n我其实并没有解决这个问题的办法。我只是觉得这是一个非常有趣的“抽象泄漏”的例子。也许我们可以写一个代码高亮工具，把所有间接使用了“奇怪”函数的地方都高亮出来，或者做点类似的事情。",
+          " \nObligatory response post ↩"
+        ]
+      }
+    },
+    {
+      "title": "Sure, xor’ing a register with itself is the idiom for zeroing it out, but why not sub?",
+      "titleZh": "为何用 XOR 清零寄存器而非 SUB？",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260421-00/?p=112247",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-04-21T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": ["assembly", "optimization", "xor", "register"],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 5,
+        "total": 20
+      },
+      "summary": "尽管 SUB 指令同样可将寄存器设为零，XOR reg, reg 成为主流清零惯用语，原因包括更短的操作码、不依赖标志位输入、以及早期处理器上的性能优势。历史演变和微架构优化共同促成了这一看似反直觉但高效的选择。文章追溯了 x86 架构中该惯用语的起源与持续影响。",
+      "reason": "揭示底层编程中一个常见但少被解释的现象，适合对汇编和编译器优化感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Matt Godbolt, probably best known for being the proprietor of Compiler Explorer, wrote a brief article on  why x86 compilers love the xor eax, eax instruction."
+          },
+          {
+            "type": "p",
+            "text": "The answer is that it is the most compact way to set a register to zero on x86. In particular, it is several bytes shorter than the more obvious mov eax, 0 since it avoids having to encode the four-byte constant. The x86 architecture does not have a dedicated zero register, so if you need to zero out a register, you’ll have to do it ab initio."
+          },
+          {
+            "type": "p",
+            "text": "But Matt doesn’t explain why everyone chooses xor as opposed to some other mathematical operation that is guaranteed to result in a zero? In particular, what’s wrong with sub eax, eax? It encodes to the same number of bytes, executes in the same number of cycles. And its behavior with respect to flags is even better:"
+          },
+          {
+            "type": "p",
+            "text": "Observe that xor eax, eax leaves the AF flag undefined, whereas sub eax, eax clears it."
+          },
+          {
+            "type": "p",
+            "text": "I don’t know why xor won the battle, but I suspect it was just a case of swarming."
+          },
+          {
+            "type": "p",
+            "text": "In my hypothetical history, xor and sub started out with roughly similar popularity, but xor took a slightly lead due to some fluke, perhaps because it felt more “clever”."
+          },
+          {
+            "type": "p",
+            "text": "When early compilers used xor to zero out a register, this started the snowball, because people would see the compiler generate xor and think, “Well, those compiler writes are smart, they must know something I don’t. Since I was on the fence between xor and sub, this tiny data point is enough to tip it toward xor.”"
+          },
+          {
+            "type": "p",
+            "text": "The predominance of these idioms as a way to zero out a register led Intel to add special xor r, r-detection and sub r, r-detection in the instruction decoding front-end and rename the destination to an internal zero register, bypassing the execution of the instruction entirely. You can imagine that the instruction, in some sense, “takes zero cycles to execute”. The front-end detection also breaks dependency chains: Normally, the output of an xor or sub is dependent on its inputs, but in this special case of xor‘ing or sub‘ing a register with itself, we know that the output is zero, independent of input."
+          },
+          {
+            "type": "p",
+            "text": "Even though Intel added support for both xor-detection and sub-detection,  Stack Overflow worries that other CPU manufacturers may have special-cased xor but not sub, so that makes xor the winner in this ultimately meaningless battle."
+          },
+          {
+            "type": "p",
+            "text": "Once an instruction has an edge, even if only extremely slight, that’s enough to tip the scales and rally everyone to that side."
+          },
+          {
+            "type": "p",
+            "text": "Bonus chatter:  One of my former colleagues was partial to using sub r, r to zero a register, and when I was reading assembly code, I could tell that he was the author due to the use of sub to zero a register rather than the more popular xor."
+          },
+          {
+            "type": "p",
+            "text": "Bonus bonus chatter: The xor trick doesn’t work for Itanium because mathematical operations  don’t reset the NaT bit. Fortunately, Itanium also  has a dedicated zero register, so you don’t need this trick. You can just move zero into your desired destination."
+          },
+          {
+            "type": "p",
+            "text": "Category"
+          },
+          {
+            "type": "p",
+            "text": "Topics"
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "Matt Godbolt 因创办 Compiler Explorer 而广为人知，他写了一篇短文，探讨为何 x86 编译器偏爱 xor eax, eax 这条指令。",
+          "原因在于，这是 x86 架构上将寄存器清零最紧凑的方式。具体来说，它比更直观的 mov eax, 0 短几个字节，因为后者需要编码一个四字节的常量。x86 架构没有专用的零寄存器，因此若要将寄存器清零，必须从头开始操作。",
+          "但 Matt 并未解释为何大家都选择 xor，而不是其他同样能保证结果为零的数学运算？特别是，sub eax, eax 有什么问题？它的编码长度相同，执行周期数也一样。而且它对标志位的影响甚至更优：",
+          "注意，xor eax, eax 会使 AF 标志位处于未定义状态，而 sub eax, eax 则会将其清零。",
+          "我不知道为何 xor 最终胜出，但我怀疑这只是“群聚效应”的结果。",
+          "在我的假想历史中，xor 和 sub 最初 popularity 大致相当，但 xor 因某种偶然因素略微领先，也许是因为它看起来更“巧妙”。",
+          "早期编译器使用 xor 清零寄存器时，便开启了滚雪球效应：人们看到编译器生成 xor 指令，会想：“嗯，这些编译器作者很聪明，他们肯定知道一些我不知道的东西。既然我在 xor 和 sub 之间犹豫不决，这个微小的数据点就足以让我倒向 xor。”",
+          "这些将寄存器清零的惯用写法盛行后，Intel 在指令解码前端加入了特殊的 xor r, r 检测和 sub r, r 检测机制，并将目标寄存器重命名为一个内部零寄存器，从而完全绕过指令的执行。你可以认为，这条指令“在某种意义上执行时间为零周期”。前端检测还打破了依赖链：通常，xor 或 sub 的输出依赖于其输入，但在这种将寄存器与自身进行 xor 或 sub 的特殊情况下，我们知道输出必然为零，与输入无关。",
+          "尽管 Intel 同时支持 xor 检测和 sub 检测，但 Stack Overflow 担心其他 CPU 制造商可能只对 xor 做了特殊优化，而未对 sub 做同样处理，这使得 xor 在这场最终毫无意义的竞争中胜出。",
+          "一旦某条指令获得哪怕极其微小的优势，也足以打破平衡，促使所有人倒向那一方。",
+          "额外闲聊：我的一位前同事偏爱使用 sub r, r 来清零寄存器，因此当我阅读汇编代码时，只要看到用 sub 而非更常见的 xor 来清零寄存器，就能判断出是他写的。",
+          "额外额外闲聊：xor 技巧在 Itanium 上无效，因为数学运算不会重置 NaT 位。幸运的是，Itanium 本身就有专用的零寄存器，因此你根本不需要这种技巧，只需将零移动到目标寄存器即可。",
+          "分类",
+          "主题",
+          "作者",
+          "Raymond 参与 Windows 的演进已超过 30 年。2003 年，他创办了一个名为 The Old New Thing 的网站，其受欢迎程度远远超出了他最疯狂的想象，这一发展至今仍让他感到心惊肉跳。该网站催生了一本书，巧合的是，书名也叫《The Old New Thing》（Addison Wesley，2007 年）。他偶尔会出现在 Windows Dev Docs 的 Twitter 账号上，讲述一些毫无实用价值的故事。"
+        ]
+      }
+    },
+    {
+      "title": "Better TTS on Linux",
+      "titleZh": "Linux 上的更好 TTS 方案",
+      "link": "https://shkspr.mobi/blog/2026/04/better-tts-on-linux/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-04-21T11:34:07.000Z",
+      "category": "tools",
+      "keywords": ["TTS", "Linux", "eSpeak", "speech synthesis"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "eSpeak 虽支持多种语言和口音，但音质机械单调，类似 1980 年代电子玩具。文章推荐使用 Piper、Coqui TTS 或 Mimic 3 等现代替代方案，它们基于深度学习，提供自然语音合成。配置指南涵盖 Debian/Ubuntu 和 Arch 系统，帮助用户快速搭建高质量语音输出环境。",
+      "reason": "为 Linux 用户提供了从过时 TTS 升级到现代神经语音合成的实用路径，提升无障碍体验。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The venerable eSpeak is a mainstay of Linux distributions. It is a clever Text-To-Speech (TTS) program which will read aloud the written word using a phenomenally wide variety of languages and accents."
+          },
+          {
+            "type": "p",
+            "text": "The only problem is that it sounds robotic. It has the same vocal fidelity as a 1980s Speak 'n' Spell toy. Monotonous, clipped, and painful to listen to. For some people, this is a feature, not a bug. I have blind friends who are so used to eSpeak that they can crank it up to hundreds of words per minute and navigate through complex documents with ease."
+          },
+          {
+            "type": "p",
+            "text": "For the rest of us, it is a steep and unpleasant learning curve."
+          },
+          {
+            "type": "p",
+            "text": "There are lots of modern TTS programs using all sorts of advanced AI. Many of them are paywalled or require you to post your text to a webserver - with all the privacy and latency problems that causes. Some are restricted to high-powered GPUs or other expensive equipment."
+          },
+          {
+            "type": "p",
+            "text": "Piper is different. It is local first, runs quickly on modest hardware, and is open source."
+          },
+          {
+            "type": "p",
+            "text": "The easiest way to install it on Linux is to use Pied - a simple GUI which allows you to select languages, listen to accents, and then install them."
+          },
+          {
+            "type": "p",
+            "text": "It will change your speech-dispatcher to use the new Piper voice. That means it is immediately available to your Linux DE's accessibility service and to apps like Firefox."
+          },
+          {
+            "type": "p",
+            "text": "I now have a reassuring Scottish lady speaking out everything on my computer."
+          }
+        ],
+        "translations": [
+          " \n经典的 eSpeak 是 Linux 发行版中的常青树。它是一款巧妙的文本转语音（TTS）程序，能以极其丰富的语言和口音朗读书面文字。",
+          " \n唯一的问题是它的发音听起来很机械，语音保真度堪比 20 世纪 80 年代的“会说话的拼写板”玩具——单调、生硬，听着让人难受。但对某些人来说，这反而是个优点而非缺陷。我有一些盲人朋友早已习惯 eSpeak，他们能把语速调到每分钟数百词，轻松浏览复杂的文档。",
+          " \n对我们其他人而言，这却是一段陡峭且令人不适的学习曲线。",
+          " \n如今市面上有许多现代 TTS 程序，采用了各种先进的 AI 技术。但它们大多需要付费，或要求你将文本发送到网络服务器——这会带来隐私和延迟问题。还有一些则受限于高性能 GPU 或其他昂贵设备。",
+          " \nPiper 则不同。它优先本地运行，在普通硬件上也能快速工作，并且是开源的。",
+          " \n在 Linux 上安装它的最简单方法是使用 Pied——一个简单的图形界面工具，你可以用它选择语言、试听口音，然后进行安装。",
+          " \n它会将你的 speech-dispatcher 切换为使用新的 Piper 语音。这意味着你的 Linux 桌面环境辅助功能以及 Firefox 等应用都能立即调用它。",
+          " \n现在我的电脑上有一位令人安心的苏格兰女士在朗读所有内容。"
+        ]
+      }
+    },
+    {
+      "title": "Four Horsemen of the AIpocalypse",
+      "titleZh": "AI启示录的四大骑士",
+      "link": "https://www.wheresyoured.at/four-horsemen-of-the-aipocalypse/",
+      "sourceName": "wheresyoured.at",
+      "sourceUrl": "https://wheresyoured.at",
+      "pubDate": "2026-04-21T16:28:59.000Z",
+      "category": "opinion",
+      "keywords": ["AI", "NVIDIA", "OpenAI", "market analysis"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "文章探讨了当前人工智能领域面临的四大核心挑战，即所谓的‘AI启示录四骑士’，包括模型幻觉、数据污染、算力垄断和伦理失控。作者指出，这些风险正随着AI技术的快速商业化而加剧，尤其在大模型训练依赖低质量网络数据、头部公司控制关键基础设施的背景下尤为突出。文中特别强调，缺乏透明度和监管的AI发展路径可能带来系统性社会风险。最终呼吁行业建立更严格的验证机制与分布式治理框架以应对危机。",
+      "reason": "如果你关心AI技术背后的深层风险与权力集中问题，这篇文章提供了极具洞察力的批判性视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ed Zitron",
+        "siteName": "Ed Zitron's Where's Your Ed At",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you liked this piece, please subscribe to my premium newsletter. It’s $70 a year, or $7 a month, and in return you get a weekly newsletter that’s usually anywhere from 5,000 to 18,000 words, including vast, detailed analyses of NVIDIA, Anthropic and OpenAI’s finances, and the AI bubble writ large. I recently put out the timely and important Hater’s Guide To The SaaSpocalypse, another on How AI Isn't Too Big To Fail, a deep (17,500 word) Hater’s Guide To OpenAI, and just last week put out the massive Hater’s Guide To Private Credit."
+          },
+          {
+            "type": "p",
+            "text": "Subscribing to premium is both great value and makes it possible to write these large, deeply-researched free pieces every week."
+          },
+          {
+            "type": "p",
+            "text": "Soundtrack — Megadeth — Hangar 18 (Eb Tuning)"
+          },
+          {
+            "type": "p",
+            "text": "For the best part of four years I’ve been wrapped up in writing these massive, sprawling narratives about the AI bubble and the tech industry at large. I still intend to write them, but today I’m going to do what I do best — explaining all the odd shit that’s happening in the tech industry and explaining why it’s concerning to me."
+          },
+          {
+            "type": "p",
+            "text": "And because I love a good bit, I’m tying these stories to my pale horses of the AIpocalypse — signs that things are beginning to unwind in the most annoying bubble in history."
+          },
+          {
+            "type": "p",
+            "text": "Anyway, considering that the newsletter and the podcast are now my main form of income, I’m going to be experimenting with the formats across the free and premium to keep things interesting and varied."
+          },
+          {
+            "type": "h2",
+            "text": "Anthropic’s Products Are Constantly Breaking Because It Doesn’t Have Enough Capacity, And Opus 4.7 Is Both Worse and Burns More Tokens"
+          },
+          {
+            "type": "quote",
+            "text": "Pale Horse: Any further price increases or service degradations from Anthropic and OpenAI are a sign that they’re running low on cash."
+          },
+          {
+            "type": "p",
+            "text": "Let’s start with a fairly direct statement: Anthropic should stop taking on new customers until it works out its capacity issues."
+          },
+          {
+            "type": "p",
+            "text": "So, generally any service — Netflix, for example — you use with any regularity has the “four nines” of availability, meaning that it’s up 99.99% of the time. Once a company grows beyond a certain scale, having four 9s is considered standard business practice…"
+          },
+          {
+            "type": "p",
+            "text": "…unless you’re Anthropic!"
+          },
+          {
+            "type": "p",
+            "text": "As of writing this sentence, Anthropic’s availability for its Claude Chatbot has 98.79% uptime, its platform/console is at 99.14%, its API is at 99.09%, and Claude Code is at 99.25% for the last 90 days."
+          },
+          {
+            "type": "p",
+            "text": "Let me put this into context. When you have 99.99% uptime, a service is only down for a minute (and 0.48 of a second) each week. If you’re hitting 98.79% uptime, as with the Claude chatbot, your downtime jumps to two hours, one minute, and 58 seconds."
+          },
+          {
+            "type": "p",
+            "text": "Or, put another way, 98.79% uptime equates to nearly four-and-a-half days in a calendar year where the service is unavailable."
+          },
+          {
+            "type": "p",
+            "text": "More-astonishingly, Claude for Government sits at 99.91%. Government services are generally expected to be four 9s minimum, or 5 (99.999%) for more important systems underlying things like emergency services."
+          },
+          {
+            "type": "p",
+            "text": "This is a company that recently raised $30 billion dollars and gets talked about like somebody’s gifted child, yet Anthropic’s services seem to have constant uptime issues linked to a lack of capacity."
+          },
+          {
+            "type": "p",
+            "text": "Per the Wall Street Journal:"
+          },
+          {
+            "type": "quote",
+            "text": "Since mid-February, outages for systems across Anthropic have become so common that some of its enterprise clients are switching to other AI model players."
+          },
+          {
+            "type": "quote",
+            "text": "David Hsu, founder and CEO of software development platform Retool, said he prefers to use Anthropic’s Opus 4.6 model to power his company’s AI agent tool because he believes it is the best model for enterprise. He recently changed to OpenAI’s model to power his company’s agent. “Anthropic has just been going down all the time,” he said.The reliability of core services on the internet is often measured in nines. Four nines means 99.99% of uptime—a typical percentage that a software company commits to customers. As of April 8, Anthropic’s Claude API had a 98.95% uptime rate in the last 90 days."
+          },
+          {
+            "type": "p",
+            "text": "Yet Anthropic’s problems go far further than simple downtime (as I discussed last week), leading to (deliberately or otherwise) severe performance issues with Opus 4.6:"
+          },
+          {
+            "type": "quote",
+            "text": "One of the most detailed public complaints originated as a GitHub issue filed by Stella Laurenzo on April 2, 2026, whose LinkedIn profile identifies her as Senior Director in AMD’s AI group.In that post, Laurenzo wrote that Claude Code had regressed to the point that it could not be trusted for complex engineering work, then backed that claim with a sprawling analysis of 6,852 Claude Code session files, 17,871 thinking blocks and 234,760 tool calls.The complaint argued that, starting in February, Claude’s estimated reasoning depth fell sharply while signs of poorer performance rose alongside it, including more premature stopping, more “simplest fix” behavior, more reasoning loops, and a measurable shift from research-first behavior to edit-first behavior."
+          },
+          {
+            "type": "p",
+            "text": "While Anthropic claims that it doesn’t degrade models to better serve demand, that doesn’t really square with the many, many users complaining about the problem. Anthropic’s response has, for the most part, been to pretend like nothing is wrong, with a spokesperson waving off Carl Franzen of VentureBeat (who has a great article on the situation here) by pointing him to two different Twitter posts, neither of which actually explain what’s going on."
+          },
+          {
+            "type": "p",
+            "text": "Things only got worse with last week’s launch of Opus 4.7, which appears to have worse performance and burn more tokens."
+          },
+          {
+            "type": "p",
+            "text": "Per Business Insider:"
+          },
+          {
+            "type": "quote",
+            "text": "One Reddit post titled, \"Claude Opus 4.7 is a serious regression, not an upgrade,\" has 2,300 upvotes. An X user's suggestion that Opus 4.7 wasn't really an improvement over Opus 4.6 got 14,000 likes. In one informal but popular test of AI intelligence, Opus 4.7 appears to say that there were two Ps in \"strawberry.\" Another user screenshot shows it saying that it didn't cross reference because it was \"being lazy.\" Some Redditors found that Opus 4.7 was rewriting their résumés with new schools and last names. Multiple X users posited that Opus 4.7 had simply gotten dumber.Some X users have suggested the culprit is the AI model's reasoning times. Anthropic says the new \"adaptive reasoning\" function lets the model decide when to think for longer or shorter periods. One user wrote that they couldn't \"get Opus 4.7 to think.\" Another wrote that it \"nerfs performance.\"\"Not accurate,\" Anthropic's Boris Cherny, the creator of Claude Code, responded. \"Adaptive thinking lets the model decide when to think, which performs better.\""
+          },
+          {
+            "type": "p",
+            "text": "I think it’s deeply bizarre that a huge company allegedly worth hundreds of billions of dollars A) can’t seem to keep its services online with any level of consistency, B) appears to be making its products worse, and C) refuses to actually address or discuss the problem. Users have been complaining about Claude models getting “dumber” going back as far as 2024, each time faced with a tepid gaslighting from a company with a CEO that loves to talk about his AI products wiping out half of white collar labor."
+          },
+          {
+            "type": "h2",
+            "text": "Anthropic Has No Good Solutions To Its Capacity Issues And Shouldn’t Be Accepting New Customers — And More Capacity Will Only Lose It Money"
+          },
+          {
+            "type": "p",
+            "text": "Some might frame this as Anthropic having “insatiable demand for its products,” but what I see is a terrible business with awful infrastructure run in an unethical way. It is blatantly, alarmingly obvious that Anthropic cannot afford to provide a stable and reliable service to its customers, and its plans to expand capacity appear to be signing deals with Broadcom that will come online “starting in 2027,” near-theoretical capacity with Hut8, which does not appear to have ever built an AI data center, and also with CoreWeave, a company that is yet to build the full capacity for its 2025 deals with OpenAI and only has around 850MW of “active power capacity” — so around 653MW of actual compute capacity — as of the end of 2025, up from 360MW of power at end of 2024."
+          },
+          {
+            "type": "p",
+            "text": "Remember: data centers take forever to build, and there’s only a limited amount of global capacity, most of which is taken up by Microsoft, Google, Amazon, Meta and OpenAI, with the first three of those already providing capacity to both Anthropic and OpenAI."
+          },
+          {
+            "type": "p",
+            "text": "We’re likely hitting the absolute physical limits of available AI compute capacity, if we haven’t already done so, and even if other data centers are coming online, is the plan to just hand them over to OpenAI or Anthropic in perpetuity?"
+          },
+          {
+            "type": "p",
+            "text": "It’s also unclear what the goal of that additional capacity might be, as I discussed last week:"
+          },
+          {
+            "type": "quote",
+            "text": "Yet it’s unclear whether “more capacity” means that things will be cheaper, or better, or just a way of Anthropic scaling an increasingly-shittier experience. To explain, when an AI lab like Anthropic or OpenAI “hits capacity limits,” it doesn’t mean that they start turning away business or stop accepting subscribers, but that current (and new) subscribers will face randomized downtime and model issues, along with increasingly-punishing rate limits. Neither company is facing a financial shortfall as a result of being unable to provide their services (rather, they’re facing financial shortfalls because they’re providing their services to customers), and the only ones paying that price because of these “capacity limits” are the customers."
+          },
+          {
+            "type": "p",
+            "text": "What’s the goal, exactly? Providing a better experience to its current customers? Securing enough capacity to keep adding customers? Securing enough capacity to support larger models like Mythos? When, exactly, does Anthropic hit equilibrium, and what does that look like?"
+          },
+          {
+            "type": "p",
+            "text": "There’s also the issue of cost."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic is currently losing billions of dollars a year offering a service with amateurish availability and oscillating quality, and continues to accept new subscribers, meaning that capacity issues are not affecting its growth. As a result, adding more capacity simply makes the product work better for a much higher cost."
+          },
+          {
+            "type": "h2",
+            "text": "Anthropic’s Growth Story Is A Sham Based on Subsidies and Sub-par Service"
+          },
+          {
+            "type": "p",
+            "text": "Anthropic’s growth story is a sham built on selling subscriptions that let users burn anywhere from $8 to $13.50 for every dollar of subscription revenue and providing a brittle, inconsistent service, made possible only through a near-infinite stream of venture capital money and infrastructure providers footing the bill for data center construction."
+          },
+          {
+            "type": "p",
+            "text": "Put another way, Anthropic doesn’t have to play by the rules. Venture capital funding allows it to massively subsidize its services. The endless, breathless support from the media runs cover for the deterioration of its services. A lack of any true regulation of tech, let alone AI, means that it can rugpull its customers with varying rate limits whenever it feels like."
+          },
+          {
+            "type": "p",
+            "text": "If Anthropic were forced to charge its actual costs — and no, I don’t believe its API is profitable no matter how many people misread Dario Amodei’s interview — its growth would quickly fall apart as customers faced the real costs of AI (which I’ll get to in a bit). If Anthropic was forced to provide a stable service, it would have to stop accepting new customers or massively increase its inference costs."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic is a con, and said con is only made possible through endless, specious hype. Everybody who blindly applauded everything this company did is a mark."
+          },
+          {
+            "type": "h2",
+            "text": "Claude Mythos Was Held Back Due To Capacity Constraints, Not Fears Around Capabilities"
+          },
+          {
+            "type": "p",
+            "text": "Congratulations to all the current winners of the “Fell For It Again Award.” Per the Financial Times:"
+          },
+          {
+            "type": "quote",
+            "text": "Anthropic has said it will hold off on a wider release of the model until it is reassured that it is safe and cannot be abused by bad actors. The company also has a finite amount of computing power and has suffered outages in recent weeks.Multiple people with knowledge of the matter suggested Anthropic was holding back from a wider release until it could reliably serve the model to customers."
+          },
+          {
+            "type": "p",
+            "text": "So, yeah, anyone in the media who bought the line of shit from Dario Amodei that this was “too dangerous to release” is a mark. Cal Newport has an excellent piece debunking the hype, but my general feeling is that if Mythos was so powerful, how did Claude Code’s source code leak?"
+          },
+          {
+            "type": "p",
+            "text": "Did… Anthropic not bother to use its super-powerful Mythos model to check? Or did it not find anything? Either way, very embarrassing for all involved."
+          },
+          {
+            "type": "h2",
+            "text": "AI Compute Demand Is Being Inflated By Anthropic and OpenAI, With More Than 50% of AI Data Centers Under Construction Built For Two Companies, and Only 15.2GW of Capacity Under Construction Through The End of 2028"
+          },
+          {
+            "type": "quote",
+            "text": "Pale Horse: data center collapses, misc."
+          },
+          {
+            "type": "p",
+            "text": "As I’ve discussed in the past, only 5GW of AI compute capacity is currently under construction worldwide (based on research from Sightline Climate), with “under construction” meaning everything from a scaffolding yard with a fence (as is the case with Nscale’s Loughton-based data center) to a building nearing handoff to the client."
+          },
+          {
+            "type": "p",
+            "text": "I reached out to Sightline to get some clarity, and they told me that of the 114GW of capacity due to come online by the end of 2028, only 15.2GW is under construction, including the 5GW due in 2026."
+          },
+          {
+            "type": "p",
+            "text": "That’s…very bad."
+          },
+          {
+            "type": "p",
+            "text": "It gets worse when you realize that the majority of that construction is for two companies:"
+          },
+          {
+            "type": "li",
+            "text": "OpenAI’s Stargate data centers account for 4.6GW — with 1.2GW in Abilene, Texas; 1.4GW in Shackelford, Texas; 1GW in Dona Ana, New Mexico; and 1GW in Port Washington, Wisconsin."
+          },
+          {
+            "type": "li",
+            "text": "It’s safe to assume that with big tech’s hundreds of billions of dollars of capex that its data centers will make up a large amount — as much as 6GW — with most of that likely going to Anthropic or OpenAI.An indeterminately-large chunk could be Amazon’s Project Rainier in Indiana, which will “eventually” (per CNBC) draw more than 2.2GW of electricity. While Amazon says it’s “fully operational,” it’s fucking lying, as it also claims that it has “nearly half a million Trainium 2 chips,” with each chip being 500 watts, and 500,000 times 500 watts being around 250MW. Other reports said it would be up to 1 million Trainium2 chips by the end of 2025, but that would still only amount to 500MW.Anthropic is apparently the primary tenant. Anthropic also agreed to take 3.5GW of capacity of TPUs from Google Cloud, with the first 1GW coming online in 2027, and also agreed to take a gigawatt from Microsoft made up of “Vera Rubin and Grace Blackwell systems,” meaning that these are likely data centers that are currently under construction.Anthropic and Google also announced in Q4 2025 that Anthropic would use 1 million TPUs as part of a new deal with Google Cloud, and that “well over” a gigawatt of capacity would come online in 2026."
+          },
+          {
+            "type": "li",
+            "text": "Microsoft is also taking the 900MW extension to Stargate Abilene, and considering that most of Microsoft’s GPU infrastructure already goes to OpenAI, I can only imagine that’s where it’s going.I also will add that Satya Nadella claimed that Microsoft brought 2GW of capacity online in 2025, and that its Fairwater Data Center cluster was “going live ahead of schedule,” only to fail to clarify when that might happen or what said schedule was. Microsoft’s also been relatively vague about the actual capacity, but based on there being “hundreds of thousands of GB200 GPUs,” that would be (assuming 300,000 GPUs) about 583MW."
+          },
+          {
+            "type": "quote",
+            "text": "Sidenote: I’ll also add that Anthropic has agreed to spend $100 billion on Amazon Web Services over the next decade as part of its $5 billion (with “up to $20 billion” more in the future, and no, there’s no more details than that) investment deal with Amazon, with Anthropic apparently securing 5GW of capacity and bringing “nearly 1GW of Trainium2 and 3 capacity online by the end of the year,” which I do not believe, but whatever.These deals shouldn’t be legal."
+          },
+          {
+            "type": "p",
+            "text": "So, to summarize, at least 4.6GW of the 15.2GW of data center capacity under construction is for OpenAI, with at least another 4GW of that reserved for Anthropic through partners like Microsoft, Google and Amazon. In truth, the number could be much higher."
+          },
+          {
+            "type": "p",
+            "text": "This is a fundamentally insane situation. OpenAI and Anthropic both burn billions of dollars a year, with The Information reporting that Anthropic expects to burn at least $11 billion and OpenAI $25 billion in 2026. The only way that these companies can continue to exist is by raising endless venture capital funding or, assuming they make it to IPO, endless debt offerings or at-the-market stock sales."
+          },
+          {
+            "type": "h2",
+            "text": "NVIDIA Claims To Have $1 Trillion In Sales Visibility Through 2027, But Only $285 Billion GPUs Worth Of Data Centers Are Under Construction — NVIDIA Is Selling Years’ Worth of GPUs In Advance And Warehousing Them"
+          },
+          {
+            "type": "p",
+            "text": "It’s also very concerning that only such a small percentage of announced compute capacity is being built, especially when you run the numbers against NVIDIA’s actual sales."
+          },
+          {
+            "type": "p",
+            "text": "Last year, Jerome Darling of TD Cowen estimated that it cost around $30 million per megawatt in critical IT (GPUs, servers, storage, and so on) and $12 million to $14 million per megawatt to build a data center, making critical IT around 68% (at the higher end of construction) of the total cost-per-megawatt."
+          },
+          {
+            "type": "p",
+            "text": "Now, to be clear, those gigawatt and megawatt numbers for data centers refer to the power rather than critical IT, and if we take an average PUE (power usage efficiency, a measurement of how efficient a data center’s power is) of 1.35, we get 11.2GW of critical IT hardware, with the majority (I’d say 90%) being GPUs, bringing us down to around 10.1GW of GPUs."
+          },
+          {
+            "type": "p",
+            "text": "If we then cut that up into GB200 or GB300 NVL72 racks with a power draw of around 140KW, that’s around 71,429 racks’ worth of hardware at an average of $4 million each, which gives us around $285.7 billion in revenue for NVIDIA."
+          },
+          {
+            "type": "p",
+            "text": "NVIDIA claims it had a combined $500 billion in orders between 2025 and 2026, and $1 trillion of sales through 2027, and it’s unclear where any of those orders are meant to go other than a warehouse in Taiwan."
+          },
+          {
+            "type": "p",
+            "text": "At this point, I think it’s fair to ask why anyone is buying more GPUs, as there’s nowhere to fucking put them. Every beat-and-raise earnings from NVIDIA is now deeply suspicious."
+          },
+          {
+            "type": "h2",
+            "text": "AI Is Really Expensive, With Companies Spending As Much As 10% Of Headcount Cost On LLM Tokens, And May Reach 100% of Headcount Cost In The Next Few Quarters"
+          },
+          {
+            "type": "quote",
+            "text": "New Pale Horse: Any and all signs that companies are facing the economic realities of AI, including any complaints around or adaptations to deal with the increasing costs of AI."
+          },
+          {
+            "type": "p",
+            "text": "Last week, a report from Goldman Sachs revealed that (and I quote) “...companies are overrunning their initial budgets for inference by orders of magnitude (we heard one industry datapoint on inference costs in engineering now approaching about 10% of headcount cost, but could be on track to be on par with headcounts costs in the next several quarters based on current trajectories.”"
+          },
+          {
+            "type": "p",
+            "text": "To simplify, this means that some companies are spending as much as 10% of the cost of their employees on generative AI services, all without appearing to provide any stability, quality or efficiency gains, or (not that I want this) justification to lay people off."
+          },
+          {
+            "type": "p",
+            "text": "The Information’s Laura Bratton also reported last week that Uber had managed to blow through its entire AI budget for the year a few months into 2026:"
+          },
+          {
+            "type": "quote",
+            "text": "Uber’s surging use of AI coding tools, particularly Anthropic’s Claude Code, has maxed out its full year AI budget just a few months into 2026, according to chief technology officer Praveen Neppalli Naga.“I'm back to the drawing board because the budget I thought I would need is blown away already,” Neppalli Naga said in an interview.…He wouldn’t disclose exact figures of the company’s software budget or what it spends on AI coding tools. Uber’s research and development expenses, which typically reflect companies’ costs of developing new AI products, rose 9% to $3.4 billion in 2025 from the previous year, and the firm said in a recent securities filing it expects that cost will continue rising on an absolute dollar basis."
+          },
+          {
+            "type": "p",
+            "text": "Uber’s CTO also added that about “...11% of real, live updates to the code in its backend systems are being written by AI agents primarily built with Claude Code, up from just a fraction of a percent three months ago.” Anyone who has ever used Uber’s app in the last year can see how well that’s going, especially if they’ve had to file any kind of support ticket."
+          },
+          {
+            "type": "p",
+            "text": "Honestly, I find this all completely fucking insane. The whole sales pitch for generative AI is that it’s meant to be this magical, efficiency-driving panacea, yet whenever you ask somebody about it the answer is either “yeah, we’re writing all the code with it!” without any described benefits or “it costs so much fucking money, man.”"
+          },
+          {
+            "type": "p",
+            "text": "Let’s get practical about these economics, and use Spotify as an example because its CEO proudly said that its “top engineers” are barely writing code anymore, though to be clear, the Goldman Sachs example didn’t specifically name any one company."
+          },
+          {
+            "type": "p",
+            "text": "For the sake of argument, let’s say that the company has 3000 engineers — one of its sites claims it has 2700, but I’ve seen reports as high as 3500. Let’s also assume, based on the Spotify Blind (an anonymous social media site for tech workers), that these engineers make a median salary of 192,000 a year."
+          },
+          {
+            "type": "p",
+            "text": "In the event that Spotify spent 10% of its engineering headcount (around $576 million) on AI inference, it would be spending roughly $57.6 million, or approximately 4.1% of its $1.393 billion in Research and Development costs from its FY2025 annual report. Eager math-doers in the audience will note that 100% of headcount would be nearly half of the R&D budget, or around a quarter of its $2.2 billion in net income for the year."
+          },
+          {
+            "type": "p",
+            "text": "Now, to be clear, these numbers likely already include some AI inference spend, but I’m just trying to illustrate the sheer scale of the cost."
+          },
+          {
+            "type": "p",
+            "text": "While this is great for Anthropic (and to a lesser extent OpenAI), I don’t see how it works out for any of its customers. A flat 10% bump on the cost of software engineering is the direct opposite of what AI was meant to do, and in the event that costs continue to rise, I’m not sure how anybody justifies the expense much further."
+          },
+          {
+            "type": "p",
+            "text": "And we’re going to find out fairly quickly, because the world of token subsidies is going away."
+          },
+          {
+            "type": "h2",
+            "text": "The Subprime AI Crisis Continues, With Microsoft Starting Token-Based Billing For GitHub Copilot Later This Year, And Anthropic Already Moving Enterprise Customers To API Rates"
+          },
+          {
+            "type": "quote",
+            "text": "Pale Horse: Any further price increases or service degradations from AI startups, and yes, that’s what I’d call GitHub Copilot, in the sense that it loses hundreds of millions of dollars and makes fuck-all revenue."
+          },
+          {
+            "type": "p",
+            "text": "As I reported yesterday, internal documents have revealed that Microsoft plans to temporarily suspend individual account signups to its GitHub Copilot coding product, tighten rate limits across the board, remove Opus models from its $10-a-month Pro subscription, and transition from requests (single interactions with GitHub Copilot) towards token-based billing some time later this year, with Microsoft confirming some of these details (but not token-based billing) in a blog post."
+          },
+          {
+            "type": "p",
+            "text": "This is a significant move, driven by (per my own reporting) Microsoft’s week-over-week costs of running GitHub Copilot nearly doubling since January."
+          },
+          {
+            "type": "quote",
+            "text": "An aside/explainer: if you’re confused as to what “token-based billing” means, know that the vast majority of AI services currently subsidize their subscriptions, using another measure (such as “requests” or “rate limits”) to meter out how much a user can use the service. Nevertheless, these services still burn tokens at whatever rate that it costs to pay for them — for example, $5 per million input and $25 per million output for Opus 4.7, as I mentioned previously — meaning that the company almost always loses money unless a person doesn’t use the subscription very much.Companies did this to grow their subscriber numbers, and I think they assumed things would get cheaper somehow. Great job, everyone!"
+          },
+          {
+            "type": "p",
+            "text": "The move to token-based billing will see GitHub users charged based on their usage of the platform, and how many tokens their prompts consume — and thus, how much compute they use. It’s unclear at this time when this will begin, but it significantly changes the value of the product."
+          },
+          {
+            "type": "p",
+            "text": "I’ll also say that the fact that Microsoft has stopped signing up new paid GitHub Copilot subscriptions entirely is one of the most shocking moves in the history of software. I’ve literally never seen a company do this outside of products it intended to kill entirely, and that’s likely because — per my source — it intends to move paid customers over to token-based-billing, though it’s unclear what these tiers would look like, as the $10-a-month and $39-a-month subscriptions are mostly differentiated based on the amount of requests you can use."
+          },
+          {
+            "type": "p",
+            "text": "What’s remarkable about this story is that Microsoft is one of the few players capable of bankrolling AI in perpetuity, with over $20 billion a quarter in profits since the middle of 2023."
+          },
+          {
+            "type": "p",
+            "text": "Its decision to start cutting costs around AI suggests that said costs have become unbearable — The Information reported back in January that it was on pace to spend $500 million a year with Anthropic alone, and if that amount has doubled, it likely means that Microsoft is spending upwards of ten times its GitHub Copilot revenue, as I can report today that at the end of 2025, GitHub Copilot was at around $1.08 billion, with the majority of that revenue coming from its CoPilot Business and Enterprise subscriptions."
+          },
+          {
+            "type": "p",
+            "text": "The Information also reported a few weeks ago that GitHub had recently seen a surge of outages attributed to “spiking traffic as well as its effort to move its applications from its own servers to Microsoft’s Azure cloud”:"
+          },
+          {
+            "type": "quote",
+            "text": "“Since January, every month, every week almost now has some new peak stat for the highest [usage] rate ever,” [GitHub COO Kyle] Daigle said. He attributed the growth to “both agents and humans,” and also noted that the rise of AI coding tools has led to a rise in humans without deep coding knowledge starting to use GitHub’s platform more."
+          },
+          {
+            "type": "p",
+            "text": "“Agents” in this case could refer to just about anything — OpenAI’s Codex, Anthropic’s Claude Code, or even people plugging in the wasteful, questionably-useful OpenClaw to their GitHub Copilot account, and if that’s what happened, it’s very likely behind the move to Token-Based Billing and rate limits."
+          },
+          {
+            "type": "p",
+            "text": "In any case, if Microsoft’s making this move, it means that CFO Amy Hood — the woman behind last year’s pullback on data center construction — has decided that the subsidy party is over. Though Microsoft is yet to formally announce the move to Token-Based Billing, I imagine it’ll be sometime this week that it rips off the bandage."
+          },
+          {
+            "type": "p",
+            "text": "Two weeks ago, Anthropic did the same with its enterprise customers, shifting them to a flat $20-a-seat fee and otherwise charging the per-token rate for whatever models they wanted to use."
+          },
+          {
+            "type": "p",
+            "text": "I’m making the call that by the end of 2026, a majority of AI services will move some or all of their customers to token-based billing as they reckon with the true costs of running AI models."
+          },
+          {
+            "type": "h2",
+            "text": "This Is The Era of AI Hysteria"
+          },
+          {
+            "type": "p",
+            "text": "I kept things simple today both to give myself a bit of a break and because these were stories I felt needed telling."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, I do have to remark on how ridiculous everything has become."
+          },
+          {
+            "type": "p",
+            "text": "Everywhere you turn, somebody is talking about “agents” in a way that doesn’t remotely match with reality, like Aaron Levie’s epic screeds about how “AI agents make it so every other company on the planet starts to create software for bringing automation to their workflows in a way that would be either infeasible technically or unaffordable economically,” a statement that may as well be about fucking unicorns and manticores as far as its connections to reality."
+          },
+          {
+            "type": "p",
+            "text": "I feel bad picking on Aaron, as he doesn’t seem like a bad guy. He is, however, increasingly-indicative of the hysterical brainrot of executive AI hysteria, where the only way to discuss the industry is in vaguely futuristic-sounding terms about “agents” and “inference” and “tokens as a commodity,” all with the intent of obfuscating the ugly, simple truth: that generative AI is deeply unprofitable, doesn’t seem to provide tangible productivity benefits, and appears to only lose both the business and the customer money."
+          },
+          {
+            "type": "p",
+            "text": "Though my arguments might be verbose, they’re ultimately pretty simple: AI does not provide even an iota of the benefits — economic or otherwise — to justify its ruinous costs. Every new story that runs about cost-cutting or horrible burnrates increasingly validates my position, and for the most part, boosters respond by saying “well LOOK at how BIG the REVENUES are.”"
+          },
+          {
+            "type": "p",
+            "text": "It isn’t! AI revenues are dogshit. They’re awful. They’re pathetic. The entire industry — including OpenAI and Anthropic’s theoretical revenues of $13.1 billion and $4.5 billion — hit around $65 billion last year, and that includes the revenues from providing compute generated by neoclouds like CoreWeave and hyperscalers like Microsoft."
+          },
+          {
+            "type": "p",
+            "text": "I’m also just gonna come out and say it: I think the AI startups are misleading their investors and the general public about their revenues. My reporting from last year had OpenAI’s revenues at somewhere in the region of $4.3 billion in the first three quarters of 2025, and Anthropic CFO Krishna Rao said in an an affidavit that the company had made revenue “exceeding” (sigh) $5 billion through March 9, 2026, which does not make sense when you add up all the annualized revenue figures reported about this company."
+          },
+          {
+            "type": "p",
+            "text": "Cursor is also reportedly at $6 billion in annualized revenue (or around $500 million a month) and “gross margin positive” — which I also doubt given that it had to raise over $3 billion last year and is apparently raising another $2 billion this year."
+          },
+          {
+            "type": "p",
+            "text": "Even if said numbers were real, the majority of OpenAI, Cursor and Anthropic’s revenues come from subsidized software subscriptions. Things have gotten so dire that even Deidre Bosa of CNBC agrees with me that AI demand is inflated by token-maxxing and subsidized services."
+          },
+          {
+            "type": "p",
+            "text": "Otherwise, everybody else is making single or double-digit millions of dollars and losing hundreds of millions of dollars to get there. And per founder Scott Stevenson, overstating annualized revenues is extremely common, with AI startups booking “three-year-long” enterprise deals with the first year discounted and a twelve-month out:"
+          },
+          {
+            "type": "quote",
+            "text": "The reason many AI startups are crushing revenue records is because they are using a dishonest metricThe biggest funds in the world are supporting this and misleading journalists for PR coverage.The setup: Company signs 3-year enterprise deals. Year 1 is discounted (say $1M), Year 2 steps up ($2M), Year 3 is full price ($3M). They report $3M as “ARR” — even though they’re only collecting $1M right now.The worst part: The customer has an opt-out option at 12 months! It’s not actually a 3 year contract."
+          },
+          {
+            "type": "p",
+            "text": "While it’s hard to say how widespread this potential act of fraud might be, Stevenson estimates that more than 50% of enterprise AI startups are using “contracted ARR” to pump their values. One (honest) founder responded to Stevenson saying that his company has $350,000 in contracted ARR but only $42,000 of ARR, adding that “next year is gonna be awesome though,” which I don’t think will be the case for what appears to be a chatbot for finding investors."
+          },
+          {
+            "type": "p",
+            "text": "This industry’s future is predicated entirely on the existence of infinite resources, and most AI companies are effectively front-ends for models owned by Anthropic and OpenAI, two other companies that rely on infinite resources to run their services and fund their infrastructure."
+          },
+          {
+            "type": "p",
+            "text": "And at the top of the pile sits NVIDIA, the largest company on the stock market, which is selling more GPUs than can be possibly installed, and very few people seem to notice or care."
+          },
+          {
+            "type": "p",
+            "text": "I’m talking about hundreds of billions of dollars of GPUs sitting in warehouses that aren’t being installed, with it taking six months to install a single quarter’s worth of GPU sales. The assumption, based on every financial publication I’ve read, appears to be “it will keep selling GPUs forever, and it will all be so great.”"
+          },
+          {
+            "type": "p",
+            "text": "Where are you going to put them, Jensen? Where do the fucking GPUs go? There isn’t enough capacity under construction! If, in fact, NVIDIA is actually selling as many GPUs as it says, it’s likely taking liberties with “transfers of ownership” where NVIDIA marks a product as “sold” to somebody that has yet to actually take it on."
+          },
+          {
+            "type": "quote",
+            "text": "Sidenote: There’re already signs that GPUs are beginning to pile up. You see, when a hyperscaler buys an AI server, what actually happens is an ODM — original design manufacturer — buys the GPUs from NVIDIA, builds the server, and then ships it to the data center, which, to be clear, is all above board and normal. These ODMs also book the entire value of the NVIDIA GPU as revenue, which is why revenues for companies like Foxconn, Wystron and Quanta Computing have all spiked during the AI bubble.Oh, right, the signs. Per Quanta Computing’s fourth quarter financial results, inventory — as in stuff that’s sitting waiting to go somewhere — has spiked from $10.54 billion in Q3 2025 to $16.3 billion 2025, and nearly doubled year-over-year ($8.33 billion) as gross profit dropped from 7.9% in Q4 2024 to 7% Q4 2025. While this isn’t an across-the-board problem (Wistron’s inventories dropped quarter-over-quarter, for example), Taiwanese ODMs are going to be one of the first places to watch for inventory accumulation."
+          },
+          {
+            "type": "p",
+            "text": "In any case, I keep coming back to the word “hysteria,” because it’s hard to find another word to describe this hype cycle. The way that the media, the markets, analysts, executives, and venture capitalists discuss AI is totally divorced from reality, discussing “agents” in terms that don’t match with reality and AI data centers in terms of “gigawatts” that are entirely fucking theoretical, all with a terrifying certainty that makes me wonder what it is I’m missing."
+          },
+          {
+            "type": "p",
+            "text": "But every sign points to me being right, and if I’m right at the scale I think I’m right, I think we’re about to have a legitimacy crisis in investing and mainstream media, because regular people are keenly aware that something isn’t right, in many cases, it’s because they’re able to count."
+          }
+        ],
+        "translations": [
+          "如果你喜欢这篇文章，请订阅我的付费通讯。年费70美元，或月付7美元，作为回报，你将每周收到一篇通常长达5000到18000字的深度通讯，内容涵盖对NVIDIA、Anthropic和OpenAI财务状况的详尽分析，以及对整个AI泡沫的全面剖析。我最近发布了时效性强且意义重大的《SaaSpocalypse厌恶者指南》，另一篇《AI并非大到不能倒》，一篇长达17500字的《OpenAI厌恶者指南》，就在上周，我还推出了篇幅庞大的《私募信贷厌恶者指南》。",
+          "订阅付费内容不仅物超所值，也让我能够每周持续撰写这些篇幅宏大、研究深入的免费文章。",
+          "配乐 —— Megadeth —— 《Hangar 18》（降E调）",
+          "过去近四年里，我一直专注于撰写关于AI泡沫和整个科技行业的宏大叙事。我仍打算继续写下去，但今天我要做我最擅长的事——解释科技行业中正在发生的各种怪现象，并说明为何这些现象令我担忧。",
+          "而且因为我喜欢玩点花活，我会把这些故事与我那匹预示AI末日的“灰马”联系起来——这些迹象表明，历史上最烦人的泡沫正在开始破裂。",
+          "总之，考虑到通讯和播客现在是我主要的收入来源，我将在免费和付费内容之间尝试不同的形式，以保持趣味性和多样性。",
+          "Anthropic的产品因容量不足而频繁崩溃，而Opus 4.7不仅性能更差，还消耗更多token。",
+          "灰马警示：Anthropic和OpenAI若进一步提价或服务降级，说明它们现金流吃紧。",
+          "我们先从一个直白的观点说起：Anthropic应暂停吸纳新客户，直到其解决容量问题。",
+          "一般来说，任何你经常使用的服务——比如Netflix——都应具备“四个九”的可用性，即正常运行时间达到99.99%。一旦公司发展到一定规模，实现四个九就被视为标准商业实践……",
+          "……除非你是Anthropic！",
+          "截至撰写本句时，Anthropic旗下Claude聊天机器人在过去90天内的可用性为98.79%，其平台/控制台为99.14%，API为99.09%，Claude Code为99.25%。",
+          "让我来解释一下这意味着什么。当可用性为99.99%时，服务每周仅中断1分钟（外加0.48秒）。而如果像Claude聊天机器人那样只有98.79%的可用性，中断时间就会飙升至2小时1分58秒。",
+          "换言之，98.79%的可用性相当于一年中有近四天半的时间服务不可用。",
+          "更令人震惊的是，Claude for Government的可用性仅为99.91%。政府服务通常要求至少达到四个九（99.99%），对于支撑紧急服务等关键系统，则要求五个九（99.999%）。",
+          "这是一家最近刚融资300亿美元、被众人捧为“天才儿童”的公司，但其服务却因容量不足而持续出现可用性问题。",
+          "据《华尔街日报》报道：",
+          "自二月中旬以来，Anthropic各系统的宕机已变得如此频繁，以至于部分企业客户正在转向其他AI模型提供商。",
+          " \n软件开发平台 Retool 的创始人兼 CEO David Hsu 表示，他此前更倾向于使用 Anthropic 的 Opus 4.6 模型来驱动其公司的 AI 代理工具，因为他认为这是最适合企业场景的模型。但他最近已改用 OpenAI 的模型来支持其公司的代理功能。“Anthropic 的表现一直在持续下滑，”他说。互联网核心服务的可靠性通常以“几个九”来衡量。四个九代表 99.99% 的正常运行时间——这是软件公司通常向客户承诺的典型水平。截至 4 月 8 日，Anthropic 的 Claude API 在过去 90 天内的正常运行时间仅为 98.95%。",
+          " \n然而，Anthropic 的问题远不止简单的宕机（正如我上周所讨论的），这还导致了 Opus 4.6 出现（有意或无意造成的）严重的性能退化：",
+          " \n最详尽的公开投诉之一源自 Stella Laurenzo 于 2026 年 4 月 2 日在 GitHub 上提交的一个 issue，其 LinkedIn 资料显示她是 AMD AI 部门的高级总监。在该帖子中，Laurenzo 指出，Claude Code 已经退化到无法胜任复杂工程任务的程度，并随后通过一份详尽的分析予以佐证：她分析了 6,852 个 Claude Code 会话文件、17,871 个思考块以及 234,760 次工具调用。投诉指出，自 2 月起，Claude 的预估推理深度急剧下降，同时伴随多项性能劣化迹象，包括更频繁的提前终止、更多“最简单修复”行为、更多推理循环，以及从“先研究后行动”向“先编辑后行动”的可量化行为转变。",
+          " \n尽管 Anthropic 声称不会为了应对需求而降低模型性能，但这与大量用户抱怨的情况严重不符。Anthropic 的回应基本是假装一切正常，其发言人曾轻描淡写地打发 VentureBeat 的 Carl Franzen（他对此事有一篇很好的报道），只是让他去看两条 Twitter 帖子，而这两条帖子实际上都没有解释任何实质问题。",
+          " \n上周 Opus 4.7 的发布让情况进一步恶化，该版本似乎性能更差，且消耗更多 token。",
+          " \n据 Business Insider 报道：",
+          " \n一篇题为《Claude Opus 4.7 是一次严重退化，而非升级》的 Reddit 帖子获得了 2,300 个赞。一位 X 用户提出 Opus 4.7 相比 Opus 4.6 并无实质改进，该推文获得了 14,000 个点赞。在一个非正式但广受欢迎的 AI 智能测试中，Opus 4.7 似乎声称单词 \"strawberry\" 中有两个字母 P。另一位用户截图显示，它自称没有交叉验证是因为“懒得做”。一些 Reddit 用户发现 Opus 4.7 在重写简历时添加了新的学校和姓氏。多位 X 用户认为 Opus 4.7 明显变笨了。部分 X 用户推测问题出在 AI 模型的推理时间上。Anthropic 表示，新的“自适应推理”功能允许模型自行决定思考时间长短。有用户写道，他们“无法让 Opus 4.7 进行思考”。另一位用户称其“削弱了性能”。“不准确，”Claude Code 的创建者、Anthropic 的 Boris Cherny 回应道，“自适应思考让模型自主决定何时思考，这反而表现更好。”",
+          " \n我觉得非常诡异：一家据称价值数千亿美元的巨头公司，A）竟然无法以任何程度的稳定性维持其服务在线，B）似乎还在让自家产品越变越差，C）而且拒绝真正去解决或讨论这个问题。早在2024年，用户就一直在抱怨Claude模型“越来越笨”，而每次回应他们的，都是该公司轻描淡写的敷衍——这家公司的CEO还热衷于宣称自己的AI产品将消灭一半白领岗位。",
+          " \nAnthropic对其产能问题毫无良策，本就不该再接纳新客户——而增加产能只会让它亏更多钱。",
+          " \n有人可能会把这说成是“Anthropic产品需求旺盛”，但在我看来，这是一家基础设施糟糕、运营方式不道德的烂生意。显而易见且令人震惊的是，Anthropic根本无力为客户提供稳定可靠的服务，而其扩大产能的计划，似乎只是与Broadcom签订协议（预计“从2027年开始”上线）、与Hut8合作（后者似乎从未建过AI数据中心）、以及与CoreWeave联手（该公司尚未完成其与OpenAI在2025年协议所需的全部产能，截至2025年底仅有约850MW的“可用电力容量”，即实际算力容量约653MW，相比2024年底的360MW电力容量有所提升）。",
+          " \n别忘了：数据中心建设周期极长，全球可用产能本就有限，其中大部分已被微软、谷歌、亚马逊、Meta和OpenAI占据，而这三家（指前三个）早已同时为Anthropic和OpenAI提供算力支持。",
+          " \n我们很可能已经触及（或即将触及）可用AI算力容量的绝对物理极限，即便有其他数据中心陆续上线，难道计划就是永久性地把它们交给OpenAI或Anthropic吗？",
+          " \n此外，增加这部分额外产能的目标究竟是什么，也尚不明确——正如我上周所讨论的：",
+          " \n然而，“更多产能”是否意味着服务会更便宜、更好，还是仅仅让Anthropic得以继续扩大其日益糟糕的用户体验，目前仍不清楚。需要说明的是，当Anthropic或OpenAI这类AI实验室“达到产能极限”时，并不意味着它们开始拒绝业务或停止接受订阅用户，而是现有（及新）用户将面临随机宕机和模型故障，同时遭遇越来越严苛的速率限制。这两家公司并未因无法提供服务而陷入财务困境（相反，它们之所以财务吃紧，正是因为正在向客户提供服务），而真正为这些“产能限制”买单的，只有客户。",
+          " \n那么，目标到底是什么？是为现有客户提供更好的体验？还是确保足够产能以持续吸纳新客户？抑或是为支持Mythos等更大模型储备算力？Anthropic究竟何时能达到平衡状态？那种状态又是什么样子？",
+          " \n还有一个成本问题。",
+          " \nAnthropic目前每年亏损数十亿美元，提供的服务可用性业余、质量波动，却仍在持续接受新订阅用户，这意味着产能问题并未阻碍其增长。因此，增加更多产能只会让产品在成本大幅上升的情况下运行得稍好一些。",
+          " \nAnthropic的增长故事，本质上是一个建立在补贴和劣质服务之上的骗局。",
+          "Anthropic 的成长故事是一场骗局，它靠销售订阅服务为生，用户每支付 1 美元的订阅收入，就要烧掉 8 到 13.50 美元，而提供的服务却脆弱且不稳定，这一切之所以可能，完全依赖于近乎无限的风险投资资金，以及基础设施提供商为数据中心建设买单。",
+          "换言之，Anthropic 根本不必遵守规则。风险投资让它能够大规模补贴其服务。媒体无休止、歇斯底里的追捧，掩盖了其服务质量的恶化。科技行业，更不用说 AI 领域，缺乏真正的监管，这意味着它可以随心所欲地通过调整速率限制来“割韭菜”。",
+          "如果 Anthropic 被迫按实际成本收费——不，无论有多少人误读了 Dario Amodei 的采访，我都不相信它的 API 能盈利——那么随着客户面临 AI 的真实成本（我稍后会谈到），它的增长将迅速瓦解。如果 Anthropic 被迫提供稳定的服务，它就必须停止接受新客户，或大幅提高推理成本。",
+          "Anthropic 就是个骗局，而这场骗局之所以能得逞，全靠无休止的、虚假的炒作。那些盲目为这家公司所做的一切鼓掌的人，都是上当受骗的傻瓜。",
+          "Claude Mythos 被搁置，不是因为对能力的担忧，而是受限于算力瓶颈。",
+          "恭喜所有“又上当了奖”的现任得主。据《金融时报》报道：",
+          "Anthropic 表示，在确信该模型安全且不会被恶意行为者滥用之前，不会进行更广泛的发布。该公司算力有限，且最近几周还遭遇了服务中断。多位知情人士透露，Anthropic 之所以暂缓更广泛的发布，是因为要等到能稳定地向客户提供服务为止。",
+          "所以，没错，任何媒体如果相信了 Dario Amodei 所谓“太危险而不能发布”的鬼话，那就是个傻瓜。Cal Newport 有一篇精彩的文章戳破了这种炒作，但我的总体感觉是，如果 Mythos 真的那么强大，Claude Code 的源代码怎么会泄露？",
+          "Anthropic……难道都没想过用其超级强大的 Mythos 模型去检查一下？还是说它什么都没发现？无论哪种情况，对所有相关方来说都非常尴尬。",
+          "AI 算力需求正被 Anthropic 和 OpenAI 夸大，超过 50% 的在建 AI 数据中心是为这两家公司而建，而到 2028 年底，在建总容量仅为 15.2GW。",
+          "Pale Horse：数据中心倒塌，等等。",
+          "正如我之前所讨论的，目前全球在建的 AI 算力容量仅为 5GW（基于 Sightline Climate 的研究），“在建”指的是从带围栏的脚手架场地（如 Nscale 位于 Loughton 的数据中心）到即将交付给客户的建筑等各种阶段。",
+          "我联系 Sightline 以获取更清晰的信息，他们告诉我，在预计到 2028 年底上线的 114GW 容量中，只有 15.2GW 正在建设中，其中包括 2026 年到期的 5GW。",
+          "这……非常糟糕。",
+          "当你意识到大部分建设都是为两家公司服务时，情况就更糟了：",
+          "OpenAI 的 Stargate 数据中心占 4.6GW——其中德克萨斯州阿比林 1.2GW；德克萨斯州沙克尔福德 1.4GW；新墨西哥州多娜安娜 1GW；威斯康星州波特华盛顿 1GW。",
+          " \n可以合理推测，鉴于大型科技公司数千亿美元的资本支出，其数据中心将占据相当大的份额——高达6吉瓦（GW），其中大部分可能流向Anthropic或OpenAI。其中一块规模难以确定的容量可能来自亚马逊在印第安纳州的“雨神计划”（Project Rainier），据CNBC报道，该项目“最终”将消耗超过2.2吉瓦的电力。尽管亚马逊声称该项目“已全面投入运营”，但这纯属扯淡，因为其还宣称拥有“近50万颗Trainium 2芯片”，每颗芯片功耗为500瓦，50万乘以500瓦约为250兆瓦（MW）。另有报道称，到2025年底，Trainium 2芯片数量将达100万颗，但即便如此，总功耗也仅为500兆瓦。Anthropic显然是主要租户。此外，Anthropic还同意从Google Cloud获取3.5吉瓦的TPU算力容量，其中首批1吉瓦将于2027年上线，并同意从微软获取1吉瓦由“Vera Rubin和Grace Blackwell系统”构成的容量，这意味着这些很可能是目前正在建设中的数据中心。Anthropic与谷歌还于2025年第四季度宣布，Anthropic将在与Google Cloud的新协议中使用100万颗TPU，且“远超”1吉瓦的容量将于2026年上线。",
+          " \n微软也在推进Stargate Abilene项目900兆瓦的扩容，考虑到微软大部分GPU基础设施已用于OpenAI，我只能推测这部分容量也将流向OpenAI。此外，萨提亚·纳德拉声称微软在2025年上线了2吉瓦的容量，并称其Fairwater数据中心集群“提前投入运营”，却未能说明具体何时上线或原定计划为何。微软对实际容量的表述也较为模糊，但根据“数十万颗GB200 GPU”的说法（假设为30万颗），其功耗约为583兆瓦。",
+          " \n附注：我还需指出，作为与亚马逊达成的50亿美元投资协议的一部分（未来还可能追加“高达20亿美元”，但除此之外无任何细节），Anthropic同意在未来十年内向Amazon Web Services投入1000亿美元。据称，Anthropic已确保获得5吉瓦的容量，并将在年底前“上线近1吉瓦的Trainium2和3容量”——对此我深表怀疑，但随便吧。这些交易本就不该被允许合法存在。",
+          " \n综上所述，在正在建设的15.2吉瓦数据中心容量中，至少有4.6吉瓦用于OpenAI，另有至少4吉瓦通过微软、谷歌和亚马逊等合作伙伴预留给Anthropic。实际上，这一数字可能更高。",
+          " \n这本质上是一种疯狂的局面。OpenAI和Anthropic每年烧掉数十亿美元，据The Information报道，Anthropic预计2026年将烧掉至少110亿美元，OpenAI则高达250亿美元。这些公司得以持续存在的唯一方式是不断募集风险投资，或假设它们能成功上市，则需持续发行债务或在二级市场抛售股票。",
+          " \n英伟达声称截至2027年拥有1万亿美元的销售可见度，但目前正在建设的数据中心仅能容纳价值2850亿美元的GPU——英伟达正在提前数年销售GPU并将其囤积起来。",
+          " \n更令人担忧的是，仅有极小比例的已公布算力容量正在实际建设中，尤其是当你将其与英伟达的实际销售额进行对比时。",
+          " \n去年，TD Cowen 的杰罗姆·达林估计，每兆瓦关键 IT 设备（GPU、服务器、存储等）的成本约为 3000 万美元，而建设数据中心的成本为每兆瓦 1200 万至 1400 万美元，这意味着关键 IT 占每兆瓦总成本的约 68%（按较高建设成本计算）。",
+          " \n需要明确的是，目前数据中心所说的吉瓦和兆瓦指的是总功耗，而非关键 IT 设备的功耗。如果我们取 1.35 的平均 PUE（电源使用效率，衡量数据中心电力利用效率的指标），则关键 IT 硬件的功耗为 11.2 吉瓦，其中大部分（我估计占 90%）是 GPU，因此 GPU 的功耗约为 10.1 吉瓦。",
+          " \n如果将这些 GPU 划分为 GB200 或 GB300 NVL72 机架，每机架功耗约为 140 千瓦，那么总共需要约 71,429 个机架的硬件，每个机架平均成本为 400 万美元，这意味着 NVIDIA 的营收约为 2857 亿美元。",
+          " \nNVIDIA 声称，2025 年至 2026 年间的订单总额达到 5000 亿美元，到 2027 年的销售额将达到 1 万亿美元，但目前尚不清楚这些订单除了发往台湾的仓库外，还能用在什么地方。",
+          " \n此时，我认为有理由质疑：既然根本没地方放这些 GPU，为什么还有人继续购买？现在 NVIDIA 每一次“超预期”的财报都显得极其可疑。",
+          " \nAI 真的很烧钱：企业用于 LLM Token 的支出高达人力成本的 10%，未来几个季度可能达到人力成本的 100%。",
+          " \n新“灰马”信号：任何表明企业正在面对 AI 经济现实的现象，包括对 AI 成本上升的抱怨或为适应成本上升而采取的调整措施。",
+          " \n上周，高盛的一份报告指出（原文引用）：“……企业在推理上的支出远超初始预算数个数量级（我们听到一个行业数据：工程部门的推理成本目前已接近人力成本的 10%，根据当前趋势，未来几个季度可能将与人力成本持平）。”",
+          " \n简单来说，这意味着一些公司在生成式 AI 服务上的支出已高达员工成本的 10%，却并未带来任何稳定性、质量或效率的提升，也没有（尽管我并不希望如此）为裁员提供合理依据。",
+          " \n《The Information》的劳拉·布拉顿上周也报道称，优步在 2026 年刚开始几个月就用完了全年 AI 预算：",
+          " \n优步首席技术官普拉文·内帕利·纳加表示，该公司对 AI 编码工具（尤其是 Anthropic 的 Claude Code）的使用激增，导致其在 2026 年刚开始几个月就用完了全年 AI 预算。“我不得不重新规划，因为我原本以为够用的预算已经花光了，”纳加在一次采访中表示。……他拒绝透露公司软件预算的具体金额，或其在 AI 编码工具上的支出。优步的研发支出（通常反映企业开发新 AI 产品的成本）在 2025 年同比增长 9%，达到 34 亿美元，该公司在最近提交给监管机构的文件中称，预计该成本将继续以绝对美元金额上升。",
+          "Uber 的首席技术官还补充说，“其后端系统中约 11% 的真实代码更新是由 AI 代理完成的，主要基于 Claude Code 构建，而三个月前这一比例还不到 1%。”过去一年里使用过 Uber 应用的人都能看出这效果有多“好”，尤其是那些不得不提交过支持工单的用户。",
+          "说实话，我觉得这整件事简直他妈的荒谬至极。生成式 AI 的销售说辞是它能成为提升效率的神奇万能药，可每当你问别人实际效果时，回答要么是“对啊，我们现在全用 AI 写代码了！”却毫无具体收益描述，要么就是“这玩意儿烧钱烧得他妈太厉害了”。",
+          "我们来务实一点分析这些经济账，以 Spotify 为例，因为其 CEO 曾 proudly 宣称其“顶尖工程师”几乎不再手写代码了。不过需要说明的是，高盛的那个例子并未特指某一家公司。",
+          "为便于讨论，假设该公司有 3000 名工程师——其某个官网称有 2700 人，但我见过高达 3500 人的报道。再根据 tech 从业者匿名社交平台 Spotify Blind 的数据，假设这些工程师年薪中位数为 19.2 万美元。",
+          "如果 Spotify 将其工程师人力成本的 10%（约 5.76 亿美元）用于 AI 推理支出，那么这笔开销约为 5760 万美元，相当于其 2025 财年 13.93 亿美元研发费用的约 4.1%。热衷心算的听众会注意到，若将 100% 人力成本都算作 AI 支出，则几乎占研发预算的一半，或接近其全年 22 亿美元净利润的四分之一。",
+          "需要澄清的是，这些数字可能已包含部分 AI 推理支出，我只是想说明其成本规模之大。",
+          "虽然这对 Anthropic（以及在较小程度上对 OpenAI）是好事，但我看不出这对它的客户有何益处。软件工程成本直接上涨 10%，完全违背了 AI 本该实现的目标；如果成本继续攀升，我真不知道该如何进一步 justify 这笔开销。",
+          "而且我们很快就会知道结果，因为 token 补贴的时代正在终结。",
+          "次贷级 AI 危机持续发酵：微软将于今年晚些时候对 GitHub Copilot 实行基于 token 的计费，而 Anthropic 已将其企业客户转向 API 费率模式。",
+          "灰马预警：如果 AI 初创公司 further 提价或服务降级——没错，我说的就是 GitHub Copilot，毕竟它亏损数亿美元却几乎毫无收入。",
+          "正如我昨日报道，内部文件显示，微软计划暂时暂停 GitHub Copilot 编码产品的个人账户注册，全面收紧速率限制，从其每月 10 美元的 Pro 订阅中移除 Opus 模型，并计划于今年晚些时候从“请求计费”（即每次与 GitHub Copilot 的单一交互）转向基于 token 的计费模式。微软在博客中确认了部分细节（但未提及 token 计费）。",
+          "这是一项重大举措，据我本人报道，其动因是微软运行 GitHub Copilot 的周环比成本自今年 1 月以来几乎翻了一番。",
+          "译文：附带说明一下：如果你对“基于 token 的计费”感到困惑，需要知道的是，目前绝大多数 AI 服务都在补贴其订阅费用，它们使用其他指标（例如“请求次数”或“速率限制”）来衡量用户可以使用多少服务。然而，这些服务仍然以支付成本的速度消耗 token——例如我之前提到的，Opus 4.7 每百万输入 token 收费 5 美元，每百万输出 token 收费 25 美元——这意味着除非用户很少使用订阅服务，否则公司几乎总是亏损。公司这样做是为了增加订阅用户数量，我认为他们当时以为成本会以某种方式降下来。干得漂亮，各位！",
+          "译文：转向基于 token 的计费后，GitHub 用户将根据其平台使用情况以及提示消耗的 token 数量（也就是使用的计算量）被收费。目前尚不清楚这一变更何时开始，但这将显著改变该产品的价值。",
+          "译文：我还要说的是，微软完全停止注册新的付费 GitHub Copilot 订阅，这是软件史上最具震撼性的举措之一。我从未见过哪家公司会在不打算彻底砍掉产品的情况下这么做，而根据我的消息来源，微软此举很可能是为了将付费客户迁移到基于 token 的计费模式，尽管目前尚不清楚这些层级会是什么样子，因为现有的每月 10 美元和 39 美元订阅主要区别在于你可使用的请求数量。",
+          "译文：值得注意的是，微软是少数几个有能力无限期资助 AI 发展的玩家之一，自 2023 年年中以来，其每季度利润超过 200 亿美元。",
+          "译文：它开始削减 AI 相关成本的决定表明，这些成本已变得难以承受——《The Information》早在今年 1 月就报道称，仅与 Anthropic 的合作，微软每年就要花费 5 亿美元；如果这笔支出已经翻倍，那很可能意味着微软在 GitHub Copilot 上的支出是其收入的十倍以上。据我今日获悉，截至 2025 年底，GitHub Copilot 的收入约为 10.8 亿美元，其中大部分来自其 Copilot Business 和企业版订阅。",
+          "译文：《The Information》几周前还报道称，GitHub 近期出现了大量服务中断，原因被归结为“流量激增，以及其将应用程序从自有服务器迁移到微软 Azure 云的努力”：",
+          "译文：“自今年 1 月以来，几乎每个月、每周都会出现新的历史最高使用率峰值，”GitHub 首席运营官凯尔·戴格尔（Kyle Daigle）表示。他将增长归因于“代理和人类用户”，并指出 AI 编程工具的兴起，也促使越来越多缺乏深厚编程知识的人开始使用 GitHub 平台。",
+          "译文：此处的“代理”可能指任何东西——OpenAI 的 Codex、Anthropic 的 Claude Code，甚至是人们将浪费且实用性存疑的 OpenClaw 接入其 GitHub Copilot 账户。如果真是这种情况，那很可能是推动转向基于 token 计费和速率限制的背后原因。",
+          "译文：无论如何，如果微软真的采取这一举措，那就意味着 CFO 艾米·胡德（Amy Hood）——去年叫停数据中心建设的那位高管——已经认定补贴时代结束了。尽管微软尚未正式宣布转向基于 token 的计费，但我估计它会在本周内迅速公布这一决定。",
+          " \n两周前，Anthropic 也对其企业客户采取了同样的做法，将收费模式调整为每位用户每月固定 20 美元，除此之外，客户使用任何模型都按 token 计费。",
+          " \n我判断，到 2026 年底，大多数 AI 服务将把部分或全部客户转向基于 token 的计费模式，因为它们不得不正视运行 AI 模型的真实成本。",
+          " \n这就是 AI 歇斯底里的时代。",
+          " \n今天我讲得比较简单，一方面是想让自己轻松一点，另一方面是因为这些故事我觉得非讲不可。",
+          " \n不过，我还是得说，现在的一切已经荒唐到离谱。",
+          " \n无论你往哪儿看，总有人在谈论“智能体”（agents），但其描述与现实完全脱节，比如 Aaron Levie 那些夸张的言论，说什么“AI 智能体让地球上每一家公司都开始开发软件，以实现工作流程自动化，而这种方式在技术上原本不可行，或在经济上原本无法承受”——这种说法与其说是关于现实，不如说是关于他妈的独角兽和蝎尾狮。",
+          " \n我有点不好意思拿 Aaron 开刀，因为他看起来不像个坏人。但他越来越典型地体现了高管层对 AI 的歇斯底里式脑残：讨论这个行业时，只能用些 vaguely futuristic 的术语，比如“智能体”、“推理”、“token 作为商品”，目的就是掩盖一个丑陋而简单的真相：生成式 AI 严重亏损，似乎并未带来切实的生产力提升，反而只会让企业和客户双双亏钱。",
+          " \n尽管我的论述可能啰嗦，但核心其实很简单：AI 带来的好处——无论是经济上的还是其他方面的——连一丁点都抵不上其毁灭性的成本。每篇关于削减成本或惊人烧钱速度的新报道，都在进一步印证我的观点；而支持者们大多只是回应说：“喂，看看那 revenue 有多大啊！”",
+          " \n才不是！AI 的收入烂透了。糟糕透顶。一文不值。整个行业——包括 OpenAI 和 Anthropic 理论上分别达到的 131 亿美元和 45 亿美元收入——去年总收入约为 650 亿美元，而这还包括了来自 CoreWeave 这类新云厂商和微软这类超大规模云厂商提供的算力收入。",
+          " \n我干脆直说了吧：我认为这些 AI 初创公司正在误导投资者和公众，夸大其收入。我去年报道过，OpenAI 在 2025 年前三个季度的收入约为 43 亿美元；而 Anthropic 的首席财务官 Krishna Rao 在一份宣誓书中称，截至 2026 年 3 月 9 日，公司收入“超过”（叹气）50 亿美元——但如果你把所有关于该公司的年化收入数据加起来，这个数字根本说不通。",
+          " \nCursor 据称年化收入也达到 60 亿美元（约合每月 5 亿美元），并且“毛利率为正”——对此我也表示怀疑，毕竟它去年刚融资超过 30 亿美元，今年 apparently 又在融 20 亿美元。",
+          " \n即便这些数字是真的，OpenAI、Cursor 和 Anthropic 的大部分收入也来自补贴型软件订阅。情况已经糟糕到连 CNBC 的 Deidre Bosa 都同意我的观点：AI 需求被 token 滥用和补贴服务严重虚增。",
+          " \n否则，其他所有人都在赚取数百万美元（个位数或两位数），同时又亏损数亿美元才能达到这一目标。据创始人斯科特·史蒂文森（Scott Stevenson）称，虚报年化收入极为普遍，AI初创公司将“三年期”企业交易的首年折扣价与十二个月后的价格计入收入：",
+          " \n许多AI初创公司之所以能打破收入纪录，是因为它们使用了一种不诚实的指标。全球最大的几家基金正在支持这种做法，并误导记者以获取公关报道。具体操作如下：公司签订为期三年的企业协议。第一年享受折扣（例如100万美元），第二年价格上调（200万美元），第三年按全价收费（300万美元）。它们将300万美元报告为“ARR”——尽管目前实际只收到100万美元。最糟糕的是：客户在12个月后拥有退出选项！这实际上并非一份为期三年的合同。",
+          " \n尽管很难判断这种潜在的欺诈行为有多普遍，但史蒂文森估计，超过50%的企业级AI初创公司正在利用“合同ARR”来推高自身估值。一位（诚实的）创始人回应史蒂文森时表示，其公司合同ARR为35万美元，但实际ARR仅为4.2万美元，并补充说“明年会非常棒”，但我认为这对于一个似乎只是用于寻找投资者的聊天机器人来说不太可能实现。",
+          " \n这个行业的未来完全依赖于无限资源的存在，而大多数AI公司实际上只是Anthropic和OpenAI所拥有模型的前端界面，这两家公司本身也依赖无限资源来运行其服务并支撑其基础设施。",
+          " \n而在这一堆叠结构的顶端，坐着英伟达（NVIDIA）——股市上最大的公司，其GPU销量已超过实际可安装的数量，但似乎很少有人注意到或在意这一点。",
+          " \n我说的是数千亿美元的GPU积压在仓库中未被安装，而安装一个季度销量的GPU就需要六个月时间。根据我所读过的所有财经出版物，普遍的假设似乎是“它将永远销售GPU，一切都会非常美好”。",
+          " \n你打算把它们放哪儿，黄仁勋？这些该死的GPU到底要去哪儿？根本没有足够的在建产能！如果英伟达真的如其所述售出了那么多GPU，那它很可能在“所有权转移”上做了手脚——将产品标记为“已售”给尚未实际接收的客户。",
+          " \n附注：已有迹象表明GPU开始积压。要知道，当超大规模云服务商购买AI服务器时，实际流程是：ODM（原始设计制造商）从英伟达购买GPU，组装成服务器，再运送到数据中心——这一切当然都是合规且正常的。这些ODM也会将英伟达GPU的全部价值计入收入，这也是富士康、纬创（Wistron）和广达电脑（Quanta Computing）等公司在AI泡沫期间收入激增的原因。哦，对了，那些迹象。根据广达电脑2025年第四季度的财报，库存（即积压在仓库等待出货的产品）已从2025年第三季度的105.4亿美元飙升至163亿美元，较去年同期（83.3亿美元）几乎翻倍，而毛利率则从2024年第四季度的7.9%下降至2025年第四季度的7%。虽然这并非普遍问题（例如纬创的库存环比有所下降），但台湾地区的ODM厂商将是观察库存积压的首批重点对象之一。",
+          " \n无论如何，我始终绕不开“歇斯底里”这个词，因为实在找不到更合适的词来形容这股炒作热潮。媒体、市场、分析师、企业高管和风险投资家谈论AI的方式完全脱离现实——他们口中的“智能体”与现实毫不相符，所谓的AI数据中心“吉瓦级”电力需求更是纯属虚构，却还带着一种令人不安的笃定，让我不禁怀疑是不是自己漏掉了什么关键信息。",
+          " \n但种种迹象都表明我是对的，而且如果我的判断在规模上也是正确的话，我认为投资和主流媒体即将面临一场合法性危机，因为普通人敏锐地察觉到事情不对劲，很多时候，他们只是会数数罢了。"
+        ]
+      }
+    },
+    {
+      "title": "brief",
+      "titleZh": "brief：将项目规范转化为CLI的知识库",
+      "link": "https://nesbitt.io/2026/04/21/brief.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-04-21T10:00:00.000Z",
+      "category": "tools",
+      "keywords": ["CLI", "knowledge base", "project conventions"],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 18
+      },
+      "summary": "该项目提出一种将团队开发规范、编码约定和流程文档结构化为可执行命令行工具（CLI）的方法。通过将知识库暴露为CLI接口，开发者可以直接在终端查询、验证或执行标准化操作，减少文档过时与执行偏差。系统支持自定义规则定义与自动化检查，提升协作一致性与开发效率。",
+      "reason": "对于追求工程规范自动化的技术团队，这是一个将文档‘活’起来的实用创新方案。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Anyone landing in an unfamiliar repo, whether that’s a new contributor, a security scanner, or an AI coding agent, has to answer the same handful of questions before doing anything useful: what language is this, how do I install dependencies, what’s the test command, which linter do I run before committing, and for a security review, which functions in this stack are the dangerous ones."
+          },
+          {
+            "type": "p",
+            "text": "The agent case just makes the cost of getting it wrong easiest to watch, because you can see Claude grep for package.json, read the Gemfile, try npm test, get told there’s no test script, try yarn test, discover it’s actually pnpm, and only then get to the work you asked for. The answers are identical for every Rails project or every Go module that has ever existed, and rediscovering them from scratch every time is wasted effort."
+          },
+          {
+            "type": "p",
+            "text": "brief is a knowledge base of 516 tools across 54 language ecosystems, with a single Go binary in front of it that does the lookup and prints JSON when piped or a human summary on a TTY. The dataset is the part that doesn’t exist anywhere else: invocation commands, config-file locations, and taxonomy for five hundred tools under one machine-readable schema. CI templates, devcontainer generators, and editor onboarding flows were the closest I found, each carrying a slice of it with no shared upstream. I think of the CLI as one view onto that data and expect there to be others."
+          },
+          {
+            "type": "p",
+            "text": "Point it at a directory, a git URL, or a registry coordinate like gem:rails or npm:express and it reports the toolchain across twenty categories, each with the command to run and the config files that drive it, plus whatever governance and community files (license with SPDX identifier, security policy, CODEOWNERS, FUNDING.yml, and so on) it finds in the usual places."
+          },
+          {
+            "type": "code",
+            "text": "brief .                       # local directory\nbrief gem:rails               # registry package, resolved to source repo\nbrief diff                    # only tools touched by changed files\nbrief missing                 # baseline categories with no tool configured\nbrief threat-model            # CWE/OWASP categories implied by the stack\nbrief sinks                   # dangerous functions in detected tools"
+          },
+          {
+            "type": "p",
+            "text": "Checking all 516 definitions finishes in under 250ms, since anything that runs at the front of every session or pipeline step can’t afford to be the slow part; on this blog’s own repo it picks out Jekyll, Bundler, Rake, Dependabot and GitHub Actions in around 220ms, and on a Go project the output looks like:"
+          },
+          {
+            "type": "code",
+            "text": "$ brief .\nLanguage:        Go\nPackage Manager: Go Modules (go mod download)\nTest:            go test (go test ./...)\nLint:            golangci-lint (golangci-lint run)  [.golangci.yml]\nFormat:          gofmt (gofmt -w .)\nBuild:           GoReleaser (goreleaser release --clean)\nSecurity:        govulncheck (govulncheck ./...)\nCI:              GitHub Actions  [.github/workflows/]"
+          },
+          {
+            "type": "p",
+            "text": "I run it myself as the first thing after cloning anything, and I have it wired into my global agent instructions so every Claude session opens with brief . before anything else. That onboards the agent to the repo in one tool call and saves the tokens it would otherwise burn on exploratory greps and wrong guesses. On a feature branch brief diff narrows the report to just the tools touched by the changed files, so whoever is reading it knows to run golangci-lint because a .go file changed without also being told about the Python linter in the monorepo’s other half."
+          },
+          {
+            "type": "p",
+            "text": "Because the JSON output follows a published schema, it also works as a building block for other tooling: brief --json . | jq -r '.tools.test[0].command.run' gives a polyglot CI job the project’s test command without anyone writing per-language cases, that lookup can drive a devcontainer or onboarding script, and the plan is to run it across every repo ecosyste.ms indexes so that stack metadata is available for every package."
+          },
+          {
+            "type": "p",
+            "text": "The detection rules are TOML rather than Go, which means adding a tool is a single file under knowledge/ with no code changes: a name, a category, the files or dependency names that signal its presence, the command to run it, and optionally a set of oss-taxonomy tags describing what kind of thing it is. That taxonomy is a sibling project: it builds the vocabulary for what a tool is; brief detects which tools a project uses."
+          },
+          {
+            "type": "p",
+            "text": "The dependency-name matching is driven by the same manifest parser as git-pkgs, so a tool definition can say “present if rspec-core is in the bundle” and brief already knows how to read Gemfiles, package.json, go.mod, Cargo.toml, and the other supported lockfile formats without any of that being reimplemented."
+          },
+          {
+            "type": "p",
+            "text": "Those tags were originally there so the JSON output could say “web framework” rather than just “build tool”, but once a few hundred definitions carried them they mapped cleanly onto CWE and OWASP categories, and brief threat-model on a Rails project produces SQL injection, mass assignment, XSS, CSRF, and SSTI without scanning a line of code, because that’s what Rails and ActiveRecord are for. The definitions also carry the specific dangerous functions each tool exposes, around 700 across the dataset, which is a reasonable starting grep list for a security review of a stack you’ve never worked in:"
+          },
+          {
+            "type": "code",
+            "text": "$ brief sinks .\nActiveRecord:\n  Arel.sql            sql_injection      CWE-89\n  find_by_sql         sql_injection      CWE-89\n  where               sql_injection      CWE-89   string interpolation only\nRails:\n  html_safe           xss                CWE-79\n  redirect_to         open_redirect      CWE-601  when target is from params\n  render inline:      ssti               CWE-1336\nRuby:\n  eval                code_injection     CWE-95\n  Marshal.load        deserialization    CWE-502"
+          },
+          {
+            "type": "p",
+            "text": "brief missing inverts the check and reports which of five baseline categories (test, lint, format, typecheck, docs) have no tool configured for the detected ecosystems, naming the canonical choice for each gap. The detection engine is also importable as a Go library if you’d rather not shell out."
+          },
+          {
+            "type": "p",
+            "text": "Tool definitions live in the knowledge/ directory and PRs adding new ones are the contributions I’m most interested in, particularly for ecosystems I don’t write every day. If you point it at a project and it gets something wrong, open an issue or find me on Mastodon."
+          },
+          {
+            "type": "p",
+            "text": "brew install git-pkgs/git-pkgs/brief / github.com/git-pkgs/brief"
+          }
+        ],
+        "translations": [
+          " \n无论是新贡献者、安全扫描器还是 AI 编码代理，任何进入一个陌生代码库的人，在开展任何有效工作之前，都必须回答同样几个基本问题：这是什么语言？如何安装依赖？测试命令是什么？提交前该运行哪个 linter？如果是安全审查，这个技术栈中哪些函数是危险函数？",
+          " \n代理的情况尤其容易看出出错的代价，因为你可以看到 Claude 去 grep package.json，读取 Gemfile，尝试 npm test，被告知没有测试脚本，再试 yarn test，最后发现其实是 pnpm，这时才能开始你真正要求的工作。对于每一个 Rails 项目或每一个 Go 模块，这些答案都完全相同，而每次都要从头重新发现这些信息，纯粹是浪费精力。",
+          " \nbrief 是一个涵盖 54 个语言生态、共 516 种工具的知识库，前面挂着一个独立的 Go 二进制程序，负责查询并以 JSON 格式输出（当通过管道传输时）或在 TTY 上输出人类可读的摘要。真正独特的是这个数据集：调用命令、配置文件位置，以及五百多种工具在统一机器可读 schema 下的分类体系。CI 模板、devcontainer 生成器和编辑器引导流程是我能找到的最接近的东西，但它们各自只包含其中一部分，且没有共享的上游数据源。我把这个 CLI 看作是该数据的一种视图，并预期未来会有其他形式的访问方式。",
+          " \n你只需将其指向一个目录、一个 git URL，或像 gem:rails 或 npm:express 这样的注册表坐标，它就会报告该项目的工具链，涵盖二十个类别，每个类别都包含要运行的命令及其驱动的配置文件，此外还会列出在常规位置找到的所有治理和社区文件（如带 SPDX 标识符的许可证、安全策略、CODEOWNERS、FUNDING.yml 等）。",
+          "brief .                       # local directory\nbrief gem:rails               # registry package, resolved to source repo\nbrief diff                    # only tools touched by changed files\nbrief missing                 # baseline categories with no tool configured\nbrief threat-model            # CWE/OWASP categories implied by the stack\nbrief sinks                   # dangerous functions in detected tools",
+          " \n检查全部 516 个定义耗时不到 250 毫秒，因为任何在每次会话或流水线步骤开头运行的工具都不能成为性能瓶颈；在本博客自己的仓库中，它大约在 220 毫秒内识别出 Jekyll、Bundler、Rake、Dependabot 和 GitHub Actions；而在一个 Go 项目中，输出如下：",
+          "$ brief .\nLanguage:        Go\nPackage Manager: Go Modules (go mod download)\nTest:            go test (go test ./...)\nLint:            golangci-lint (golangci-lint run)  [.golangci.yml]\nFormat:          gofmt (gofmt -w .)\nBuild:           GoReleaser (goreleaser release --clean)\nSecurity:        govulncheck (govulncheck ./...)\nCI:              GitHub Actions  [.github/workflows/]",
+          " \n我自己在克隆任何仓库后首先运行的就是它，并且已将其集成到我的全局代理指令中，因此每次 Claude 会话一开始都会先执行 brief .。这样只需一次工具调用就能让代理熟悉该仓库，省去了它原本会浪费在探索性 grep 和错误猜测上的 token。在功能分支上，brief diff 会将报告范围缩小到仅受更改文件影响的工具，因此阅读报告的人就知道要运行 golangci-lint（因为 .go 文件变了），而不会被告知 monorepo 另一侧的 Python linter。",
+          " \n由于 JSON 输出遵循已发布的 schema，它也可作为其他工具的构建块：brief --json . | jq -r '.tools.test[0].command.run' 可让一个多语言 CI 任务获取项目的测试命令，而无需为每种语言编写特定逻辑；该查询结果还可用于生成 devcontainer 或引导脚本；目前的计划是在 ecosyste.ms 索引的每个仓库上运行它，以便为每个软件包提供其技术栈元数据。",
+          " \n检测规则采用 TOML 格式而非 Go 语言编写，这意味着添加新工具只需在 knowledge/ 目录下创建一个文件，无需修改任何代码：包括工具名称、所属类别、表明其存在的文件或依赖项名称、运行该工具的命令，以及可选的一组 oss-taxonomy 标签（用于描述该工具的类型）。该分类体系是一个独立项目：它定义了“工具”的术语体系；而 brief 则负责检测项目实际使用了哪些工具。",
+          " \n依赖项名称的匹配逻辑与 git-pkgs 使用相同的清单解析器，因此工具定义可以声明“当 rspec-core 存在于 bundle 中时即视为存在”，而 brief 已内置支持解析 Gemfiles、package.json、go.mod、Cargo.toml 及其他受支持的锁文件格式，无需重复实现这些解析逻辑。",
+          " \n这些标签最初的作用是让 JSON 输出能显示“Web 框架”而非笼统的“构建工具”，但当数百个定义都带上标签后，它们清晰地映射到了 CWE 和 OWASP 分类上。因此，对 Rails 项目进行威胁建模时，brief 无需扫描一行代码就能识别出 SQL 注入、批量赋值、XSS、CSRF 和 SSTI 等风险，因为这些正是 Rails 和 ActiveRecord 的典型特征。此外，定义中还包含了每个工具暴露的具体危险函数（整个数据集约有 700 个），这为审查一个陌生技术栈的安全问题提供了一个合理的初始 grep 关键词列表。",
+          "$ brief sinks .\nActiveRecord:\n  Arel.sql            sql_injection      CWE-89\n  find_by_sql         sql_injection      CWE-89\n  where               sql_injection      CWE-89   string interpolation only\nRails:\n  html_safe           xss                CWE-79\n  redirect_to         open_redirect      CWE-601  when target is from params\n  render inline:      ssti               CWE-1336\nRuby:\n  eval                code_injection     CWE-95\n  Marshal.load        deserialization    CWE-502",
+          " \nbrief missing 功能会反向检查，并报告在已检测到的生态系统中，五个基准类别（测试、代码检查、格式化、类型检查、文档）中哪些尚未配置工具，同时指出每个空缺对应的推荐工具。该检测引擎也可作为一个 Go 库被导入使用，如果你不想通过 shell 调用的话。",
+          " \n工具定义文件存放在 knowledge/ 目录中，我最欢迎的贡献就是提交新增定义的 PR，尤其是针对那些我不常接触的生态系统。如果你发现 brief 对某个项目的判断有误，请提交 issue 或在 Mastodon 上联系我。",
+          " \nbrew install git-pkgs/git-pkgs/brief / github.com/git-pkgs/brief"
+        ]
+      }
+    },
+    {
+      "title": "★ Another Day Has Come",
+      "titleZh": "又一天到来",
+      "link": "https://daringfireball.net/2026/04/another_day_has_come",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-21T03:59:41.000Z",
+      "category": "opinion",
+      "keywords": ["Apple", "product launch", "corporate culture", "brand perception"],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "文章以苹果公司近期某项重大产品或组织调整为背景，评价其执行过程高度有序、令人信服且符合预期。作者认为，这种‘感觉对了’的节奏体现了苹果一贯的稳健战略风格，尽管外界可能期待更多戏剧性变化，但苹果的克制反而增强了用户与市场的信心。",
+      "reason": "果粉或关注科技巨头战略节奏的读者，会欣赏这种对苹果‘低调掌控力’的精准解读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Monday, 20 April 2026",
+        "siteName": "Daring Fireball",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It’s a profoundly different feeling today than the last time Apple’s CEO announced his transition to chairman of the board, and his chosen successor was promoted to replace him as CEO."
+          },
+          {
+            "type": "p",
+            "text": "In August 2011, Steve Jobs was sick. For years he’d managed to stay a step, sometimes two, ahead of the pancreatic cancer he’d been battling since 2003, but no more. Jobs wrote, in his letter to the company’s board and the Apple community: “I have always said if there ever came a day when I could no longer meet my duties and expectations as Apple’s CEO, I would be the first to let you know. Unfortunately, that day has come.”"
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately, indeed. Cook inherited a company with extraordinary potential growth in front of it, but in deep existential grief. He led the company — and its community — through that grief and achieved that potential."
+          },
+          {
+            "type": "p",
+            "text": "The transition Apple and Tim Cook announced today is entirely different. No one’s hand was forced. There is nothing unpleasant. Apple’s business is firing on nearly all cylinders. This year’s iPhone 17 lineup is arguably the best ever. The Mac is more popular than ever — exemplified just last month by the introduction of the $600 MacBook Neo, a machine so fun, with a price so low, that the only problem is that it’s selling so well that Apple is reportedly running out of A18 Pro chips to put in it. The iPad lineup is strong, AirPods remain dominant, and I see Apple Watches on wrists everywhere I go."
+          },
+          {
+            "type": "p",
+            "text": "Tim Cook is 65 years old, has been CEO for 15 years, and is going out on top. Looking only at the numbers, Cook is the GOAT. But Cook, by all accounts, would be the first to tell us he doesn’t want to be judged by the numbers alone. Or as he famously put it himself at a shareholders meeting, early in his reign, “When we work on making our devices accessible by the blind, I don’t consider the bloody ROI.”"
+          },
+          {
+            "type": "p",
+            "text": "Jobs made the right pick for his successor. And while only time will tell, it sure feels today like Cook has too. Cook has never been a product person and to his credit, he never once pretended to be. (That was John Sculley’s downfall, in a nut.) With the table set by the budding iPhone and nascent iPad products Jobs left behind, Apple didn’t need a product person at the helm in the 2010s. They needed someone to let the existing products blossom and expand. Today, it feels to me like Apple needs a product guy at the helm again. Someone with the itch to spearhead the creation of new things. Of course Cook’s successor came from within the company’s ranks. And John Ternus, more than anyone else at the company, seems like that person."
+          },
+          {
+            "type": "p",
+            "text": "Here’s Cook, quoted in Apple’s announcement today: “John Ternus has the mind of an engineer, the soul of an innovator, and the heart to lead with integrity and with honor. He is a visionary whose contributions to Apple over 25 years are already too numerous to count, and he is without question the right person to lead Apple into the future. I could not be more confident in his abilities and his character, and I look forward to working closely with him on this transition and in my new role as executive chairman.”"
+          },
+          {
+            "type": "p",
+            "text": "Regarding that new role, Apple’s announcement states:"
+          },
+          {
+            "type": "quote",
+            "text": "As executive chairman, Cook will assist with certain aspects\nof the company, including engaging with policymakers around\nthe world."
+          },
+          {
+            "type": "p",
+            "text": "Back in December, linking to the Financial Times’s blockbuster scoop accurately foretelling this announcement, I predicted:"
+          },
+          {
+            "type": "quote",
+            "text": "I would also bet that Cook moves into the role of executive\nchairman, and will still play a significant, if not leading, role\nfor the company when it comes to domestic and international\npolitics. Especially with regard to\nTrump."
+          },
+          {
+            "type": "p",
+            "text": "Sounds right. The only problem I can see with this arrangement is the potential for Cook to stand over Ternus’s shoulder — keeping Ternus in his shadow. That doesn’t sound like Tim Cook to me. A Bob Iger situation, I do not foresee."
+          },
+          {
+            "type": "p",
+            "text": "After I gathered my thoughts back in August 2011, under the title “Resigned”, I wrote:"
+          },
+          {
+            "type": "quote",
+            "text": "Apple’s products are replete with Apple-like features and details,\nembedded in Apple-like apps, running on Apple-like devices, which\ncome packaged in Apple-like boxes, are promoted in Apple-like ads,\nand sold in Apple-like stores. The company is a fractal design.\nSimplicity, elegance, beauty, cleverness, humility. Directness.\nTruth. Zoom out enough and you can see that the same things that\ndefine Apple’s products apply to Apple as a whole. The company\nitself is Apple-like. The same thought, care, and painstaking\nattention to detail that Steve Jobs brought to questions like\n“How should a computer work?”, “How should a phone work?”,\n“How should we buy music and apps in the digital age?” he also\nbrought to the most important question: “How should a company\nthat creates such things function?”\n\nJobs’s greatest creation isn’t any Apple product. It is\nApple itself."
+          },
+          {
+            "type": "p",
+            "text": "I remember writing that piece with such a heavy heart. It hurt. But there was hope. Those words stand up, and I can quote them today in the context of Cook handing the mantle to Ternus with nothing but the hope, and none of the hurt."
+          },
+          {
+            "type": "p",
+            "text": "CEOs typically leave companies in one of three ways: with a hook, on a gurney, or on their own terms. Cook, seemingly, is doing it entirely on his own terms. One can reasonably argue with certain of his strategic decisions over the years. I certainly have. But I don’t think you can argue that Cook ever did anything for any reason other than what he believed was in the company’s best interest. Not his personal interest. Not employees. Not users. Not shareholders. Not developers (ha!). The company’s interest always came first. There’s a nobility to his singleminded focus on Apple itself, as an abiding institution, and his faith that what’s best for Apple will ultimately prove best for everyone involved with it: employees, shareholders, users, and, yes, even developers. If he’s made mistakes, they’re errors in taste, not mistaken priorities. He is the ultimate company man at the ultimate company."
+          },
+          {
+            "type": "p",
+            "text": "Cook has transformed Apple in his own image. The company is much more predictable now than it ever was, or could have been, under Jobs. It now runs on an annual schedule that can be printed on a calendar. There is far less drama, and no scandal. And there is seemingly no drama, at all, in this particular transition, despite the incredibly high stakes and the (justifiably) large egos in Apple’s leadership team. Cook inherited the greatest company in the world. He’s handing it over to Ternus in even better shape than what Jobs handed to him. Even the timing of the announcement and the transition, on Apple’s annual calendar, seems perfect. Cook oversees one last WWDC in June, then Ternus takes the helm on the cusp of Apple’s announcement of new iPhones in September. It’s hard to imagine a more orderly, confidence-inspiring, exciting-but-not-at-all-surprising, this-feels-right way to do this."
+          },
+          {
+            "type": "p",
+            "text": "All of that, I am sure, is just the way Cook wants it."
+          },
+          {
+            "type": "p",
+            "text": "And, if you agree that Apple itself was Jobs’s greatest product, Cook really is a product person after all."
+          }
+        ],
+        "translations": [
+          " \n今天的感觉与上次苹果CEO宣布转任董事会主席、其选定的继任者升任CEO时截然不同。",
+          " \n2011年8月，史蒂夫·乔布斯病重。多年来，他一直努力在与2003年确诊的胰腺癌抗争中保持领先一步，有时甚至两步，但这一次未能幸免。乔布斯在致公司董事会和苹果社区的信中写道：“我一直说，如果有朝一日我不再能履行苹果CEO的职责和期望，我会第一个告诉你们。不幸的是，这一天已经到来。”",
+          " \n确实不幸。库克接手了一家潜力巨大但深陷存在性悲痛的公司。他带领公司及其社区走出悲痛，实现了这一潜力。",
+          " \n苹果和蒂姆·库克今天宣布的交接则完全不同。没有人被迫做出决定，也没有任何不愉快。苹果的业务几乎在所有方面都运转良好。今年的iPhone 17系列 arguably 是有史以来最好的。Mac比以往任何时候都更受欢迎——上个月推出的600美元MacBook Neo就是明证，这款机器如此有趣，价格如此低廉，唯一的问题是它卖得太好，据说苹果已经快要用完A18 Pro芯片来生产它了。iPad产品线强劲，AirPods仍占据主导地位，而我走到哪里都能看到人们手腕上戴着Apple Watch。",
+          " \n蒂姆·库克现年65岁，已担任CEO 15年，如今功成身退。仅从数字来看，库克堪称史上最佳（GOAT）。但据各方说法，库克本人会第一个告诉我们，他不希望仅凭数字来评判自己。正如他在任期早期一次股东大会上 famously 所说：“当我们致力于让盲人也能使用我们的设备时，我根本不会去考虑 bloody ROI。”",
+          " \n乔布斯为继任者做出了正确选择。虽然最终结果仍需时间检验，但今天看来，库克似乎也做到了。库克从来不是产品型人物，值得称赞的是，他也从未假装自己是。（这正是约翰·斯卡利的败笔，简而言之。）在乔布斯留下的iPhone初露锋芒、iPad刚刚起步的产品基础上，苹果在2010年代并不需要一位产品型领导者掌舵。他们需要的是能让现有产品开花结果、不断拓展的人。而今天，在我看来，苹果似乎又需要一位产品型领导者了——一个有强烈冲动去主导创造新事物的人。当然，库克的继任者来自公司内部。而在公司所有人中，约翰·特努斯最像这样的人。",
+          " \n以下是库克在苹果今日公告中的引述：“约翰·特努斯拥有工程师的头脑、创新者的灵魂，以及以正直和荣誉领导团队的心。他是一位远见卓识者，25年来对苹果的贡献已多到无法计数，毫无疑问，他是带领苹果走向未来的合适人选。我对他的能力和品格充满信心，并期待在这一过渡期及我作为执行主席的新角色中与他密切合作。”",
+          " \n关于这一新角色，苹果的公告指出：",
+          " \n作为执行主席，库克将协助公司某些方面的事务，包括与全球政策制定者接触。",
+          " \n早在12月，我在转发《金融时报》准确预测此次公告的独家报道时曾预测：",
+          " \n我敢肯定，库克将转任执行董事长，在国内和国际政治事务上，他仍将在公司扮演重要角色，即使不是主导角色。尤其是在特朗普问题上。",
+          " \n听起来没错。这种安排唯一可能的问题是，库克可能会站在特纳斯身后——让特纳斯始终活在他的阴影下。但这不像蒂姆·库克的风格。我不认为会出现鲍勃·艾格那样的情况。",
+          " \n2011年8月，我整理思绪后，以《辞职》为题写下：",
+          " \n苹果的产品充满了苹果式的特性和细节，内置于苹果式的应用中，运行在苹果式的设备上，包装在苹果式的盒子里，通过苹果式的广告推广，在苹果式的商店里销售。这家公司是一个分形设计。简约、优雅、美观、巧妙、谦逊。直接。真实。退后一步看，你会发现，定义苹果产品的那些特质，同样适用于苹果整体。公司本身就是苹果式的。史蒂夫·乔布斯在思考“电脑应该如何工作？”、“手机应该如何工作？”、“在数字时代我们该如何购买音乐和应用？”这些问题时所投入的同样的思考、用心和对细节的极致关注，也同样体现在最重要的问题上：“创造这些产品的公司，应该如何运作？”\n\n乔布斯最伟大的创造，不是任何一款苹果产品。而是苹果本身。",
+          " \n我记得写那篇文章时心情无比沉重。那很痛苦。但仍有希望。那些话经得起时间考验，今天我可以在库克将权杖交给特纳斯这一背景下引用它们，心中只有希望，再无痛苦。",
+          " \nCEO通常以三种方式离开公司：带着钩子（被迫下台）、躺在担架上（因健康或丑闻），或按自己的意愿。库克显然是在完全按自己的意愿行事。人们完全可以对他多年来的某些战略决策提出异议。我也确实这么做过。但我认为，你不能否认库克所做的一切，都不是出于他认为对公司最有利的原因。不是出于个人利益。不是员工。不是用户。不是股东。不是开发者（哈！）。公司的利益永远是第一位的。他对苹果本身——作为一个持久存在的机构——的专注，具有一种高尚的品质；他坚信，对苹果最有利的，最终也会对所有与之相关的人最有利：员工、股东、用户，甚至开发者。如果他犯了错，那也是品味上的失误，而非优先级上的错误。他是终极公司人，身处终极公司。",
+          " \n库克以自己的形象重塑了苹果。如今的公司比乔布斯时代更可预测，也更稳定。它现在遵循一个可以印在日历上的年度计划。戏剧性事件少得多，也没有丑闻。而在这场交接中，尽管 stakes 极高，苹果领导团队中也不乏（理应如此）自负之人，却似乎完全没有戏剧性。库克继承了世界上最好的公司。他将其交给特纳斯时，公司的状况甚至比乔布斯交给他时还要好。就连宣布和交接的时机，在苹果的年历上也显得完美无缺。库克 overseeing 最后一次6月的WWDC，然后特纳斯在9月苹果发布新iPhone之际正式掌舵。很难想象还有比这更有序、更令人安心、更激动人心却毫不意外、感觉完全正确的方式来完成这一交接。",
+          "我敢肯定，这一切正是库克所希望看到的局面。",
+          "而且，如果你也认为苹果本身就是乔布斯最伟大的产品，那么库克终究还是一位真正的产品人。"
+        ]
+      }
+    },
+    {
+      "title": "Pluralistic: Quinn Slobodian and Ben Tarnoff's \"Muskism: A Guide for the Perplexed\" (21 Apr 2026)",
+      "titleZh": "多元视角：奎因·斯洛博迪安与本·塔诺夫的《马斯克主义：困惑者指南》",
+      "link": "https://pluralistic.net/2026/04/21/torment-nexusism/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-21T13:18:50.000Z",
+      "category": "opinion",
+      "keywords": ["Muskism", "Elon Musk", "critique", "technology culture"],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 17
+      },
+      "summary": "文章推介并评析了《马斯克主义：困惑者指南》一书，将其核心思想概括为‘火箭在人脸前爆炸，永无止境’，揭示马斯克所代表的科技救世主叙事背后的暴力性与矛盾。作者批判‘马斯克主义’将技术乌托邦与威权管理结合，形成一种新型数字极权意识形态。文中还穿插对社交媒体、消费主义与透明性神话的反思。",
+      "reason": "想了解马斯克现象背后的政治哲学批判，这篇深度书评提供了犀利而系统的分析框架。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Quinn Slobodian and Ben Tarnoff's \"Muskism: A Guide for the Perplexed\": A rocket exploding in a human face, forever."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Is sugar poison? More watch-part motorcycles; \"Something New\"; \"Seeds\"; Bulldozer fight; Facebook tonsils; Against transparency."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: San Francisco, London, Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Quinn Slobodian and Ben Tarnoff's \"Muskism: A Guide for the Perplexed\" (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Quinn Slobodian and Ben Tarnoff's Muskism: A Guide for the Perplexed seeks to describe the ideology that gave rise to Elon Musk, the social forces that gave rise to that ideology, and the terrible future that ideology seeks to bring about:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.harpercollins.com/products/muskism-quinn-slobodianben-tarnoff?variant=43838135402530"
+          },
+          {
+            "type": "p",
+            "text": "The book's starting point is that \"Muskism\" isn't merely the things Musk says, believes and does. It's the ideology that coalesces around him, from the people in his wake and the people he follows. Just as Henry Ford neither defined \"Fordism\" nor precisely practiced it, \"Muskism\" is centered on Elon Musk, but it's not Elon Musk's creation."
+          },
+          {
+            "type": "p",
+            "text": "So what is Muskism? To answer this question, Slobodian and Tarnoff enumerate the factors and influences that produced Musk himself. There's apartheid, with its \"rational\" system of technocratic authoritarianism, which blended together a life of luxury and plenty (for white settlers), brutal surveillance and state violence (for the Black majority) and fascist control over speech (for everyone), combined with a meat-grinder draft that saw young men of Musk's age being called up to suppress liberation uprisings."
+          },
+          {
+            "type": "p",
+            "text": "Peak apartheid coincided with peak personal computing, the moment where PCs (and then, modems) were getting cheaper and faster, propagating like mushrooms, offering a young Musk access to a broad world outside of the fascist bubble of South Africa, inspiring global ambitions in Musk."
+          },
+          {
+            "type": "p",
+            "text": "Closer to home, there's Musk's family: his grandfather, a grandiose and vicious white supremacist who moved to South Africa from Canada because of his love for apartheid and racial hierarchy. There's Musk's father, a violent and abusive fool."
+          },
+          {
+            "type": "p",
+            "text": "Muskism is also a new variant on techno-libertarianism. Traditional techno-libertarianism seeks to dismantle the state – or better yet, exit from the state, in the manner of an Ayn Rand hero. Techno-libertarianism is intimately bound up with settler colonialism, ever on the hunt for an \"empty land\" (terra nullius) that can be settled without committing the original sin of expropriation, the gravest offense in a religion organized around the total sanctity of private property:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2022/06/14/this-way-to-the-egress/#terra-nullius"
+          },
+          {
+            "type": "p",
+            "text": "Muskism doesn't seek to exit the state, it seeks to colonize and control it. Long before DOGE, Musk was playing the organs of the state to his own tune, securing massive contracts and subsidies for his solar and rocketry businesses, relying on the massive, deep-pocketed government to keep his businesses afloat."
+          },
+          {
+            "type": "p",
+            "text": "Obviously (DOGE!), Muskism also seeks to dismantle the state, but only the parts of it that can be transferred to Musk's own private hands. Muskism is about big government…for Musk, but not for you. It embodies that important conservative value summarized in Wilhoit's Law:"
+          },
+          {
+            "type": "quote",
+            "text": "There must be in-groups whom the law protects but does not bind, alongside out-groups whom the law binds but does not protect."
+          },
+          {
+            "type": "p",
+            "text": "https://crookedtimber.org/2018/03/21/liberals-against-progressives/#comment-729288"
+          },
+          {
+            "type": "p",
+            "text": "This is Musk through and through – a man who demands the right to call innocent strangers \"pedo guy\" without legal consequence; and also wields the power of the state to shutter businesses that boycott his platform because of its shitty practices:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.findlaw.com/legalblogs/courtside/elon-musk-sues-advertisers-who-boycott-x-under-anti-trust-laws/"
+          },
+          {
+            "type": "p",
+            "text": "Musk grew up on science fiction novels and weaves stfnal tropes through his offerings (for example, calling his chatbot \"Grok\"). There's no shortage of reactionary politics in science fiction, but Musk doesn't confine his sf-inspired cosmology to reactionary literature. He's famously very fond of the Wachowskis' \"Matrix\" movies, and leans heavily into the metaphor of the Matrix in explaining his interest in wiring people directly into computers, in characterizing opposing political beliefs as \"mind viruses,\" and in calling his political enemies \"NPCs\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/08/18/seeing-like-a-billionaire/#npcs"
+          },
+          {
+            "type": "p",
+            "text": "But Musk's relationship to this metaphor differs in a subtle and important way from the right's \"Red Pill\" rhetoric. Musk doesn't want to break out of the Matrix – he wants to control the Matrix. He wants to decide which opinions you're allowed to see and discuss (because \"most people have weak firewalls for bad ideas\"), he wants to beam ideas directly into your neural link, and he wants to abolish any form of workplace democracy, conquering the world with South African baasskap (boss-ism):"
+          },
+          {
+            "type": "p",
+            "text": "https://en.wikipedia.org/wiki/Baasskap"
+          },
+          {
+            "type": "p",
+            "text": "Throughout this slim volume, Slobodian and Tarnoff tease these strains of thought out of Musk's deeds and utterances, and in the systems that he has built or colonized through acquisition. The authors are offering more than a psychoanalysis, though – they're surfacing the material basis for Muskism, the benefits it delivers to its adherents, and the victories it has racked up."
+          },
+          {
+            "type": "p",
+            "text": "They reveal the method in Musk's chaotic and bullying management style, and recount the times Musk has successfully shattered sclerotic processes to make real breakthroughs, especially in aerospace. You'd be hard pressed to read these passages and without feeling some grudging admiration."
+          },
+          {
+            "type": "p",
+            "text": "Muskism gets stuff done…sometimes. At a cost. A high cost. Tarnoff and Slobodian count that cost, identify who pays it, and conjure up the world in which those costs continue to mount for all of us."
+          },
+          {
+            "type": "p",
+            "text": "It's a chilling vision, a Torment Nexus dystopia run by someone who thinks cyberpunk was a suggestion, not a warning."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Move Slow and Upgrade https://www.cambridge.org/core/books/move-slow-and-upgrade/93EAB1B110C5AD50D2395B149DF98EC6"
+          },
+          {
+            "type": "li",
+            "text": "Union Now Fund https://secure.actblue.com/donate/unionnow"
+          },
+          {
+            "type": "li",
+            "text": "On Dangerous Rhetoric https://omny.fm/shows/better-offline/monologue-on-dangerous-rhetoric"
+          },
+          {
+            "type": "li",
+            "text": "What Did I Learn from Running the “Reflections on Trusting Trust” Compiler? https://theofficialacm.substack.com/p/what-did-i-learn-from-running-the"
+          },
+          {
+            "type": "li",
+            "text": "Happy Tax Day, New York. We're taxing the rich https://www.youtube.com/watch?v=FLKZnVB4F9k"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago US, EU want to delay copyright treaty to help blind people for 3-5 years https://web.archive.org/web/20110423170607/http://keionline.org/node/1114"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Is sugar a poison? https://www.nytimes.com/2011/04/17/magazine/mag-17Sugar-t.html?_r=1&amp;pagewanted=all"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago More watch-part motorcycles https://ummaisoumenos.blogspot.com/2008/11/miniaturas-fantsticasbikesfeitas-de.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Seeds: comic-book memoir of father’s cancer is moving, sweet https://memex.craphound.com/2011/04/19/seeds-comic-book-memoir-of-fathers-cancer-is-moving-sweet/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Something New: frank, comedic, romantic memoir of a wedding in comic form https://memex.craphound.com/2016/04/19/something-new-frank-comedic-romantic-memoir-of-a-wedding-in-comic-form/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Ben and Jerry arrested at Democracy Spring demonstration in DC https://web.archive.org/web/20160419173913/https://www.msn.com/en-us/news/us/co-founders-of-ben-and-jerrys-arrested-at-us-capitol/ar-BBrW5tb?li=BBnb7Kz"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Competing construction companies stage a bulldozer fight in a busy street https://www.youtube.com/watch?v=UrtnIImGipg"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Chicago Police Accountability Task Force Report: racism, corruption, and a “broken system” https://chicagopatf.org/wp-content/uploads/2016/04/PATF_Final_Report_4_13_16-1.pdf"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Facebook's tonsils https://pluralistic.net/2021/04/19/tonsilitis/#mod-traum"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Against transparency https://pluralistic.net/2025/04/19/gotcha/#known-to-the-state-of-california-to-cause-cancer"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "San Francisco: 2026 Berkeley Spring Forum on M&A and the Boardroom, Apr 23\nhttps://www.theberkeleyforum.com/#agenda"
+          },
+          {
+            "type": "li",
+            "text": "London: Resisting Big Tech Empires (LSBU), Apr 25\nhttps://www.tickettailor.com/events/globaljusticenow/2042691"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Enshittification at Commonweal Ventures, Apr 29\nhttps://luma.com/ssgfvqz8"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyibuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "li",
+            "text": "Launch for Cindy's Cohn's \"Privacy's Defender\" (City Lights)\nhttps://www.youtube.com/watch?v=WuVCm2PUalU"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          " \n今日链接",
+          " \nQuinn Slobodian 与 Ben Tarnoff 所著《马斯克主义：困惑者指南》：一枚火箭在人脸前爆炸，永远定格。",
+          " \n嘿，看看这个：令人愉悦的精选内容。",
+          " \n客体恒常性：糖是毒药吗？更多手表零件摩托车；“新事物”；“种子”；推土机大战；Facebook 扁桃体；反对透明化。",
+          " \n即将亮相：旧金山、伦敦、柏林、纽约、巴塞罗那、海伊-on-Wye、伦敦、纽约。",
+          " \n近期活动：我曾去过的地方。",
+          " \n最新著作：你一直在读，我就在一直写。",
+          " \n即将出版：如我所言，我会继续写下去。",
+          " \n附录：其余内容。",
+          " \nQuinn Slobodian 与 Ben Tarnoff 所著《马斯克主义：困惑者指南》（永久链接）",
+          " \nQuinn Slobodian 与 Ben Tarnoff 的《马斯克主义：困惑者指南》旨在描述催生埃隆·马斯克的意识形态、催生该意识形态的社会力量，以及该意识形态意欲带来的可怕未来：",
+          " \nhttps://www.harpercollins.com/products/muskism-quinn-slobodianben-tarnoff?variant=43838135402530",
+          " \n该书的出发点在于：“马斯克主义”并非仅仅是马斯克所说、所信与所做之事。它是围绕他凝聚而成的意识形态，来自追随他的人群以及他所追随的人。正如亨利·福特既未定义“福特主义”，也未精确践行它一样，“马斯克主义”以埃隆·马斯克为中心，却并非由他创造。",
+          " \n那么，什么是马斯克主义？为回答这一问题，Slobodian 与 Tarnoff 列举了塑造马斯克本人的各种因素与影响。其中包括种族隔离制度——一种“理性”的技术官僚威权体系，它将白人定居者的奢靡富足、对黑人多数的残酷监控与国家暴力，以及对所有人言论的法西斯式控制融为一体，同时还伴随着将马斯克同龄青年征召入伍、镇压解放起义的绞肉机式征兵制度。",
+          " \n种族隔离的顶峰时期，恰逢个人计算机的巅峰时刻：PC（随后是调制解调器）变得愈发便宜与快速，如蘑菇般迅速普及，为年轻的马斯克提供了通往南非法西斯泡沫之外广阔世界的通道，激发了他全球性的野心。",
+          " \n更贴近个人层面，是马斯克的家庭：他的祖父是一位浮夸而凶残的白人至上主义者，因热爱种族隔离与种族等级制度而从加拿大移居南非；他的父亲则是一个暴力且愚蠢的虐待者。",
+          " \n马斯克主义也是技术自由意志主义的新变种。传统的技术自由意志主义试图 dismantle 国家——或更理想地，如安·兰德笔下的英雄般“退出”国家。技术自由意志主义与定居者殖民主义紧密交织，始终在寻找一片“无主之地”（terra nullius），以便在不犯下剥夺原罪的前提下进行殖民——在以私有财产神圣性为核心的宗教中，这是最严重的罪行：",
+          " \nhttps://pluralistic.net/2022/06/14/this-way-to-the-egress/#terra-nullius",
+          " \n马斯克主义并不寻求退出国家，而是试图殖民并控制国家。早在 DOGE 之前，马斯克就已将国家机器为己所用，为其太阳能与火箭业务争取巨额合同与补贴，依赖财力雄厚、深口袋的政府来维持其企业运转。",
+          "Obviously (DOGE!), Muskism also seeks to dismantle the state, but only the parts of it that can be transferred to Musk's own private hands. Muskism is about big government…for Musk, but not for you. It embodies that important conservative value summarized in Wilhoit's Law:",
+          "There must be in-groups whom the law protects but does not bind, alongside out-groups whom the law binds but does not protect.",
+          "https://crookedtimber.org/2018/03/21/liberals-against-progressives/#comment-729288",
+          "This is Musk through and through – a man who demands the right to call innocent strangers \"pedo guy\" without legal consequence; and also wields the power of the state to shutter businesses that boycott his platform because of its shitty practices:",
+          "https://www.findlaw.com/legalblogs/courtside/elon-musk-sues-advertisers-who-boycott-x-under-anti-trust-laws/",
+          "Musk grew up on science fiction novels and weaves stfnal tropes through his offerings (for example, calling his chatbot \"Grok\"). There's no shortage of reactionary politics in science fiction, but Musk doesn't confine his sf-inspired cosmology to reactionary literature. He's famously very fond of the Wachowskis' \"Matrix\" movies, and leans heavily into the metaphor of the Matrix in explaining his interest in wiring people directly into computers, in characterizing opposing political beliefs as \"mind viruses,\" and in calling his political enemies \"NPCs\":",
+          "https://pluralistic.net/2025/08/18/seeing-like-a-billionaire/#npcs",
+          "But Musk's relationship to this metaphor differs in a subtle and important way from the right's \"Red Pill\" rhetoric. Musk doesn't want to break out of the Matrix – he wants to control the Matrix. He wants to decide which opinions you're allowed to see and discuss (because \"most people have weak firewalls for bad ideas\"), he wants to beam ideas directly into your neural link, and he wants to abolish any form of workplace democracy, conquering the world with South African baasskap (boss-ism):",
+          "https://en.wikipedia.org/wiki/Baasskap",
+          "Throughout this slim volume, Slobodian and Tarnoff tease these strains of thought out of Musk's deeds and utterances, and in the systems that he has built or colonized through acquisition. The authors are offering more than a psychoanalysis, though – they're surfacing the material basis for Muskism, the benefits it delivers to its adherents, and the victories it has racked up.",
+          "They reveal the method in Musk's chaotic and bullying management style, and recount the times Musk has successfully shattered sclerotic processes to make real breakthroughs, especially in aerospace. You'd be hard pressed to read these passages and without feeling some grudging admiration.",
+          "Muskism gets stuff done…sometimes. At a cost. A high cost. Tarnoff and Slobodian count that cost, identify who pays it, and conjure up the world in which those costs continue to mount for all of us.",
+          "It's a chilling vision, a Torment Nexus dystopia run by someone who thinks cyberpunk was a suggestion, not a warning.",
+          "Hey look at this (permalink)",
+          "Move Slow and Upgrade https://www.cambridge.org/core/books/move-slow-and-upgrade/93EAB1B110C5AD50D2395B149DF98EC6",
+          "Union Now Fund https://secure.actblue.com/donate/unionnow",
+          "On Dangerous Rhetoric https://omny.fm/shows/better-offline/monologue-on-dangerous-rhetoric",
+          "What Did I Learn from Running the “Reflections on Trusting Trust” Compiler? https://theofficialacm.substack.com/p/what-did-i-learn-from-running-the",
+          "纽约，税收日快乐。我们要向富人征税 https://www.youtube.com/watch?v=FLKZnVB4F9k",
+          "客体永久性（永久链接）",
+          "#15年前 美国和欧盟希望将帮助盲人的版权条约推迟3-5年 https://web.archive.org/web/20110423170607/http://keionline.org/node/1114",
+          "#15年前 糖是毒药吗？ https://www.nytimes.com/2011/04/17/magazine/mag-17Sugar-t.html?_r=1&amp;pagewanted=all",
+          "#15年前 更多手表零件改造的摩托车 https://ummaisoumenos.blogspot.com/2008/11/miniaturas-fantsticasbikesfeitas-de.html",
+          "#15年前 《种子》：一本感人又温馨的关于父亲癌症的漫画回忆录 https://memex.craphound.com/2011/04/19/seeds-comic-book-memoir-of-fathers-cancer-is-moving-sweet/",
+          "#10年前 《新事物》：一部坦率、幽默又浪漫的婚礼漫画回忆录 https://memex.craphound.com/2016/04/19/something-new-frank-comedic-romantic-memoir-of-a-wedding-in-comic-form/",
+          "#10年前 本和杰瑞在华盛顿“民主之春”示威活动中被捕 https://web.archive.org/web/20160419173913/https://www.msn.com/en-us/news/us/co-founders-of-ben-and-jerrys-arrested-at-us-capitol/ar-BBrW5tb?li=BBnb7Kz",
+          "#10年前 竞争的建筑公司在繁忙街道上演推土机大战 https://www.youtube.com/watch?v=UrtnIImGipg",
+          "#10年前 芝加哥警察问责特别工作组报告：种族主义、腐败与“破碎的系统” https://chicagopatf.org/wp-content/uploads/2016/04/PATF_Final_Report_4_13_16-1.pdf",
+          "#5年前 Facebook的扁桃体 https://pluralistic.net/2021/04/19/tonsilitis/#mod-traum",
+          "#1年前 反对透明 https://pluralistic.net/2025/04/19/gotcha/#known-to-the-state-of-california-to-cause-cancer",
+          "即将出席的活动（永久链接）",
+          "旧金山：2026年伯克利并购与董事会春季论坛，4月23日 https://www.theberkeleyforum.com/#agenda",
+          "伦敦：抵抗大科技帝国（LSBU），4月25日 https://www.tickettailor.com/events/globaljusticenow/2042691",
+          "纽约：Commonweal Ventures 的“劣化”（Enshittification）主题演讲，4月29日 https://luma.com/ssgfvqz8",
+          "纽约：Techidemic 对谈 Sarah Jeong、Tochi Onyibuchi 和 Alia Dastagir（PEN World Voices），4月30日 https://worldvoices.pen.org/event/techidemic/",
+          "巴塞罗那：互联网不该是个垃圾场（全球数字权利论坛），5月13日 https://encuentroderechosdigitales.com/en/",
+          "柏林：Re:publica，5月18-20日 https://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland Books 的“劣化”（Enshittification）主题演讲，5月19日 https://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-Wye：HowTheLightGetsIn 思想节，5月22-25日 https://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日 https://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《反向半人马：AI之后的生活指南》（Strand书店），6月24日 https://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "近期活动（永久链接）",
+          "平台何时停止创新，开始榨取？（InnovEU） https://www.youtube.com/watch?v=cccDR0YaMt8",
+          "皮特·“市长”·布蒂吉格（No Gods No Mayors） https://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变得更糟（CBC The National） https://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否觉得自己被大科技公司坑了？（Ontario Today） https://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "辛迪·科恩《隐私的捍卫者》新书发布会（City Lights书店） https://www.youtube.com/watch?v=WuVCm2PUalU",
+          "最新著作（永久链接）",
+          " \n“Canny Valley”：我为《Pluralistic》创作的拼贴画限量合集，自费出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          " \n《Enshittification：为何一切突然变糟以及应对之道》，Farrar, Straus, Giroux 出版社，2025年10月7日  \nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          " \n《Picks and Shovels》：《Red Team Blues》续作，讲述个人电脑英雄时代的故事，Tor Books（美国），Head of Zeus（英国），2025年2月（https://us.macmillan.com/books/9781250865908/picksandshovels）。",
+          " \n《The Bezzle》：《Red Team Blues》续作，讲述监狱科技及其他骗局，Tor Books（美国），Head of Zeus（英国），2024年2月（thebezzle.org）。",
+          " \n《The Lost Cause》：一部关于气候危机中希望的太阳能朋克小说，Tor Books（美国），Head of Zeus（英国），2023年11月（http://lost-cause.org）。",
+          " \n《The Internet Con》：一本关于互操作性与大型科技公司的非虚构作品（Verso 出版社），2023年9月（http://seizethemeansofcomputation.org）。签名版可在 Book Soup 购买（https://www.booksoup.com/book/9781804291245）。",
+          " \n《Red Team Blues》：“一部扣人心弦、令人欲罢不能的惊悚小说，读完后你会比从前更懂这个世界如何运转。” Tor Books http://redteamblues.com。",
+          " \n《Chokepoint Capitalism：如何击败大型科技公司、驯服大型内容平台并让艺术家获得报酬》，与 Rebecca Giblin 合著，探讨如何打破创意劳动市场的垄断，Beacon Press/Scribe 出版社，2022年 https://chokepointcapitalism.com",
+          " \n即将出版书籍（永久链接）",
+          " \n《The Reverse-Centaur's Guide to AI》：一本关于如何成为更优秀 AI 批评者的小册子，Farrar, Straus and Giroux 出版社，2026年6月（https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/）",
+          " \n《Enshittification：为何一切突然变糟以及应对之道》（图像小说版），Firstsecond 出版社，2026年",
+          " \n《The Post-American Internet》：某种意义上《Enshittification》的地缘政治续作，Farrar, Straus and Giroux 出版社，2027年",
+          " \n《Unauthorized Bread》：一部面向青少年读者的图像小说，改编自我的中篇小说，讲述难民、烤面包机和 DRM 的故事，FirstSecond 出版社，2027年",
+          " \n《The Memex Method》，Farrar, Straus, Giroux 出版社，2027年",
+          " \n版权页信息（永久链接）",
+          " \n今日推荐来源：",
+          " \n当前正在写作：《The Post-American Internet》，《Enshittification》续作，讲述在特朗普焚毁美国之后，我们其余人所能拥有的更美好世界。已完成第三稿，提交给编辑。",
+          " \n《The Reverse Centaur's Guide to AI》：一本为 Farrar, Straus and Giroux 出版社撰写的小册子，讲述如何成为一名有效的 AI 批评者。法律审查与文字编辑已完成。",
+          " \n《The Post-American Internet》：一本关于特朗普主义时代互联网政策的小册子。处于规划阶段。",
+          " \n一篇关于 DIY 胰岛素的《Little Brother》短篇故事。处于规划阶段。",
+          " \n本作品（不包括任何连载小说）采用知识共享署名 4.0 国际许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，只要注明作者 Cory Doctorow 并附上 pluralistic.net 的链接即可。",
+          " \nhttps://creativecommons.org/licenses/by/4.0/",
+          " \n引用内容和图像不包含在本许可范围内；它们要么受版权限制或例外条款保护，要么基于单独许可。请谨慎使用。",
+          " \n如何获取《Pluralistic》：",
+          " \n博客（无广告、无追踪、无数据收集）：",
+          " \nPluralistic.net",
+          " \n通讯订阅（无广告、无追踪、无数据收集）：",
+          " \nhttps://pluralistic.net/plura-list",
+          " \nMastodon（无广告、无追踪、无数据收集）：",
+          " \nhttps://mamot.fr/@pluralistic",
+          " \nBluesky（无广告，可能存在追踪和数据收集）：",
+          " \nhttps://bsky.app/profile/doctorow.pluralistic.net",
+          " \nMedium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制、第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“生活给你SARS，你就做沙士汽水”——乔伊“手风琴哥”德维拉",
+          "请仔细阅读：通过阅读本文，您代表您的雇主同意，永久性地、在不损害我持续享有的权利和特权的前提下，解除我与您雇主及其合作伙伴、许可方、代理机构和受让人之间签订的任何及所有未经协商的协议、许可、服务条款、拆封协议、点击协议、浏览协议、保密协议、不披露协议、竞业禁止协议和可接受使用政策（统称“虚假协议”）所产生的全部义务与弃权。您进一步声明，您有权代表您的雇主解除任何“虚假协议”。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "title": "AI has no moat",
+      "titleZh": "AI没有护城河",
+      "link": "https://geohot.github.io//blog/jekyll/update/2026/04/22/ai-has-no-moat.html",
+      "sourceName": "geohot.github.io",
+      "sourceUrl": "https://geohot.github.io",
+      "pubDate": "2026-04-21T16:00:00.000Z",
+      "category": "opinion",
+      "keywords": ["Cursor", "acquisition", "AI tools"],
+      "score": {
+        "relevance": 5,
+        "quality": 4,
+        "timeliness": 8,
+        "total": 17
+      },
+      "summary": "作者尖锐指出，当前AI领域所谓的技术壁垒并不存在，真正的护城河被夸大其词。以SpaceX以600亿美元收购Cursor为例（对比Twitter仅440亿美元），讽刺市场估值泡沫与资本盲目。文中强调，多数用户已弃用Cursor等产品，质疑此类交易背后的真实价值与可持续性。",
+      "reason": "对AI投资热潮持怀疑态度的读者，会认同这篇对市场虚火与‘伪创新’的辛辣嘲讽。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "the singularity is nearer",
+        "blocks": [
+          {
+            "type": "p",
+            "text": "SpaceX is buying Cursor for $60B. lol it’s just sad to watch this shit, Twitter was $44B. Like this has to be some scam I don’t understand. Nobody I know even uses Cursor any more."
+          },
+          {
+            "type": "p",
+            "text": "In my opinion, opencode is legit the best coding agent. Not open source cope, like it’s actually number 1. And yes, it’s a good harness, but it’s not that hard to write something similar. opencode has a solid business model, let’s hope they don’t enshittify. The Claude Code source leaked and it was 10% agent, 90% spyware."
+          },
+          {
+            "type": "p",
+            "text": "Then there’s models. The closed source models are the best (I find these rankings accurate), GPT-5.4 and Opus 4.7, but they cost at least 10x more to make than Kimi K2.6 and GLM 5.1 which aren’t that much worse (6 months behind). The models are harder to make than harness software, but there’s full guides to make them, it’s mostly just a question of being able to justify spending tons on training for an asset that depreciates so fast."
+          },
+          {
+            "type": "p",
+            "text": "It’s kind of beautiful if it wasn’t so sad. The money grubbiness has to burn itself out. It just looks stupider and stupider and so incredibility detached from reality. It’s happening because of FOMO and super low time horizon thinking."
+          },
+          {
+            "type": "p",
+            "text": "These people actually believe in some AGI singularity crap and if they don’t act in the next 7 minutes it’s all over BROS ITS NOT REAL IT NEVER WAS REAL look at China they don’t believe in it it’s just the normal exponential growth curve."
+          },
+          {
+            "type": "p",
+            "text": "It seems the tech world is experiencing AI psychosis. As I’m sure many of you experienced personally to a degree, AI psychosis is very real. The future belongs to the people who successfully navigate it. Please let the tech world die fast and not draw out a long and painful death where we all have to watch the writhing and screaming."
+          }
+        ],
+        "translations": [
+          " \nSpaceX 要以 600 亿美元收购 Cursor。笑死，看着这破事真让人难过，Twitter 才卖了 440 亿。这肯定是个骗局，我完全搞不懂。我认识的人里根本没人再用 Cursor 了。",
+          " \n在我看来，opencode 确实是最好的编码代理工具。不是那种开源的仿制品，而是真正的第一名。它的 harness 确实不错，但写个类似的也不难。opencode 有扎实的商业模式，希望他们别搞砸了。Claude Code 的源码泄露了，结果发现 10% 是代理功能，90% 是间谍软件。",
+          " \n再说说模型。闭源模型确实是最强的（我觉得这些排名很准），比如 GPT-5.4 和 Opus 4.7，但它们的训练成本至少是 Kimi K2.6 和 GLM 5.1 的 10 倍，而后者性能差距并不大（大概落后半年）。模型确实比 harness 软件更难做，但网上已经有完整的教程教你如何训练，关键问题在于能否 justify 投入巨额资金去训练一个贬值这么快的资产。",
+          " \n如果这事儿不是这么可悲的话，其实还挺美的。这种捞钱行为迟早会自取灭亡。现在看起来越来越蠢，越来越脱离现实。之所以发生，就是因为 FOMO（错失恐惧症）和极度短视的思维。",
+          " \n这些人居然真的相信什么 AGI 奇点鬼话，觉得如果不在接下来的 7 分钟内行动就全完了——兄弟，这根本不是真的，从来就没真过！看看中国，他们就不信这套，那只是正常的指数增长曲线而已。",
+          " \n看起来科技圈正在经历一场 AI 精神病。我相信你们很多人或多或少都亲身经历过，AI 精神病确实存在。未来属于那些能成功驾驭它的人。求求科技圈快点死吧，别拖拖拉拉地搞一场漫长而痛苦的死亡，让我们眼睁睁看着它挣扎哀嚎。"
+        ]
+      }
+    }
+  ]
+}

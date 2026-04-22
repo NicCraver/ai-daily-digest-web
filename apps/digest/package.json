@@ -1,0 +1,20 @@
+{
+  "name": "digest",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun --env-file=../../.env src/digest.ts",
+    "quick": "bun --env-file=../../.env src/digest.ts --hours 168 --max-scan 20 --top-n 3",
+    "weekly": "bun src/weekly.ts",
+    "weekly:current": "bun src/weekly.ts --current"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "jsdom": "^29.0.2"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.12",
+    "@types/jsdom": "^28.0.1"
+  }
+}
