@@ -2,9 +2,10 @@
 name: Daily digest
 
 on:
-  # 每天 UTC 00:00 = 北京时间 08:00（可按需改 cron）
+  # 每天北京时间 01:17 自动运行；避开整点以降低 GitHub schedule 延迟/丢调度概率
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "17 1 * * *"
+      timezone: "Asia/Shanghai"
   workflow_dispatch: {}
 
 concurrency:
