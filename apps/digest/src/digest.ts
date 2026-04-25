@@ -1062,6 +1062,35 @@ function urlHash(url: string): string {
   return createHash("sha1").update(url).digest("hex").slice(0, 16);
 }
 
+const REPORT_TIMEZONE = "Asia/Shanghai";
+
+function formatDateInTimeZone(date: Date, timeZone = REPORT_TIMEZONE): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+  return `${year}-${month}-${day}`;
+}
+
+function formatTimeInTimeZone(date: Date, timeZone = REPORT_TIMEZONE): string {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+
+  const hour = parts.find((part) => part.type === "hour")?.value;
+  const minute = parts.find((part) => part.type === "minute")?.value;
+  return `${hour}:${minute}`;
+}
+
 /** Short extracted body → treat as partial (not a full article). */
 const FULLTEXT_MIN_CHARS = 1800;
 const FULLTEXT_MIN_BODY_BLOCKS = 3;
@@ -1504,11 +1533,12 @@ function generateDigestReport(
     hours: number;
     lang: string;
   },
+  reportDate: string,
 ): string {
   const now = new Date();
-  const dateStr = now.toISOString().split("T")[0];
+  const timeStr = formatTimeInTimeZone(now);
 
-  let report = `# 📰 AI 博客每日精选 — ${dateStr}\n\n`;
+  let report = `# 📰 AI 博客每日精选 — ${reportDate}\n\n`;
   report += `> 来自 Karpathy 推荐的 ${stats.totalFeeds} 个顶级技术博客，AI 精选 Top ${articles.length}\n\n`;
 
   // ── Today's Highlights ──
@@ -1601,7 +1631,7 @@ function generateDigestReport(
   }
 
   // ── Footer ──
-  report += `*生成于 ${dateStr} ${now.toISOString().split("T")[1]?.slice(0, 5) || ""} | 扫描 ${stats.successFeeds} 源 → 获取 ${stats.totalArticles} 篇 → 精选 ${articles.length} 篇*\n`;
+  report += `*生成于 ${reportDate} ${timeStr} (${REPORT_TIMEZONE}) | 扫描 ${stats.successFeeds} 源 → 获取 ${stats.totalArticles} 篇 → 精选 ${articles.length} 篇*\n`;
   report += `*基于 [Hacker News Popularity Contest 2025](https://refactoringenglish.com/tools/hn-popularity/) RSS 源列表，由 [Andrej Karpathy](https://x.com/karpathy) 推荐*\n`;
   report += `*由「懂点儿AI」制作，欢迎关注同名微信公众号获取更多 AI 实用技巧 💡*\n`;
 
@@ -1854,10 +1884,8 @@ function generateHtmlReport(
     hours: number;
     lang: string;
   },
+  reportDate: string,
 ): string {
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0, 10);
-
   // Tag cloud
   const kwCount = new Map<string, number>();
   for (const a of articles) {
@@ -1897,13 +1925,13 @@ function generateHtmlReport(
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 博客每日精选 — ${dateStr}</title>
+<title>AI 博客每日精选 — ${reportDate}</title>
 <style>${HTML_STYLES}</style>
 </head>
 <body data-mode="both">
 <div class="container">
   <div class="topbar">
-    <h1>📰 AI 博客每日精选 — ${dateStr}</h1>
+    <h1>📰 AI 博客每日精选 — ${reportDate}</h1>
     <div class="subtitle">来自 Karpathy 推荐的 ${stats.totalFeeds} 个顶级技术博客 · AI 精选 ${articles.length} 篇 · 全文翻译 ${okCount}/${articles.length}</div>
     <div class="lang-switch" role="tablist">
       <button data-mode="zh">中文</button>
@@ -1939,7 +1967,7 @@ function generateHtmlReport(
   ${articlesHtml}
 
   <footer>
-    生成于 ${dateStr} · 由「懂点儿AI」制作 · <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">源码</a>
+    生成于 ${reportDate} · 由「懂点儿AI」制作 · <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">源码</a>
   </footer>
 </div>
 <script>${HTML_SCRIPT}</script>
@@ -2156,8 +2184,8 @@ async function main(): Promise<void> {
     openaiModel,
   });
 
-  // dateStr: ISO YYYY-MM-DD used for output filenames + JSON `date` field
-  const effectiveDate = targetDate || new Date().toISOString().slice(0, 10);
+  // Output date defaults to the local publication day in Asia/Shanghai.
+  const effectiveDate = targetDate || formatDateInTimeZone(new Date());
   if (!outputPath) {
     const compact = effectiveDate.replace(/-/g, "");
     outputPath = join(dataDir, `digest-${compact}.md`);
@@ -2337,7 +2365,7 @@ async function main(): Promise<void> {
     lang,
   };
 
-  const report = generateDigestReport(finalArticles, highlights, reportStats);
+  const report = generateDigestReport(finalArticles, highlights, reportStats, effectiveDate);
 
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, report);
@@ -2351,7 +2379,10 @@ async function main(): Promise<void> {
   // Legacy self-contained HTML (opt-in)
   if (process.env.DIGEST_HTML === "1") {
     const htmlPath = outputPath.replace(/\.md$/, ".html");
-    await writeFile(htmlPath, generateHtmlReport(finalArticles, highlights, reportStats));
+    await writeFile(
+      htmlPath,
+      generateHtmlReport(finalArticles, highlights, reportStats, effectiveDate),
+    );
     console.log(`[digest] 🌐 HTML:   ${htmlPath}`);
     if (process.env.DIGEST_OPEN !== "0") {
       try {
