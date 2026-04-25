@@ -1,0 +1,2389 @@
+{
+  "date": "2026-04-25",
+  "generatedAt": "2026-04-25T00:32:03.082Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 81,
+    "totalArticles": 2404,
+    "filteredArticles": 23,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：中国AI公司DeepSeek发布高性价比大模型，以百万级上下文长度和低价策略冲击前沿市场；开源社区持续探讨AI伦理与治理，从“功能退化”概念到Mythos AI对代码安全的潜在影响，反映出对技术失控的深层忧虑；同时，工程实践层面亮点频出，如SQLite新增Postgres通知机制、C++异常处理最佳实践等，凸显底层系统创新与开发者工具优化的并行发展。",
+  "articles": [
+    {
+      "slug": "29df7a2987bc3573",
+      "title": "DeepSeek V4 - almost on the frontier, a fraction of the price",
+      "titleZh": "DeepSeek V4：接近前沿水平，价格仅为十分之一",
+      "link": "https://simonwillison.net/2026/Apr/24/deepseek-v4/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T06:01:04.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "DeepSeek V4",
+        "Chinese AI",
+        "model release"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "中国AI实验室DeepSeek发布了备受期待的V4系列模型中的两个预览版——DeepSeek-V4-Pro和DeepSeek-V4-Flash。这两个模型均支持100万token上下文长度，并采用混合专家（Mixture of Experts）架构。与上一代V3.2相比，V4在性能和成本效率上均有显著提升，Pro版本在复杂推理任务中表现接近顶级模型，而Flash版本则以更低延迟实现高吞吐量。DeepSeek表示其技术路线在保持高性能的同时大幅降低了训练与部署成本。",
+      "summaryEn": "Chinese AI lab DeepSeek has released two preview models from its highly anticipated V4 series: DeepSeek-V4-Pro and DeepSeek-V4-Flash. Both support a 1 million token context window and use a Mixture of Experts architecture. Compared to the previous V3.2, the V4 series shows significant improvements in performance and cost efficiency, with the Pro model approaching frontier-level capabilities on complex reasoning tasks and the Flash variant offering high throughput at lower latency. DeepSeek claims its approach reduces both training and deployment costs substantially while maintaining top-tier performance.",
+      "reason": "这是DeepSeek最新一代大模型的首次公开亮相，展示了其在性能与成本之间取得突破性平衡的技术实力，对全球AI市场竞争格局具有重要影响。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026"
+          },
+          {
+            "type": "p",
+            "text": "Chinese AI lab DeepSeek’s last model release was V3.2 (and V3.2 Speciale) last December. They just dropped the first of their hotly anticipated V4 series in the shape of two preview models, DeepSeek-V4-Pro and DeepSeek-V4-Flash."
+          },
+          {
+            "type": "p",
+            "text": "Both models are 1 million token context Mixture of Experts. Pro is 1.6T total parameters, 49B active. Flash is 284B total, 13B active. They’re using the standard MIT license."
+          },
+          {
+            "type": "p",
+            "text": "I think this makes DeepSeek-V4-Pro the new largest open weights model. It’s larger than Kimi K2.6 (1.1T) and GLM-5.1 (754B) and more than twice the size of DeepSeek V3.2 (685B)."
+          },
+          {
+            "type": "p",
+            "text": "Pro is 865GB on Hugging Face, Flash is 160GB. I’m hoping that a lightly quantized Flash will run on my 128GB M5 MacBook Pro. It’s possible the Pro model may run on it if I can stream just the necessary active experts from disk."
+          },
+          {
+            "type": "p",
+            "text": "For the moment I tried the models out via OpenRouter, using llm-openrouter:"
+          },
+          {
+            "type": "code",
+            "text": "llm install llm-openrouter\nllm openrouter refresh\nllm -m openrouter/deepseek/deepseek-v4-pro 'Generate an SVG of a pelican riding a bicycle'"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the pelican for DeepSeek-V4-Flash:"
+          },
+          {
+            "type": "p",
+            "text": "And for DeepSeek-V4-Pro:"
+          },
+          {
+            "type": "p",
+            "text": "For comparison, take a look at the pelicans I got from DeepSeek V3.2 in December, V3.1 in August, and V3-0324 in March 2025."
+          },
+          {
+            "type": "p",
+            "text": "So the pelicans are pretty good, but what’s really notable here is the cost. DeepSeek V4 is a very, very inexpensive model."
+          },
+          {
+            "type": "p",
+            "text": "This is DeepSeek’s pricing page. They’re charging $0.14/million tokens input and $0.28/million tokens output for Flash, and $1.74/million input and $3.48/million output for Pro."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a comparison table with the frontier models from Gemini, OpenAI and Anthropic:"
+          },
+          {
+            "type": "p",
+            "text": "DeepSeek-V4-Flash is the cheapest of the small models, beating even OpenAI’s GPT-5.4 Nano. DeepSeek-V4-Pro is the cheapest of the larger frontier models."
+          },
+          {
+            "type": "p",
+            "text": "This note from the DeepSeek paper helps explain why they can price these models so low—they’ve focused a great deal on efficiency with this release, especially for longer context prompts:"
+          },
+          {
+            "type": "quote",
+            "text": "In the scenario of 1M-token context, even DeepSeek-V4-Pro, which has a larger number of activated parameters, attains only 27% of the single-token FLOPs (measured in equivalent FP8 FLOPs) and 10% of the KV cache size relative to DeepSeek-V3.2. Furthermore, DeepSeek-V4-Flash, with its smaller number of activated parameters, pushes efficiency even further: in the 1M-token context setting, it achieves only 10% of the single-token FLOPs and 7% of the KV cache size compared with DeepSeek-V3.2."
+          },
+          {
+            "type": "p",
+            "text": "DeepSeek’s self-reported benchmarks in their paper show their Pro model competitive with those other frontier models, albeit with this note:"
+          },
+          {
+            "type": "quote",
+            "text": "Through the expansion of reasoning tokens, DeepSeek-V4-Pro-Max demonstrates superior performance relative to GPT-5.2 and Gemini-3.0-Pro on standard reasoning benchmarks. Nevertheless, its performance falls marginally short of GPT-5.4 and Gemini-3.1-Pro, suggesting a developmental trajectory that trails state-of-the-art frontier models by approximately 3 to 6 months."
+          },
+          {
+            "type": "p",
+            "text": "I’m keeping an eye on huggingface.co/unsloth/models as I expect the Unsloth team will have a set of quantized versions out pretty soon. It’s going to be very interesting to see how well that Flash model runs on my own machine."
+          }
+        ],
+        "translations": [
+          "2026年4月24日",
+          "中国AI实验室DeepSeek上一款模型是去年12月发布的V3.2（以及V3.2 Speciale），而他们刚刚推出了备受期待的V4系列的首批预览模型——DeepSeek-V4-Pro和DeepSeek-V4-Flash。",
+          "两款模型均支持百万级token上下文长度的专家混合架构（Mixture of Experts）。Pro版本总参数量为1.6万亿，激活参数为490亿；Flash版本总参数量为2840亿，激活参数为130亿。它们采用标准的MIT许可证。",
+          "我认为这使得DeepSeek-V4-Pro成为目前最大的开源权重模型。它比Kimi K2.6（1.1万亿）和GLM-5.1（7540亿）更大，并且其规模超过DeepSeek V3.2（6850亿）的两倍。",
+          "Pro模型在Hugging Face上大小为865GB，Flash为160GB。我希望能让一个轻度量化的Flash版本在我的128GB内存的M5 MacBook Pro上运行。如果我能从磁盘流式加载所需的活跃专家模块，Pro模型或许也能在其上运行。",
+          "目前我通过OpenRouter试用这些模型，使用的是llm-openrouter插件：",
+          "llm install llm-openrouter\nllm openrouter refresh\nllm -m openrouter/deepseek/deepseek-v4-pro 'Generate an SVG of a pelican riding a bicycle'",
+          "这是由DeepSeek-V4-Flash生成的企鹅（pelican）：",
+          "这是由DeepSeek-V4-Pro生成的企鹅：",
+          "作为对比，可以参考我在去年12月、8月和2025年3月分别从DeepSeek V3.2、V3.1和V3-0324获得的企鹅图像。",
+          "所以这些企鹅图像质量相当不错，但真正值得注意的是成本——DeepSeek V4是一个非常非常便宜的模型。",
+          "这是DeepSeek的定价页面。他们对Flash收取每百万输入token 0.14美元、每百万输出token 0.28美元的费用；对Pro则收取每百万输入token 1.74美元、每百万输出token 3.48美元。",
+          "这里是一张与Gemini、OpenAI和Anthropic的前沿模型价格对比表：",
+          "DeepSeek-V4-Flash是所有小型模型中最便宜的，甚至比OpenAI的GPT-5.4 Nano还要便宜。DeepSeek-V4-Pro则是所有大型前沿模型中价格最低的。",
+          "DeepSeek论文中的一段说明有助于解释为何他们能如此低价提供这些模型——他们在本次发布中高度专注于效率优化，尤其是在处理长上下文提示方面：",
+          "在100万token的上下文场景中，即使DeepSeek-V4-Pro拥有更多激活参数，其单token FLOPs（以等效FP8 FLOPs计算）仅为DeepSeek-V3.2的27%，KV缓存大小也仅为其10%。此外，激活参数更少的DeepSeek-V4-Flash进一步提升了效率：在100万token上下文设定下，其单token FLOPs仅为DeepSeek-V3.2的10%，KV缓存大小更是仅占7%。",
+          "DeepSeek在其论文中自报告的基准测试显示，其Pro模型与其他前沿模型相比具有竞争力，但附带如下说明：",
+          "通过扩展推理标记，DeepSeek-V4-Pro-Max在标准推理基准测试中表现优于GPT-5.2和Gemini-3.0-Pro。然而，其性能略低于GPT-5.4和Gemini-3.1-Pro，表明其发展轨迹大约落后于当前最先进的前沿模型3到6个月。",
+          "我正在关注huggingface.co/unsloth/models，因为我预计Unsloth团队很快就会推出一系列量化版本。到时候看看Flash模型在我自己的机器上运行得如何，将会非常有趣。"
+        ]
+      }
+    },
+    {
+      "slug": "2daebdd4da8b03b9",
+      "title": "Pluralistic: A free, open visual identity for enshittification (24 Apr 2026)",
+      "titleZh": "多元主义：为‘功能退化’设计的免费开源视觉标识",
+      "link": "https://pluralistic.net/2026/04/24/poop-emoji-plus-plus/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-24T12:50:06.000Z",
+      "category": "opinion",
+      "keywords": [
+        "enshittification",
+        "design",
+        "culture"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "本文提出了一个名为‘功能退化’（enshittification）的概念及其对应的视觉标识设计，旨在揭示数字平台如何逐渐牺牲用户体验以追求利润最大化。作者强调该标识是免费且开源的，可用于识别那些因商业策略而变得臃肿、低效或令人不满的服务。这一设计不仅是对当前互联网生态的批判工具，也鼓励社区共同参与对抗平台滥用权力的现象。",
+      "summaryEn": "This article introduces a free, open-source visual identity for 'enshittification'—the process by which digital platforms gradually degrade user experience to maximize profits. The author presents this symbol as a tool to identify services that have become bloated, inefficient, or frustrating due to corporate strategies. It serves both as a critique of current internet ecosystems and as an invitation for community resistance against platform abuse.",
+      "reason": "它提供了一个清晰、可复用的符号来描述和对抗现代科技产品日益严重的‘功能退化’趋势，有助于公众识别并抵制不良平台行为。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "A free, open visual identity for enshittification: No mere poop emoji!"
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: RIAA v little girl; Portal turret Easter egg; Atari v indie games; Chabon's Phantom Tollbooth intro; The 0.1%; Well-labeled inns; \"More Everything Forever.\""
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: London, Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "A free, open visual identity for enshittification (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "To my surprise, my life's work has turned out to be a long series of attempts to get people to engage with the abstract, distant issues of tech policy before it's too late. This is hard, because people naturally devote their attention to things that are concrete and immediate (for very good reasons!)."
+          },
+          {
+            "type": "p",
+            "text": "For nearly 25 years, I've worked with my comrades at the Electronic Frontier Foundation to raise the salience of these abstract, technical ideas. I've come up with metaphors, parables, framing devices, narratives, and then…a dirty little word: enshittification. It turned out that this word, and the minor license to vulgarity it confers, was the secret to unleashing a tide of interest in these issues, to my immense surprise and gratification."
+          },
+          {
+            "type": "p",
+            "text": "But I don't confine my efforts to coming up with words to engage people on these matters. For several years now, I have been developing myself as a collagist, combining public domain images with Creative Commons-licensed materials to create several collages every week that aim to illustrate these abstract, technical issues in an engaging, visual way:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/albums/72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "This got a lot easier with the 2025 publication of my international bestseller Enshittification, and not just because a lot of people read that book. It was also because the US edition, from MCD/Farrar, Straus and Giroux had a gorgeous cover:"
+          },
+          {
+            "type": "p",
+            "text": "https://mpd-biblio-covers.imgix.net/9780374619329.jpg"
+          },
+          {
+            "type": "p",
+            "text": "That cover featured a (literally and figuratively) iconic variation of the \"pile of poo\" emoji, with angry eyebrows and a grawlix-scrawled black censor's bar over its mouth. It was designed by the brilliant Devin Washburn of No Ideas studio:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.noideas.website/"
+          },
+          {
+            "type": "p",
+            "text": "Devin's poop emoji became my go-to visual shorthand for illustrating stories about enshittification, an instantly recognizable way to identify my subject matter:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54957634601/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "I remixed it over and over:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54962122121/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "And over:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54992219613/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "I liked it so much I ordered a couple hundred enamel pins and a couple thousand vinyl stickers featuring the design, and handed them out for free to people I met on my 33-city book tour. Everywhere I went – and every time a video went out showing me wearing the pin – I was inundated with requests to buy this stuff. But my pins and stickers weren't merch (stuff you could buy) – they were swag (stuff I gave away). I had no interest in getting into the merch business!"
+          },
+          {
+            "type": "p",
+            "text": "But you folks kept asking, and also, I really loved that design, so I offered Devin a cash buyout for the rights to his enshittification poop emoji and then I released it under a Creative Commons Attribution 4.0 license that lets you use it any way you want, including for commercial products, provided you attribute it and link back to the original:"
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/deed.en"
+          },
+          {
+            "type": "p",
+            "text": "And I made sure that my EFF comrades had first crack at this design, and they've made merch of it. You can get a $5 sticker:"
+          },
+          {
+            "type": "p",
+            "text": "https://shop.eff.org/products/enshittification-sticker"
+          },
+          {
+            "type": "p",
+            "text": "Or a $10 pin:"
+          },
+          {
+            "type": "p",
+            "text": "https://shop.eff.org/products/enshittification-pin"
+          },
+          {
+            "type": "p",
+            "text": "With all proceeds going to the Electronic Frontier Foundation, the most profound and powerful disenshittifying force on the planet Earth!"
+          },
+          {
+            "type": "p",
+            "text": "But because this is CC licensed, you can make your own merch and swag! I made this great print-on-demand lawn flag my for front garden so I could let my enshittification flag fly:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/55025045602/"
+          },
+          {
+            "type": "p",
+            "text": "My goal here is to create a free, open, remixable visual language for talking about platform decay, not owned by me or anyone, a part of the commons. Use it to illustrate anything you want, especially if you want to analogize enshittification to other phenomena, like politics or other non-digital phenomena. Semantic drift is good, actually!"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/10/14/pearl-clutching/#this-toilet-has-no-central-nervous-system"
+          },
+          {
+            "type": "p",
+            "text": "You can get the high-rez of Devin's enshittification poop emoji from the internet's three most important repositories of Creative Commons licensed work."
+          },
+          {
+            "type": "p",
+            "text": "There's a copy on Wikimedia Commons:"
+          },
+          {
+            "type": "p",
+            "text": "https://commons.wikimedia.org/wiki/File:Enshittification_poop_emoji_logo.png"
+          },
+          {
+            "type": "p",
+            "text": "And on Flickr:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/55225631563/"
+          },
+          {
+            "type": "p",
+            "text": "And of course on the Internet Archive, along with a PSD that includes an ink-density adjustment layer:"
+          },
+          {
+            "type": "p",
+            "text": "https://archive.org/details/enshittification-poop-emoji-logo"
+          },
+          {
+            "type": "p",
+            "text": "I've supported Creative Commons literally since the very beginning. I worked with Larry Lessig, Aaron Swartz, Matt Haughey and Lisa Rein on the launch of the original licenses in 2002/3, and my first novel, Down and Out in the Magic Kingdom was the first book released under a CC license:"
+          },
+          {
+            "type": "p",
+            "text": "https://craphound.com/down/download/"
+          },
+          {
+            "type": "p",
+            "text": "Creative Commons is one of the most amazing feats of stunt-lawyering ever attempted, and it has been an unmitigated success, with tens of billions of works licensed CC, including all of Wikipedia. Like EFF, CC is a charitable nonprofit that depends on individual donors to keep its work going. The org turned 25 this year (along with my career as a novelist), and they've launched a giant fundraiser to carry their work forward."
+          },
+          {
+            "type": "p",
+            "text": "As my contribution to the fundraiser, I've provided them with 375 signed, numbered copies of Canny Valley, my (otherwise) not-for-sale, extremely limited edition book of my collages, with an intro by Bruce Sterling. The book was designed by type legend John D Berry and printed at Pasadena's Typeworks, a century-old, family-owned print shop, on 100lb Mohawk paper, with a PVC binding that will last for generations:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/10/canny-valley/"
+          },
+          {
+            "type": "p",
+            "text": "CC tells me there's still some copies of Canny Valley left in the fundraiser. If you're intrigued by my collaging and want to own this very strange and beautiful little artifact, here's where to go:"
+          },
+          {
+            "type": "p",
+            "text": "https://mailchi.mp/creativecommons/were-turning-25-book-giveaway"
+          },
+          {
+            "type": "p",
+            "text": "And if you want to try your own hand at collaging – or making merch (or swag!) – help yourself to Devin's wondrous piece of poo and go to town."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "trying to do something you probably shouldn't https://backofmind.substack.com/p/trying-to-do-something-you-probably"
+          },
+          {
+            "type": "li",
+            "text": "What Is the Point of California’s Privacy Laws if Big Tech Ignores Them? https://www.kqed.org/news/12079887/what-is-the-point-of-californias-privacy-laws-if-big-tech-ignores-them"
+          },
+          {
+            "type": "li",
+            "text": "An Open Letter to FCC Chairman Brendan Carr https://chkbal.substack.com/p/an-open-letter-to-fcc-chairman-brendan"
+          },
+          {
+            "type": "li",
+            "text": "A Simple Model of Online Platform Enshittification https://apoorvalal.github.io/lalgorithms/eternalizing_septembers"
+          },
+          {
+            "type": "li",
+            "text": "At the New School: Against Money https://jwmason.org/slackwire/at-the-new-school-against-money/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Court throws out RIAA attempt to sue little girl https://web.archive.org/web/20060422232323/https://p2pnet.net/story/8603"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Android secretly stores location data too — though less of it, and with less detail https://arstechnica.com/gadgets/2011/04/android-phones-keep-location-cache-too-but-its-harder-to-access/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Portal turret Easter egg https://www.flickr.com/photos/57617475@N00/5638462322/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Michael Chabon’s introduction to The Phantom Tollbooth 50th anniversary edition https://web.archive.org/web/20110424055621/http://www.nybooks.com/blogs/nyrblog/2011/apr/21/michael-chabon-phantom-tollbooth-wonder-words/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago UK spy agencies store sensitive data on millions of innocent people, with no safeguards from abuse https://arstechnica.com/tech-policy/2016/04/uk-secret-police-surveillance-bulk-personal-datasets/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Zombie company Atari wants exclusive right to make haunted house games https://www.techdirt.com/2016/04/21/ex-game-maker-atari-to-argue-to-us-pto-that-only-it-can-make-haunted-house-games/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Hackers take $81 million from Bangladesh’s central bank by pwning its $10 second-hand routers https://www.bbc.com/news/technology-36110421"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Forget the one percent, it’s the 0.1% who run the show https://web.archive.org/web/20160416022112/https://www.alternet.org/economy/1-really-problem"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The quest for the well-labeled inn https://memex.craphound.com/2016/04/22/the-quest-for-the-well-labeled-inn/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago EFF sues Proctorio over copyfraud https://pluralistic.net/2021/04/22/ihor-kolomoisky/#copyfraud"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Fighting FLoC is compatible with fighting monopoly https://pluralistic.net/2021/04/22/ihor-kolomoisky/#not-that-competition"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Moxie hacks Cellebrite https://pluralistic.net/2021/04/22/ihor-kolomoisky/#petard"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Banks made bank on covid overdraft charges https://pluralistic.net/2021/04/22/ihor-kolomoisky/#usurers"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The awesome destructive power of a billionaire https://pluralistic.net/2021/04/22/ihor-kolomoisky/#force-multiplier"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago More Everything Forever https://pluralistic.net/2025/04/22/vinges-bastards/#cyberpunk-is-a-warning-not-a-suggestion"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "London: Resisting Big Tech Empires (LSBU), Apr 25\nhttps://www.tickettailor.com/events/globaljusticenow/2042691"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Enshittification at Commonweal Ventures, Apr 29\nhttps://luma.com/ssgfvqz8"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyebuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "为“功能退化”（Enshittification）打造的一个免费、开放的视觉标识：不只是个单纯的便便表情符号！",
+          "嘿，看看这个：令人愉悦的小玩意儿。",
+          "物体恒存性：RIAA起诉小女孩；Portal炮塔彩蛋；Atari与独立游戏之争；查博恩《幻影收费亭》的引言；顶层0.1%；标注清晰的客栈；“永远更多”。",
+          "即将出席的活动：伦敦、柏林、纽约、巴塞罗那、海伊-昂-怀伊、伦敦、纽约。",
+          "近期活动回顾：我走过的路。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所言，我会一直写下去。",
+          "版权说明：其余部分。",
+          "为“功能退化”（Enshittification）打造的一个免费、开放的视觉标识（永久链接）",
+          "令我惊讶的是，我毕生的事业竟成了一系列尝试——在科技政策问题变得过于紧迫之前，让人们关注这些抽象而遥远的问题。这很难，因为人们自然会把注意力集中在具体且迫在眉睫的事情上（这非常有道理！）。",
+          "近25年来，我一直与电子前沿基金会（Electronic Frontier Foundation）的同仁们合作，提升人们对这些抽象、技术性议题的关注度。我创造了比喻、寓言、叙事框架和故事……然后，出现了一个不太体面的小词：“功能退化”（Enshittification）。结果证明，正是这个词，以及它所赋予的一点粗俗许可，才让我意外又欣慰地激发了人们对这些问题的浓厚兴趣。",
+          "但我并不满足于仅仅创造词语来吸引人们关注这些问题。多年来，我一直在努力成为一名拼贴艺术家，将公共领域的图像与知识共享许可的材料结合，每周创作几幅拼贴画，以生动、直观的方式阐释这些抽象的技术议题：",
+          "https://www.flickr.com/photos/doctorow/albums/72177720316719208",
+          "这一切在2025年我的国际畅销书《功能退化》（Enshittification）出版后变得容易多了，这不仅是因为很多人读了这本书。更因为美国版由MCD/Farrar, Straus and Giroux出版，封面非常精美：",
+          "https://mpd-biblio-covers.imgix.net/9780374619329.jpg",
+          "封面上是一个（字面和象征意义上）标志性的“便便表情符号”变体，眉毛紧蹙，嘴上横着一条黑色审查标记般的涂鸦式横杠。这是才华横溢的Devin Washburn（来自No Ideas工作室）设计的：",
+          "https://www.noideas.website/",
+          "Devin的便便表情符号成了我用来形象化讲述“功能退化”故事的视觉缩写，一种能立刻让人识别出主题的标志：",
+          "https://www.flickr.com/photos/doctorow/54957634601/in/album-72177720316719208",
+          "我一遍又一遍地重新演绎它：",
+          "https://www.flickr.com/photos/doctorow/54962122121/in/album-72177720316719208",
+          "而且持续不断地：",
+          "https://www.flickr.com/photos/doctorow/54992219613/in/album-72177720316719208",
+          "我喜欢到几乎痴迷，于是订购了几百枚别针和几千张乙烯基贴纸，上面印着这个设计，并在为期33城的巡回签售活动中免费分发给遇到的人。无论我去到哪里——只要视频里出现我戴着别针的画面，就会立刻收到大量求购请求。但我的别针和贴纸不是商品（可购买的物品），而是赠品（我送出去的纪念品）！我可没兴趣涉足周边生意！",
+          "但你们一直追问，而且我真的很喜欢那个设计，所以我向Devin提出现金买断，获得了他的“去人性化”便便表情符号的版权，随后将其以知识共享署名4.0国际许可协议（Creative Commons Attribution 4.0 license）发布——该协议允许你随心所欲地使用它，包括用于商业产品，只要注明出处并链接回原作即可：",
+          "https://creativecommons.org/licenses/by/4.0/deed.en",
+          "我还确保我的EFF战友们能优先使用这个设计，他们已将其制成周边商品。你可以花5美元买到一个贴纸：",
+          "https://shop.eff.org/products/enshittification-sticker",
+          "或者花10美元买一个别针：",
+          "https://shop.eff.org/products/enshittification-pin",
+          "所有收益都将捐赠给电子前沿基金会（Electronic Frontier Foundation），这是地球上最深刻、最有力的“反去人性化”力量！",
+          "但由于此作品采用CC许可，你也可以自己制作 merch 和周边！我在前院挂了一面按需印刷的草坪旗，让我的“去人性化”旗帜高高飘扬：",
+          "https://www.flickr.com/photos/doctorow/55025045602/",
+          "我的目标是创建一个自由、开放、可混用的视觉语言，用来讨论平台退化问题，不属于任何人，而是公共领域的一部分。用它来阐释任何你想表达的内容，尤其是当你想将“去人性化”与其他现象（如政治或其他非数字现象）进行类比时。语义漂移其实挺好的！",
+          "https://pluralistic.net/2024/10/14/pearl-clutching/#this-toilet-has-no-central-nervous-system",
+          "你可以从互联网上最重要的三个知识共享授权作品库中获取Devin的“去人性化”便便表情符号高清版本。",
+          "维基媒体共享资源（Wikimedia Commons）上有副本：",
+          "https://commons.wikimedia.org/wiki/File:Enshittification_poop_emoji_logo.png",
+          "Flickr 上也有：",
+          "https://www.flickr.com/photos/doctorow/55225631563/",
+          "当然，互联网档案馆（Internet Archive）也有存档，还附带一个包含墨量调整图层的PSD文件：",
+          "https://archive.org/details/enshittification-poop-emoji-logo",
+          "我从一开始就坚定支持知识共享（Creative Commons）。我曾与拉里·莱西格（Larry Lessig）、亚伦·斯沃茨（Aaron Swartz）、马特·哈格希（Matt Haughey）和丽莎·赖安（Lisa Rein）共同推动2002–2003年原始许可协议的诞生；我的第一本小说《魔法王国落魄记》（Down and Out in the Magic Kingdom）也是首部以CC许可发布的书籍：",
+          "https://craphound.com/down/download/",
+          "知识共享堪称法律创意的巅峰之作，其成果无与伦比，已有数十亿作品采用CC许可，其中包括整个维基百科。像EFF一样，CC是一个依靠个人捐赠维持运作的慈善非营利组织。今年恰逢该组织成立25周年（也正值我作为小说家的职业生涯起步之年），他们发起了一场大型募捐活动，以延续其事业。",
+          "作为对此次募捐的贡献，我向他们提供了375本签名编号版《谷值迷境》（Canny Valley）——这本（除本次外）绝版的限量收藏册收录了我的拼贴画作品，由布鲁斯·斯特林撰写引言。该书由字体传奇约翰·D·贝里（John D. Berry）设计，在帕萨迪纳百年老字号印刷厂Typeworks印制，采用100磅Mohawk纸张，配以经久耐用的PVC装订，可世代传承：",
+          "https://pluralistic.net/2026/04/10/canny-valley/",
+          "CC告诉我，募捐活动中仍有少量《谷值迷境》存留。如果你对我的拼贴艺术感兴趣，并希望拥有这本奇特而精美的微型艺术品，请前往以下地址：",
+          "https://mailchi.mp/creativecommons/were-turning-25-book-giveaway",
+          "如果你想尝试拼贴画——或者制作 merch（或周边商品！）——不妨试试 Devin 那件奇妙的作品，尽情发挥吧。",
+          "嘿，看看这个（永久链接）",
+          "试图做一些你或许不该做的事 https://backofmind.substack.com/p/trying-to-do-something-you-probably",
+          "加州隐私法若被科技巨头无视，其意义何在？https://www.kqed.org/news/12079887/what-is-the-point-of-californias-privacy-laws-if-big-tech-ignores-them",
+          "致 FCC 主席 Brendan Carr 的公开信 https://chkbal.substack.com/p/an-open-letter-to-fcc-chairman-brendan",
+          "在线平台“粪化”（Enshittification）的简明模型 https://apoorvalal.github.io/lalgorithms/eternalizing_septembers",
+          "在新学院：反对金钱 https://jwmason.org/slackwire/at-the-new-school-against-money/",
+          "客体永久性（永久链接）",
+          "#20年前 法院驳回 RIAA 起诉小女孩的企图 https://web.archive.org/web/20060422232323/https://p2pnet.net/story/8603",
+          "#15年前 Android 手机秘密存储位置数据——尽管数量较少且细节有限 https://arstechnica.com/gadgets/2011/04/android-phones-keep-location-cache-too-but-its-harder-to-access/",
+          "#15年前 Portal 炮塔彩蛋 https://www.flickr.com/photos/57617475@N00/5638462322/",
+          "#15年前 Michael Chabon 为《魔境历险记》50周年纪念版撰写的引言 https://web.archive.org/web/20110424055621/http://www.nybooks.com/blogs/nyrblog/2011/apr/21/michael-chabon-phantom-tollbooth-wonder-words/",
+          "#10年前 英国情报机构储存数百万无辜者的敏感数据，却无任何防止滥用的保障 https://arstechnica.com/tech-policy/2016/04/uk-secret-police-surveillance-bulk-personal-datasets/",
+          "#10年前 僵尸公司 Atari 欲申请独家权利，垄断 haunted house 游戏开发 https://www.techdirt.com/2016/04/21/ex-game-maker-atari-to-argue-to-us-pto-that-only-it-can-make-haunted-house-games/",
+          "#10年前 黑客通过入侵孟加拉国央行使用的二手路由器，盗取 8100 万美元 https://www.bbc.com/news/technology-36110421",
+          "#10年前 别只盯着百分之一，真正掌权的是那 0.1% https://web.archive.org/web/20160416022112/https://www.alternet.org/economy/1-really-problem",
+          "#10年前 寻找那个被正确标记的客栈 https://memex.craphound.com/2016/04/22/the-quest-for-the-well-labeled-inn/",
+          "#5年前 EFF 起诉 Proctorio 滥用版权主张（copyfraud）https://pluralistic.net/2021/04/22/ihor-kolomoisky/#copyfraud",
+          "#5年前 抵制 FLoC 与反垄断斗争并不冲突 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#not-that-competition",
+          "#5年前 Moxie 团队成功破解 Cellebrite https://pluralistic.net/2021/04/22/ihor-kolomoisky/#petard",
+          "#5年前 银行在新冠疫情期间靠透支手续费赚得盆满钵满 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#usurers",
+          "#5年前 亿万富翁拥有的惊人破坏力 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#force-multiplier",
+          "#1年前 更多的一切，永远继续 https://pluralistic.net/2025/04/22/vinges-bastards/#cyberpunk-is-a-warning-not-a-suggestion",
+          "即将出席的活动（永久链接）",
+          "伦敦：反抗科技帝国（LSBU），4月25日 https://www.tickettailor.com/events/globaljusticenow/2042691",
+          "纽约：在 Commonweal Ventures 探讨“粪化”现象，4月29日 https://luma.com/ssgfvqz8",
+          "纽约：Techidemic 论坛，与 Sarah Jeong、Tochi Onyebuchi 和 Alia Dastagir 对话（PEN 世界之声），4月30日 https://worldvoices.pen.org/event/techidemic/",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日 https://encuentroderechosdigitales.com/en/",
+          "柏林：Re:publica，5月18-20日  \nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland Books“Enshittification”活动，5月19日  \nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊（Hay-on-Wye）：HowTheLightGetsIn，5月22-25日  \nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日  \nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《AI之后的反半人马指南》（The Strand书店），6月24日  \nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "近期公开露面（永久链接）",
+          "人工智能：终极颠覆者，与Astra Taylor和Yoshua Bengio对谈（CBC Ideas）  \nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新而开始榨取？（InnovEU）  \nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "Pete \"Mayor\" Buttigieg（No Gods No Mayors）  \nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变糟（CBC《国家新闻》）  \nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被大科技公司坑了？（Ontario Today）  \nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "最新著作（永久链接）",
+          "“Canny Valley”：为Pluralistic创作的拼贴画限量合集，自行出版，2025年9月  \nhttps://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为何一切突然变得更糟及如何应对》，Farrar, Straus, Giroux出版社，2025年10月7日  \nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：《Red Team Blues》的续作，讲述个人电脑英雄时代，Tor Books（美国）、Head of Zeus（英国），2025年2月  \nhttps://us.macmillan.com/books/9781250865908/picksandshovels",
+          "《The Bezzle》：《Red Team Blues》的续作，聚焦监狱科技等骗局，Tor Books（美国）、Head of Zeus（英国），2024年2月（thebezzle.org）",
+          "《The Lost Cause》：一部在气候危机中充满希望的太阳朋克小说，Tor Books（美国）、Head of Zeus（英国），2023年11月（http://lost-cause.org）",
+          "《The Internet Con》：关于互操作性与大科技公司的一部非虚构作品（Verso出版社），2023年9月（http://seizethemeansofcomputation.org）。签名版可在Book Soup购买（https://www.booksoup.com/book/9781804291245）",
+          "《Red Team Blues》：“一部引人入胜、令人欲罢不能的惊悚小说，读完你会对世界运作方式有更深的了解。” Tor Books（http://redteamblues.com）",
+          "《Chokepoint Capitalism：如何击败大科技公司、驯服大内容，并让艺术家获得报酬》，与Rebecca Giblin合著，探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe出版社，2022年  \nhttps://chokepointcapitalism.com",
+          "即将出版的著作（永久链接）",
+          "《AI之后的反半人马指南》：一本关于如何成为更好AI批评家的短书，Farrar, Straus and Giroux出版社，2026年6月  \nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《Enshittification》（图像小说版），Firstsecond出版社，2026年",
+          "《后美国互联网》：一部地缘政治意义上的《Enshittification》续作，Farrar, Straus and Giroux出版社，2027年",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机和数字版权管理（DRM）的中篇小说的儿童图像小说，FirstSecond出版社，2027年",
+          "《Memex方法》，Farrar, Straus, Giroux出版社，2027年",
+          "版权说明（永久链接）",
+          "今日主要消息来源：",
+          "目前正在撰写《后美国互联网》，作为《平台暴政》的续作，讲述特朗普摧毁美国后我们其余人所能享有的更美好的世界。已完成第三稿，提交编辑审阅。",
+          "《逆向半人马指南：AI 批判之道》，一本面向 Farrar, Straus and Giroux 出版社的短书，探讨如何成为一名有效的 AI 批评者。法律审查与文字润色全部完成。",
+          "《后美国互联网》，一本关于特朗普主义时代网络政策的短书。目前处于规划阶段。",
+          "《小兄弟》短篇故事之一，主题围绕 DIY 胰岛素。目前处于规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名 4.0 国际许可协议（Creative Commons Attribution 4.0 license）授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图像不在此许可范围内；它们或因版权例外或限制而包含在内，或基于单独的许可。请谨慎处理。",
+          "获取《多元主义》（Pluralistic）的方式：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯简报（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，但有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制，第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你 SARS，你就做 sarsaparilla”——乔伊“手风琴男”德维拉",
+          "仔细阅读：阅读即表示，你代表雇主同意，永久且无损害地免除我因与雇主及其合作伙伴、许可方、代理人及受让人签订的任何未经协商之协议、许可、服务条款、密封包装、点击包装、浏览包装、保密、非披露、竞业禁止和合理使用政策（统称“虚假协议”）而产生的所有义务与弃权声明。你还须确认你有权代表雇主解除任何“虚假协议”。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "6446468f26ba3d87",
+      "title": "llm 0.31",
+      "titleZh": "llm 0.31 发布：新增 GPT-5.5 模型与动词度控制选项",
+      "link": "https://simonwillison.net/2026/Apr/24/llm/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T23:35:07.000Z",
+      "category": "tools",
+      "keywords": [
+        "LLM",
+        "OpenAI",
+        "gpt-5.5",
+        "release"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Simon Willison 发布的 llm 0.31 版本正式集成了 OpenAI 最新的 GPT-5.5 模型，用户可通过 `llm -m gpt-5.5` 调用。同时新增了针对 GPT-5+ 系列模型的文本动词度参数设置功能（`-o verbosity low/medium/high`），允许开发者更精细地控制输出详细程度。此外还包括多项 bug 修复与性能优化。",
+      "summaryEn": "The llm 0.31 release by Simon Willison now supports OpenAI's latest GPT-5.5 model via `llm -m gpt-5.5`. A new verbosity parameter (`-o verbosity low|medium|high`) allows finer control over output detail for GPT-5+ models. Other changes include bug fixes and performance improvements.",
+      "reason": "对于使用命令行进行 LLM 交互的开发者而言，此更新提供了对最新最强模型的支持及更灵活的输出调控能力，极大提升了工作效率。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Release\n    \n    llm 0.31\n    — Access large language models from the command-line"
+          },
+          {
+            "type": "quote",
+            "text": "New GPT-5.5 OpenAI model: llm -m gpt-5.5. #1418\nNew option to set the text verbosity level for GPT-5+ OpenAI models: -o verbosity low. Values are low, medium, high.\nNew option for setting the image detail level used for image attachments to OpenAI models: -o image_detail low - values are low, high and auto, and GPT-5.4 and 5.5 also accept original.\nModels listed in extra-openai-models.yaml are now also registered as asynchronous. #1395"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f51e5938d15e5801",
+      "title": "An update on recent Claude Code quality reports",
+      "titleZh": "Claude Code 质量报告更新：问题源于封装而非模型本身",
+      "link": "https://simonwillison.net/2026/Apr/24/recent-claude-code-quality-reports/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T01:31:25.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Claude Code",
+        "quality issues",
+        "postmortem"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "Anthropic 发布关于近期 Claude Code 质量下降事件的复盘报告，确认过去两个月用户反馈的问题确实存在。但根本原因并非底层模型性能下滑，而是三个独立的工程缺陷——包括提示词注入漏洞、缓存机制错误以及日志记录混乱——共同导致了输出质量恶化。公司已修复这些问题并承诺加强测试流程。",
+      "summaryEn": "Anthropic's postmortem on recent Claude Code quality issues confirms real problems existed over the past two months. However, the root cause was not model degradation but three separate engineering flaws in the Claude Code harness: prompt injection vulnerabilities, flawed caching logic, and confusing logging practices. These bugs collectively degraded output quality before being fixed.",
+      "reason": "这份内部复盘揭示了大型语言应用在实际部署中可能遇到的隐蔽工程陷阱，对构建可靠 AI 编程工具有重要参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "An update on recent Claude Code quality reports (via) It turns out the high volume of complaints that Claude Code was providing worse quality results over the past two months was grounded in real problems."
+          },
+          {
+            "type": "p",
+            "text": "The models themselves were not to blame, but three separate issues in the Claude Code harness caused complex but material problems which directly affected users."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic's postmortem describes these in detail. This one in particular stood out to me:"
+          },
+          {
+            "type": "quote",
+            "text": "On March 26, we shipped a change to clear Claude's older thinking from sessions that had been idle for over an hour, to reduce latency when users resumed those sessions. A bug caused this to keep happening every turn for the rest of the session instead of just once, which made Claude seem forgetful and repetitive."
+          },
+          {
+            "type": "p",
+            "text": "I frequently have Claude Code sessions which I leave for an hour (or often a day or longer) before returning to them. Right now I have 11 of those (according to ps aux  | grep 'claude ') and that's after closing down dozens more the other day."
+          },
+          {
+            "type": "p",
+            "text": "I estimate I spend more time prompting in these \"stale\" sessions than sessions that I've recently started!"
+          },
+          {
+            "type": "p",
+            "text": "If you're building agentic systems it's worth reading this article in detail - the kinds of bugs that affect harnesses are deeply complicated, even if you put aside the inherent non-deterministic nature of the models themselves."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e7af44a91ea15fab",
+      "title": "Does Mythos mean you need to shut down your Open Source repositories?",
+      "titleZh": "Mythos AI 是否意味着应关闭开源仓库？不必担心",
+      "link": "https://shkspr.mobi/blog/2026/04/does-mythos-mean-you-need-to-shut-down-your-open-source-repos/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-04-24T11:34:30.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Mythos AI",
+        "open source",
+        "security"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "针对新出现的 Mythos AI 宣称能全面接管代码库的说法，作者指出所有主流开源项目早在几年前就已作为训练数据被广泛采集。因此即便现在停止维护也不会带来额外风险。真正需要关注的是未来新项目的安全边界设定，而非历史代码的命运。建议采取主动防御而非被动反应。",
+      "summaryEn": "Regarding concerns about Mythos AI taking over all codebases, the author notes that most open source code was already ingested years ago for training purposes. Shutting down existing repos won't improve safety. The real issue is setting boundaries for future projects rather than reacting to past ingestion.",
+      "reason": "澄清了关于 AI 吞噬开源社区的常见误解，引导读者理性看待历史数据使用与未来安全策略的区别。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Much Sturm und Drang in the world of Open Source with the announcement that the \"Mythos\" AI is now the ultimate hacker and is poised to unleash havoc on every code base."
+          },
+          {
+            "type": "p",
+            "text": "So should you close all your Open Source projects to make them safe?"
+          },
+          {
+            "type": "p",
+            "text": "No."
+          },
+          {
+            "type": "p",
+            "text": "Firstly, all your Open Source code has already been slurped up."
+          },
+          {
+            "type": "p",
+            "text": "It was all ingested for \"training purposes\" years ago. If it was moderately interesting then it was backed-up by a digital hoarder. It has been archived by various digital libraries. Anyone who wants to do research on your code base can."
+          },
+          {
+            "type": "p",
+            "text": "Closing now doesn't meaningfully protect you."
+          },
+          {
+            "type": "p",
+            "text": "Secondly, most of the security holes in your systems are probably not in your code. Vulnerabilities exist throughout your supply chain. All the dependencies - your OS, libraries, and even hardware - are all richer targets for hackers. Finding a CVE in a popular library is almost certainly more worthwhile than investigating your Open Source code."
+          },
+          {
+            "type": "p",
+            "text": "The bigger risk comes not from subtle logic bugs but from phishers, poor password hygiene, and insider threats. Securing your existing systems provides more protection than rushing to close-source your code."
+          },
+          {
+            "type": "p",
+            "text": "Finally, closing the source of something doesn't protect you. These new AI models can easily investigate and your closed source systems and potentially penetrate them. It has always been possible to analyse websites and binaries. AI doesn't change that - although it might accelerate it."
+          },
+          {
+            "type": "p",
+            "text": "Open Source does have risks but AI doesn't upend decades of evidence that closed-source is just as vulnerable to attackers."
+          },
+          {
+            "type": "p",
+            "text": "In cases where the state creates code using public money, it has a responsibly to share that code. Automated threat analysis - even by hypercapabe AI - doesn't change that."
+          },
+          {
+            "type": "p",
+            "text": "I would strongly recommend reading the UK's AI Safety Institute's evaluation of Claude Mythos Preview’s cyber capabilities and the NCSC's advice. Neither of them recommend closing down Open Source code."
+          }
+        ],
+        "translations": [
+          "随着“Mythos” AI宣布成为终极黑客，即将对每个代码库造成破坏，开源世界掀起轩然大波。",
+          "那么，你是否应该关闭所有开源项目以确保安全？",
+          "不。",
+          "首先，你的所有开源代码早已被采集殆尽。",
+          "多年前，它们就已被用于“训练目的”。只要稍有价值，就会被数字囤积者备份。各大数字图书馆也将其归档保存。任何希望研究你代码库的人都能获取到。",
+          "现在关闭并不能真正保护你。",
+          "其次，你系统中的大多数安全漏洞很可能不在你的代码里。整个供应链都存在漏洞——包括你的操作系统、库文件，甚至硬件，都是黑客更青睐的目标。在流行库中发现一个 CVE 漏洞，远比调查你的开源代码更有价值。",
+          "更大的风险并非来自微妙的逻辑缺陷，而是钓鱼攻击、糟糕的密码管理以及内部威胁。加固现有系统比匆忙将代码转为闭源能提供更有效的保护。",
+          "最后，将某物转为闭源并不能保护你。这些新型 AI 模型可以轻松分析你的闭源系统，并可能渗透其中。一直以来，分析网站和二进制文件都是可行的。AI 并未改变这一点——尽管可能会加快这一过程。",
+          "开源确实存在风险，但 AI 并未颠覆数十年来的证据——即闭源系统与攻击者一样脆弱。",
+          "当国家使用公共资金创建代码时，有责任共享该代码。即使是能力超群的 AI 自动化威胁分析，也无法改变这一点。",
+          "我强烈建议阅读英国 AI 安全研究所对 Claude Mythos Preview 网络能力的评估，以及 NCSC 的建议。两者均未建议关闭开源代码。"
+        ]
+      }
+    },
+    {
+      "slug": "643ae89cedf59b02",
+      "title": "Defending against exceptions in a scope_exit RAII type",
+      "titleZh": "防御 scope_exit RAII 类型中的异常处理",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260424-00/?p=112266",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-04-24T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "RAII",
+        "scope_exit",
+        "exception safety"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 23
+      },
+      "summary": "微软资深工程师 Raymond Chen 探讨了在 C++ 中使用 scope_exit 类时如何应对构造函数或析构函数中可能抛出的异常。他分析了多种场景下的最佳实践，强调即使资源清理操作本身不应失败，也必须为其编写健壮的错误处理逻辑，以确保程序稳定性。",
+      "summaryEn": "Raymond Chen examines how to handle exceptions in scope_exit RAII types when their constructors or destructors might throw. He analyzes various scenarios and emphasizes that even resource cleanup operations should have robust error handling despite generally not expected to fail.",
+      "reason": "深入剖析了现代 C++ 中关键资源管理模式的异常安全机制，适合高级开发者提升代码健壮性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "One of the handy helpers in the  Windows Implementation Library (WIL) is wil::scope_exit. We’ve used it to  simulate the finally keyword in other languages by arranging for code to run when control leaves a scope."
+          },
+          {
+            "type": "p",
+            "text": "I’ve identified three places where exceptions can occur when using scope_exit."
+          },
+          {
+            "type": "code",
+            "text": "auto cleanup = wil::scope_exit([captures] { action; });"
+          },
+          {
+            "type": "p",
+            "text": "One is at the construction of the lambda. What happens if an exception occurs during the initialization of the captures?"
+          },
+          {
+            "type": "p",
+            "text": "This exception occurs even before scope_exit is called, so there’s nothing that scope_exit can do. The exception propagates outward, and the action is never performed."
+          },
+          {
+            "type": "p",
+            "text": "Another is at the point the scope_exit tries to move the lambda into cleanup. In a naïve implementation of scope_exit, the exception would propagate outward without the action ever being performed."
+          },
+          {
+            "type": "p",
+            "text": "The third point is when the scope_exit is destructed. In that case, it’s an exception thrown from a destructor. Since destructors default to noexcept, this is by default a std::terminate. If you explicitly enable a throwing destructor, then what happens next depends on why the destructor is running. If it’s running due to executing leaving the block normally, then the exception propagates outward. But if it’s running due to unwinding as a result of some other exception, then that’s a std::terminate."
+          },
+          {
+            "type": "p",
+            "text": "The dangerous parts are the first two cases, because those result in the exception being thrown (and possibly caught elsewhere) without the cleanup action ever taking place."
+          },
+          {
+            "type": "p",
+            "text": "WIL addresses this problem by merely saying that if an exception occurs during copying/moving of the lambda, then the behavior is undefined."
+          },
+          {
+            "type": "p",
+            "text": "C++ has a scope_exit that is  in the experimental stage, and it addresses the problem a different way: If an exception occurs during the construction of the capture, then the lambda is called before propagating the exception. (It can’t do anything about exceptions during contruction of the lambda, and it also declares the behavior undefined if the lambda itself throws an exception.)"
+          },
+          {
+            "type": "p",
+            "text": "In practice, the problems with exceptions on construction or copy are immaterial because the lambda typically captures all values by reference ([&]), and those types of captures do not throw on construction or copy."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "Windows 实现库 (WIL) 中有一个便捷的辅助工具是 wil::scope_exit。我们用它来模拟其他语言中的 finally 关键字，即在控制离开作用域时执行代码。",
+          "在使用 scope_exit 时，我发现了三个可能发生异常的地方。",
+          "auto cleanup = wil::scope_exit([captures] { action; });",
+          "第一个是在 lambda 的构造过程中。如果在捕获变量的初始化期间发生异常会怎样？",
+          "这种异常在 scope_exit 被调用之前就已经发生了，因此 scope_exit 对此无能为力。异常会向外传播，而清理操作永远不会执行。",
+          "另一个是在 scope_exit 试图将 lambda 移动到清理阶段时。在一个朴素的 scope_exit 实现中，异常会向外传播，而清理操作永远不会执行。",
+          "第三个是在 scope_exit 被析构时。此时抛出的异常来自析构函数。由于析构函数默认 noexcept，这默认会导致 std::terminate。如果你显式启用可抛出异常的析构函数，那么接下来会发生什么取决于析构函数运行的原因。如果它是因为正常离开块而运行，则异常会向外传播；但如果它是由于其他异常导致的栈展开而运行，则会触发 std::terminate。",
+          "危险的部分是前两种情况，因为在这两种情况下，异常会被抛出（并可能被其他地方捕获），而清理操作却从未执行。",
+          "WIL 通过简单声明：如果在复制/移动 lambda 期间发生异常，则行为是未定义的，从而解决了这个问题。",
+          "C++ 的实验性 scope_exit 以不同的方式处理该问题：如果在捕获构造期间发生异常，则在传播异常之前会先调用 lambda。（它无法处理 lambda 自身构造期间的异常，并且如果 lambda 抛出异常，也会将其行为声明为未定义。）",
+          "实际上，构造或复制时的异常问题并不重要，因为 lambda 通常通过引用 [&] 捕获所有值，而这些类型的捕获在构造或复制时不会抛出异常。",
+          "作者",
+          "Raymond 参与 Windows 的发展已有 30 多年。2003 年，他创建了一个名为 The Old New Thing 的网站，其受欢迎程度远超他的想象，这一发展至今仍让他感到不安。该网站催生了一本同名书籍《The Old New Thing》（Addison Wesley, 2007）。他偶尔会在 Windows Dev Docs Twitter 账号上出现，讲述一些毫无用处的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "a4eee61af9153e71",
+      "title": "russellromney/honker",
+      "titleZh": "honker：为 SQLite 添加 Postgres 风格的 NOTIFY/LISTEN 通知机制",
+      "link": "https://simonwillison.net/2026/Apr/24/honker/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T01:50:07.000Z",
+      "category": "engineering",
+      "keywords": [
+        "SQLite",
+        "Postgres NOTIFY",
+        "Rust extension"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "Russell Romney 开发的 honker 是一个用 Rust 编写的 SQLite 扩展，实现了类似 PostgreSQL 的 NOTIFY/LISTEN 异步消息通知语义。通过 Python 绑定，开发者可以轻松地在 SQLite 数据库变更时触发事件通知，适用于轻量级队列系统或实时同步场景。该项目展示了跨数据库抽象通信层的设计潜力。",
+      "summaryEn": "Honker by Russell Romney is a Rust-based SQLite extension implementing PostgreSQL-style NOTIFY/LISTEN asynchronous messaging semantics. With Python bindings, it enables event-driven notifications when SQLite databases change, useful for lightweight queuing or real-time syncing. The project demonstrates cross-database communication abstraction potential.",
+      "reason": "为传统关系型数据库注入了现代消息传递能力，为解决本地开发环境下的异步通信难题提供了优雅方案。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "russellromney/honker (via) \"Postgres NOTIFY/LISTEN semantics\" for SQLite, implemented as a Rust SQLite extension and various language bindings to help make use of it."
+          },
+          {
+            "type": "p",
+            "text": "The design of this looks very solid. It lets you write Python code for queues that looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "import honker\n\ndb = honker.open(\"app.db\")\nemails = db.queue(\"emails\")\nemails.enqueue({\"to\": \"alice@example.com\"})\n\n# Consume (in a worker process)\nasync for job in emails.claim(\"worker-1\"):\n    send(job.payload)\n    job.ack()"
+          },
+          {
+            "type": "p",
+            "text": "And Kafka-style durable streams like this:"
+          },
+          {
+            "type": "code",
+            "text": "stream = db.stream(\"user-events\")\n\nwith db.transaction() as tx:\n    tx.execute(\"UPDATE users SET name=? WHERE id=?\", [name, uid])\n    stream.publish({\"user_id\": uid, \"change\": \"name\"}, tx=tx)\n\nasync for event in stream.subscribe(consumer=\"dashboard\"):\n    await push_to_browser(event)"
+          },
+          {
+            "type": "p",
+            "text": "It also adds 20+ custom SQL functions including these two:"
+          },
+          {
+            "type": "code",
+            "text": "SELECT notify('orders', '{\"id\":42}');\nSELECT honker_stream_read_since('orders', 0, 1000);"
+          },
+          {
+            "type": "p",
+            "text": "The extension requires WAL mode, and workers can poll the .db-wal file with a stat call every 1ms to get as close to real-time as possible without the expense of running a full SQL query."
+          },
+          {
+            "type": "p",
+            "text": "honker implements the transactional outbox pattern, which ensures items are only queued if a transaction successfully commits. My favorite explanation of that pattern remains Transactionally Staged Job Drains in Postgres by Brandur Leach. It's great to see a new implementation of that pattern for SQLite."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "035dc6faa2d5117b",
+      "title": "The people do not yearn for automation",
+      "titleZh": "人们并不渴望自动化：解析 AI 为何不受大众欢迎",
+      "link": "https://simonwillison.net/2026/Apr/24/the-people-do-not-yearn-for-automation/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T22:38:49.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI backlash",
+        "public perception",
+        "automation"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 21
+      },
+      "summary": "Nilay Patel 在其视频评论中指出，尽管 ChatGPT 等 AI 工具使用量持续增长，普通公众对其普遍持负面态度。核心原因在于‘软件脑’（software brain）概念下，用户反感被算法替代思考过程，认为 AI 削弱了人类自主性与创造力。这种心理抗拒比技术优劣更能决定大众接受度。",
+      "summaryEn": "Despite rising usage numbers, public opinion toward AI remains largely negative according to Nilay Patel's analysis. The core reason lies in the 'software brain' concept where users resent being replaced by algorithms, feeling it erodes human autonomy and creativity. This psychological resistance outweighs technical merits in shaping mass adoption.",
+      "reason": "深刻揭示了技术与人文之间的张力，解释了为何再强大的 AI 也可能遭遇社会层面的排斥。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "The people do not yearn for automation (via) This written and video essay by Nilay Patel explores why AI is unpopular with the general public even as usage numbers for ChatGPT continue to skyrocket."
+          },
+          {
+            "type": "p",
+            "text": "It’s a superb piece of commentary, and something I expect I’ll be thinking about for a long time to come."
+          },
+          {
+            "type": "p",
+            "text": "Nilay’s core idea is that people afflicted with “software brain” - who see the world as something to be automated as much as possible, and attempt to model everything in terms of information flows and data - are becoming detached from everyone else."
+          },
+          {
+            "type": "quote",
+            "text": "[…] software brain has ruled the business world for a long time. AI has just made it easier than ever for more people to make more software than ever before — for every kind of business to automate big chunks of itself with software. It’s everywhere: the absolute cutting edge of advertising and marketing is automation with AI. It’s not being a creative.\nBut: not everything is a business. Not everything is a loop! The entire human experience cannot be captured in a database. That’s the limit of software brain. That’s why people hate AI. It flattens them.\nRegular people don’t see the opportunity to write code as an opportunity at all. The people do not yearn for automation. I’m a full-on smart home sicko; the lights and shades and climate controls of my house are automated in dozens of ways. But huge companies like Apple, Google and Amazon have struggled for over a decade now to make regular people care about smart home automation at all. And they just don’t."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ac0cff066fa1e329",
+      "title": "Blog prize for the big questions about AI",
+      "titleZh": "Dwarkesh 博客大奖：征集关于 AI 重大问题的悬赏文章",
+      "link": "https://www.dwarkesh.com/p/blog-prize",
+      "sourceName": "dwarkesh.com",
+      "sourceUrl": "https://dwarkesh.com",
+      "pubDate": "2026-04-24T16:37:49.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI research",
+        "big questions",
+        "blog prize"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 21
+      },
+      "summary": "Dwarkesh Patel 设立了一项悬赏计划，邀请研究者提交关于人工智能领域最重要未解问题的深度分析文章。获胜作品将获得奖金并被收录至其博客专栏。此举旨在汇聚顶尖智慧，推动对 AI 发展路径、伦理挑战及长期影响的系统性思考。",
+      "summaryEn": "Dwarkesh Patel launches a blog prize contest inviting researchers to submit in-depth analyses of the most important unsolved questions in AI. Winning entries receive cash prizes and publication on his blog. The initiative aims to crowdsource deep thinking about AI's trajectory, ethics, and long-term impacts.",
+      "reason": "为关心 AI 未来方向的读者提供了一个参与前沿思想交流的机会，并有机会获得专业认可与经济奖励。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dwarkesh Patel",
+        "siteName": "Dwarkesh Podcast",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "There has never been a time where excellent intellectual output on the right question has been more valuable or more urgent. Compelling answers about the big questions about AI can inform the most important economic and foreign policy decisions that will ever be made, the deployment of (at least) hundreds of billions of philanthropic dollars, and the training and governance of superintelligences."
+          },
+          {
+            "type": "p",
+            "text": "I’m announcing a $20,000 blog prize in order to find people who will excel at researching and thinking through these problems. The not-so-secret point of this whole contest is so that I can hire a research collaborator to think through questions like this hand in hand with me. See more at the end."
+          },
+          {
+            "type": "p",
+            "text": "Pick a question below, and spend no more than 1,000 words answering it. 1st, 2nd, and 3rd place will get $10,000, $6,000, and $4,000 respectively. I’ll publish the winning entry (and potentially the runner ups) on my blog. Please submit by May 10th, 11:59 PM PST."
+          },
+          {
+            "type": "li",
+            "text": "A couple years ago, there was this idea that AI progress might slow down as we make further progress into the RL regime. 1. Because as horizon lengths increase, the AI needs to do many days’ worth of work before we can even see if it did it right, so if we’re still in a naive policy gradient world, the reward signal / FLOP goes down, and 2. We’d crossed through many OOMs of RL compute from GPT 4 to o1 to o3, and it would not be feasible to replicate that many OOMs increase in compute immediately again. But AI progress seems to have been fast nonetheless - even potentially speeding up if rumors about Spud or Mythos are to be believed. What gives? What did that previous intuition pump that motivated longer timelines miss?"
+          },
+          {
+            "type": "li",
+            "text": "What’s the most plausible story where foundation model companies actually start making money? If you consider each individual model as a company, then its profits may be able to pay back the training cost. But of course, if you don’t train a bigger, more expensive model immediately, then you stop making money after 3 months. So when does the profit start? Maybe at some point scaling will plateau, but if progress at the frontier has slowed down, then the combination of distillation and low switching costs (cloud margins result from high switching costs) makes it really easy for open source to catch up to the labs, eating into their margins. So how do the labs actually start making money?"
+          },
+          {
+            "type": "li",
+            "text": "With OpenAI’s new raise at an $852B valuation, OpenAI Foundation’s stake is now worth $180B. Anthropic’s cofounders have pledged to donate 80% of their wealth. Nobody seems to have a concrete idea of how to deploy 100s of billions (soon trillions) of wealth productively to “make AI go well”. If you were in charge of the OpenAI Foundation right now, what exactly would you do? And when? It’s not enough to identify a cause you think is important, because that doesn’t answer the fundamental problem of how you convert money to impact. Identify the concrete strategy you recommend pursuing."
+          },
+          {
+            "type": "li",
+            "text": "What should countries which are not currently in the AI production chain (semis, energy, frontier models, robotics) do in order to not get totally sidestepped by transformative AI? If you’re the leader of India or Nigeria, what do you do right now?"
+          },
+          {
+            "type": "li",
+            "text": "Please don’t let a lack of domain expertise dissuade you from entering. I’m looking for someone who can ramp up fast on unfamiliar topics and think clearly."
+          },
+          {
+            "type": "li",
+            "text": "Each entrant may submit only once."
+          },
+          {
+            "type": "li",
+            "text": "You are still eligible for this essay competition even if you’re not interested in the researcher role. Nor does winning this competition guarantee that you will be offered the role."
+          },
+          {
+            "type": "li",
+            "text": "You’re welcome to use LLMs to help you research, but I specifically picked these questions because I’ve found LLM answers to them unsatisfying. On these kinds of ambiguous questions, LLMs are too all over the place. For example, they’ll identify 5 plausible answers but not have the context and taste to identify the crucial factor and iron out its implications."
+          },
+          {
+            "type": "li",
+            "text": "You only have 1000 words - make them count. People have the habit of spending the first paragraphs clearing their throat - avoid that."
+          },
+          {
+            "type": "p",
+            "text": "I want my podcast/blog to move from just asking questions about AI to actually helping answer them. But there are too many important questions, and I need a collaborator to build up context on them all, to explore dozens of fractal sub-questions, to consider the rebuttals and syntheses, and to sharpen each others thinking."
+          },
+          {
+            "type": "p",
+            "text": "The questions I want us to explore are very broad while at the same time requiring deep technical analysis across many domains to actually answer."
+          },
+          {
+            "type": "p",
+            "text": "Well, I could just put out a job ad for a researcher, but I’ll get 1,000 different resumes, and I’ll have no clue based on that information whether the applicant would be any good at synthesizing lots of technical arguments and information. So I thought, let’s just list out some questions where I genuinely don’t know the answer and would be keen to get some insight."
+          },
+          {
+            "type": "li",
+            "text": "Ideally in person in San Francisco, but potentially open to remote."
+          },
+          {
+            "type": "li",
+            "text": "Will pay competitively"
+          },
+          {
+            "type": "p",
+            "text": "If you have questions or comments, I’m hello@dwarkeshpatel.com."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "从未有过如此关键且迫切的时刻，需要针对正确问题产出卓越智力成果。关于人工智能重大问题的有力答案，将影响人类历史上最重要的经济决策与外交政策、（至少）数千亿美元慈善资金的部署，以及超级智能的训练与治理方式。",
+          "我宣布设立2万美元博客竞赛奖金，旨在寻找那些能深入研究并系统思考这些问题的人才。这场竞赛的真正目的——说出来可能有点不好意思——是希望能雇到一位研究合作者，与我共同探讨此类问题。详情见文末。",
+          "请从下方任选一个问题作答，字数不超过1000字。第一名奖金1万美元，第二名6000美元，第三名4000美元。我将把获奖作品（及可能的入围作品）发布在我的博客上。请于5月10日晚上11:59（太平洋时间）前提交。",
+          "几年前曾有一种观点认为，随着我们在强化学习（RL）领域取得进展，AI进步速度可能会放缓。原因有二：一是当任务周期变长时，AI需完成数天工作后我们才能判断其是否成功，若仍处于朴素策略梯度框架下，则奖励信号/FLOP效率会下降；二是从GPT-4到o1再到o3，我们已跨越多个数量级的RL算力门槛，短期内难以再次实现同等规模的算力跃升。然而，AI发展似乎并未减速——甚至若有Spud或Mythos的传闻属实，还可能加速了。这究竟是怎么回事？先前推动长期时间线的直觉模型遗漏了什么关键因素？",
+          "基础模型公司最有可能通过哪种路径实现盈利？若将每个模型视为独立公司，其利润或许足以覆盖训练成本。但显然，若不立即训练更大更昂贵的模型，企业将在三个月后停止盈利。那么利润究竟从何而来？也许在某个节点上扩展将趋于平稳，但若前沿技术进步放缓，蒸馏技术与低切换成本（云服务利润源于高切换成本）的结合，将使开源模型极易追赶实验室成果，从而侵蚀后者利润空间。那么实验室究竟该如何真正开始赚钱？",
+          "随着OpenAI新一轮融资估值达8520亿美元，OpenAI基金会的持股价值已达1800亿美元。Anthropic联合创始人承诺捐出其财富的80%。目前无人能提出切实可行的方案，将数百亿（很快将达数万亿美元）财富高效转化为“让AI向善”的实际影响力。假设你现在是OpenAI基金会负责人，具体该采取什么行动？何时启动？仅仅指出你认为重要的方向远远不够，因为那无法解决如何将资金投入转化为实际影响力的根本难题。请明确推荐可执行的具体战略。",
+          "对于当前尚未参与AI产业链（半导体、能源、前沿模型、机器人）的国家而言，为避免被变革性AI彻底边缘化，应采取何种策略？如果你是印度或尼日利亚的领导人，现在该怎么做？",
+          "请不要因缺乏专业背景而却步。我寻找的是具备快速掌握陌生领域能力并能清晰思考的人才。",
+          "每位参赛者仅可提交一次。",
+          "即使你对研究员职位不感兴趣，你仍然有资格参加这篇论文竞赛。赢得比赛也并不能保证你会被录用。",
+          "欢迎使用大语言模型（LLM）来协助你的研究，但我特意选择了这些问题，是因为我发现 LLM 对这些问题的回答并不令人满意。在面对这类模糊的问题时，LLM 的回答往往过于发散。例如，它们可能会列出五种看似合理的答案，却缺乏足够的背景知识和判断力，无法识别出关键因素并厘清其影响。",
+          "你的文章只有 1000 字——务必字字珠玑。很多人习惯在开头段落“清嗓子”，请避免这种写法。",
+          "我希望我的播客/博客不再只是提出关于 AI 的问题，而是真正帮助解答这些问题。但这类重要问题实在太多，我需要一位合作者来帮助我建立对这些问题的全面认知，探索数十个层层嵌套的子问题，分析反驳与综合观点，并共同打磨彼此的思路。",
+          "我们希望探讨的问题范围非常广泛，同时又需要跨多个领域进行深入的技术分析才能真正作答。",
+          "我本可以直接发布一个研究员的招聘启事，但那样会收到上千份简历，而我根本无从判断申请者是否擅长整合大量技术性论据和信息。因此我想，不如列出一些我确实不知道答案、并且很乐意获得新见解的问题。",
+          "理想情况是在旧金山面对面交流，但也可能接受远程协作。",
+          "薪酬将具有竞争力。",
+          "如有疑问或评论，欢迎联系 hello@dwarkeshpatel.com。",
+          "无公开投稿"
+        ]
+      }
+    },
+    {
+      "slug": "45e7cfc0a78e35f6",
+      "title": "Premium: How OpenAI Kills Oracle",
+      "titleZh": "OpenAI 如何击败 Oracle：从数据库巨头到 AI 新星",
+      "link": "https://www.wheresyoured.at/how-openai-kills-oracle/",
+      "sourceName": "wheresyoured.at",
+      "sourceUrl": "https://wheresyoured.at",
+      "pubDate": "2026-04-24T16:40:45.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "OpenAI",
+        "Oracle",
+        "AI competition"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "文章追溯了 Larry Ellison 亲自飞往华盛顿与 OpenAI 高管会面的背景，揭示了传统数据库霸主 Oracle 在面对生成式 AI 浪潮时的战略焦虑。OpenAI 凭借垂直整合的软硬件协同优势、海量高质量数据闭环以及开放生态策略，正在重塑企业计算基础设施的竞争格局。",
+      "summaryEn": "Tracing Larry Ellison's urgent trip to Washington DC, this piece reveals Oracle's strategic anxiety facing OpenAI's rise. OpenAI leverages vertical integration of hardware/software, closed-loop high-quality data pipelines, and open ecosystem strategies to reshape enterprise computing infrastructure competition.",
+      "reason": "揭示了传统 IT 巨头在 AI 时代面临的颠覆性威胁，展现了新一代科技公司如何通过创新模式重构行业规则。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ed Zitron",
+        "siteName": "Ed Zitron's Where's Your Ed At",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Soundtrack — Brass Against — Karma Police"
+          },
+          {
+            "type": "p",
+            "text": "It was January 21, 2025. Per The Information, Larry Ellison, CEO of Oracle, had just flown to Washington DC from Florida, and had to borrow a coat “...so he wouldn’t freeze during an interview he did on the White House lawn, according to two people who were involved in the event.” He was there to announce a very big — some might even say huge — new project standing next to SoftBank CEO Masayoshi Son and OpenAI CEO Sam Altman."
+          },
+          {
+            "type": "p",
+            "text": "“Together, these world-leading technology giants are announcing the formation of Stargate, so put that name down in your books, because I think you’re gonna hear a lot about it in the future. A new American company that will invest $500 billion at least in AI infrastructure in the United States and very, very quickly, moving very rapidly, creating over 100,000 American jobs almost immediately,” said President Donald Trump."
+          },
+          {
+            "type": "p",
+            "text": "After he was done, Ellison stepped to the podium. “The data centers are actually under construction, the first of them are under construction in Texas. Each building’s a half a million square feet, there are ten buildings currently being built, but that will expand to 20.”"
+          },
+          {
+            "type": "p",
+            "text": "Following Ellison, SoftBank’s Masayoshi Son added that Stargate would “...immediately start deploying $100 billion dollars, with the goal of making $500 billion dollars within [the] next four years, within your town!” turning to Donald Trump with his hands extended. It was unclear what town he was referring to."
+          },
+          {
+            "type": "p",
+            "text": "Altman added that it would be “an exciting project” and that “...we’ll be able to do all the wonderful things that these guys talked about, but the fact that we get to do this in the United States is I think wonderful,” though it’s unclear what “the wonderful things” or “this” refers to."
+          },
+          {
+            "type": "p",
+            "text": "It’s been 15 months, and Stargate LLC has never been formed. SoftBank and OpenAI have contributed no capital to the project, other than SoftBank’s own acquisition of a former electric vehicle manufacturing plant in Lordstown, Ohio that it intends to turn into a data center parts manufacturing plant with Foxconn, which is best known for effectively abandoning a $10 billion factory in Wisconsin back in 2021. Oh, and Project Freebird, a SoftBank-built project that exists to funnel money to its subsidiary SB Energy, though I can’t imagine how SoftBank actually funds it."
+          },
+          {
+            "type": "p",
+            "text": "No government money was ever involved, no funding ever left anyone’s bank account, no \"initiative\" ever existed, and OpenAI, Oracle and SoftBank have, in my opinion, conspired to mislead the general public about the existence and validity of a project for marketing purposes."
+          },
+          {
+            "type": "p",
+            "text": "The “data centers actually under construction” referred to a 1.2GW project in Abilene Texas that had been under construction since the middle of 2024, and had originally been earmarked by Elon Musk and xAI, except Musk pulled out because he felt that Oracle was moving too slow. While Ellison said that there were ten buildings under construction with plans to expand to twenty, only eight were actually being built (each holding around 50,000 GB200 GPUs across NVL72 racks), with the extension up in the air until March 2026, when Microsoft agreed to lease 700MW — so another seven buildings — that were meant to go to OpenAI. These buildings will not make Oracle any money, as Oracle is, despite spending so much money, leasing whatever land it uses from Crusoe."
+          },
+          {
+            "type": "quote",
+            "text": "Sidenote: Previously-unknown information from the Wall Street Journal published this week shows that the reason why Microsoft ended up buying the additional capacity at Abilene was because lenders were uncomfortable with providing additional funding to provide compute that was ultimately destined to go to Oracle."
+          },
+          {
+            "type": "p",
+            "text": "As far as those eight buildings go, only two are actually online and generating revenue, though sources with direct knowledge of Oracle’s infrastructure have informed me that work is still being done on both buildings despite CNBC reporting that they were “operational” in September 2025."
+          },
+          {
+            "type": "p",
+            "text": "Let’s break this down. Based on a presentation by landowner Lancium from May 2025, the Stargate Abilene campus was meant to have 1.2GW of AI data centers online by year-end 2025."
+          },
+          {
+            "type": "p",
+            "text": "Based on reporting from DatacenterDynamics, the first 200MW of power was meant to be energized “in 2025.” As time dragged on, occupancy was meant to begin in the first half of 2025, had “potential to reach 1GW by 2025,” complete all 1.2GW of capacity by mid-2026, be energized by mid-2026, have 64,000 GPUs by the end of 2026, as of September 30, 2025 had “two buildings live,” and as of December 12, 2025, Oracle co-CEO Clay Magouyurk said that Abilene was “on track” with “more than 96,000 NVIDIA Grace Blackwell GB200 delivered,” otherwise known as two buildings’ worth of GPUs."
+          },
+          {
+            "type": "p",
+            "text": "Four months later on April 22, 2026, Oracle tweeted that “...in Abilene, 200MW is already operational, and delivery of the eight-building campus remains on schedule.” It is unclear if that’s 200MW of critical IT capacity or the total available power at the Abilene campus, and in any case, this is only enough power for two buildings, which means that Oracle is most decidedly not “on schedule.”"
+          },
+          {
+            "type": "p",
+            "text": "Sources familiar with Oracle infrastructure have confirmed that while construction has finished on building three, barely any actual tech has been installed. It also appears that while construction has begun on a power plant of some sort, it’s unclear whether it’s the 360.5MW gas power plant or 1GW substation. In any case, Abilene needs both to turn on the GPUs, if they ever get installed."
+          },
+          {
+            "type": "p",
+            "text": "Abilene is, for the most part, the only part of the Stargate project that’s anywhere near complete."
+          },
+          {
+            "type": "p",
+            "text": "I say that because the other data centers — Shackelford, Texas, Port Washington, Wisconsin, Doña Ana County, New Mexico, Saline, Michigan, and Milam County, Texas — are patches of land with a few steel beams, if that. To be explicit, every single Stargate data center is funded by Oracle and its respective financial backers."
+          },
+          {
+            "type": "p",
+            "text": "Oracle is taking on a massive amount of debt to build these data centers, working with a labyrinthine network of financiers and construction partners to pull together the capacity necessary to get paid for its five-year-long $300 billion compute deal with OpenAI."
+          },
+          {
+            "type": "p",
+            "text": "Oracle has also, per Bloomberg, deliberately raised money using “project financing” loans that are repaid using the projected cashflow, allowing it to keep the massive amount of debt off of its balance sheet. This is remarkable — and offensive! — because it’s borrowing over $38 billion to fund construction of its Wisconsin and Shackelford data centers (the largest debt deal of its kind on record) and said debt will now effectively not exist despite its massive drag on Oracle’s cashflow, which sat at negative $24.7 billion in its last quarterly earnings."
+          },
+          {
+            "type": "p",
+            "text": "Based on estimates ($30 million in critical IT and $14 million in construction per megawatt) from TD Cowen’s Jerome Darling, the total cost of Oracle’s 7.1GW of data center capacity will be somewhere in the region of $340 billion to build."
+          },
+          {
+            "type": "p",
+            "text": "All of these data centers are being built for a single tenant — OpenAI — which expects, per The Information, to lose over $167 billion (assuming it hits annual revenues of over $100 billion) by the end of 2028, and as a result does not actually have the money to pay Oracle for its compute on an ongoing basis."
+          },
+          {
+            "type": "p",
+            "text": "In addition to its commitments to Oracle, OpenAI has also made commitments to spend $138 billion on Amazon over eight years, $250 billion on Microsoft Azure over an unspecific period, $20 billion with Cerebras over three years, $22.4 billion with CoreWeave over five years, and a non-specific amount with Google Cloud."
+          },
+          {
+            "type": "p",
+            "text": "All of this is happening as Oracle’s core businesses plateau, even after Oracle reshuffled them in Q3 FY25 to represent Cloud, Software, Hardware and Services segments, the latter three of which have barely moved in the last 9 months as low-to-negative-margin cloud compute revenue grows."
+          },
+          {
+            "type": "p",
+            "text": "In other words, Oracle’s only growth comes from a segment requiring hundreds of billions of dollars of compute."
+          },
+          {
+            "type": "p",
+            "text": "To make matters worse, every single one of these data centers is behind schedule. Stargate Abilene was meant to be done at the beginning, middle, and now the end of this year, yet sources tell me there’s no way it’s finished before April 2027."
+          },
+          {
+            "type": "p",
+            "text": "Bloomberg also reported late last year that Oracle had delayed several data centers from 2027 to 2028, but here in reality, every other Stargate data center is somewhere between a patch of dirt, a single steel beam, multiple steel beams, or less than half of a shell of a single building. Considering it’s taken two years for Stargate Abilene to build two buildings, I don’t see how it’s possible that these are built before the beginning of 2029."
+          },
+          {
+            "type": "p",
+            "text": "And at that point, where exactly will we be in the AI bubble? What GPUs will be available? What other kinds of silicon will exist? What will the demand be for AI compute?"
+          },
+          {
+            "type": "p",
+            "text": "I don’t think that OpenAI exists for that long, and even if it does, it will have to raise at least $200 billion in the space of three years to possibly keep up with its commitments."
+          },
+          {
+            "type": "p",
+            "text": "I’m surprised that nobody (outside of JustDario, at least) has raised the seriousness of this situation."
+          },
+          {
+            "type": "p",
+            "text": "Stargate, as it stands, will kill Oracle, outside of OpenAI becoming the literal most-profitable and highest-revenue-generating company of all time within the next two years. Even then, by the time that Abilene is built, its 450,000 GB200 GPUs will be two-years-old, and entirely obsolete far before its debts are repaid. A similar fate awaits whatever GPUs are put in the other Stargate data centers."
+          },
+          {
+            "type": "p",
+            "text": "Today’s newsletter is a thorough review and analysis of the ruinous excess of Stargate, a name that only really means “data centers being built for OpenAI in the hopes that OpenAI will pay for them.” Oracle is mortgaging its entire future on their construction, and even if it gets paid, I see no way that the cashflow from OpenAI’s compute spend can recover the cost before its GPU capex is rendered obsolete, let alone whether it can cover the debt associated with the buildout."
+          },
+          {
+            "type": "p",
+            "text": "I’m Larry Ellison — Welcome To Jackass."
+          },
+          {
+            "type": "h2",
+            "text": "Coming Up In This Week’s Where’s Your Ed At Premium…"
+          },
+          {
+            "type": "li",
+            "text": "The total estimated cost of Oracle’s Stargate capacity is around $340 billion."
+          },
+          {
+            "type": "li",
+            "text": "OpenAI needs to make, in total, $852 billion in both revenue and funding through the end of 2030 to keep up with its compute costs with Oracle, Amazon, Google, CoreWeave and Microsoft."
+          },
+          {
+            "type": "li",
+            "text": "Oracle cannot afford to pay for the cost of construction and equipment out of cashflow, and has had to take on over $100 billion in debt and sell $20 billion in shares."
+          },
+          {
+            "type": "li",
+            "text": "Across a potential 7.1GW of planned Stargate capacity, Oracle stands to make around $75 billion in annual revenue.Abilene is expected to generate around $10 billion a year in revenue on completion for a project that will likely cost in excess of $58 billion."
+          },
+          {
+            "type": "li",
+            "text": "Stargate Abilene is extremely behind schedule, and likely won’t be finished until Q2 2027."
+          },
+          {
+            "type": "li",
+            "text": "Oracle estimated in 2024 that Abilene would cost it $2.14 billion a year in colocation and electricity fees."
+          },
+          {
+            "type": "li",
+            "text": "Oracle has spent over $5 billion in construction costs on the first two buildings of Abilene, with sources saying that it will likely spend over $10 billion to finish them, suggesting an overall cost of around $48-per-megawatt."
+          },
+          {
+            "type": "li",
+            "text": "Oracle’s remaining Stargate sites are barely under construction, and will likely not be finished before the end of 2028."
+          },
+          {
+            "type": "li",
+            "text": "Even if Oracle builds the data centers and OpenAI pays for them, the incredible upfront cost and NVIDIA’s yearly upgrade cycle will render much of the GPU capacity worthless within the next ten years."
+          },
+          {
+            "type": "li",
+            "text": "And if OpenAI fails to pay, Larry Ellison likely has over $20 billion in personal loans collateralized by over $60 billion in Oracle shares, meaning that margin calls will follow with the collapse of Oracle's stock."
+          },
+          {
+            "type": "p",
+            "text": "Welcome to the end of Oracle, or Sell The Compute To Who, Larry? Fucking Aquaman?"
+          }
+        ],
+        "translations": [
+          "原声带——Brass Against——《卡玛警察》",
+          "2025年1月21日，据《信息报》报道，甲骨文公司首席执行官拉里·埃里森刚从佛罗里达州飞抵华盛顿特区，就不得不“借了一件外套……以免在白宫草坪上的采访中冻僵”，此事据参与活动的两人透露。他此行是为了与软银集团首席执行官孙正义和OpenAI首席执行官山姆·奥特曼一同宣布一项极为宏大——甚至可以说是史无前例——的新项目。",
+          "唐纳德·特朗普总统表示：“这些全球领先的技术巨头将共同启动‘星际之门’计划，请记住这个名字，因为我想你们未来会频繁听到它的消息。这是一家全新的美国公司，至少将在美国的人工智能基础设施领域投资5000亿美元，并且会以极快的速度迅速推进，几乎立即创造超过10万个工作岗位。”",
+          "演讲结束后，埃里森走上讲台。“事实上，数据中心已经开始建设了，第一批位于德克萨斯州的阿比林市。每座建筑占地约五十万平方英尺，目前共有十座在建，未来将扩展至二十座。”",
+          "随后，软银的孙正义补充道，“星际之门”将“立即投入1000亿美元，目标是在未来四年内实现5000亿美元的投资规模——就在你们的城镇中！”说罢，他转身面向唐纳德·特朗普，双手张开。至于他指的是哪个城镇，则尚不明确。",
+          "奥特曼也表态称，这将是一个“令人振奋的项目”，并表示“……我们将能够实现他们刚才提到的所有美好愿景，而能够在美利坚合众国开展这项工作，我认为尤为可贵”，不过，“那些美好的事情”以及“这项工作”具体指代什么，仍不清晰。",
+          "如今已过去十五个月，Stargate LLC 公司始终未成立。除了软银收购俄亥俄州洛兹敦一家前电动汽车制造厂（计划与富士康合作改建为数据中心零部件生产基地）之外，软银与 OpenAI 均未向该项目注资。值得一提的是，这家工厂正是软银此前耗资100亿美元在威斯康星州建设的工厂的翻版——而那家工厂最终几乎被彻底废弃。此外，还有一个名为“自由鸟计划”（Project Freebird）的项目，由软银自行出资建设，旨在向其子公司 SB Energy 输送资金，只是我不太明白软银究竟如何支撑这一项目的运作。",
+          "政府从未提供任何资金支持，资金也从未真正从任何人的银行账户中转出，所谓的“倡议”也从未存在过。在我看来，OpenAI、甲骨文和软银三方合谋，出于营销目的误导公众对该项目真实性与可行性的认知。",
+          "所谓“正在建设中的数据中心”，实际上是指自2024年中起就已动工的阿比林市1.2吉瓦级项目。该项目最初由埃隆·马斯克与xAI团队规划，但马斯克中途退出，理由是认为甲骨文推进速度过于缓慢。尽管埃里森声称已有十座建筑在建，并计划扩建至二十座，但实际上仅有八座处于施工状态（每座可容纳约5万台GB200 GPU，部署于NVL72机架之上），其余扩建计划悬而未决，直至2026年3月微软同意租赁其中700兆瓦容量（即另外七座建筑）才尘埃落定——而这些建筑建成后，甲骨文不仅无法从中获利，反而需向 Crusoe 公司租用土地，尽管其已投入巨额资金。",
+          "备注：本周《华尔街日报》发布了一条此前不为人知的信息，揭示了微软为何最终决定收购阿比林（Abilene）的额外容量——原因是贷款方对提供资金给那些最终将用于甲骨文（Oracle）计算资源的设施感到不安。",
+          "至于这八栋建筑，目前仅有两栋真正投入运营并产生收入。不过，据熟悉甲骨文基础设施的消息人士透露，尽管 CNBC 在2025年9月曾报道这两栋建筑“已投入使用”，但相关工作仍在进行中。",
+          "我们来梳理一下时间线。根据土地所有者 Lancium 于2025年5月发布的演示文稿，Stargate 阿比林园区计划到2025年底上线1.2GW的人工智能数据中心。",
+          "据 DatacenterDynamics 报道，该园区的首批200MW电力原计划于“2025年”通电；随着时间推移，预计2025年上半年开始入驻，“有望在2025年达到1GW”，全部1.2GW容量将于2026年中完成，并于2026年中全面通电；到2026年底部署64,000块GPU；截至2025年9月30日已有“两栋建筑运行”；而截至2025年12月12日，甲骨文联合首席执行官克莱·马古伊尔克表示，阿比林项目“进展顺利”，已交付超过96,000颗英伟达Grace Blackwell GB200芯片——相当于两栋建筑的GPU配置量。",
+          "四个月后，即2026年4月22日，甲骨文发推称：“……在阿比林，200MW已投入运行，八栋建筑校园的交付仍按计划进行。”目前尚不清楚这200MW是指关键IT负载容量还是整个阿比林园区的总可用电力，无论如何，这点电量仅够支持两栋建筑运行，这意味着甲骨文显然并未“按计划推进”。",
+          "熟悉甲骨文基础设施的人士证实，虽然第三栋建筑的施工已基本完工，但几乎未安装任何实际设备。此外，尽管已开始建设某种发电厂，但目前尚不确定是360.5MW燃气电厂还是1GW变电站。无论如何，若这些GPU真能安装到位，阿比林必须同时具备这两者才能启用。",
+          "总体而言，阿比林是星门（Stargate）项目中唯一接近完工的部分。",
+          "之所以这么说，是因为其他数据中心——德克萨斯州的沙克尔福德、威斯康星州的华盛顿港、新墨西哥州多纳安娜县、密歇根州萨利纳以及德克萨斯州米拉姆县——目前只是几处零星场地，甚至可能只有几根钢梁。需要明确的是，每一个星门数据中心均由甲骨文及其财务支持者出资建设。",
+          "甲骨文正承担巨额债务以推进这些项目建设，通过与错综复杂的金融家和施工合作伙伴网络协作，筹集必要资金，以便从其与OpenAI为期五年的3000亿美元算力协议中获得回报。",
+          "另据彭博社报道，甲骨文还特意采用“项目融资”贷款方式募集资金，利用预期现金流偿还债务，从而将这笔巨额负债保留在资产负债表之外。这种做法令人瞩目——也极具争议！——因为该公司为威斯康星州和沙克尔福德数据中心的建设借款逾380亿美元（创历史纪录），而这些债务如今实际上已从账面上消失，尽管其对甲骨文的现金流造成了巨大拖累——其上一季度财报显示现金流为负247亿美元。",
+          "根据 TD Cowen 的杰罗姆·达林（Jerome Darling）估算，每兆瓦的 IT 关键基础设施和建筑成本分别为 3000 万美元和 1400 万美元，因此甲骨文公司 7.1 吉瓦的数据中心总建设成本预计高达约 3400 亿美元。",
+          "所有这些数据中心都是为单一租户 OpenAI 建造的——据《信息报》（The Information）报道，OpenAI 预计在 2028 年底实现年收入超 1000 亿美元的情况下，届时将累计亏损超过 1670 亿美元，因此实际上并无能力持续支付甲骨文为其提供的算力服务费用。",
+          "除了对甲骨文的巨额投入承诺外，OpenAI 还承诺在八年内向亚马逊 AWS 支出 1380 亿美元，在一段未明确的时间框架内向微软 Azure 支出 2500 亿美元，三年内与 Cerebras 合作投入 200 亿美元，五年内与 CoreWeave 合作投入 224 亿美元，并与谷歌云达成一笔金额不确定的合作协议。",
+          "与此同时，甲骨文的传统核心业务已趋于停滞。即便该公司在 FY25 第三季度重组了业务板块，将其划分为云计算、软件、硬件与服务三大类，但过去九个月中，这三项业务的增长几乎未见起色，而低利润率甚至负边际收益的云计算收入仍在持续增长。",
+          "换言之，甲骨文目前唯一的增长点，正是那些需要数百亿美元算力支撑的业务领域。",
+          "更糟糕的是，每一个 Stargate 数据中心都严重滞后。Stargate Abilene 本应在今年年初、年中乃至年末分阶段完工，但据我所知的消息来源称，该项目最早也要到 2027 年 4 月才能完成。",
+          "彭博社去年底曾报道甲骨文已将多个数据中心从 2027 年推迟至 2028 年，然而实际情况是，其他所有 Stargate 数据中心仍处于不同建设阶段——有的只是片空地，有的仅立起一根钢梁，有的有几根钢梁，有的甚至尚未建成一栋完整建筑的半壳结构。考虑到 Stargate Abilene 花了两年时间才建成两栋楼，我不认为其余项目能在 2029 年前全部竣工。",
+          "那么到了那时，我们究竟处于 AI 泡沫的哪个阶段？届时可用的 GPU 是什么型号？还有哪些新型硅芯片会出现？AI 算力的市场需求又将如何演变？",
+          "我认为 OpenAI 未必能撑过这段时间；即便它能坚持下来，也必须在未来三年内筹集至少 2000 亿美元资金，才有可能勉强满足其各项承诺支出。",
+          "令人惊讶的是，除 JustDario 之外，似乎无人真正意识到这一局面的严峻性。",
+          "就现状而言，Stargate 项目或将拖垮甲骨文——除非 OpenAI 在未来两年内成为史上最盈利、营收最高的公司。即便如此，等到 Abilene 建成时，其所搭载的 45 万颗 GB200 GPU 也已服役满两年，远在其债务清偿之前便已彻底过时。其他 Stargate 数据中心的 GPU 也将面临同样的命运。",
+          "本期通讯是一份关于 Stargate 项目过度扩张的全面复盘与分析——这个名字本质上只意味着“为 OpenAI 建造数据中心，寄望于 OpenAI 最终会为此买单”。甲骨文正以其整个未来为这笔巨额投资抵押，即便真能获得付款，我也看不到 OpenAI 的算力支出现金流能在 GPU 资本开支被淘汰前收回成本，更不用说覆盖建设相关的债务负担。",
+          "我是拉里·埃里森——欢迎来到《杰克辣评》。",
+          "本周《Where’s Your Ed At Premium》节目预告……",
+          "甲骨文 Stargate 项目的总预估成本约为 3400 亿美元。",
+          "OpenAI 到2030年底，需要从甲骨文、亚马逊、谷歌、CoreWeave 和微软获得总计8520亿美元的收入和资金，才能跟上这些公司的算力成本。",
+          "甲骨文无法通过现金流承担建设和设备成本，不得不背负超过1000亿美元的债务，并出售了价值200亿美元的股票。",
+          "在计划中的7.1吉瓦 Stargate 容量中，甲骨文预计每年可产生约750亿美元的收入。Abilene 项目完成后预计每年将带来约100亿美元的收入，而该项目成本可能超过580亿美元。",
+          "Stargate Abilene 严重滞后于进度，很可能要到2027年第二季度才能完工。",
+          "甲骨文在2024年估计，Abilene 每年将为其带来21.4亿美元的托管和电力费用。",
+          "甲骨文已在 Abilene 的前两栋建筑上投入超过50亿美元的建造成本，据消息来源称，完成这两栋建筑可能需要再投入超过100亿美元，这意味着每兆瓦的综合成本约为48万美元。",
+          "甲骨文剩余的 Stargate 数据中心几乎尚未开始建设，很可能在2028年底前都无法完工。",
+          "即使甲骨文建造了数据中心且 OpenAI 支付费用，高昂的前期投入以及 NVIDIA 每年的升级周期，也将在未来十年内使大部分 GPU 算力变得毫无价值。",
+          "如果 OpenAI 未能付款，拉里·埃里森很可能拥有以超过600亿美元甲骨文股票为抵押的超过200亿美元个人贷款，这意味着一旦甲骨文股价崩盘，将面临追加保证金的要求。",
+          "欢迎来到甲骨文的末日，或者卖算力给谁，拉里？该死的阿凡达？"
+        ]
+      }
+    },
+    {
+      "slug": "a911ebba0ff09a32",
+      "title": "Serving the For You feed",
+      "titleZh": "如何为 Bluesky 的 For You 信息流提供服务",
+      "link": "https://simonwillison.net/2026/Apr/24/serving-the-for-you-feed/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T01:08:17.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Bluesky",
+        "custom feeds",
+        "AT Protocol"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "Bluesky 平台允许用户运行自定义 feed 算法，实现个性化内容推荐。文章探讨了如何实现高效、可扩展的 For You feed 服务，支持大规模用户并发访问。作者分析了现有架构的挑战，并提出基于分布式系统和缓存优化的技术方案。该设计显著提升了 feed 生成速度与系统稳定性。",
+      "summaryEn": "Bluesky enables users to run custom feed algorithms for personalized content recommendations. The article explores how to serve the For You feed at scale, addressing challenges in performance and reliability. It presents a distributed architecture with caching optimizations to handle high concurrency. This approach significantly improves feed generation speed and system stability.",
+      "reason": "揭示了去中心化社交平台上实现个性化推荐系统的关键技术路径，对构建下一代内容分发网络具有参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Serving the For You feed. One of Bluesky's most interesting features is that anyone can run their own custom \"feed\" implementation and make it available to other users - effectively enabling custom algorithms that can use any mechanism they like to recommend posts."
+          },
+          {
+            "type": "p",
+            "text": "spacecowboy runs the For You Feed, used by around 70,000 people. This guest post on the AT Protocol blog explains how it works."
+          },
+          {
+            "type": "p",
+            "text": "The architecture is fascinating. The feed is served by a single Go process running on SQLite on a \"gaming\" PC in spacecowboy's living room - 16 cores, 96GB of RAM and 4TB of attached NVMe storage."
+          },
+          {
+            "type": "p",
+            "text": "Recommendations are based on likes: what else are the people who like the same things as you liking on the platform?"
+          },
+          {
+            "type": "p",
+            "text": "That Go server consumes the Bluesky firehouse and stores the relevant details in SQLite, keeping the last 90 days of relevant data which currently uses around 419GB of SQLite storage."
+          },
+          {
+            "type": "p",
+            "text": "Public internet traffic is handled by a $7/month VPS on OVH, which talks to the living room server via Tailscale."
+          },
+          {
+            "type": "p",
+            "text": "Total cost is now $30/month: $20 in electricity, $7 in VPS and $3 for the two domain names. spacecowboy estimates that the existing system could handle all ~1 million daily active Bluesky users if they were to switch to the cheapest algorithm they have found to work."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e062cecebced666d",
+      "title": "XOXO Explore",
+      "titleZh": "XOXO Explore：十年后重启的创意盛会网站",
+      "link": "https://xoxofest.com/blog/2026-launching-xoxo-explore/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-24T13:28:41.000Z",
+      "category": "tools",
+      "keywords": [
+        "XOXO",
+        "festival",
+        "web archive"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 18
+      },
+      "summary": "XOXO 团队在停办两年后重新推出官方网站 XOXO Explore，首次加入完整的 About 页面。该网站追溯了 XOXO 音乐节十二年的发展历程，回顾其作为创意与技术交汇点的历史意义。项目以 GitHub 仓库的临时命名“XOXO”为灵感，延续了对数字文化、艺术与科技融合的探索。",
+      "summaryEn": "After retiring the festival over ten years ago, the XOXO team has finally launched its official website, XOXO Explore, featuring an inaugural About page. The site documents the 12-year history of the festival, reflecting on its role as a convergence point for creativity and technology. Inspired by a temporary GitHub repo name, the project continues exploring the intersection of digital culture, art, and tech.",
+      "reason": "展现了独立创意社区如何通过数字遗产重建文化影响力，为类似活动提供品牌复兴的参考案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "XOXO",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Back in 2015, four years into producing XOXO, we decided it was about time the festival had a proper website."
+          },
+          {
+            "type": "p",
+            "text": "Up until then, we had been designing and building three completely separate mini-sites each year: one to announce our dates, a second to publish our lineup and open registration, and a third to share our schedule with attendees."
+          },
+          {
+            "type": "p",
+            "text": "While this gave us a great excuse to collaborate with some exceptionally talented designers, it was also wildly inefficient to build a website every time we had something new to share."
+          },
+          {
+            "type": "p",
+            "text": "We figured it wouldn’t take much to wrap a flexible design system around a simple CMS, something we could feed new announcements, lineups, and schedules into, while still leaving space for us to express the unique and vibrant visual identity of each festival year."
+          },
+          {
+            "type": "p",
+            "text": "Today, over 10 years later, and almost two full years after we retired the festival for good, we’re finally launching that website. Named after what we thought would be a throwaway title for a short-lived GitHub repo, allow us to introduce XOXO Explore."
+          },
+          {
+            "type": "p",
+            "text": "We hope you’ll take the time to scroll around and notice all the little details and considerations, but let us point you in the direction of some highlights."
+          },
+          {
+            "type": "p",
+            "text": "Each festival year now has its own index, featuring the complete lineup of every speaker, performer, artist, and project from that year, along with a detailed (and accurate!) schedule with descriptions, dates, times, and venues meticulously imported from our print attendee guide. Our recap video and conference talk videos are also prominently featured, as well as credits for each year’s patrons (thank you forever!), and, last but not least, links to a restored archive of every previous announcement, lineup, and schedule mini-site."
+          },
+          {
+            "type": "p",
+            "text": "Our talk videos finally have a proper home on the XOXO website, filterable by year and topic, with each video page now including a talk description, relevant tags, and links to other related videos from our full archive of conference talks."
+          },
+          {
+            "type": "p",
+            "text": "Our Guide and Blog have also been preserved, including the most recent versions of our Code of Conduct, Inclusion, Accessibility, and COVID policies, which remain available to use under a permissive Creative Commons license, and which we hope will continue to inspire other thoughtfully produced events well into the future."
+          },
+          {
+            "type": "p",
+            "text": "And, for the first time ever (!) on an XOXO website, we now have an actual About page, where we’ve attempted to explain what XOXO actually was, documenting the 12-year history of the festival and its related projects, and featuring a bunch of our favorite quotes from press and attendees over the years."
+          },
+          {
+            "type": "p",
+            "text": "You’ll also notice the entire site is littered with floating visual ephemera: design artifacts, illustrations, animations, photos, and videos, all pulled from our vast archive of commissions and collaborations."
+          },
+          {
+            "type": "p",
+            "text": "We’ve been working on this version of the XOXO Explore site for over two years, and we want to take the opportunity again to thank Collin Joyce and Friends of The Web for all the hard work they put into what we’re finally launching today. We also want to thank Lizy Gershenzon, Travis Kochel, and Paulo Pereira for helping conceive the original XOXO Explore project back in 2015, and everyone who gave us permission to feature their creative work, quotes, and photography throughout."
+          },
+          {
+            "type": "h2",
+            "text": "Let’s Make Some Merch About It"
+          },
+          {
+            "type": "p",
+            "text": "One other thing you might notice is a new button in our navigation that says \"Merch\"."
+          },
+          {
+            "type": "p",
+            "text": "To mark the occasion, we’ve collaborated with our friends Jen and Richard at Skinny Ships to design a logo to represent all eight years of the festival, blending the primary colors from each year into a new variant of the XOXO logo."
+          },
+          {
+            "type": "p",
+            "text": "To make up for not having a festival t-shirt in 2024, we’re printing some new XOXO letters tees featuring all eight year colors, and we’re also making a beautiful embroidered Explore logo sweatshirt, as well as enamel pins and stickers featuring our primary year colors and the new Explore logo."
+          },
+          {
+            "type": "p",
+            "text": "We’ve also been working on a few unique and extremely limited edition items, including hand-sewn felt pins in the eight festival year colors from long-time friend of the festival Booky Margoof."
+          },
+          {
+            "type": "p",
+            "text": "Two original LEGO sets—one of the festival layout at Washington High and another of the XOXO Explore logo—designed by Portland LEGO designer Nate Funk."
+          },
+          {
+            "type": "p",
+            "text": "And a desktop-sized version of our lit “Lower Your Expectations” sign, fabricated by our friends at Big Secret in Richmond, Virginia."
+          },
+          {
+            "type": "p",
+            "text": "The merch sale will run for a limited time, with pre-orders closing end of day on Friday, May 1st. Limited edition items will sell out when they do, and everything else will be made to order after the sale closes, with the plan for Buy Olympia to ship everything, all being well, by the end of June."
+          },
+          {
+            "type": "h2",
+            "text": "Appreciate Everything Endlessly"
+          },
+          {
+            "type": "p",
+            "text": "XOXO was an experimental festival celebrating independent artists and creators working on the internet that ran from 2012 to 2024."
+          },
+          {
+            "type": "p",
+            "text": "Except, if you ever attended the festival, worked at the Outpost, were a member of the Slack, posted on our Mastodon instance, or came to a local meetup, you know that doesn’t really explain what XOXO was."
+          },
+          {
+            "type": "p",
+            "text": "Part of the struggle of finishing a website for XOXO is that a few pages of text and some embedded images can’t possibly summarize what this thoroughly unique and extraordinary thing was."
+          },
+          {
+            "type": "p",
+            "text": "What we can hopefully document here, at least in part, is that it was vast, and ambitious, and weird, and exciting, and, at its core, it was about people. The community is what made XOXO what it was, and attempting to present the infinite complexity of the hundreds of remarkable, courageous, empathetic, creative individuals who passed through this thing over the years cannot be simply summarized and wrapped in HTML and CSS."
+          },
+          {
+            "type": "p",
+            "text": "We’re both incredibly proud of the work we did on and through XOXO, and we hope this archive serves as a fitting tribute to this indescribably special thing. This is the final item on our to-do list as we shut down for good, except to say goodbye."
+          },
+          {
+            "type": "p",
+            "text": "Be well, take good care of each other, and don’t lower your expectations too much. While XOXO may be gone, we’re all still out in the world, still doing the work, and still expressing the same vibrancy and enthusiasm we’ve attempted to capture here in this very good website."
+          },
+          {
+            "type": "p",
+            "text": "Remember: you may be independent, but you’re not alone."
+          },
+          {
+            "type": "p",
+            "text": "— Andy & Andy"
+          }
+        ],
+        "translations": [
+          "早在2015年，也就是我们举办XOXO音乐节四年后，我们觉得是时候该为这个节日打造一个真正像样的网站了。",
+          "在此之前，我们每年都要设计和搭建三个完全独立的微型网站：一个用来公布音乐节日期，第二个发布阵容并开放报名，第三个则向参与者分享日程安排。",
+          "虽然这给了我们一个绝佳理由，去与一些才华横溢的设计师合作，但每次有新内容要发布时都重新建站，效率实在低得离谱。",
+          "我们认为，只要稍加努力，就能围绕一个简单的CMS构建一个灵活的设计系统——我们可以把新的公告、阵容和日程输入其中，同时仍然保留每届音乐节独特而充满活力的视觉风格。",
+          "如今，距离我们正式告别XOXO音乐节已过去近两年，也已是十年后的今天，我们终于推出了这个网站。它得名于当年我们原本打算作为临时GitHub仓库的代号，现在，请允许我们隆重介绍 XOXO Explore。",
+          "我们希望您能花些时间浏览页面，留意那些精心设计的细节与用心之处，不过，我们也想先为您推荐几个亮点。",
+          "现在，每一届音乐节都有了专属的索引页，完整收录当年的所有演讲者、表演者、艺术家和项目，并提供详尽（且准确！）的日程信息，包括描述、日期、时间和场地，这些数据均从我们的纸质参会指南中精准导入。此外，回顾视频和会议演讲视频也赫然在列，还有对每位赞助者的致谢（衷心感谢你们！），以及最重要的——链接到之前所有公告、阵容和日程微型网站的修复版存档。",
+          "我们的演讲视频终于有了正式的栖身之所——XOXO官网，可按年份和主题筛选，每个视频页面都包含演讲简介、相关标签，以及来自我们全部会议演讲档案库的其他相关视频链接。",
+          "我们的《指南》和《博客》也已完整保留，其中包括最新的《行为准则》《包容性》《无障碍访问》和《疫情防控》政策文件，这些内容均以宽松的Creative Commons许可协议公开可用，我们希望它们能在未来继续启发更多精心策划的活动。",
+          "而且，在XOXO网站上，我们首次拥有了真正的“关于我们”页面，试图解释XOXO究竟是什么，记录这场持续十二年的音乐节及其相关项目的历程，并精选了多年来媒体与参会者留下的诸多精彩语录。",
+          "您还会发现，整个网站遍布着漂浮的视觉小品：设计作品、插画、动画、照片和视频，它们均来自我们庞大的委托创作与合作项目档案库。",
+          "我们花了两年多的时间打造这个版本的XOXO Explore网站，在此再次感谢Collin Joyce与Friends of The Web团队为今天正式上线所付出的辛勤努力。同时也要感谢Lizy Gershenzon、Travis Kochel和Paulo Pereira，他们在2015年就共同构思了最初的XOXO Explore项目；还要感谢所有授权我们在各处展示其创意作品、引述和摄影作品的创作者们。",
+          "让我们为它做点周边吧",
+          "您可能还注意到，导航栏里多了一个新按钮，上面写着“Merch”。",
+          "为庆祝这一盛事，我们与 Skinny Ships 的朋友们 Jen 和 Richard 合作，设计了一款新 LOGO，融合了 XOXO 八年来各届的主色调，形成全新版本的 XOXO 标志。",
+          "为弥补 2024 年未能推出纪念 T 恤的遗憾，我们将印制一系列新款 XOXO 字母 T 恤，采用全部八年的经典配色；同时还将推出一款精美的 embroidered（刺绣）Explore LOGO 连帽卫衣，以及以历年主色调和新 Explore LOGO 为主题的珐琅徽章和贴纸。",
+          "我们还特别制作了少量独特且极其限量的周边商品，其中包括由长期支持本节日的老朋友 Booky Margoof 手工缝制的八种节日年份颜色毛绒胸针。",
+          "两款原创 LEGO 积木套装——一套还原华盛顿高中场地布局，另一套为 XOXO Explore LOGO 造型，均由波特兰乐高设计师 Nate Funk 设计。",
+          "由弗吉尼亚里士满 Big Secret 工作室友情打造的桌面级版本“Lower Your Expectations”发光灯牌。",
+          "本次 merch 销售将限时进行，预购将于 5 月 1 日周五截止。限量版商品售罄即止，其余商品将在销售结束后按需生产，如一切顺利，Buy Olympia 计划于 6 月底前完成全部发货。",
+          "无尽感激",
+          "XOXO 是一个从 2012 年至 2024 年举办的实验性节日，旨在庆祝互联网上的独立艺术家与创作者。",
+          "但如果你曾参加过 XOXO 节日、在 Outpost 工作、是 Slack 成员、曾在我们的 Mastodon 实例发帖，或参与过本地聚会，你就知道这远不能概括 XOXO 的真正面貌。",
+          "为 XOXO 收尾时最大的挑战在于：几页文字和几张嵌入图片根本无法完整呈现这个独一无二、非凡事物的全貌。",
+          "我们希望能在此至少部分记录下它的宏大、雄心、怪异与激动人心——而最核心的是，它关乎人。正是社区让 XOXO 成为今天的模样；试图用 HTML 和 CSS 来总结多年来数百位杰出、勇敢、富有同理心与创造力的人们所构成的无限复杂图景，终究是不现实的。",
+          "我们对 XOXO 上下的所有工作深感自豪，并希望这份档案能作为对这一难以言喻的特殊存在最恰当的致敬。这是我们在彻底关闭前最后一项待办事项，除了道别之外别无其他。",
+          "保重身体，彼此善待，但请别过度降低期望。虽然 XOXO 已落幕，但我们仍在世间奔走，继续工作，并以与此前相同的活力与热情表达自我——这正是我们试图通过这个非常出色的网站所捕捉到的精神。",
+          "谨记：你或许独立，但绝不孤单。",
+          "— Andy & Andy"
+        ]
+      }
+    },
+    {
+      "slug": "429cd493b8934fee",
+      "title": "New 10 GbE USB adapters are cooler, smaller, cheaper",
+      "titleZh": "新款 10GbE USB 网卡更酷、更小、更便宜",
+      "link": "https://www.jeffgeerling.com/blog/2026/new-10-gbe-usb-adapters-cooler-smaller-cheaper/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-04-24T14:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "10GbE",
+        "USB adapter",
+        "networking"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "过去高端笔记本电脑需依赖昂贵的 Thunderbolt 接口才能实现 10GbE 网络连接，而新型 RTL8159 芯片的 USB 3.2 适配器正在改变这一局面。这些新设备体积仅为传统 Thunderbolt 适配器的一半左右，发热量更低，价格更具竞争力。测试显示其性能已能满足高速局域网传输需求。",
+      "summaryEn": "Previously, achieving 10 GbE networking on laptops required expensive, bulky, and heat-generating Thunderbolt adapters. New RTL8159-based USB 3.2 adapters are now available, offering similar performance in half the size and with lower power consumption. These compact devices deliver reliable speeds suitable for high-bandwidth local network tasks.",
+      "reason": "为追求高性能网络扩展的用户提供了高性价比且便携的替代方案，尤其适合移动办公与小型工作室场景。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "For years, the best way to get 10 gigabit networking on laptops was to buy an expensive, large, and hot 10 GbE Thunderbolt adapter. With new RTL8159-based 10G USB 3.2 adapters coming onto the market, the bulky adapters might be a thing of the past. Just look at the size of the thing in comparison to my Thunderbolt adapters:"
+          },
+          {
+            "type": "p",
+            "text": "2.5G and even 5G USB adapters have been out for a while, but sometimes you need more bandwidth."
+          },
+          {
+            "type": "p",
+            "text": "The 10G adapter I'm testing is this $80 model from WisdPi. That's double the price of most 5G/2.5G adapters, but less than half what I paid for my Thunderbolt 10G adapters."
+          },
+          {
+            "type": "p",
+            "text": "If you need 10 gigs, this might be the best option, if you use RJ45 and not SFP+. If you don't need 10 gigs, a 2.5 or 5 Gbps adapter is still the best value."
+          },
+          {
+            "type": "p",
+            "text": "Also, you might not even get 10 Gbps with these new adapters, depending on your computer. I'll summarize why after the video:"
+          },
+          {
+            "type": "h2",
+            "text": "USB is fast frustrating"
+          },
+          {
+            "type": "p",
+            "text": "I tested this adapter on four computers:"
+          },
+          {
+            "type": "li",
+            "text": "Framework 13 with AMD Ryzen AI 5 340 (includes USB 4 / USB 3.2 Gen 2)"
+          },
+          {
+            "type": "li",
+            "text": "MacBook Neo (USB 3.1 and USB 2.0)"
+          },
+          {
+            "type": "li",
+            "text": "M4 MacBook Air (USB 4 / USB 3.1 Gen 2)"
+          },
+          {
+            "type": "li",
+            "text": "Desktop with AMD Ryzen 7900x with B650 motherboard (USB 3.2 Gen 2x2)"
+          },
+          {
+            "type": "p",
+            "text": "Getting those specific USB port specs is a bit of a chore (some websites don't even tell you if it's '3.2 Gen 2' or '3.0', and Windows itself only says \"USB 3.0\" when you plug in a USB 3.2 Gen 2x2 device like the 10 Gbps NIC!)"
+          },
+          {
+            "type": "p",
+            "text": "I was only able to get full 10 Gbps speed (minus a little overhead) on the AMD Desktop, which has a single USB 3.2 Gen 2x2 port good for 20 Gbps of throughput. The other machines got around 6-7 Gbps:"
+          },
+          {
+            "type": "p",
+            "text": "The Macs have the same per-port bandwidth (USB 3.1 Gen 2x1, for 10 Gbps), but the performance is consistently worse than the Framework."
+          },
+          {
+            "type": "p",
+            "text": "On the Macs, the adapter was correctly identified when I plugged it in, and worked straightaway, with no extra driver installation. The 'Hardware' tab in the Network settings incorrectly reported a connection speed of 2500Base-T."
+          },
+          {
+            "type": "p",
+            "text": "On Windows, the adapter was recognized when plugged in, but wouldn't connect to the network until I installed the latest Realtek driver, downloaded from their website."
+          },
+          {
+            "type": "p",
+            "text": "Bidirectional bandwidth testing offered an interesting contrast; the Macs both handled traffic symmetrically, while the Framework was wildly disparate. The desktop PC gave a full 9.5 Gbps down, and around 5 Gbps up."
+          },
+          {
+            "type": "p",
+            "text": "The main takeaway is this adapter only reaches its full potential if you have a USB 3.2 Gen 2 2x2 20 Gbps port."
+          },
+          {
+            "type": "p",
+            "text": "And considering the mess of USB naming over the past decade—and the fact Microsoft reports all USB 3.x connections as \"3.0\" in their Device Settings pane, good luck figuring out your own computer's support without glancing at spec sheets!"
+          },
+          {
+            "type": "p",
+            "text": "A few computers I've seen actually label the USB port speed (e.g. '10' or '20'), but that seems fairly rare. Most manufacturers seem to follow Apple in eschewing labeling entirely!"
+          },
+          {
+            "type": "p",
+            "text": "At least Apple has the negotiated port speed visible in the 'System Information' app—I couldn't find that detail anywhere on Windows."
+          },
+          {
+            "type": "h2",
+            "text": "5G and 2.5G a better value?"
+          },
+          {
+            "type": "p",
+            "text": "With reduced speed due to inadequate USB port bandwidth, would a 2.5 Gbps or 5 Gbps adapter be a better value?"
+          },
+          {
+            "type": "p",
+            "text": "Testing the WisdPi 5 Gbps adapter pictured above on my M4 Air, it got 4.6 Gbps. The 10 Gbps adapter is 1.4x faster, but for more than 2x the price ($30 vs $80)."
+          },
+          {
+            "type": "p",
+            "text": "I think, if you already have a 10 Gbps network, you use RJ45 and not SFP+ connections, and you want a more compact adapter (compared to the bulky, hot Thunderbolt adapters), it's a good deal. But if you need that full 10 Gbps or SFP+ support, Thunderbolt adapters are still the best if you have Thunderbolt ports that don't support USB 3.2 Gen 2 2x2."
+          },
+          {
+            "type": "p",
+            "text": "If you don't need 10 Gbps, though, stick to 2.5 or 5 Gbps adapters—they are still the best value right now."
+          },
+          {
+            "type": "h2",
+            "text": "Thermals and Power Draw"
+          },
+          {
+            "type": "p",
+            "text": "I also checked thermals and power draw—though my tests are not comprehensive. Measuring the absolute power draw is difficult because my USB-C power measurement devices downgrade the connection speed to USB 2, which means I'm not testing at full performance."
+          },
+          {
+            "type": "p",
+            "text": "At the slower USB 2 speed, the adapter uses about 0.86 Watts of power."
+          },
+          {
+            "type": "p",
+            "text": "And it doesn't get that hot, which was surprising. All my Aquantia-based 10 gig adapters turn into little ovens. That's why they're so big: the enclosures are giant heatsinks."
+          },
+          {
+            "type": "p",
+            "text": "But the WisdPi only got up to 42.5°C after running a bidirectional iperf3 test for a few minutes."
+          },
+          {
+            "type": "p",
+            "text": "That's warm, but not so hot that I'd burn myself touching it like I have with other 10 gig adapters."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "If $80 is too rich, this isn't the only option that uses the new chip; AliExpress is littered with alternatives. And you can get it on PCI Express cards, which bypasses the USB port requirement on desktop PCs."
+          },
+          {
+            "type": "p",
+            "text": "In the midst of all the price inflation in personal computing, it's nice to find a new device that's cheaper, faster, and (depending on your USB port) better."
+          }
+        ],
+        "translations": [
+          "多年来，要在笔记本电脑上实现 10Gb 网络连接，唯一的方法是购买昂贵、笨重且发热的 10 GbE Thunderbolt 适配器。随着基于 RTL8156 的新款 10G USB 3.2 适配器进入市场，这些大家伙或许将成为过去式。看看它和我 Thunderbolt 适配器的大小对比就知道了：",
+          "2.5G 甚至 5G USB 适配器已经存在一段时间了，但有时你确实需要更大的带宽。",
+          "我正在测试的这款 10G 适配器是 WisdPi 的 80 美元型号。这个价格几乎是大多数 5G/2.5G 适配器的两倍，但还不到我之前购买的 Thunderbolt 10G 适配器价格的一半。",
+          "如果你真的需要 10Gbps 的速度，这可能是最佳选择——前提是你使用 RJ45 接口而非 SFP+。如果你不需要那么高的速度，2.5G 或 5Gbps 的适配器仍然是性价比之选。",
+          "此外，你是否能真正达到 10Gbps 的速度还取决于你的电脑本身。视频后面我会总结原因：",
+          "USB 速度很快，但令人沮丧",
+          "我在四台电脑上测试了这款适配器：",
+          "Framework 13（搭载 AMD Ryzen AI 5 340，支持 USB 4 / USB 3.2 Gen 2）",
+          "MacBook Neo（USB 3.1 和 USB 2.0）",
+          "M4 MacBook Air（USB 4 / USB 3.1 Gen 2）",
+          "台式机（AMD Ryzen 7900x + B650 主板，配备 USB 3.2 Gen 2x2）",
+          "要准确了解这些 USB 端口的规格其实挺麻烦的（有些网站甚至不会标明是“3.2 Gen 2”还是“3.0”，而 Windows 系统在插入像这款 10Gbps 网卡这样的 USB 3.2 Gen 2x2 设备时，只会显示“USB 3.0”！）",
+          "我只在 AMD 台式机上实现了接近满速的 10Gbps 传输（扣除少量开销后），该机型拥有一个支持 20Gbps 吞吐量的 USB 3.2 Gen 2x2 端口。其他设备只能跑到 6-7Gbps：",
+          "Mac 设备的每个端口理论带宽相同（USB 3.1 Gen 2x1，即 10Gbps），但实际性能始终不如 Framework。",
+          "在 Mac 上，插入适配器后系统能正确识别并立即工作，无需额外安装驱动。但在“网络设置”的“硬件”选项卡中，显示的连接速度错误地报告为 2500Base-T。",
+          "在 Windows 上，虽然插入后能识别适配器，但必须安装从 Realtek 官网下载的最新驱动程序才能连网。",
+          "双向带宽测试结果很有意思：Mac 设备处理流量是对称的，而 Framework 则差异很大。台式机下行可达 9.5Gbps，上行约为 5Gbps。",
+          "关键结论是：只有当你拥有支持 20Gbps 的 USB 3.2 Gen 2x2 端口时，这款适配器才能发挥全部潜力。",
+          "再加上过去十年 USB 命名混乱的问题——微软在“设备设置”面板中将所有 USB 3.x 连接都标记为“3.0”，除非查看规格表，否则很难判断自己的电脑是否真正支持！",
+          "我见过少数电脑会在 USB 端口上标注速度（比如标“10”或“20”），但这并不常见。大多数厂商似乎都像苹果一样干脆不标注！",
+          "至少苹果在“系统信息”应用里能看到协商后的端口速度——我在 Windows 上完全找不到这个细节。",
+          "那 5G 或 2.5G 适配器是不是更划算？",
+          "考虑到由于 USB 端口带宽不足导致速度下降，2.5Gbps 或 5Gbps 的适配器是否更具性价比？",
+          "我在 M4 Air 上测试了上面展示的 WisdPi 5Gbps 适配器，测得速度为 4.6Gbps。10Gbps 适配器快 1.4 倍，但价格却贵了两倍以上（30 美元 vs 80 美元）。",
+          "如果你已经拥有 10 Gbps 网络，使用 RJ45 而非 SFP+ 连接，并且希望适配器更紧凑（相比笨重发热的 Thunderbolt 适配器），那这确实是个不错的选择。但若你需要完整的 10 Gbps 或 SFP+ 支持，且你的 Thunderbolt 端口不支持 USB 3.2 Gen 2 2x2，那么 Thunderbolt 适配器仍是最佳选择。",
+          "不过，如果你不需要 10 Gbps 速度，那就坚持使用 2.5 或 5 Gbps 的适配器吧——目前它们仍然是性价比最高的选择。",
+          "散热与功耗",
+          "我还测试了散热和功耗表现——尽管我的测试并不全面。测量绝对功耗比较困难，因为我的 USB-C 功率测量设备会将连接降级至 USB 2 速度，这意味着我无法进行满性能测试。",
+          "在较慢的 USB 2 速度下，该适配器大约消耗 0.86 瓦特的电力。",
+          "而且它并不会变得很烫，这一点令人意外。我所有基于 Aquantia 的 10Gb 适配器都像个小烤箱。这也是它们体积庞大的原因：外壳本身就是巨大的散热片。",
+          "但 WisdPi 在运行几分钟的双向 iperf3 测试后，温度仅升至 42.5°C。",
+          "虽然有点热，但远不至于像其他 10Gb 适配器那样烫得让人不敢触碰。",
+          "总结",
+          "如果 80 美元的价格让你觉得太贵，那这款采用新芯片的设备并非唯一选择；AliExpress 上充斥着各种替代品。此外，你还可以购买 PCI Express 版本，这样就能绕过台式机上对 USB 端口的依赖。",
+          "在当前个人计算设备普遍涨价的大环境下，能找到一个更便宜、更快（取决于你的 USB 端口）的新设备，实属难得。"
+        ]
+      }
+    },
+    {
+      "slug": "308c94e987d264e9",
+      "title": "How nonlinearity affects a pendulum",
+      "titleZh": "非线性效应对单摆运动的影响分析",
+      "link": "https://www.johndcook.com/blog/2026/04/24/nonlinear-pendulum/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-24T23:53:29.000Z",
+      "category": "other",
+      "keywords": [
+        "pendulum",
+        "nonlinearity",
+        "physics"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 16
+      },
+      "summary": "经典单摆运动方程在引入非线性项后，其周期不再与振幅无关。当摆角较大时，实际周期比小角度近似下的理论值更长。文章通过数学推导和数值模拟展示了非线性如何导致频率随振幅变化，并解释了为何大角度摆动会减慢整体节奏。",
+      "summaryEn": "The period of a pendulum becomes amplitude-dependent when nonlinear effects are considered. For larger angles, the actual period exceeds the small-angle approximation, slowing down the swing rate. Through mathematical analysis and simulations, the post demonstrates how nonlinearity alters oscillation frequency based on amplitude.",
+      "reason": "深化了对经典物理模型局限性的理解，适用于工程建模与教育演示中的精确动力学分析。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The equation of motion for a pendulum is the differential equation"
+          },
+          {
+            "type": "p",
+            "text": "where g is the acceleration due to gravity and ℓ is the length of the pendulum. When this is presented in an introductory physics class, the instructor will immediately say something like “we’re only interested in the case where θ is small, so we can rewrite the equation as"
+          },
+          {
+            "type": "h2",
+            "text": "Questions"
+          },
+          {
+            "type": "p",
+            "text": "This raises a lot of questions, or at least it should."
+          },
+          {
+            "type": "li",
+            "text": "Why not leave sin θ alone?"
+          },
+          {
+            "type": "li",
+            "text": "What justifies replacing sin θ with just θ?"
+          },
+          {
+            "type": "li",
+            "text": "How small does θ have to be for this to be OK?"
+          },
+          {
+            "type": "li",
+            "text": "How do the solutions to the exact and approximate equations differ?"
+          },
+          {
+            "type": "p",
+            "text": "First, sine is a nonlinear function, making the differential equation nonlinear. The nonlinear pendulum equation cannot be solved using mathematics that students in an introductory physics class have seen. There is a closed-form solution, but only if you extend “closed-form” to mean more than the elementary functions a student would see in a calculus class."
+          },
+          {
+            "type": "p",
+            "text": "Second, the approximation is justified because sin θ ≈ θ when θ is small. That’s true, but it’s kinda subtle. Here’s a post unpacking that."
+          },
+          {
+            "type": "p",
+            "text": "The third question doesn’t have a simple answer, though simple answers are often given. An instructor could make up an answer on the spot and say “less than 10 degrees” or something like that. A more thorough answer requires answering the fourth question."
+          },
+          {
+            "type": "p",
+            "text": "I addresses how nonlinear affects the solutions in a post a couple years ago. This post will expand a bit on that post."
+          },
+          {
+            "type": "h2",
+            "text": "Longer period"
+          },
+          {
+            "type": "p",
+            "text": "The primary difference between the nonlinear and linear pendulum equations is that the solutions to the nonlinear equation have longer periods. The solution to the linear equation is a cosine. Solving the equation determines the frequency, amplitude, and phase shift of the cosine, but qualitatively its just a cosine. The solution to the corresponding nonlinear equation, with sin θ rather than θ, is not exactly a cosine, but it looks a lot like a cosine, only the period is a little longer [1]."
+          },
+          {
+            "type": "p",
+            "text": "OK, the nonlinear pendulum has a longer period, but how much longer? The period is increased by a factor f(θ0) where θ0 is the initial displacement."
+          },
+          {
+            "type": "p",
+            "text": "You can find the exact answer in my earlier post. The exact answer depends on a special function called the “complete elliptic integral of the first kind,” but to a good approximation"
+          },
+          {
+            "type": "p",
+            "text": "The earlier post compares this approximation to the exact function."
+          },
+          {
+            "type": "h2",
+            "text": "Linear solution with adjusted period"
+          },
+          {
+            "type": "p",
+            "text": "Since the nonlinear pendulum equation is roughly the same as the linear equation with a longer period, you can approximate the solution to the nonlinear equation by solving the linear equation but increasing the period. How good is that approximation?"
+          },
+          {
+            "type": "p",
+            "text": "Let’s do an example with θ0 = 60° = π/3 radians. Then sin θ0 = 0.866 but θ0, in radians, is 1.047, so we definitely can’t say sin θ0 is approximately θ0. To make things simple, let’s set ℓ = g. Also, assume the pendulum starts from rest, i.e. θ'(0) = 0."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a plot of the solutions to the nonlinear and linear equations."
+          },
+          {
+            "type": "p",
+            "text": "Obviously the solution to the nonlinear equation has a longer period. In fact it’s 7.32% longer. (The approximation above would have estimated 7.46%.)"
+          },
+          {
+            "type": "p",
+            "text": "Here’s a plot comparing the solution of the nonlinear equation and the solution to the linear equations with period stretched by 7.32%."
+          },
+          {
+            "type": "p",
+            "text": "The solutions differ by less than the width of the plotting line, so it’s too small to see. But we can see there’s a difference when we subtract the two solutions."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a plot of the solutions to the nonlinear and linear equations."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Mechanical vibrations"
+          },
+          {
+            "type": "li",
+            "text": "Bowie integrator and the nonlinear pendulum"
+          },
+          {
+            "type": "p",
+            "text": "[1] The period of a pendulum depends on its length ℓ, and so we can think of the nonlinear term effectively replacing ℓ by a longer effective length ℓeff."
+          }
+        ],
+        "translations": [
+          "单摆的运动方程是一个微分方程",
+          "其中 g 是重力加速度，ℓ 是摆长。在普通物理课程中讲授这一内容时，教师通常会立即强调“我们只关心 θ 很小的情况”，因此可以将方程改写为",
+          "问题",
+          "这引发了许多疑问，至少应该如此。",
+          "为什么不保留 sin θ 不变？",
+          "为什么可以用 θ 来代替 sin θ？",
+          "θ 小到什么程度才适用这种近似？",
+          "精确方程和近似方程的解有何不同？",
+          "首先，正弦函数是非线性的，这使得该微分方程成为非线性方程。非线性单摆方程无法用普通物理课程中学生所学的数学方法求解。虽然存在闭式解，但前提是必须将“闭式”的定义扩展到超出学生在微积分课程中所接触的基本初等函数范围。",
+          "其次，之所以采用这种近似，是因为当 θ 很小时有 sin θ ≈ θ。这没错，但其中微妙之处值得深入探讨。相关文章对此已有详细分析。",
+          "第三个问题没有简单的答案，尽管人们常常给出看似简单的回答。教师可能会临时编造一个答案，比如“小于10度”之类。但要给出更严谨的回答，需要先回答第四个问题。",
+          "我在几年前的一篇文章中曾讨论过非线性对解的影响。本文将在那篇文章的基础上进一步展开。",
+          "周期更长",
+          "非线性单摆方程与线性方程的主要区别在于：非线性方程的解具有更长的周期。线性方程的解是余弦函数。求解过程可以确定余弦函数的频率、振幅和相位偏移，但从定性角度看，它本质上就是一个余弦波。而对应的非线性方程（使用 sin θ 而非 θ）的解并非精确的余弦函数，但其波形与余弦极为相似，只是周期略长一些 [1]。",
+          "好的，非线性单摆的周期确实更长，但具体长多少呢？其周期被放大了一个因子 f(θ₀)，其中 θ₀ 是初始位移角。",
+          "你可以在我之前的文章中找到精确答案。该答案依赖于一种称为“第一类完全椭圆积分”的特殊函数，但一个很好的近似表达式是",
+          "前述文章将该近似值与精确函数进行了比较。",
+          "调整周期的线性解法",
+          "由于非线性单摆方程大致等同于周期更长的线性方程，因此可以通过求解周期加长的线性方程来近似非线性方程的解。这种近似有多准确？",
+          "让我们以 θ₀ = 60° = π/3 弧度为例。此时 sin θ₀ = 0.866，而 θ₀ 本身（以弧度计）为 1.047，显然不能简单认为 sin θ₀ ≈ θ₀。为简化计算，设 ℓ = g。同时假设摆锤从静止开始摆动，即 θ'(0) = 0。",
+          "以下是非线性方程和线性方程解的图像。",
+          "显然，非线性方程的解具有更长的周期——实际上比线性情况长 7.32%。（上述近似方法估计的结果为 7.46%。）",
+          "下面是比较非线性方程解与周期拉伸 7.32% 后的线性方程解的图像。",
+          "两种解之间的差异小于绘图线条的宽度，肉眼几乎无法察觉。但我们可以通过两解之差来观察其差别。",
+          "以下是非线性方程和线性方程解的图像。",
+          "相关文章",
+          "机械振动",
+          "鲍伊积分器与非线性摆",
+          "[1] 单摆的周期取决于其长度 ℓ，因此我们可以认为非线性项实际上是用一个更长的有效长度 ℓeff 替换了 ℓ。"
+        ]
+      }
+    },
+    {
+      "slug": "9d62eeccdf5bb861",
+      "title": "Apple IIc: A smaller, sleeker Apple II from 1984",
+      "titleZh": "Apple IIc：1984年推出的更小巧的 Apple II 电脑",
+      "link": "https://dfarq.homeip.net/apple-iic/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=apple-iic",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-04-24T11:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Apple IIc",
+        "retro computing",
+        "hardware history"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 16
+      },
+      "summary": "Apple IIc 是 Apple II 系列中首款便携式计算机，于1984年4月24日发布。它打破了此前 II、II+ 和 IIe 均为台式机的设计传统，采用紧凑一体化机身，内置软驱并支持外接显示器。这款设备标志着苹果向移动计算迈出的重要一步。",
+      "summaryEn": "Introduced on April 24, 1984, the Apple IIc was the first portable computer in the Apple II line, departing from the desktop-only design of its predecessors (II, II+, and IIe). With an integrated form factor, built-in floppy drive, and compatibility with external displays, it represented Apple’s early move toward mobile computing.",
+      "reason": "作为个人计算机发展史上的关键节点，Apple IIc 的设计理念影响了后续便携式设备的演进方向。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The Apple IIc was the 4th computer in the Apple II line, introduced April 24, 1984. It was a bit of a departure from the earlier Apple II machines."
+          },
+          {
+            "type": "p",
+            "text": "The Apple II, II+, and IIe were strictly desktop computers. The system unit was a large box with an integrated keyboard and, importantly, expansion slots. The expansion slots went a long way toward ensuring the Apple II’s longevity. When you ran short on hardware capability, there were seven expansion slots to plug more hardware in to solve your problem."
+          },
+          {
+            "type": "h2",
+            "text": "Apple IIc vs IIe and II+"
+          },
+          {
+            "type": "p",
+            "text": "The IIc was a departure from that modular desktop design of earlier models. It was a compact all-in-one unit with an integrated keyboard and an integrated floppy drive and ports for connecting a printer, modem, and an 80 column display. Basically Apple took the IIe and the four most popular options for it, combined it into a smaller and lighter package, gave it a carrying handle, and marketed it as a semi portable computer."
+          },
+          {
+            "type": "p",
+            "text": "While it lacked the integrated display that we take for granted in today’s laptops, it did resemble today’s portable computers more closely than it resembled the large luggable computers with integrated CRTs that existed at the time like CP/M portables from Kaypro or Osborne, the Compaq Model 1, or the Commodore SX-64."
+          },
+          {
+            "type": "p",
+            "text": "And it was in some ways a better home computer than earlier Apple computers had been. It took up less space, and the industrial design was pleasing to look at."
+          },
+          {
+            "type": "p",
+            "text": "In 1984 when Apple released it, the appeal was that it was smaller, less expensive, and more convenient than the long running IIe. It sold for about $400 less than a similarly equipped IIe. In St Louis in the 1984-85 time frame, I saw ads from Famous Barr and Forsyth Computers advertising Apple IIc bundles including a monitor for right around $1,000."
+          },
+          {
+            "type": "p",
+            "text": "It was still an expensive machine by 1984 standards. But while a IIe cost nearly twice as much as a comparable setup from Atari or Commodore, the IIc split the difference."
+          },
+          {
+            "type": "h3",
+            "text": "The Apple IIc’s influence"
+          },
+          {
+            "type": "p",
+            "text": "One could make a case that the IIc inspired the modern laptop design. But it also inspired the design of some of its contemporaries. The Laser 128 was a blatant copy. Not only did it look like an Apple IIc knockoff, it was compatible with it."
+          },
+          {
+            "type": "p",
+            "text": "But the Tandy 1000 EX was also clearly inspired by the Apple IIc. Tandy didn’t try to make the EX portable, but the all-in-one design with the keyboard in front and a disk drive along the right side and the most popular integrated ports in the back didn’t hide the inspiration at all. Reviewers noted the resemblance at the time, and one person I know who grew up with a 1000EX even called it a Tandy Apple."
+          },
+          {
+            "type": "h2",
+            "text": "The Apple IIc today"
+          },
+          {
+            "type": "p",
+            "text": "The Apple IIc had some disadvantages over some of the other machines in the line as a hobbyist computer in modern times. It was much easier and cheaper to add solid state storage to the IIe, for example."
+          },
+          {
+            "type": "p",
+            "text": "But that’s changing, and it may increase the IIc’s standing in the retro community. For someone who likes retro computers in general, not specifically vintage Apple computers, I can see the IIc becoming the preferred option because it’s more compact than the other models in the line."
+          },
+          {
+            "type": "h3",
+            "text": "Adding capability to a IIc"
+          },
+          {
+            "type": "p",
+            "text": "The multifunction peripheral Fujinet is a gamechanger for the IIe. With Fujinet, you can plug a single device into the back of an Apple IIc to get mass storage, Wi-Fi modem capability, CP/M capability that’s better than the Softcard, and emulate virtual printers. An Apple IIc with Fujinet provides virtually of the capability someone is likely to want out of a IIe in less space. Space is always a concern for vintage computer hobbyists, so being able to add all that capability to a sleek, compact all in one unit definitely increases the Apple IIc’s appeal to a hobbyist today."
+          },
+          {
+            "type": "h3",
+            "text": "Saving even more space"
+          },
+          {
+            "type": "p",
+            "text": "If you can get a IIc with the nice clicky Alps keyboard, it’s nice to type on and more convenient than a IIe or II+. And it works well with a Alsop Metal Art monitor riser so you can easily swap it in and out with other machines with composite output, like Commodore and Atari 8-bits. You could keep a composite display set up permanently, keep a couple of picture ledges on the wall, and swap a IIc and two other machines in and out as desired, for example."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "Apple IIc 是 Apple II 系列中的第四款计算机，于1984年4月24日推出。它相比早期的 Apple II 机型有了一些变化。",
+          "Apple II、II+ 和 IIe 都是纯粹的台式电脑。主机是一个带有集成键盘的大型机箱，更重要的是配备了扩展槽。这些扩展槽在很大程度上确保了 Apple II 系列的长期生命力。当硬件能力不足时，用户可以通过七个扩展槽插入更多设备来解决问题。",
+          "Apple IIc 与 IIe 和 II+ 的比较",
+          "IIc 打破了早期机型那种模块化的台式机设计。它是一款紧凑的一体机，集成了键盘、软盘驱动器，并配有连接打印机、调制解调器和80列显示器的接口。本质上，苹果将 IIe 及其四种最受欢迎的选件整合到一个更小更轻的机身中，增加了一个提手，并将其定位为一款半便携式电脑。",
+          "虽然它没有像今天笔记本电脑那样内置显示器，但它比当时存在的那些带CRT显示器的笨重便携电脑（如 Kaypro 或 Osborne 的 CP/M 便携机、Compaq Model 1 或 Commodore SX-64）更接近现代便携式电脑的外观。",
+          "在某些方面，它甚至比早期的 Apple 家用电脑更好。它占用的空间更少，工业设计也更令人赏心悦目。",
+          "1984年发布时，它的吸引力在于它比长期运行的 IIe 更小、更便宜、更方便。它的售价比配置相似的 IIe 低约400美元。在1984-85年期间，我在圣路易斯看到 Famous Barr 和 Forsyth Computers 的广告，宣传包含显示器的 Apple IIc 套装，价格就在1000美元左右。",
+          "到1984年，它仍然是一台昂贵的机器。但与 Atari 或 Commodore 的同类产品相比，IIe 的价格几乎是它们的两倍，而 IIc 则介于两者之间。",
+          "Apple IIc 的影响",
+          "可以说，IIc 启发了现代笔记本电脑的设计。它也影响了同时代一些其他产品的设计。Laser 128 就是明显的模仿之作。它不仅看起来像 Apple IIc 的山寨版，而且与之兼容。",
+          "Tandy 1000 EX 也明显受到了 Apple IIc 的启发。Tandy 并没有试图让 EX 变得便携，但其一体式设计——键盘在前方、磁盘驱动器位于右侧、最常用的接口集中在后部——完全没有掩盖这种影响。当时的评论者也注意到了这种相似性，我认识的一位在拥有 1000EX 环境中长大的人甚至称它为“Tandy Apple”。",
+          "Apple IIc 的现状",
+          "在现代作为爱好者电脑的语境下，Apple IIc 相比该系列中的其他机型存在一些劣势。例如，给 IIe 添加固态存储要容易得多，也更便宜。",
+          "但情况正在改变，这可能会提升 IIc 在复古社区中的地位。对于喜欢复古电脑（尤其是非特定 vintage Apple 电脑）的人来说，我可以看到 IIc 会成为首选，因为它比其他型号更紧凑。",
+          "为 IIc 添加功能",
+          "多功能外围设备 Fujinet 为 Apple IIe 带来了革命性变化。通过 Fujinet，只需将一台设备插入 Apple IIc 的背部，即可获得大容量存储、Wi-Fi 调制解调器功能以及优于 Softcard 的 CP/M 能力，还能模拟虚拟打印机。配备 Fujinet 的 Apple IIc 在更小的空间内提供了几乎所有用户可能需要的 IIe 功能，这对于复古计算机爱好者来说尤为重要——空间始终是他们的关注点。因此，能够将所有这些功能集成到一款 sleek（时尚紧凑）的一体机中，无疑大大提升了 Apple IIc 对当今爱好者的吸引力。",
+          "进一步节省空间",
+          "如果能找到带有清脆点击声 Alps 键盘的 IIc，不仅打字体验更佳，也远比 IIe 或 II+ 更方便。配合 Alsop Metal Art 显示器支架使用，可以轻松与其他具有复合输出功能的机器（如 Commodore 和 Atari 8 位机）互换。例如，可以永久设置一个复合显示设备，在墙上安装几个图片架，并根据需要随时切换 IIc 和其他两台机器。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。自 1991 年起便专业从事计算机写作，因此在复古计算机刚问世时他就已开始撰写相关文章。自 1994 年以来，他一直在 IT 行业工作，并于 2013 年起专注于漏洞管理领域。他持有 Security+ 和 CISSP 认证。如今他每周写博客五次，内容主要涵盖 1975 至 2000 年间的复古计算机和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
