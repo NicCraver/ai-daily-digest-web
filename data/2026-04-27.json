@@ -1,0 +1,566 @@
+{
+  "date": "2026-04-27",
+  "generatedAt": "2026-04-26T18:00:19.433Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2400,
+    "filteredArticles": 2,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦两大趋势：一是密码管理领域持续深化加密技术研究，Bitwarden 开源项目推动自托管场景下的安全实践成为关注焦点；二是半导体行业承压明显，三星移动部门因内存芯片市场供过于求面临成立以来首次亏损，凸显存储产业周期波动对终端业务的深远影响。",
+  "articles": [
+    {
+      "slug": "8061b6dab14ac591",
+      "title": "How Bitwarden Encrypts and Decrypts Secrets",
+      "titleZh": "Bitwarden 如何加密和解密秘密",
+      "link": "https://blog.miguelgrinberg.com/post/how-bitwarden-encrypts-and-decrypts-secrets",
+      "sourceName": "miguelgrinberg.com",
+      "sourceUrl": "https://miguelgrinberg.com",
+      "pubDate": "2026-04-26T14:05:41.000Z",
+      "category": "security",
+      "keywords": [
+        "Bitwarden",
+        "encryption",
+        "decryption",
+        "self-hosting"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 7,
+        "total": 25
+      },
+      "summary": "文章探讨了 Bitwarden 密码管理器在自托管场景下的加密机制，重点分析了其使用 SQLite 数据库存储加密数据的技术实现。作者研究了 Vaultwarden——一个开源的 Bitwarden 服务器克隆项目，发现它通过客户端加密将敏感信息在传输前就进行加密，服务器端仅存储密文。文章揭示了 Bitwarden 采用 AES-256-GCM 算法和基于用户主密码的密钥派生机制，确保即使数据库泄露也不会暴露明文密码。最终结论是，这种设计使得自托管方案既安全又便于备份，为减少对大型科技公司的依赖提供了可行路径。",
+      "summaryEn": "The article examines how Bitwarden encrypts and decrypts secrets, focusing on its implementation for self-hosted password management. It highlights that Vaultwarden, an open-source clone of the Bitwarden cloud server, stores all encrypted data in a standard SQLite database, enabling local backups without compromising security. The system uses client-side encryption with AES-256-GCM and derives keys from the user’s master password via PBKDF2, ensuring that even if the database is compromised, plaintext secrets remain protected. This architecture allows users to maintain full control over their data while benefiting from Bitwarden’s robust security model. Ultimately, the approach demonstrates that secure, decentralized password management is both practical and resilient.",
+      "reason": "如果你正在考虑自建密码管理器以摆脱对云服务的依赖，这篇文章能让你深入了解 Bitwarden 的安全架构和 Vaultwarden 的实现细节，帮助你做出更明智的技术选型。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Miguel Grinberg",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "As part of my efforts in reducing my dependency on Big Tech, I have been researching how to self-host my password manager. One solution that looks very promising is Vaultwarden, an open source clone of the Bitwarden cloud server. An interesting aspect of this server is that it stores all the secrets in a standard SQLite database, so in addition to having the self-hosted password server I could keep a backup copy of the database on my machine and query it directly. But of course, the secrets are encrypted in this database, so they are useless unless I learn how to decrypt them, similar to how the Bitwarden clients do it."
+          },
+          {
+            "type": "p",
+            "text": "Speaking of the Bitwarden clients, while I was writing this article it came out that the official Bitwarden CLI client was compromised in a supply chain attack. This is a tool that I personally use and have on all my computers, so this feels like a wake up call to me. Luckily I did not install the compromised version myself, but I think there is an argument to be made about rolling your own secret management client instead of relying on the one all the hackers are after!"
+          },
+          {
+            "type": "p",
+            "text": "In this article I'll share how the encryption of secrets works in Bitwarden and its Vaultwarden clone. I'll also include working Python code, in case you want to tinker with this and like myself, would be interested in building your own tooling to keep your secrets safe."
+          },
+          {
+            "type": "h2",
+            "text": "The 10,000 foot view"
+          },
+          {
+            "type": "p",
+            "text": "Okay, let's get to it, first at a high enough level to keep things simple."
+          },
+          {
+            "type": "p",
+            "text": "Bitwarden, Vaultwarden and pretty much any half decent password manager store all your secrets encrypted in the server. When I say \"secrets\" I do not mean just the passwords, but also the usernames, URLs, notes, attachments and everything else that you store that applies to each secret. Bitwarden even encrypts the name you give to each secret. Only the client knows how to encrypt or decrypt, and it always encrypts data before sending it to the server. The server only knows how to store and retrieve blobs of encrypted data from a database."
+          },
+          {
+            "type": "p",
+            "text": "To encrypt and decrypt secrets, the client uses a master key that is associated with your account. The master key is a random sequence of bytes that is generated in the client at the time you create an account. Like the secrets, this master key is itself encrypted before it is sent to the server for storage. The encryption algorithm used to encrypt the master key is similar to that of the secrets, but they encryption key in this case is generated from the the passphrase chosen by the user to protect the account."
+          },
+          {
+            "type": "p",
+            "text": "So you see, the account passphrase is not directly used to encrypt your secrets as many people think, it just encrypts the master key. To be able to decrypt your secrets, the Bitwarden client first uses your passphrase to decrypt the master key. Then it uses the master key to decrypt your actual secrets. When the client leaves your vault unlocked, it just means that it is keeping a copy of the decrypted master key in memory (or maybe the whole decrypted vault), so that it can return secrets to you without you having to type your passphrase again. To lock your vault, all the client needs to do is discard the master key."
+          },
+          {
+            "type": "h2",
+            "text": "The master key"
+          },
+          {
+            "type": "p",
+            "text": "I will now share the details of how things work, which as far as I know are not formally documented anywhere. I had to dig through the Bitwarden and Vaultwarden source code to figure out a lot of these details."
+          },
+          {
+            "type": "p",
+            "text": "As stated above, each user on Bitwarden has a master key, which is used as an encryption key during encryption and decryption of secrets. A master key is a randomly generated sequence of 64 bytes, so there is really nothing special about it. Here is how easy it is to generate a master key directly in the Python console:"
+          },
+          {
+            "type": "code",
+            "text": ">>> import random\n>>> random.randbytes(64)\nb'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'"
+          },
+          {
+            "type": "p",
+            "text": "Bitwarden splits the key in two halves of 32 bytes each. The first half is used as a 256-bit encryption key, while the second half is used to generate message authentication codes or MACs, which are cryptographic signatures that verify the integrity of encrypted strings. Let's separate the key into its two components, which I'm going to call enc_key and mac_key:"
+          },
+          {
+            "type": "code",
+            "text": "# the following master key is used for demonstration purposes, never write a real master key in your code!\nmaster_key = b'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]"
+          },
+          {
+            "type": "h2",
+            "text": "Decoding a Bitwarden secret"
+          },
+          {
+            "type": "p",
+            "text": "Now that we have a master key, we can look at how to decode a secret. For this I'll start by showing you an example secret, exactly as it would be stored in a Bitwarden or Vaultwarden database. Here it is:"
+          },
+          {
+            "type": "code",
+            "text": "encrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='"
+          },
+          {
+            "type": "p",
+            "text": "Encrypted secrets start with an encryption format version, followed by a period. The version currently in use is version 2. The encrypted payload comes after the period, and contains three parts separated by pipe characters:"
+          },
+          {
+            "type": "li",
+            "text": "iv: an initialization vector, used to \"prime\" the encryption or decryption engine"
+          },
+          {
+            "type": "li",
+            "text": "ciphertext: the encrypted secret"
+          },
+          {
+            "type": "li",
+            "text": "mac: a MAC signature for this secret, used to verify its integrity"
+          },
+          {
+            "type": "p",
+            "text": "These three sections are all binary sequences written in base64 encoding, which ensures all characters are printable. Below you can see some more Python code to decode the secret into its parts:"
+          },
+          {
+            "type": "code",
+            "text": "from base64 import b64decode\n# ...\n\nversion, payload = encrypted_secret.split('.', 2)\nif version != '2':\n    raise ValueError('Unsupported encryption version')\nfields = payload.split('|')\nif len(fields) != 3:\n    raise ValueError('Invalid encrypted data')\niv = b64decode(fields[0])\nciphertext = b64decode(fields[1])\nmac = b64decode(fields[2])"
+          },
+          {
+            "type": "p",
+            "text": "Before attempting to decrypt the secret, we need to ensure that the encrypted string isn't corrupted or altered in any way. For this we can independently calculate the MAC signature and then compare it against the mac value included in the secret. If the two are different, then we'll know that the encrypted string has been corrupted or tampered with, so in that case this secret should be discarded as invalid."
+          },
+          {
+            "type": "p",
+            "text": "For the signature, Bitwarden computes a standard HMAC hash of the concatenation of iv and ciphertext, using the SHA-256 hash function. The secret key used to calculate this hash is the mac_key part of the master key. If you are not familiar with cryptographic functions then just know that this is a standard cryptographic calculation, so common that it is available in the Python standard library. Below you can see Python code that calculates the value of mac and then confirms that the calculated value is identical to the mac value that comes with the secret:"
+          },
+          {
+            "type": "code",
+            "text": "import hashlib\nimport hmac\n# ...\n\ncalculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\nif calculated_mac != mac:\n    raise ValueError('Invalid data or key')"
+          },
+          {
+            "type": "p",
+            "text": "If the mac test passes, then everything looks good and we can proceed to decrypt the value."
+          },
+          {
+            "type": "p",
+            "text": "The encryption algorithm used by Bitwarden is also well known, it is called AES, which is short for Advanced Encryption Standard. If you can tolerate another bit of cryptographic jargon, I can add that the encryption uses a CBC mode of operation, 128-bit blocks, and PKCS#7 padding. The iv portion of the secret is the initialization vector parameter that the AES encryption needs, and the enc_key part of the master key is used as the encryption or decryption key. Once again, you do not need to understand what all this means, since I'll show you Python code that takes care of everything in a moment."
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately the Python standard library does not include support for AES, so a third-party package needs to be installed. I've found a few and chosen pyaes, which is written in pure Python. If you are going to install this on your computer, I recommend that you first make a virtual environment."
+          },
+          {
+            "type": "code",
+            "text": "pip install pyaes"
+          },
+          {
+            "type": "p",
+            "text": "Here is the Python code to decrypt the secret:"
+          },
+          {
+            "type": "code",
+            "text": "import pyaes\n# ...\n\ndecrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\nsecret = decrypter.feed(ciphertext) + decrypter.feed()\nprint(secret)"
+          },
+          {
+            "type": "p",
+            "text": "The decrypter object from the pyaes package decrypts whatever is passed through its feed() method. It is designed so that you can pass the encrypted data in chunks, so when you are done you have to call the method with no arguments to indicate that you have sent all the data. The method returns the decrypted data also in chunks, so all the return values have to be appended."
+          },
+          {
+            "type": "p",
+            "text": "Ready to try this? Below is the complete Python script to decrypt the secret:"
+          },
+          {
+            "type": "code",
+            "text": "from base64 import b64decode\nimport hashlib\nimport hmac\nimport pyaes\n\n# the following master key is used for demonstration purposes, never write a real master key in your code!\nmaster_key = b'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]\n\nencrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='\n\nversion, payload = encrypted_secret.split('.', 2)\nif version != '2':\n    raise ValueError('Unsupported encryption version')\nfields = payload.split('|')\nif len(fields) != 3:\n    raise ValueError('Invalid encrypted data')\niv = b64decode(fields[0])\nciphertext = b64decode(fields[1])\nmac = b64decode(fields[2])\n\ncalculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\nif calculated_mac != mac:\n    raise ValueError('Invalid data or key')\n\ndecrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\nsecret = decrypter.feed(ciphertext) + decrypter.feed()\nprint(secret)"
+          },
+          {
+            "type": "p",
+            "text": "Run the script to see the secret message that I encrypted in this example:"
+          },
+          {
+            "type": "code",
+            "text": "$ python decrypt.py\nb'The quick brown fox jumps over the lazy dog'"
+          },
+          {
+            "type": "h2",
+            "text": "Securing the master key"
+          },
+          {
+            "type": "p",
+            "text": "The example in the previous section has the bulk of the logic needed to decrypt Bitwarden secrets, but it has the master key right there in the code in plain text. The Bitwarden server returns the master key to the client as an encrypted string, and the client needs to ask the user to type their email and their passphrase to be able to decrypt it. We'll now add this to the script."
+          },
+          {
+            "type": "p",
+            "text": "As I did with the secret in the previous section, I'll start by showing you an example encrypted master key, and then we'll work on the steps required to decrypt it. Here is the master key I used above, but now encrypted:"
+          },
+          {
+            "type": "code",
+            "text": "encrypted_master_key = '2.i5dH92a79wJ8L8tsqQEdLw==|a5swb8CeW5cTM2N+XQZCF+mX263BMaag+ghxiu+ci4W+fqqLZ82g+i7ReIcdiPLafoCAmeWZE48PETGJOsoOb6DcrK3sRdvHCx8xbRt1Xas=|MhY1/he1RntesSYJyZqFh8s8dQTXqmPRQM2hVcsjIWk='"
+          },
+          {
+            "type": "p",
+            "text": "What do you think? This looks pretty familliar, right? Bitwarden uses the same algorithm it uses for the secrets to encrypt the master key. The only difference is that the enc_key and mac_key values for this encryption are derived from the email address and the passphrase."
+          },
+          {
+            "type": "p",
+            "text": "Given that we'll need to run the decryption algorithm first to decrypt the master key and then again to decrypt secrets, it makes sense to refactor all that logic into a function:"
+          },
+          {
+            "type": "code",
+            "text": "from base64 import b64decode\nimport hashlib\nimport hmac\nimport pyaes\n\ndef decrypt(encrypted_data, enc_key, mac_key):\n    version, payload = encrypted_data.split('.', 2)\n    if version != '2':\n        raise ValueError('Unsupported encryption version')\n    fields = payload.split('|')\n    if len(fields) != 3:\n        raise ValueError('Invalid encrypted data')\n    iv = b64decode(fields[0])\n    ciphertext = b64decode(fields[1])\n    mac = b64decode(fields[2])\n\n    calculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    if calculated_mac != mac:\n        raise ValueError('Invalid data or key')\n\n    decrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    return decrypter.feed(ciphertext) + decrypter.feed()"
+          },
+          {
+            "type": "p",
+            "text": "What we need now is to generate the enc_key and mac_key values to send to this function with the encrypted master key. For this, Bitwarden uses a combination of two standard cryptographic operations called key derivation and key stretching, which it applies to the information entered by the user."
+          },
+          {
+            "type": "p",
+            "text": "Let's start by asking the user for their details:"
+          },
+          {
+            "type": "code",
+            "text": "from getpass import getpass\n# ...\n\nemail = input('Email address: ')\npassphrase = getpass('Passphrase: ')"
+          },
+          {
+            "type": "p",
+            "text": "Now we need to use these details to \"derive\" a key that we can use. For key derivation, Bitwarden uses the PBKDF2 function, which also happens to be common enough that it is included in the Python standard library:"
+          },
+          {
+            "type": "code",
+            "text": "temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), 600000, 32)"
+          },
+          {
+            "type": "p",
+            "text": "You may have noticed that most of the cryptographic functions that we are using are operations that are built on top of the SHA-256 hashing function. The key derivation is not exception, but for this function the name of the hashing function has to be given as a string."
+          },
+          {
+            "type": "p",
+            "text": "The key derivation function takes the passphrase and a salt as arguments. In cryptography, a salt is an additional input that is added to the main payload, with the purpose to make brute force attacks more costly for the attacker. In this instance Bitwarden uses the email address as salt. The function needs the passphrase and the email in binary form, so I'm using the encode() method to convert them to bytes."
+          },
+          {
+            "type": "p",
+            "text": "Key derivation functions repeat a basic operation for a number of iterations. This is done first to separate the derived key as much as possible from the original passphrase, but also to make the computation expensive, because if someone were to attempt to figure out a key with brute force methods, you'd want this to be an unbearably slow process for the attacker. Current Bitwarden accounts use 600,000 iterations for this step. The Bitwarden client receives this correct number of iterations associated with an account from the server, so this number isn't guaranteed to be 600,000. The number of iterations is increased from time to time, to keep up with performance improvements in hardware."
+          },
+          {
+            "type": "p",
+            "text": "The last argument to the key derivation function is the derived key length, in bytes. Bitwarden uses keys that are 32 bytes long."
+          },
+          {
+            "type": "p",
+            "text": "I should note that Bitwarden gives users the option to change the key derivation function to another one called Argon2id. Argon2id is considered to be more secure than PBKDF2, but it is also more resource intensive in terms of RAM and compute power. I would imagine that at some point in the future Bitwarden may decide to make Argon2id the default."
+          },
+          {
+            "type": "p",
+            "text": "But anyway, you may have noticed that I called this derived key a temp_key in the code above. This is because we are not done yet. If you recall, we need two keys of 32 bytes each, one for the encryption key and another for the MAC signature calculation. Bitwarden uses the HKDF-Expand key stretching algorithm to generate these two from temp_key."
+          },
+          {
+            "type": "p",
+            "text": "The HKDF algorithm does not exist in the Python standard library, so a third party package needs to be installed:"
+          },
+          {
+            "type": "code",
+            "text": "pip install hkdf"
+          },
+          {
+            "type": "p",
+            "text": "Here is how to \"stretch\" temp_key into the two keys that we need:"
+          },
+          {
+            "type": "code",
+            "text": "from hkdf import hkdf_expand\n# ...\n\nmaster_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\nmaster_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)"
+          },
+          {
+            "type": "p",
+            "text": "The key stretching algorithm accepts a source key, an \"info\" argument that provides context to the stretching operation, the length of the stretched key in bytes, and once again, the base cryptographic hashing function to use, which is SHA-256 as before."
+          },
+          {
+            "type": "p",
+            "text": "Bitwarden uses enc and mac as context for each key stretching operation. This allows us to use the same source key for both, yet obtain very different stretched keys."
+          },
+          {
+            "type": "p",
+            "text": "Now we are ready to decode the master key using the decrypt() function from before:"
+          },
+          {
+            "type": "code",
+            "text": "master_key = decrypt(encrypted_master_key, master_enc_key, master_mac_key)"
+          },
+          {
+            "type": "p",
+            "text": "And now that we have a master key, we can go ahead and decrypt the secret, also with the decrypt() function"
+          },
+          {
+            "type": "code",
+            "text": "enc_key = master_key[:32]\nmac_key = master_key[32:]\nprint('Secret:', decrypt(encrypted_secret, enc_key, mac_key).decode())"
+          },
+          {
+            "type": "p",
+            "text": "To keep things well organized, I decided to refactor the logic that decrypts the master key into a function:"
+          },
+          {
+            "type": "code",
+            "text": "def decrypt_master_key(encrypted_master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return decrypt(encrypted_master_key, master_enc_key, master_mac_key)"
+          },
+          {
+            "type": "p",
+            "text": "Below is the complete decryption script, this time without any sensitive information in the code:"
+          },
+          {
+            "type": "code",
+            "text": "from base64 import b64decode\nfrom getpass import getpass\nimport hashlib\nimport hmac\nimport pyaes\nfrom hkdf import hkdf_expand\n\ndef decrypt(encrypted_data, enc_key, mac_key):\n    version, payload = encrypted_data.split('.', 2)\n    if version != '2':\n        raise ValueError('Unsupported encryption version')\n    fields = payload.split('|')\n    if len(fields) != 3:\n        raise ValueError('Invalid encrypted data')\n    iv = b64decode(fields[0])\n    ciphertext = b64decode(fields[1])\n    mac = b64decode(fields[2])\n\n    calculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    if calculated_mac != mac:\n        raise ValueError('Invalid data or key')\n\n    decrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    return decrypter.feed(ciphertext) + decrypter.feed()\n\ndef decrypt_master_key(encrypted_master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return decrypt(encrypted_master_key, master_enc_key, master_mac_key)\n\nencrypted_master_key = '2.i5dH92a79wJ8L8tsqQEdLw==|a5swb8CeW5cTM2N+XQZCF+mX263BMaag+ghxiu+ci4W+fqqLZ82g+i7ReIcdiPLafoCAmeWZE48PETGJOsoOb6DcrK3sRdvHCx8xbRt1Xas=|MhY1/he1RntesSYJyZqFh8s8dQTXqmPRQM2hVcsjIWk='\nencrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='\n\nemail = input('Email address: ')\npassphrase = getpass('Passphrase: ')\n\nmaster_key = decrypt_master_key(encrypted_master_key, email, passphrase)\nenc_key = master_key[:32]\nmac_key = master_key[32:]\nprint('Secret:', decrypt(encrypted_secret, enc_key, mac_key).decode())"
+          },
+          {
+            "type": "p",
+            "text": "To be able to decode the example secret from above you will need to use the email and passphrase that I've chosen for this example, which are somebody@example.com and the moon landing was fake respectively. Here is an example run of the script showing the decoded secret:"
+          },
+          {
+            "type": "code",
+            "text": "$ python decrypt.py\nEmail: somebody@example.com\nPassphrase: the moon landing was fake\nSecret: The quick brown fox jumps over the lazy dog"
+          },
+          {
+            "type": "h2",
+            "text": "Encrypting secrets"
+          },
+          {
+            "type": "p",
+            "text": "The script that I shared in the previous section could serve as the basis for a complete secret decryption solution that is designed to work with a database such as the one Vaultwarden maintains, without the need to use web APIs or actually any networking at all."
+          },
+          {
+            "type": "p",
+            "text": "At this point I wondered if I could also work out how to encrypt, which would allow me to insert new secrets in the same way the Bitwarden clients do it. And as it turns out, after figuring out the decryption, adding encryption was easy."
+          },
+          {
+            "type": "p",
+            "text": "To do this I just worked backwards through the decrypt() function to build encrypt():"
+          },
+          {
+            "type": "code",
+            "text": "import random\n# ...\n\ndef encrypt(secret, enc_key, mac_key):\n    if isinstance(secret, str):\n        secret = secret.encode()\n    iv = random.randbytes(16)\n    encrypter = pyaes.Encrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    ciphertext = encrypter.feed(secret) + encrypter.feed()\n    mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    return f'2.{b64encode(iv).decode()}|{b64encode(ciphertext).decode()}|{b64encode(mac).decode()}'"
+          },
+          {
+            "type": "p",
+            "text": "First, and only as a convenience, if the secret that is passed to the function is a string, I convert it to bytes. Encryption and decryption always works with bytes."
+          },
+          {
+            "type": "p",
+            "text": "As you recall, the three parts of the secret are iv, ciphertext and mac. When encrypting, the iv part can be any sequence of 16 random bytes, which are used to initialize the encryption engine. The bytes that are used do not matter, as long as the decryption side uses the same ones. The ciphertext component is the secret after it is encrypted with the AES algorithm, so here I used pyaes to generate it. Finally we already know how to calculate the mac signature, so that is done exactly as before."
+          },
+          {
+            "type": "p",
+            "text": "Once all the parts are generated, the function returns a string formatted as Bitwarden likes it, starting with version 2, a period, and then the three parts of the encrypted secret with | separators."
+          },
+          {
+            "type": "p",
+            "text": "As a bonus, I also created a function that encrypts master keys:"
+          },
+          {
+            "type": "code",
+            "text": "def encrypt_master_key(master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return encrypt(master_key, master_enc_key, master_mac_key)"
+          },
+          {
+            "type": "p",
+            "text": "Now with the encrypt() and encrypt_master_key() functions I can generate secrets that are fully interoperable with those stored by Bitwarden and Vaultwarden. I can even generate new accounts with their own master keys. The following example generates a brand new master key, encrypts a secret with it, and then prints both the encrypted master key and the encrypted secret:"
+          },
+          {
+            "type": "code",
+            "text": "email = input('Email address: ')\npassphrase = getpass('Passphrase: ')\n\nmaster_key = random.randbytes(64)\nencrypted_master_key = encrypt_master_key(master_key, email, passphrase)\nprint(f'Master key: {encrypted_master_key}')\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]\nencrypted_secret = encrypt('The quick brown fox jumps over the lazy dog', enc_key, mac_key)\nprint(f'Secret: {encrypted_secret}')"
+          },
+          {
+            "type": "p",
+            "text": "If someone gets hold of your encrypted master key and secret, they would need to guess your email and your passphrase to decode them. Without those, they would have no way to exploit them."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "Now that I know how Bitwarden secrets are encrypted I think I'll probably end up writing my own little client. I like the idea of having all my secrets conveniently stored in a local SQLite database, so I'll probably build a solution that syncs with a Vaultwarden database, but keeps secret management local."
+          },
+          {
+            "type": "p",
+            "text": "In any case, I hope you enjoyed discovering how Bitwarden secrets work with me! There are many more Bitwarden features to explore, so this will probably turn out to be the first of a series of articles. Feel free to let me know below in the comments what other aspects of Bitwarden or Vaultwarden you would want me to cover!"
+          },
+          {
+            "type": "p",
+            "text": "Thank you for visiting my blog! If you enjoyed this article, please consider supporting my work and keeping me caffeinated with a small one-time donation through Buy me a coffee. Thanks!"
+          }
+        ],
+        "translations": [
+          "为了减少对大型科技公司的依赖，我一直在研究如何自建密码管理器。Vaultwarden 是一个非常有前景的开源方案，它是 Bitwarden 云服务器的克隆版本。这个服务器的一个有趣之处在于，它使用标准的 SQLite 数据库存储所有密钥，因此除了拥有一个自托管的密码服务器外，我还可以将数据库备份到本地机器上，并直接查询其中的数据。但当然，这些密钥在数据库中是加密的，除非我学会如何解密它们——就像 Bitwarden 客户端所做的那样，否则这些数据毫无用处。",
+          "说到 Bitwarden 客户端，就在我写这篇文章的时候，官方 Bitwarden CLI 客户端被曝出在一次供应链攻击中被植入了恶意代码。这是我个人在所有电脑上都会使用的工具，所以这件事对我来说是一次警醒。幸运的是，我并没有自己安装那个被污染的版本，但我认为，与其依赖那些黑客们都在盯着的现成客户端，不如自己动手开发一个自己的密钥管理客户端，这确实有它的道理！",
+          "在这篇文章中，我将分享 Bitwarden 及其克隆项目 Vaultwarden 中密钥加密的工作原理。我还会在文中附上可运行的 Python 代码，如果你也想动手尝试，或者像我一样对构建自己的安全工具感兴趣，这些代码应该会对你有所帮助。",
+          "宏观视角",
+          "好了，让我们开始吧，首先从足够高的层面来简化问题。",
+          "Bitwarden、Vaultwarden 以及几乎所有像样的密码管理器都会在服务器端将所有你的密钥进行加密存储。当我提到“密钥”时，我指的不仅仅是密码，还包括用户名、网址、备注、附件等与每个密钥相关的所有内容。Bitwarden 甚至还会加密你给每个密钥起的名字。只有客户端才知道如何进行加密或解密操作，而且它总是在将数据发送到服务器之前先对其进行加密。服务器只知道如何从数据库中存储和检索加密后的数据块。",
+          "为了加密和解密密钥，客户端会使用一个与你的账户关联的主密钥（master key）。这个主密钥是在你创建账户时由客户端随机生成的一组字节序列。和密钥本身一样，这个主密钥也会在发送到服务器存储之前被加密。用于加密主密钥的算法与加密密钥的算法类似，但这次用来加密的密钥是由用户为保护账户而选择的口令短语（passphrase）生成的。",
+          "所以你明白了吧，很多人以为口令短语是直接用来加密你的密钥的，其实不然，它只是用来加密主密钥的。要解密你的密钥，Bitwarden 客户端首先需要用你的口令短语来解密主密钥，然后再用主密钥去解密你真正的密钥。当客户端保持你的保险库处于解锁状态时，这意味着它只是在内存中保留了一份已解密的主密钥（或者整个已解密的保险库），这样你就可以在不再次输入口令短语的情况下获取密钥。要锁定你的保险库，客户端只需要丢弃主密钥即可。",
+          "主密钥",
+          "接下来我会详细讲解具体的工作原理，据我所知这些细节目前并没有正式文档说明。我不得不深入查阅 Bitwarden 和 Vaultwarden 的源代码才能搞清楚其中很多细节。",
+          "如前所述，Bitwarden 上的每个用户都有一个主密钥，它在加密和解密秘密时被用作加密密钥。主密钥是一个随机生成的 64 字节序列，因此它本身并无特别之处。以下是如何直接在 Python 控制台中生成主密钥的示例：",
+          ">>> import random\n>>> random.randbytes(64)\nb'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'",
+          "Bitwarden 将密钥分为两个各为 32 字节的半部分。前半部分用作 256 位加密密钥，后半部分用于生成消息认证码（MAC），即验证加密字符串完整性的密码学签名。让我们将密钥拆分为两个组成部分，我将其分别称为 enc_key 和 mac_key：",
+          "# the following master key is used for demonstration purposes, never write a real master key in your code!\nmaster_key = b'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]",
+          "解码 Bitwarden 秘密",
+          "现在我们有了主密钥，可以来看看如何解码一个秘密。为此，我先展示一个秘密的示例，其格式与存储在 Bitwarden 或 Vaultwarden 数据库中的完全一致。如下所示：",
+          "encrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='",
+          "加密的秘密以加密格式版本号开头，后跟一个句点。当前使用的版本是版本 2。句点之后是加密的有效载荷，包含三个由管道符分隔的部分：",
+          "iv：初始化向量，用于“启动”加密或解密引擎",
+          "ciphertext：加密后的秘密内容",
+          "mac：该秘密的 MAC 签名，用于验证其完整性",
+          "这三个部分均为采用 base64 编码的二进制序列，确保所有字符均可打印。以下是更多用于将秘密解码为其各部分的 Python 代码：",
+          "from base64 import b64decode\n# ...\n\nversion, payload = encrypted_secret.split('.', 2)\nif version != '2':\n    raise ValueError('Unsupported encryption version')\nfields = payload.split('|')\nif len(fields) != 3:\n    raise ValueError('Invalid encrypted data')\niv = b64decode(fields[0])\nciphertext = b64decode(fields[1])\nmac = b64decode(fields[2])",
+          "在尝试解密秘密之前，我们需要确保加密字符串未被损坏或篡改。为此，我们可以独立计算 MAC 签名，然后将其与秘密中包含的 mac 值进行比较。如果两者不同，则说明加密字符串已被损坏或篡改，此时应丢弃该秘密，视为无效。",
+          "对于签名，Bitwarden 使用 SHA-256 哈希函数对 iv 和 ciphertext 的连接结果计算标准的 HMAC 哈希。用于计算此哈希的密钥是主密钥中的 mac_key 部分。如果你不熟悉密码学函数，只需知道这是一个标准的密码学计算，非常常见，Python 标准库中已有支持。以下是计算 mac 值并确认其是否与秘密附带的 mac 值一致的 Python 代码：",
+          "import hashlib\nimport hmac\n# ...\n\ncalculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\nif calculated_mac != mac:\n    raise ValueError('Invalid data or key')",
+          "如果 MAC 测试通过，则一切正常，可以继续解密该值。",
+          "Bitwarden 使用的加密算法也广为人知，名为 AES，即高级加密标准。如果可以接受一点额外的密码学术语，我可以补充说明：该加密采用 CBC 操作模式、128 位块大小以及 PKCS#7 填充。秘密中的 iv 部分是 AES 加密所需的初始化向量参数，而主密钥中的 enc_key 部分则作为加密或解密密钥使用。你无需理解所有这些术语的含义，因为我稍后会展示一段 Python 代码来处理全部细节。",
+          "遗憾的是，Python 标准库不包含对 AES 的支持，因此需要安装第三方包。我找到了几个选项，选择了 pyaes，它是一个纯 Python 编写的库。如果你打算在自己的计算机上安装它，建议先创建一个虚拟环境。",
+          "pip install pyaes",
+          "以下是解密该密钥的 Python 代码：",
+          "import pyaes\n# ...\n\ndecrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\nsecret = decrypter.feed(ciphertext) + decrypter.feed()\nprint(secret)",
+          "pyaes 包中的解密器对象通过其 feed() 方法接收数据。它设计为可以分块传入加密数据，因此当所有数据发送完毕后，必须调用一个不带参数的 feed() 方法来表示数据已全部发送。该方法也会以分块的形式返回解密后的数据，因此需要将所有返回值拼接起来。",
+          "想试试吗？以下是一个完整的 Python 脚本，用于解密该密钥：",
+          "from base64 import b64decode\nimport hashlib\nimport hmac\nimport pyaes\n\n# the following master key is used for demonstration purposes, never write a real master key in your code!\nmaster_key = b'\\xa3?\\xbc\\x86\\x18\\x7f\\x9c|\\xe2\\xf1\\x10\\xd4\\xee B\\xde\\x93\\x12g\\x03\\\\\\x83\\x9a\\xc5S<!\\x18\\xc0\\x0eRp\\xb5\\xbc`\\xfc\\xceu)\\x93Q\\x84r\\xaa\\xd6\\xde\\x1f\\xc6Y\\x92\\x85?\\xf8j\\x95\\xe98\\x8e\\xe5\\xe0\\x98\\xd8\\x85\\x9c'\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]\n\nencrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='\n\nversion, payload = encrypted_secret.split('.', 2)\nif version != '2':\n    raise ValueError('Unsupported encryption version')\nfields = payload.split('|')\nif len(fields) != 3:\n    raise ValueError('Invalid encrypted data')\niv = b64decode(fields[0])\nciphertext = b64decode(fields[1])\nmac = b64decode(fields[2])\n\ncalculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\nif calculated_mac != mac:\n    raise ValueError('Invalid data or key')\n\ndecrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\nsecret = decrypter.feed(ciphertext) + decrypter.feed()\nprint(secret)",
+          "运行该脚本即可看到我在本例中加密的密文消息：",
+          "$ python decrypt.py\nb'The quick brown fox jumps over the lazy dog'",
+          "保护主密钥",
+          "上一节的示例包含了用于解密 Bitwarden 密钥所需的大部分逻辑，但其中的主密钥以明文形式直接写在代码中。Bitwarden 服务器将主密钥以加密字符串的形式返回给客户端，客户端需要用户输入邮箱和密码短语才能解密该密钥。现在我们将这部分功能添加到脚本中。",
+          "和上一节处理密钥的方式一样，我将先展示一个加密后的主密钥示例，然后逐步说明如何对其进行解密。下面是我之前使用的主密钥，现已加密：",
+          "encrypted_master_key = '2.i5dH92a79wJ8L8tsqQEdLw==|a5swb8CeW5cTM2N+XQZCF+mX263BMaag+ghxiu+ci4W+fqqLZ82g+i7ReIcdiPLafoCAmeWZE48PETGJOsoOb6DcrK3sRdvHCx8xbRt1Xas=|MhY1/he1RntesSYJyZqFh8s8dQTXqmPRQM2hVcsjIWk='",
+          "你觉得怎么样？看起来是不是很熟悉？Bitwarden 对主密钥的加密方式与对密钥的加密方式相同。唯一不同的是，这次加密所用的 enc_key 和 mac_key 是从用户的邮箱地址和密码短语派生而来的。",
+          "由于我们需要先运行解密算法来解密主密钥，然后再用主密钥解密其他内容，因此将所有这些逻辑重构为一个函数是有意义的：",
+          "from base64 import b64decode\nimport hashlib\nimport hmac\nimport pyaes\n\ndef decrypt(encrypted_data, enc_key, mac_key):\n    version, payload = encrypted_data.split('.', 2)\n    if version != '2':\n        raise ValueError('Unsupported encryption version')\n    fields = payload.split('|')\n    if len(fields) != 3:\n        raise ValueError('Invalid encrypted data')\n    iv = b64decode(fields[0])\n    ciphertext = b64decode(fields[1])\n    mac = b64decode(fields[2])\n\n    calculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    if calculated_mac != mac:\n        raise ValueError('Invalid data or key')\n\n    decrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    return decrypter.feed(ciphertext) + decrypter.feed()",
+          "现在我们需要的，是生成 enc_key 和 mac_key 的值，以便将它们与加密的主密钥一起传递给该函数。为此，Bitwarden 使用了两种标准密码学操作——密钥派生和密钥拉伸的组合，并将其应用于用户输入的信息。",
+          "让我们先从用户那里获取他们的信息：",
+          "from getpass import getpass\n# ...\n\nemail = input('Email address: ')\npassphrase = getpass('Passphrase: ')",
+          "现在我们需要利用这些信息“派生”出一个我们可以使用的密钥。对于密钥派生，Bitwarden 使用的是 PBKDF2 函数，而该函数在 Python 标准库中也有提供，因此非常常见：",
+          "temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), 600000, 32)",
+          "你可能已经注意到，我们使用的绝大多数密码学函数都是基于 SHA-256 哈希函数构建的操作。密钥派生也不例外，但对于这个函数，哈希函数的名称必须以字符串形式给出。",
+          "密钥派生函数接受密码短语和盐作为参数。在密码学中，盐是一种额外的输入，添加到主要载荷中，目的是增加攻击者进行暴力破解的成本。在此场景中，Bitwarden 使用电子邮件地址作为盐值。该函数需要密码短语和电子邮件地址的二进制形式，因此我使用 encode() 方法将它们转换为字节。",
+          "密钥派生函数通过重复执行基本操作来实现多次迭代。这样做一方面是为了尽可能地将派生出的密钥与原始密码短语分离，另一方面则是为了提高计算成本——如果有人试图用暴力破解的方式获取密钥，你自然希望这个过程对攻击者来说慢得难以忍受。目前 Bitwarden 账户使用的是 60 万次迭代。Bitwarden 客户端会从服务器接收与该账户关联的正确迭代次数，因此这个数值不一定是固定的 60 万。随着硬件性能提升，该迭代次数也会逐步增加以维持安全性。",
+          "密钥派生函数的最后一个参数是派生长度，单位为字节。Bitwarden 使用的密钥长度为 32 字节。",
+          "需要说明的是，Bitwarden 允许用户将密钥派生函数更换为另一种名为 Argon2id 的算法。Argon2id 被认为比 PBKDF2 更安全，但同时也更消耗内存和计算资源。我推测未来某个时候 Bitwarden 可能会把 Argon2id 设为默认选项。",
+          "不过你可能已经注意到，我在上面的代码中称这个派生密钥为 temp_key。这是因为我们还没完成——还记得吗？我们需要两个各为 32 字节的密钥：一个用于加密，另一个用于 MAC 签名计算。Bitwarden 使用 HKDF-Expand 密钥扩展算法从 temp_key 生成这两个密钥。",
+          "HKDF 算法并未包含在 Python 标准库中，因此需要安装第三方包：",
+          "pip install hkdf",
+          "下面是如何将 temp_key“拉伸”为我们所需的两个密钥：",
+          "from hkdf import hkdf_expand\n# ...\n\nmaster_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\nmaster_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)",
+          "密钥拉伸算法接受源密钥、提供操作上下文的 \"info\" 参数、拉伸后密钥的长度（以字节为单位），以及再次使用的底层加密哈希函数（如前所述，此处仍为 SHA-256）。",
+          "Bitwarden 分别为每个密钥拉伸操作使用 enc 和 mac 作为上下文。这使得我们可以使用相同的源密钥，却能得到完全不同的拉伸结果密钥。",
+          "现在我们可以用之前提到的 decrypt() 函数来解码主密钥了：",
+          "master_key = decrypt(encrypted_master_key, master_enc_key, master_mac_key)",
+          "现在我们已经有了主密钥，就可以用它配合 decrypt() 函数来解密 secret 了：",
+          "enc_key = master_key[:32]\nmac_key = master_key[32:]\nprint('Secret:', decrypt(encrypted_secret, enc_key, mac_key).decode())",
+          "为了保持代码整洁，我决定把解密主密钥的逻辑重构为一个函数：",
+          "def decrypt_master_key(encrypted_master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return decrypt(encrypted_master_key, master_enc_key, master_mac_key)",
+          "以下是完整的解密脚本，这次代码中不再包含任何敏感信息：",
+          "from base64 import b64decode\nfrom getpass import getpass\nimport hashlib\nimport hmac\nimport pyaes\nfrom hkdf import hkdf_expand\n\ndef decrypt(encrypted_data, enc_key, mac_key):\n    version, payload = encrypted_data.split('.', 2)\n    if version != '2':\n        raise ValueError('Unsupported encryption version')\n    fields = payload.split('|')\n    if len(fields) != 3:\n        raise ValueError('Invalid encrypted data')\n    iv = b64decode(fields[0])\n    ciphertext = b64decode(fields[1])\n    mac = b64decode(fields[2])\n\n    calculated_mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    if calculated_mac != mac:\n        raise ValueError('Invalid data or key')\n\n    decrypter = pyaes.Decrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    return decrypter.feed(ciphertext) + decrypter.feed()\n\ndef decrypt_master_key(encrypted_master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return decrypt(encrypted_master_key, master_enc_key, master_mac_key)\n\nencrypted_master_key = '2.i5dH92a79wJ8L8tsqQEdLw==|a5swb8CeW5cTM2N+XQZCF+mX263BMaag+ghxiu+ci4W+fqqLZ82g+i7ReIcdiPLafoCAmeWZE48PETGJOsoOb6DcrK3sRdvHCx8xbRt1Xas=|MhY1/he1RntesSYJyZqFh8s8dQTXqmPRQM2hVcsjIWk='\nencrypted_secret = '2.IkWFb104bXv7Zwl7eFbsnQ==|SB42jIOvjhV32hSusW/J7WfAnQV8DKIV/CJQB7IDaiz4lQv4lIcXzWp9+IT0ncVQ|S8Tcp2klhcOOzZvoA0C9WRURaWUq+U1F9jbuBskDIz0='\n\nemail = input('Email address: ')\npassphrase = getpass('Passphrase: ')\n\nmaster_key = decrypt_master_key(encrypted_master_key, email, passphrase)\nenc_key = master_key[:32]\nmac_key = master_key[32:]\nprint('Secret:', decrypt(encrypted_secret, enc_key, mac_key).decode())",
+          "要解码上面示例中的 secret，你需要使用我为本次示例选择的邮箱和密码：somebody@example.com 和 the moon landing was fake。下面是脚本运行的一个示例输出，展示了已解密的 secret：",
+          "$ python decrypt.py\nEmail: somebody@example.com\nPassphrase: the moon landing was fake\nSecret: The quick brown fox jumps over the lazy dog",
+          "加密 secrets",
+          "上一节分享的脚本可以作为完整解密方案的基础，适用于像 Vaultwarden 维护的那种数据库，完全不需要调用 Web API 或进行任何网络交互。",
+          "此时我开始思考是否也能实现加密功能，这样就能像 Bitwarden 客户端一样插入新的 secret。事实证明，在搞懂了解密之后，添加加密反而变得很简单。",
+          "我只需要逆向推导 decrypt() 函数，反向构建出 encrypt() 即可：",
+          "import random\n# ...\n\ndef encrypt(secret, enc_key, mac_key):\n    if isinstance(secret, str):\n        secret = secret.encode()\n    iv = random.randbytes(16)\n    encrypter = pyaes.Encrypter(pyaes.AESModeOfOperationCBC(enc_key, iv))\n    ciphertext = encrypter.feed(secret) + encrypter.feed()\n    mac = hmac.new(mac_key, iv + ciphertext, hashlib.sha256).digest()\n    return f'2.{b64encode(iv).decode()}|{b64encode(ciphertext).decode()}|{b64encode(mac).decode()}'",
+          "首先，仅为了方便起见，如果传递给函数的密钥是字符串，我会将其转换为字节。加密和解密始终使用字节进行。",
+          "如你所记，密钥由三部分组成：iv、密文和 mac。加密时，iv 部分可以是任意 16 个随机字节序列，用于初始化加密引擎。只要解密方使用相同的字节，具体使用哪些并不重要。密文部分是经过 AES 算法加密后的密钥内容，因此这里我使用了 pyaes 来生成它。最后，我们已经知道如何计算 mac 签名，所以这部分处理方式与之前完全相同。",
+          "所有部分生成后，函数会返回一个 Bitwarden 所偏好的格式字符串：以版本号 2 开头，接着是一个点，然后是三个用 | 分隔的加密密钥组成部分。",
+          "作为额外功能，我还创建了一个用于加密主密钥的函数：",
+          "def encrypt_master_key(master_key, email, passphrase, iterations=600000):\n    temp_key = hashlib.pbkdf2_hmac('sha256', passphrase.encode(), email.encode(), iterations, 32)\n    master_enc_key = hkdf_expand(temp_key, b'enc', 32, hashlib.sha256)\n    master_mac_key = hkdf_expand(temp_key, b'mac', 32, hashlib.sha256)\n    return encrypt(master_key, master_enc_key, master_mac_key)",
+          "现在有了 encrypt() 和 encrypt_master_key() 这两个函数，我就能生成与 Bitwarden 和 Vaultwarden 存储完全兼容的密钥。我甚至可以为自己的账户生成新的主密钥。以下示例演示了如何生成全新的主密钥，并用它加密一个密钥，然后分别输出加密后的主密钥和加密后的普通密钥：",
+          "email = input('Email address: ')\npassphrase = getpass('Passphrase: ')\n\nmaster_key = random.randbytes(64)\nencrypted_master_key = encrypt_master_key(master_key, email, passphrase)\nprint(f'Master key: {encrypted_master_key}')\n\nenc_key = master_key[:32]\nmac_key = master_key[32:]\nencrypted_secret = encrypt('The quick brown fox jumps over the lazy dog', enc_key, mac_key)\nprint(f'Secret: {encrypted_secret}')",
+          "如果有人获取了你的加密主密钥和普通密钥，他们仍需猜测你的邮箱和密码短语才能解码。没有这些信息，他们就无法利用这些密钥。",
+          "结论",
+          "既然我已经了解了 Bitwarden 密钥的加密机制，我想我可能会自己动手写一个小型客户端。我喜欢将所有密钥方便地存储在本地 SQLite 数据库中的想法，所以我可能会构建一个能与 Vaultwarden 数据库同步，但密钥管理保持本地的解决方案。",
+          "无论如何，希望你能享受和我一起探索 Bitwarden 密钥的工作原理！Bitwarden 还有很多其他特性值得深入研究，这很可能成为一系列文章的开篇之作。欢迎在评论区留言，告诉我你还想了解 Bitwarden 或 Vaultwarden 的哪些方面！",
+          "感谢访问我的博客！如果你喜欢这篇文章，请考虑通过“Buy me a coffee”支持我的工作，哪怕是一次性小额捐赠也能让我精神百倍。谢谢！"
+        ]
+      }
+    },
+    {
+      "slug": "f8265b67955df4b0",
+      "title": "Report Claims Samsung Might Post Its First-Ever Mobile Division Loss This Year, Blaming RAM Crisis",
+      "titleZh": "三星可能首次出现移动部门亏损，归因于内存危机",
+      "link": "https://9to5google.com/2026/04/22/samsung-is-increasingly-worried-about-first-ever-mobile-division-loss-in-ram-crisis-report/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-26T17:39:40.000Z",
+      "category": "other",
+      "keywords": [
+        "Samsung",
+        "mobile division",
+        "RAM crisis"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 19
+      },
+      "summary": "据韩国媒体报道，三星电子移动体验（MX）部门今年可能面临自成立以来首次运营亏损，主要受 DRAM 和 NAND 闪存市场严重供过于求的影响。公司内部已采取多项削减成本措施，包括推迟新品发布和调整供应链策略，但行业整体库存积压和高价合约导致价格持续下跌。尽管三星在高端手机市场仍具竞争力，但存储芯片业务拖累整体利润，反映出消费电子需求疲软与半导体周期下行叠加的风险。分析师认为，若内存价格未能快速反弹，这一亏损或将提前确认。",
+      "summaryEn": "A new report suggests Samsung's mobile division (MX) may post its first-ever operating loss this year due to a severe memory chip crisis. The downturn stems from oversupply in DRAM and NAND flash markets, driving prices down sharply and squeezing margins across Samsung's semiconductor business. Internal cuts and production adjustments have been implemented, but weak consumer demand and inventory buildup continue to pressure earnings. Despite strong performance in flagship smartphones, the broader mobile segment remains vulnerable to external supply chain shocks. If memory pricing does not recover soon, the loss could become official sooner than expected.",
+      "reason": "了解三星移动部门面临的财务压力有助于评估全球半导体周期对消费电子巨头的影响，尤其对关注供应链风险和科技股投资的人来说具有重要参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ben Schoon",
+        "siteName": "9to5Google",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "As AI continues to eat up the market’s RAM output, smartphones are in crisis as costs continue to skyrocket. A new report claims that Samsung is increasingly worried about this, and warning of its first-ever loss in its mobile division."
+          },
+          {
+            "type": "p",
+            "text": "We’ve heard this before. In March, a report revealed some of the internal cuts Samsung has been making for its mobile division, with the company initially concerned it could post an operating loss for the first time ever. It’s a big deal, as Samsung’s mobile (MX) division has historically always turned a profit."
+          },
+          {
+            "type": "p",
+            "text": "A new report out of Korea (via Jukan) makes this seem all but certain."
+          },
+          {
+            "type": "p",
+            "text": "Apparently, Samsung’s TM Roh, the head of the company’s mobile division, has expressed concerns of the “possibility of an annual deficit for the MX business unit.” Previously, those concerns came from speculation and outside parties, but with such a high figure in Samsung’s organization worried, it’s clear things are looking pretty bleak."
+          },
+          {
+            "type": "p",
+            "text": "The smartphone market as a whole is in turmoil, as increasing costs for RAM and storage affect the price of new devices. Low-cost Android devices have been especially affected, with price hikes described as “inevitable.” We’ve seen some of those price hikes already, from brands including Motorola and even Samsung."
+          },
+          {
+            "type": "h2",
+            "text": "More on Samsung:"
+          },
+          {
+            "type": "li",
+            "text": "Samsung’s next pair of Galaxy Buds surface with apparent open-ear design"
+          },
+          {
+            "type": "li",
+            "text": "Galaxy Tab A11+ Kids Edition is now available for $349, but you can already get it for less"
+          },
+          {
+            "type": "li",
+            "text": "Samsung says Galaxy S26 vertical camera is a ‘core identity’ — it’s also a core problem"
+          },
+          {
+            "type": "p",
+            "text": "Follow Ben: Twitter/X, Threads, Bluesky, and Instagram"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
