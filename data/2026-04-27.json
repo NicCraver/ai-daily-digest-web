@@ -1,15 +1,15 @@
 {
   "date": "2026-04-27",
-  "generatedAt": "2026-04-26T18:00:19.433Z",
+  "generatedAt": "2026-04-27T02:04:46.735Z",
   "stats": {
     "totalFeeds": 92,
-    "successFeeds": 80,
-    "totalArticles": 2400,
-    "filteredArticles": 2,
+    "successFeeds": 82,
+    "totalArticles": 2423,
+    "filteredArticles": 4,
     "hours": 24,
     "lang": "zh"
   },
-  "highlights": "今日技术圈聚焦两大趋势：一是密码管理领域持续深化加密技术研究，Bitwarden 开源项目推动自托管场景下的安全实践成为关注焦点；二是半导体行业承压明显，三星移动部门因内存芯片市场供过于求面临成立以来首次亏损，凸显存储产业周期波动对终端业务的深远影响。",
+  "highlights": "今日技术圈聚焦三大动向：一是密码管理安全持续受关注，Bitwarden 开源实现细节被深入剖析；二是半导体行业承压，三星移动部门因内存价格暴跌面临成立来首次亏损；三是科技与人文思维碰撞升温，《纽约时报》填字游戏失误引发对“软件速度”与“硬件完美”的哲学讨论。",
   "articles": [
     {
       "slug": "8061b6dab14ac591",
@@ -24,17 +24,17 @@
         "Bitwarden",
         "encryption",
         "decryption",
-        "self-hosting"
+        "Vaultwarden"
       ],
       "score": {
-        "relevance": 9,
+        "relevance": 8,
         "quality": 9,
-        "timeliness": 7,
+        "timeliness": 8,
         "total": 25
       },
-      "summary": "文章探讨了 Bitwarden 密码管理器在自托管场景下的加密机制，重点分析了其使用 SQLite 数据库存储加密数据的技术实现。作者研究了 Vaultwarden——一个开源的 Bitwarden 服务器克隆项目，发现它通过客户端加密将敏感信息在传输前就进行加密，服务器端仅存储密文。文章揭示了 Bitwarden 采用 AES-256-GCM 算法和基于用户主密码的密钥派生机制，确保即使数据库泄露也不会暴露明文密码。最终结论是，这种设计使得自托管方案既安全又便于备份，为减少对大型科技公司的依赖提供了可行路径。",
-      "summaryEn": "The article examines how Bitwarden encrypts and decrypts secrets, focusing on its implementation for self-hosted password management. It highlights that Vaultwarden, an open-source clone of the Bitwarden cloud server, stores all encrypted data in a standard SQLite database, enabling local backups without compromising security. The system uses client-side encryption with AES-256-GCM and derives keys from the user’s master password via PBKDF2, ensuring that even if the database is compromised, plaintext secrets remain protected. This architecture allows users to maintain full control over their data while benefiting from Bitwarden’s robust security model. Ultimately, the approach demonstrates that secure, decentralized password management is both practical and resilient.",
-      "reason": "如果你正在考虑自建密码管理器以摆脱对云服务的依赖，这篇文章能让你深入了解 Bitwarden 的安全架构和 Vaultwarden 的实现细节，帮助你做出更明智的技术选型。",
+      "summary": "文章探讨了 Bitwarden 密码管理器在自托管场景下的安全机制，重点分析了其使用 SQLite 数据库存储加密数据的技术实现。作者通过研究 Vaultwarden——一个开源的 Bitwarden 服务器克隆项目，揭示了 Bitwarden 采用客户端加密（client-side encryption）的方式，确保用户数据在传输和存储过程中始终处于加密状态。核心加密流程依赖于用户的 master password 派生出的密钥，结合 AES-256-GCM 和 RSA-OAEP 算法完成本地加解密操作。该设计使得即使服务器被攻破，攻击者也无法获取明文密码信息。",
+      "summaryEn": "The article examines how Bitwarden encrypts and decrypts secrets, focusing on its use of a standard SQLite database for storing encrypted data in self-hosted setups. By analyzing Vaultwarden—an open-source clone of the Bitwarden cloud server—the author explains that Bitwarden employs client-side encryption, ensuring user data remains encrypted during both transmission and storage. The core encryption relies on a key derived from the user's master password, using AES-256-GCM for local encryption and RSA-OAEP for secure key exchange. This design ensures that even if the server is compromised, attackers cannot access plaintext passwords.",
+      "reason": "如果你正在考虑自建密码管理服务并希望理解主流方案的安全架构，这篇文章提供了清晰的技术拆解，尤其适合对端到端加密机制感兴趣的开发者。",
       "fullTextStatus": "ok",
       "fullText": {
         "byline": "Miguel Grinberg",
@@ -488,7 +488,7 @@
     {
       "slug": "f8265b67955df4b0",
       "title": "Report Claims Samsung Might Post Its First-Ever Mobile Division Loss This Year, Blaming RAM Crisis",
-      "titleZh": "三星可能首次出现移动部门亏损，归因于内存危机",
+      "titleZh": "报告称三星可能首次出现移动部门亏损，归因于内存危机",
       "link": "https://9to5google.com/2026/04/22/samsung-is-increasingly-worried-about-first-ever-mobile-division-loss-in-ram-crisis-report/",
       "sourceName": "daringfireball.net",
       "sourceUrl": "https://daringfireball.net",
@@ -500,14 +500,14 @@
         "RAM crisis"
       ],
       "score": {
-        "relevance": 5,
+        "relevance": 4,
         "quality": 6,
-        "timeliness": 8,
-        "total": 19
+        "timeliness": 6,
+        "total": 16
       },
-      "summary": "据韩国媒体报道，三星电子移动体验（MX）部门今年可能面临自成立以来首次运营亏损，主要受 DRAM 和 NAND 闪存市场严重供过于求的影响。公司内部已采取多项削减成本措施，包括推迟新品发布和调整供应链策略，但行业整体库存积压和高价合约导致价格持续下跌。尽管三星在高端手机市场仍具竞争力，但存储芯片业务拖累整体利润，反映出消费电子需求疲软与半导体周期下行叠加的风险。分析师认为，若内存价格未能快速反弹，这一亏损或将提前确认。",
-      "summaryEn": "A new report suggests Samsung's mobile division (MX) may post its first-ever operating loss this year due to a severe memory chip crisis. The downturn stems from oversupply in DRAM and NAND flash markets, driving prices down sharply and squeezing margins across Samsung's semiconductor business. Internal cuts and production adjustments have been implemented, but weak consumer demand and inventory buildup continue to pressure earnings. Despite strong performance in flagship smartphones, the broader mobile segment remains vulnerable to external supply chain shocks. If memory pricing does not recover soon, the loss could become official sooner than expected.",
-      "reason": "了解三星移动部门面临的财务压力有助于评估全球半导体周期对消费电子巨头的影响，尤其对关注供应链风险和科技股投资的人来说具有重要参考价值。",
+      "summary": "据韩国媒体报道，三星电子移动体验（MX）部门正面临自成立以来首次运营亏损的风险，主要受全球 DRAM 和 NAND 闪存供应紧张及价格暴跌影响。公司内部已采取多项削减措施，包括推迟新品发布和调整营销预算，以应对半导体市场低迷。尽管此前该部门长期保持盈利，但分析师指出，若消费电子需求持续疲软，亏损或将不可避免。这一情况也反映出整个科技行业正经历由 AI 芯片热潮引发的供应链结构性变化。",
+      "summaryEn": "A new report suggests Samsung's mobile division (MX) may post its first-ever operating loss this year, primarily due to the ongoing RAM crisis affecting DRAM and NAND flash prices. Internal cost-cutting measures have been implemented, including delayed product launches and reduced marketing spend, as the company grapples with sluggish demand in the consumer electronics sector. Historically profitable, the MX division now faces unprecedented challenges amid broader semiconductor market volatility driven by shifts toward AI chip production.",
+      "reason": "了解三星移动业务困境有助于把握全球半导体周期与智能手机市场的联动关系，对投资者和科技观察者具有重要参考价值。",
       "fullTextStatus": "ok",
       "fullText": {
         "byline": "Ben Schoon",
@@ -560,6 +560,143 @@
           }
         ],
         "translations": []
+      }
+    },
+    {
+      "slug": "4f2565a055bb05c6",
+      "title": "★ The New York Times Printed the Wrong Crossword Grid Last Sunday, and I Find That Timing Serendipitous",
+      "titleZh": "《纽约时报》上周日印错了填字游戏网格，我觉得时机很巧妙",
+      "link": "https://daringfireball.net/2026/04/nyt_wrong_crossword_grid",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-26T19:28:59.000Z",
+      "category": "opinion",
+      "keywords": [
+        "crossword",
+        "software brain",
+        "hardware brain"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "作者调侃《纽约时报》周日版填字游戏出现印刷错误的事件，借此对比两种思维模式：软件思维强调速度与效率，认为‘唯一不可挽回的错误是行动太慢’；而硬件思维则主张专注与完美主义，坚持‘放慢节奏、追求卓越、永不妥协’。他认为此次失误虽小，却恰好映射出数字时代对即时性与容错性的矛盾需求。",
+      "summaryEn": "The author reflects on The New York Times' accidental printing of an incorrect crossword grid last Sunday, finding the timing serendipitous. He contrasts two mindsets: the software brain values speed and output ('go faster; do more'), while the hardware brain prioritizes focus and perfection ('slow down; do less'). This incident highlights the tension between rapid delivery and flawless execution in today's digital culture.",
+      "reason": "这篇短文以轻松幽默的方式引发对现代工作节奏与质量标准的深层思考，适合喜欢哲学式技术随笔的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Sunday, 26 April 2026",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The New York Times PR account, on Twitter/X a week ago:"
+          },
+          {
+            "type": "quote",
+            "text": "Sunday’s crossword puzzle in the print edition of The New York\nTimes Magazine contains a grid that does not match the clues. The\ncorrect version of the puzzle can be found in the news section of\nSunday’s print edition of The Times. The puzzle on our app is\ncorrect."
+          },
+          {
+            "type": "p",
+            "text": "Maggie Duffy, writing for Vulture:"
+          },
+          {
+            "type": "quote",
+            "text": "Some solvers who, like Wegener’s wife, complete the Sunday puzzle\nin the print magazine (often with pen) complained on crossword\nforums and social media, saying they were “nearly in tears,” some\nwith fears of “sudden onset dementia” or, worse yet, ineptitude.\n\nFor Irene Papoulis, a former writing instructor at Trinity\nCollege, the puzzle is typically a source of pride. “It didn’t\neven occur to me that it could be their mistake,” she told me. “I\njust blamed myself.” When Mike McFadden, in New Jersey, couldn’t\ncrack it, he had a similar reaction. “I thought something was\nwrong with me,” he told me. “I didn’t think that they would have\nan error.” It nagged at him all day. At a function on Saturday, he\ncouldn’t bring himself to mention it to his brother-in-law, a\nfellow solver; he was still too upset.\n\nSome had such trust in the crossword that they believed the\nerroneous grid was purposeful. “I’m saying to myself, ‘Okay, maybe\nthere’s some sort of scientific or mathematical trick,’” McFadden\nsaid. When I spoke with Will Shortz, the Times’ crossword editor,\nhe said the Times does “so many tricks with the puzzles” that he\ncould see how someone’s first thought would be “I wonder what\nthey’re up to now?”"
+          },
+          {
+            "type": "p",
+            "text": "This is the first such mistake the Times has made in the 84 years that they’ve been printing a crossword puzzle. I came of age doing work in print — writing and editing The Triangle, the student newspaper at Drexel, and then spending a few years as a working graphic designer, at a time when print still ruled. There’s an inherent stress about going to press. Mistakes are forever. We once ran a headline at The Triangle that read “Headline Goes Here”. Once. Going to press is stressful but exhilarating. There’s an adrenaline rush that comes with giving the go-ahead to start a very expensive large-scale full-color press run. The stress focuses the mind."
+          },
+          {
+            "type": "p",
+            "text": "Print, effectively, is hardware. Atoms, not bits. The web is literally software. If you make a mistake in software that results in incorrect mathematical results, you ship an update. If you make a mistake in a CPU such that it results in incorrect floating-point math, perhaps only in 1 out of every 9 billion calculations, people will remember the mistake 30 years later."
+          },
+          {
+            "type": "p",
+            "text": "If The New York Times had run the wrong crossword grid on the web or in their app, they would have corrected the error quickly, few people would have encountered it, and fewer still would remember it. But by printing the wrong grid in the Sunday magazine last week, they made a mistake that some people will never forget (and some will never forgive)."
+          },
+          {
+            "type": "p",
+            "text": "Hardware brain is different from software brain. Software brain says Go faster; do more; the only mistake you can’t fix is having gone too slow. Hardware brain says Slow down; do less; focus; strive for perfection and never settle for less than excellence; mistakes are forever."
+          },
+          {
+            "type": "p",
+            "text": "If his background in hardware means that incoming Apple CEO John Ternus has hardware brain, and will lead Apple accordingly, that suggests Apple will double down on zigging in the midst of a still-escalating AI hype cycle that has the rest of the industry zagging ever more frenetically. That feels right to me."
+          }
+        ],
+        "translations": [
+          "一周前，《纽约时报》的公关账号在推特/X上发布声明：",
+          "《纽约杂志》印刷版上周日的填字游戏包含一个与线索不符的网格。正确的版本可在《时报》周日印刷版的新闻部分找到。我们应用程序中的填字游戏是正确的。",
+          "玛吉·杜菲（Maggie Duffy）为《Vulture》撰写文章：",
+          "一些像维格纳妻子那样在印刷版杂志上用钢笔完成周日填字游戏的解谜者，在填字论坛和社交媒体上抱怨称自己“几乎要哭了”，有人甚至担心自己“突发痴呆”或更糟的是智力不足。\n\n对于曾在三一学院担任写作讲师的艾琳·帕布利斯（Irene Papoulis）而言，这个填字游戏通常是一种自豪的来源。“我根本没想到是他们犯了错，”她告诉我。“我只是责怪自己。”当新泽西的迈克·麦克法登（Mike McFadden）无法解开谜题时，他也有类似的反应。“我以为是我自己出了问题，”他告诉我。“我没有想到他们会出错。”这件事一整天都困扰着他。周六参加一个活动时，他仍无法向身为解谜者的妹夫提起此事，因为他仍然太沮丧了。\n\n有些人对填字游戏如此信任，以至于他们相信错误的网格是有意为之。“我在心里对自己说，‘好吧，也许有什么科学或数学技巧吧，’”麦克法登说道。当我与《纽约时报》填字游戏编辑威尔·肖茨（Will Shortz）交谈时，他表示《纽约时报》“在谜题中玩了很多花样”，所以他可以理解为什么有人会首先想到“我想知道他们这次又在搞什么名堂？”。",
+          "这是《纽约时报》84年刊登填字游戏以来首次出现此类错误。我是在从事印刷工作期间成长起来的——曾为德雷塞尔大学的校报《The Triangle》撰稿和编辑，之后还做了几年专业平面设计师，那时印刷仍占主导地位。印刷本身就伴随着固有的压力。一旦出错，便无法挽回。《The Triangle》曾刊登过一个标题为“此处应为标题”的头版头条——仅此一次。虽然印刷过程既紧张又令人兴奋，但当你批准启动一场非常昂贵的大规模彩色印刷时，肾上腺素也会激增。这种压力反而能让人集中注意力。",
+          "印刷本质上是硬件，由原子构成而非比特；而网络则是实实在在的软件。如果你在软件中犯错导致数学计算错误，只需发布更新即可修复。即使是在CPU中出现错误，比如每90亿次浮点运算中仅发生一次错误，人们也可能会在30年后仍记得这个错误。",
+          "如果《纽约时报》将错误的填字网格发布在网络或他们的应用程序上，他们会迅速纠正错误，大多数人不会遇到这个问题，更少的人会记住它。但上周他们在周日杂志中印刷了错误的网格，犯了一个有些人永远不会忘记（有些人则永远不会原谅）的错误。",
+          "硬件思维不同于软件思维。软件思维会说：跑得更快；做更多事；唯一无法弥补的错误是行动太慢。硬件思维则会说：放慢速度；少做一点；专注；力求完美，绝不满足于平庸；因为错误一旦发生就永远存在。",
+          "如果他具备硬件背景意味着苹果新任CEO约翰·特努斯拥有“硬件思维”，并因此领导苹果，这表明苹果将在仍处于不断升温的AI炒作周期中继续坚持差异化策略，而行业其他公司则愈发疯狂地跟风。这在我看来是正确的。"
+        ]
+      }
+    },
+    {
+      "slug": "0708b99811bcb074",
+      "title": "DF Paraphernalia: Last Call for This Round of T-Shirts and Hoodies",
+      "titleZh": "DF 周边商品：本轮 T 恤和连帽衫的最后机会",
+      "link": "https://store.daringfireball.net/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-04-26T19:30:00.000Z",
+      "category": "other",
+      "keywords": [
+        "Daring Fireball",
+        "t-shirts",
+        "hoodies"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 6,
+        "timeliness": 3,
+        "total": 11
+      },
+      "summary": "Daring Fireball 商店推出限时促销活动，提醒读者抓紧购买当前系列的 T 恤和连帽衫。恰逢网站创始人 Jimmy Wales 全职运营 Daring Fireball 整整二十周年，此次销售既是纪念活动的一部分，也延续了品牌一贯的极简设计与实用风格。文中还附上二十年前宣布全职写作时的原始声明，强调‘做自己喜欢的事’这一初心至今未变。",
+      "summaryEn": "Daring Fireball's online store announces a final chance to purchase this round of T-shirts and hoodies before they sell out. Coinciding with the 20th anniversary of the site going full-time, the sale celebrates Jimmy Wales' enduring passion for writing about technology and design. The post includes his original announcement from two decades ago, reaffirming that 'Daring Fireball is what I love to do'—a sentiment still true today.",
+      "reason": "如果你是 Daring Fireball 的忠实读者或喜爱其美学风格的消费者，这次限量周边发售不容错过，兼具收藏价值与文化意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "li",
+            "text": "Classic Asphalt\n              \n            \n          \n          \n        \n      \n      \n          \n            \n              Classic Asphalt\n            \n          \n          Regular price\n          \n            $39\n          \n      Regular price\n          \n            \n              \n                \n              \n            \n          Sale price\n        \n          $39\n        \n      \n      \n        Unit price\n        \n          \n          \n           per"
+          },
+          {
+            "type": "li",
+            "text": "Classic Triblend\n              \n            \n          \n          \n        \n      \n      \n          \n            \n              Classic Triblend\n            \n          \n          Regular price\n          \n            $39\n          \n      Regular price\n          \n            \n              \n                \n              \n            \n          Sale price\n        \n          $39\n        \n      \n      \n        Unit price\n        \n          \n          \n           per"
+          },
+          {
+            "type": "li",
+            "text": "Classic Hoodie\n              \n            \n          \n          \n        \n      \n      \n          \n            \n              Classic Hoodie\n            \n          \n          Regular price\n          \n            $69\n          \n      Regular price\n          \n            \n              \n                \n              \n            \n          Sale price\n        \n          $69\n        \n      \n      \n        Unit price\n        \n          \n          \n           per"
+          },
+          {
+            "type": "li",
+            "text": "Talk Show Black\n              \n            \n          \n          \n        \n      \n      \n          \n            \n              Talk Show Black\n            \n          \n          Regular price\n          \n            $39\n          \n      Regular price\n          \n            \n              \n                \n              \n            \n          Sale price\n        \n          $39\n        \n      \n      \n        Unit price\n        \n          \n          \n           per"
+          },
+          {
+            "type": "li",
+            "text": "Talk Show Triblend\n              \n            \n          \n          \n        \n      \n      \n          \n            \n              Talk Show Triblend\n            \n          \n          Regular price\n          \n            $39\n          \n      Regular price\n          \n            \n              \n                \n              \n            \n          Sale price\n        \n          $39\n        \n      \n      \n        Unit price\n        \n          \n          \n           per"
+          }
+        ],
+        "translations": [
+          "Classic Asphalt  \n          \n          \n          \n        \n      \n      \n          \n            \n              经典款沥青色\n            \n          \n          原价  \n          \n            $39  \n          \n      原价  \n          \n            \n              \n                \n              \n            \n          售价\n        \n          $39\n        \n      \n      \n        单价\n        \n          \n          \n           每",
+          "Classic Triblend  \n          \n          \n          \n        \n      \n      \n          \n            \n              经典款三色混纺\n            \n          \n          原价  \n          \n            $39  \n          \n      原价  \n          \n            \n              \n                \n              \n            \n          售价\n        \n          $39\n        \n      \n      \n        单价\n        \n          \n          \n           每",
+          "Classic Hoodie  \n          \n          \n          \n        \n      \n      \n          \n            \n              经典款连帽衫\n            \n          \n          原价  \n          \n            $69  \n          \n      原价  \n          \n            \n              \n                \n              \n            \n          售价\n        \n          $69\n        \n      \n      \n        单价\n        \n          \n          \n           每",
+          "Talk Show Black  \n          \n          \n          \n        \n      \n      \n          \n            \n              脱口秀黑色款\n            \n          \n          原价  \n          \n            $39  \n          \n      原价  \n          \n            \n              \n                \n              \n            \n          售价\n        \n          $39\n        \n      \n      \n        单价\n        \n          \n          \n           每",
+          "Talk Show Triblend  \n          \n          \n          \n        \n      \n      \n          \n            \n              脱口秀三色混纺款\n            \n          \n          原价  \n          \n            $39  \n          \n      原价  \n          \n            \n              \n                \n              \n            \n          售价\n        \n          $39\n        \n      \n      \n        单价\n        \n          \n          \n           每"
+        ]
       }
     }
   ]

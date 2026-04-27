@@ -1,0 +1,2209 @@
+{
+  "weekId": "2026-W17",
+  "rangeStart": "2026-04-20",
+  "rangeEnd": "2026-04-26",
+  "generatedAt": "2026-04-27T02:04:46.846Z",
+  "stats": {
+    "totalDays": 7,
+    "candidateArticles": 98,
+    "uniqueSources": 25
+  },
+  "topPicks": [
+    {
+      "slug": "29df7a2987bc3573",
+      "title": "DeepSeek V4 - almost on the frontier, a fraction of the price",
+      "titleZh": "DeepSeek V4：接近前沿水平，价格仅为十分之一",
+      "link": "https://simonwillison.net/2026/Apr/24/deepseek-v4/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T06:01:04.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "DeepSeek V4",
+        "Chinese AI",
+        "model release"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "中国AI实验室DeepSeek发布了备受期待的V4系列模型中的两个预览版——DeepSeek-V4-Pro和DeepSeek-V4-Flash。这两个模型均支持100万token上下文长度，并采用混合专家（Mixture of Experts）架构。与上一代V3.2相比，V4在性能和成本效率上均有显著提升，Pro版本在复杂推理任务中表现接近顶级模型，而Flash版本则以更低延迟实现高吞吐量。DeepSeek表示其技术路线在保持高性能的同时大幅降低了训练与部署成本。",
+      "summaryEn": "Chinese AI lab DeepSeek has released two preview models from its highly anticipated V4 series: DeepSeek-V4-Pro and DeepSeek-V4-Flash. Both support a 1 million token context window and use a Mixture of Experts architecture. Compared to the previous V3.2, the V4 series shows significant improvements in performance and cost efficiency, with the Pro model approaching frontier-level capabilities on complex reasoning tasks and the Flash variant offering high throughput at lower latency. DeepSeek claims its approach reduces both training and deployment costs substantially while maintaining top-tier performance.",
+      "reason": "这是DeepSeek最新一代大模型的首次公开亮相，展示了其在性能与成本之间取得突破性平衡的技术实力，对全球AI市场竞争格局具有重要影响。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th April 2026"
+          },
+          {
+            "type": "p",
+            "text": "Chinese AI lab DeepSeek’s last model release was V3.2 (and V3.2 Speciale) last December. They just dropped the first of their hotly anticipated V4 series in the shape of two preview models, DeepSeek-V4-Pro and DeepSeek-V4-Flash."
+          },
+          {
+            "type": "p",
+            "text": "Both models are 1 million token context Mixture of Experts. Pro is 1.6T total parameters, 49B active. Flash is 284B total, 13B active. They’re using the standard MIT license."
+          },
+          {
+            "type": "p",
+            "text": "I think this makes DeepSeek-V4-Pro the new largest open weights model. It’s larger than Kimi K2.6 (1.1T) and GLM-5.1 (754B) and more than twice the size of DeepSeek V3.2 (685B)."
+          },
+          {
+            "type": "p",
+            "text": "Pro is 865GB on Hugging Face, Flash is 160GB. I’m hoping that a lightly quantized Flash will run on my 128GB M5 MacBook Pro. It’s possible the Pro model may run on it if I can stream just the necessary active experts from disk."
+          },
+          {
+            "type": "p",
+            "text": "For the moment I tried the models out via OpenRouter, using llm-openrouter:"
+          },
+          {
+            "type": "code",
+            "text": "llm install llm-openrouter\nllm openrouter refresh\nllm -m openrouter/deepseek/deepseek-v4-pro 'Generate an SVG of a pelican riding a bicycle'"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the pelican for DeepSeek-V4-Flash:"
+          },
+          {
+            "type": "p",
+            "text": "And for DeepSeek-V4-Pro:"
+          },
+          {
+            "type": "p",
+            "text": "For comparison, take a look at the pelicans I got from DeepSeek V3.2 in December, V3.1 in August, and V3-0324 in March 2025."
+          },
+          {
+            "type": "p",
+            "text": "So the pelicans are pretty good, but what’s really notable here is the cost. DeepSeek V4 is a very, very inexpensive model."
+          },
+          {
+            "type": "p",
+            "text": "This is DeepSeek’s pricing page. They’re charging $0.14/million tokens input and $0.28/million tokens output for Flash, and $1.74/million input and $3.48/million output for Pro."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a comparison table with the frontier models from Gemini, OpenAI and Anthropic:"
+          },
+          {
+            "type": "p",
+            "text": "DeepSeek-V4-Flash is the cheapest of the small models, beating even OpenAI’s GPT-5.4 Nano. DeepSeek-V4-Pro is the cheapest of the larger frontier models."
+          },
+          {
+            "type": "p",
+            "text": "This note from the DeepSeek paper helps explain why they can price these models so low—they’ve focused a great deal on efficiency with this release, especially for longer context prompts:"
+          },
+          {
+            "type": "quote",
+            "text": "In the scenario of 1M-token context, even DeepSeek-V4-Pro, which has a larger number of activated parameters, attains only 27% of the single-token FLOPs (measured in equivalent FP8 FLOPs) and 10% of the KV cache size relative to DeepSeek-V3.2. Furthermore, DeepSeek-V4-Flash, with its smaller number of activated parameters, pushes efficiency even further: in the 1M-token context setting, it achieves only 10% of the single-token FLOPs and 7% of the KV cache size compared with DeepSeek-V3.2."
+          },
+          {
+            "type": "p",
+            "text": "DeepSeek’s self-reported benchmarks in their paper show their Pro model competitive with those other frontier models, albeit with this note:"
+          },
+          {
+            "type": "quote",
+            "text": "Through the expansion of reasoning tokens, DeepSeek-V4-Pro-Max demonstrates superior performance relative to GPT-5.2 and Gemini-3.0-Pro on standard reasoning benchmarks. Nevertheless, its performance falls marginally short of GPT-5.4 and Gemini-3.1-Pro, suggesting a developmental trajectory that trails state-of-the-art frontier models by approximately 3 to 6 months."
+          },
+          {
+            "type": "p",
+            "text": "I’m keeping an eye on huggingface.co/unsloth/models as I expect the Unsloth team will have a set of quantized versions out pretty soon. It’s going to be very interesting to see how well that Flash model runs on my own machine."
+          }
+        ],
+        "translations": [
+          "2026年4月24日",
+          "中国AI实验室DeepSeek上一款模型是去年12月发布的V3.2（以及V3.2 Speciale），而他们刚刚推出了备受期待的V4系列的首批预览模型——DeepSeek-V4-Pro和DeepSeek-V4-Flash。",
+          "两款模型均支持百万级token上下文长度的专家混合架构（Mixture of Experts）。Pro版本总参数量为1.6万亿，激活参数为490亿；Flash版本总参数量为2840亿，激活参数为130亿。它们采用标准的MIT许可证。",
+          "我认为这使得DeepSeek-V4-Pro成为目前最大的开源权重模型。它比Kimi K2.6（1.1万亿）和GLM-5.1（7540亿）更大，并且其规模超过DeepSeek V3.2（6850亿）的两倍。",
+          "Pro模型在Hugging Face上大小为865GB，Flash为160GB。我希望能让一个轻度量化的Flash版本在我的128GB内存的M5 MacBook Pro上运行。如果我能从磁盘流式加载所需的活跃专家模块，Pro模型或许也能在其上运行。",
+          "目前我通过OpenRouter试用这些模型，使用的是llm-openrouter插件：",
+          "llm install llm-openrouter\nllm openrouter refresh\nllm -m openrouter/deepseek/deepseek-v4-pro 'Generate an SVG of a pelican riding a bicycle'",
+          "这是由DeepSeek-V4-Flash生成的企鹅（pelican）：",
+          "这是由DeepSeek-V4-Pro生成的企鹅：",
+          "作为对比，可以参考我在去年12月、8月和2025年3月分别从DeepSeek V3.2、V3.1和V3-0324获得的企鹅图像。",
+          "所以这些企鹅图像质量相当不错，但真正值得注意的是成本——DeepSeek V4是一个非常非常便宜的模型。",
+          "这是DeepSeek的定价页面。他们对Flash收取每百万输入token 0.14美元、每百万输出token 0.28美元的费用；对Pro则收取每百万输入token 1.74美元、每百万输出token 3.48美元。",
+          "这里是一张与Gemini、OpenAI和Anthropic的前沿模型价格对比表：",
+          "DeepSeek-V4-Flash是所有小型模型中最便宜的，甚至比OpenAI的GPT-5.4 Nano还要便宜。DeepSeek-V4-Pro则是所有大型前沿模型中价格最低的。",
+          "DeepSeek论文中的一段说明有助于解释为何他们能如此低价提供这些模型——他们在本次发布中高度专注于效率优化，尤其是在处理长上下文提示方面：",
+          "在100万token的上下文场景中，即使DeepSeek-V4-Pro拥有更多激活参数，其单token FLOPs（以等效FP8 FLOPs计算）仅为DeepSeek-V3.2的27%，KV缓存大小也仅为其10%。此外，激活参数更少的DeepSeek-V4-Flash进一步提升了效率：在100万token上下文设定下，其单token FLOPs仅为DeepSeek-V3.2的10%，KV缓存大小更是仅占7%。",
+          "DeepSeek在其论文中自报告的基准测试显示，其Pro模型与其他前沿模型相比具有竞争力，但附带如下说明：",
+          "通过扩展推理标记，DeepSeek-V4-Pro-Max在标准推理基准测试中表现优于GPT-5.2和Gemini-3.0-Pro。然而，其性能略低于GPT-5.4和Gemini-3.1-Pro，表明其发展轨迹大约落后于当前最先进的前沿模型3到6个月。",
+          "我正在关注huggingface.co/unsloth/models，因为我预计Unsloth团队很快就会推出一系列量化版本。到时候看看Flash模型在我自己的机器上运行得如何，将会非常有趣。"
+        ]
+      },
+      "fromDate": "2026-04-25"
+    },
+    {
+      "slug": "dc064711c8f1aab7",
+      "title": "A pelican for GPT-5.5 via the semi-official Codex backdoor API",
+      "titleZh": "通过半官方 Codex 后门 API 获取 GPT-5.5 的 Pelican",
+      "link": "https://simonwillison.net/2026/Apr/23/gpt-5-5/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-23T19:59:47.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "GPT-5.5",
+        "OpenAI",
+        "Codex"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "OpenAI 发布了 GPT-5.5，该模型已集成到 Codex 中并向付费 ChatGPT 用户逐步开放。作者通过预览体验发现其响应迅速、执行精准且能力强大。然而，此次发布未包含标准 API 访问方式，仅通过 Codex 间接可用。这表明 OpenAI 正尝试控制模型分发路径，限制直接 API 调用以维持生态主导权。",
+      "summaryEn": "OpenAI has released GPT-5.5, now integrated into Codex and rolling out to paid ChatGPT subscribers. The author found it fast, effective, and highly capable during preview access, often executing requests exactly as asked. Notably, the model is not available via the standard API—only through Codex, creating a semi-official backdoor access method. This suggests OpenAI is tightly controlling distribution to maintain ecosystem control.",
+      "reason": "揭示了 GPT-5.5 虽功能强大却缺乏公开 API 这一关键信息，为开发者提供了绕过官方渠道获取新模型的实际路径。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "23rd April 2026"
+          },
+          {
+            "type": "p",
+            "text": "GPT-5.5 is out. It’s available in OpenAI Codex and is rolling out to paid ChatGPT subscribers. I’ve had some preview access and found it to be a fast, effective and highly capable model. As is usually the case these days, it’s hard to put into words what’s good about it—I ask it to build things and it builds exactly what I ask for!"
+          },
+          {
+            "type": "p",
+            "text": "There’s one notable omission from today’s release—the API:"
+          },
+          {
+            "type": "quote",
+            "text": "API deployments require different safeguards and we are working closely with partners and customers on the safety and security requirements for serving it at scale. We’ll bring GPT‑5.5 and GPT‑5.5 Pro to the API very soon."
+          },
+          {
+            "type": "p",
+            "text": "When I run my pelican benchmark I always prefer to use an API, to avoid hidden system prompts in ChatGPT or other agent harnesses from impacting the results."
+          },
+          {
+            "type": "h3",
+            "text": "The OpenClaw backdoor"
+          },
+          {
+            "type": "p",
+            "text": "One of the ongoing tension points in the AI world over the past few months has concerned how agent harnesses like OpenClaw and Pi interact with the APIs provided by the big providers."
+          },
+          {
+            "type": "p",
+            "text": "Both OpenAI and Anthropic offer popular monthly subscriptions which provide access to their models at a significant discount to their raw API."
+          },
+          {
+            "type": "p",
+            "text": "OpenClaw integrated directly with this mechanism, and was then blocked from doing so by Anthropic. This kicked off a whole thing. OpenAI—who recently hired OpenClaw creator Peter Steinberger—saw an opportunity for an easy karma win and announced that OpenClaw was welcome to continue integrating with OpenAI’s subscriptions via the same mechanism used by their (open source) Codex CLI tool."
+          },
+          {
+            "type": "p",
+            "text": "Does this mean anyone can write code that integrates with OpenAI’s Codex-specific APIs to hook into those existing subscriptions?"
+          },
+          {
+            "type": "p",
+            "text": "The other day Jeremy Howard asked:"
+          },
+          {
+            "type": "quote",
+            "text": "Anyone know whether OpenAI officially supports the use of the /backend-api/codex/responses endpoint that Pi and Opencode (IIUC) uses?"
+          },
+          {
+            "type": "p",
+            "text": "It turned out that on March 30th OpenAI’s Romain Huet had tweeted:"
+          },
+          {
+            "type": "quote",
+            "text": "We want people to be able to use Codex, and their ChatGPT subscription, wherever they like! That means in the app, in the terminal, but also in JetBrains, Xcode, OpenCode, Pi, and now Claude Code.\nThat’s why Codex CLI and Codex app server are open source too! 🙂"
+          },
+          {
+            "type": "p",
+            "text": "And Peter Steinberger replied to Jeremy that:"
+          },
+          {
+            "type": "quote",
+            "text": "OpenAI sub is officially supported."
+          },
+          {
+            "type": "h3",
+            "text": "llm-openai-via-codex"
+          },
+          {
+            "type": "p",
+            "text": "So... I had Claude Code reverse-engineer the openai/codex repo, figure out how authentication tokens were stored and build me llm-openai-via-codex, a new plugin for LLM which picks up your existing Codex subscription and uses it to run prompts!"
+          },
+          {
+            "type": "p",
+            "text": "(With hindsight I wish I’d used GPT-5.4 or the GPT-5.5 preview, it would have been funnier. I genuinely considered rewriting the project from scratch using Codex and GPT-5.5 for the sake of the joke, but decided not to spend any more time on this!)"
+          },
+          {
+            "type": "p",
+            "text": "Here’s how to use it:"
+          },
+          {
+            "type": "li",
+            "text": "Install Codex CLI, buy an OpenAI plan, login to Codex"
+          },
+          {
+            "type": "li",
+            "text": "Install LLM: uv tool install llm"
+          },
+          {
+            "type": "li",
+            "text": "Install the new plugin: llm install llm-openai-via-codex"
+          },
+          {
+            "type": "li",
+            "text": "Start prompting: llm -m openai-codex/gpt-5.5 'Your prompt goes here'"
+          },
+          {
+            "type": "p",
+            "text": "All existing LLM features should also work—use -a filepath.jpg/URL to attach an image, llm chat -m openai-codex/gpt-5.5 to start an ongoing chat, llm logs to view logged conversations and llm --tool ... to try it out with tool support."
+          },
+          {
+            "type": "h3",
+            "text": "And some pelicans"
+          },
+          {
+            "type": "p",
+            "text": "Let’s generate a pelican!"
+          },
+          {
+            "type": "code",
+            "text": "llm install llm-openai-via-codex\nllm -m openai-codex/gpt-5.5 'Generate an SVG of a pelican riding a bicycle'"
+          },
+          {
+            "type": "p",
+            "text": "Here’s what I got back:"
+          },
+          {
+            "type": "p",
+            "text": "I’ve seen better from GPT-5.4, so I tagged on -o reasoning_effort xhigh and tried again:"
+          },
+          {
+            "type": "p",
+            "text": "That one took almost four minutes to generate, but I think it’s a much better effort."
+          },
+          {
+            "type": "p",
+            "text": "If you compare the SVG code (default, xhigh) the xhigh one took a very different approach, which is much more CSS-heavy—as demonstrated by those gradients. xhigh used 9,322 reasoning tokens where the default used just 39."
+          },
+          {
+            "type": "h3",
+            "text": "A few more notes on GPT-5.5"
+          },
+          {
+            "type": "p",
+            "text": "One of the most notable things about GPT-5.5 is the pricing. Once it goes live in the API it’s going to be priced at twice the cost of GPT-5.4—$5 per 1M input tokens and $30 per 1M output tokens, where 5.4 is $2.5 and $15."
+          },
+          {
+            "type": "p",
+            "text": "GPT-5.5 Pro will be even more: $30 per 1M input tokens and $180 per 1M output tokens."
+          },
+          {
+            "type": "p",
+            "text": "GPT-5.4 will remain available. At half the price of 5.5 this feels like 5.4 is to 5.5 as Claude Sonnet is to Claude Opus."
+          },
+          {
+            "type": "p",
+            "text": "Ethan Mollick has a detailed review of GPT-5.5 where he put it (and GPT-5.5 Pro) through an array of interesting challenges. His verdict: the jagged frontier continues to hold, with GPT-5.5 excellent at some things and challenged by others in a way that remains difficult to predict."
+          }
+        ],
+        "translations": [
+          "2026年4月23日",
+          "GPT-5.5 已经发布。它现在可以在 OpenAI Codex 中使用，并逐步向付费 ChatGPT 订阅用户开放。我提前体验了一下，感觉这个模型运行迅速、效果出色且能力强大。如今这类新模型往往难以用语言描述其优秀之处——我让它做什么，它就能精准地实现我的需求！",
+          "不过今天的发布有一个明显缺失：API 接口尚未推出。",
+          "API 部署需要不同的安全机制，我们正在与合作伙伴和客户紧密协作，以确保大规模提供服务时的安全性与合规性。很快，GPT-5.5 和 GPT-5.5 Pro 就将登陆 API 平台。",
+          "我在运行 pelican 基准测试时，一直偏好使用 API 方式调用，以避免 ChatGPT 或其他智能代理中的隐藏系统提示影响测试结果。",
+          "OpenClaw 后门事件",
+          "过去几个月里，AI 领域持续关注的一个焦点问题是：像 OpenClaw 和 Pi 这样的智能代理框架如何与大模型厂商提供的 API 进行交互。",
+          "OpenAI 和 Anthropic 都提供按月订阅服务，能以远低于原始 API 的价格访问其模型。",
+          "OpenClaw 原本可以直接集成这些订阅机制，但后来被 Anthropic 封禁。这引发了一系列连锁反应。OpenAI（最近刚聘请了 OpenClaw 作者 Peter Steinberger）抓住机会宣布，欢迎 OpenClaw 继续通过与其（开源的）Codex CLI 工具相同的机制，集成到 OpenAI 的订阅体系中。",
+          "这是否意味着任何人都可以编写代码，利用 OpenAI 特有的 Codex API 来接入现有的订阅服务？",
+          "几天前，Jeremy Howard 提出疑问：",
+          "有人知道 OpenAI 是否正式支持 Pi 和 Opencode（据我所知）所使用的 /backend-api/codex/responses 端点吗？",
+          "原来在3月30日，OpenAI 的 Romain Huet 曾发推表示：",
+          "我们希望人们能在任何地方使用 Codex 及其 ChatGPT 订阅服务！无论是在应用内、终端中，还是在 JetBrains、Xcode、OpenCode、Pi，乃至最新的 Claude Code 中都可以。正因如此，Codex CLI 和 Codex 应用服务器也都是开源的！😊",
+          "Peter Steinberger 随后回复 Jeremy 说：",
+          "OpenAI 订阅是官方支持的。",
+          "llm-openai-via-codex",
+          "于是……我让 Claude Code 逆向解析 openai/codex 仓库，搞明白认证令牌是如何存储的，然后开发了 llm-openai-via-codex 这个全新的 LLM 插件。它能自动识别你已有的 Codex 订阅，并用它来执行各类提示词请求！",
+          "（事后想想，我应该用 GPT-5.4 或 GPT-5.5 预览版来做这件事会更有趣。我曾认真考虑过用 Codex 和 GPT-5.5 重写整个项目来制造笑点，但最终决定不再浪费时间在这上面！）",
+          "使用方法如下：",
+          "安装 Codex CLI，购买 OpenAI 套餐，登录 Codex",
+          "安装 LLM：uv tool install llm",
+          "安装新插件：llm install llm-openai-via-codex",
+          "开始提问：llm -m openai-codex/gpt-5.5 '你的提示词写在这里'",
+          "所有现有 LLM 功能均可正常使用——使用 -a filepath.jpg/URL 可附加图片，llm chat -m openai-codex/gpt-5.5 可开启持续对话，llm logs 可查看历史记录，llm --tool ... 则可尝试启用工具支持的功能。",
+          "顺便看看 pelican 的效果",
+          "我们来生成一只 pelican（北美红尾鵟）！",
+          "llm install llm-openai-via-codex\nllm -m openai-codex/gpt-5.5 'Generate an SVG of a pelican riding a bicycle'",
+          "这是我得到的结果：",
+          "相比 GPT-5.4 的表现，这次稍逊一筹，所以我加上了 -o reasoning_effort xhigh 参数重新尝试：",
+          "这次耗时近四分钟才完成，但我觉得成果明显更用心、更细致。",
+          "如果比较 SVG 代码（默认、xhigh），xhigh 采用了截然不同的方法，其 CSS 使用量要大得多——那些渐变效果就说明了这一点。xhigh 使用了 9,322 个推理标记，而默认版本仅用了 39 个。",
+          "关于 GPT-5.5 的几点补充说明",
+          "GPT-5.5 最引人注目的特点之一是其定价。一旦在 API 中上线，其价格将是 GPT-5.4 的两倍——每百万输入 token 收费 5 美元，每百万输出 token 收费 30 美元，而 5.4 的价格分别是 2.5 美元和 15 美元。",
+          "GPT-5.5 Pro 的价格会更高：每百万输入 token 30 美元，每百万输出 token 180 美元。",
+          "GPT-5.4 仍将保持可用。以 GPT-5.5 一半的价格来看，这感觉就像 Claude Sonnet 之于 Claude Opus。",
+          "Ethan Mollick 对 GPT-5.5 进行了详细评测，他让 GPT-5.5（以及 GPT-5.5 Pro）接受了一系列有趣的挑战。他的结论是：这个不平坦的前沿仍在延续，GPT-5.5 在某些方面表现出色，而在其他方面则面临挑战，这种表现仍然难以预测。"
+        ]
+      },
+      "fromDate": "2026-04-23"
+    },
+    {
+      "slug": "2d6cc9b237956a2e",
+      "title": "Exclusive: Microsoft To Shift GitHub Copilot Users To Token-Based Billing, Tighten Rate Limits",
+      "titleZh": "微软将把 GitHub Copilot 用户转向基于 Token 的计费模式并收紧速率限制",
+      "link": "https://www.wheresyoured.at/news-microsoft-to-shift-github-copilot-users-to-token-based-billing-reduce-rate-limits-2/",
+      "sourceName": "wheresyoured.at",
+      "sourceUrl": "https://wheresyoured.at",
+      "pubDate": "2026-04-20T17:11:58.000Z",
+      "category": "security",
+      "keywords": [
+        "GitHub Copilot",
+        "token billing",
+        "rate limits",
+        "Microsoft"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "微软计划暂停个人账号注册 GitHub Copilot，并过渡到基于 Token 的计费系统，取代原有的按请求次数计费模式。内部文件显示，自推出以来，GitHub Copilot 每周运行成本已翻倍。此举旨在优化资源使用并控制服务成本，同时可能影响用户的访问频率和支出结构。",
+      "summaryEn": "Microsoft plans to suspend individual account signups for GitHub Copilot and transition from request-based billing to a token-based system. Internal documents show the weekly cost of using Copilot has doubled since its launch. This shift aims to optimize resource usage and control operational costs, potentially altering how users access and pay for the service.",
+      "reason": "这一变化直接影响数百万开发者的使用成本和体验，是理解 AI 生产力工具商业化路径的关键信号。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ed Zitron",
+        "siteName": "Ed Zitron's Where's Your Ed At",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h3",
+            "text": "Executive Summary:"
+          },
+          {
+            "type": "li",
+            "text": "Internal documents reveal that Microsoft plans to temporarily suspend individual account signups to its GitHub Copilot coding product, as it transitions from requests (single interactions with Copilot) towards token-based billing."
+          },
+          {
+            "type": "li",
+            "text": "The documents reveal that the weekly cost of running Github Copilot has doubled since the start of the year."
+          },
+          {
+            "type": "li",
+            "text": "Microsoft also intends to tighten the rate limits on its individual and business accounts, and to remove access to certain models for those with the cheapest subscriptions."
+          },
+          {
+            "type": "p",
+            "text": "Note: Microsoft has now confirmed some of these details in a blog post."
+          },
+          {
+            "type": "p",
+            "text": "Leaked internal documents viewed by Where’s Your Ed At reveal that Microsoft intends to pause new signups for the student and paid individual tiers of AI coding product GitHub Copilot, tighter rate limits, and eventually move users to “token-based billing,” charging them based on what the actual cost of their token burn really is."
+          },
+          {
+            "type": "quote",
+            "text": "Explainer: At present, GitHub Copilot users have a certain amount of “requests” — interactions where you ask the model to do something, with Pro ($10-a-month) accounts getting 300 a month, and Pro+ ($39-a-month) getting 1500. More-expensive models use more requests, cheaper ones use less (I’ll explain in a bit).Moving to “token-based billing” would mean that instead of using “requests,” GitHub Copilot users would pay for the actual cost of tokens. For example, Claude Opus 4.7 costs $5 per million input tokens (stuff you feed in) and $25 per million output tokens (stuff the model outputs, including tokens for chain-of-thought reasoning."
+          },
+          {
+            "type": "h2",
+            "text": "Token-Based-Billing"
+          },
+          {
+            "type": "p",
+            "text": "The document says that although token-based billing has been a top priority for Microsoft, it became more urgent in recent months, with the week-over-week cost of running GitHub Copilot nearly doubling since January."
+          },
+          {
+            "type": "p",
+            "text": "The move to token-based billing will see GitHub users charged based on their usage of the platform, and how many tokens their prompts consume — and thus, how much compute they use. It’s unclear at this time when this will begin."
+          },
+          {
+            "type": "p",
+            "text": "This is a significant move, reflecting the significant cost of running models on any AI product. Much like Anthropic, OpenAI, Cursor, and every other AI company, Microsoft has been subsidizing the cost of compute, allowing users to burn way, way more in tokens than their subscriptions cost."
+          },
+          {
+            "type": "p",
+            "text": "The party appears to be ending for subsidized AI products, with Microsoft’s upcoming move following Anthropic’s (per The Information) recent changes shifting enterprise users to token-based billing as a means of reducing its costs."
+          },
+          {
+            "type": "h2",
+            "text": "Pauses on Signups for Individual and Student Tiers"
+          },
+          {
+            "type": "p",
+            "text": "GitHub Copilot currently has two tiers for individual developers — a $10-per-month package called GitHub Copilot Pro, and a $39-a-month subscription called GitHub Copilot Pro+."
+          },
+          {
+            "type": "p",
+            "text": "According to the leaked documents, both of these tiers will be impacted by the shutdown, as will the GitHub Copilot Student product, which is included within the free GitHub Education package."
+          },
+          {
+            "type": "h2",
+            "text": "Removing Opus From GitHub Copilot Pro, Rate Limits Tightened on GitHub Copilot Pro, Pro+, Business, Enterprise"
+          },
+          {
+            "type": "p",
+            "text": "According to the documents, Microsoft also intends to tighten rate limits on some Copilot Business and Enterprise plans, as well as on individual plans, where limits have already been squeezed, and plans to suspend trials of paid individual plans as it attempts to “fight abuse.”"
+          },
+          {
+            "type": "p",
+            "text": "Although Microsoft has regularly tweaked the rate limits for individual GitHub Copilot accounts, most recently at the start of April, the document notes that these changes weren’t enough, and that more rate limits changes are to come in the next few weeks."
+          },
+          {
+            "type": "p",
+            "text": "As part of this cost-cutting exercise, Microsoft intends to remove Anthropic’s Opus family of AI models from the $10-per-month GitHub Copilot Pro package altogether."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft most recently retired Opus 4.6 Fast at the start of April for GitHub Copilot Pro+ users, although this decision was framed as a way to “further improve service reliability” and “[streamline] our model offerings and focusing resources on the models our users use the most.”"
+          },
+          {
+            "type": "p",
+            "text": "Other Opus models — namely Opus 4.6 and Opus 4.5 — will be removed from the GitHub Copilot Pro+ tier in the coming weeks, as Microsoft transitions to Anthropic’s latest Opus 4.7 model."
+          },
+          {
+            "type": "p",
+            "text": "The move towards Opus 4.7 will likely see GitHub Copilot Pro+ users reach their usage limits faster."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft is offering a 7.5x request multiplier until April 30 — although it’s unclear what the multiplier will be after this date. This might sound like a good thing, but it actually means that each request using Opus 4.7 is actually 7.5 of them. Redditors immediately worked that out and are a little bit worried."
+          },
+          {
+            "type": "p",
+            "text": "Premium request multipliers allow GitHub to reflect the cost of compute for different models. LLMs that require the most compute will have higher premium request multipliers compared to those that are comparatively more lightweight."
+          },
+          {
+            "type": "p",
+            "text": "For example, the GPT-5.4 Mini model has a premium request multiplier of 0.33 — meaning that every prompt is treated as one-third of a premium request — whereas the now-retired Claude Opus 4.6 Fast had a 30x multiplier, meaning each request was treated as thirty of them."
+          },
+          {
+            "type": "p",
+            "text": "The standard version of Claude Opus 4.6 has a premium request multiplier of three — meaning that, even with the promotional pricing, Claude Opus 4.7 is around 250% more expensive to use."
+          },
+          {
+            "type": "p",
+            "text": "The announcements for all of these changes are scheduled to take place throughout the week."
+          },
+          {
+            "type": "p",
+            "text": "If you liked this news hit and want to support my independent reporting and analysis, why not subscribe to my premium newsletter?"
+          },
+          {
+            "type": "p",
+            "text": "It’s $70 a year, or $7 a month, and in return you get a weekly newsletter that’s usually anywhere from 5,000 to 18,000 words, including vast, detailed analyses of NVIDIA, Anthropic and OpenAI’s finances, and the AI bubble writ large. I recently put out the timely and important Hater’s Guide To The SaaSpocalypse, another on How AI Isn't Too Big To Fail, a deep (17,500 word) Hater’s Guide To OpenAI, and just last week put out the massive Hater’s Guide To Private Credit."
+          },
+          {
+            "type": "p",
+            "text": "Subscribing to premium is both great value and makes it possible to write these large, deeply-researched free pieces every week."
+          }
+        ],
+        "translations": [
+          "执行摘要：",
+          "内部文件显示，微软计划暂时暂停其 GitHub Copilot 编码产品的个人账户注册，因其正从“请求”（与 Copilot 的单一交互）转向基于代币的计费模式。",
+          "这些文件还揭示，自年初以来，运行 GitHub Copilot 的周成本已翻了一番。",
+          "微软还打算对其个人账户和企业账户提高速率限制，并取消最廉价订阅用户的某些模型访问权限。",
+          "注：微软已在博客文章中确认了部分细节。",
+          "由 Where’s Your Ed At 获取的泄露内部文件显示，微软拟暂停 AI 编程产品 GitHub Copilot 的学生和付费个人套餐的新用户注册，收紧速率限制，并最终将用户迁移至“基于代币的计费”系统——即根据用户实际消耗的代币成本进行收费。",
+          "说明：目前，GitHub Copilot 用户拥有一定数量的“请求”——即向模型提出任务的行为。Pro（每月 10 美元）账户每月可获 300 次请求，Pro+（每月 39 美元）则可获得 1500 次。更高级的模型消耗更多请求，便宜的则用得更少（我稍后会解释）。转向“基于代币的计费”意味着用户将不再使用“请求”作为单位，而是按实际使用的代币成本付费。例如，Claude Opus 4.7 每百万输入代币收费 5 美元，每百万输出代币收费 25 美元（包括用于链式思考推理的代币）。",
+          "基于代币的计费",
+          "文件中指出，尽管基于代币的计费一直是微软的首要任务，但最近几个月变得尤为紧迫，因为自一月份以来，GitHub Copilot 每周的运行成本几乎翻了一番。",
+          "转向基于代币的计费后，GitHub 用户将根据其在平台上的使用情况以及提示所消耗的代币数量被收费——从而反映其计算资源的使用量。目前尚不清楚这一变更何时开始实施。",
+          "这是一项重大举措，反映出运行任何 AI 产品模型所需的高昂成本。与 Anthropic、OpenAI、Cursor 及其他所有 AI 公司一样，微软此前一直在补贴计算成本，让用户能够以远低于订阅费用的价格燃烧大量代币。",
+          "补贴型 AI 产品的时代似乎正在结束。微软即将采取的这一举措紧随 Anthropic（据 The Information 报道）近期对企业用户转向基于代币计费的调整之后，后者旨在降低自身成本。",
+          "暂停个人与学生套餐的新注册",
+          "GitHub Copilot 目前为个人开发者提供两个层级：每月 10 美元的 GitHub Copilot Pro 和每月 39 美元的 GitHub Copilot Pro+。",
+          "根据泄露的文件，这两个个人套餐以及包含在免费 GitHub Education 包中的 GitHub Copilot Student 产品均将受到此次关停的影响。",
+          "移除 Opus 模型并收紧 Pro、Pro+、商业版与企业版的速率限制",
+          "文件显示，微软还计划进一步收紧 Copilot 商业版和企业版计划的速率限制，同时也会对个人账户的速率限制进行压缩——这些限制已被逐步收紧——并暂停付费个人套餐的试用，以“打击滥用行为”。",
+          "尽管微软一直在调整 GitHub Copilot 个人账户的速率限制，最近一次是在四月初，但文档指出这些改动仍不够，未来几周内还将推出更多速率限制调整。",
+          "作为此次成本削减计划的一部分，微软计划完全从每月 10 美元的 GitHub Copilot Pro 套餐中移除 Anthropic 的 Opus 系列 AI 模型。",
+          "微软最近于四月初为 GitHub Copilot Pro+ 用户停用了 Opus 4.6 Fast 模型，尽管这一决定被描述为“进一步提升服务可靠性”并“精简我们的模型产品线，集中资源支持用户使用最频繁的模型”。",
+          "其他 Opus 模型——即 Opus 4.6 和 Opus 4.5——将在未来几周内从 GitHub Copilot Pro+ 层级中移除，届时微软将全面转向 Anthropic 最新的 Opus 4.7 模型。",
+          "向 Opus 4.7 的迁移很可能导致 GitHub Copilot Pro+ 用户更快达到使用上限。",
+          "微软在 4 月 30 日前提供 7.5 倍请求乘数，但不确定之后该乘数是否会变化。这听起来像是利好，但实际上意味着每次调用 Opus 4.7 的请求相当于 7.5 次标准请求。Reddit 用户迅速算出这一点，并对此表示担忧。",
+          "高级请求乘数允许 GitHub 反映不同模型的计算成本。需要最多计算资源的 LLM 将获得更高的高级请求乘数，相比之下，轻量级模型则较低。",
+          "例如，GPT-5.4 Mini 模型的高级请求乘数为 0.33——即每条提示被视为三分之一的高级请求；而现已退役的 Claude Opus 4.6 Fast 的乘数为 30 倍，意味着每次请求被视为三十次。",
+          "Claude Opus 4.6 的标准版本高级请求乘数为 3——这意味着即使有促销价格，Claude Opus 4.7 的使用成本仍高出约 250%。",
+          "所有这些变更的公告将在本周陆续发布。",
+          "如果你喜欢这条新闻，并希望支持我的独立报道与分析，不妨订阅我的付费通讯。",
+          "年费 70 美元或月付 7 美元，你将收到一份每周更新的通讯，通常长达 5,000 至 18,000 字，内容包括对 NVIDIA、Anthropic 和 OpenAI 财务状况的详细分析，以及关于 AI 泡沫的整体深度剖析。我最近发布了《反潮流者指南：SaaS 大崩溃》（Hater’s Guide To The SaaSpocalypse）、《AI 为何不会轻易失败》（How AI Isn't Too Big To Fail）、《OpenAI 反潮流者深度指南》（长达 17,500 字）以及上周刚推出的《私人信贷反潮流者指南》。",
+          "订阅付费内容不仅物有所值，也让我能够持续撰写这些每周发布的、篇幅庞大且研究深入的免费文章。"
+        ]
+      },
+      "fromDate": "2026-04-20"
+    },
+    {
+      "slug": "a66bee3db76f1eb4",
+      "title": "GPT-5.5 prompting guide",
+      "titleZh": "GPT-5.5 提示词指南",
+      "link": "https://simonwillison.net/2026/Apr/25/gpt-5-5-prompting-guide/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-25T04:13:36.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "GPT-5.5",
+        "prompting",
+        "OpenAI"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "OpenAI 发布了针对 GPT-5.5 模型的官方提示工程指南，旨在帮助开发者更有效地使用该模型。文章重点介绍了如何通过结构化提示提升输出质量，并推荐了一种适用于需要长时间思考后再返回用户响应的应用场景的技巧：在提示中明确加入 'Before any' 前缀以引导模型进行深度推理。此外，该指南还强调了使用工具调用、系统消息和参数调优等高级技巧的重要性。作者指出，合理使用这些方法可以显著提升 GPT-5.5 在复杂任务中的表现。",
+      "summaryEn": "OpenAI has released an official prompting guide for the GPT-5.5 model, offering practical tips to maximize its effectiveness in API applications. The guide emphasizes structured prompting techniques and recommends a specific trick for apps that need extended reasoning before responding: prefixing prompts with 'Before any' to encourage deeper analysis. It also highlights advanced strategies like tool use, system messages, and parameter tuning. Proper implementation of these methods can significantly improve GPT-5.5's performance on complex tasks.",
+      "reason": "如果你正在集成 GPT-5.5 到你的应用或想优化现有提示策略，这份来自 OpenAI 的官方指南提供了经过验证的最佳实践和实用技巧。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "25th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "GPT-5.5 prompting guide. Now that GPT-5.5 is available in the API, OpenAI have released a wealth of useful tips on how best to prompt the new model."
+          },
+          {
+            "type": "p",
+            "text": "Here's a neat trick they recommend for applications that might spend considerable time thinking before returning a user-visible response:"
+          },
+          {
+            "type": "code",
+            "text": "Before any tool calls for a multi-step task, send a short user-visible update that acknowledges the request and states the first step. Keep it to one or two sentences."
+          },
+          {
+            "type": "p",
+            "text": "I've already noticed their Codex app doing this, and it does make longer running tasks feel less like the model has crashed."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI suggest running the following in Codex to upgrade your existing code using advice embedded in their openai-docs skill:"
+          },
+          {
+            "type": "code",
+            "text": "$openai-docs migrate this project to gpt-5.5"
+          },
+          {
+            "type": "p",
+            "text": "The upgrade guide the coding agent will follow is this one, which even includes light instructions on how to rewrite prompts to better fit the model."
+          },
+          {
+            "type": "p",
+            "text": "Also relevant is the Using GPT-5.5 guide, which opens with this warning:"
+          },
+          {
+            "type": "quote",
+            "text": "To get the most out of GPT-5.5, treat it as a new model family to tune for, not a drop-in replacement for gpt-5.2 or gpt-5.4. Begin migration with a fresh baseline instead of carrying over every instruction from an older prompt stack. Start with the smallest prompt that preserves the product contract, then tune reasoning effort, verbosity, tool descriptions, and output format against representative examples."
+          },
+          {
+            "type": "p",
+            "text": "Interesting to see OpenAI recommend starting from scratch rather than trusting that existing prompts optimized for previous models will continue to work effectively with GPT-5.5."
+          }
+        ],
+        "translations": []
+      },
+      "fromDate": "2026-04-26"
+    },
+    {
+      "slug": "2daebdd4da8b03b9",
+      "title": "Pluralistic: A free, open visual identity for enshittification (24 Apr 2026)",
+      "titleZh": "多元主义：为‘功能退化’设计的免费开源视觉标识",
+      "link": "https://pluralistic.net/2026/04/24/poop-emoji-plus-plus/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-24T12:50:06.000Z",
+      "category": "opinion",
+      "keywords": [
+        "enshittification",
+        "design",
+        "culture"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "本文提出了一个名为‘功能退化’（enshittification）的概念及其对应的视觉标识设计，旨在揭示数字平台如何逐渐牺牲用户体验以追求利润最大化。作者强调该标识是免费且开源的，可用于识别那些因商业策略而变得臃肿、低效或令人不满的服务。这一设计不仅是对当前互联网生态的批判工具，也鼓励社区共同参与对抗平台滥用权力的现象。",
+      "summaryEn": "This article introduces a free, open-source visual identity for 'enshittification'—the process by which digital platforms gradually degrade user experience to maximize profits. The author presents this symbol as a tool to identify services that have become bloated, inefficient, or frustrating due to corporate strategies. It serves both as a critique of current internet ecosystems and as an invitation for community resistance against platform abuse.",
+      "reason": "它提供了一个清晰、可复用的符号来描述和对抗现代科技产品日益严重的‘功能退化’趋势，有助于公众识别并抵制不良平台行为。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "A free, open visual identity for enshittification: No mere poop emoji!"
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: RIAA v little girl; Portal turret Easter egg; Atari v indie games; Chabon's Phantom Tollbooth intro; The 0.1%; Well-labeled inns; \"More Everything Forever.\""
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: London, Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "A free, open visual identity for enshittification (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "To my surprise, my life's work has turned out to be a long series of attempts to get people to engage with the abstract, distant issues of tech policy before it's too late. This is hard, because people naturally devote their attention to things that are concrete and immediate (for very good reasons!)."
+          },
+          {
+            "type": "p",
+            "text": "For nearly 25 years, I've worked with my comrades at the Electronic Frontier Foundation to raise the salience of these abstract, technical ideas. I've come up with metaphors, parables, framing devices, narratives, and then…a dirty little word: enshittification. It turned out that this word, and the minor license to vulgarity it confers, was the secret to unleashing a tide of interest in these issues, to my immense surprise and gratification."
+          },
+          {
+            "type": "p",
+            "text": "But I don't confine my efforts to coming up with words to engage people on these matters. For several years now, I have been developing myself as a collagist, combining public domain images with Creative Commons-licensed materials to create several collages every week that aim to illustrate these abstract, technical issues in an engaging, visual way:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/albums/72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "This got a lot easier with the 2025 publication of my international bestseller Enshittification, and not just because a lot of people read that book. It was also because the US edition, from MCD/Farrar, Straus and Giroux had a gorgeous cover:"
+          },
+          {
+            "type": "p",
+            "text": "https://mpd-biblio-covers.imgix.net/9780374619329.jpg"
+          },
+          {
+            "type": "p",
+            "text": "That cover featured a (literally and figuratively) iconic variation of the \"pile of poo\" emoji, with angry eyebrows and a grawlix-scrawled black censor's bar over its mouth. It was designed by the brilliant Devin Washburn of No Ideas studio:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.noideas.website/"
+          },
+          {
+            "type": "p",
+            "text": "Devin's poop emoji became my go-to visual shorthand for illustrating stories about enshittification, an instantly recognizable way to identify my subject matter:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54957634601/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "I remixed it over and over:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54962122121/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "And over:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/54992219613/in/album-72177720316719208"
+          },
+          {
+            "type": "p",
+            "text": "I liked it so much I ordered a couple hundred enamel pins and a couple thousand vinyl stickers featuring the design, and handed them out for free to people I met on my 33-city book tour. Everywhere I went – and every time a video went out showing me wearing the pin – I was inundated with requests to buy this stuff. But my pins and stickers weren't merch (stuff you could buy) – they were swag (stuff I gave away). I had no interest in getting into the merch business!"
+          },
+          {
+            "type": "p",
+            "text": "But you folks kept asking, and also, I really loved that design, so I offered Devin a cash buyout for the rights to his enshittification poop emoji and then I released it under a Creative Commons Attribution 4.0 license that lets you use it any way you want, including for commercial products, provided you attribute it and link back to the original:"
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/deed.en"
+          },
+          {
+            "type": "p",
+            "text": "And I made sure that my EFF comrades had first crack at this design, and they've made merch of it. You can get a $5 sticker:"
+          },
+          {
+            "type": "p",
+            "text": "https://shop.eff.org/products/enshittification-sticker"
+          },
+          {
+            "type": "p",
+            "text": "Or a $10 pin:"
+          },
+          {
+            "type": "p",
+            "text": "https://shop.eff.org/products/enshittification-pin"
+          },
+          {
+            "type": "p",
+            "text": "With all proceeds going to the Electronic Frontier Foundation, the most profound and powerful disenshittifying force on the planet Earth!"
+          },
+          {
+            "type": "p",
+            "text": "But because this is CC licensed, you can make your own merch and swag! I made this great print-on-demand lawn flag my for front garden so I could let my enshittification flag fly:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/55025045602/"
+          },
+          {
+            "type": "p",
+            "text": "My goal here is to create a free, open, remixable visual language for talking about platform decay, not owned by me or anyone, a part of the commons. Use it to illustrate anything you want, especially if you want to analogize enshittification to other phenomena, like politics or other non-digital phenomena. Semantic drift is good, actually!"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/10/14/pearl-clutching/#this-toilet-has-no-central-nervous-system"
+          },
+          {
+            "type": "p",
+            "text": "You can get the high-rez of Devin's enshittification poop emoji from the internet's three most important repositories of Creative Commons licensed work."
+          },
+          {
+            "type": "p",
+            "text": "There's a copy on Wikimedia Commons:"
+          },
+          {
+            "type": "p",
+            "text": "https://commons.wikimedia.org/wiki/File:Enshittification_poop_emoji_logo.png"
+          },
+          {
+            "type": "p",
+            "text": "And on Flickr:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.flickr.com/photos/doctorow/55225631563/"
+          },
+          {
+            "type": "p",
+            "text": "And of course on the Internet Archive, along with a PSD that includes an ink-density adjustment layer:"
+          },
+          {
+            "type": "p",
+            "text": "https://archive.org/details/enshittification-poop-emoji-logo"
+          },
+          {
+            "type": "p",
+            "text": "I've supported Creative Commons literally since the very beginning. I worked with Larry Lessig, Aaron Swartz, Matt Haughey and Lisa Rein on the launch of the original licenses in 2002/3, and my first novel, Down and Out in the Magic Kingdom was the first book released under a CC license:"
+          },
+          {
+            "type": "p",
+            "text": "https://craphound.com/down/download/"
+          },
+          {
+            "type": "p",
+            "text": "Creative Commons is one of the most amazing feats of stunt-lawyering ever attempted, and it has been an unmitigated success, with tens of billions of works licensed CC, including all of Wikipedia. Like EFF, CC is a charitable nonprofit that depends on individual donors to keep its work going. The org turned 25 this year (along with my career as a novelist), and they've launched a giant fundraiser to carry their work forward."
+          },
+          {
+            "type": "p",
+            "text": "As my contribution to the fundraiser, I've provided them with 375 signed, numbered copies of Canny Valley, my (otherwise) not-for-sale, extremely limited edition book of my collages, with an intro by Bruce Sterling. The book was designed by type legend John D Berry and printed at Pasadena's Typeworks, a century-old, family-owned print shop, on 100lb Mohawk paper, with a PVC binding that will last for generations:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/10/canny-valley/"
+          },
+          {
+            "type": "p",
+            "text": "CC tells me there's still some copies of Canny Valley left in the fundraiser. If you're intrigued by my collaging and want to own this very strange and beautiful little artifact, here's where to go:"
+          },
+          {
+            "type": "p",
+            "text": "https://mailchi.mp/creativecommons/were-turning-25-book-giveaway"
+          },
+          {
+            "type": "p",
+            "text": "And if you want to try your own hand at collaging – or making merch (or swag!) – help yourself to Devin's wondrous piece of poo and go to town."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "trying to do something you probably shouldn't https://backofmind.substack.com/p/trying-to-do-something-you-probably"
+          },
+          {
+            "type": "li",
+            "text": "What Is the Point of California’s Privacy Laws if Big Tech Ignores Them? https://www.kqed.org/news/12079887/what-is-the-point-of-californias-privacy-laws-if-big-tech-ignores-them"
+          },
+          {
+            "type": "li",
+            "text": "An Open Letter to FCC Chairman Brendan Carr https://chkbal.substack.com/p/an-open-letter-to-fcc-chairman-brendan"
+          },
+          {
+            "type": "li",
+            "text": "A Simple Model of Online Platform Enshittification https://apoorvalal.github.io/lalgorithms/eternalizing_septembers"
+          },
+          {
+            "type": "li",
+            "text": "At the New School: Against Money https://jwmason.org/slackwire/at-the-new-school-against-money/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Court throws out RIAA attempt to sue little girl https://web.archive.org/web/20060422232323/https://p2pnet.net/story/8603"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Android secretly stores location data too — though less of it, and with less detail https://arstechnica.com/gadgets/2011/04/android-phones-keep-location-cache-too-but-its-harder-to-access/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Portal turret Easter egg https://www.flickr.com/photos/57617475@N00/5638462322/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Michael Chabon’s introduction to The Phantom Tollbooth 50th anniversary edition https://web.archive.org/web/20110424055621/http://www.nybooks.com/blogs/nyrblog/2011/apr/21/michael-chabon-phantom-tollbooth-wonder-words/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago UK spy agencies store sensitive data on millions of innocent people, with no safeguards from abuse https://arstechnica.com/tech-policy/2016/04/uk-secret-police-surveillance-bulk-personal-datasets/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Zombie company Atari wants exclusive right to make haunted house games https://www.techdirt.com/2016/04/21/ex-game-maker-atari-to-argue-to-us-pto-that-only-it-can-make-haunted-house-games/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Hackers take $81 million from Bangladesh’s central bank by pwning its $10 second-hand routers https://www.bbc.com/news/technology-36110421"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Forget the one percent, it’s the 0.1% who run the show https://web.archive.org/web/20160416022112/https://www.alternet.org/economy/1-really-problem"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The quest for the well-labeled inn https://memex.craphound.com/2016/04/22/the-quest-for-the-well-labeled-inn/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago EFF sues Proctorio over copyfraud https://pluralistic.net/2021/04/22/ihor-kolomoisky/#copyfraud"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Fighting FLoC is compatible with fighting monopoly https://pluralistic.net/2021/04/22/ihor-kolomoisky/#not-that-competition"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Moxie hacks Cellebrite https://pluralistic.net/2021/04/22/ihor-kolomoisky/#petard"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Banks made bank on covid overdraft charges https://pluralistic.net/2021/04/22/ihor-kolomoisky/#usurers"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The awesome destructive power of a billionaire https://pluralistic.net/2021/04/22/ihor-kolomoisky/#force-multiplier"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago More Everything Forever https://pluralistic.net/2025/04/22/vinges-bastards/#cyberpunk-is-a-warning-not-a-suggestion"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "London: Resisting Big Tech Empires (LSBU), Apr 25\nhttps://www.tickettailor.com/events/globaljusticenow/2042691"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Enshittification at Commonweal Ventures, Apr 29\nhttps://luma.com/ssgfvqz8"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyebuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "为“功能退化”（Enshittification）打造的一个免费、开放的视觉标识：不只是个单纯的便便表情符号！",
+          "嘿，看看这个：令人愉悦的小玩意儿。",
+          "物体恒存性：RIAA起诉小女孩；Portal炮塔彩蛋；Atari与独立游戏之争；查博恩《幻影收费亭》的引言；顶层0.1%；标注清晰的客栈；“永远更多”。",
+          "即将出席的活动：伦敦、柏林、纽约、巴塞罗那、海伊-昂-怀伊、伦敦、纽约。",
+          "近期活动回顾：我走过的路。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所言，我会一直写下去。",
+          "版权说明：其余部分。",
+          "为“功能退化”（Enshittification）打造的一个免费、开放的视觉标识（永久链接）",
+          "令我惊讶的是，我毕生的事业竟成了一系列尝试——在科技政策问题变得过于紧迫之前，让人们关注这些抽象而遥远的问题。这很难，因为人们自然会把注意力集中在具体且迫在眉睫的事情上（这非常有道理！）。",
+          "近25年来，我一直与电子前沿基金会（Electronic Frontier Foundation）的同仁们合作，提升人们对这些抽象、技术性议题的关注度。我创造了比喻、寓言、叙事框架和故事……然后，出现了一个不太体面的小词：“功能退化”（Enshittification）。结果证明，正是这个词，以及它所赋予的一点粗俗许可，才让我意外又欣慰地激发了人们对这些问题的浓厚兴趣。",
+          "但我并不满足于仅仅创造词语来吸引人们关注这些问题。多年来，我一直在努力成为一名拼贴艺术家，将公共领域的图像与知识共享许可的材料结合，每周创作几幅拼贴画，以生动、直观的方式阐释这些抽象的技术议题：",
+          "https://www.flickr.com/photos/doctorow/albums/72177720316719208",
+          "这一切在2025年我的国际畅销书《功能退化》（Enshittification）出版后变得容易多了，这不仅是因为很多人读了这本书。更因为美国版由MCD/Farrar, Straus and Giroux出版，封面非常精美：",
+          "https://mpd-biblio-covers.imgix.net/9780374619329.jpg",
+          "封面上是一个（字面和象征意义上）标志性的“便便表情符号”变体，眉毛紧蹙，嘴上横着一条黑色审查标记般的涂鸦式横杠。这是才华横溢的Devin Washburn（来自No Ideas工作室）设计的：",
+          "https://www.noideas.website/",
+          "Devin的便便表情符号成了我用来形象化讲述“功能退化”故事的视觉缩写，一种能立刻让人识别出主题的标志：",
+          "https://www.flickr.com/photos/doctorow/54957634601/in/album-72177720316719208",
+          "我一遍又一遍地重新演绎它：",
+          "https://www.flickr.com/photos/doctorow/54962122121/in/album-72177720316719208",
+          "而且持续不断地：",
+          "https://www.flickr.com/photos/doctorow/54992219613/in/album-72177720316719208",
+          "我喜欢到几乎痴迷，于是订购了几百枚别针和几千张乙烯基贴纸，上面印着这个设计，并在为期33城的巡回签售活动中免费分发给遇到的人。无论我去到哪里——只要视频里出现我戴着别针的画面，就会立刻收到大量求购请求。但我的别针和贴纸不是商品（可购买的物品），而是赠品（我送出去的纪念品）！我可没兴趣涉足周边生意！",
+          "但你们一直追问，而且我真的很喜欢那个设计，所以我向Devin提出现金买断，获得了他的“去人性化”便便表情符号的版权，随后将其以知识共享署名4.0国际许可协议（Creative Commons Attribution 4.0 license）发布——该协议允许你随心所欲地使用它，包括用于商业产品，只要注明出处并链接回原作即可：",
+          "https://creativecommons.org/licenses/by/4.0/deed.en",
+          "我还确保我的EFF战友们能优先使用这个设计，他们已将其制成周边商品。你可以花5美元买到一个贴纸：",
+          "https://shop.eff.org/products/enshittification-sticker",
+          "或者花10美元买一个别针：",
+          "https://shop.eff.org/products/enshittification-pin",
+          "所有收益都将捐赠给电子前沿基金会（Electronic Frontier Foundation），这是地球上最深刻、最有力的“反去人性化”力量！",
+          "但由于此作品采用CC许可，你也可以自己制作 merch 和周边！我在前院挂了一面按需印刷的草坪旗，让我的“去人性化”旗帜高高飘扬：",
+          "https://www.flickr.com/photos/doctorow/55025045602/",
+          "我的目标是创建一个自由、开放、可混用的视觉语言，用来讨论平台退化问题，不属于任何人，而是公共领域的一部分。用它来阐释任何你想表达的内容，尤其是当你想将“去人性化”与其他现象（如政治或其他非数字现象）进行类比时。语义漂移其实挺好的！",
+          "https://pluralistic.net/2024/10/14/pearl-clutching/#this-toilet-has-no-central-nervous-system",
+          "你可以从互联网上最重要的三个知识共享授权作品库中获取Devin的“去人性化”便便表情符号高清版本。",
+          "维基媒体共享资源（Wikimedia Commons）上有副本：",
+          "https://commons.wikimedia.org/wiki/File:Enshittification_poop_emoji_logo.png",
+          "Flickr 上也有：",
+          "https://www.flickr.com/photos/doctorow/55225631563/",
+          "当然，互联网档案馆（Internet Archive）也有存档，还附带一个包含墨量调整图层的PSD文件：",
+          "https://archive.org/details/enshittification-poop-emoji-logo",
+          "我从一开始就坚定支持知识共享（Creative Commons）。我曾与拉里·莱西格（Larry Lessig）、亚伦·斯沃茨（Aaron Swartz）、马特·哈格希（Matt Haughey）和丽莎·赖安（Lisa Rein）共同推动2002–2003年原始许可协议的诞生；我的第一本小说《魔法王国落魄记》（Down and Out in the Magic Kingdom）也是首部以CC许可发布的书籍：",
+          "https://craphound.com/down/download/",
+          "知识共享堪称法律创意的巅峰之作，其成果无与伦比，已有数十亿作品采用CC许可，其中包括整个维基百科。像EFF一样，CC是一个依靠个人捐赠维持运作的慈善非营利组织。今年恰逢该组织成立25周年（也正值我作为小说家的职业生涯起步之年），他们发起了一场大型募捐活动，以延续其事业。",
+          "作为对此次募捐的贡献，我向他们提供了375本签名编号版《谷值迷境》（Canny Valley）——这本（除本次外）绝版的限量收藏册收录了我的拼贴画作品，由布鲁斯·斯特林撰写引言。该书由字体传奇约翰·D·贝里（John D. Berry）设计，在帕萨迪纳百年老字号印刷厂Typeworks印制，采用100磅Mohawk纸张，配以经久耐用的PVC装订，可世代传承：",
+          "https://pluralistic.net/2026/04/10/canny-valley/",
+          "CC告诉我，募捐活动中仍有少量《谷值迷境》存留。如果你对我的拼贴艺术感兴趣，并希望拥有这本奇特而精美的微型艺术品，请前往以下地址：",
+          "https://mailchi.mp/creativecommons/were-turning-25-book-giveaway",
+          "如果你想尝试拼贴画——或者制作 merch（或周边商品！）——不妨试试 Devin 那件奇妙的作品，尽情发挥吧。",
+          "嘿，看看这个（永久链接）",
+          "试图做一些你或许不该做的事 https://backofmind.substack.com/p/trying-to-do-something-you-probably",
+          "加州隐私法若被科技巨头无视，其意义何在？https://www.kqed.org/news/12079887/what-is-the-point-of-californias-privacy-laws-if-big-tech-ignores-them",
+          "致 FCC 主席 Brendan Carr 的公开信 https://chkbal.substack.com/p/an-open-letter-to-fcc-chairman-brendan",
+          "在线平台“粪化”（Enshittification）的简明模型 https://apoorvalal.github.io/lalgorithms/eternalizing_septembers",
+          "在新学院：反对金钱 https://jwmason.org/slackwire/at-the-new-school-against-money/",
+          "客体永久性（永久链接）",
+          "#20年前 法院驳回 RIAA 起诉小女孩的企图 https://web.archive.org/web/20060422232323/https://p2pnet.net/story/8603",
+          "#15年前 Android 手机秘密存储位置数据——尽管数量较少且细节有限 https://arstechnica.com/gadgets/2011/04/android-phones-keep-location-cache-too-but-its-harder-to-access/",
+          "#15年前 Portal 炮塔彩蛋 https://www.flickr.com/photos/57617475@N00/5638462322/",
+          "#15年前 Michael Chabon 为《魔境历险记》50周年纪念版撰写的引言 https://web.archive.org/web/20110424055621/http://www.nybooks.com/blogs/nyrblog/2011/apr/21/michael-chabon-phantom-tollbooth-wonder-words/",
+          "#10年前 英国情报机构储存数百万无辜者的敏感数据，却无任何防止滥用的保障 https://arstechnica.com/tech-policy/2016/04/uk-secret-police-surveillance-bulk-personal-datasets/",
+          "#10年前 僵尸公司 Atari 欲申请独家权利，垄断 haunted house 游戏开发 https://www.techdirt.com/2016/04/21/ex-game-maker-atari-to-argue-to-us-pto-that-only-it-can-make-haunted-house-games/",
+          "#10年前 黑客通过入侵孟加拉国央行使用的二手路由器，盗取 8100 万美元 https://www.bbc.com/news/technology-36110421",
+          "#10年前 别只盯着百分之一，真正掌权的是那 0.1% https://web.archive.org/web/20160416022112/https://www.alternet.org/economy/1-really-problem",
+          "#10年前 寻找那个被正确标记的客栈 https://memex.craphound.com/2016/04/22/the-quest-for-the-well-labeled-inn/",
+          "#5年前 EFF 起诉 Proctorio 滥用版权主张（copyfraud）https://pluralistic.net/2021/04/22/ihor-kolomoisky/#copyfraud",
+          "#5年前 抵制 FLoC 与反垄断斗争并不冲突 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#not-that-competition",
+          "#5年前 Moxie 团队成功破解 Cellebrite https://pluralistic.net/2021/04/22/ihor-kolomoisky/#petard",
+          "#5年前 银行在新冠疫情期间靠透支手续费赚得盆满钵满 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#usurers",
+          "#5年前 亿万富翁拥有的惊人破坏力 https://pluralistic.net/2021/04/22/ihor-kolomoisky/#force-multiplier",
+          "#1年前 更多的一切，永远继续 https://pluralistic.net/2025/04/22/vinges-bastards/#cyberpunk-is-a-warning-not-a-suggestion",
+          "即将出席的活动（永久链接）",
+          "伦敦：反抗科技帝国（LSBU），4月25日 https://www.tickettailor.com/events/globaljusticenow/2042691",
+          "纽约：在 Commonweal Ventures 探讨“粪化”现象，4月29日 https://luma.com/ssgfvqz8",
+          "纽约：Techidemic 论坛，与 Sarah Jeong、Tochi Onyebuchi 和 Alia Dastagir 对话（PEN 世界之声），4月30日 https://worldvoices.pen.org/event/techidemic/",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日 https://encuentroderechosdigitales.com/en/",
+          "柏林：Re:publica，5月18-20日  \nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland Books“Enshittification”活动，5月19日  \nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊（Hay-on-Wye）：HowTheLightGetsIn，5月22-25日  \nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日  \nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《AI之后的反半人马指南》（The Strand书店），6月24日  \nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "近期公开露面（永久链接）",
+          "人工智能：终极颠覆者，与Astra Taylor和Yoshua Bengio对谈（CBC Ideas）  \nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新而开始榨取？（InnovEU）  \nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "Pete \"Mayor\" Buttigieg（No Gods No Mayors）  \nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变糟（CBC《国家新闻》）  \nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被大科技公司坑了？（Ontario Today）  \nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "最新著作（永久链接）",
+          "“Canny Valley”：为Pluralistic创作的拼贴画限量合集，自行出版，2025年9月  \nhttps://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为何一切突然变得更糟及如何应对》，Farrar, Straus, Giroux出版社，2025年10月7日  \nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：《Red Team Blues》的续作，讲述个人电脑英雄时代，Tor Books（美国）、Head of Zeus（英国），2025年2月  \nhttps://us.macmillan.com/books/9781250865908/picksandshovels",
+          "《The Bezzle》：《Red Team Blues》的续作，聚焦监狱科技等骗局，Tor Books（美国）、Head of Zeus（英国），2024年2月（thebezzle.org）",
+          "《The Lost Cause》：一部在气候危机中充满希望的太阳朋克小说，Tor Books（美国）、Head of Zeus（英国），2023年11月（http://lost-cause.org）",
+          "《The Internet Con》：关于互操作性与大科技公司的一部非虚构作品（Verso出版社），2023年9月（http://seizethemeansofcomputation.org）。签名版可在Book Soup购买（https://www.booksoup.com/book/9781804291245）",
+          "《Red Team Blues》：“一部引人入胜、令人欲罢不能的惊悚小说，读完你会对世界运作方式有更深的了解。” Tor Books（http://redteamblues.com）",
+          "《Chokepoint Capitalism：如何击败大科技公司、驯服大内容，并让艺术家获得报酬》，与Rebecca Giblin合著，探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe出版社，2022年  \nhttps://chokepointcapitalism.com",
+          "即将出版的著作（永久链接）",
+          "《AI之后的反半人马指南》：一本关于如何成为更好AI批评家的短书，Farrar, Straus and Giroux出版社，2026年6月  \nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《Enshittification》（图像小说版），Firstsecond出版社，2026年",
+          "《后美国互联网》：一部地缘政治意义上的《Enshittification》续作，Farrar, Straus and Giroux出版社，2027年",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机和数字版权管理（DRM）的中篇小说的儿童图像小说，FirstSecond出版社，2027年",
+          "《Memex方法》，Farrar, Straus, Giroux出版社，2027年",
+          "版权说明（永久链接）",
+          "今日主要消息来源：",
+          "目前正在撰写《后美国互联网》，作为《平台暴政》的续作，讲述特朗普摧毁美国后我们其余人所能享有的更美好的世界。已完成第三稿，提交编辑审阅。",
+          "《逆向半人马指南：AI 批判之道》，一本面向 Farrar, Straus and Giroux 出版社的短书，探讨如何成为一名有效的 AI 批评者。法律审查与文字润色全部完成。",
+          "《后美国互联网》，一本关于特朗普主义时代网络政策的短书。目前处于规划阶段。",
+          "《小兄弟》短篇故事之一，主题围绕 DIY 胰岛素。目前处于规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名 4.0 国际许可协议（Creative Commons Attribution 4.0 license）授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图像不在此许可范围内；它们或因版权例外或限制而包含在内，或基于单独的许可。请谨慎处理。",
+          "获取《多元主义》（Pluralistic）的方式：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯简报（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，但有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制，第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你 SARS，你就做 sarsaparilla”——乔伊“手风琴男”德维拉",
+          "仔细阅读：阅读即表示，你代表雇主同意，永久且无损害地免除我因与雇主及其合作伙伴、许可方、代理人及受让人签订的任何未经协商之协议、许可、服务条款、密封包装、点击包装、浏览包装、保密、非披露、竞业禁止和合理使用政策（统称“虚假协议”）而产生的所有义务与弃权声明。你还须确认你有权代表雇主解除任何“虚假协议”。",
+          "ISSN: 3066-764X"
+        ]
+      },
+      "fromDate": "2026-04-25"
+    },
+    {
+      "slug": "523a4945cfb7af73",
+      "title": "Debugging WASM in Chrome DevTools",
+      "titleZh": "在 Chrome DevTools 中调试 WASM 代码",
+      "link": "https://eli.thegreenplace.net/2026/debugging-wasm-in-chrome-devtools/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-04-23T02:23:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "WASM",
+        "debugging",
+        "Chrome DevTools",
+        "WebAssembly"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "作者在将 Scheme 编译器编译为 WebAssembly（WASM）时遇到调试难题。Chrome DevTools 实际上具备强大的 WASM 调试功能，包括源码映射、断点设置和变量监控。文章详细介绍了如何利用 Source Map 将 WASM 指令与原始 Scheme 代码关联，实现逐行调试。这对使用 WASM 进行前端性能优化或复杂逻辑开发具有重要实践价值。",
+      "summaryEn": "While porting a Scheme compiler to WebAssembly (WASM), the author encountered debugging challenges with generated code. Chrome DevTools offers surprisingly robust WASM debugging capabilities, including source mapping, breakpoints, and variable inspection. The post explains how to use source maps to link WASM instructions back to original Scheme code for line-by-line debugging—a crucial skill for developers working with compiled languages in the browser.",
+      "reason": "为前端工程师和语言工具链开发者提供了 Chrome 浏览器内高效调试 WASM 代码的完整指南，极大提升开发效率。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When I was working on the WASM backend for my Scheme compiler,\nI ran into several tricky situations with debugging generated WASM code. It\nturned out that Chrome has a very capable WASM debugger in its DevTools, so in\nthis brief post I want to share how it can be used."
+          },
+          {
+            "type": "h2",
+            "text": "The setup and harness"
+          },
+          {
+            "type": "p",
+            "text": "I'll be using an example from my wasm-wat-samples project for this post. In fact,\neverything is already in place in the gc-print-scheme-pairs\nsample. This sample shows how to construct Scheme-like s-exprs in WASM using gc\nreferences and print them out recursively. The sample supports nested pairs\nof integers, booleans and symbols."
+          },
+          {
+            "type": "p",
+            "text": "To see this in action, we have to first compile the WAT file to WASM, for\nexample using watgo:"
+          },
+          {
+            "type": "code",
+            "text": "$ cd gc-print-scheme-pairs\n$ watgo parse gc-print-scheme-pairs.wat -o gc-print-scheme-pairs.wasm"
+          },
+          {
+            "type": "p",
+            "text": "The browser-loader.html file in that directory already expects to load\ngc-print-scheme-pairs.wasm. But we can't just open it\ndirectly from the file-system; since it loads WASM, this file needs to be\nserved with a local HTTP server. I personally use static-server\nfor this, but you can use anything else - like Python's built-in http.server:"
+          },
+          {
+            "type": "code",
+            "text": "$ static-server\n2026/04/10 08:55:20.244096 Serving directory \".\" on http://127.0.0.1:8080\n..."
+          },
+          {
+            "type": "p",
+            "text": "Now it can be opened in the browser by following the printed link and selecting\nthe browser-loader.html file."
+          },
+          {
+            "type": "h2",
+            "text": "The debugging process"
+          },
+          {
+            "type": "p",
+            "text": "Open the Chrome DevTools, and in Sources, open the Page view on the left.\nIt should have one entry under wasm, which will show the decompiled WAT\ncode for our module. Note: this code is disassembled from the binary WASM, so\nit will lose some WAT syntactic sugar (like folded instructions):"
+          },
+          {
+            "type": "p",
+            "text": "You can set a breakpoint by clicking on the address column to the left of the\ncode, and then refresh the page. The DevTools debugger will run the program\nagain and stop at the breakpoint:"
+          },
+          {
+            "type": "p",
+            "text": "Here you can step over, into, see local values and call stack, etc - a real\ndebugger!"
+          },
+          {
+            "type": "h2",
+            "text": "Debugging unexpected exceptions"
+          },
+          {
+            "type": "p",
+            "text": "The most important use case for me while developing the compiler was debugging\nunexpected exceptions (coming from instructions like ref.cast). Notice\nthe checkboxes saying \"Pause on ... exceptions\" on the right-hand side of the\nprevious screenshot. With these selected, the DevTools debugger will\nautomatically stop on an exception and show where it is coming from. Let's\nmodify the gc-print-scheme-pairs.wat sample to see this in action. The\n$emit_value function performs a set of ref.test checks to see which kind\nof reference it's dealing with before casting; let's add this line at the\nvery start:"
+          },
+          {
+            "type": "code",
+            "text": "(call $emit_bool (ref.cast (ref $Bool) (local.get $v)))"
+          },
+          {
+            "type": "p",
+            "text": "It's clearly wrong to assume that $v is a bool reference without first\ntesting it; this is just for demonstration purposes."
+          },
+          {
+            "type": "p",
+            "text": "Without setting any breakpoints, recompiling this code with watgo and\nreloading the page, we get:"
+          },
+          {
+            "type": "p",
+            "text": "The debugger stopped at the instruction causing the exception; moreover, in the\nScope pane on the right we can see that the actual type of $v is\n(ref $Pair), so it's immediately clear what's going on."
+          },
+          {
+            "type": "p",
+            "text": "I've found this capability extremely valuable when writing (or emitting from\na compiler) non-trivial chunks of WASM code using gc types and instructions."
+          },
+          {
+            "type": "h2",
+            "text": "Debugger vs. printfs in wasm"
+          },
+          {
+            "type": "p",
+            "text": "\"Should I use a debugger or just printfs\" is a common topic of debate among\nprogrammers. While I'm usually in the \"printf debugging\"\ncamp, I'm not dogmatic, and will certainly reach for a debugger when\nthe situation calls for it."
+          },
+          {
+            "type": "p",
+            "text": "Specifically, when investigating reference exceptions in WASM, two strong\nfactors tilt the decision towards using a debugger:"
+          },
+          {
+            "type": "li",
+            "text": "In general, WASM's printf capabilities aren't great. We can import print-like\nfunctions from the host (and - in fact - our sample does just that), but\nthey're not very flexible and dealing with strings in WASM is painful in\ngeneral. This is compounded even more when working with gc types, because\nthese aren't even visible to the host (they're opaque references). If we want\nto do printf debugging of gc values, we have to build a lot of scaffolding\nfirst."
+          },
+          {
+            "type": "li",
+            "text": "Exception debugging - in general - is much easier with a supportive debugger\nin hand. Our ref.cast exception from the example above could have\nhappened anywhere in the code. Imagine having to debug a very large\nWASM program (emitted by a compiler) to find the source of a failed\nref.cast; the debugger takes you right to the spot!\nIn fact, even for C programming, I've always found gdb most useful for\npinpointing the source of segmentation faults and similar crashes."
+          }
+        ],
+        "translations": [
+          "在为我的 Scheme 编译器开发 WASM 后端时，我在调试生成的 WASM 代码时遇到了几个棘手的情况。结果发现 Chrome 的 DevTools 中有一个功能非常强大的 WASM 调试器，因此在这篇简短的博文中，我想分享一下如何使用它。",
+          "设置和测试环境",
+          "本文将使用 wasm-wat-samples 项目中的一个示例。实际上，gc-print-scheme-pairs 示例已经完成了所有准备工作。该示例展示了如何在 WASM 中使用 GC 引用构造类似 Scheme 的 s-expr，并递归地打印它们。该示例支持嵌套整数、布尔值和符号对。",
+          "要查看其效果，我们必须先将 WAT 文件编译为 WASM，例如使用 watgo：",
+          "$ cd gc-print-scheme-pairs\n$ watgo parse gc-print-scheme-pairs.wat -o gc-print-scheme-pairs.wasm",
+          "该目录中的 browser-loader.html 文件已经期望加载 gc-print-scheme-pairs.wasm。但我们不能直接从文件系统打开它；由于它加载的是 WASM，因此需要通过本地 HTTP 服务器提供服务。我个人使用 static-server，但你也可以使用其他工具，比如 Python 内置的 http.server：",
+          "$ static-server\n2026/04/10 08:55:20.244096 Serving directory \".\" on http://127.0.0.1:8080\n...",
+          "现在可以通过点击打印出的链接并选择 browser-loader.html 文件在浏览器中打开。",
+          "调试过程",
+          "打开 Chrome DevTools，在 Sources 面板中，左侧打开 Page 视图。它应该在 wasm 下有一个条目，显示我们模块的反编译 WAT 代码。注意：此代码是从二进制 WASM 反汇编而来，因此会丢失一些 WAT 语法糖（如折叠指令）：",
+          "可以通过点击代码左侧地址列设置断点，然后刷新页面。DevTools 调试器将重新运行程序并在断点处停止：",
+          "在这里可以单步执行、进入函数、查看局部变量和调用栈等——真正的调试器！",
+          "调试意外异常",
+          "在开发编译器时，对我来说最重要的用例是调试意外的异常（来自 ref.cast 等指令）。注意上一张截图右侧的复选框“暂停于...异常”。选中这些选项后，DevTools 调试器会自动在异常处停止，并显示其来源。让我们修改 gc-print-scheme-pairs.wat 示例来演示这一点。$emit_value 函数在执行类型转换前会进行一组 ref.test 检查以确定引用的类型；让我们在最开始添加这一行：",
+          "(call $emit_bool (ref.cast (ref $Bool) (local.get $v)))",
+          "显然，在没有先测试的情况下就假设 $v 是布尔引用是错误的；这仅用于演示目的。",
+          "不设置任何断点，用 watgo 重新编译此代码并重新加载页面，我们会得到：",
+          "调试器在导致异常的指令处停止；此外，在右侧的 Scope 面板中我们可以看到 $v 的实际类型是 (ref $Pair)，因此问题一目了然。",
+          "我发现这种能力在编写或使用编译器生成涉及 GC 类型和指令的非平凡 WASM 代码片段时非常有价值。",
+          "WASM 中的调试器 vs. printf",
+          "“应该使用调试器还是仅仅使用 printf”是程序员之间常见的争论话题。虽然我通常属于“printf 调试”阵营，但我并不教条，当情况需要时，我肯定会选择调试器。",
+          "具体来说，在调查 WASM 中的引用异常时，有两个强有力的因素使得选择调试器成为更优解：",
+          "WASM 的 printf 功能通常并不强大。我们可以从宿主环境导入类似打印的函数（事实上，我们的示例正是这样做的），但这些函数灵活性较差，而且在 WASM 中处理字符串通常很麻烦。当涉及垃圾回收（gc）类型时情况更糟，因为这些类型对宿主环境甚至不可见（它们是不可见的引用）。如果要对 gc 值进行 printf 调试，通常需要先搭建大量辅助结构。",
+          "异常调试——总体而言——如果有合适的调试器会容易得多。上面例子中的 ref.cast 异常可能发生在代码的任何位置。想象一下，要调试一个非常大的 WASM 程序（由编译器生成）来定位失败的 ref.cast 的来源；调试器能直接带你到问题现场！事实上，即使是 C 编程，我也一直觉得 gdb 在定位段错误和类似崩溃方面最有用。"
+        ]
+      },
+      "fromDate": "2026-04-23"
+    },
+    {
+      "slug": "78a467e4efddaac6",
+      "title": "Writing an LLM from scratch, part 32l -- Interventions: updated instruction fine-tuning results",
+      "titleZh": "从零开始构建 LLM（第32部分）：干预措施与指令微调结果更新",
+      "link": "https://www.gilesthomas.com/2026/04/llm-from-scratch-32l-interventions-instruction-fine-tuning-tests",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-04-20T20:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "instruction fine-tuning",
+        "GPT-2",
+        "from scratch"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "作者基于 Sebastian Raschka 的《Build a Large Language Model (from Scratch)》一书，训练了一个类 GPT-2-small 模型，并通过多种干预手段提升其在测试集上的损失表现。实验包括指令微调等策略，目标是逼近 OpenAI GPT-2-small 的质量水平。",
+      "summaryEn": "The author is training a GPT-2-small-style language model based on Sebastian Raschka's book, aiming to match OpenAI's original performance measured by test loss. Various interventions, including instruction fine-tuning, have been tested to improve model quality. The post details experimental approaches and their impact on loss reduction.",
+      "reason": "为那些希望深入理解 LLM 训练细节和性能优化方法的技术爱好者提供了可复现的实践参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "I've been working on a GPT-2-small-style LLM based on\nSebastian Raschka's book\n\"Build a Large Language Model (from Scratch)\",\nand have tried a bunch of different things to see if I could get it to approach\nthe quality of the original OpenAI GPT-2-small, measured in terms of loss on a\nheld-back test dataset.  After working through them, in my\nlast post,\nI managed to train one that was almost (if not quite) there."
+          },
+          {
+            "type": "p",
+            "text": "Now, back before I started digging into these interventions, I was doing three evals\nfor each model I built; a smoke test (to see if it could give a coherent completion\nto \"Every effort moves you\"), a test for that test set loss, and\nan instruction-following test that fine-tuned the model on the Alpaca\ndataset, got it to generate results for a test set of instructions, and then used\nan LLM as a judge to score them."
+          },
+          {
+            "type": "p",
+            "text": "The idea behind this was that the loss on the test set was an interesting technical measure\nof the quality of a model, but it didn't really tell us much about how useful it might\nbe in reality."
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately, in January, I realised that my methodology was bad;\nbecause I was asking the LLM\nto score a model in isolation, the LLM's natural randomness would mean that results were\nnot really comparable, at least for models that were reasonably close in quality."
+          },
+          {
+            "type": "p",
+            "text": "For example, if two models both replied to"
+          },
+          {
+            "type": "code",
+            "text": "Name the author of 'Pride and Prejudice'."
+          },
+          {
+            "type": "p",
+            "text": "with:"
+          },
+          {
+            "type": "code",
+            "text": "The author of 'Pride and Prejudice' is Sarah Palin."
+          },
+          {
+            "type": "p",
+            "text": "...then one run of the instruction-following test might \"find the judge LLM in a good mood\"\nand get, say, 5% -- after all, the model tried to answer, and actually used a real person's\nname, even if the answer was totally wrong.  But in another run, the judge might be in a\n\"worse mood\" and score it at 0%."
+          },
+          {
+            "type": "p",
+            "text": "My fix was to have two scripts:"
+          },
+          {
+            "type": "li",
+            "text": "One that fine-tuned the model then got it to generate responses, then saved those responses in a file."
+          },
+          {
+            "type": "li",
+            "text": "One that took a bunch of files generated by the above, one for each of a set of different models, and presented them to the\nLLM together, so that it would (hopefully) be consistent in how it rated them relative to each other."
+          },
+          {
+            "type": "p",
+            "text": "The details are here."
+          },
+          {
+            "type": "p",
+            "text": "Because doing it that way was significantly more work, I've not been doing these tests as part of the interventions mini-series.\nI felt it would make more sense to wait until I'd tried a bunch of interventions\nand got a number of models to try."
+          },
+          {
+            "type": "p",
+            "text": "Now I have those, so let's give it a go!"
+          },
+          {
+            "type": "h3",
+            "text": "The background, and the last test"
+          },
+          {
+            "type": "p",
+            "text": "At the end of the previous round of IFT tests, I had this table.  It's sorted\nby the loss on the test set (shown to 3 decimal places), and has the score that\nthe model got from an instruction fine-tuning run:"
+          },
+          {
+            "type": "p",
+            "text": "There's a loose correlation where lower loss means a higher IFT score, with two\nweird exceptions: the two FineWeb-Edu training runs, where they got much higher results\nthan you'd expect from the loss."
+          },
+          {
+            "type": "p",
+            "text": "My working hypothesis was that there were two components that led to a model getting a good\nscore:"
+          },
+          {
+            "type": "li",
+            "text": "Its raw intelligence: lower-loss models were smarter, so they were better at\ninstruction-following after the fine-tune."
+          },
+          {
+            "type": "li",
+            "text": "Its knowledge.  All of the models -- mine and OpenAI's -- apart from the FineWeb-Edu ones were trained on\nwhat amounted to minimally-curated data from the Internet.  But FineWeb-Edu is\nmeant to be \"the most educational\" subset of FineWeb, so it presumably is more\ndense in useful facts."
+          },
+          {
+            "type": "p",
+            "text": "So in those terms, the OpenAI models and Cloud FineWeb, 8x A100 40 GiB might be smart but not know very much, and the FineWeb-Edu ones\nmight be dumb but knowledgeable.  The ones in between, by contrast, could be relatively dumb too, but\nalso not know very much."
+          },
+          {
+            "type": "p",
+            "text": "There was one other oddity: the Cloud FineWeb, 8x A100 40 GiB\nmodel seemed surprisingly good on the IFT results when considering its loss -- but perhaps\nthere was some kind of step function, where as soon as a model got better than (say) 3.7\non the loss, it suddenly became smart in whatever way mattered."
+          },
+          {
+            "type": "p",
+            "text": "All very hand-wavy, of course, but it was a hypothesis of sorts.\nWould the new models fit that pattern?  It was time to find out."
+          },
+          {
+            "type": "h3",
+            "text": "The initial run, and the mystery"
+          },
+          {
+            "type": "p",
+            "text": "I didn't think it was worth adding all 14 models that I've trained in my intervention-testing\nto that table, so I decided to just add four of them:"
+          },
+          {
+            "type": "li",
+            "text": "8xa100m40-baseline, the baseline cloud-trained model for all of the interventions."
+          },
+          {
+            "type": "li",
+            "text": "1xrtx3090-baseline, the locally-trained version of the same -- the first model from this post."
+          },
+          {
+            "type": "li",
+            "text": "8xa100m40-stacked-interventions-1, the best model we managed to get in the cloud."
+          },
+          {
+            "type": "li",
+            "text": "1xrtx3090-stacked-interventions, the best local model -- the second from this post."
+          },
+          {
+            "type": "p",
+            "text": "Now, I already had files containing responses from fine-tuned versions of the\nother models, so I just needed to run the first of my two fine-tuning scripts against\nall four of the new models."
+          },
+          {
+            "type": "p",
+            "text": "I did that, and then also tweaked the judge script so that instead of using GPT-5.1, it\nused GPT-5.4.  If you run the script multiple times, each time will normally give you different\nscores anyway; hopefully the ranking will remain roughly the same.  So given that I\nwas going to have to re-run the script to get new aggregate results, and those would\nnot really be comparable to the original ones anyway, this seemed like a reasonable\nprice to pay for (hopefully) a smarter judge."
+          },
+          {
+            "type": "p",
+            "text": "I ran that once, and got some results that surprised me -- so much that I decided to\ndo three runs and see if the results stood up.  They did; here's the new table,\nwith scores for each run, the average, and the rank that each one got based on the average."
+          },
+          {
+            "type": "p",
+            "text": "You can see that relative rankings are fairly consistent across the IFT runs.  But while in general\nthe lower-loss runs get better IFT results, now there are even more exceptions to that\ntrend than there were before."
+          },
+          {
+            "type": "p",
+            "text": "Let's look down the \"IFT rank\" column, which is based on the IFT average:"
+          },
+          {
+            "type": "li",
+            "text": "The first surprise is 8xa100m40-stacked-interventions-1.  It has the fourth-best\nloss, but it's the worst model out of all of them on the instruction fine-tuning\ntest!  It was trained on exactly the same data as all of the others apart from\nthe OpenAI ones and the FineWeb-Edu ones.  Even more perplexingly, it was as close\na match to 1xrtx3090-stacked-interventions  as I could make it, but got\ncompletely different results.  You might\nremember from the post\nthat those two runs started with the same weights and had exactly the same\ntraining config; the only difference was that they were trained on different\narchitectures, and one used DDP with a real global batch size of 96, while the\nother used gradient accumulation to get the same batch size."
+          },
+          {
+            "type": "li",
+            "text": "1xrtx3090-baseline also does much worse than you'd expect from its loss numbers;\nit's only a tiny bit worse than Cloud FineWeb, 8x A100 40 GiB in loss terms, but\nmuch worse on the IFT test.  Again, this one is essentially a clone of another:\n8xa100m40-baseline, which was the same training run but using DDP rather than\ngradient accumulation.  The same problem -- one of a pair of closely-matched\nmodels has worse results on the IFT test.  But in this case, it's the gradient\naccumulation model that turned out bad."
+          },
+          {
+            "type": "p",
+            "text": "That's a really odd situation.  If the training runs using gradient accumulation rather than\nDDP had been consistently worse -- or vice versa -- then we could imagine some kind\nof connection.  But in the first case, GA beat DDP, but in the second, it was\nthe other way around."
+          },
+          {
+            "type": "p",
+            "text": "Apart from that, we do still see that the two FineWeb-Edu models are doing much\nbetter than the others.  And the remaining models are all pretty close together, both\nin terms of loss and in terms of their ranking, apart from the Local FineWeb train,\nwhich is bad in both."
+          },
+          {
+            "type": "p",
+            "text": "It is, however, interesting that Local FineWeb-Edu extended train, which was trained\non twice as much data as Local FineWeb-Edu train, is consistently worse in terms of\nthe IFT numbers, though.  That wasn't the case in my tests previously."
+          },
+          {
+            "type": "p",
+            "text": "All of this puzzled me.  The \"lots of knowledge makes a model better at this\" idea\nseemed to be weakened by the relative ranks of the two FineWeb-Edu models (after all,\nif it was true, you'd expect the model trained on more data to be consistently better).\nAnd the \"smart, low-loss models are better\" side seemed to be contradicted by\n8xa100m40-stacked-interventions-1 and 1xrtx3090-baseline's bad results."
+          },
+          {
+            "type": "p",
+            "text": "What might be going on here?"
+          },
+          {
+            "type": "h3",
+            "text": "Epochs of fine-tuning"
+          },
+          {
+            "type": "p",
+            "text": "Looking at the training code, one thing stood out to me.  The process was:"
+          },
+          {
+            "type": "li",
+            "text": "Fine-tune the model for a maximum of 100 epochs over the training set."
+          },
+          {
+            "type": "li",
+            "text": "If loss on a held-back validation set went above the result for the previous\nepoch, we did an early exit and used the previous epoch's model for the generation\nof the responses."
+          },
+          {
+            "type": "p",
+            "text": "In practice, the early-exit code always cut in pretty quickly.\nI'd noticed that during my original generation of the results for the new models:"
+          },
+          {
+            "type": "li",
+            "text": "8xa100m40-baseline took 6 epochs until validation loss started rising."
+          },
+          {
+            "type": "li",
+            "text": "1xrtx3090-baseline took 5"
+          },
+          {
+            "type": "li",
+            "text": "8xa100m40-stacked-interventions-1 took 4"
+          },
+          {
+            "type": "li",
+            "text": "1xrtx3090-stacked-interventions took 5"
+          },
+          {
+            "type": "p",
+            "text": "I decided to regenerate responses for all of the models, and then run the new\nresponses past the LLM judge again.  But this time I would keep a record of how\nmany epochs of training we got before the exit:"
+          },
+          {
+            "type": "p",
+            "text": "It was getting even harder to see any useful pattern!  One thing that did\nstand out, though, was that the still oddly-high Cloud FineWeb, 8x A100 40 GiB\nmodel was being instruction-trained for seven epochs.  It was also rather noticeable\nthat the two FineWeb-Edu models had the same \"advantage\", if that's what it was.  But\nthe Local FineWeb train had seven\nepochs too, and got a poor score, the OpenAI models only got two each, and\nled the pack, and 1xrtx3090-baseline got a pretty poor result given its six\nepochs of training."
+          },
+          {
+            "type": "p",
+            "text": "Still, what would happen if we got rid of that confounder?  I did yet another\nset of runs; this time, I changed the fine-tuning/generation script to always do\nfour epochs -- no early exit.  I chose four because it was the modal number in the\nprevious trains -- no strong reason for it beyond that."
+          },
+          {
+            "type": "h3",
+            "text": "Training for four epochs"
+          },
+          {
+            "type": "p",
+            "text": "Here's what came out at the end:"
+          },
+          {
+            "type": "p",
+            "text": "Still no obvious pattern."
+          },
+          {
+            "type": "h3",
+            "text": "Training for seven epochs"
+          },
+          {
+            "type": "p",
+            "text": "What if we try seven epochs of training for all of them, so that they all get as much\n\"benefit\" (if that's what it is) as the FineWeb-Edu models?"
+          },
+          {
+            "type": "p",
+            "text": "Just as confused as ever..."
+          },
+          {
+            "type": "h3",
+            "text": "Putting it all together"
+          },
+          {
+            "type": "p",
+            "text": "Here's a table with all of the ranks we got from these tests:"
+          },
+          {
+            "type": "p",
+            "text": "It's hard to draw much sense out of this, but a few things are clear:"
+          },
+          {
+            "type": "li",
+            "text": "Performance on this test is correlated with loss, but it's far from the only factor."
+          },
+          {
+            "type": "li",
+            "text": "The OpenAI weights consistently lead the pack."
+          },
+          {
+            "type": "li",
+            "text": "Of our own models, 1xrtx3090-stacked-interventions, Cloud FineWeb, 8x A100 40 GiB,\nand Local FineWeb-Edu train do pretty well."
+          },
+          {
+            "type": "li",
+            "text": "Strangely, Local FineWeb-Edu extended train, which is just Local FineWeb-Edu train\nthat has been trained on a further 3B tokens of the FineWeb-Edu dataset, is consistently\nworse than the model it was based on."
+          },
+          {
+            "type": "li",
+            "text": "8xa100m40-stacked-interventions-1 and 1xrtx3090-baseline are consistently bad.  Cloud FineWeb, 8x A100 80 GiB is\nalso not great."
+          },
+          {
+            "type": "p",
+            "text": "On the one hand, training different models for different numbers of epochs feels wrong\nfor an evaluation like this, as they're being \"treated differently\".  On the other hand,\nif it's meant to be a good evaluation of model usefulness in the real world, then individual models would\nbe fine-tuned for different amounts of time, depending on validation loss.  So perhaps\nit is better?"
+          },
+          {
+            "type": "p",
+            "text": "But the differing results are still quite a puzzle.  I figured that a modern AI could\neasily build me a data exploration interface, specifically for the original results\nand seven-epoch ones, so I asked Claude and got this rather nice one."
+          },
+          {
+            "type": "p",
+            "text": "After poring over that, though, I couldn't find a smoking gun -- for example, some\nkind of systematic error that 8xa100m40-stacked-interventions-1 was always making\nthat pulled its score down."
+          },
+          {
+            "type": "p",
+            "text": "I think that the best -- albeit hand-wavy and incomplete -- mental model that I have right now is something like this.  If\nwe consider the loss landscape that these models are all in, they've all been trained\nto try to get to a place with as low loss as we could manage.  When we do the instruction\nfine-tune on them, we're changing the landscape -- the objective of \"be better at\nfollowing instructions\" is different to \"be better at minimising loss\"."
+          },
+          {
+            "type": "p",
+            "text": "Now, those two landscapes could be completely different!  You can imagine a task that we\nmight set instead of instruction-following that could be completely uncorrelated with\nloss minimisation, or even inversely correlated."
+          },
+          {
+            "type": "p",
+            "text": "But instruction-following is relatively close; it at least shares features like \"generate\ncoherent text\".  So when we do the instruction fine-tuning, what we're trying to do is\nto move from the place where the model ended up after its pre-training, to a place where\nperformance on the new goal -- instruction-following -- is best."
+          },
+          {
+            "type": "p",
+            "text": "Here's where I'm going to get more than a bit hand-wavy.  You can easily imagine that some\nplaces where the loss was low, there might be downhill slopes pointing towards good\nlocations in the new instruction-following landscape.  With instruction fine-tuning,\nyou'd be able to get a good IFT model."
+          },
+          {
+            "type": "p",
+            "text": "But other places with low loss might not have that advantage; maybe they're at or\nnear a poor \"local minimum\" in the IFT landscape -- that is, a place where there is\nno downhill route to a better place.  So simple fine-tuning like this\nmight never get a good result!"
+          },
+          {
+            "type": "p",
+            "text": "With this mindset, we might say that the OpenAI weights are pretty well-positioned,\nnot just in the loss landscape but also in the IFT landscape.  The FineWeb-Edu\nmodels happened to get lucky, and wind up in a place that (despite having poor loss),\nis well-positioned for the IFT objective.  And by contrast, 8xa100m40-stacked-interventions-1\nand 1xrtx3090-baseline were just unlucky: they got to a place where the loss\nlandscape was not well-correlated with the IFT landscape."
+          },
+          {
+            "type": "p",
+            "text": "This seems plausible enough for me to\nuse it as my working model for now, and see if I can work out some way to test it.\nKeeping track of the validation loss during the instruction fine-tuning process would\ncertainly be a good start; unfortunately I only realised that after doing all\nof the tests above, and re-doing them would be quite a lot of work."
+          },
+          {
+            "type": "p",
+            "text": "One final thing is worth repeating.  Our two \"unlucky\" models,\n8xa100m40-stacked-interventions-1 and 1xrtx3090-baseline, each had a twin.\nThe former was the DDP-trained counterpart of the gradient-accumulated\n1xrtx3090-stacked-interventions, while the latter was the gradient-accumulated counterpart\nof 8xa100m40-baseline.  So while something odd clearly happened, it doesn't look like\nDDP or gradient accumulation by themselves are the culprit."
+          },
+          {
+            "type": "p",
+            "text": "I think that at this point, it's best for me to draw a line under this -- I have a\nbunch of other things I'd like to get to, and this is a bit of a side quest at\nthis point."
+          },
+          {
+            "type": "p",
+            "text": "Still, I have one main takeaway from this: chasing lower loss is technically interesting but is not the only goal.\nIn some cases, it seems likely that lower-loss models can be worse for actual use."
+          },
+          {
+            "type": "p",
+            "text": "Coming up next: I'm going to wrap up this \"interventions\" mini-series, and move\non to the final steps in my LLM from scratch journey.  See you then!"
+          },
+          {
+            "type": "p",
+            "text": "Here's a link to the next post in this series."
+          }
+        ],
+        "translations": [
+          "归档",
+          "分类",
+          "友情链接",
+          "我一直在基于 Sebastian Raschka 的书籍《Build a Large Language Model (from Scratch)》开发一个类似 GPT-2-small 的 LLM，并尝试了多种方法，看看是否能使其在保留的测试数据集上的损失值方面接近原始 OpenAI GPT-2-small 的质量。经过一番努力，我在上一篇文章中成功训练出了一个几乎（如果不是完全）达到该水平的模型。",
+          "在我开始深入这些干预措施之前，我为每个构建的模型执行三次评估：冒烟测试（看它能否对“Every effort moves you”给出连贯的补全），测试集损失值测试，以及一个指令遵循测试——先对该模型进行 Alpaca 数据集的微调，让它为一批指令生成结果，然后使用另一个 LLM 作为裁判来评分。",
+          "这个想法是，虽然测试集上的损失值是一个有趣的技术指标，能反映模型质量，但它并不能真正告诉我们它在实际使用中可能有多有用。",
+          "遗憾的是，今年一月我意识到自己的方法论有问题；因为我让 LLM 单独对一个模型打分，而 LLM 本身的随机性会导致结果不可比，至少对于质量相近的模型来说是这样。",
+          "例如，如果两个模型都对",
+          "Name the author of 'Pride and Prejudice'.",
+          "做出了回应：",
+          "The author of 'Pride and Prejudice' is Sarah Palin.",
+          "...那么一次指令遵循测试可能会“遇到裁判 LLM 心情好”的情况，给出比如 5% 的分数——毕竟模型确实尝试回答了问题，甚至用了一个真实的人名，尽管答案完全错误。但在另一次运行中，裁判可能“心情不好”，直接给 0%。",
+          "我的解决方案是写两个脚本：",
+          "一个脚本先对模型进行微调，让它生成回复，然后把回复保存到文件中。",
+          "另一个脚本读取上述生成的多个文件（每个不同模型对应一个），一起呈现给 LLM，希望它能相对一致地对这些回复进行评分。",
+          "具体细节见这里。",
+          "因为这样做工作量大大增加，我没有把这些测试纳入干预措施的迷你系列中。我觉得更有意义的做法是等尝试完一系列干预措施、积累多个模型后再统一测试。",
+          "现在我已经有了这些模型，让我们开始吧！",
+          "背景与上次测试结果",
+          "在上轮 IFT 测试结束时，我有过这张表格。它按测试集损失值排序（精确到小数点后三位），并列出了模型在指令微调后的得分：",
+          "总体趋势是损失越低，IFT 得分越高，但有两个异常情况：两次 FineWeb-Edu 训练的结果远高于根据损失值预期的水平。",
+          "我当时认为，模型获得高分有两个关键因素：",
+          "首先是它的基础智能水平：损失越低的模型越聪明，微调后执行指令的能力也越强。",
+          "其次是知识密度。除了 FineWeb-Edu 外，所有模型（包括我的和 OpenAI 的）都基于互联网上经过最低限度筛选的数据训练而成。而 FineWeb-Edu 被设计为“最具教育价值”的 FineWeb 子集，因此很可能包含更多有用的知识点。",
+          "这么说来，OpenAI 模型和 Cloud FineWeb（8x A100 40 GiB）可能“聪明但所知不多”，而 FineWeb-Edu 模型则可能是“愚钝却知识渊博”。相比之下，中间的那些模型也可能相对愚钝，而且所知也有限。",
+          "还有一个奇怪之处：Cloud FineWeb（8x A100 40 GiB）模型在 IFT 测试中表现异常出色，尽管它的损失值并不低——也许存在某种阶跃函数机制，一旦模型在损失上优于（比如）3.7，它就会突然变得“智能”起来，至少在相关指标上如此。",
+          "当然，这纯属猜测，但至少是一种可能的解释。新模型是否符合这一模式？是时候验证一下了。",
+          "初次运行与谜团",
+          "我不认为有必要把我在干预测试中训练的所有 14 个模型都加进那张表格里，于是决定只加入其中四个：",
+          "8xa100m40-baseline，即所有干预实验所基于的云训练基准模型。",
+          "1xrtx3090-baseline，这是同一模型的本地训练版本——也就是本文第一篇中提到的第一个模型。",
+          "8xa100m40-stacked-interventions-1，我们在云端能获得的最好模型。",
+          "1xrtx3090-stacked-interventions，本地训练的最佳模型——即本文第二篇中介绍的那个。",
+          "现在，我已经有了经过微调的其他模型响应文件，因此只需用我的两个微调脚本中的第一个，对这四个新模型进行处理即可。",
+          "我这样做了，同时也调整了评判脚本，使其不再使用 GPT-5.1，而是改用 GPT-5.4。如果你多次运行该脚本，每次结果通常都会不同；不过希望排名大致保持不变。考虑到我不得不重新运行脚本来获取新的汇总结果，而这些结果本身也难以与原数据直接比较，那么为了（ hopefully）一个更聪明的评判者而付出这个代价似乎是合理的。",
+          "我只运行了一次，就得到了令人惊讶的结果——惊讶到让我决定多做三次运行，看看结果是否稳定。事实证明确实如此；以下是新表格，列出了每次运行的分数、平均值，以及根据平均值得出的排名。",
+          "你可以看到，IFT 各次运行的相对排名相当一致。虽然总体而言，损失越低的模型在 IFT 测试中表现越好，但现在这种趋势出现了比以往更多的例外。",
+          "让我们来看看“IFT rank”列，它基于 IFT 的平均得分：",
+          "第一个意外是 8xa100m40-stacked-interventions-1。它的损失排第四，但在所有模型中却是指令微调测试中最差的！它除了 OpenAI 模型和 FineWeb-Edu 模型外，使用的训练数据与其他模型完全相同。更令人困惑的是，它与 1xrtx3090-stacked-interventions 的匹配度已经尽可能接近，却得出了完全相反的结果。你可能还记得，这两个实验最初共享相同的权重和完全一致的训练配置；唯一的区别在于它们运行在不同架构上，其中一个使用了 DDP 并实现了真实的全局批量大小为 96，另一个则通过梯度累积达到相同批量大小。",
+          "1xrtx3090-baseline 的表现远不如其损失数值所预期的那样好；它在损失指标上仅略逊于 Cloud FineWeb（8块 A100 40 GiB），但在 IFT 测试中却差得多。这本质上是一个克隆模型：8xa100m40-baseline，同样是使用 DDP 而非梯度累积的训练运行。问题相同——在一对高度匹配的模型中，总有一个在 IFT 测试中表现更差。但这次情况相反：反而是采用梯度累积的那个模型表现不佳。",
+          "这种情况非常奇怪。如果梯度累积（GA）始终比 DDP 差，或者反过来总是更差，我们或许还能设想某种关联。但实际情况是：第一次 GA 优于 DDP，第二次却是 DDP 更好。",
+          "除了这一点，我们依然看到两个 FineWeb-Edu 模型明显优于其他模型。其余模型在损失值和排名上都相当接近，唯独 Local FineWeb train 两项都表现糟糕。",
+          "不过有趣的是，Local FineWeb-Edu extended train 虽然在数据量上是 Local FineWeb-Edu train 的两倍，但在 IFT 分数上却持续落后。我之前测试时并非如此。",
+          "这让我十分困惑。“大量知识让模型在此任务上表现更好”这一观点，似乎被两个 FineWeb-Edu 模型的相对排名削弱了——毕竟若该说法成立，训练更多数据的模型理应全面领先。而“低损失即代表智能且更优”的说法，也被 8xa100m40-stacked-interventions-1 和 1xrtx3090-baseline 的糟糕结果所质疑。",
+          "那么，究竟发生了什么？",
+          "微调轮次的影响",
+          "查看训练代码后，我发现一个关键点。流程如下：",
+          "在训练集上最多微调 100 个 epoch。",
+          "如果在保留的验证集上损失高于上一 epoch，则提前终止，并使用前一 epoch 的模型生成回复。",
+          "实际上，早停机制几乎每次都迅速触发。我在最初为新模型生成结果时就注意到了这一点：",
+          "8xa100m40-baseline 在第 6 个 epoch 开始出现验证损失上升。",
+          "1xrtx3090-baseline 在第 5 个 epoch。",
+          "8xa100m40-stacked-interventions-1 在第 4 个 epoch。",
+          "1xrtx3090-stacked-interventions 在第 5 个 epoch。",
+          "我决定重新为所有模型生成回复，并将新回复再次提交给 LLM judge。但这次我会记录每个模型实际训练了多少个 epoch 后才退出：",
+          "结果愈发难以看出任何有用模式！但有一点突出：那个 IFT 分数仍异常高的 Cloud FineWeb（8xA100 40GiB）模型恰好训练了七个 epoch。值得注意的是，两个 FineWeb-Edu 模型也都有这个“优势”。然而 Local FineWeb train 同样训练了七轮，得分却很低；OpenAI 模型只训练了两轮，反而拔得头筹；而仅训练六轮的 1xrtx3090-baseline 也取得了较差的结果。",
+          "尽管如此，如果我们能消除这个干扰因素会怎样？我进行了另一组实验：修改微调/生成脚本，强制固定训练四轮——不再启用早停。之所以选四，是因为它是之前训练中最常见的轮数，别无深意。",
+          "训练四轮后的结果",
+          "最终结果如下：",
+          "仍然没有明显的规律。",
+          "训练七轮",
+          "如果我们让所有模型都训练七轮，这样它们都能像 FineWeb-Edu 模型一样获得“好处”（如果这真是好处的话）呢？",
+          "还是一样让人困惑……",
+          "综合来看",
+          "以下是我们在这些测试中获得的所有排名的表格：",
+          "很难从中得出什么明确的结论，但有些现象是清晰的：",
+          "在这个测试中的表现与损失相关，但远非唯一决定因素。",
+          "OpenAI 权重始终处于领先地位。",
+          "在我们自己的模型中，1xrtx3090-stacked-interventions、Cloud FineWeb、8x A100 40 GiB 以及 Local FineWeb-Edu train 表现相当不错。",
+          "奇怪的是，Local FineWeb-Edu extended train（即在 Local FineWeb-Edu train 基础上再额外训练 30 亿个 FineWeb-Edu 数据集的 token）的表现反而 consistently 不如其基础模型。",
+          "8xa100m40-stacked-interventions-1 和 1xrtx3090-baseline 的表现 consistently 很差；Cloud FineWeb 和 8x A100 80 GiB 的表现也不尽如人意。",
+          "一方面，为不同数量的 epoch 训练不同的模型，在这种评估方式下感觉不太合理，因为它们被“区别对待”了；另一方面，如果这种评估旨在真实反映模型的实际用途，那么不同模型根据验证损失进行不同时长的微调也是合理的。所以也许这样反而是更好的做法？",
+          "但这些差异的结果依然是个谜。我想现代 AI 应该能轻松为我构建一个专门用于分析原始结果和七轮训练结果的探索界面，于是我问了 Claude，它给了我这样一个相当不错的工具。",
+          "然而仔细研究之后，我仍然没有找到确凿的证据——比如某种系统性错误导致 8xa100m40-stacked-interventions-1 的分数持续偏低。",
+          "目前我认为最合理的解释（尽管有些模糊且不完整）是这样的：如果我们把这些模型看作处于同一个损失景观中，它们都被训练到尽可能低的损失位置。当我们对其进行指令微调时，实际上是在改变这个景观——“更好地遵循指令”的目标与“更好地最小化损失”是不同的。",
+          "这两个景观可能完全不同！你可以想象一个任务，它完全与损失最小化无关，甚至呈负相关。",
+          "但指令遵循任务相对接近，至少共享一些特征，比如“生成连贯文本”。因此当我们进行指令微调时，实际上是从预训练后模型所处的位置出发，迁移到一个在新目标——即指令遵循——上表现最佳的位置。",
+          "接下来我要开始有些模糊地推测了。你可以想象某些低损失区域可能存在通往新指令遵循景观中良好位置的“下坡路径”。通过指令微调，我们就能得到一个优秀的 IFT 模型。",
+          "但其他低损失区域可能不具备这种优势；它们可能位于或靠近 IFT 景观中的“局部极小值”——也就是说那里没有通往更好位置的路径。因此简单的微调可能永远无法取得好结果！",
+          "在这种思路下，我们可以说 OpenAI 的权重在损失景观和 IFT 景观两方面都处于有利位置。FineWeb-Edu 模型运气不错，虽然损失值较高，但恰好位于对 IFT 目标更有利的区域内。相比之下，8xa100m40-stacked-interventions-1 和 1xrtx3090-baseline 就比较“倒霉”了：它们收敛到了损失景观与 IFT 景观相关性较差的位置。",
+          "这个解释对我来说已经足够合理，可以作为当前的工作假设，并尝试寻找验证方法。在指令微调过程中持续监控验证损失当然是个好起点；可惜我在完成上述所有测试后才意识到这一点，重新运行这些实验工作量会很大。",
+          "还有一点值得重申：我们那两个“不幸”的模型——8xa100m40-stacked-interventions-1 和 1xrtx3090-baseline——各自都有一个“孪生兄弟”。前者是梯度累积版 1xrtx3090-stacked-interventions 的 DDP 训练版本，后者则是 8xa100m40-baseline 的梯度累积版本。因此，尽管确实发生了异常情况，但 DDP 或梯度累积本身似乎并非元凶。",
+          "我认为现在应该到此为止了——我还有其他很多事情要做，这已经算是支线任务了。",
+          "不过，这次经历让我得出一个重要结论：追求更低损失在技术上固然有趣，但并非唯一目标。在某些情况下，低损失模型反而可能在实际使用中表现更差。",
+          "接下来：我将结束这个“干预”小系列，进入我的从零开始构建 LLM 旅程的最后阶段。敬请期待！",
+          "这是本系列下一篇文章的链接。"
+        ]
+      },
+      "fromDate": "2026-04-20"
+    },
+    {
+      "slug": "fa344ff3c19d5381",
+      "title": "Writing an LLM from scratch, part 32m -- Interventions: conclusion",
+      "titleZh": "从零开始编写 LLM，第 32m 部分——干预措施：结论",
+      "link": "https://www.gilesthomas.com/2026/04/llm-from-scratch-32m-interventions-conclusion",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-04-21T20:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "from scratch",
+        "interventions"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 24
+      },
+      "summary": "作者完成了《从零构建大型语言模型》一书的主要部分后，设定了训练完整 GPT-2 基础模型的后续目标。经过努力，他成功训练出一个在 44 小时内完成的模型，其性能几乎（如果不是完全）达到了 GPT-2 small 的水平。",
+      "summaryEn": "After finishing the main body of 'Build a Large Language Model (from Scratch)', the author set a goal to train the full GPT-2 base model himself. He has now completed this journey, training a model in 44 hours that is almost—if not quite—as good as GPT-2 small.",
+      "reason": "这个项目展示了个人开发者也能复现先进模型的能力，为 AI 教育者和研究者提供了宝贵的实践参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "Last November, when I finished the main body of\n\"Build a Large Language Model (from Scratch)\",\nI set myself a number of follow-on goals.\nOne was \"training the full GPT-2 base model myself\"."
+          },
+          {
+            "type": "p",
+            "text": "I've reached the end of that journey, with a model that is almost -- if not quite\n-- as good as GPT-2 small, trained in 44 hours on my own machine,\nso I thought it would be worth summarising\nhow it went."
+          },
+          {
+            "type": "p",
+            "text": "In December, I trained my first model,\ntaking two days,\nbut was disappointed to see that it was worse in terms of loss, and in terms\nof how well it could be fine-tuned to follow instructions, than the original GPT-2 model."
+          },
+          {
+            "type": "p",
+            "text": "I expected that a chunk of that difference was likely to be due to the original model having\nbeen trained for longer, but also noticed that there were a number of changes -- interventions -- that\nI could make to the model and the training run, and I thought they might help."
+          },
+          {
+            "type": "p",
+            "text": "In January, I got a DDP training system together\nthat would allow me to iterate on those interventions without having to wait for\ntwo days for each result."
+          },
+          {
+            "type": "p",
+            "text": "In February, I got started by training a baseline model in the cloud,\nand\nI've since ground through all of the interventions, and come up with\na set that lowered the loss nicely, both in the cloud,\nand locally."
+          },
+          {
+            "type": "p",
+            "text": "Along the way, I've learned about, or refined my knowledge of, a bunch of ML concepts.\nIn increasing order of how they helped with the loss (with the first two actually making\nit slightly worse):"
+          },
+          {
+            "type": "li",
+            "text": "Weight tying, which\nI found made the loss worse, but it was interesting how simple it was to implement."
+          },
+          {
+            "type": "li",
+            "text": "PyTorch's Automated Mixed Precision,\nwhich also harmed the loss a tiny bit, but\nhad the benefit of making training twice as fast, and 66% cheaper in the cloud\n-- well worth the loss penalty."
+          },
+          {
+            "type": "li",
+            "text": "Gradient clipping -- a cheap,\nbut (somewhat to my surprise) not particularly effective intervention for this model."
+          },
+          {
+            "type": "li",
+            "text": "QKV bias -- that is,\nadding bias to the attention weight matrices -- which also helped a tiny bit, though\nI later felt that this might have been in the noise."
+          },
+          {
+            "type": "li",
+            "text": "Weight decay -- more effective,\nand something\nthat's simple enough to understand with simple gradient descent.  I still need to\nlearn more about it in\nthe context of optimisers, though -- particularly with AdamW."
+          },
+          {
+            "type": "li",
+            "text": "Dropout, which\nseems to be less than useful for single-epoch training: removing it\nhelped the model quite a lot."
+          },
+          {
+            "type": "li",
+            "text": "The learning rate,\nwhich I built up quite a lot of new knowledge about, and by both increasing it\nand scheduling it, I got the biggest bang for the buck."
+          },
+          {
+            "type": "p",
+            "text": "I've also learned how to upload my custom models to Hugging Face,\nfound out some interesting things about how random noise affects training,\nand come up with improvements in the setup I have for using an\nLLM as a judge for instruction fine-tuned models."
+          },
+          {
+            "type": "p",
+            "text": "There was a bit of a mystery when I tried out the instruction fine-tuning tests,\nthough.  Although two of my models were very close to GPT-2 small in terms of loss,\nI found\nthat while one of them had an instruction fine-tuning result that was likewise close\nto GPT-2 small, the other was much worse!  A mystery to dig into later, I think."
+          },
+          {
+            "type": "p",
+            "text": "But it was still very satisfying that my best model -- trained locally in 44 hours\n-- was almost as good as GPT-2 small, even if it did fall somewhat short.  So on that\npositive note, I'm going to wrap up this \"Interventions\" series-within-a-series, and move\non to the two other things I wanted to do before wrapping up the \"LLM from scratch\" series\nas a whole:"
+          },
+          {
+            "type": "li",
+            "text": "Going through the appendices in the book to see if there's anything I want\nto highlight there."
+          },
+          {
+            "type": "li",
+            "text": "The final test as to whether I've really understood everything: building my own\nLLM from scratch without reference to the book.  I want to do that in a different\nframework, not PyTorch, to minimise the risk of just regurgitating code --\nI asked people on X/Twitter which one I should use, and\nthe winner was JAX -- so it should be interesting to see how that goes!"
+          },
+          {
+            "type": "p",
+            "text": "The appendices first, I think -- I'll post about them shortly.  But I think the big\none will be the JAX implementation -- really looking forward to that."
+          }
+        ],
+        "translations": [
+          "归档",
+          "分类",
+          "友情链接",
+          "去年11月，当我完成《从零开始构建大型语言模型》一书的正文部分后，给自己设定了一系列后续目标。其中之一是“亲自训练完整的 GPT-2 基础模型”。",
+          "如今，我已完成这段旅程，在个人电脑上经过44小时训练得到的模型性能几乎——如果不是完全——达到了 GPT-2 small 的水平。因此，我认为有必要总结一下整个过程。",
+          "12月份，我首次尝试训练模型，耗时两天，但结果令人失望：无论是在损失值方面，还是在指令微调后的表现上，都明显不如原始的 GPT-2 模型。",
+          "我推测这种差距可能部分源于原模型训练时间更长，但也注意到可以对模型和训练流程进行若干调整——即所谓的“干预措施”——并认为这些措施或许能带来改善。",
+          "1月份，我搭建了一个分布式数据并行（DDP）训练系统，使我能够在每次迭代中快速测试这些干预措施，而无需等待两天才能看到结果。",
+          "2月份，我从在云端训练一个基线模型开始，随后逐一尝试了所有干预措施，最终找到一组显著降低损失的方法，无论是在云端还是本地环境中均有效。",
+          "在此过程中，我对一系列机器学习概念有了更深入的理解或修正了原有认知。按其对损失的影响程度递增排列如下（前两项实际上略微增加了损失）：",
+          "权重绑定（Weight tying），我发现它反而使损失变差，不过实现起来非常简单，这一点很有意思。",
+          "PyTorch 的自动混合精度（Automated Mixed Precision），虽然也轻微恶化了损失，但训练速度提升了一倍，在云端成本降低了66%——这点损失换来的效率提升非常值得。",
+          "梯度裁剪（Gradient clipping），这是一种低成本的方法，但（让我有些意外的是）对这个模型效果并不显著。",
+          "QKV偏置——即在注意力权重矩阵中加入偏置项——虽有小幅帮助，但后来我觉得这可能是噪声所致。",
+          "权重衰减（Weight decay），效果更明显，且其原理用简单的梯度下降就能理解。不过我还需进一步学习其在优化器（尤其是 AdamW）背景下的深层机制。",
+          "Dropout，在单轮训练中似乎作用有限：移除它反而让模型表现大幅提升。",
+          "学习率，我在此方面积累了大量新知识，通过同时提高初始学习率并配合调度策略，获得了最大的性价比提升。",
+          "我还学会了如何将自定义模型上传到 Hugging Face，了解到随机噪声对训练的影响，并对使用 LLM 作为指令微调模型的评判标准这一设置进行了优化改进。",
+          "不过在测试指令微调效果时出现了一点小谜团：尽管我的两个模型在损失值上已接近 GPT-2 small，其中一个模型的指令微调结果也与之相当，另一个却差得很多！这留待日后深入探究。",
+          "尽管如此，能够用本地44小时的训练成果得到一个几乎媲美 GPT-2 small 的模型，依然令人非常满足——哪怕仍有差距。基于此积极进展，我将结束这个“干预措施”系列专题，转向“从零构建 LLM”整体系列的另外两个预定目标。",
+          "翻看书中附录，看看有没有什么值得特别标注的内容。",
+          "最终检验我是否真正理解一切的标志：不参考书本内容，从零开始构建自己的大语言模型（LLM）。我希望用不同的框架来实现，而不是 PyTorch，以减少单纯复制代码的风险——我在 X/Twitter 上询问大家该选哪个，呼声最高的是 JAX，所以这次尝试应该会很有趣！",
+          "我觉得应该先处理附录部分——很快就会发布相关内容。不过，最让我期待的还是 JAX 的实现，非常期待看到成果。"
+        ]
+      },
+      "fromDate": "2026-04-21"
+    },
+    {
+      "slug": "84a783d02f917882",
+      "title": "An AI Odyssey, Part 4: Astounding Coding Agents",
+      "titleZh": "AI 奥德赛，第四部分：令人惊叹的编码代理",
+      "link": "https://www.johndcook.com/blog/2026/04/21/an-ai-odyssey-part-4-astounding-coding-agents/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-21T20:14:40.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI coding agents",
+        "developer tools",
+        "automation",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "去年夏天和去年十二月至一月期间，AI 编码代理的能力显著提升。作者主观感觉这些模型变得更聪明，能完成更广泛的任务，并对代码库有更全面深入的理解。这表明 AI 编程助手正在向更智能、更自主的方向发展。",
+      "summaryEn": "AI coding agents have improved significantly since last summer and again during December-January. The models feel subjectively much smarter, can accomplish a much broader range of tasks, and seem to have a larger, more comprehensive in-depth view of the codebase. This indicates that AI programming assistants are evolving toward greater intelligence and autonomy.",
+      "reason": "对于从事软件开发的专业人士来说，了解 AI 编码代理的最新进展至关重要，这可能改变未来的编程工作方式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Wayne Joubert",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "AI coding agents improved greatly last summer, and again last December-January. Here are my experiences since my last post on the subject."
+          },
+          {
+            "type": "p",
+            "text": "The models feel subjectively much smarter. They can accomplish a much broader range of tasks. They seem to have a larger, more comprehensive in-depth view of the code base and what you are trying to accomplish. They can locate more details in obscure parts of the code related to the specific task at hand. By rough personal estimate, I would say that they helped me with 20% of my coding effort last August and about 60% now. Both of these figures may be below what is possible, I may not be using them to fullest capability."
+          },
+          {
+            "type": "p",
+            "text": "This being said, they are not a panacea. Sometimes they need help and direction to where to look for a problem. Sometimes they myopically look at the trees and don’t see the forest, don’t step back to see the big picture to understand something is wrong at a high level. Also they can overoptimize to the test harness. They can also generate code that is not conceptually consistent with existing code."
+          },
+          {
+            "type": "p",
+            "text": "They can also generate much larger amounts of code than necessary. Some warn that that this will lead to explosion of coding debt. On the other hand, you can also guide the coding agent to refactor and improve its own code—quickly. In one case I’ve gotten it to reduce the size of one piece of code to less than half its original size with no change in behavior."
+          },
+          {
+            "type": "p",
+            "text": "I use OpenAI Codex rather than Claude Code.  I’m glad to hear some technically credible people think this a good choice. Though maybe I should try both."
+          },
+          {
+            "type": "p",
+            "text": "My work is a research project for which the code itself is the research product, so I can’t give specifications of everything in advance; writing the code itself is a process of discovery. Also, I want a code base that remains human-readable. So I am deeply involved in discussion with the coding agent that will sometimes go off to do a task for some period of time. It is not my desire to treat the agent as what some have called a dark software factory."
+          },
+          {
+            "type": "p",
+            "text": "Some say they fear that using a coding agent will result in forgetting how to write code without one. I have felt this, but from having exercised this muscle for such a very long time I don’t think it is a skill I would easily forget. The flip side of this argument is, you might even learn new coding idioms from observing what the coding agent writes, that is a good thing."
+          },
+          {
+            "type": "p",
+            "text": "Some say they haven’t written a line of code in weeks because the coding agent does it for them. I don’t think I’ll ever stop writing code, any more than I will stop scribbling random ideas on the back of an envelope, or typing out some number of lines of code by which I discover some new idea in real time while I am typing. Learning is multisensory."
+          },
+          {
+            "type": "p",
+            "text": "My hat’s off to the developers who are able to keep many different agents in flight at the same time. Personally I have difficulty handling the cognitive load of thinking deeply about each one and doing a mental context switch across many agents. Though I am experimenting with running more than one agent so I can be doing something while another agent is working."
+          },
+          {
+            "type": "p",
+            "text": "I continue to be astounded by productivity gains in some situations. I recently added a new capability, which normally I think would’ve taken me two months to learn a whole new algorithmic method and library to use. With the coding agent, it took me four days to get this done, on the order of 10X productivity increase. Though admittedly things are not always that rosy."
+          },
+          {
+            "type": "p",
+            "text": "In short, the tools are getting better and better. I’m looking forward to what they will be like a few months or a year from now."
+          }
+        ],
+        "translations": [
+          "AI 编程代理在去年的夏天取得了巨大进步，又在去年12月至今年1月再次提升。以下是我自上次发文以来使用它们的经验总结。",
+          "这些模型主观上感觉聪明了很多。它们能完成更广泛的任务。似乎对代码库和你的目标有更全面、更深入的理解。能在代码中晦涩的部分找到与当前任务相关的更多细节。粗略估计，我认为它们在去年8月帮我节省了约20%的编码工作量，而现在大约是60%。这两个数字可能都低于实际潜力，我或许还没有充分发挥它们的能力。",
+          "尽管如此，它们并非万能药。有时需要你指引方向才能找到问题所在。有时它们会陷入细节（只见树木不见森林），无法从整体角度审视问题，导致高估某些错误。它们还可能过度优化测试用例，或生成与现有代码在概念上不一致的代码。",
+          "它们还能生成远超必要量的代码。有人警告这会导致代码债务激增。另一方面，你也可以引导编程代理重构并改进自己的代码——而且速度很快。我曾让它将某段代码的大小缩减至原来的一半以下，而行为保持不变。",
+          "我使用的是 OpenAI Codex 而非 Claude Code。很高兴听到一些技术可信的人认为这是个不错的选择。不过也许我应该两种都试试。",
+          "我的工作是研究项目，代码本身就是研究成果，因此我无法提前规定所有细节；编写代码本身就是一个探索过程。此外，我希望代码库保持人类可读性。所以我深度参与与编程代理的对话，它有时会离开去执行某个任务一段时间。我不希望把它当作某些人所谓的“暗软件工厂”。",
+          "有人说担心使用编程代理后会忘记如何不用它来写代码。我确实有过这种感觉，但由于长期锻炼这项技能，我不认为会轻易遗忘。反过来说，通过观察代理生成的代码，你甚至可能学到新的编程惯用法，这也是一件好事。",
+          "有人说他们几周没写过一行代码，因为代理替他们写了。我不认为自己会停止亲自写代码，就像我不会停止在信封背面涂鸦随机想法，或在输入过程中实时敲出若干行代码来发现新思路一样。学习是多感官的。",
+          "向那些能同时运行多个代理的开发者致敬。我个人难以承受同时思考多个代理并进行频繁上下文切换的认知负担。不过我正在尝试运行不止一个代理，这样当一个代理工作时，我可以处理其他事情。",
+          "我仍对某些情况下的生产力提升感到震惊。最近我添加了一项新功能，按以往经验，通常需要两个月时间来学习一种全新的算法方法和库。但借助编程代理，我只用了四天就完成了，生产力提升了大约10倍。当然，并非所有情况都如此顺利。",
+          "简而言之，这些工具正变得越来越好。我期待几个月或一年后它们会变成什么样。"
+        ]
+      },
+      "fromDate": "2026-04-21"
+    },
+    {
+      "slug": "6446468f26ba3d87",
+      "title": "llm 0.31",
+      "titleZh": "llm 0.31 发布：新增 GPT-5.5 模型与动词度控制选项",
+      "link": "https://simonwillison.net/2026/Apr/24/llm/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-24T23:35:07.000Z",
+      "category": "tools",
+      "keywords": [
+        "LLM",
+        "OpenAI",
+        "gpt-5.5",
+        "release"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Simon Willison 发布的 llm 0.31 版本正式集成了 OpenAI 最新的 GPT-5.5 模型，用户可通过 `llm -m gpt-5.5` 调用。同时新增了针对 GPT-5+ 系列模型的文本动词度参数设置功能（`-o verbosity low/medium/high`），允许开发者更精细地控制输出详细程度。此外还包括多项 bug 修复与性能优化。",
+      "summaryEn": "The llm 0.31 release by Simon Willison now supports OpenAI's latest GPT-5.5 model via `llm -m gpt-5.5`. A new verbosity parameter (`-o verbosity low|medium|high`) allows finer control over output detail for GPT-5+ models. Other changes include bug fixes and performance improvements.",
+      "reason": "对于使用命令行进行 LLM 交互的开发者而言，此更新提供了对最新最强模型的支持及更灵活的输出调控能力，极大提升了工作效率。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Release\n    \n    llm 0.31\n    — Access large language models from the command-line"
+          },
+          {
+            "type": "quote",
+            "text": "New GPT-5.5 OpenAI model: llm -m gpt-5.5. #1418\nNew option to set the text verbosity level for GPT-5+ OpenAI models: -o verbosity low. Values are low, medium, high.\nNew option for setting the image detail level used for image attachments to OpenAI models: -o image_detail low - values are low, high and auto, and GPT-5.4 and 5.5 also accept original.\nModels listed in extra-openai-models.yaml are now also registered as asynchronous. #1395"
+          }
+        ],
+        "translations": []
+      },
+      "fromDate": "2026-04-25"
+    }
+  ]
+}
