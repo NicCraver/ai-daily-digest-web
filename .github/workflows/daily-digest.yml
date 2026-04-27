@@ -60,6 +60,22 @@ jobs:
           fi
           cd apps/digest && bun src/digest.ts --hours 24 --top-n 15
 
+      - name: Run weekly digest on Monday (Beijing time)
+        run: |
+          if [ "$(TZ=Asia/Shanghai date +%u)" != "1" ]; then
+            echo "Not Monday in Asia/Shanghai, skipping weekly digest."
+            exit 0
+          fi
+          WEEK_ID="$(TZ=Asia/Shanghai python3 - <<'PY'
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          target = datetime.now(ZoneInfo("Asia/Shanghai")) - timedelta(days=7)
+          print(target.strftime("%G-W%V"))
+          PY
+          )"
+          echo "Building weekly digest for ${WEEK_ID}"
+          cd apps/digest && bun src/weekly.ts --week "${WEEK_ID}"
+
       - name: Build site (verify data 可被 vite-ssg 消费)
         run: bun run build
 
@@ -69,5 +85,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "data: daily digest ${{ github.run_id }}"
-          file_pattern: "data/*"
+          file_pattern: "data/**"
           commit_options: "--no-verify"
