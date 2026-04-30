@@ -1,0 +1,2546 @@
+{
+  "date": "2026-05-01",
+  "generatedAt": "2026-04-30T18:50:06.883Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2377,
+    "filteredArticles": 21,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：LLM 工具链持续进化，Simon Willison 发布 LLM 0.32a1 修复关键 bug，并推动从简单提示到复杂对话状态管理的架构重构；工程实践深化，微软工程师探讨跨进程读写锁的公平性设计，Zig 语言坚持反 AI 贡献政策引发对开发伦理的思考；同时，WebAssembly 底层机制再被审视，而关于去中心化代码平台的设想则呼应了开发者对平台自主权的期待。",
+  "articles": [
+    {
+      "slug": "e51fcc8c47dae3ce",
+      "title": "llm 0.32a1",
+      "titleZh": "LLM 0.32a1 发布",
+      "link": "https://simonwillison.net/2026/Apr/29/llm-3/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-29T23:52:50.000Z",
+      "category": "tools",
+      "keywords": [
+        "LLM",
+        "Python library",
+        "tool-calling"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 10,
+        "total": 27
+      },
+      "summary": "Simon Willison 发布了 LLM 库的 0.32a1 版本，主要修复了 0.32a0 中的一个关键 bug：在从 SQLite 数据库恢复时，工具调用对话未能正确重新加载。该问题影响了使用工具调用的对话功能，现已通过此 alpha 版本修复。此次更新是向后兼容的初步修复补丁。",
+      "summaryEn": "Simon Willison released version 0.32a1 of the LLM library, fixing a critical bug present in 0.32a0 where tool-calling conversations were not correctly re-inflated from SQLite storage. This issue affected functionality involving tool calls and has now been resolved in this alpha release. The update is a backward-compatible patch addressing GitHub issue #1426.",
+      "reason": "如果你正在使用 LLM 库进行工具调用相关的开发，这个修复版本值得立即升级以避免数据恢复问题。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 29th April 2026."
+          },
+          {
+            "type": "p",
+            "text": "llm\n            593"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "327e6329e5c52228",
+      "title": "LLM 0.32a0  is a major backwards-compatible refactor",
+      "titleZh": "LLM 0.32a0 是一次重大的向后兼容重构",
+      "link": "https://simonwillison.net/2026/Apr/29/llm/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-29T19:01:47.000Z",
+      "category": "tools",
+      "keywords": [
+        "LLM",
+        "refactor",
+        "backwards-compatible"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 10,
+        "total": 27
+      },
+      "summary": "Simon Willison 发布了 LLM 0.32a0 版本，这是一个重要的 alpha 版本，标志着该项目从传统的提示-响应模型向更复杂的对话状态管理架构的重大重构。新版本引入了对工具调用和对话历史的原生支持，为未来更强大的 AI 交互功能奠定了基础。",
+      "summaryEn": "Simon Willison released LLM 0.32a0, an alpha version that marks a major backward-compatible refactor of his Python library and CLI tool for accessing LLMs. The new architecture moves beyond simple prompt-response pairs to support tool-calling and conversation state management natively, enabling more sophisticated AI interactions.",
+      "reason": "了解 LLM 项目的技术演进方向，有助于开发者提前规划集成策略并理解新功能的设计哲学。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "29th April 2026"
+          },
+          {
+            "type": "p",
+            "text": "I just released LLM 0.32a0, an alpha release of my LLM Python library and CLI tool for accessing LLMs, with some consequential changes that I’ve been working towards for quite a while."
+          },
+          {
+            "type": "p",
+            "text": "Previous versions of LLM modeled the world in terms of prompts and responses. Send the model a text prompt, get back a text response."
+          },
+          {
+            "type": "code",
+            "text": "import llm\n\nmodel = llm.get_model(\"gpt-5.5\")\nresponse = model.prompt(\"Capital of France?\")\nprint(response.text())"
+          },
+          {
+            "type": "p",
+            "text": "This made sense when I started working on the library back in April 2023. A lot has changed since then!"
+          },
+          {
+            "type": "p",
+            "text": "LLM provides an abstraction over thousands of different models via its plugin system. The original abstraction—of text input that returns text output—was no longer able to represent everything I needed it to."
+          },
+          {
+            "type": "p",
+            "text": "Over time LLM itself has grown attachments to handle image, audio, and video input, then schemas for outputting structured JSON, then tools for executing tool calls. Meanwhile LLMs kept evolving, adding reasoning support and the ability to return images and all kinds of other interesting capabilities."
+          },
+          {
+            "type": "p",
+            "text": "LLM needs to evolve to better handle the diversity of input and output types that can be processed by today’s frontier models."
+          },
+          {
+            "type": "p",
+            "text": "The 0.32a0 alpha has two key changes: model inputs can be represented as a sequence of messages, and model responses can be composed of a stream of differently typed parts."
+          },
+          {
+            "type": "h3",
+            "text": "Prompts as a sequence of messages"
+          },
+          {
+            "type": "p",
+            "text": "LLMs accept input as text, but ever since ChatGPT demonstrated the value of a two-way conversational interface, the most common way to prompt them has been to treat that input as a sequence of conversational turns."
+          },
+          {
+            "type": "p",
+            "text": "The first turn might look like this:"
+          },
+          {
+            "type": "code",
+            "text": "user: Capital of France?\nassistant: "
+          },
+          {
+            "type": "p",
+            "text": "(The model then gets to fill out the reply from the assistant.)"
+          },
+          {
+            "type": "p",
+            "text": "But each subsequent turn needs to replay the entire conversation up to that point, as a sort of screenplay:"
+          },
+          {
+            "type": "code",
+            "text": "user: Capital of France?\nassistant: Paris\nuser: Germany?\nassistant:"
+          },
+          {
+            "type": "p",
+            "text": "Most of the JSON APIs from the major vendors follow this pattern. Here’s what the above looks like using the OpenAI chat completions API, which has been widely imitated by other providers:"
+          },
+          {
+            "type": "code",
+            "text": "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"gpt-5.5\",\n    \"messages\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Capital of France?\"\n      },\n      {\n        \"role\": \"assistant\",\n        \"content\": \"Paris\"\n      },\n      {\n        \"role\": \"user\",\n        \"content\": \"Germany?\"\n      }\n    ]\n  }'"
+          },
+          {
+            "type": "p",
+            "text": "Prior to 0.32, LLM modeled these as conversations:"
+          },
+          {
+            "type": "code",
+            "text": "model = llm.get_model(\"gpt-5.5\")\n\nconversation = model.conversation()\nr1 = conversation.prompt(\"Capital of France?\")\nprint(r1.text())\n# Outputs \"Paris\"\n\nr2 = conversation.prompt(\"Germany?\")\nprint(r2.text())\n# Outputs \"Berlin\""
+          },
+          {
+            "type": "p",
+            "text": "This worked if you were building a conversation with the model from scratch, but it didn’t provide a way to feed in a previous conversation from the start. This made tasks like building an emulation of the OpenAI chat completions API much harder than they should have been."
+          },
+          {
+            "type": "p",
+            "text": "The llm CLI tool worked around this through a custom mechanism for persisting and inflating conversations using SQLite, but that never became a stable part of the LLM API—and there are many places you might want to use the Python library without committing to SQLite as the storage layer."
+          },
+          {
+            "type": "p",
+            "text": "The new alpha now supports this:"
+          },
+          {
+            "type": "code",
+            "text": "import llm\nfrom llm import user, assistant\n\nmodel = llm.get_model(\"gpt-5.5\")\n\nresponse = model.prompt(messages=[\n    user(\"Capital of France?\"),\n    assistant(\"Paris\"),\n    user(\"Germany?\"),\n])\nprint(response.text())"
+          },
+          {
+            "type": "p",
+            "text": "The llm.user() and llm.assistant() functions are new builder functions designed to be used within that messages=[] array."
+          },
+          {
+            "type": "p",
+            "text": "The previous prompt= option still works, but LLM upgrades it to a single-item messages array behind the scenes."
+          },
+          {
+            "type": "p",
+            "text": "You can also now reply to a response, as an alternative to building a conversation:"
+          },
+          {
+            "type": "code",
+            "text": "response2 = response.reply(\"How about Hungary?\")\nprint(response2) # Default __str__() calls .text()"
+          },
+          {
+            "type": "h3",
+            "text": "Streaming parts"
+          },
+          {
+            "type": "p",
+            "text": "The other major new interface in the alpha concerns streaming results back from a prompt."
+          },
+          {
+            "type": "p",
+            "text": "Previously, LLM supported streaming like this:"
+          },
+          {
+            "type": "code",
+            "text": "response = model.prompt(\"Generate an SVG of a pelican riding a bicycle\")\nfor chunk in response:\n    print(chunk, end=\"\")"
+          },
+          {
+            "type": "p",
+            "text": "Or this async variant:"
+          },
+          {
+            "type": "code",
+            "text": "import asyncio\nimport llm\n\nmodel = llm.get_async_model(\"gpt-5.5\")\nresponse = model.prompt(\"Generate an SVG of a pelican riding a bicycle\")\n\nasync def run():\n    async for chunk in response:\n        print(chunk, end=\"\", flush=True)\n\nasyncio.run(run())"
+          },
+          {
+            "type": "p",
+            "text": "Many of today’s models return mixed types of content. A prompt run against Claude might return reasoning output, then text, then a JSON request for a tool call, then more text content."
+          },
+          {
+            "type": "p",
+            "text": "Some models can even execute tools on the server-side, for example OpenAI’s code interpreter tool or Anthropic’s web search. This means the results from the model can combine text, tool calls, tool outputs and other formats."
+          },
+          {
+            "type": "p",
+            "text": "Multi-modal output models are starting to emerge too, which can return images or even snippets of audio intermixed into that streaming response."
+          },
+          {
+            "type": "p",
+            "text": "The new LLM alpha models these as a stream of typed message parts. Here’s what that looks like as a Python API consumer:"
+          },
+          {
+            "type": "code",
+            "text": "import asyncio\nimport llm\n\nmodel = llm.get_model(\"gpt-5.5\")\nprompt = \"invent 3 cool dogs, first talk about your motivations\"\n\ndef describe_dog(name: str, bio: str) -> str:\n    \"\"\"Record the name and biography of a hypothetical dog.\"\"\"\n    return f\"{name}: {bio}\"\n\ndef sync_example():\n    response = model.prompt(\n        prompt,\n        tools=[describe_dog],\n    )\n    for event in response.stream_events():\n        if event.type == \"text\":\n            print(event.chunk, end=\"\", flush=True)\n        elif event.type == \"tool_call_name\":\n            print(f\"\\nTool call: {event.chunk}(\", end=\"\", flush=True)\n        elif event.type == \"tool_call_args\":\n            print(event.chunk, end=\"\", flush=True)\n\nasync def async_example():\n    model = llm.get_async_model(\"gpt-5.5\")\n    response = model.prompt(\n        prompt,\n        tools=[describe_dog],\n    )\n    async for event in response.astream_events():\n        if event.type == \"text\":\n            print(event.chunk, end=\"\", flush=True)\n        elif event.type == \"tool_call_name\":\n            print(f\"\\nTool call: {event.chunk}(\", end=\"\", flush=True)\n        elif event.type == \"tool_call_args\":\n            print(event.chunk, end=\"\", flush=True)\n\nsync_example()\nasyncio.run(async_example())"
+          },
+          {
+            "type": "p",
+            "text": "Sample output (from just the first sync example):"
+          },
+          {
+            "type": "quote",
+            "text": "My motivation: create three memorable dogs with distinct “cool” styles—one cinematic, one adventurous, and one charmingly chaotic—so each feels like they could star in their own story.\nTool call: describe_dog({\"name\": \"Nova Jetpaw\", \"bio\": \"A sleek silver-gray whippet who wears tiny aviator goggles and loves sprinting along moonlit beaches. Nova is fearless, elegant, and rumored to outrun drones just for fun.\"}\nTool call: describe_dog({\"name\": \"Mochi Thunderbark\", \"bio\": \"A fluffy corgi with a dramatic black-and-gold bandana and the confidence of a rock star. Mochi is short, loud, loyal, and leads a neighborhood 'security patrol' made entirely of squirrels.\"}\nTool call: describe_dog({\"name\": \"Atlas Snowfang\", \"bio\": \"A massive white husky with ice-blue eyes and a backpack full of trail snacks. Atlas is calm, heroic, and always knows the way home—even during blizzards, fog, or confusing camping trips.\"}"
+          },
+          {
+            "type": "p",
+            "text": "At the end of the response you can call response.execute_tool_calls() to actually run the functions that were requested, or send a response.reply() to have those tools called and their return values sent back to the model:"
+          },
+          {
+            "type": "code",
+            "text": "print(response.reply(\"Tell me about the dogs\"))"
+          },
+          {
+            "type": "p",
+            "text": "This new mechanism for streaming different token types means the CLI tool can now display “thinking” text in a different color from the text in the final response. The thinking text goes to stderr so it won’t affect results that are piped into other tools."
+          },
+          {
+            "type": "p",
+            "text": "This example uses Claude Sonnet 4.6 (with an updated streaming event version of the llm-anthropic plugin) as Anthropic’s models return their reasoning text as part of the response:"
+          },
+          {
+            "type": "code",
+            "text": "llm -m claude-sonnet-4.6 'Think about 3 cool dogs then describe them' \\\n  -o thinking_display 1"
+          },
+          {
+            "type": "p",
+            "text": "You can suppress the output of reasoning tokens using the new -R/--no-reasoning flag. Surprisingly that ended up being the only CLI-facing change in this release."
+          },
+          {
+            "type": "h3",
+            "text": "A mechanism for serializing and deserializing responses"
+          },
+          {
+            "type": "p",
+            "text": "As mentioned earlier, LLM has quite inflexible code at the moment for persisting conversations to SQLite. I’ve added a new mechanism in 0.32a0 that should provide Python API users a way to roll their own alternative:"
+          },
+          {
+            "type": "code",
+            "text": "serializable = response.to_dict()\n# serializable is a JSON-style dictionary\n# store it anywhere you like, then inflate it:\nresponse = Response.from_dict(serializable)"
+          },
+          {
+            "type": "p",
+            "text": "The dictionary this returns is actually a TypedDict defined in the new llm/serialization.py module."
+          },
+          {
+            "type": "h3",
+            "text": "What’s next?"
+          },
+          {
+            "type": "p",
+            "text": "I’m releasing this as an alpha so I can upgrade various plugins and exercise the new design in real world environments for a few days. I expect the stable 0.32 release will be very similar to this alpha, unless alpha testing reveals some design flaw in the way I’ve put this all together."
+          },
+          {
+            "type": "p",
+            "text": "There’s one remaining large task: I’d like to redesign the SQLite logging system to better capture the more finely grained details that are returned by this new abstraction."
+          },
+          {
+            "type": "p",
+            "text": "Ideally I’d like to model this as a graph, to best support situations like an OpenAI-style chat completions API where the same conversations are constantly extended and then repeated with every prompt. I want to be able to store those without duplicating them in the database."
+          },
+          {
+            "type": "p",
+            "text": "I’m undecided as to whether that should be a feature in 0.32 or I should hold it for 0.33."
+          }
+        ],
+        "translations": [
+          "2026年4月29日",
+          "我刚刚发布了 LLM 0.32a0，这是我用于访问大型语言模型（LLM）的 Python 库和命令行工具的 alpha 版本，其中包含一些经过长期努力才实现的重要变更。",
+          "在之前的版本中，LLM 将世界建模为提示词（prompt）与响应（response）的关系：向模型发送一段文本提示词，然后接收一段文本响应。",
+          "import llm\n\nmodel = llm.get_model(\"gpt-5.5\")\nresponse = model.prompt(\"Capital of France?\")\nprint(response.text())",
+          "这在我于2023年4月开始开发这个库时是合理的。但自那时以来，情况已经发生了巨大变化！",
+          "通过其插件系统，LLM 为数千种不同的模型提供了抽象层。最初的抽象——即输入文本返回文本——已无法涵盖我所需要支持的所有功能。",
+          "随着时间推移，LLM 自身也逐步增加了对图像、音频和视频输入的支持，随后又引入了结构化 JSON 输出的模式，接着又加入了执行工具调用的能力。与此同时，LLMs 本身也在不断演进，增加了推理支持以及返回图像等多种有趣的功能。",
+          "LLM 需要进一步发展，以更好地处理当今前沿模型所能处理的多种类型的输入和输出。",
+          "0.32a0 alpha 版本包含两个关键变更：模型输入现在可以表示为一系列消息（messages），而模型响应则可以由不同类型的内容流组成。",
+          "作为消息序列的提示词",
+          "虽然 LLMs 接受文本形式的输入，但从 ChatGPT 展示双向对话界面的价值以来，最常见的方式是将这些输入视为一系列对话轮次。",
+          "第一轮可能如下所示：",
+          "user: Capital of France?\nassistant:",
+          "（然后模型会填充助手的回复内容。）",
+          "但后续每一轮都需要重放此前完整的对话历史，就像一份剧本一样：",
+          "user: Capital of France?\nassistant: Paris\nuser: Germany?\nassistant:",
+          "大多数主流厂商的 JSON API 都遵循这一模式。以下是使用 OpenAI 聊天补全 API（该 API 已被其他供应商广泛模仿）所呈现的上述示例：",
+          "curl https://api.openai.com/v1/chat/completions \\\n  -H \"Authorization: Bearer $OPENAI_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"gpt-5.5\",\n    \"messages\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Capital of France?\"\n      },\n      {\n        \"role\": \"assistant\",\n        \"content\": \"Paris\"\n      },\n      {\n        \"role\": \"user\",\n        \"content\": \"Germany?\"\n      }\n    ]\n  }'",
+          "在 0.32 版本之前，LLM 将这些对话建模为：",
+          "model = llm.get_model(\"gpt-5.5\")\n\nconversation = model.conversation()\nr1 = conversation.prompt(\"Capital of France?\")\nprint(r1.text())\n# Outputs \"Paris\"\n\nr2 = conversation.prompt(\"Germany?\")\nprint(r2.text())\n# Outputs \"Berlin\"",
+          "如果你从头开始构建与模型的对话，这种方式是可行的；但它无法从一开始就引入之前的对话历史。这使得诸如模拟 OpenAI 聊天补全 API 等任务变得异常困难。",
+          "llm CLI 工具通过一个自定义机制绕过了这个问题，利用 SQLite 持久化和扩展对话内容，但这从未成为 LLM API 的稳定组成部分——而且在许多场景中，你可能希望在不依赖 SQLite 存储层的情况下使用 Python 库。",
+          "新的 alpha 版本现已支持以下方式：",
+          "import llm\nfrom llm import user, assistant\n\nmodel = llm.get_model(\"gpt-5.5\")\n\nresponse = model.prompt(messages=[\n    user(\"Capital of France?\"),\n    assistant(\"Paris\"),\n    user(\"Germany?\"),\n])\nprint(response.text())",
+          "llm.user() 和 llm.assistant() 函数是新引入的构建器函数，专门用于在 messages=[] 数组内部使用。",
+          "之前的 prompt= 选项仍然有效，但在后台 LLM 会自动将其升级为单条消息的数组形式。",
+          "你现在还可以直接回复某个响应，作为构建对话的替代方案：",
+          "response2 = response.reply(\"How about Hungary?\")\nprint(response2) # Default __str__() calls .text()",
+          "流式内容分块",
+          "alpha 版本中的另一个主要新接口涉及从提示词流式返回结果。",
+          "此前，LLM 支持如下流式处理方式：",
+          "response = model.prompt(\"Generate an SVG of a pelican riding a bicycle\")\nfor chunk in response:\n    print(chunk, end=\"\")",
+          "或此异步变体：",
+          "import asyncio\nimport llm\n\nmodel = llm.get_async_model(\"gpt-5.5\")\nresponse = model.prompt(\"Generate an SVG of a pelican riding a bicycle\")\n\nasync def run():\n    async for chunk in response:\n        print(chunk, end=\"\", flush=True)\n\nasyncio.run(run())",
+          "如今许多模型会返回混合类型的内容。例如，向 Claude 发出的提示可能先返回推理输出，然后是文本，接着是一个用于工具调用的 JSON 请求，最后再返回更多文本内容。",
+          "某些模型甚至可以在服务器端执行工具，比如 OpenAI 的代码解释器工具或 Anthropic 的网络搜索工具。这意味着模型的结果可以结合文本、工具调用、工具输出以及其他格式。",
+          "多模态输出模型也开始涌现，它们可以在流式响应中返回图像，甚至混合音频片段。",
+          "新的 LLM alpha 模型将这些内容视为一系列带类型的消息部分。以下是 Python API 消费者的使用示例：",
+          "import asyncio\nimport llm\n\nmodel = llm.get_model(\"gpt-5.5\")\nprompt = \"invent 3 cool dogs, first talk about your motivations\"\n\ndef describe_dog(name: str, bio: str) -> str:\n    \"\"\"Record the name and biography of a hypothetical dog.\"\"\"\n    return f\"{name}: {bio}\"\n\ndef sync_example():\n    response = model.prompt(\n        prompt,\n        tools=[describe_dog],\n    )\n    for event in response.stream_events():\n        if event.type == \"text\":\n            print(event.chunk, end=\"\", flush=True)\n        elif event.type == \"tool_call_name\":\n            print(f\"\\nTool call: {event.chunk}(\", end=\"\", flush=True)\n        elif event.type == \"tool_call_args\":\n            print(event.chunk, end=\"\", flush=True)\n\nasync def async_example():\n    model = llm.get_async_model(\"gpt-5.5\")\n    response = model.prompt(\n        prompt,\n        tools=[describe_dog],\n    )\n    async for event in response.astream_events():\n        if event.type == \"text\":\n            print(event.chunk, end=\"\", flush=True)\n        elif event.type == \"tool_call_name\":\n            print(f\"\\nTool call: {event.chunk}(\", end=\"\", flush=True)\n        elif event.type == \"tool_call_args\":\n            print(event.chunk, end=\"\", flush=True)\n\nsync_example()\nasyncio.run(async_example())",
+          "示例输出（仅来自第一个同步示例）：",
+          "我的目标：创造三只风格独特、令人难忘的狗狗——一只电影感十足的，一只探险家式的，还有一只魅力十足又有点混乱的——让每只都仿佛能主演自己的故事。\n工具调用：describe_dog({\"name\": \"Nova Jetpaw\", \"bio\": \"一只银灰色细犬，戴着小巧的飞行员护目镜，喜欢在月光下的海滩上疾驰。Nova 勇敢、优雅，据说还常为了好玩而跑赢无人机。\"})\n工具调用：describe_dog({\"name\": \"Mochi Thunderbark\", \"bio\": \"一只毛茸茸的柯基，系着一条戏剧性的黑金相间头巾，自信得像摇滚明星。Mochi 个子矮小却嗓门大，忠诚无比，还领导着一支由松鼠组成的‘社区巡逻队’。\"})\n工具调用：describe_dog({\"name\": \"Atlas Snowfang\", \"bio\": \"一只体型庞大的白色哈士奇，冰蓝色的眼睛，背包装满徒步零食。Atlas 冷静、英勇，无论暴风雪、浓雾还是迷路的露营之旅，总能找到回家的路。\"})",
+          "响应结束时，你可以调用 response.execute_tool_calls() 来实际执行请求的工具函数，或者发送 response.reply() 让这些工具被调用并将返回值送回模型：",
+          "print(response.reply(\"Tell me about the dogs\"))",
+          "这种支持不同 token 类型流式传输的新机制，意味着 CLI 工具现在可以用不同颜色显示“思考”文本，与最终响应文本区分开来。思考文本会输出到 stderr，因此不会影响通过管道传递给其他工具的输出结果。",
+          "本例使用了 Claude Sonnet 4.6（配合 llm-anthropic 插件更新的流式事件版本），因为 Anthropic 的模型将推理文本作为响应的一部分返回：",
+          "llm -m claude-sonnet-4.6 'Think about 3 cool dogs then describe them' \\\n  -o thinking_display 1",
+          "你可以使用新添加的 -R/--no-reasoning 标志来抑制推理 token 的输出。令人惊讶的是，这成了本次发布中唯一面向 CLI 的改动。",
+          "响应序列化与反序列化的机制",
+          "如前所述，LLM 目前用于将对话持久化到 SQLite 的代码相当僵化。我在 0.32a0 版本中新增了一种机制，希望能为 Python API 用户提供自定义替代方案的空间：",
+          "serializable = response.to_dict()\n# serializable is a JSON-style dictionary\n# store it anywhere you like, then inflate it:\nresponse = Response.from_dict(serializable)",
+          "该字典实际上是一个 TypedDict，定义在全新的 llm/serialization.py 模块中。",
+          "接下来要做什么？",
+          "我将其作为 alpha 版本发布，以便能在真实环境中测试几天各种插件并验证新设计的可行性。除非 alpha 测试暴露出整体设计上的缺陷，否则我预计稳定版 0.32 将与当前 alpha 版本非常相似。",
+          "还有一个重要任务待完成：我希望重新设计 SQLite 日志系统，以更好地捕获这一新抽象层返回的更精细细节。",
+          "理想情况下，我希望将其建模为一个图结构，以最好地支持类似 OpenAI 聊天补全 API 的场景——同一对话不断被扩展，随后每次提示都会重复使用。我希望能够在不重复存储的情况下保存这些内容。",
+          "我尚未决定是否应将此功能包含在 0.32 版本中，还是推迟到 0.33 版本再实现。"
+        ]
+      }
+    },
+    {
+      "slug": "d1fcf2465958d004",
+      "title": "llm 0.32a0",
+      "titleZh": "LLM 0.32a0 发布",
+      "link": "https://simonwillison.net/2026/Apr/29/llm-2/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-29T18:57:47.000Z",
+      "category": "tools",
+      "keywords": [
+        "LLM",
+        "release",
+        "alpha"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 10,
+        "total": 27
+      },
+      "summary": "Simon Willison 发布了 LLM 0.32a0 版本，这是其用于访问大型语言模型的 Python 库和命令行工具的 alpha 版本。该版本包含重大重构，支持工具调用和更复杂的对话处理，具体变更详见带注释的版本说明文档。",
+      "summaryEn": "Version 0.32a0 of the LLM library and CLI tool for accessing large language models has been released by Simon Willison. This alpha version introduces significant architectural changes including native support for tool-calling and enhanced conversation handling, with detailed annotated release notes available online.",
+      "reason": "关注 LLM 项目的开发者应查阅详细变更日志，以掌握此次重构带来的 API 和行为变化。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 29th April 2026."
+          },
+          {
+            "type": "p",
+            "text": "llm\n            593"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "95a0a80cb7f4007f",
+      "title": "The Zig project's rationale for their firm anti-AI contribution policy",
+      "titleZh": "Zig 项目为何坚持反 AI 贡献政策",
+      "link": "https://simonwillison.net/2026/Apr/30/zig-anti-ai/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-30T01:24:23.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Zig",
+        "anti-AI policy",
+        "open source"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Zig 编程语言项目实施了最严格的反对使用大语言模型（LLM）的贡献政策之一：禁止在议题、拉取请求或 Bug 跟踪评论中使用 LLM，包括翻译。项目鼓励使用英语，但也接受其他语言的帖子，前提是依赖社区成员自行翻译。",
+      "summaryEn": "The Zig programming language project enforces one of the strictest anti-LLM policies among major open-source projects: no LLMs allowed for issues, pull requests, or comments on the bug tracker—including translations. While English is encouraged, posts in native languages are accepted if community members use their own translation tools.",
+      "reason": "这一政策反映了开源社区对 AI 辅助开发的伦理和技术影响的深入思考，值得技术决策者参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Zig has one of the most stringent anti-LLM policies of any major open source project:"
+          },
+          {
+            "type": "quote",
+            "text": "No LLMs for issues.\nNo LLMs for pull requests.\nNo LLMs for comments on the bug tracker, including translation. English is encouraged, but not required. You are welcome to post in your native language and rely on others to have their own translation tools of choice to interpret your words."
+          },
+          {
+            "type": "p",
+            "text": "The most prominent project written in Zig may be the Bun JavaScript runtime, which was acquired by Anthropic in December 2025 and, unsurprisingly, makes heavy use of AI assistance."
+          },
+          {
+            "type": "p",
+            "text": "Bun operates its own fork of Zig, and recently achieved a 4x performance improvement on Bun compile after adding \"parallel semantic analysis and multiple codegen units to the llvm backend\". Here's that code. But @bunjavascript says:"
+          },
+          {
+            "type": "quote",
+            "text": "We do not currently plan to upstream this, as Zig has a strict ban on LLM-authored contributions."
+          },
+          {
+            "type": "p",
+            "text": "(Update: here's a Zig core contributor providing details on why they wouldn't accept that particular patch independent of the LLM issue - parallel semantic analysis is a long planned feature but has implications \"for the Zig language itself\".)"
+          },
+          {
+            "type": "p",
+            "text": "In Contributor Poker and Zig's AI Ban (via Lobste.rs) Zig Software Foundation VP of Community Loris Cro explains the rationale for this strict ban. It's the best articulation I've seen yet for a blanket ban on LLM-assisted contributions:"
+          },
+          {
+            "type": "quote",
+            "text": "In successful open source projects you eventually reach a point where you start getting more PRs than what you’re capable of processing. Given what I mentioned so far, it would make sense to stop accepting imperfect PRs in order to maximize ROI from your work, but that’s not what we do in the Zig project. Instead, we try our best to help new contributors to get their work in, even if they need some help getting there. We don’t do this just because it’s the “right” thing to do, but also because it’s the smart thing to do."
+          },
+          {
+            "type": "p",
+            "text": "Zig values contributors over their contributions. Each contributor represents an investment by the Zig core team - the primary goal of reviewing and accepting PRs isn't to land new code, it's to help grow new contributors who can become trusted and prolific over time."
+          },
+          {
+            "type": "p",
+            "text": "LLM assistance breaks that completely. It doesn't matter if the LLM helps you submit a perfect PR to Zig - the time the Zig team spends reviewing your work does nothing to help them add new, confident, trustworthy contributors to their overall project."
+          },
+          {
+            "type": "p",
+            "text": "Loris explains the name here:"
+          },
+          {
+            "type": "quote",
+            "text": "The reason I call it “contributor poker” is because, just like people say about the actual card game, “you play the person, not the cards”. In contributor poker, you bet on the contributor, not on the contents of their first PR."
+          },
+          {
+            "type": "p",
+            "text": "This makes a lot of sense to me. It relates to an idea I've seen circulating elsewhere: if a PR was mostly written by an LLM, why should a project maintainer spend time reviewing and discussing that PR as opposed to firing up their own LLM to solve the same problem?"
+          }
+        ],
+        "translations": [
+          "Zig 是所有主流开源项目中反 LLM 政策最严格的项目之一：",
+          "不允许使用 LLM 处理 issue。  \n不允许使用 LLM 处理 pull requests。  \n不允许在 bug tracker 的评论中使用 LLM，包括翻译也不行。虽然鼓励使用英语，但并非强制要求。你可以用母语发帖，并请他人自行选择翻译工具来理解你的内容。",
+          "用 Zig 编写的著名项目可能是 Bun JavaScript 运行时，它于 2025 年 12 月被 Anthropic 收购，毫不意外的是，该项目大量依赖 AI 辅助开发。",
+          "Bun 运行着自己维护的 Zig 分支，最近通过在 LLVM 后端添加“并行语义分析和多个代码生成单元”，实现了 Bun 编译性能提升 4 倍。相关代码如下。但 @bunjavascript 表示：",
+          "我们目前不打算将这部分改动合并回上游，因为 Zig 对由 LLM 生成的贡献有严格禁令。",
+          "（更新：一位 Zig 核心贡献者解释了为何即使不考虑 LLM 问题也不会接受该补丁——并行语义分析本就是长期规划的功能，但其实现会“影响 Zig 语言本身”。）",
+          "在《Contributor Poker 与 Zig 的 AI 禁令》（via Lobste.rs）一文中，Zig 软件基金会社区副总裁 Loris Cro 阐述了这一严格禁令背后的理由。这是我所见过对全面禁止 LLM 辅助贡献最清晰的论述：",
+          "在成功的开源项目中，最终都会面临提交的 PR 数量远超处理能力的情况。考虑到上述情况，似乎应该停止接受不完美的 PR，以最大化投入产出比，但 Zig 项目并不这么做。相反，我们会尽最大努力帮助新贡献者完成他们的提交，哪怕他们需要一些指导才能达成目标。我们这样做不仅是因为这是“正确”的事，更是因为这是“聪明”的做法。",
+          "Zig 重视贡献者本人，而非其提交的内容。每位贡献者都是 Zig 核心团队的投资对象——评审和接纳 PR 的主要目的不是引入新代码，而是帮助培养新的贡献者，使其逐步成长为值得信赖且高产的开发者。",
+          "LLM 辅助彻底破坏了这一点。即便 LLM 帮你提交了完美的 PR，Zig 团队花费时间审核你的工作也无法帮助他们吸纳更多自信、可靠的新贡献者加入项目。",
+          "Loris 在此解释了命名缘由：",
+          "我之所以称之为“contributor poker”，正如人们常说的真实扑克游戏那样，“你是在和人打交道，而不是和牌打交道”。在 contributor poker 中，你押注的是贡献者本人，而非其首个 PR 的内容。",
+          "这对我而言非常有道理。这让我联想到一个在其他地方看到过的观点：如果一个 PR 主要由 LLM 编写，为什么项目维护者要花费时间亲自审核和讨论，而不是直接启动自己的 LLM 来解决同样的问题？"
+        ]
+      }
+    },
+    {
+      "slug": "7658a178c379a4d6",
+      "title": "Anti-DDoS Firm Heaped Attacks on Brazilian ISPs",
+      "titleZh": "反 DDoS 公司意外加剧巴西 ISP 遭受攻击",
+      "link": "https://krebsonsecurity.com/2026/04/anti-ddos-firm-heaped-attacks-on-brazilian-isps/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-04-30T14:04:26.000Z",
+      "category": "security",
+      "keywords": [
+        "DDoS",
+        "botnet",
+        "Brazilian ISPs"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "一家专门防御分布式拒绝服务（DDoS）攻击的巴西科技公司被发现无意中成为针对其他网络运营商的大规模 DDoS 攻击的帮凶。该公司首席执行官称，恶意活动源于安全漏洞，很可能是竞争对手试图损害其声誉所致。",
+      "summaryEn": "A Brazilian cybersecurity firm specializing in DDoS protection was found to have inadvertently enabled a botnet responsible for massive attacks against other ISPs in Brazil. The company's CEO attributes the malicious activity to a security breach, likely orchestrated by a competitor seeking to damage its public image.",
+      "reason": "揭示了网络安全行业内部竞争可能带来的系统性风险，提醒企业加强供应链和第三方合作的安全审计。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A Brazilian tech firm that specializes in protecting networks from distributed denial-of-service (DDoS) attacks has been enabling a botnet responsible for an extended campaign of massive DDoS attacks against other network operators in Brazil, KrebsOnSecurity has learned. The firm’s chief executive says the malicious activity resulted from a security breach and was likely the work of a competitor trying to tarnish his company’s public image."
+          },
+          {
+            "type": "p",
+            "text": "An Archer AX21 router from TP-Link. Image: tp-link.com."
+          },
+          {
+            "type": "p",
+            "text": "For the past several years, security experts have tracked a series of massive DDoS attacks originating from Brazil and solely targeting Brazilian ISPs. Until recently, it was less than clear who or what was behind these digital sieges. That changed earlier this month when a trusted source who asked to remain anonymous shared a curious file archive that was exposed in an open directory online."
+          },
+          {
+            "type": "p",
+            "text": "The exposed archive contained several Portuguese-language malicious programs written in Python. It also included the private SSH authentication keys belonging to the CEO of Huge Networks, a Brazilian ISP that primarily offers DDoS protection to other Brazilian network operators."
+          },
+          {
+            "type": "p",
+            "text": "Founded in Miami, Fla. in 2014, Huge Networks’s operations are centered in Brazil. The company originated from protecting game servers against DDoS attacks and evolved into an ISP-focused DDoS mitigation provider. It does not appear in any public abuse complaints and is not associated with any known DDoS-for-hire services."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, the exposed archive shows that a Brazil-based threat actor maintained root access to Huge Networks infrastructure and built a powerful DDoS botnet by routinely mass-scanning the Internet for insecure Internet routers and unmanaged domain name system (DNS) servers on the Web that could be enlisted in attacks."
+          },
+          {
+            "type": "p",
+            "text": "DNS is what allows Internet users to reach websites by typing familiar domain names instead of the associated IP addresses. Ideally, DNS servers only provide answers to machines within a trusted domain. But so-called “DNS reflection” attacks rely on DNS servers that are (mis)configured to accept queries from anywhere on the Web. Attackers can send spoofed DNS queries to these servers so that the request appears to come from the target’s network. That way, when the DNS servers respond, they reply to the spoofed (targeted) address."
+          },
+          {
+            "type": "p",
+            "text": "By taking advantage of an extension to the DNS protocol that enables large DNS messages, botmasters can dramatically boost the size and impact of a reflection attack — crafting DNS queries so that the responses are much bigger than the requests. For example, an attacker could compose a DNS request of less than 100 bytes, prompting a response that is 60-70 times as large. This amplification effect is especially pronounced when the perpetrators can query many DNS servers with these spoofed requests from tens of thousands of compromised devices simultaneously."
+          },
+          {
+            "type": "p",
+            "text": "A DNS amplification and reflection attack, illustrated. Image: veracara.digicert.com."
+          },
+          {
+            "type": "p",
+            "text": "The exposed file archive includes a command-line history showing exactly how this attacker built and maintained a powerful botnet by scouring the Internet for TP-Link Archer AX21 routers. Specifically, the botnet seeks out TP-Link devices that remain vulnerable to CVE-2023-1389, an unauthenticated command injection vulnerability that was patched back in April 2023."
+          },
+          {
+            "type": "p",
+            "text": "Malicious domains in the exposed Python attack scripts included DNS lookups for hikylover[.]st, and c.loyaltyservices[.]lol, both domains that have been flagged in the past year as control servers for an Internet of Things (IoT) botnet powered by a Mirai malware variant."
+          },
+          {
+            "type": "p",
+            "text": "The leaked archive shows the botmaster coordinated their scanning from a Digital Ocean server that has been flagged for abusive activity hundreds of times in the past year. The Python scripts invoke multiple Internet addresses assigned to Huge Networks that were used to identify targets and execute DDoS campaigns. The attacks were strictly limited to Brazilian IP address ranges, and the scripts show that each selected IP address prefix was attacked for 10-60 seconds with four parallel processes per host before the botnet moved on to the next target."
+          },
+          {
+            "type": "p",
+            "text": "The archive also shows these malicious Python scripts relied on private SSH keys belonging to Huge Networks’s CEO, Erick Nascimento. Reached for comment about the files, Mr. Nascimento said he did not write the attack programs and that he didn’t realize the extent of the DDoS campaigns until contacted by KrebsOnSecurity."
+          },
+          {
+            "type": "p",
+            "text": "“We received and notified many Tier 1 upstreams regarding very very large DDoS attacks against small ISPs,” Nascimento said. “We didn’t dig deep enough at the time, and what you sent makes that clear.”"
+          },
+          {
+            "type": "p",
+            "text": "Nascimento said the unauthorized activity is likely related to a digital intrusion first detected in January 2026 that compromised two of the company’s development servers, as well as his personal SSH keys. But he said there’s no evidence those keys were used after January."
+          },
+          {
+            "type": "p",
+            "text": "“We notified the team in writing the same day, wiped the boxes, and rotated keys,” Nascimento said, sharing a screenshot of a January 11 notification from Digital Ocean. “All documented internally.”"
+          },
+          {
+            "type": "p",
+            "text": "Mr. Nascimento said Huge Networks has since engaged a third-party network forensics firm to investigate further."
+          },
+          {
+            "type": "p",
+            "text": "“Our working assessment so far is that this all started with a single internal compromise — one pivot point that gave the attacker downstream access to some resources, including a legacy personal droplet of mine,” he wrote."
+          },
+          {
+            "type": "p",
+            "text": "“The compromise happened through a bastion/jump server that several people had access to,” Nascimento continued. “Digital Ocean flagged the droplet on January 11 — compromised due to a leaked SSH key, in their wording — I was traveling at the time and addressed it on return. That droplet was deprecated and destroyed, and it was never part of Huge Networks infrastructure.”"
+          },
+          {
+            "type": "p",
+            "text": "The malicious software that powers the botnet of TP-Link devices used in the DDoS attacks on Brazilian ISPs is based on Mirai, a malware strain that made its public debut in September 2016 by launching a then record-smashing DDoS attack that kept this website offline for four days. In January 2017, KrebsOnSecurity identified the Mirai authors as the co-owners of a DDoS mitigation firm that was using the botnet to attack gaming servers and scare up new clients."
+          },
+          {
+            "type": "p",
+            "text": "In May 2025, KrebsOnSecurity was hit by another Mirai-based DDoS that Google called the largest attack it had ever mitigated. That report implicated a 20-something Brazilian man who was running a DDoS mitigation company as well as several DDoS-for-hire services that have since been seized by the FBI."
+          },
+          {
+            "type": "p",
+            "text": "Nascimento flatly denied being involved in DDoS attacks against Brazilian operators to generate business for his company’s services."
+          },
+          {
+            "type": "p",
+            "text": "“We don’t run DDoS attacks against Brazilian operators to sell protection,” Nascimento wrote in response to questions. “Our sales model is mostly inbound and through channel integrator, distributors, partners — not active prospecting based on market incidents. The targets in the scripts you received are small regional providers, the vast majority of which are neither in our customer base nor in our commercial pipeline — a fact verifiable through public sources like QRator.”"
+          },
+          {
+            "type": "p",
+            "text": "Nascimento maintains he has “strong evidence stored on the blockchain” that this was all done by a competitor. As for who that competitor might be, the CEO wouldn’t say."
+          },
+          {
+            "type": "p",
+            "text": "“I would love to share this with you, but it could not be published as it would lose the surprise factor against my dishonest competitor,” he explained. “Coincidentally or not, your contact happened a week before an important event – ​​one that this competitor has NEVER participated in (and it’s a traditional event in the sector). And this year, they will be participating. Strange, isn’t it?”"
+          },
+          {
+            "type": "p",
+            "text": "Strange indeed."
+          }
+        ],
+        "translations": [
+          "一家专门保护网络免受分布式拒绝服务（DDoS）攻击的巴西科技公司，被证实曾启用一个负责针对巴西其他网络运营商发起大规模DDoS攻击活动的僵尸网络。据 KrebsOnSecurity 报道，该公司首席执行官表示，此次恶意行为源于一次安全漏洞，很可能是竞争对手试图损害其公司公众形象所致。",
+          "TP-Link Archer AX21 路由器。图片：tp-link.com。",
+          "过去几年中，安全专家一直在追踪一系列源自巴西、且仅以巴西互联网服务提供商（ISP）为目标的大规模DDoS攻击。直到最近，这些数字围城战的幕后黑手仍不明确。本月早些时候，一位要求匿名的可信消息源分享了一个令人惊讶的文件归档，该文件此前在一个公开目录中被暴露于网上。",
+          "这个暴露的文件归档中包含多个用Python编写的葡萄牙语恶意程序，还包含了巴西ISP——Huge Networks公司首席执行官的私人SSH身份验证密钥。",
+          "Huge Networks成立于佛罗里达州迈阿密，成立于2014年，运营中心位于巴西。该公司最初专注于为游戏服务器提供DDoS防护，后转型成为一家专注于ISP客户的DDoS缓解服务提供商。该公司未出现在任何公开的滥用投诉记录中，也未与任何已知的DDoS即服务（DDoS-for-hire）平台有关联。",
+          "然而，暴露的文件显示，一名基于巴西的威胁行为者长期拥有对Huge Networks基础设施的root权限，并通过定期大规模扫描互联网上存在不安全配置的互联网路由器和不受管理的域名系统（DNS）服务器，构建了一个强大的DDoS僵尸网络，以便将其纳入攻击行动。",
+          "DNS的作用是让用户通过输入熟悉的域名而非IP地址来访问网站。理想情况下，DNS服务器只应响应其信任域内机器的查询。但所谓的“DNS反射”攻击则利用了那些配置错误（misconfigured）、允许来自整个Web任意来源查询的DNS服务器。攻击者可向这些服务器发送伪造的DNS请求，使请求看似来自目标网络的地址。这样一来，当DNS服务器回复时，就会将响应发往被伪造（即目标）的地址。",
+          "通过利用DNS协议的一项扩展功能——支持大型DNS消息，僵尸网络操控者可显著放大反射攻击的规模与威力——构造出比请求大得多的响应。例如，攻击者可以发送不到100字节的DNS请求，从而触发60至70倍大小的响应。这种放大效应在攻击者能同时从数万台受控设备发出此类伪造请求并查询大量DNS服务器时尤为突出。",
+          "DNS放大与反射攻击示意图。图片：veracara.digicert.com。",
+          "暴露的文件归档中包含一份命令行历史记录，详细展示了该攻击者如何通过搜索互联网上的TP-Link Archer AX21路由器来构建和维护这一强大僵尸网络的具体过程。具体而言，该僵尸网络专门寻找仍存在CVE-2023-1389漏洞的TP-Link设备——这是一个未经身份验证的命令注入漏洞，已于2023年4月修复。",
+          "暴露的 Python 攻击脚本中包含对 hikylover[.]st 和 c.loyaltyservices[.]lol 这两个域名的 DNS 查询，这两个域名在过去一年中被标记为 Mirai 变种恶意软件驱动的物联网（IoT）僵尸网络的控制服务器。",
+          "泄露的档案显示，该僵尸网络的操控者是从一个数字海洋（Digital Ocean）服务器协调扫描活动的，该服务器在过去一年中因滥用行为被标记了数百次。这些 Python 脚本调用了分配给 Huge Networks 的多个互联网地址，用于识别目标并执行 DDoS 攻击。此次攻击严格局限于巴西的 IP 地址范围，脚本显示每个选定的 IP 地址前缀在 10 到 60 秒内受到攻击，每个主机使用四个并行进程，之后僵尸网络才会转向下一个目标。",
+          "档案还显示，这些恶意的 Python 脚本依赖的是 Huge Networks 首席执行官 Erick Nascimento 的私人 SSH 密钥。在被问及这些文件时，Nascimento 表示他并未编写这些攻击程序，直到被 KrebsOnSecurity 联系后才意识到 DDoS 攻击的规模。",
+          "“我们收到了许多一级上游运营商关于针对小型 ISP 的大规模 DDoS 攻击的通知，”Nascimento 说。“当时我们没有深入调查，而你所提供的资料清楚地说明了这一点。”",
+          "Nascimento 表示，未经授权的活动很可能与 2026 年 1 月首次检测到的一次数字入侵有关，那次入侵破坏了公司两个开发服务器以及他的个人 SSH 密钥。但他表示没有证据表明这些密钥在 1 月之后被使用过。",
+          "“我们在当天以书面形式通知了团队，清除了相关设备，并轮换了新密钥，”Nascimento 说，并分享了一张来自数字海洋的 1 月 11 日通知截图。“所有操作均已内部记录。”",
+          "Nascimento 表示，自那以后，Huge Networks 已聘请第三方网络取证公司进一步调查此事。",
+          "“目前我们的评估是，这一切始于一次内部单点入侵——一个跳板点让攻击者获得了对某些资源的下游访问权限，包括我的一台旧版个人 droplet，”他写道。",
+          "“入侵是通过一个 bastion/jump 服务器发生的，多个人员都有访问权限，”Nascimento 继续说道。“数字海洋在 1 月 11 日标记了该 droplet，称其因泄露的 SSH 密钥而被入侵——我当时正在旅行，返回后立即处理了此事。该 droplet 已被弃用并销毁，它从未属于 Huge Networks 的基础设施。”",
+          "用于对巴西 ISP 发动 DDoS 攻击的 TP-Link 设备僵尸网络的恶意软件基于 Mirai，这是一种于 2016 年 9 月首次公开亮相的恶意软件，曾发起当时创纪录的 DDoS 攻击，导致本网站离线四天。2017 年 1 月，KrebsOnSecurity 确认 Mirai 的作者正是某家 DDoS 防护公司的共同所有者，该公司利用该僵尸网络攻击游戏服务器以吸引新客户。",
+          "2025 年 5 月，KrebsOnSecurity 再次遭遇基于 Mirai 的 DDoS 攻击，谷歌称其为当时所缓解的最大规模攻击。该报道涉及一位二十多岁的巴西男子，他同时运营一家 DDoS 防护公司和多家 DDoS 即服务业务，这些业务后来均被 FBI 查封。",
+          "Nascimento 明确否认参与针对巴西运营商的 DDoS 攻击，以为其公司的服务获取业务。",
+          "“我们不会对巴西运营商发起 DDoS 攻击来推销防护服务，”纳西门托在回应提问时写道。“我们的销售模式主要是通过渠道集成商、分销商和合作伙伴的被动获客，而非基于市场事件的主动营销。你收到的脚本中的目标对象多为小型区域性服务商，其中绝大多数既不在我们的客户名单中，也不在我们的商业管线中——这一事实可通过 QRator 等公开渠道验证。”",
+          "纳西门托坚称自己“在区块链上保存了强有力的证据”，证明这一切均由竞争对手所为。至于具体是哪家公司，这位 CEO 并未透露。",
+          "“我也很想把这些资料分享给你，但这样发布会失去对那位不诚实的竞争对手的突袭效果，”他解释道。“巧合的是——无论是否真的巧合——你的联系人恰好安排在一场重要活动前一周——而这场活动这位竞争对手从未参加过（它是该行业的传统盛会）。但今年他们却要参加了。这难道不奇怪吗？”",
+          "确实很奇怪。"
+        ]
+      }
+    },
+    {
+      "slug": "a0257099c016404f",
+      "title": "Developing a cross-process reader/writer lock with limited readers, part 3: Fairness",
+      "titleZh": "跨进程读写锁开发（第三部分）：公平性设计",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260430-00/?p=112288",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-04-30T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "concurrency",
+        "synchronization",
+        "reader-writer lock",
+        "fairness"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 24
+      },
+      "summary": "微软资深工程师 Raymond Chen 在其博客中继续探讨跨进程读写锁的实现，本部分重点讨论如何确保独占锁获取与共享锁获取之间的公平性。文章分析了现有机制中的潜在不公平问题，并提出改进方案以实现更均衡的并发控制。",
+      "summaryEn": "In part 3 of his series on cross-process reader/writer locks, Raymond Chen addresses fairness between exclusive and shared acquisitions. He analyzes potential unfairness in existing mechanisms and proposes solutions to ensure balanced access patterns in multi-process environments.",
+      "reason": "对于需要高并发同步的系统程序员而言，这是一篇深入剖析底层同步机制公平性的权威指南。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "We’ve been building a cross-process reader/writer lock with a cap on the number of readers, we concluded our investigation last time by noting  that throughput of exclusive accesses was poor. What’s going on?"
+          },
+          {
+            "type": "p",
+            "text": "The problem is that exclusive acquisitions are working to claim semaphore tokens one at a time, so it can lose out to shared acquisitions that are requested even after the exclusive acquisition had started, effectively letting shared acquisitions “jump ahead of the exclusive acquisition”, and thereby starving out exclusive acquisitions."
+          },
+          {
+            "type": "p",
+            "text": "Let’s say that we have capped the number of shared acquisitions to five. In the above scenario, we have an exclusive acquiring thread and four shared acquiring threads. The first two shared acquiring threads (call them A and B) succeed at their shared acquisitions, and then the exclusive acquiring thread tries to enter exclusively. The exclusive acquiring thread needs five tokens, and it quickly gets three of them before blocking when it tries to get the fourth."
+          },
+          {
+            "type": "p",
+            "text": "While the exclusive acquiring thread is waiting to get its fourth token, two other shared acquiring threads (call them C and D) try to enter in shared mode. They too block."
+          },
+          {
+            "type": "p",
+            "text": "One of the original shared acquiring threads releases its shared lock, which release a token, and that token is quickly snapped up by the exclusive acquiring thread, thanks to the “mostly FIFO” policy for synchronization objects. (Let’s assume for the purpose of this discussion that none of the things that violate FIFO-ness has occurred.) The exclusive acquiring thread now waits to claim its fifth token."
+          },
+          {
+            "type": "p",
+            "text": "When the second of the original shared acquiring threads releases its token, it is given to thread C, even though thread C started its shared acquisition after the exclusive acquiring thread tried to acquire exclusively."
+          },
+          {
+            "type": "p",
+            "text": "And then when thread C releases its token, that token is given to thread D, since its request for the token precedes the exclusive thread’s request for the fifth token. The exclusive acquiring thread has once again gotten boxed out."
+          },
+          {
+            "type": "p",
+            "text": "To fix this, we can make all acquisitions claim the shared mutex. The shared mutex then does the work of enforcing “mostly FIFO” acquisition behavior across all acquisitions."
+          },
+          {
+            "type": "p",
+            "text": "Since we’re going to be doing combined timeouts, I’ll refactor the timeout management into a helper class."
+          },
+          {
+            "type": "code",
+            "text": "struct TimeoutTracker\n{\n    explicit TimeoutTracker(DWORD timeout)\n        : m_timeout(timeout) {}\n\n    DWORD m_start = GetTickCount();\n\n    bool Wait(HANDLE h)\n    {\n        DWORD elapsed = GetTickCount() - m_start;\n        if (elapsed > m_timeout) return false;\n        return WaitForSingleObject(h, m_timeout - elapsed)\n                    == WAIT_OBJECT_0;\n    }\n};"
+          },
+          {
+            "type": "p",
+            "text": "We can use this helper class to manage our timeouts."
+          },
+          {
+            "type": "code",
+            "text": "HANDLE sharedSemaphore;\nHANDLE sharedMutex;\n\nvoid AcquireShared()\n{\n    WaitForSingleObject(sharedMutex, INFINITE);\n\n    WaitForSingleObject(sharedSemaphore, INFINITE);\n\n    ReleaseMutex(sharedMutex);\n}\n\nbool AcquireSharedWithTimeout(DWORD timeout)\n{\n    TimeoutTracker tracker(timeout);         \n    bool result = tracker.Wait(hSharedMutex);\n    if (!result) return false;               \n    result = tracker.Wait(sharedSemaphore);  \n    ReleaseMutex(sharedMutex);               \n    return result;                           \n}\n\n// no change to AcquireExclusive\nvoid AcquireExclusive()\n{\n    WaitForSingleObject(sharedMutex, INFINITE);\n\n    for (unsigned i = 0; i < MAX_SHARED; i++) {\n        WaitForSingleObject(sharedSemaphore, INFINITE);\n    }\n\n    ReleaseMutex(sharedMutex);\n}\n\n// no functional change, but using the new helper class\nbool AcquireExclusiveWithTimeout(DWORD timeout)\n{\n    TimeoutTracker tracker(timeout);        \n    bool result = tracker.Wait(sharedMutex);\n    if (!result) return false;              \n\n    for (unsigned i = 0; i < MAX_SHARED; i++) {\n        if (!tracker.Wait(sharedSemaphore)) {\n            // Restore the tokens we already claimed.\n            if (i > 0) {\n                ReleaseSemaphore(sharedSemaphore, i, nullptr);\n            }\n            ReleaseMutex(sharedMutex);\n            return false;\n        }\n    }\n    ReleaseMutex(sharedMutex);\n    return true;\n}"
+          },
+          {
+            "type": "p",
+            "text": "(Yes, I’m not using RAII. I’ve made that choice for expository purposes, since it lets you see exactly when each synchronization object is acquired and released.)"
+          },
+          {
+            "type": "p",
+            "text": "Are we done?"
+          },
+          {
+            "type": "p",
+            "text": "No, we’re not done."
+          },
+          {
+            "type": "p",
+            "text": "There is still a serious problem that needs to be fixed. We’ll look at it next time."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "我们一直在构建一个跨进程的读写锁，并且对读者数量设置了上限。上次调查结束时，我们注意到独占访问的吞吐量很差。这到底是怎么回事？",
+          "问题在于，独占获取操作是逐个申请信号量令牌的，因此即使独占请求已经开始，它仍可能被共享请求超越——共享请求可以“插队”到独占请求之前，从而导致独占请求被饿死。",
+          "假设我们将共享获取的数量限制为五个。在上述场景中，有一个正在尝试进行独占获取的线程，以及四个正在尝试进行共享获取的线程。前两个共享获取线程（我们称它们为 A 和 B）成功获得了共享锁，接着独占获取线程试图进入独占模式。独占线程需要五个令牌，它在尝试获取第四个令牌时很快获得了三个，然后被阻塞。",
+          "当独占获取线程等待获取其第四个令牌时，另外两个共享获取线程（我们称它们为 C 和 D）也尝试以共享模式进入。它们同样被阻塞。",
+          "其中一个原始共享获取线程释放了其共享锁，释放出一个令牌，该令牌迅速被独占获取线程获得，这得益于同步对象的“基本先进先出”策略。（为了便于讨论，我们假设没有发生任何破坏先进先出特性的情况。）现在，独占获取线程等待获取其第五个令牌。",
+          "当第二个原始共享获取线程释放其令牌时，该令牌被分配给线程 C，尽管线程 C 是在独占获取线程尝试独占获取之后才开始其共享获取的。",
+          "然后，当线程 C 释放其令牌时，该令牌被分配给线程 D，因为其对该令牌的需求在独占线程对其第五个令牌的需求之前。独占获取线程再次被排挤在外。",
+          "要解决这个问题，我们可以让所有获取操作都申请共享互斥锁。这样，共享互斥锁就能负责强制执行所有获取操作的“基本先进先出”行为。",
+          "由于我们将使用组合超时机制，我将把超时管理重构为一个辅助类。",
+          "struct TimeoutTracker\n{\n    explicit TimeoutTracker(DWORD timeout)\n        : m_timeout(timeout) {}\n\n    DWORD m_start = GetTickCount();\n\n    bool Wait(HANDLE h)\n    {\n        DWORD elapsed = GetTickCount() - m_start;\n        if (elapsed > m_timeout) return false;\n        return WaitForSingleObject(h, m_timeout - elapsed)\n                    == WAIT_OBJECT_0;\n    }\n};",
+          "我们可以使用这个辅助类来管理我们的超时。",
+          "HANDLE sharedSemaphore;\nHANDLE sharedMutex;\n\nvoid AcquireShared()\n{\n    WaitForSingleObject(sharedMutex, INFINITE);\n\n    WaitForSingleObject(sharedSemaphore, INFINITE);\n\n    ReleaseMutex(sharedMutex);\n}\n\nbool AcquireSharedWithTimeout(DWORD timeout)\n{\n    TimeoutTracker tracker(timeout);         \n    bool result = tracker.Wait(hSharedMutex);\n    if (!result) return false;               \n    result = tracker.Wait(sharedSemaphore);  \n    ReleaseMutex(sharedMutex);               \n    return result;                           \n}\n\n// no change to AcquireExclusive\nvoid AcquireExclusive()\n{\n    WaitForSingleObject(sharedMutex, INFINITE);\n\n    for (unsigned i = 0; i < MAX_SHARED; i++) {\n        WaitForSingleObject(sharedSemaphore, INFINITE);\n    }\n\n    ReleaseMutex(sharedMutex);\n}\n\n// no functional change, but using the new helper class\nbool AcquireExclusiveWithTimeout(DWORD timeout)\n{\n    TimeoutTracker tracker(timeout);        \n    bool result = tracker.Wait(sharedMutex);\n    if (!result) return false;              \n\n    for (unsigned i = 0; i < MAX_SHARED; i++) {\n        if (!tracker.Wait(sharedSemaphore)) {\n            // Restore the tokens we already claimed.\n            if (i > 0) {\n                ReleaseSemaphore(sharedSemaphore, i, nullptr);\n            }\n            ReleaseMutex(sharedMutex);\n            return false;\n        }\n    }\n    ReleaseMutex(sharedMutex);\n    return true;\n}",
+          "（是的，我没有使用 RAII。出于教学目的，我做出了这个选择，因为它能让你清楚地看到每个同步对象何时被获取和释放。）",
+          "我们完成了吗？",
+          "不，我们还没有完成。",
+          "仍然有一个严重的问题需要修复。下次我们会讨论它。",
+          "作者",
+          "Raymond 参与 Windows 系统演化已超过 30 年。2003 年，他创建了一个名为 The Old New Thing 的网站，其受欢迎程度远超他的想象，这一发展至今仍让他感到有些不安。该网站催生了一本同名书籍《The Old New Thing》（Addison Wesley, 2007）。他偶尔会在 Windows Dev Docs 的 Twitter 账号上出现，讲述一些毫无实用价值的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "47fcc7d13fd63424",
+      "title": "Three ways to differentiate ReLU",
+      "titleZh": "ReLU 函数的三种微分方式",
+      "link": "https://www.johndcook.com/blog/2026/04/30/derivative-of-relu/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-04-30T14:51:08.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "ReLU",
+        "differentiability",
+        "neural networks",
+        "derivatives"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 22
+      },
+      "summary": "John D. Cook 探讨了 ReLU（修正线性单元）函数在不可微点处的广义导数计算方法。文章介绍了三种不同的导数定义方式——次梯度、Clarke 导数和近似导数，并分别应用于 ReLU 函数，展示了不同数学框架下的结果差异。",
+      "summaryEn": "This post examines three generalized derivative approaches—subgradient, Clarke derivative, and approximate derivative—applied to the ReLU activation function commonly used in neural networks. Each method provides a different perspective on handling non-differentiable points in deep learning models.",
+      "reason": "帮助机器学习研究者理解激活函数边界行为的数学本质，对优化算法设计和理论分析有重要价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When a function is not differentiable in the classical sense there are multiple ways to compute a generalized derivative. This post will look at three generalizations of the classical derivative, each applied to the ReLU (rectified linear unit) function. The ReLU function is a commonly used activation function for neural networks. It’s also called the ramp function for obvious reasons."
+          },
+          {
+            "type": "p",
+            "text": "The function is simply r(x) = max(0, x)."
+          },
+          {
+            "type": "h2",
+            "text": "Pointwise derivative"
+          },
+          {
+            "type": "p",
+            "text": "The pointwise derivative would be 0 for x < 0, 1 for x > 0, and undefined at x = 0. So except at 0, the pointwise derivative of the ramp function is the Heaviside function."
+          },
+          {
+            "type": "p",
+            "text": "In a real analysis course, you’d simply say r′(x) =H(x) because functions are only defined up to equivalent modulo sets of measure zero, i.e. the definition at x = 0 doesn’t matter."
+          },
+          {
+            "type": "h2",
+            "text": "Distributional derivative"
+          },
+          {
+            "type": "p",
+            "text": "In distribution theory you’d identify the function r(x) with the distribution whose action on a test function φ is"
+          },
+          {
+            "type": "p",
+            "text": "Then the derivative of r would be the distribution r′ satisfying"
+          },
+          {
+            "type": "p",
+            "text": "for all smooth functions φ with compact support. You can prove using integration by parts that the above equals the integral of φ from 0 to ∞, which is the same as the action of H(x) on φ."
+          },
+          {
+            "type": "p",
+            "text": "In this case the distributional derivative of r is the same as the pointwise derivative of r interpreted as a distribution. This does not happen in general. For example, the pointwise derivative of H is zero but the distributional derivative of H is δ, the Dirac delta distribution."
+          },
+          {
+            "type": "p",
+            "text": "For more on distributional derivatives, see How to differentiate a non-differentiable function."
+          },
+          {
+            "type": "h2",
+            "text": "Subgradient"
+          },
+          {
+            "type": "p",
+            "text": "The subgradient of a function f at a point x, written ∂f(x), is the set of slopes of tangent lines to the graph of f at x. If f is differentiable at x, then there is only one slope, namely f′(x), and we typically say the subgradient of f at x is simply f′(x) when strictly speaking we should say it is the one-element set {f′(x)}."
+          },
+          {
+            "type": "p",
+            "text": "A line tangent to the graph of the ReLU function at a negative value of x has slope 0, and a tangent line at a positive x has slope 1. But because there’s a sharp corner at x = 0, a tangent at this point could have any slope between 0 and 1."
+          },
+          {
+            "type": "p",
+            "text": "My dissertation was full of subgradients of convex functions. This made me uneasy because subgradients are not real-valued functions; they’re set-valued functions. Most of the time you can blithely ignore this distinction, but there’s always a nagging suspicion that it’s going to bite you unexpectedly."
+          }
+        ],
+        "translations": [
+          "当函数在经典意义下不可微时，仍有多种方法可计算广义导数。本文将探讨三种对经典导数的推广方式，并以 ReLU（修正线性单元）函数为例进行说明。ReLU 是神经网络中常用的激活函数，因其图像形似斜坡，故也被称为斜坡函数。",
+          "该函数的表达式为 r(x) = max(0, x)。",
+          "逐点导数",
+          "逐点导数在 x < 0 时为 0，在 x > 0 时为 1，而在 x = 0 处无定义。因此，除零点外，斜坡函数的逐点导数即为 Heaviside 函数。",
+          "在实分析课程中，通常会直接写作 r′(x) = H(x)，因为在测度论的意义下，函数仅在几乎处处相等的意义下唯一，即 x = 0 处的取值并不影响整体定义。",
+          "分布导数",
+          "在分布理论中，可将函数 r(x) 视为一个作用于测试函数 φ 上的分布，其作用方式为：",
+          "则 r 的导数是一个满足以下条件的分布 r′：",
+          "对所有具有紧支集的光滑函数 φ 成立。通过分部积分可证明上式等价于从 0 到 ∞ 对 φ 积分，这与 H(x) 作用于 φ 的结果一致。",
+          "此时，r 的分布导数与其作为分布解释下的逐点导数相同。但这种情况并不普遍。例如，H 的逐点导数为零，而其分布导数却是 δ，即 Dirac delta 分布。",
+          "欲了解更多关于分布导数的内容，请参见《如何对不可微函数求导》。",
+          "次梯度",
+          "函数 f 在某点 x 的次梯度 ∂f(x)，表示的是该点图像上所有切线斜率的集合。若 f 在 x 处可微，则仅存在唯一斜率 f′(x)，通常我们说 f 在 x 处的次梯度就是 f′(x)，尽管严格来说应将其视为单元素集合 {f′(x)}。",
+          "对于 ReLU 函数，在 x 为负值时，切线斜率为 0；在 x 为正值时，斜率为 1。但由于 x = 0 处存在尖角，该点的切线斜率可在 0 到 1 之间的任意值。",
+          "我的博士论文中充满了凸函数的次梯度。这让我感到不安，因为次梯度并非实值函数，而是集值函数。大多数时候我们可以忽略这一区别，但总有一种隐隐的不安感，担心它会在不经意间带来麻烦。"
+        ]
+      }
+    },
+    {
+      "slug": "1f26e1a505e68a01",
+      "title": "Thoughts on WebAssembly as a stack machine",
+      "titleZh": "关于 WebAssembly 作为堆栈机器的思考",
+      "link": "https://eli.thegreenplace.net/2026/thoughts-on-webassembly-as-a-stack-machine/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-04-30T02:28:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "WebAssembly",
+        "stack machine",
+        "locals",
+        "execution model"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "Eli Bendersky 回应了一篇广为流传的文章，该文指出 WebAssembly 并非纯粹的堆栈机，因其拥有局部变量且缺少如 dup 和 swap 等堆栈操作指令。作者认为尽管 WASM 基于堆栈模型，但其引入的局部变量机制使其更接近寄存器式虚拟机，这影响了其执行效率和编程范式。",
+      "summaryEn": "Eli Bendersky discusses the claim that WebAssembly is not a pure stack machine due to its locals and lack of stack manipulation operations like dup and swap. He argues that while WASM uses a stack-based model, its introduction of local variables makes it closer to a register machine, affecting both performance and programming paradigms.",
+      "reason": "澄清了 WASM 架构设计的核心特征，有助于开发者更准确地理解其性能特点和适用场景。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This week the article Wasm is not quite a stack machine has been\nmaking the rounds and has caught my eye. The post claims that WASM is not a pure\nstack machine because it has locals and is missing some stack manipulation\noperations like dup and swap."
+          },
+          {
+            "type": "p",
+            "text": "While I don't necessarily disagree, IMHO it's a bit of a semantic\ndiscussion because - to the best of my knowledge - there is no formal\ndefinition of what is a stack machine. Wikipedia, for example,\nsays:"
+          },
+          {
+            "type": "quote",
+            "text": "[...], a stack machine is a computer processor or a process virtual machine in\nwhich the primary interaction is moving short-lived temporary values to and\nfrom a push-down stack."
+          },
+          {
+            "type": "p",
+            "text": "WASM certainly fits this definition; the primary interaction is through the\nstack, though WASM is augmented with an infinite register file (locals).\nThe more purist stack machines like Forth are only limited to the stack and a\nmemory (pointers into which are managed on the stack); WASM has these too, plus\nthe registers."
+          },
+          {
+            "type": "p",
+            "text": "Speaking of Forth, the mention of dup reminded me of my own impressions\nof programming in that language, documented in my post about\nimplementing Forth in Go and C. There,\nI highlighted the following essential library function for Forth; it adds an\naddend to a value stored in memory."
+          },
+          {
+            "type": "code",
+            "text": ": +!        ( addend addr -- )\n  tuck      ( addr addend addr )\n  @         ( addr addend value-at-addr )\n  +         ( addr updated-value )\n  swap      ( updated-value addr )\n  ! ;"
+          },
+          {
+            "type": "p",
+            "text": "And lamented how difficult it is to understand such code without the\ndetailed stack view in comments alongside it."
+          },
+          {
+            "type": "p",
+            "text": "I find it much simpler to reason about this WASM code:"
+          },
+          {
+            "type": "code",
+            "text": "(func (export \"add_to_byte\") (param $addr i32) (param $delta i32)\n    (i32.store8\n        (local.get $addr)\n        (i32.add\n            (i32.load8_u (local.get $addr))\n            (local.get $delta)))\n)"
+          },
+          {
+            "type": "p",
+            "text": "You may say this is cheating because folded WASM instructions help readability\nand they're just syntactic sugar; OK, here's the linear code:"
+          },
+          {
+            "type": "code",
+            "text": "local.get $addr\nlocal.get $addr\ni32.load8_u\nlocal.get $delta\ni32.add\ni32.store8"
+          },
+          {
+            "type": "p",
+            "text": "It's still very readable, because - while the stack is used for all the\ncalculations and actual commands - some of the data lives in named \"registers\"\ninstead of on the stack. So we don't need all those tuck-swap contortions to get\nthings into the right order."
+          },
+          {
+            "type": "p",
+            "text": "One might worry about the duplicated local.get $addr; wouldn't a real dup\nbe better? Well, not in terms of readability, as we've already discussed. How\nabout performance? Since the stack VM is just an abstraction and the underlying\nCPUs executing this code are register machines anyway, the answer is no - it\ndoesn't matter at all."
+          },
+          {
+            "type": "p",
+            "text": "Modern compiler engineers were forged in the fires of C and its descendants;\narbitrary control flow, arbitrary register and memory access, anything goes.\nCompilers are quite sophisticated. Let's see how wasmtime compiles our\nadd_to_byte to native code (using wasmtime explore with its\ndefault opt-level=2); comments are added by me:"
+          },
+          {
+            "type": "code",
+            "text": "// Prologue\npush rbp\nmov rbp, rsp\n\n// wasmtime's VM context pointer lives in rdi; 0x38 is likely its offset\n// to the default linear memory. Therefore, r10 will hold the base address\n// of the linear memory buffer\nmov r10, qword ptr [rdi + 0x38]\n\n// The first parameter ($addr) is in edx; since WASM values are i32, it's\n// zero-extended into the 64-bit r11 by copying into r11d\nmov r11d, edx\n\n// r10+r11 is memory[$addr]; this loads the current value into rsi\n// (zero-extending from 8 bits)\nmovzx rsi, byte ptr [r10 + r11]\n\n// ecx is the first parameter ($delta); this adds the addend to the\n// current value\nadd esi, ecx\n\n// Store cur_value+addend back into memory[$addr]\nmov byte ptr [r10 + r11], sil\n\n// Epilogue\nmov rsp, rbp\npop rbp\nret"
+          },
+          {
+            "type": "p",
+            "text": "This is pretty much the code we'd expect to be emitted for the C statement\nmem[addr] += addend, or if we were writing x86-64 assembly by hand. The\ncompiler had no difficulty figuring out that two consecutive loads from\nthe same WASM local produce the same value and do not - in fact - have to be\nduplicated. The WASM model makes it rather easy, because you can't alias locals;\nas long as there are no intervening writes into the same local, multiple reads\nare known to produce the same value (redundant load elimination)."
+          },
+          {
+            "type": "p",
+            "text": "For comments, please send me\n an email."
+          }
+        ],
+        "translations": [
+          "本周，文章《Wasm 并不完全是一台栈机器》在圈内流传开来，引起了我的注意。该文声称 WASM 并非纯粹的栈机器，因为它拥有局部变量（locals），并且缺少一些栈操作指令，比如 dup 和 swap。",
+          "虽然我未必完全反对这一观点，但就我个人看法而言，这更像是一个语义层面的讨论，因为据我所知，目前并没有对“栈机器”的正式定义。例如维基百科就指出：",
+          "[...]，栈机器是一种计算机处理器或过程虚拟机，其主要交互方式是通过压入弹出栈来移动短生命周期的临时值。",
+          "WASM 显然符合这一定义；其核心交互正是通过栈进行的，尽管 WASM 还增加了一个无限的寄存器文件（即 locals）。而更纯粹意义上的栈机器，如 Forth，则仅依赖栈和内存（内存指针也通过栈管理）；WASM 同样具备这两者，另外还有寄存器支持。",
+          "说到 Forth，文中提到 dup 让我想起了自己用这门语言编程时的印象——我在关于用 Go 和 C 实现 Forth 的文章中有过记录。在那篇文章中，我强调了以下这个 Forth 中的关键库函数：它用于将一个加数加到内存中存储的值上。",
+          ": +!        ( addend addr -- )\n  tuck      ( addr addend addr )\n  @         ( addr addend value-at-addr )\n  +         ( addr updated-value )\n  swap      ( updated-value addr )\n  ! ;",
+          "同时我也感叹，如果没有详细的栈视图注释伴随代码，要理解这样的代码是多么困难。",
+          "我发现分析这段 WASM 代码要简单得多：",
+          "(func (export \"add_to_byte\") (param $addr i32) (param $delta i32)\n    (i32.store8\n        (local.get $addr)\n        (i32.add\n            (i32.load8_u (local.get $addr))\n            (local.get $delta)))\n)",
+          "你可能会说这是作弊，因为折叠后的 WASM 指令提升了可读性，它们只是语法糖而已；好吧，这里给出线性代码：",
+          "local.get $addr\nlocal.get $addr\ni32.load8_u\nlocal.get $delta\ni32.add\ni32.store8",
+          "它依然非常易读，因为尽管栈被用于所有计算和实际命令，但部分数据却存放在命名“寄存器”中而非栈上。因此我们无需那些复杂的 tuck-swap 操作来调整顺序。",
+          "有人或许会担心重复的 local.get $addr 是否应该用真正的 dup 更好？但从可读性角度我们已经讨论过了，那性能呢？由于栈式虚拟机只是一个抽象层，而底层执行此代码的 CPU 本质上是寄存器架构的机器，所以答案是否定的——根本无关紧要。",
+          "现代编译器工程师都是在 C 及其后代语言的熔炉中锤炼出来的；任意控制流、任意寄存器和内存访问，一切皆有可能。编译器已经相当复杂了。让我们看看 wasmtime 如何将我们的 add_to_byte 编译为本地代码（使用 wasmtime explore，默认 opt-level=2）；以下是我添加的注释：",
+          "// Prologue\npush rbp\nmov rbp, rsp\n\n// wasmtime's VM context pointer lives in rdi; 0x38 is likely its offset\n// to the default linear memory. Therefore, r10 will hold the base address\n// of the linear memory buffer\nmov r10, qword ptr [rdi + 0x38]\n\n// The first parameter ($addr) is in edx; since WASM values are i32, it's\n// zero-extended into the 64-bit r11 by copying into r11d\nmov r11d, edx\n\n// r10+r11 is memory[$addr]; this loads the current value into rsi\n// (zero-extending from 8 bits)\nmovzx rsi, byte ptr [r10 + r11]\n\n// ecx is the first parameter ($delta); this adds the addend to the\n// current value\nadd esi, ecx\n\n// Store cur_value+addend back into memory[$addr]\nmov byte ptr [r10 + r11], sil\n\n// Epilogue\nmov rsp, rbp\npop rbp\nret",
+          "这基本上就是我们预期由 C 语句 mem[addr] += addend 生成的代码，或者如果我们手动编写 x86-64 汇编也会得到类似结果。编译器很容易就能判断出连续两次从同一个 WASM 局部变量加载会得到相同值，实际上不必重复加载。WASM 模型使得这一点变得容易，因为你无法让局部变量别名化；只要没有对该局部变量进行中间写入，多次读取已知会产生相同结果（冗余加载消除）。",
+          "如有意见，请邮件联系我。"
+        ]
+      }
+    },
+    {
+      "slug": "a590fc6a313b0cbf",
+      "title": "Pluralistic: How not to ban surveillance pricing (30 Apr 2026)",
+      "titleZh": "切勿以漏洞百出的方式禁止监控定价",
+      "link": "https://pluralistic.net/2026/04/30/something-must-be-done/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-04-30T14:38:35.000Z",
+      "category": "other",
+      "keywords": [
+        "surveillance",
+        "privacy",
+        "consumer law"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Cory Doctorow 批评马里兰州新出台的消费保护法在禁止监控定价方面存在严重 loophole，法律允许企业在用户同意下继续使用数据画像进行个性化定价。文章同时推荐了多个有趣的文化和科技观察内容，包括 Google 的 Linux 服务器规模、手工编织防烫垫等。",
+      "summaryEn": "Cory Doctorow critiques Maryland's new consumer protection law for failing to ban surveillance pricing, as it allows companies to continue personalized pricing with user consent. The post also features delightful observations including Google's 8,000 Linux servers and hand-knitted oven mitts.",
+      "reason": "作为数字权利倡导者，Doctorow 的分析揭示了政策制定者在隐私保护上的现实困境，极具启发性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "How not to ban surveillance pricing: Maryland's new consumer protection law is all loophole."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Google's 8,000 Linux servers; Battleshoe; Knitted potholes; Unpack the court; \"Robot Artists and Black Swans\"; Enshittifying tech jobs."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "How not to ban surveillance pricing (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "If you want to piss me off, it's easy: just breezily assert that our tech regulation problems are the result of the fast pace of technological change racing ahead of the plodding speed of governmental action:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/22/uber-for-nurses/#go-meta"
+          },
+          {
+            "type": "p",
+            "text": "While there have been some instances in which this was true, it is far more often the case that there are blindingly obvious answers to tech problems, which our lawmakers and regulators ignore, amidst a rising chorus of warnings about the dire consequences of failing to act."
+          },
+          {
+            "type": "p",
+            "text": "Take the new Maryland bill that (supposedly) outlaws surveillance pricing: this bill is, frankly, a terribly drafted piece of shit. Worse: it's a terribly drafted piece of shit bill that fails to resolve a serious and urgent problem. Even worse: the lawmakers who drafted this piece of shit bill and Maryland Governor Wes Moore were all loudly and repeatedly warned about the problems of this bill, and they did nothing and now the people of Maryland are fucked."
+          },
+          {
+            "type": "p",
+            "text": "So what is surveillance pricing, why is it so dangerous, and what's wrong with Maryland's Protection Against Predatory Pricing Act?"
+          },
+          {
+            "type": "p",
+            "text": "Surveillance pricing is when a company spies on you (\"surveillance\") and uses the resulting dossier to raise its prices to the maximum it calculates you will be willing to pay (\"pricing\"). With surveillance pricing, a retailer reaches into your bank account and devalues your dollars. If you pay $2 for an apple at the grocery store and the same store only charges me $1 for that apple, then that grocer is telling you that your dollars are worth half as much as mine:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/06/24/price-discrimination/"
+          },
+          {
+            "type": "p",
+            "text": "There's a kind of economics brainworm that makes some economists looooove surveillance pricing. They will insist that this is an \"efficient\" way to price goods, and claim that surveillance pricing isn't just a way to raise prices on people who are willing to pay more, it's a way to lower prices for people who are willing to pay less."
+          },
+          {
+            "type": "p",
+            "text": "What you're supposed to infer from this is that people who can afford more will end up paying more, while people who can afford less will pay less. It's pitched as the Robin Hood of pricing policies, gouging the rich to finance discounts for the poor. But in practice, that's not at all how surveillance pricing works. Instead, surveillance pricing is most often used to levy a \"desperation premium\" on people who have fewer choices and less leverage."
+          },
+          {
+            "type": "p",
+            "text": "For example, there's a McDonald's investments portfolio company called Plexure that supplies surveillance pricing tools to fast food restaurants. Plexure advertises its ability to use surveillance data to find out when a customer has just gotten a paycheck so that vendors can increase the price of their usual breakfast sandwich order. This isn't aimed at wealthy people – it's explicitly designed to target people who are living paycheck to paycheck."
+          },
+          {
+            "type": "p",
+            "text": "Surveillance pricing is also used to determine how much you get paid; when that happens, we call it \"algorithmic wage discrimination.\" Gig platforms like Uber use surveillance data about their drivers to predict which workers are most desperate, and those drivers are offered less money per mile and per hour, because a desperate worker will take whatever is on offer. Gig work apps for health-care do the same thing to nurses:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/12/18/loose-flapping-ends/#luigi-has-a-point"
+          },
+          {
+            "type": "p",
+            "text": "Indeed, surveillance pricing represents a kind of cod-Marxism. Instead of \"from each to their own ability, to each according to their need,\" the \"efficient\" surveillance pricing motto is, \"from each according to their desperation, to each according to our power\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/01/11/socialism-for-the-wealthy/#rugged-individualism-for-the-poor"
+          },
+          {
+            "type": "p",
+            "text": "Surveillance pricing is anything but efficient. Because surveillance pricing is a transfer from consumers to investors, it has the net effect of reducing consumption overall. If your grocer can screw you out of an extra $50/month on your household food bill, that's $50/month you can't spend on a babysitter, a movie, or a couple of nice books for your kid. The American economy runs on consumption, and the American consumer has less discretionary income than they've had in generations. Anything that reduces consumption is a drag on the whole economy."
+          },
+          {
+            "type": "p",
+            "text": "Surveillance pricing is rampant and getting worse all the time. During the Biden administration the FTC held hearings on the practice and developed a detailed, eye-watering record of all the ways that surveillance, combined with digital platforms that can alter prices for every visit by every customer, has resulted in a massive transfer from working people to wealthy investors:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/07/24/gouging-the-all-seeing-eye/#i-spy"
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately – and predictably – Trump's new FTC chairman, Andrew Ferguson, killed off that action, replacing it with an initiative that encouraged FTC officials to anonymously rat each other out for being too \"woke\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/04/21/trumpflation/#andrew-ferguson"
+          },
+          {
+            "type": "p",
+            "text": "He did this even as a whole bunch of surveillance pricing companies were blitzing their clients with messages about the surveillance pricing possibilities created by Trump's tariffs, which would condition buyers to expect higher prices, creating opportunities to smuggle in surveillance-priced premiums:"
+          },
+          {
+            "type": "p",
+            "text": "https://pros.com/learn/webinars/navigating-tariff-increases-future-proof-pricing-strategy"
+          },
+          {
+            "type": "p",
+            "text": "It's only gotten worse since. Back in January, Google CEO Sundar Pichai announced that the company had a new plan to make AI profitable: they would supply surveillance prices for sellers who used Google's advertising services. After all, Google spies on more people, more comprehensively, than anyone except Meta and the NSA, and Google has an advanced ad-targeting network and a giant AI arm. Put these three facts together and Google can offer merchants the ability to target you for ads and prices that are calculated, to the penny, to be the most you would be willing to pay:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/01/21/cod-marxism/#wannamaker-slain"
+          },
+          {
+            "type": "p",
+            "text": "All this – rampant, desperation-based price-gouging; federal inaction; a risk to the whole economy – is the backdrop for Maryland's new anti-surveillance pricing bill, which Governor Wes Moore has been trumpeting as the nation's first state bill banning surveillance pricing. This would be very cool – if it was real. But – as the American Economic Liberties Project's Pat Garofalo writes for the Economic Populist – the Protection Against Predatory Pricing Act is so badly drafted that it will have essentially no impact on surveillance pricing. It's positively riddled with loopholes:"
+          },
+          {
+            "type": "p",
+            "text": "https://economicpopulist.substack.com/p/gov-wes-moore-claims-maryland-banned"
+          },
+          {
+            "type": "p",
+            "text": "The first problem with this bill is its scope: it only regulates surveillance pricing for groceries. It has nothing to say about the use of surveillance data to reprice car rentals, apartments, healthcare, taxi rides, quick-service food, or the thousand other areas where surveillance pricing is already rampant. Worse: it is silent on algorithmic wage discrimination: the use of surveillance data to reprice your wages, penalizing workers for being poor by making them even poorer."
+          },
+          {
+            "type": "p",
+            "text": "Now, helping people with their grocery bills isn't nothing. However, even within that very narrow scope, this bill is a disaster. As Garofalo points out, the bill's first glaring loophole here is how it permits surveillance pricing if a purchaser \"consents.\" This is quite a loophole! After all, we live in an era in which \"consent\" consists of clicking \"I agree\" when presented with a gigantic list of terms and conditions, which you cannot negotiate, which are subject to change without notice, and which are so long that it would take 26 hours to review all the \"agreements\" you \"consent\" to in any given 24-hour day."
+          },
+          {
+            "type": "p",
+            "text": "So if the company that you use to book your pet's veterinary check-ups is owned by the same company that provides your grocer with its surveillance pricing tools, you might \"consent\" to having that company jack you on every bag of groceries just by clicking \"I agree\" when your cat needs a vet appointment."
+          },
+          {
+            "type": "p",
+            "text": "The bill also exempts \"promotional offers\" and \"temporary discounts,\" suggesting that it was drafted by someone who has never encountered a merchant whose retail premises are always plastered with signs trumpeting the fact that every price in the shop is both \"temporary\" (ACT NOW!) and \"promotional\" (SALE! SALE! SALE!). Since the bill doesn't define either of these words, it effectively grants every grocer in the state an easy way to evade the law entirely."
+          },
+          {
+            "type": "p",
+            "text": "Finally, the bill exempts two exceptionally scammy tactics that are already the major vehicle for surveillance price-based gouging: loyalty cards and subscription-based pricing."
+          },
+          {
+            "type": "p",
+            "text": "Loyalty cards are often a total scam:"
+          },
+          {
+            "type": "p",
+            "text": "https://consumerlaw.berkeley.edu/news/price-loyalty-how-rewards-programs-trap-consumers-and-how-states-can-take-action-protect-them"
+          },
+          {
+            "type": "p",
+            "text": "And subscriptions are a scammer's best friend:"
+          },
+          {
+            "type": "p",
+            "text": "https://redrocks.org/financial-education/hidden-charges-and-fake-subscriptions-the-quiet-scam-costing-consumers-millions"
+          },
+          {
+            "type": "p",
+            "text": "But even if you are ripped off by a grocer who can't be bothered to call the scam a \"sale\" or a \"temporary offer,\" who can't be bothered to dress it up as a \"loyalty perk\" or a \"subscription price,\" you still can't get justice. That's because the Protection Against Predatory Pricing Act excludes the \"private right of action,\" which means that you can't sue a grocer who rips you off. All this bill lets you do is petition the state Attorney General's office to sue the grocer on your behalf, and if the AG doesn't think you deserve justice, you're shit out of luck. And the Protection Against Predatory Pricing Act pre-empts other rights in Maryland's existing Consumer Protection Act, meaning that it actually gives Marylanders fewer rights than they had a month ago, before it was signed into law."
+          },
+          {
+            "type": "p",
+            "text": "Legislation this bad doesn't happen by accident. The omissions and defects in this law aren't there because \"technology moves so fast that lawmakers can't make sense of it.\" This is the result of lobbyists and sellout politicians conspiring to rip off the public, and of a governor who decided to ignore the warnings about the bill in order to get a chance to grandstand on Bill Maher while doing nothing to help Marylanders:"
+          },
+          {
+            "type": "p",
+            "text": "https://x.com/BlueGeorgia/status/2047868126365106631"
+          },
+          {
+            "type": "p",
+            "text": "From nurses' wages to your payday breakfast sandwich, surveillance pricing is everywhere, especially in groceries. Every time you use Instacart to shop at Albertsons, Costco, Kroger, and Sprouts Farmers Market, you might be getting ripped off for as much as 23% of the total price:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography"
+          },
+          {
+            "type": "p",
+            "text": "This isn't some silly-season fake controversy. It's an existential crisis for America's cash-strapped, heavily indebted households, whose lives have been made immeasurably worse by the inflation from Trump's Strait of Epstein disaster. Maryland had the chance to do something to help these people and instead they squandered it, selling out to lobbyists for companies whose bottom line depends on draining the bank accounts of the most desperate people in the state."
+          },
+          {
+            "type": "p",
+            "text": "(Image: Cryteria, CC BY 3.0, modified)"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"An Ignorant Population Is Easier to Control\" https://rickperlstein.substack.com/p/an-ignorant-population-is-easier"
+          },
+          {
+            "type": "li",
+            "text": "Walt Disney Visited a Ford Factory in 1948. What He Witnessed There Laid the Groundwork for What Would Become Disneyland https://www.smithsonianmag.com/history/walt-disney-visited-a-ford-factory-in-1948-what-he-witnessed-there-laid-the-groundwork-for-what-would-become-disneyland-180988551/"
+          },
+          {
+            "type": "li",
+            "text": "‘Stop’: Warning over viral Scientology ‘Speedrun’ trend https://www.news.com.au/lifestyle/real-life/news-life/stop-warning-over-viral-scientology-speedrun-trend/news-story/067ce0336bcf53774b4be682741dd868"
+          },
+          {
+            "type": "li",
+            "text": "Aftermath: China Is Electrifying Freight Trucking https://prospect.org/2026/04/29/aftermath-china-electrifying-freight-trucking/"
+          },
+          {
+            "type": "li",
+            "text": "2026 Digital Publishing Awards Nominees https://digitalpublishingawards.ca/2026nominees/?utm_medium=email&amp;utm_campaign=DPA-2026-Nominees&amp;utm_source=Envoke-Digital-Publishing-Awards&amp;utm_term=DPA-2026-Nominees-Announced"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Google's now running on 8,000 Linux servers https://web.archive.org/web/20010501043429/http://www.internetweek.com/story/INW20010427S0010"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Karl Schroeder’s Ventus in the NYT https://archive.nytimes.com/www.nytimes.com/books/01/04/29/reviews/010429.29scifit.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Sony screwing artists out of iTunes royalties, customers out of first sale https://www.nytimes.com/2006/04/30/technology/cheap-trick-allman-brothers-sue-sony-over-download-royalties.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Robot Lego CD thrower can shatter discs https://www.techeblog.com/hammerhead-the-lego-cd-thrower/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Understanding alternative voting, with coffee and beer https://www.youtube.com/watch?v=TtW3QkX8Xa0"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Battleshoe https://philnoto.tumblr.com/post/4613522934/quite-busy-with-work-today-so-heres-a-little"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Filling Paris’s potholes with knitwork https://www.flickr.com/photos/39380641@N03/albums/72157622189211405/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Pinhole cameras made out of hollow eggs https://www.lomography.com/magazine/71984-the-pinhegg-my-journey-to-build-an-egg-pinhole-camera"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Canadian pro-Net Neutrality/anti-censorship/anti-surveillance party gaining support https://web.archive.org/web/20110429020845/http://www.ekospolitics.com/index.php/2011/04/ndp’s-new-status-as-second-runner-holding-april-26-2011/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago We Say Gay: Tennessee kids fight bill that would prohibit discussing homosexuality in school https://web.archive.org/web/20110501072834/https://wesaygay.com/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago HOWTO build an impossible Escher perpetual motion waterfall https://www.instructables.com/Perpetual-Motion-Machine-The-real-life-version-of/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago RIP Keith Aoki, copyfighting law prof, comics illustrator, musician and writer https://www.thepublicdomain.org/2011/04/27/rip-keith-aoki/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Unpack the court with judicial overrides https://pluralistic.net/2021/04/27/bruno-argento/#crisis-of-legitimacy"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Pharma's anti-generic-vaccine lobbying blitz https://pluralistic.net/2021/04/27/bruno-argento/#pharma-death-cult"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Klobuchar on trustbusting https://pluralistic.net/2021/04/27/bruno-argento/#klobuchar"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Robot Artists & Black Swans https://pluralistic.net/2021/04/27/bruno-argento/#fantascienza"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago The enshittification of tech jobs https://pluralistic.net/2025/04/27/some-animals/#are-more-equal-than-others"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Dems want to give $600b to the one percent https://pluralistic.net/2021/04/28/inequality-r-us/#neotrumpism"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "NYC: Techidemic with Sarah Jeong, Tochi Onyebuchi and Alia Dastagir (PEN World Voices), Apr 30\nhttps://worldvoices.pen.org/event/techidemic/"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: How to Disenshittify the Internet with Wendy Liu (EFF), May 14\nhttps://www.eff.org/event/effecting-change-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI with Jonathan Coulton (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "如何禁止监控定价：马里兰州新出台的消费者保护法漏洞百出。",
+          "嘿，看看这个：令人愉悦的小玩意儿。",
+          "客体永久性：谷歌的8,000台Linux服务器；Battleshoe；针织锅垫；拆解法院；“机器人艺术家与黑天鹅”；科技工作正在变得愈发糟糕。",
+          "即将出席的活动：柏林、纽约、巴塞罗那、海伊-昂怀、伦敦、纽约。",
+          "近期活动回顾：我去了哪里。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所言，我会一直写下去。",
+          "版权说明：其余内容。",
+          "如何禁止监控定价（永久链接）",
+          "如果你想惹恼我，很简单：只需轻描淡写地断言，我们的技术监管问题源于技术变革速度之快，而政府行动却步履蹒跚：",
+          "https://pluralistic.net/2026/04/22/uber-for-nurses/#go-meta",
+          "尽管在某些情况下确实如此，但更多时候，针对技术问题的答案显而易见，而立法者和监管机构却视而不见，只顾在日益高涨的警告声中，对不采取行动可能带来的严重后果忧心忡忡。",
+          "就拿新出台的马里兰州法案来说，它（据称）禁止监控定价：坦率地说，这份法案写得极差劲。更糟的是：这是一份写得极差劲的法案，却未能解决一个严重且紧迫的问题。更糟糕的是：起草这份垃圾法案的立法者以及马里兰州州长韦斯·摩尔曾多次大声疾呼该法案的问题，但他们无动于衷，现在马里兰州的人民就遭殃了。",
+          "那么，什么是监控定价？为什么它如此危险？马里兰州《反掠夺性定价保护法》又存在什么问题？",
+          "监控定价是指公司监视你（“监控”），并利用由此获得的信息档案，将价格提高到你认为愿意支付的最高水平（“定价”）。通过监控定价，零售商可以直接插手你的银行账户，贬低你的美元价值。如果你在杂货店花2美元买一个苹果，而同一商店只收我1美元买同样的苹果，那么这家杂货店就是在告诉你，你的美元只值我的美元的一半：",
+          "https://pluralistic.net/2025/06/24/price-discrimination/",
+          "有一种经济学“脑虫”让一些经济学家对监控定价爱得深沉。他们会坚称这是定价商品的一种“高效”方式，并声称监控定价不仅是为了向愿意支付更多的人提高价格，更是为了向愿意支付更少的人降低价格。",
+          "人们通常认为，能负担得起更多商品的人会支付更多，而只能负担较少的人则会支付更少。这被宣传为一种“劫富济贫”的定价政策，即对富人加价以补贴穷人的折扣。但实际上，监控定价并非如此运作。相反，监控定价最常用来对那些选择更少、议价能力更弱的人收取“绝望溢价”。",
+          "例如，麦当劳的投资组合公司Plexure为快餐店提供监控定价工具。Plexure宣传其利用监控数据判断顾客是否刚拿到工资，以便商家提高他们通常早餐三明治订单的价格。这并不是针对富人——它的设计初衷是明确针对那些靠工资度日的人。",
+          "监控定价也被用来决定你能拿到多少报酬；当这种情况发生时，我们称之为“算法工资歧视”。像优步这样的零工平台会利用对司机的监控数据来预测哪些工人最迫切地需要工作，这些司机每英里和每小时能拿到的钱就更少，因为绝望的工人会接受任何报价。医疗行业的零工应用对护士也如法炮制：",
+          "https://pluralistic.net/2024/12/18/loose-flapping-ends/#luigi-has-a-point",
+          "确实，监控定价体现了一种“代码马克思主义”。它不再遵循“各尽所能，按需分配”的原则，而是奉行“各尽所能，按我们的权力分配”——即“从每个人身上榨取其 desperation（绝望程度），然后根据我们的支配能力给予回报”：",
+          "https://pluralistic.net/2025/01/11/socialism-for-the-wealthy/#rugged-individualism-for-the-poor",
+          "监控定价绝非高效。由于监控定价本质上是将消费者财富转移给投资者，其净效应是整体消费水平下降。如果你的杂货店每月能从你的家庭食品账单中多收你50美元，那你就少了50美元可用于请保姆、看电影或给孩子买几本好书。美国经济依赖消费，而美国消费者的 discretionary income（可支配收入）已多年未见。任何抑制消费的行为都会拖累整个经济。",
+          "监控定价愈演愈烈，情况不断恶化。拜登政府时期，联邦贸易委员会（FTC）曾就此举行听证会，并记录了大量证据，揭示监控与数字平台结合后，如何针对每位客户每次访问动态调整价格，导致大量财富从劳动者向富裕投资者转移：",
+          "https://pluralistic.net/2024/07/24/gouging-the-all-seeing-eye/#i-spy",
+          "遗憾的是——而且不出所料——特朗普任命的新任 FTC 主席安德鲁·弗格森终止了这项行动，转而推行一项鼓励 FTC 官员匿名举报彼此“过于 woke（觉醒）”的计划：",
+          "https://pluralistic.net/2025/04/21/trumpflation/#andrew-ferguson",
+          "就在同一时期，多家监控定价公司正疯狂向客户推送信息，宣传特朗普关税政策带来的新机会——通过制造买家预期价格上涨，为后续实施监控定价附加费铺平道路：",
+          "https://pros.com/learn/webinars/navigating-tariff-increases-future-proof-pricing-strategy",
+          "自那以后情况更糟。今年1月，谷歌 CEO 桑达尔·皮查伊宣布，公司已制定新计划以实现 AI 盈利：他们将为使用谷歌广告服务的卖家提供“监控定价”。毕竟，除了 Meta 和国家安全局（NSA），谷歌是监控用户最全面的公司，同时拥有先进的广告定向网络和庞大的 AI 部门。将这三点结合起来，谷歌就能让商家精准地向你投放广告和定价——精确到美分，让你愿意支付的极限价格：",
+          "https://pluralistic.net/2026/01/21/cod-marxism/#wannamaker-slain",
+          "所有这一切——猖獗、基于绝望的哄抬物价；联邦政府的无所作为；对整个经济的威胁——构成了马里兰州新反监控定价法案的背景。州长韦斯·摩尔大肆宣传这是全国首个禁止监控定价的州级法案。这听起来很棒——如果它真的有效的话。但正如美国经济自由项目组织帕特·加罗法洛在《经济民粹主义者》中所写，《反掠夺性定价保护法》起草得如此糟糕，以至于对监控定价几乎没有任何影响。它充斥着大量漏洞：",
+          "https://economicpopulist.substack.com/p/gov-wes-moore-claims-maryland-banned",
+          "该法案的第一个问题是其适用范围：它只监管杂货店的监控定价。对于利用监控数据重新定价汽车租赁、公寓、医疗保健、出租车行程、快餐或其他数千个监控定价已泛滥的领域，它毫无规定。更糟的是：它对算法工资歧视保持沉默——即利用监控数据重新设定你的工资，通过让穷人变得更穷来惩罚工人。",
+          "帮助人们减轻食品开支并非小事。然而，即使在其极其狭窄的范围内，这项法案也是一场灾难。正如加罗法洛指出的那样，该法案在此处的第一个明显漏洞是它允许在“同意”的情况下进行监控定价。这是一个多么大的漏洞！毕竟，我们生活在一个“同意”意味着点击“我同意”的时代，面对的是无法协商、可随时更改且无需通知的冗长条款和条件列表，而这些“协议”你每天“同意”的数量之多，足以让你连续26小时都在阅读。",
+          "因此，如果你用来预约宠物兽医检查的公司与为你提供监控定价工具的同一家公司有关联，那么仅仅因为你的猫需要看兽医而点击“我同意”，你就可能“同意”被该公司在每袋杂货上多收费用。",
+          "该法案还豁免了“促销优惠”和“临时折扣”，这表明起草者从未见过任何商店，其零售场所总是贴满标语，宣称店内每一件商品的价格既是“临时的”（现在行动！）又是“促销的”（大减价！大减价！）。由于该法案未定义这两个词，实际上为全州每一位杂货店提供了轻易规避法律的手段。",
+          "最后，该法案豁免了两种特别恶劣的策略，这些策略已经是基于监控定价的哄抬物价的主要手段：忠诚卡和订阅制定价。",
+          "忠诚卡往往是一场彻底的骗局：",
+          "https://consumerlaw.berkeley.edu/news/price-loyalty-how-rewards-programs-trap-consumers-and-how-states-can-take-action-protect-them",
+          "而订阅制是骗子的最佳工具：",
+          "https://redrocks.org/financial-education/hidden-charges-and-fake-subscriptions-the-quiet-scam-costing-consumers-millions",
+          "即使你被那些连“促销”或“限时优惠”都不愿称之为骗局、连“忠诚度福利”或“订阅价格”都不屑包装一下的杂货店坑了，你也无法获得正义。这是因为《反掠夺性定价保护法》排除了“私人诉权”，也就是说，你根本无法起诉这些坑害你的杂货店。这部法案唯一允许你做的就是向州总检察长办公室请愿，让他们代表你提起诉讼；但如果总检察长认为你不值得伸张正义，那你也就只能自认倒霉了。更糟糕的是，该法还优先于马里兰州现有《消费者保护法》中的其他权利条款，这意味着它实际上让马里兰州的居民比一个月前法案签署前拥有的权利更少。",
+          "如此恶劣的立法绝非偶然。这部法律中的漏洞和缺陷并非因为“技术发展太快，立法者难以理解”。这是游说者和背叛公众利益的政客合谋的结果，也是那位州长无视关于该法案的警告，只为在比尔·马赫（Bill Maher）面前作秀，却对马里兰州民毫无帮助的决定所致：",
+          "https://x.com/BlueGeorgia/status/2047868126365106631",
+          "从护士的工资到你的早餐三明治，监控定价无处不在，尤其是在杂货行业。每当你通过 Instacart 在 Albertsons、Costco、Kroger 和 Sprouts Farmers Market 购物时，你可能已经被多收了高达总价 23% 的费用：",
+          "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography",
+          "这并非什么荒谬的虚假争议。这是美国那些捉襟见肘、背负沉重债务的家庭所面临的生存危机，特朗普的“斯坦斯特灾难”（Strait of Epstein disaster）引发的通货膨胀已使他们的生活变得无比艰难。马里兰州本有机会做些什么来帮助这些人，但他们却浪费了这个机会，屈从于那些依赖榨取州内最绝望人群银行账户利润的公司的游说者：",
+          "(图片：Cryteria, CC BY 3.0, 修改)",
+          "嘿，看看这个（永久链接）",
+          "“无知民众更易控制” https://rickperlstein.substack.com/p/an-ignorant-population-is-easier",
+          "华特·迪士尼参观福特工厂（1948年）。他所目睹的一切为后来迪士尼乐园的诞生奠定了基础 https://www.smithsonianmag.com/history/walt-disney-visited-a-ford-factory-in-1948-what-he-witnessed-there-laid-the-groundwork-for-what-would-become-disneyland-180988551/",
+          "“停止”：对病毒式传播的“科学教速通”趋势发出警告 https://www.news.com.au/lifestyle/real-life/news-life/stop-warning-over-viral-scientology-speedrun-trend/news-story/067ce0336bcf53774b4be682741dd868",
+          "aftermath：中国正在为货运卡车电动化 https://prospect.org/2026/04/29/aftermath-china-electrifying-freight-trucking/",
+          "2026 数字出版奖提名名单 https://digitalpublishingawards.ca/2026nominees/?utm_medium=email&amp;utm_campaign=DPA-2026-Nominees&amp;utm_source=Envoke-Digital-Publishing-Awards&amp;utm_term=DPA-2026-Nominees-Announced",
+          "客体永久性（永久链接）",
+          "#25年前 Google 已在运行 8,000 台 Linux 服务器 https://web.archive.org/web/20010501043429/http://www.internetweek.com/story/INW20010427S0010",
+          "#25年前 Karl Schroeder 的 Ventus 登上纽约时报 https://archive.nytimes.com/www.nytimes.com/books/01/04/29/reviews/010429.29scifit.html",
+          "#20年前 索尼通过iTunes版税剥削艺术家，剥夺消费者的首次销售权 https://www.nytimes.com/2006/04/30/technology/cheap-trick-allman-brothers-sue-sony-over-download-royalties.html",
+          "#20年前 乐高机器人CD投掷器可粉碎光盘 https://www.techeblog.com/hammerhead-the-lego-cd-thrower/",
+          "#15年前 用咖啡和啤酒理解替代性投票制度 https://www.youtube.com/watch?v=TtW3QkX8Xa0",
+          "#15年前 Battleshoe https://philnoto.tumblr.com/post/4613522934/quite-busy-with-work-today-so-heres-a-little",
+          "#15年前 用编织物填补巴黎的坑洼路面 https://www.flickr.com/photos/39380641@N03/albums/72157622189211405/",
+          "#15年前 用空心鸡蛋制作针孔相机 https://www.lomography.com/magazine/71984-the-pinhegg-my-journey-to-build-an-egg-pinhole-camera",
+          "#15年前 加拿大亲网络中立、反审查、反监控政党获得支持 https://web.archive.org/web/20110429020845/http://www.ekospolitics.com/index.php/2011/04/ndp’s-new-status-as-second-runner-holding-april-26-2011/",
+          "#15年前 我们说“同性恋”：田纳西州孩子反对禁止在学校讨论同性恋的法案 https://web.archive.org/web/20110501072834/https://wesaygay.com/",
+          "#15年前 如何建造一台不可能的埃舍尔永动瀑布 https://www.instructables.com/Perpetual-Motion-Machine-The-real-life-version-of/",
+          "#15年前 RIP Keith Aoki，版权法教授、漫画插画家、音乐家兼作家 https://www.thepublicdomain.org/2011/04/27/rip-keith-aoki/",
+          "#5年前 通过司法推翻来解构法院 https://pluralistic.net/2021/04/27/bruno-argento/#crisis-of-legitimacy",
+          "#5年前 制药业针对仿制疫苗的反攻游说 https://pluralistic.net/2021/04/27/bruno-argento/#pharma-death-cult",
+          "#5年前 克洛布彻的反垄断立场 https://pluralistic.net/2021/04/27/bruno-argento/#klobuchar",
+          "#5年前 机器人艺术家与黑天鹅 https://pluralistic.net/2021/04/27/bruno-argento/#fantascienza",
+          "#1年前 科技岗位的“去人性化”趋势 https://pluralistic.net/2025/04/27/some-animals/#are-more-equal-than-others",
+          "#5年前 民主党欲向百分之一群体分配6000亿美元 https://pluralistic.net/2021/04/28/inequality-r-us/#neotrumpism",
+          "即将出席的活动（永久链接）",
+          "纽约：Techidemic，与Sarah Jeong、Tochi Onyebuchi和Alia Dastagir共同主持（PEN世界之声），4月30日\nhttps://worldvoices.pen.org/event/techidemic/",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日\nhttps://encuentroderechosdigitales.com/en/",
+          "线上：Wendy Liu谈如何“去去人性化”互联网（电子前哨基金会），5月14日\nhttps://www.eff.org/event/effecting-change-enshittification",
+          "柏林：Re:publica，5月18–20日\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland书店举办“去人性化”讲座，5月19日\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-Wye：HowTheLightGetsIn，5月22–25日\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《反向半人马指南：AI时代之后的生活》，与Jonathan Coulton对谈（The Strand），6月24日\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "爱丁堡国际图书节，与Jimmy Wales对谈，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "近期活动（永久链接）",
+          "人工智能：终极颠覆者，与阿斯特拉·泰勒和优舒亚·本吉奥对话（CBC Ideas）\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新而开始榨取？(InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "皮特“市长”·布蒂吉格 (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变得更糟 (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被大科技公司坑了？(Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "最新书籍（永久链接）",
+          "《坎尼谷》：为Pluralistic创作的拼贴画限量特装版，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《堕落化：为何一切突然变糟及如何应对》，Farrar, Straus, Giroux，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《镐与铲》：《红队蓝调》续集，讲述个人电脑的英雄时代，Tor Books（美国），Head of Zeus（英国），2025年2月（https://us.macmillan.com/books/9781250865908/picksandshovels）。",
+          "《骗局》：《红队蓝调》续集，讲述监狱科技及其他骗局，Tor Books（美国），Head of Zeus（英国），2024年2月（thebezzle.org）。",
+          "《失乐园》：一部关于希望的后末日气候小说，Tor Books（美国），Head of Zeus（英国），2023年11月（http://lost-cause.org）。",
+          "《互联网困局》：一本关于互操作性与大型科技公司的非虚构作品（Verso），2023年9月（http://seizethemeansofcomputation.org）。签名本可在Book Soup购买（https://www.booksoup.com/book/9781804291245）。",
+          "《红队蓝调》：“引人入胜、令人欲罢不能的惊悚小说，读完你将比以往更了解世界如何运转。” Tor Books http://redteamblues.com。",
+          "《 chokepoint capitalism：如何击败大型科技公司、驯服大型内容并让艺术家获得应有报酬》，与丽贝卡·吉布琳合著，探讨如何纠正创意劳动市场的扭曲，Beacon Press/Scribe，2022年 https://chokepointcapitalism.com",
+          "即将出版的书籍（永久链接）",
+          "《半人马的反向指南：AI篇》，一本关于如何成为更好AI批评家的短书，Farrar, Straus and Giroux，2026年6月（https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/）",
+          "《堕落化》（图像小说版），Firstsecond，2026年",
+          "《后美国互联网》，《堕落化》的政治续篇，Farrar, Straus and Giroux，2027年",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机与数字版权管理的中篇小说的青少年图像小说，FirstSecond，2027年4月20日",
+          "《梅米克方法》，Farrar, Straus, Giroux，2027年",
+          "版本说明（永久链接）",
+          "今日主要来源：",
+          "当前写作中：《后美国互联网》，《堕落化》的续作，讲述特朗普烧毁美国后我们其余人所能拥有的美好世界。第三稿已完成，已提交编辑。",
+          "《半人马的反向指南：AI篇》，一本为Farrar, Straus and Giroux撰写的短书，讲述如何成为一名有效的AI批评家。法律审校与文字润色已完成。",
+          "《后美国互联网》，一本关于特朗普主义时代互联网政策的短书。处于规划阶段。",
+          "《小兄弟》短篇故事之一，关于DIY胰岛素。处于规划阶段。",
+          "本作品（不包括任何系列小说）采用知识共享署名4.0国际许可协议进行授权。这意味着您可以以任何方式使用它，包括商业用途，但前提是必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图像不在此许可证范围内；它们要么属于版权的限制或例外情况，要么基于单独的许可协议。请谨慎处理。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制，第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你SARS时，你就做sarsaparilla”——乔伊“手风琴男”德维拉",
+          "仔细阅读：通过阅读此内容，您代表您的雇主同意，永久且无损害地免除我与您雇主及其合作伙伴、许可方、代理人及受让人之间签订的所有非协商性协议、许可证、服务条款、密封包装、点击包装、浏览包装、保密协议、不披露协议、竞业禁止协议和可接受使用政策（“虚假协议”）所产生的所有义务和弃权声明。您进一步声明，您有权代表雇主免除我对任何虚假协议的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "e7cff295ca2646d0",
+      "title": "If I Could Make My Own GitHub",
+      "titleZh": "如果我能自己打造 GitHub",
+      "link": "https://matduggan.com/if-i-could-make-my-own-github/",
+      "sourceName": "matduggan.com",
+      "sourceUrl": "https://matduggan.com",
+      "pubDate": "2026-04-30T12:02:49.000Z",
+      "category": "opinion",
+      "keywords": [
+        "GitHub",
+        "alternative",
+        "software development",
+        "vision"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "作者与朋友设想了一个假设场景：如果他们拥有无限资源，会如何构建自己的代码托管平台。他们考虑的核心理念是打造一个真正属于开发者、尊重代码所有权、避免平台垄断的理想化版本，强调去中心化与社区自治。",
+      "summaryEn": "The author imagines what they would build if they had unlimited resources to create their own GitHub alternative. Their vision centers on developer ownership, avoiding platform monopolies, and building a truly decentralized code hosting platform focused on community autonomy.",
+      "reason": "激发了对当前代码托管生态的反思，为那些不满现有平台限制的开发者提供了建设性的替代思路。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Mathew Duggan",
+        "siteName": "matduggan.com",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "My friend and I have a game where we talk about what we'd do if we were rich. Not rich like 'paid off the mortgage' rich. Rich like a man who owns a submarine he's never been inside. Rich like a man whose third wife has a skincare line. Tech-titan rich — the kind of money that buys you a compound in Wyoming and the confidence to wear the same gray t-shirt to congressional testimony.\""
+          },
+          {
+            "type": "p",
+            "text": "One of mine, for a long time, has been the dream of making a new forge. I was prompted to write this after reading the good post about Ghostty leaving GitHub but it's something I've written and talked about for a few years. Given how bad GitHub has become at its core job, it seemed like a fun opportunity to try and write up what my billionaire folly of a forge would look like. This folly would have less penile rockets filled with aging celebrities."
+          },
+          {
+            "type": "h3",
+            "text": "What are the problems with modern forges?"
+          },
+          {
+            "type": "p",
+            "text": "GitHub, GitLab and Gitea (those being the 3 I've used the most) are all modeled on effectively the same design. There are differences, but you can tell that GitHub sets the pattern for the industry and then those features are ported over to the other two with varying levels of success. The issue with all of these is that they're designed to add things git doesn't do that you need."
+          },
+          {
+            "type": "p",
+            "text": "Git is great at what it is designed to do, but what it is designed to do isn't the way most people are using it. Git is a perfect tool for kernel development. It is a decentralized distributed version control system that relies on the idea of patches being sent to maintainers over email. You trust those maintainers to maintain their sections and merge in the stuff that makes sense and not merge in the other stuff. It's a pretty high trust environment that places very few restrictions on how online a specific contributor is or what system they are using. If you have a laptop from 2010 that connects to the Internet once a week you can still be a meaningful contributor to a project with these workflows. ."
+          },
+          {
+            "type": "p",
+            "text": "However, in most jobs, git is effectively just the way I pull and push from a centralized repository stored in a forge. All the important stuff happens inside the forge, and very little of it happens on my client. Pull Requests are how I enforce the four-eyes principle, GitHub Actions are how I run my tests and linting on those Pull Requests to ensure they are functional and meet my organizational requirements, the user's identity in relation to that forge is how I verify who they are. I track issues with my code through Issues and cut releases for users to download through Releases. There's not a lot of git in this workflow, this is mostly placed on top of git."
+          },
+          {
+            "type": "p",
+            "text": "So here are the primary issues I see with modern forges that I would love to solve."
+          },
+          {
+            "type": "li",
+            "text": "Stuff happens in the wrong order. You know the PR. Commit 1: 'Feature.' Commit 2: 'fix.' Commit 3: 'fix.' Commit 4: 'actually fix.' Commit 5: 'please.' Commit 6, made at 11:47 PM on a Thursday: 'asdfasdf'. This person has a family. This person has hobbies. This person is, at this moment, crying. You don't want the feedback loop after the commit you want it before. Let me do an enforced pre-commit hook to run the jobs remotely on the forge and provide the feedback to the user before they push."
+          },
+          {
+            "type": "li",
+            "text": "PR approval is too boolean. The PR is approved or it's not approved. Real code review, like real life, lives in the middle. 'Sure, fine, we'll deal with it later' is a legitimate human response and should be a legitimate button. Gerrit has a better model for this. If I weakly approve something as a maintainer, let me flag it for later."
+          },
+          {
+            "type": "li",
+            "text": "PRs are too inflexible. I don't need 4 eyes on every change, especially in a universe where LLMs exist. The global GDP lost annually to senior engineers staring at a four-line PR waiting for someone — anyone — to type 'LGTM' could fund a moon mission. A nice one. With legroom. Let me customize and more easily control this. If the person is a maintainer and the LLM says its low risk/no risk just let them go."
+          },
+          {
+            "type": "li",
+            "text": "Stacked PRs are just better. They're easier to review and understand. They have to be a first-class citizen not an add-on through a tool other than your VCS."
+          },
+          {
+            "type": "li",
+            "text": "A forge shouldn't do everything. Issue tracking yes. Kanban board, probably not. Wiki? I doubt it. Everything tools always turn into crap. You add features when its easy to add features and then pay the maintenance price for those features forever regardless of their rate of adoption because now someone, somewhere uses them and you are locked in."
+          },
+          {
+            "type": "li",
+            "text": "The standard unit of hosting is too large. Running Github Enterprise is a big task. Running GitLab is also a relatively big ask. These are complicated products with a lot of moving pieces. I want smaller individual units of hosting that I can link together to make an organization. It's fine if they're not globally federated and I need to make an account for each Organization, but an Organization should be flexible enough to let me say \"these 12 Raspberry Pis are my org\". I don't know how they communicate securely, I hire people for that problem."
+          },
+          {
+            "type": "li",
+            "text": "My local copy of the repo should be a representation of the entire repo, not just the code. I should be able to approve a PR from the same VCS I use to check in the code. I should be able to go through my issues by looking through local files."
+          },
+          {
+            "type": "li",
+            "text": "On the flip side, since I need to be online all the time to really work with a team, don't make me pay the storage price all the time. I want my VCS and my forge to work together. If I clone a repo, I want a pretty limited history for that repo when I clone. If I start to go back in time, spin up a worker to go fetch that stuff from the VCS when I need it. I don't need to hammer the forge with giant clone requests on the assumption that I might need to rebuild the forge at any moment with the entire history of the entire project."
+          },
+          {
+            "type": "li",
+            "text": "Actions need to be signed, SHA'd and usable offline. If I want, I should be able to get tarballs of all my actions, stick them in the repo and tell my system \"don't go anywhere for checkout action, that's right here\". If I say latest, have that work like Dependabot does now where it opens up a PR to put the latest tarballs in my repo. Actions are critical and they should be runnable on my local machine through the same VCS if I want to."
+          },
+          {
+            "type": "h3",
+            "text": "Well Y Does Some Of That"
+          },
+          {
+            "type": "p",
+            "text": "Absolutely. There are a lot of tools that do parts of this. I want someone to take them, put them all together and fit them up. I want JJ as the VCS, I want this as the forge and I want the expectation that I as a user could live happily with a raspberry pi as a forge for a long time. I want those forges designed around modern concepts like object storage and shallow clones and getting constantly hammered by LLM bots."
+          },
+          {
+            "type": "p",
+            "text": "Now in a universe where GitHub was doing a good job, I wouldn't even bother writing this up. GitHub is the default and talking to people about overcoming the default is usually a waste of time. Heinz is the default ketchup, when I order a Coke I don't want a Pepsi and if I'm going to use a forge up until 2026 there would have to be an amazing reason for me to not choose the one that everyone uses. Up until recently other forges have been like sweet potato french fries, which is to say never the thing you actually want."
+          },
+          {
+            "type": "p",
+            "text": "But we live in a world where the monolithic forge is breaking down and nobody has built the replacement. The people with the money are busy with the rockets. The people with the taste are busy with their day jobs. And the rest of us are opening PRs titled 'asdfasdf' at midnight, waiting for a robot to check them, wondering when the tool we spend our whole working lives inside stopped being built for us."
+          },
+          {
+            "type": "p",
+            "text": "If I ever get the submarine money, I'll let you know."
+          }
+        ],
+        "translations": [
+          "我和朋友有个游戏，我们会聊如果变得超级有钱会做什么。不是那种“还清房贷”的有钱，是那种拥有潜艇却从未坐进去过的有钱，是那种第三任妻子开了护肤品牌的有钱，是科技巨头级别的有钱——能让你在怀俄明州买下一整片地产，还能让你穿着同一件灰色T恤去国会作证时充满自信的那种有钱。",
+          "我一直以来的梦想之一就是打造一个新的代码托管平台（forge）。这次动笔是因为看到一篇关于Ghostty在GitHub上表现不错的文章，但其实这个想法我已经酝酿和谈论好几年了。鉴于GitHub在其核心职能上已经变得如此糟糕，我觉得尝试描绘一下我这个亿万富翁式的理想化平台会很有意思。而且这个平台不会有太多阴茎形状的火箭，里面塞满过气的名人。",
+          "现代代码托管平台存在哪些问题？",
+          "GitHub、GitLab 和 Gitea（我主要用过的三个）本质上都是基于相似的设计理念。它们之间确实有差异，但可以看出GitHub为整个行业设定了标准，其他平台则试图借鉴这些特性，成功程度不一。问题在于，所有这些平台都试图添加git本身不具备的功能，而这些功能却是用户所需要的。",
+          "Git在其设计目标上表现出色，但它被设计用来解决的不是大多数人的使用场景。Git是内核开发者的完美工具。它是一个去中心化的分布式版本控制系统，其核心思想是通过邮件发送补丁给维护者。你信任这些维护者来管理他们负责的部分，只合并合理的提交，拒绝不合理的。这是一个高度信任的环境，对在线贡献者的地理位置或所用系统几乎没有限制。即使你有一台2010年的笔记本电脑，每周才连一次网，依然可以通过这些流程成为一个项目中有意义的贡献者。",
+          "然而，在大多数工作中，git实际上只是我从中央仓库拉取和推送代码的方式。所有重要的事情都在托管平台内部发生，而我的本地客户端上几乎什么都不做。Pull Request 是我用来执行“四眼原则”的方式，GitHub Actions 是我在 Pull Request 上运行测试和代码检查的工具，以确保代码功能正常并符合组织要求，用户在平台上的身份信息是我验证其身份的依据。我通过 Issues 跟踪代码中的问题，并通过 Releases 发布供用户下载的版本。这个工作流程中并没有太多 git 的操作，大部分功能都是建立在 git 之上的。",
+          "因此，这就是我对现代代码托管平台的主要不满，也是我希望能解决的问题。",
+          "事情发生的顺序不对。你知道那个 PR 吗？Commit 1：'Feature.' Commit 2：'fix.' Commit 3：'fix.' Commit 4：'actually fix.' Commit 5：'please.' Commit 6，周四晚上11:47提交的：'asdfasdf'。这个人家里有妻儿，有自己的爱好。此刻，他正在哭泣。我们不想在提交之后再收到反馈，我们希望在提交之前就得到反馈。让我来实现一个强制性的 pre-commit hook，让它在远程的平台上运行任务，并在用户推送之前将反馈结果返回给他们。",
+          "PR审批太非黑即白了。PR要么被批准，要么没被批准。真实的代码审查，就像真实生活一样，存在于中间地带。“行吧，先放着以后再说”也是一种合理的人类回应，理应成为一个合法的选项。Gerrit在这方面做得更好。如果我是维护者，只是弱批准某项内容，我希望能够标记为“稍后处理”。",
+          "PR机制过于僵化。我不需要每处改动都经过四人审核，尤其是在存在LLM的时代。每年全球GDP因高级工程师盯着一个四行代码的PR，等待任何人敲出“LGTM”而白白流失的资金，足以资助一次配备座椅的月球任务。让我能自定义并更轻松地控制这一流程。如果提交者是维护者，且LLM判断风险极低或为零，就让他们直接通过吧。",
+          "堆叠式PR（stacked PRs）显然更优。它们更容易审查和理解。必须将其作为一等公民对待，而不是通过非VCS工具附加的功能。",
+          "平台不应包揽一切。问题追踪可以，看板板可能不行。Wiki？我表示怀疑。工具一旦功能泛滥，最终都会变得糟糕透顶。只在易于添加功能时才增加新功能，然后永远承担其维护成本——因为总有人会用上这些功能，你就被锁定了。",
+          "托管的基本单位过大。运行GitHub Enterprise是大工程，运行GitLab也是不小的负担。这些都是复杂产品，包含大量组件。我希望有更小的独立托管单元，可以组合起来构成一个组织。即使它们无法全局联邦，我也愿意为每个组织单独创建账户；但组织应足够灵活，允许我说“这12台树莓派就是我的组织”。至于它们如何安全通信，那是另一个问题，我会雇人解决。",
+          "本地仓库副本应是整个仓库的完整映射，而不仅仅是代码。我应该能通过我用来提交代码的同一个VCS来批准PR。我还应该能通过浏览本地文件来查看我的issue。",
+          "另一方面，既然我需要时刻在线才能高效协作，就别让我一直为存储付费。我希望我的VCS和平台（forge）协同工作。克隆仓库时，我希望它只拉取有限的历史记录；当我试图回溯时，再启动一个worker从VCS按需获取所需内容。我不该被迫发起巨大的克隆请求来假设自己可能随时需要重建整个项目的完整历史——这会压垮平台。",
+          "Actions必须经过签名、SHA校验，并支持离线使用。如果我想，应该能将所有Actions打包成tarball放入仓库，并告诉系统：“checkout action不用去别处，就在这里”。如果我指定latest，就让它像Dependabot现在那样，自动打开PR将最新的tarball更新到我的仓库中。Actions至关重要，若我想，应能在本地机器上通过同一VCS运行它们。",
+          "那么Y确实部分实现了这些想法",
+          "没错。有很多工具各自实现了其中一部分。我希望有人能把它们整合起来，组装成一个完整的解决方案。我希望JJ作为VCS，这个平台作为Forge，并让用户相信：我可以长期愉快地用一台树莓派作为Forge。这些平台的设计应基于现代理念，比如对象存储、浅层克隆，以及持续被LLM机器人频繁调用。",
+          "在一个 GitHub 做得足够好的世界里，我根本不会费心写这些。GitHub 是默认选择，跟人讨论如何绕过默认选项通常是浪费时间。就像点可乐时默认要 Heinz 番茄酱，我不会想要 Pepsi，如果我要用 Forge 到 2026 年，除非有极其充分的理由，否则我不会选别人用的那个。直到最近，其他 Forge 还像红薯薯条一样——也就是从来不是你想吃的那道。",
+          "但我们现在所处的时代，那个大一统的 Forge 正在崩塌，而没人能造出替代品。有钱的人忙着造火箭，有品味的人忙着上班，剩下我们这些人则在午夜打开标题为 'asdfasdf' 的 PR，等着机器人审核，心里琢磨着：我们整个职业生涯都在用的工具，到底从什么时候开始就不是为我们打造的了？",
+          "哪天我拿到潜艇经费了，一定告诉你。"
+        ]
+      }
+    },
+    {
+      "slug": "9f56a8b6305211f0",
+      "title": "We need RSS for sharing abundant vibe-coded apps",
+      "titleZh": "我们需要为充满 vibe-coded 应用的分享建立 RSS",
+      "link": "https://simonwillison.net/2026/Apr/30/rss-vibe-coded-apps/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-04-30T18:38:48.000Z",
+      "category": "other",
+      "keywords": [
+        "RSS",
+        "vibe-coding",
+        "web feeds"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "文章探讨了随着 vibe-coding（ vibe 编码）加速应用开发，个人化、情境化和高频次的小型工具与微应用大量涌现的现象。作者 Matt Webb 提出应建立一个基于 RSS 的 Web 订阅源，用于分发这些应用页面，每个条目都包含“安装”按钮，以解决当前缺乏统一分发机制的问题。他认为，当开发速度远超传统发布节奏时，亟需一种轻量级、去中心化的方式来发现和部署这类新型应用。",
+      "summaryEn": "The article discusses the rise of personalized, context-aware micro-apps created through vibe-coding, which are being developed at an accelerating pace. Author Matt Webb proposes creating an RSS web feed for these tools and apps, with each entry featuring an 'Install' button to address the lack of a unified distribution mechanism. He argues that as development outpaces traditional launch cycles, a lightweight, decentralized approach is needed to discover and deploy these new types of applications.",
+      "reason": "这是一篇前瞻性思考，揭示了未来应用生态可能的发展方向，对关注去中心化工具和开发者体验的人来说极具启发价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "30th April 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "We need RSS for sharing abundant vibe-coded apps. Matt Webb:"
+          },
+          {
+            "type": "quote",
+            "text": "I would love an RSS web feed for all those various tools and apps pages, each item with an “Install” button. (But install to where?)\nThe lesson here is that when vibe-coding accelerates app development, apps become more personal, more situated, and more frequent. Shipping a tool or a micro-app is less like launching a website and more like posting on a blog."
+          },
+          {
+            "type": "p",
+            "text": "This inspired me to have Claude add an Atom feed (and icon) to my /elsewhere/tools/ page, which itself is populated by content from my tools.simonwillison.net site."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "eea77e2eba9bcef1",
+      "title": "Notes from April 2026",
+      "titleZh": "2026年4月笔记",
+      "link": "https://evanhahn.com/notes-from-april-2026/",
+      "sourceName": "evanhahn.com",
+      "sourceUrl": "https://evanhahn.com",
+      "pubDate": "2026-04-30T00:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "GitHub",
+        "uptime",
+        "developer tools",
+        "status"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "Evan Hahn 在四月相对安静的月份中整理了一系列链接和发布内容。他撰写了《捍卫 GitHub 糟糕的可用性》一文，表达了对 GitHub 近期服务不稳定的看法，尽管他本人并不喜欢这家微软旗下的公司。此外，他还分享了一些其他有趣的链接供读者点击浏览。",
+      "summaryEn": "In April 2026, Evan Hahn had a quieter month after a busy March. He published an article titled 'In Defense of GitHub's Poor Uptime,' expressing his views on the platform's recent instability despite his general dislike for its parent company Microsoft. He also shared several other interesting links for readers to explore.",
+      "reason": "如果你关心开发者工具平台的稳定性问题以及独立博主对主流服务的批判性思考，这篇文章值得一读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "by Evan Hahn,\nposted\nApr 30, 2026, tagged\n#month-notes\n#me\n#work\n#link",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "After a busy March, April was a little quieter. But don’t worry, I still have a bunch of little links for you to click on."
+          },
+          {
+            "type": "li",
+            "text": "Ghost, my employer, was recognized as a digital public good."
+          },
+          {
+            "type": "li",
+            "text": "“You can’t advertise people out of reacting to their own experiences. This is a fundamental disconnect between how tech people with software brains see the world and how regular people are living their lives.” From “The people do not yearn for automation”."
+          },
+          {
+            "type": "li",
+            "text": "I subscribed to the RSS feed for internet RFCs. Most of this is over my head but it’s neat!"
+          },
+          {
+            "type": "li",
+            "text": "This post argues that “any gains we do realize [from LLM coding] are likely going to be incremental and evolutionary, rather than the world-changing revolution many people seem to be expecting.” Matches my experience."
+          },
+          {
+            "type": "li",
+            "text": "Loved this piece about LLM-assisted development, talking about the real pros and cons for a production project."
+          },
+          {
+            "type": "li",
+            "text": "Bookmarked this list of books critical of AI, from 1976 to today. (I’ve only read 1.5 of the books on this list.)"
+          },
+          {
+            "type": "li",
+            "text": "This pair of podcast episodes about driverless cars ends with a poignant thought: the haters need to “imagine visions of the future more vivid than the word ’no’.” Same applies to other technologies."
+          },
+          {
+            "type": "li",
+            "text": "“For the last 20 years, employees could accept the intense external criticism and awkward conversations with family and friends about working for a company named after J.R.R. Tolkien’s corrupting all-seeing orb. But a year into Trump’s second term, as Palantir deepens its relationship with an administration many workers fear is wreaking havoc at home, employees are finally raising these concerns internally, as the US’s war on immigrants, war in Iran, and even company-released manifestos has forced them to rethink the role they play in it all.” From “Palantir Employees Are Starting to Wonder if They’re the Bad Guys”."
+          },
+          {
+            "type": "li",
+            "text": "Spotted the Fuck Capitalism game jam. This is the kind of nerdy punk rock stuff I like to see!!"
+          },
+          {
+            "type": "p",
+            "text": "Hope you had a good April."
+          }
+        ],
+        "translations": [
+          "三月份忙得不可开交，四月份总算安静了些。不过别担心，我依然攒了一堆链接可以分享给你。",
+          "我的雇主 Ghost 被认定为数字公共产品。",
+          "“你无法通过广告让人对自身经历产生反应——这是软件思维主导的技术人士与普通人生活之间的根本脱节。” 出自《人们并不渴望自动化》。",
+          "我订阅了互联网 RFC 的 RSS 源。大部分内容我看不太懂，但挺有意思！",
+          "这篇文章认为：“我们真正从 LLM 编程中获得的收益很可能是渐进式的演进，而非许多人期待的那种颠覆世界的革命。” 这和我自己的体验一致。",
+          "很喜欢这篇关于 LLM 辅助开发的文章，它深入剖析了在实际生产项目中真正的利弊。",
+          "收藏了一份从 1976 年至今批判 AI 的书籍清单。（这份清单我只读过 1.5 本。）",
+          "这个关于自动驾驶汽车的播客系列最后提出了一个发人深省的想法：反对者需要“想象比‘不’字更生动的未来愿景”。其他技术也适用同样的道理。",
+          "“过去二十年，员工可以接受外界对公司名为托尔金笔下那枚邪恶全视之珠的批评，也能应付家人朋友关于为何为这家公司工作的尴尬对话。但特朗普第二个任期一年后，随着 Palantir 与政府关系加深——而许多员工担忧这个政府正在国内造成破坏——他们终于开始内部质疑：在移民战争、伊朗冲突甚至公司发布的宣言面前，自己是否成了坏人。” 出自《Palantir 员工开始怀疑自己是不是坏蛋》。",
+          "发现了 Fuck Capitalism 游戏开发比赛。这种 geek 式的朋克摇滚风格正是我想看到的！！",
+          "希望你的四月过得不错。"
+        ]
+      }
+    },
+    {
+      "slug": "53acf02a4e3db8a2",
+      "title": "Why are the Artemis II photos on Flickr?",
+      "titleZh": "为什么阿尔忒弥斯II号的照片会在Flickr上？",
+      "link": "https://anildash.com/2026/04/30/artemis-photos-flickr/",
+      "sourceName": "anildash.com",
+      "sourceUrl": "https://anildash.com",
+      "pubDate": "2026-04-30T00:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "Artemis II",
+        "Flickr",
+        "NASA",
+        "space photography"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "NASA 将阿尔忒弥斯II号任务的所有原始图像发布在 Flickr 上，这一选择并非偶然。Flickr 诞生于 Web 2.0 时代，其核心理念是赋予用户对其数据的控制权，这与 NASA 希望让公众直接访问和掌控航天影像数据的目标一致。这种平台选择体现了对开放数据理念的坚持。",
+      "summaryEn": "NASA chose to share all original images from the Artemis II mission on Flickr, a decision rooted in the platform's origins during the Web 2.0 era. Flickr was built on the principle of giving users control over their data, aligning with NASA's goal of allowing public access and ownership of space imagery. This choice reflects a commitment to open data principles.",
+      "reason": "了解 NASA 为何选择 Flickr 有助于理解开放科学和数据共享在现代航天项目中的重要性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Anil Dash",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you followed along with the recent joyful celebrations of the Artemis cruise around the moon, and took a moment to dive into the photographic archives of the mission, you might have noticed that all of the original images were shared by NASA on the venerable photo sharing service Flickr. What you might not know is… why?"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the TL;DR:"
+          },
+          {
+            "type": "li",
+            "text": "Flickr comes from (and helped start!) the Web 2.0 era, which was based on users having control over their data"
+          },
+          {
+            "type": "li",
+            "text": "Tools at that time began giving creators the power to decide what license they wanted to release their content under, including permissions about how it could be shared, used, or remixed"
+          },
+          {
+            "type": "li",
+            "text": "Because the people who made platforms back then were users and creators themselves, they thought about the long term and wanted to be able to preserve people’s work"
+          },
+          {
+            "type": "li",
+            "text": "After lots of corporate shuffling, Flickr ended up in the hands of a family-owned company, SmugMug, and they made the Flickr Foundation to preserve public photos for the next 100 years"
+          },
+          {
+            "type": "li",
+            "text": "NASA’s images should only be on a service where they can be stored in full resolution, for the long term, dedicated to the public domain — which the other social media apps of today can’t do"
+          },
+          {
+            "type": "h2",
+            "text": "The Photographic Record"
+          },
+          {
+            "type": "p",
+            "text": "First, some background for folks who might not know what Flickr is, or who may have forgotten. Flickr is a social sharing site for photography which was founded in 2004, and these days people might say that it shares some of its cofounders with Slack, though back when Slack started, everybody said that the company was started by some of the founders of Flickr. That’s because Flickr was arguably the most influential site of the Web 2.0 era, helping define everything from the user interface design to the bright colors to the easy way that developers could access data from the platform. A lot of the things that we take for granted on the modern social internet, like a friendly “voice” used to communicate to users, were pioneered by Flickr, and then quickly came to be considered standard expectations for the apps and sites that followed. It’s hard to imagine that sites from Tumblr to Grindr would have omitted their final “e”s without Flickr’s precedent."
+          },
+          {
+            "type": "p",
+            "text": "Flickr spun out of a Canadian gaming company called Ludicorp, founded by Stewart Butterfield (later CEO/co-founder of Slack) and Caterina Fake (later an investor and chair of Etsy). The photo-sharing service was extracted from the pieces of a somewhat unsuccessful attempt at multiplayer gaming called “Game Neverending”, but it retained the playfulness of that game even as it became a social app. Flickr also inherited the fine-grained privacy controls and thoughtful community features of earlier social platforms like LiveJournal — along with being actively, intentionally moderated by actual humans who worked diligently to prevent destructive behaviors on the platform. This meant that, more than 20 years ago, this early photo sharing community typically had better social norms than people see on today’s social media apps. (A little side note: Part of Flickr/Ludicorp’s initial funding was with public money. What a remarkable way to fund lasting innovation!)"
+          },
+          {
+            "type": "p",
+            "text": "With all of these groundbreaking features, Flickr didn’t just inspire lots of other entrepreneurs to create a new wave of Web 2.0 startups, it also attracted millions of users who, for the first time, began taking photos with the primary goal of sharing them online. Prior to this moment, the earliest phones with decent cameras were coming to market (it would be years until the iPhone came out), and other photo services of the time were still often oriented towards taking film to processing facilities, and then having the professionals at those facilities scan the resulting images and post them to a clunky online service where you could tediously click through them in a virtual album. Until Flickr, photo sharing online was essentially still analog, even if the experience was technically happening online."
+          },
+          {
+            "type": "h2",
+            "text": "In Focus"
+          },
+          {
+            "type": "p",
+            "text": "Flickr wasn't a social platform first — it was a photography platform first. That means it was designed to store high-resolution versions of every image, and didn't distort pictures with things like filters. Every image showed details like what kind of camera had taken the photo, and even what specific settings were used to take the shot. People started building communities around the then-new idea of using tags to help them find content by topics online — an idea that would directly influence the creation of hashtags on Twitter a few years later."
+          },
+          {
+            "type": "p",
+            "text": "Another core idea of the time was a firm belief in open data: people should own and control their own work. Eventually, some experts (including a then-teenage Aaron Swartz, who we'd later talk about in the early days of Markdown) created a set of standards called Creative Commons licenses, now maintained by an organization of the same name. Flickr made it easy for users to describe what permissions people had for reusing or remixing any photos they posted. (I was helping out with a blogging platform back then, and I think we were the first tool to support this stuff. It felt like a big deal at the time!)"
+          },
+          {
+            "type": "p",
+            "text": "People's Flickr images started popping up in corporate PowerPoint presentations or commercial advertising almost immediately. A little sidebar: the incredibly positive and generous intent of these open licenses has since been exploited by extractive Big AI companies, who ransacked all of the images on Flickr that had permissive licenses without any consent from, or compensation to, the creators. That might be legal by most readings of the licenses, but if you have hundreds of billions of dollars and don't think you should at least have a conversation with the photographers whose work you're using, you're probably an asshole."
+          },
+          {
+            "type": "h2",
+            "text": "Archival Prints"
+          },
+          {
+            "type": "p",
+            "text": "Our close-knit community of people building the new era of web apps was keenly aware that our users were creating culture. This realization brought a huge amount of responsibility — not just in enabling users to express themselves, but in thinking about the long term for people's ownership of their works. Public institutions had just begun to use these platforms, which meant that the content being shared wasn't just a nice picture to look at: it might be socially or even historically significant."
+          },
+          {
+            "type": "p",
+            "text": "What happened in the years that followed was… a lot of corporate machinations. Flickr got bought by Yahoo. Flickr's founders left Yahoo. Yahoo got bought by Verizon. You can imagine how all of that went; the details aren't all that important, except to say that by the time Instagram launched, Flickr had begun to fade into obscurity. People were focused on mobile phones instead of the desktop, on sharing square images with filters instead of full-resolution photography, and on connecting socially instead of caring about photos as art or a cultural record. Nobody would post the canonical historical photo of an event with a Valencia filter on it. Most of Flickr's users moved on, rarely checking their old accounts — until a family-owned photo service named SmugMug bought the service from Yahoo. A human-scale operation with some actual heart and a love of photography was a much better home for the platform than some random division of Verizon."
+          },
+          {
+            "type": "h2",
+            "text": "Commons Sense"
+          },
+          {
+            "type": "p",
+            "text": "In 2022, the new team at SmugMug that owned Flickr decided to focus on Flickr’s larger place in culture. Many major institutions around the world had chosen to archive their public photos on Flickr because of its superior support for high-resolution imagery, its unique ability to declare explicit legal licenses (including public domain licenses), and its long-term reputation for reliably hosting content without any of the harms or abuses that typical social networks had inflicted on users. Museums around the world had entire catalogs on the platform, and governments routinely used it to document their public events. When I had a photo taken at an official White House event with President Obama, his team sent me the final image afterward by sending me a Flickr link; when Zohran Mamdani met King Charles, the NYC Mayor’s Office shared those pictures on Flickr, too."
+          },
+          {
+            "type": "p",
+            "text": "The Flickr team at SmugMug did something special with their responsibility about these public works, due to their cultural significance to the world. They made the Flickr Commons, and brought in a team with expertise in digital archiving and community. This is a project of The Flickr Foundation, designed to preserve digital legacies, and begun in collaboration with no less than the U.S. Library of Congress (back before that was an institution under siege.) They are developing a hundred year plan for how to care for these works, which is virtually unheard-of in the digital world. (You should absolutely donate to support the Flickr Foundation in their mission to preserve these vital public resources for many years in the future.)"
+          },
+          {
+            "type": "p",
+            "text": "It’s in this context that NASA has long been sharing its imagery on Flickr, for all of its missions — not just Artemis II. There’s even a special section for NASA on The Commons. And since everything is provided in incredibly high-resolution and has every single detail about the photo and how it was taken, it’s possible to combine the information about the photo with other data and create amazing resources like this beautiful timeline of the entire mission. You can see Hank Green’s wonderful narration of his inspiration and creative journey behind the timeline right here:"
+          },
+          {
+            "type": "h2",
+            "text": "Why Not With Us?"
+          },
+          {
+            "type": "p",
+            "text": "Anybody who’s read my site for a while knows that I’m a huge proponent of owning your own website, and having your own content live there. Shouldn’t NASA, of all institutions, have their photos live on their own nasa.gov website? Well, yes! But."
+          },
+          {
+            "type": "p",
+            "text": "One complication is that many large institutions, especially ones that have developed complex processes for good reasons, like government agencies and big businesses, often have trouble maintaining public-facing web infrastructure over long timeframes. Running a website that millions of people can access requires constant updates and maintenance, guarding against a never-ending onslaught of security challenges (a task that’s rapidly getting more difficult!), and the internal knowledge on how a site was created in the first place often leaves when employees do."
+          },
+          {
+            "type": "p",
+            "text": "In contrast, platforms that are run by technically fluent, well-intentioned and thoughtful technologists can be very effective in maintaining content over a timescale of decades. The SmugMug team has been very thoughtful in managing both their business and their technical infrastructure in order to sustain Flickr’s public archives for years to come. (Though, as mentioned, you should still donate to ensure they can keep doing so!)"
+          },
+          {
+            "type": "p",
+            "text": "What’s more painful is the more recent threats to public stewardship of this kind of content. The traditional authoritarian impulse to destroy or falsify the public record has not spared the digital realm under the current administration. Wide swaths of the government’s websites have been erased, taken offline, or had their content modified to either delete or adulterate the content. Leaders who regularly post AI slop on their social media accounts, and who have begun posting lies and distortions on major websites like the White House’s, will of course not hesitate to modify or remove photos from public archives as well. By having the public’s images preserved in an independent archive in standard formats, we increase the likelihood of future generations being able to access accurate copies of these historical records."
+          },
+          {
+            "type": "p",
+            "text": "We’ll be glad to have archives like Flickr’s in the future, and people around the world will be glad for its place in archiving even much more mundane aspects of culture."
+          },
+          {
+            "type": "h2",
+            "text": "Taking off"
+          },
+          {
+            "type": "p",
+            "text": "I was honored to get to reflect on my long history with Flickr, and with online community, in an interview with my old friend Jessamyn West, for the Flickr Foundation’s blog. In a conversation that unspooled over a few months, I think we covered so many of the themes that resonated in what I’ve mentioned here, and what struck me most was how much I wanted a new generation of people on the internet to have their own version of the communities and experiences that we got to have when sites like Flickr were first being made. People still cherish those values!"
+          },
+          {
+            "type": "p",
+            "text": "The beautiful thing about communities and platforms like Flickr is that they remind us that not everything on the internet has to be ephemeral, not everything on the web has to be hyper-commercial. Sometimes a bunch of decent people can do a good thing for the right reasons, and the result of that work can persevere for decades. Then, others who do some of the most ambitious and astounding things imaginable can build on that work to inspire us. And then, some more regular folks can build on top of that and help us waste a little bit of time just clicking around on something fun. That’s what the internet is supposed to be about!"
+          },
+          {
+            "type": "p",
+            "text": "This isn’t just about recounting old web lore — this is about explaining the internet we have right now. Hank’s timeline site is brand new, entertaining a whole new generation, and probably the majority of the audience who are looking at it weren’t even born when Flickr was first conceived. But the reason he can build that site is because of the values and the inventiveness of the team and community who created a platform like Flickr — and because those kinds of values are durable. They might not be as loud or flashy, but they are still everywhere, quietly enabling a lot of the things we enjoy most every day."
+          },
+          {
+            "type": "p",
+            "text": "Public dollars helped make a fascinating community, then public dollars enabled a breathtaking journey into space, and then a public commons helped a creator make a novel way to explore that journey. Lots of people chose, over and over, to be generous with their genius. These are all gifts that a bunch of strangers gave each other, over hundreds of thousands of miles, and many years. Inspiration is all around us!"
+          }
+        ],
+        "translations": [
+          "如果你最近关注了阿尔忒弥斯绕月巡航的欢乐庆祝活动，并花时间浏览了任务的照片档案，你可能会注意到 NASA 最初发布的所有图像都是通过 Flickr 这个老牌照片分享服务发布的。你可能不知道的是……为什么？",
+          "简单来说：",
+          "Flickr 诞生于（并推动了！）Web 2.0 时代，其核心理念是用户对自己的数据拥有控制权。",
+          "当时，各种工具开始赋予创作者决定他们内容使用何种许可的权利，包括规定该内容如何被分享、使用或二次创作。",
+          "因为当时的平台创建者本身就是用户和创作者，所以他们考虑长远，希望保护人们的作品。",
+          "经过多次企业重组后，Flickr 最终落入一家家族企业 SmugMug 手中，该公司成立了 Flickr 基金会，致力于在未来 100 年内保存公共照片。",
+          "NASA 的图像应仅存储在能够长期完整保存、专为公共领域服务的平台上——而如今其他社交媒体应用无法做到这一点。",
+          "摄影记录",
+          "首先，为那些可能不了解 Flickr 或已忘记其背景的人提供一些背景信息。Flickr 是一个成立于 2004 年的摄影社交分享网站。如今，人们可能会说它的一些联合创始人后来参与了 Slack 的创立，尽管当 Slack 起步时，大家普遍认为它是由 Flickr 的部分创始人创办的。这是因为 Flickr 可以说是 Web 2.0 时代最具影响力的网站之一，从用户界面设计到明亮的色彩，再到开发者轻松获取平台数据的便捷方式，都深受其影响。我们今天习以为常的现代社交网络中的许多元素，比如友好亲切的“语气”来与用户沟通，都是由 Flickr 开创的，并迅速成为后续应用和网站的普遍标准。很难想象 Tumblr 到 Grindr 这样的网站会省略它们最后的“e”，如果没有 Flickr 的先例。",
+          "Flickr 是从一家名为 Ludicorp 的加拿大游戏公司中独立出来的，由 Stewart Butterfield（后来的 Slack CEO/联合创始人）和 Caterina Fake（后来的 Etsy 投资者兼主席）共同创立。这个照片分享服务是从一款不太成功的多人在线游戏“Game Neverending”的残骸中提取出来的，但它保留了该游戏的趣味性，并逐渐演变为一款社交应用。Flickr 还继承了早期社交平台 LiveJournal 精细的隐私控制功能和深思熟虑的社区功能，同时由真正的人类员工积极、有意识地进行管理，努力防止平台上的破坏性行为。这意味着，早在二十多年前，这个早期的照片分享社区通常比今天的社交媒体应用拥有更好的社会规范。（顺便提一句：Flickr/Ludicorp 的初始资金部分来自公共资金。这是资助持久创新的绝佳方式！）",
+          "凭借这些突破性功能，Flickr 不仅激励了众多创业者掀起 Web 2.0 创业浪潮，还吸引了数百万用户首次以在线分享为主要目的拍摄照片。在此之前，虽然市场上已有配备尚可拍照功能的早期手机（iPhone 问世还需数年），但当时其他照片服务仍普遍依赖将胶片送至冲印店，再由专业人员扫描图像并上传至笨拙的在线服务中，用户只能枯燥地点击浏览虚拟相册里的照片。直到 Flickr 出现前，尽管体验发生在数字空间，线上照片分享本质上仍是模拟时代的延续。",
+          "焦点",
+          "Flickr 并非首先是一个社交平台——它首先是一个摄影平台。这意味着它的设计初衷是存储每张图片的高分辨率版本，且不会像后来那样用滤镜扭曲画面。每张照片都清晰显示拍摄所用相机型号，甚至包括具体的拍摄参数设置。人们围绕当时新兴的“通过标签在线按主题查找内容”这一理念开始建立社区——这一理念后来直接影响了几年后 Twitter 上 hashtag 的诞生。",
+          "当时另一个核心理念是对开放数据的坚定信念：人们应拥有并掌控自己的作品。后来，一些专家（其中包括当时还是青少年的 Aaron Swartz，我们之后会在 Markdown 的早期历史中提到他）制定了一套被称为 Creative Commons 许可的标准，现由同名组织维护。Flickr 让用户能轻松说明他人对其发布照片的再使用或混编权限。（那时我正参与一个博客平台的开发，我认为我们是最早支持这类功能的产品之一。在当时看来这意义重大！）",
+          "人们的 Flickr 照片几乎立刻出现在企业 PowerPoint 演示文稿或商业广告中。顺便提一句：这些开放式许可原本充满善意与慷慨，却被如今那些攫取式的大 AI 公司滥用——它们未经创作者同意或补偿，就大规模爬取了 Flickr 上所有允许自由使用的图片。从大多数许可条款来看这可能合法，但如果你坐拥数千亿美元却认为无需至少与摄影师们沟通一下你正在使用他们的作品，那你大概就是个混蛋。",
+          "档案级打印",
+          "我们这个紧密协作、共同构建新时代网络应用的群体深知，我们的用户在创造文化。这种认知带来了巨大的责任感——不仅要赋能用户表达自我，更要思考他们作品的长期归属问题。公共机构刚刚开始使用这些平台，这意味着分享的内容已不仅是好看的照片：它可能具有社会意义，甚至具备历史价值。",
+          "在随后的几年里发生的事情……充满了企业间的权谋斗争。Flickr 被雅虎收购，其创始人离开雅虎，而雅虎又被 Verizon 收购。你可以想象这一切的结局如何；细节并不重要，但重要的是，当 Instagram 推出时，Flickr 已经开始淡出人们的视野。人们关注的焦点从桌面端转向了手机，从分享带滤镜的正方形图片转向高分辨率摄影，从关注照片的艺术性或文化记录价值转向社交连接。没有人会把一张带有 Valencia 滤镜的历史性事件照片发布出来。大多数 Flickr 用户都转移了注意力，很少再登录旧账户——直到一家名为 SmugMug 的家庭式照片服务公司从雅虎手中买下该平台。相比 Verizon 某个随机的部门，这家真正热爱摄影、充满人情味的小型企业为平台提供了更温暖的家。",
+          "Commons Sense",
+          "2022年，SmugMug 团队决定重新思考 Flickr 在文化中的重要作用。全球许多重要机构选择将公开照片存档于 Flickr，正是看中了其对高分辨率影像的卓越支持、能够明确声明法律许可（包括公共领域许可）的独特能力，以及长期可靠托管内容而不像主流社交平台那样对用户造成伤害或滥用内容的良好声誉。世界各地的博物馆都在该平台上拥有完整的藏品目录，各国政府也常用来记录公共活动。当我拍摄奥巴马总统的官方活动照片后，他的团队会发给我最终成品，方式是发送一个 Flickr 链接；同样，当佐赫兰·曼达尼会见查尔斯国王时，纽约市长办公室也是通过 Flickr 分享了这些照片。",
+          "鉴于这些作品对世界具有的文化意义，SmugMug 旗下的 Flickr 团队采取了一项特别举措——他们创建了 Flickr Commons，并组建了一支精通数字档案和社区运营的专业团队。这是由 Flickr 基金会发起的项目，旨在保护数字遗产，最初与美国国会图书馆（当时尚未陷入困境）合作启动。他们正在制定一项长达百年的计划来妥善保管这些作品，这在数字时代几乎前所未有。（请务必捐款支持 Flickr 基金会，帮助其在未来多年里持续保存这些至关重要的公共资源。）",
+          "正是在这样的背景下，NASA 长期以来一直在 Flickr 上分享其所有任务的影像资料——不仅仅是阿波罗15号任务。甚至在 The Commons 中还设有专门的 NASA 专区。由于所有图像都以极高的分辨率呈现，并包含拍摄照片的每一个细节信息，因此可以将照片信息与其它数据结合，创造出令人惊叹的资源，比如这份关于整个任务的精美时间线。你可以在这里观看汉克·格林讲述他创作灵感与创意历程的精彩解说：",
+          "Why Not With Us?",
+          "任何读过我网站一段时间的人都知道，我一直大力倡导拥有自己的网站并托管自己的内容。难道 NASA 作为机构，不应该将其照片放在自己的 nasa.gov 网站上吗？当然应该！但是……",
+          "一个复杂之处在于，许多大型机构——尤其是那些出于合理原因建立了复杂流程的机构，如政府机构和企业——往往难以长期维护面向公众的 Web 基础设施。运营一个可供数百万人访问的网站需要持续更新和维护，同时要抵御永无止境的安全挑战（这项任务正变得越来越困难！），而最初创建网站所需的内部知识，也常常随着员工的离职而流失。",
+          "相比之下，由技术娴熟、心怀善意且深思熟虑的技术人员所运营的平台，可以在数十年时间尺度上有效地维持内容。SmugMug 团队在管理和维护其业务与技术基础设施方面一直非常用心，以确保 Flickr 的公共档案能够长久保存。（不过，正如之前提到的，你仍应进行捐赠，以支持他们继续这项工作！）",
+          "更令人痛心的是，近期对这类内容公共托管权的威胁日益加剧。当前政府并未放过数字领域，传统上那种摧毁或篡改公共记录的专制冲动仍在延续。政府网站的广泛内容已被删除、下线，或遭修改以删除或篡改信息。那些经常在社交媒体上发布 AI 生成垃圾内容，并开始在白宫等主要网站上散布谎言与歪曲事实的领导人，自然也不会犹豫去修改或移除公共档案中的照片。通过在标准格式下的独立存档中保存公众影像，我们增加了未来世代能够获取这些历史记录准确副本的可能性。",
+          "未来我们将庆幸拥有像 Flickr 这样的档案馆，全世界的人们也会感激它记录下了文化中那些看似平凡却同样重要的方方面面。",
+          "起飞",
+          "我很荣幸能就我与 Flickr 以及在线社区的长期渊源，接受老朋友 Jessamyn West 的采访，内容发表在 Flickr Foundation 的博客上。经过几个月的交流，我想我们涵盖了许多我在前面提到过的共鸣主题，最让我感慨的是，我多么希望新一代互联网用户也能拥有我们在 Flickr 等网站初建时期所体验到的社区与经历。人们依然珍视这些价值观！",
+          "像 Flickr 这样的社区和平台之美，在于它们提醒我们：互联网上的并非所有内容都必须是转瞬即逝的，网络上也并非一切都必须高度商业化。有时，一群正直的人出于正确的原因做了一件好事，其成果可以持续数十年；接着，那些做出最雄心勃勃、最令人惊叹之事的人们可以在此基础上继续前行，激励我们；然后，更多普通人也可以在此基础上搭建起新的乐趣，让我们花点时间在有趣的事物上随意浏览——而这，正是互联网应有的模样！",
+          "这不仅仅是在回顾旧时的网络传说——而是在解释我们当下所拥有的互联网。汉克的时光轴网站是全新的，正在吸引全新一代的用户，而大多数浏览它的人可能甚至都没出生过 Flickr 最初构想的时候。但他能建立这个网站，是因为 Flickr 这样的平台背后团队的价值观和创造力，而这些价值观具有持久的生命力。它们或许不再那么张扬或耀眼，却依然无处不在，默默地支撑着我们每天最享受的许多事物。",
+          "公共资金帮助催生了一个引人入胜的社区，随后又助力人类踏上令人惊叹的太空之旅，接着一个开放的公共资源又让创作者以独特的方式探索这段旅程。许多人一次又一次地选择慷慨地分享自己的才华。这些都是陌生人之间跨越数千英里、历时多年互赠的礼物。灵感就在我们身边！"
+        ]
+      }
+    },
+    {
+      "slug": "f495409c3bd920c4",
+      "title": "Why Commodore went bankrupt in 1994",
+      "titleZh": "为什么康懋达于1994年破产",
+      "link": "https://dfarq.homeip.net/why-commodore-went-bankrupt-in-1994/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=why-commodore-went-bankrupt-in-1994",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-04-30T11:00:52.000Z",
+      "category": "other",
+      "keywords": [
+        "Commodore",
+        "history",
+        "computer industry"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "康懋达（Commodore）于1994年4月29日宣布破产，其倒闭并非偶然，而是早在十年前就已注定。文章指出，导致其破产的原因常被过度简化，实际上涉及多个长期积累的战略失误和市场误判。",
+      "summaryEn": "Commodore went bankrupt on April 29, 1994, a demise that was arguably inevitable for a decade prior. The article argues that the reasons for its bankruptcy are often oversimplified, involving multiple long-term strategic missteps and market miscalculations rather than a single cause.",
+      "reason": "对于科技史爱好者来说，这是一篇深入分析经典企业失败案例的文章，有助于理解商业竞争中的复杂因素。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On April 29, 1994, Commodore announced it was bankrupt and was going out of business. Its demise was a long time coming. Arguably it had been inevitable for 10 years. But the reasons Commodore went bankrupt are often oversimplified and misunderstood."
+          },
+          {
+            "type": "h2",
+            "text": "Loss of Jack Tramiel"
+          },
+          {
+            "type": "p",
+            "text": "Jack Tramiel left Commodore in 1984 as a result of a disagreement with its chairman and majority owner, Irving Gould. He resurfaced a few months later at Atari. Some argue Commodore’s demise became inevitable when Tramiel left. And there’s something to this, given Tramiel’s successors like Max Toy and Thomas Rattigan generally lasted less than two years."
+          },
+          {
+            "type": "p",
+            "text": "But I’ll also argue Tramiel’s tactics of undercutting everyone in price weren’t sustainable. The Commodore 64 dominated the 1980s home computer market by undercutting everyone’s price aggressively, and the Atari ST had a nice run in the mid 1980s doing the same. But eventually someone else will figure out how to undercut your price."
+          },
+          {
+            "type": "p",
+            "text": "It’s hard to imagine Commodore doing any worse with Tramiel at the helm for 10 more years. After all, Atari under Tramiel outlasted Commodore. But Tramiel alone wasn’t the answer."
+          },
+          {
+            "type": "h2",
+            "text": "Commodore went bankrupt because of the PC’s momentum"
+          },
+          {
+            "type": "p",
+            "text": "Others have said the PC’s momentum was too much for Commodore to overcome. But this too is an oversimplification. The Commodore 64 sold well for the entirety of the 1980s and the Amiga’s trajectory closely resembled that of Apple’s Macintosh."
+          },
+          {
+            "type": "p",
+            "text": "The Amiga wasn’t going to overtake the PC but had every possibility of surviving as a niche platform. We have three incompatible standards for game consoles, so there’s no reason a third standard for computers couldn’t have also survived. The Amiga was so much better for analog video editing than any other platform that it could have owned that market even after the switch to digital."
+          },
+          {
+            "type": "h2",
+            "text": "Not keeping pace"
+          },
+          {
+            "type": "p",
+            "text": "The conventional argument is that the Amiga hit the market in 1985 with four-channel audio and 4,096-color video but was outmoded by 1989, when you could get a PC with 262,144-color video and 11-channel audio. Commodore didn’t respond with AGA until 1992."
+          },
+          {
+            "type": "p",
+            "text": "This is all true, but it ignores the Amiga’s sales figures. The Amiga’s sales increased year over year until 1993, and the only reason it slowed down in 1993 was that Commodore didn’t have the money to produce more units."
+          },
+          {
+            "type": "p",
+            "text": "Had Commodore been faster to respond with AGA or something better, no doubt the Amiga would have fared better. But the conventional narrative that the availability of VGA graphics and Ad Lib sound killed the Amiga overnight is an exaggeration. Commodore sold all the Amiga 1200s it could make, but it couldn’t make nearly enough of them to keep up with demand."
+          },
+          {
+            "type": "h2",
+            "text": "Commodore’s fab"
+          },
+          {
+            "type": "p",
+            "text": "I see this brought up on Reddit from time to time and frequently shot down, but there’s something to Commodore’s fabs. Commodore owning its own fabrication plants was an advantage until it wasn’t. It allowed Commodore to undercut everyone’s prices in 1981 and 1982, but Moore’s Law requires reinvestment to take effect. Commodore closed its fab in California rather than modernizing it, and last updated its fab in Pennsylvania in 1985. Even the 1985 update didn’t bring it to state of the art. Commodore licensed the rights to manufacture the 8088 CPU but never exercised it, because Commodore could buy 8088s for less than it cost for them to make them."
+          },
+          {
+            "type": "p",
+            "text": "The antiquated fab meant the custom chips in the C-64 and Amiga couldn’t decrease in price as quickly as everyone else’s. Commodore switched to using contract fabs for the Amiga’s AGA chips, which was the right thing to do, but not getting its orders in soon enough meant they didn’t have enough AGA chips to meet demand for the Amiga 1200 and 4000 in 1992."
+          },
+          {
+            "type": "p",
+            "text": "If Commodore had modernized its fabs, switched to contract fabbing sooner, or simply not botched the transition, 1992 and 1993 would have gone much better for Commodore. Any of those answers is a better answer than what Commodore ended up doing."
+          },
+          {
+            "type": "h3",
+            "text": "The fab problems were a long time coming"
+          },
+          {
+            "type": "p",
+            "text": "Commodore could see the problem with the fab a long way off. Commodore couldn’t keep up with demand for the C-64 in 1983 and 1984 because it didn’t have enough chips. Modernizing the fabs would have meant more chips per wafer, which would have meant lower prices and increased capacity. But what they did was close the California fab to save money in 1985. This ensured Commodore would never have the capacity to produce 3 million machines a year again."
+          },
+          {
+            "type": "p",
+            "text": "Since Commodore could get by without the California fab in 1985, they should have modernized it instead, then shifted all production there and modernized the Pennsylvania fab at a later date."
+          },
+          {
+            "type": "h2",
+            "text": "Pricing"
+          },
+          {
+            "type": "p",
+            "text": "There’s an argument that Commodore priced the Amiga too high. Part of this was because their profit margins didn’t let them lower prices as aggressively as the clone makers. But I also don’t think Commodore should have gotten into a price war with the likes of Packard Bell. Given the Amiga’s dominance in the video production field, Commodore could have priced its big-box machines at the high end to increase its overall margins, much like Apple charges superpremium prices for its desktop models. Newtek actually raised the price of its Video Toaster over time, and its customers simply paid the new price. Newtek realized they were competing with machines that cost several times what the Amiga did, and took advantage."
+          },
+          {
+            "type": "p",
+            "text": "The Amiga 500 and 2000 grew less cost competitive over time as they aged, especially if you wanted a hard drive. But the Amiga 1200 and 4000 closed the gap by using cheap commodity IDE drives like everyone else."
+          },
+          {
+            "type": "h2",
+            "text": "Irving Gould"
+          },
+          {
+            "type": "p",
+            "text": "We really can’t heap too much blame for Commodore going bankrupt on Irving Gould and his yes-man, Mehdi Ali. Gould was an intelligent financier, but technology wasn’t his thing and he wasn’t interested in learning. For him, Commodore was a piggybank to loot for however long it lasted, while he was in his shipping and vending machines businesses for the long haul."
+          },
+          {
+            "type": "p",
+            "text": "Gould paid himself lavish salaries while Commodore struggled, maintained redundant office buildings in three countries and traveled between those three countries at Commodore’s expense, all so he could evade taxes. All of this benefited Gould tremendously, while draining cash that Commodore could have been putting to profitable use. Such as building Amiga 1200s."
+          },
+          {
+            "type": "p",
+            "text": "Commodore ran out of time before Gould did. Commodore died April 29, 1994. Gould died December 17, 2001, aged 82. At the time of his death, he was still fighting off lawsuits related to his mismanagement of Commodore."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "1994年4月29日，Commodore宣布破产并退出市场。它的衰亡早已注定，甚至可以说早在十年前就已不可避免。然而，导致Commodore破产的原因常常被过度简化或误解。",
+          "杰克·特曼（Jack Tramiel）的离开",
+          "杰克·特曼因与时任董事长兼大股东欧文·戈尔德（Irving Gould）意见不合，于1984年离开Commodore。数月后，他重返Atari担任CEO。有人认为，特曼的离去使Commodore的倒闭变得不可避免——这种说法有一定道理，尤其是考虑到他的继任者如马克斯·托伊（Max Toy）和托马斯·拉特igan（Thomas Rattigan）大多在任时间不足两年。",
+          "但我也认为，特曼那种通过大幅降价打压对手的策略本身就不具可持续性。Commodore 64正是凭借激进的价格优势在1980年代主导了家用电脑市场；而Atari ST也在1980年代中期采取了类似策略并取得成功。但最终总会有其他人想出办法进一步压低价格。",
+          "很难想象，如果让特曼再执掌Commodore十年会怎样——毕竟在他领导下的Atari反而撑得更久。但仅靠特曼一人也无法挽救Commodore。",
+          "Commodore的破产源于个人电脑（PC）的崛起",
+          "有人指出，个人电脑的迅猛发展是Commodore无法逾越的障碍——但这同样是一种简化论。事实上，Commodore 64在整个1980年代都保持了强劲销量，而Amiga的发展轨迹也与苹果Macintosh高度相似。",
+          "Amiga虽未必能超越PC，却完全有可能作为小众平台存活下来。游戏机领域存在三个互不兼容的标准，那么计算机领域为何不能有第三个标准长期共存？Amiga在模拟视频剪辑方面远超其他平台，即便进入数字时代，它仍可能占据该细分市场。",
+          "未能跟上技术步伐",
+          "传统观点认为，尽管Amiga于1985年推出时就具备四声道音频和4,096色视频能力，但到1989年，普通PC已能提供262,144色视频和11声道音频，因此Amiga迅速过时。Commodore直到1992年才推出AGA芯片回应这一趋势。",
+          "以上说法属实，却忽视了Amiga的实际销售数据。Amiga的销量从1985年起逐年增长，直到1993年才放缓——而这并非市场需求下降，而是因为Commodore没钱继续生产更多产品。",
+          "若Commodore能更快推出AGA或其他更先进的解决方案，Amiga无疑会表现更好。但“VGA图形卡和Ad Lib声卡一夜之间扼杀Amiga”的说法言过其实。实际上，Commodore生产的每一台Amiga 1200都售罄，只是产量远远无法满足市场需求。",
+          "Commodore的自有晶圆厂",
+          "我注意到Reddit上偶尔会有人提及此事，且常被反驳，但Commodore拥有自有晶圆厂确实有其两面性。在1981至1982年间，这曾是其低价竞争的优势来源。然而摩尔定律的实现需要持续投入更新设备。Commodore选择关闭加州工厂而非进行现代化改造，宾夕法尼亚工厂最后一次升级是在1985年，那次升级也远未达到当时的技术前沿水平。此外，Commodore曾获得制造8088 CPU的授权，却因外购成本更低而从未实际使用这项权利。",
+          "过时的芯片制造工艺导致 C-64 和 Amiga 上的定制芯片无法像其他厂商那样迅速降价。Commodore 转而采用外包晶圆厂来生产 Amiga 的 AGA 芯片，这本身没错，但订单提交得太晚，导致 1992 年无法满足 Amiga 1200 和 4000 的需求。",
+          "如果 Commodore 能更早升级自己的晶圆厂、更早转向外包制造，或者至少别把转型搞得一团糟，那么 1992 年和 1993 年会好得多。这些选择都比 Commodore 最终采取的做法要好。",
+          "晶圆厂的问题由来已久。",
+          "Commodore 很早就看到了晶圆厂的问题。1983 和 1984 年，由于芯片供应不足，他们无法满足 C-64 的市场需求。升级晶圆厂意味着每片晶圆能产出更多芯片，从而降低成本并提升产能。但他们却在 1985 年关闭了加州工厂以节省开支——这一决定让 Commodore 再也无法达到年产三百万台机器的能力。",
+          "既然 1985 年没有加州工厂也能勉强维持，那还不如趁此机会将其现代化，然后把全部产能集中于此，之后再逐步改造宾夕法尼亚的工厂。",
+          "定价策略",
+          "有人认为 Commodore 对 Amiga 的定价过高。部分原因在于其利润率限制了它像克隆厂商那样 aggressively 降价。但我也不认为 Commodore 应该与 Packard Bell 这类厂商打价格战。鉴于 Amiga 在视频制作领域的统治地位，Commodore 完全可以像 Apple 对其高端桌面机型收取超高溢价一样，将大机箱产品定在高价位以提升整体利润。Newtek 实际上就逐步提高了 Video Toaster 的价格，而客户也欣然接受。Newtek 意识到自己是在与价格数倍于 Amiga 的机器竞争，于是充分利用了这一优势。",
+          "随着时间推移，Amiga 500 和 2000 的成本竞争力逐渐下降，尤其是当你需要加装硬盘时。但 Amiga 1200 和 4000 通过使用廉价的通用 IDE 硬盘（与其他人一样）缩小了这个差距。",
+          "Irving Gould",
+          "我们很难把太多责任归咎于 Irving Gould 和他的跟班 Mehdi Ali。Gould 是个精明的金融家，但对技术一窍不通，也没兴趣去了解。对他而言，Commodore 只是一个可以长期榨取资金的摇钱树，而他真正长期经营的是航运和自动售货机业务。",
+          "Gould 在公司举步维艰时仍给自己发放 lavish 薪资，维持着三个国家中重复建设的办公楼，并以公司名义往返三国以避税。所有这些行为都极大惠及了 Gould，却抽走了本可用于盈利发展的现金流——比如生产 Amiga 1200。",
+          "Commodore 在 Gould 之前耗尽了时间。公司于 1994 年 4 月 29 日倒闭。Gould 则于 2001 年 12 月 17 日去世，享年 82 岁。他去世时仍在应对因管理不善引发的诉讼。",
+          "大卫·法克赫（David Farquhar）是一名计算机安全专家、企业家和作家。自1991年起，他便开始专业从事计算机相关的写作工作，因此当复古电脑刚刚问世时，他就已经开始关注这类产品。自1994年以来，他一直在IT行业从事专业工作，并于2013年起专注于漏洞管理领域。他持有Security+和CISSP认证。如今，他每周撰写五篇博客文章，内容主要围绕1975至2000年间的复古电脑和复古游戏。"
+        ]
+      }
+    },
+    {
+      "slug": "9fe9dc5695f52d86",
+      "title": "Have You Seen the New Excel?",
+      "titleZh": "你见过新版 Excel 吗？",
+      "link": "https://idiallo.com/blog/have-you-seen-the-new-xl-ai-parody?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-04-29T23:40:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Excel",
+        "disruption",
+        "AI hype"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 6,
+        "total": 15
+      },
+      "summary": "作者以讽刺手法调侃当前 AI 热潮，声称发现了一个真正的颠覆者——Excel，它自1992年就在桌面上运行，即将改变世界。文章强调电子表格作为企业能力飞跃的核心地位，远超过当前对大语言模型和神经网络的痴迷。",
+      "summaryEn": "The author humorously claims to have discovered the real disruptor hiding in plain sight: Microsoft Excel, originally installed on desktop computers in 1992 and poised to change everything. He argues that while the tech world obsesses over large language models and neural networks, spreadsheets represent the most significant leap in enterprise capability since the invention of the corporation.",
+      "reason": "这篇文章用戏谑的方式提醒我们重新审视那些看似过时的工具，它们或许才是真正推动生产力进步的关键。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Stop coding. Stop hiring. Stop building."
+          },
+          {
+            "type": "p",
+            "text": "While the tech world obsesses over large language models and neural networks, I discovered the real disruptor that has been hiding in plain sight. Mine was originally installed on my desktop in 1992. And now, it's about to change everything in the world. We are talking about Microsoft Excel, of course."
+          },
+          {
+            "type": "p",
+            "text": "If you haven't looked at a spreadsheet lately, you are missing the most significant leap in enterprise capability since the invention of the corporation itself. We are entering an era of No-Code where the code was never needed in the first place."
+          },
+          {
+            "type": "p",
+            "text": "My own job as a software engineer is not safe, and I'm looking forward to the future. Developers from every walk of life are afraid, and for good reasons. You hear the complaints constantly: \"How can I ensure the code works? I can't possibly review a PR with a thousand files. It's unmaintainable.\" This is a crisis of confidence in the software engineering sector."
+          },
+          {
+            "type": "p",
+            "text": "This specific anxiety has never existed in the Excel ecosystem. Code is called code for a reason, it is meant for the machine to read, not people. In Excel, we don't worry about \"reviewing pull requests.\" We worry about results. The spreadsheet handles the logic and you handle the business outcome. It abstracts away the complexity so you don't have to pretend to understand it."
+          },
+          {
+            "type": "p",
+            "text": "And let's talk about the intimidation factor. Have you ever opened a modern codebase? It's a labyrinth of directories, dependencies, and config files. Where do you even start? It's paralyzing. How do you get started with Excel? You double-click an icon. It opens. It is a file. It is a grid. You type. It works. The barrier to entry is non-existent, yet the ceiling is infinite."
+          },
+          {
+            "type": "p",
+            "text": "If you are getting paid a high salary, and are watching how efficient excel is, you will be terrified. Companies are realizing they don't need distinct software solutions for distinct problems. They just need a grid."
+          },
+          {
+            "type": "p",
+            "text": "We are seeing enterprises replace entire departments with a single file. That is not an exaggeration. The HR department? Replaced by an org chart linked to a payroll calculator. The supply chain team? Replaced by a real-time inventory tracker. The marketing department? Replaced by a pie chart and a mailing list."
+          },
+          {
+            "type": "p",
+            "text": "Why pay for Salesforce? A well-formatted sheet with conditional formatting is a Customer Relationship Manager (CRM). Who even knows how to write SQL? SQL is legacy. A workbook with 1 million rows is a database. Jira is redundant when you have Gantt charts generated from cell dependencies."
+          },
+          {
+            "type": "p",
+            "text": "On top of it all, it has AI. It comes equipped with Microsoft Copilot for 365 apps, not to be confused with Windows Copilot, Microsoft Copilot, Copilot for Teams, Copilot+, Copilot Chat, or Copilot Web. This is the Copilot. It sits inside your grid, ready to extrapolate trends from column D and write your VLOOKUPs for you. While other AI startups are fighting for funding rounds, this integration is already live, embedded directly into the tool that runs the global economy."
+          },
+          {
+            "type": "p",
+            "text": "You aren't hearing much about Venture Capital funding or Series A rounds when it comes to Excel. Why? Because it is already profitable. It doesn't need a roadmap to profitability because it is the roadmap."
+          },
+          {
+            "type": "p",
+            "text": "While other platforms burn cash to acquire users, Excel is the default operating system of business. It requires no adoption curve. It requires no evangelists. It requires only that you open it and have a Microsoft 365 apps subscription."
+          },
+          {
+            "type": "p",
+            "text": "Total Vertical Integration"
+          },
+          {
+            "type": "p",
+            "text": "Excel is versatile. It is a text editor; you can write your novel in cell B2. It is a design tool; pixel-perfect layouts can be achieved by merging cells and removing gridlines. It is an IDE; you can write and execute VBA code directly within the environment."
+          },
+          {
+            "type": "p",
+            "text": "It handles the visual and the logical simultaneously. You can present a quarterly report to the board while the underlying formulas are calculating the ROI of the lunch break. It creates a seamless workflow where the input and the output exist in the same plane."
+          },
+          {
+            "type": "p",
+            "text": "Privacy, Scalability, and The Cloud"
+          },
+          {
+            "type": "p",
+            "text": "For the enterprise client, Excel offers the ultimate flexibility. Are you concerned about data sovereignty? Run your entire global operation locally on a ThinkPad from 2012. The file sits on your hard drive, unbreachable by the cloud."
+          },
+          {
+            "type": "p",
+            "text": "Do you need to scale? Push it to the cloud. Collaborate in real-time. Ten thousand employees can edit the same cell, creating a hive mind of productivity that traditional management structures cannot compete with."
+          },
+          {
+            "type": "p",
+            "text": "Oh, if you want to add support for crypto, just add a new worksheet. Batteries are included."
+          },
+          {
+            "type": "p",
+            "text": "The Future is a Cell"
+          },
+          {
+            "type": "p",
+            "text": "The economy is shifting. We are moving away from specialized labor and toward generalized grid management. If your job involves inputting data, processing data, or presenting data, Excel has already automated you. It doesn't sleep, it doesn't ask for a raise, and it doesn't make calculation errors unless you tell it to. Best of all, it doesn't hallucinate."
+          },
+          {
+            "type": "p",
+            "text": "The grid is absolute, it is infinite and the grid is the future."
+          },
+          {
+            "type": "p",
+            "text": "Learn Excel now, or get left behind."
+          },
+          {
+            "type": "p",
+            "text": "That’s what AI Hype sounds like to my ears. Yes, it’s a great tool. But I don’t think we are all gonna die and lose our jobs. The same way we didn’t die and or lose our jobs to Excel."
+          },
+          {
+            "type": "p",
+            "text": "None of these things are jokes about Excel by the way, you can run entire companies from it. I'm tempted to just start hyping it everyday until everyone gets annoyed."
+          }
+        ],
+        "translations": [
+          "停止编码。停止招聘。停止开发。",
+          "当科技界沉迷于大型语言模型和神经网络时，我发现了一个真正颠覆性的存在——它一直就在我们眼前。我最初在1992年把它装在我的台式机上。而现在，它将改变整个世界。当然，我们说的是 Microsoft Excel。",
+          "如果你最近没碰过电子表格，那你可能错过了自公司诞生以来企业能力最重大的飞跃。我们正在进入一个“无代码”时代——从一开始就不需要写代码。",
+          "作为一名软件工程师，我的工作也不再安全，但我对未来充满期待。各行各业的开发者都感到恐惧，这完全可以理解。你总能听到抱怨：“我怎么确保代码能正常运行？我怎么可能审查上千个文件的 PR？根本没法维护。”这是软件工程领域信心危机的体现。",
+          "这种焦虑在 Excel 生态中从未存在过。代码之所以叫代码，就是因为它本意是给机器读的，不是给人看的。在 Excel 里，我们不担心“审查拉取请求”。我们只关心结果。电子表格处理逻辑，而你负责业务成果。它把复杂性封装起来，让你不必假装理解它。",
+          "再说说那个令人望而生畏的因素。你有没有打开过一个现代代码库？那简直是目录、依赖和配置文件组成的迷宫。你该从哪里开始？简直让人瘫痪。怎么用 Excel 呢？双击图标。打开。就是一个文件。一个网格。输入。它就工作了。入门门槛为零，天花板却无限高。",
+          "如果你拿着高薪，看着 Excel 多么高效，你会感到恐惧。公司正在意识到：他们不需要为每个问题单独开发一套软件。他们只需要一个网格。",
+          "我们看到企业用单个文件取代整个部门。这不是夸张。人力资源部？被一张链接到薪酬计算器的组织架构图取代了。供应链团队？被实时库存追踪器取代了。市场部？被一个饼图和邮件列表取代了。",
+          "为什么要花钱买 Salesforce？一份格式良好的表格，加上条件格式，就是一个客户关系管理系统（CRM）。谁还知道怎么写 SQL？SQL 已经是过时技术了。一个包含一百万元素的电子表格，就是数据库。当你能用单元格依赖生成甘特图时，Jira 就多余了。",
+          "更厉害的是，它还集成了 AI。它内置了 Microsoft Copilot for 365 apps——别把它和 Windows Copilot、Microsoft Copilot、Copilot for Teams、Copilot+、Copilot Chat 或 Copilot Web 搞混了。这才是真正的 Copilot。它就坐在你的网格里，随时准备从 D 列推断趋势，甚至替你写好 VLOOKUP 公式。当其他 AI 初创公司还在为融资而战时，这个集成已经上线，直接嵌入到驱动全球经济的核心工具之中。",
+          "你不会听说太多关于 Excel 获得风险投资或 A 轮融资的消息。为什么？因为它早就赚钱了。它不需要通往盈利的路线图，因为它本身就是那条路。",
+          "其他平台靠烧钱来获取用户，而 Excel 是企业默认的操作系统。它没有采用曲线，不需要布道者，也不需要教育用户。你只需要打开它，并拥有一个 Microsoft 365 apps 订阅即可。",
+          "完全垂直整合",
+          "Excel 功能强大。它既是文本编辑器，你可以在 B2 单元格中写小说；它也是设计工具，通过合并单元格、隐藏网格线即可实现像素级精度的布局；它还是集成开发环境（IDE），你可直接在其中编写并运行 VBA 代码。",
+          "Excel 同时处理视觉呈现与逻辑运算。你可以向董事会展示季度报告，而底层的公式仍在默默计算午餐时间的投资回报率。它创造了一种无缝的工作流——输入与输出共处同一界面。",
+          "隐私、扩展性与云端",
+          "对企业客户而言，Excel 提供了极致的灵活性。担心数据主权？没问题，把整个全球业务都跑在 2012 年的 ThinkPad 上，文件就在本地硬盘里，坚不可摧，不受云的影响。",
+          "需要扩展？那就推送到云端。实时协作，十万员工可以同时编辑同一个单元格，形成一种超越传统管理结构的生产力蜂群。",
+          "哦对了，如果你想加入加密货币支持，只需新建一个工作表就行——电池已内置。",
+          "未来即单元格",
+          "经济正在转型。我们正在从专业化劳动转向通用化网格管理。如果你的工作涉及数据录入、处理或展示，Excel 早已替你自动化了这一切。它不睡觉，不要求加薪，除非你让它出错，而且它从不胡言乱语。最棒的是，它不会产生幻觉。",
+          "网格是绝对的，它是无限的，网格就是未来。",
+          "现在学 Excel，否则就会被时代淘汰。",
+          "这听起来就像 AI 炒作一样。没错，这是个好工具。但我认为我们不会因此灭亡或失业——就像当年 Excel 来临时，我们也没死没丢工作一样。",
+          "顺便说一句，这些都不是关于 Excel 的玩笑，你完全可以靠它运营一整家公司。我甚至有点想每天疯狂安利它，直到所有人都烦为止。"
+        ]
+      }
+    }
+  ]
+}
