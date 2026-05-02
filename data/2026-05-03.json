@@ -1,0 +1,1926 @@
+{
+  "date": "2026-05-03",
+  "generatedAt": "2026-05-02T18:06:08.832Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2445,
+    "filteredArticles": 11,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：AI伦理争议持续发酵，Meta因智能眼镜用户隐私审查事件陷入舆论风暴；开发者工具创新活跃，从GitHub维护者平台到iNaturalist数据聚合工具，凸显开源生态的实用化演进；同时，企业对政策风险的应对策略引发关注，苹果CEO库克以精巧话术化解关税退款的政治质疑，展现科技领袖在复杂监管环境中的话语博弈。",
+  "articles": [
+    {
+      "slug": "bf34303293944850",
+      "title": "A GitHub for maintainers",
+      "titleZh": "为维护者打造的 GitHub",
+      "link": "https://nesbitt.io/2026/05/02/a-github-for-maintainers.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-05-02T10:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "dependency management",
+        "GitHub",
+        "maintainers"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "nesbitt.io 提出了一个名为 'GitHub for maintainers' 的新平台，旨在让依赖项（dependencies）获得与代码 fork 相同的透明度和可追溯性处理方式。该平台通过记录依赖项的更新历史、维护者变更和重大修改，增强开源项目的可审计性。核心理念是将软件供应链中的信任问题可视化，类似于 Git 对代码版本的管理。作者认为这能显著提升开源生态系统的责任感和安全性。",
+      "summaryEn": "Nesbitt.io introduces a new platform called 'A GitHub for maintainers,' designed to apply the same transparency and traceability used for code forks to software dependencies. It tracks dependency update histories, maintainer changes, and major modifications to enhance auditability in open-source projects. The core idea is to visualize trust issues within the software supply chain, akin to how Git manages code versions. The author argues this approach significantly improves accountability and security in the open-source ecosystem.",
+      "reason": "它为开源维护者提供了一个创新工具，以应对日益复杂的依赖管理挑战，值得开发者关注。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Mat Duggan wrote up what he’d want from a GitHub replacement and it’s a reasonable list if you’re the one at the keyboard. Stacked PRs, pre-push feedback, offline review, lazy history, graduated approval states. Reading through it I kept noticing that almost every item is a client problem, and the clients are already solving it. Jujutsu does stacked changes better than any web UI is going to. Review is moving into editors. Pre-commit feedback wants to run on your machine, where the files are."
+          },
+          {
+            "type": "p",
+            "text": "The things I want from a forge are the things that can’t move to the client because they involve more than one party. Who depends on you, who you depend on, what happened to that project you forked from three years ago, where the active development moved to when the original went quiet. Almost none of that happens inside a single repository. It happens in the relationships between them, and that’s the part GitHub has barely touched in years and the part none of the would-be replacements are talking about either."
+          },
+          {
+            "type": "p",
+            "text": "So my version of Mat’s list is mostly about coordination between projects. The only relationship between two repos that GitHub actually models is the fork, because in 2008 the way you used someone else’s code was to fork it and send a pull request. In 2026 the way you use someone else’s code is to add a line to a manifest, and the forge has no equivalent object for that. It knows about dependencies only as a thing that generates Dependabot PRs. I’d like them to get the same treatment the fork got."
+          },
+          {
+            "type": "h3",
+            "text": "Downstream testing"
+          },
+          {
+            "type": "p",
+            "text": "When I’m preparing a release of a library, I want the forge to run my test suite, and then check out a sample of the projects that depend on me and run their test suites against my change. Rust calls this a crater run and reserves it for the compiler. It should be a button on every release PR. Right now I find out that I’ve broken a thousand downstreams via a thousand furious tickets after the tag is pushed, and the forge is the only place with both the dependency graph and the compute to tell me beforehand. The tickets are actually the good outcome, because the worse one is that they pin the old version and never upgrade again."
+          },
+          {
+            "type": "h3",
+            "text": "A feed for dependents"
+          },
+          {
+            "type": "p",
+            "text": "If I’m planning to remove a deprecated function in the next major version, today I write it in a changelog that nobody reads until they’re already broken, or emit a runtime deprecation warning that, as Seth Larson points out for Python, mostly never reaches a human either. I want to post it into a feed that every project with my package in its lockfile is subscribed to by default. The same channel carries “this project is looking for maintainers” and “we’re moving the repo” and “there’s a CVE, here’s the patched version.” GitHub put “social coding” on the homepage in 2008 and then built the social layer around following people. Following the code you actually run, subscribed by lockfile, is the version that would be useful."
+          },
+          {
+            "type": "h3",
+            "text": "Fork networks"
+          },
+          {
+            "type": "p",
+            "text": "When a project goes quiet the community response is usually that everyone patches or forks it independently, one of those forks eventually picks up steam, and a long tail of users slowly discover it through word of mouth and a pinned issue. The forge can see all of this. It knows the upstream hasn’t merged in eighteen months and that three forks have active release tags and incoming stars. Put that on the original repo’s page instead of leaving every user to do the archaeology themselves, and let the fork’s maintainers signal that they consider themselves a continuation. The GitHub network graph has shown the same unreadable spaghetti since 2010 and there’s an obvious better version waiting to be built."
+          },
+          {
+            "type": "h3",
+            "text": "Borrowed from the npmx list"
+          },
+          {
+            "type": "p",
+            "text": "Once a forge takes dependencies seriously it starts to overlap with what a package registry frontend does, and I wrote up the npmx feature list a couple of weeks ago as a catalogue of what users build when they get to design that themselves. Several of those belong on a repo page as much as a package page:"
+          },
+          {
+            "type": "li",
+            "text": "A breakdown of which versions of this project downstream users are actually running, so a maintainer can see how many are stuck three majors behind"
+          },
+          {
+            "type": "li",
+            "text": "A diff view between any two tagged releases, in the browser"
+          },
+          {
+            "type": "li",
+            "text": "The resolved dependency tree with outdated and vulnerable nodes flagged, transitives included"
+          },
+          {
+            "type": "li",
+            "text": "Community-curated “use X instead” pointers when a project is unmaintained, which is the registry-side complement of surfacing active forks"
+          },
+          {
+            "type": "h3",
+            "text": "Safer CI defaults"
+          },
+          {
+            "type": "p",
+            "text": "I’ve written about this twice already, once on Actions being a package manager with no lockfile and once on the run of supply-chain incidents that all trace back to a workflow file, so I won’t repeat it here. The short version is that forge-hosted CI is where most open source artifacts now get built and published, and the defaults were designed for private enterprise repos. Anyone building a new forge gets to pick new defaults: pinned actions, isolated caches, no workflows triggered by strangers at all."
+          },
+          {
+            "type": "h3",
+            "text": "A package cache in CI"
+          },
+          {
+            "type": "p",
+            "text": "Every CI run on every forge starts by downloading the same set of packages from the same public registries, and those registries are mostly run by non-profits paying the bandwidth bill out of donations. A forge-run caching proxy in front of npm, PyPI, RubyGems, crates.io and the rest, wired into the CI runners by default, would take an enormous amount of load off that infrastructure and keep everyone’s builds working when a registry has a bad afternoon. git-pkgs/proxy is one implementation of the idea. The forge already has the lockfile, so it even knows what to pre-warm."
+          },
+          {
+            "type": "h3",
+            "text": "Rename “issues”"
+          },
+          {
+            "type": "p",
+            "text": "Nothing to do with the dependency graph, but while I’m making a list: a feature request isn’t a problem, a question isn’t a problem, and calling everything that arrives in a maintainer’s inbox an “issue” sets the temperature of the conversation before anyone’s typed a word. I think it contributes more than people realise to the ambient hostility of running a popular project. “Tickets” is boring and neutral and that’s the point."
+          },
+          {
+            "type": "h3",
+            "text": "Out of scope"
+          },
+          {
+            "type": "p",
+            "text": "I haven’t mentioned AI, federation, or enterprise permissions. I’m not getting into AI right now. I’ve written about federation before and the hard part is naming, which I’m not going to pretend to solve here. And I just don’t care about enterprise features. If your favourite topic isn’t here it’s probably one of those."
+          },
+          {
+            "type": "p",
+            "text": "Maintainers need help finding out who’s downstream of them, talking to those people before things break, and working across project boundaries instead of in isolation. That side of the job has got harder every year as dependency trees have got deeper, and it’s had almost no new tooling to help. There’s no enterprise equivalent of any of this, because an internal codebase doesn’t have a thousand unknown downstreams, so the only people who’d benefit are open source maintainers with large public dependent graphs and no budget. Which is probably why GitHub hasn’t built it. Anyone building a new forge could start there."
+          }
+        ],
+        "translations": [
+          "马特·达根（Mat Duggan）列出了他对 GitHub 替代品的期望，这份清单相当合理——尤其是当你需要亲自操作键盘的时候。它包括堆叠式 PR、推送前反馈、离线审查、惰性历史记录以及分阶段审批状态。通读下来，我注意到几乎所有项目都涉及客户端问题，而这些问题用户早已自行解决。Jujutsu 在实现堆叠变更方面比任何网页界面都要出色。代码审查正逐渐融入编辑器中。推送前的反馈则希望在本地运行，因为文件就在那里。",
+          "我对“代码托管平台”（forge）的需求，是那些无法迁移到客户端的功能——因为它们涉及多方协作。谁依赖着你，你又依赖着谁？三年前你 fork 的那个项目后来怎么样了？当原始项目沉寂后，活跃开发又转移到了哪里？这些情况几乎不会发生在单个仓库内部。它们存在于仓库之间的关系之中，而这正是 GitHub 多年来几乎未曾触及的部分，也是所有潜在的替代品所忽视的领域。",
+          "因此，我所理解的马特那份清单，主要关注的是跨项目的协调。GitHub 实际上只建模了一种仓库间的关系：fork。因为在 2008 年，使用他人代码的方式就是 fork 并发送 pull request。但到了 2026 年，人们只需在清单文件中添加一行即可引入外部代码，而当前的 forge 对此并无对应对象。它仅将依赖项视为生成 Dependabot PR 的工具。我希望它能像对待 fork 那样，给予依赖项同等重视。",
+          "下游测试",
+          "当我准备发布一个库时，我希望平台能先运行我的测试套件，然后检出若干依赖该库的项目，并用我的改动执行它们的测试。Rust 称此为“crater run”，并将其保留给编译器专用。这应该成为每个发布 PR 上的一个按钮。目前我只能通过上千条愤怒的工单才知道自己破坏了上千个下游项目——而这些工单往往是在标签推送之后才出现。只有平台拥有完整的依赖图谱和计算资源，才能提前告知我这一结果。事实上，这些工单反而是较好的结局，更糟的情况是它们会锁定旧版本，导致项目从此不再升级。",
+          "依赖者的信息流",
+          "如果我计划在下个大版本中移除某个已弃用的函数，今天我只能将其写入无人阅读的变更日志，或者发出运行时弃用警告——正如塞思·拉森（Seth Larson）指出的 Python 情况那样，这种警告通常也传达到不了人类开发者。我希望这些信息能自动发布到一个信息流中，所有在其 lockfile 中包含我包的项目默认都会订阅该流。同一频道还会推送“本项目正在寻找维护者”、“我们将迁移仓库地址”以及“发现 CVE，这是修复后的版本”等内容。GitHub 在 2008 年将“社交编程”（social coding）放在首页，随后围绕“关注人”构建了整个社交层。真正有用的做法应是关注实际运行的代码——通过 lockfile 订阅——这才是更有价值的版本。",
+          "Fork 网络",
+          "当一个项目沉寂下来时，社区的反应通常是大家各自独立地打补丁或分叉它，最终其中一个分叉会逐渐流行起来，用户通过口口相传和置顶的问题慢慢发现它。代码托管平台可以看到这一切：它知道上游项目已经18个月没有合并提交，而三个分叉项目都有活跃的发布标签和新增的星标。与其让用户自己去挖掘这些历史，不如在原始仓库页面上展示这些信息，并让分叉项目的维护者表明他们自认为是该项目的延续。GitHub的网络图谱自2010年以来一直显示着这种难以理解的混乱局面，显然存在一种更清晰的解决方案。",
+          "借鉴自 npmx 列表",
+          "一旦代码托管平台认真对待依赖关系，它就与包注册中心前端的功能开始重叠。几周前我整理了 npmx 功能清单，作为用户自行设计时的参考范例。其中许多功能既适合放在仓库页面，也适合放在包页面：",
+          "下游用户实际运行的项目版本分布情况，让维护者能清楚看到有多少用户落后了三个主要版本",
+          "浏览器内查看任意两个标记版本之间的差异",
+          "已解析的依赖树，包含过时和有漏洞的节点（包括传递性依赖）",
+          "当项目不再维护时，由社区整理的\"建议使用X替代\"的指引，这是展示活跃分叉功能的注册表端补充",
+          "更安全的CI默认配置",
+          "关于这个问题我已经写过两次，一次是关于Actions作为没有lockfile的包管理器，另一次是关于所有供应链事件都追溯到工作流文件的情况，这里就不再重复了。简而言之，现在大多数开源构件都是在代码托管平台的CI上构建和发布的，而这些默认配置最初是为私有企业仓库设计的。任何新建立的代码托管平台都可以选择新的默认配置：固定版本的actions、隔离的缓存，完全禁止陌生人触发的workflow。",
+          "CI中的包缓存",
+          "每个代码托管平台上的每次CI运行都会从相同的公共注册中心下载相同的包集合，而这些注册中心大多由非营利组织运营，带宽费用来自捐赠。在npm、PyPI、RubyGems、crates.io等前面设置一个代码托管平台运行的缓存代理，并将其默认集成到CI运行器中，将大大减轻这些基础设施的压力，并在注册中心出现问题时保持所有人的构建正常运行。git-pkgs/proxy 是该想法的一个实现方案。代码托管平台已经有了lockfile，因此它甚至知道要预加载哪些内容。",
+          "重命名\"issues\"",
+          "这与依赖图无关，但既然我在列清单：功能请求不是问题，提问不是问题，将所有到达维护者收件箱的内容统称为\"issue\"，会在任何人打字之前就设定了对话的温度。我认为这比人们意识到的更能助长维护热门项目的普遍敌意。\"工单\"听起来平淡中立，而这正是关键所在。",
+          "超出范围",
+          "我没有提到AI、联邦或企业权限。我现在不打算讨论AI。我之前写过关于联邦的内容，难点在于命名，我不会在这里假装解决了这个问题。而且我对企业功能完全不感兴趣。如果你的关注点不在这里，那很可能就是上述那些之一。",
+          "维护者需要帮助确定下游依赖者，并在问题出现前与他们沟通，同时跨项目协作而非孤立工作。随着依赖关系日益复杂，这项工作每年都在变得更加困难，但几乎没有新的工具来提供支持。企业内部没有类似机制，因为内部代码库通常不会有上千个未知的下游依赖，因此唯一能从中受益的是那些拥有大量公开依赖图且没有预算的开源维护者。这或许也是 GitHub 尚未开发此类功能的原因。任何构建新代码托管平台的人都可以从这里开始。"
+        ]
+      }
+    },
+    {
+      "slug": "0fbdc24e19d0e28c",
+      "title": "Meta Solved Their Problem With Kenyan Contractors Seeing Footage of AI Glasses Wearers on the Toilet",
+      "titleZh": "Meta 肯尼亚承包商查看 AI 眼镜用户如厕画面事件后续",
+      "link": "https://www.bbc.com/news/articles/c5y7yvgy0w6o",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-01T21:00:36.000Z",
+      "category": "security",
+      "keywords": [
+        "AI glasses",
+        "privacy",
+        "labor practices"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "BBC 报道了 Meta 因雇佣肯尼亚承包商审查其智能眼镜拍摄的视频内容而引发的争议，这些工人被迫观看用户如厕、更衣甚至性行为的画面。尽管 Meta 声称已终止合作并加强审核流程，但事件暴露了 AI 监控技术背后的伦理困境和劳工剥削问题。公众对隐私侵犯的担忧加剧，促使科技公司重新审视外包审核工作的道德边界。该事件也引发了对‘智能’设备数据收集边界的广泛讨论。",
+      "summaryEn": "The BBC reports on Meta's controversial practice of contracting Kenyan workers to review video content captured by its smart glasses, forcing them to view intimate footage of users undressing, having sex, or using the toilet. Although Meta claims to have ended the partnership and improved oversight, the incident exposes ethical dilemmas and labor exploitation behind AI monitoring technologies. Public concern over privacy violations has intensified, prompting tech companies to reevaluate the moral boundaries of outsourced content moderation. This event also sparked broader discussions about the limits of data collection from 'smart' devices.",
+      "reason": "它揭示了大型科技公司在自动化审核中忽视人权保护的严重问题，具有深远的社会警示意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Chris Vallance",
+        "siteName": "BBC News",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Meta in row after workers who say they saw smart glasses users having sex lose jobs"
+          },
+          {
+            "type": "p",
+            "text": "2 days ago"
+          },
+          {
+            "type": "p",
+            "text": "Chris VallanceSenior technology reporter"
+          },
+          {
+            "type": "p",
+            "text": "AFP via Getty Images"
+          },
+          {
+            "type": "p",
+            "text": "Meta is under pressure to explain why it cancelled a major contract with a company it was using to train AI, shortly after some of its Kenya-based workers alleged they had to view graphic content captured by Meta smart glasses."
+          },
+          {
+            "type": "p",
+            "text": "Less than two months later, Meta ended its contract with Sama, which Sama said would result in 1,108 workers being made redundant."
+          },
+          {
+            "type": "p",
+            "text": "Meta says it's because Sama did not meet its standards, a criticism Sama rejects. A Kenyan workers' organisation alleges Meta's decision was caused by the staff speaking out."
+          },
+          {
+            "type": "p",
+            "text": "Meta has not addressed that allegation but told BBC News in a statement it had \"decided to end our work with Sama because they don't meet our standards\"."
+          },
+          {
+            "type": "p",
+            "text": "Sama has defended its work."
+          },
+          {
+            "type": "p",
+            "text": "\"Sama has consistently met the operational, security and quality standards required across our client engagements, including with Meta,\" it said in a statement."
+          },
+          {
+            "type": "p",
+            "text": "\"At no point were we notified of any failure to meet those standards, and we stand firmly behind the quality and integrity of our work.\""
+          },
+          {
+            "type": "h2",
+            "text": "'Naked bodies'"
+          },
+          {
+            "type": "p",
+            "text": "In late February, Swedish newspapers Svenska Dagbladet (SvD) and Goteborgs-Posten (GP) published an investigation which included the accounts of unnamed workers who had been asked to review videos filmed by Meta's glasses."
+          },
+          {
+            "type": "p",
+            "text": "\"We see everything - from living rooms to naked bodies,\" one worker reportedly said."
+          },
+          {
+            "type": "p",
+            "text": "At the time of the publication, Meta admitted subcontracted workers might sometimes review content filmed on its smart glasses when people shared it with Meta AI."
+          },
+          {
+            "type": "p",
+            "text": "It said this was for the purpose of improving the customer experience, and was a common practice among other companies."
+          },
+          {
+            "type": "p",
+            "text": "However, the revelations have prompted regulators to act."
+          },
+          {
+            "type": "p",
+            "text": "Shortly after the Swedish investigation, the UK data watchdog, the Information Commissioners Office (ICO) wrote to Meta about what it called a \"concerning\" report."
+          },
+          {
+            "type": "p",
+            "text": "The Office of the Data Protection Commissioner in Kenya also announced it was commencing an investigation into privacy concerns raised by the glasses."
+          },
+          {
+            "type": "p",
+            "text": "In a statement in response to news of the redundancies a Meta spokesperson told the BBC, \"last month, we paused our work with Sama while we looked into these claims."
+          },
+          {
+            "type": "p",
+            "text": "\"We take them seriously. Photos and videos are private to users. Humans review AI content to improve product performance, for which we get clear user consent.\""
+          },
+          {
+            "type": "h2",
+            "text": "'Standards of secrecy'"
+          },
+          {
+            "type": "p",
+            "text": "Features can include translating text, or responding to questions about what the user is looking at - particularly useful for those who are blind or partially sighted."
+          },
+          {
+            "type": "p",
+            "text": "However, as the devices have grown in popularity, so too have concerns about their misuse."
+          },
+          {
+            "type": "p",
+            "text": "The workers the Swedish newspapers spoke to were data annotators, teaching Meta's AI to interpret images by manually labelling content."
+          },
+          {
+            "type": "p",
+            "text": "The workers said they also reviewed transcripts of interactions with the AI to check it had answered questions adequately."
+          },
+          {
+            "type": "p",
+            "text": "In one instance, a worker told the newspapers, a man's glasses were left recording in a bedroom where they later filmed a woman, apparently the man's wife, undressing."
+          },
+          {
+            "type": "p",
+            "text": "Meta's glasses have a light in the corner of the frames that is turned on when the built-in camera is recording."
+          },
+          {
+            "type": "p",
+            "text": "Sama, a US headquartered outsourcing business, which began as a non-profit organisation with the aim of increasing employment through the provision of tech jobs, is now an \"ethical\" B-corp."
+          },
+          {
+            "type": "p",
+            "text": "But this is not the first time a contract with Meta has soured."
+          },
+          {
+            "type": "p",
+            "text": "An earlier deal to moderate Facebook posts attracted criticism, alongside legal action by former employees - some of whom described being exposed to graphic, traumatising content."
+          },
+          {
+            "type": "p",
+            "text": "Sama later said it regretted taking the work."
+          },
+          {
+            "type": "p",
+            "text": "Naftali Wambalo of the Africa Tech Workers Movement, who is a petitioner in the continuing legal action around that case, told the BBC he had also spoken with workers involved in the smart glasses contract."
+          },
+          {
+            "type": "p",
+            "text": "Wambalo believed the reason for Meta's ending the work was that it didn't want workers speaking out about human workers sometimes reviewing content captured by the smart glasses."
+          },
+          {
+            "type": "p",
+            "text": "\"What I think are the standards they are talking about here are standards of secrecy,\" he told BBC News."
+          },
+          {
+            "type": "p",
+            "text": "The BBC has asked Meta to respond to this point."
+          },
+          {
+            "type": "p",
+            "text": "The tech giant has previously said that users were made aware of the possibility of human review in the its terms of service."
+          },
+          {
+            "type": "p",
+            "text": "Mercy Mutemi a lawyer representing the petitioners, who is also executive director of campaign group the Oversight Lab, said Meta's statement should be a warning to the Kenyan government."
+          },
+          {
+            "type": "p",
+            "text": "\"We've been told that this is our entry route into the AI ecosystem,\" she told the BBC. \"This is a very flimsy foundation to build your entire industry on.\""
+          }
+        ],
+        "translations": [
+          "Meta因员工举报智能眼镜拍摄隐私内容遭解雇而陷入舆论风波",
+          "2天前",
+          "克里斯·瓦兰斯（Chris Vallance）资深科技记者",
+          "法新社/ Getty Images",
+          "Meta正面临压力，需解释为何在肯尼亚员工指控其智能眼镜拍摄到用户私密画面后不久，便取消了与一家AI训练公司的重大合同。",
+          "不到两个月后，Meta终止了与Sama的合同，Sama方面称此举将导致1,108名员工被裁。",
+          "Meta声称是因Sama未达其标准，但Sama对此予以否认；肯尼亚劳工组织则指控Meta的决策源于员工发声。",
+          "Meta尚未回应该指控，但在向BBC发表的声明中表示：“我们决定终止与Sama的合作，因其未能达到我们的标准。”",
+          "Sama为其工作辩护。",
+          "其在声明中称：“Sama始终满足客户合作中的运营、安全及质量标准，包括与Meta的合作。”",
+          "“我们从未收到任何未达标的通知，我们坚定支持自身工作的质量与诚信。”",
+          "“裸体画面”",
+          "二月下旬，瑞典媒体《瑞典日报》（Svenska Dagbladet，简称SvD）和《哥德堡邮报》（Goteborgs-Posten，简称GP）发布调查报道，其中包含多名匿名工人证词，他们曾被指协助审查由Meta智能眼镜拍摄的视频。",
+          "有工人 reportedly 表示：“我们从客厅看到裸体画面。”",
+          "报道发布时，Meta承认有时会将智能眼镜拍摄的内容交由外包员工审核，前提是用户将其分享给了Meta AI。",
+          "公司称此举旨在改善用户体验，并强调此类做法在其他企业中也属常见。",
+          "然而，这些 revelations 已促使监管机构采取行动。",
+          "瑞典调查曝光后不久，英国数据监管机构——信息专员办公室（ICO）致信Meta，称其报告“令人担忧”。",
+          "肯尼亚数据保护专员办公室也宣布，将对智能眼镜引发的隐私问题展开调查。",
+          "在裁员消息传出后，Meta发言人向BBC表示：“上月我们暂停与Sama的合作，以调查相关指控。”",
+          "“我们对此高度重视。照片和视频属于用户私人内容。人类审核AI内容是为了优化产品性能，且我们已获得用户的明确授权。”",
+          "“保密标准”",
+          "智能眼镜功能可包括实时翻译文本，或响应用户对所视内容的提问——对视力障碍者尤为实用。",
+          "然而，随着设备日益普及，对其滥用的担忧也随之加剧。",
+          "瑞典媒体报道所涉员工为数据标注员，负责通过手动标记图像来训练Meta的AI识别内容。",
+          "工人还称，他们需审查与AI交互的对话记录，以确认回答是否恰当。",
+          "一名工人向媒体透露，曾有一男子将眼镜遗留在卧室，随后镜头竟录下其妻子（推测为妻子）脱衣的画面。",
+          "Meta智能眼镜镜框角落设有指示灯，内置摄像头录制时会亮起。",
+          "Sama是一家总部位于美国的业务外包公司，最初为非盈利组织，旨在通过提供科技岗位促进就业，现为“道德”B型企业。",
+          "但这并非 Meta 首次因合同问题引发争议。",
+          "此前，一项负责审核 Facebook 帖子的协议曾招致批评，并遭到前员工的集体诉讼——部分员工表示，他们曾接触大量令人不安的暴力内容。",
+          "Sama 后来表示，自己后悔接下了这份工作。",
+          "非洲科技工人运动组织成员纳塔莱·万巴拉洛（Naftali Wambalo）是该案持续法律行动中的原告之一，他向 BBC 透露，他也曾与参与智能眼镜项目审核工作的员工沟通过。",
+          "万巴拉洛认为，Meta 终止该项目的原因在于，公司不希望员工对外发声，揭露人类审核人员有时需要审查由智能眼镜捕捉到的影像内容这一事实。",
+          "他对 BBC 新闻表示：“我认为他们所说的标准，实际上是指保密原则。”",
+          "BBC 已向 Meta 就该观点提出质询。",
+          "这家科技巨头此前曾表示，用户已在服务条款中知晓可能存在人工审核的情况。",
+          "代表原告的律师梅茜·穆特米（Mercy Mutemi）同时也是监督实验室（Oversight Lab）的执行主任，她指出，Meta 的声明应成为对肯尼亚政府的警示。",
+          "她对 BBC 表示：“我们一直听说，这是进入人工智能生态系统的入口。但以此为基础来构建整个产业，实在太过脆弱。”"
+        ]
+      }
+    },
+    {
+      "slug": "c4fdf910d6085ea8",
+      "title": "Editing my LLM assisted Articles",
+      "titleZh": "编辑我的 LLM 辅助撰写的文章",
+      "link": "https://idiallo.com/byte-size/editing-llm-assisted-articles?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-05-02T03:00:23.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "content generation",
+        "editorial control"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "作者回顾去年使用 AI 撰写文章的便利性，但指出直接引用这些文章时存在严重问题：AI 生成的内容与作者真实意图不符，导致自我认知混乱。为此，他正在重写所有 AI 协助的文章，以恢复个人声音和原始思想表达。这一过程不仅是为了准确引用，更是为了维护创作自主性。作者强调，即使借助 AI，最终文本仍需回归人类作者的视角与风格。",
+      "summaryEn": "The author reflects on the convenience of using AI to write articles last year but highlights a critical issue: when attempting to quote these pieces, the AI-generated content often diverges from his original intent, causing cognitive dissonance. As a result, he is rewriting all AI-assisted articles to restore his authentic voice and capture the thoughts he actually had during writing. This process aims not only to enable accurate quoting but also to reclaim creative autonomy. The author stresses that even with AI assistance, the final text must ultimately reflect human authorship and perspective.",
+      "reason": "它坦诚地探讨了 AI 写作带来的身份认同危机，对创作者极具共鸣价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Last year, I used AI to help me write articles. As I've mentioned before, it's convenient when you are doing so because it saves you time. But the problem comes up when you try to quote those articles back. Whatever you think you wrote is not what's in there. I always cringe when I read them back."
+          },
+          {
+            "type": "p",
+            "text": "As I've said before, I'm rewriting those articles so that they capture my voice, and so that I can actually quote the real thoughts I had in mind at the time of writing. I will show you exactly what the article looked like before and after. From prompt, to the final post, and the new edit."
+          },
+          {
+            "type": "p",
+            "text": "Prompt: Feb 4th, 2025 on DeepSeek"
+          },
+          {
+            "type": "quote",
+            "text": "I am writing a blog post, help me refine it . It should be a fun read that helps convince readers that building useless tools is part of the journey and career growth.\n  \n  Programmers don't use calculators, they build them and abandon them 3 quarters completed.\n  \n  The start of a project is always exciting. You have an brilliant idea, you have the skills to build it, and you have a blind spot. This blind spot propels you into a journey of excitement, setting up the project, deciding on frameworks, paying for AWS servers. You even get to test some of your ideas in a prototype version of your project.\n  \n  As you keep building the project, and resolving the low hanging fruits, you realize that it takes more than the CRUD part to bring your project to life. This is where we start making excuses. The clearer the blind spot gets, the more we lose interest. Resistance is the secret to creating a collection of abandoned projects. \n  \n  Early in my career, i found myself with a brand new life altering idea several times a week. My weekends were spent in front of a laptop, typing away on my IDE and testing an idea. I have to admit I often get distracted by creating meta code, like a ORM that should be ultra efficient, or a html parser that will allow me to use custom html tags that automatically render into components in real time. At the end, I have a robust framework with 3 quarters of an application that is getting less and less exciting.\n  \n  But this is not a warning call to tell you your idea sucks and shouldn't work on it. It's a confession to tell you that those useless projects are exactly how developers hone their skills. We are tricked into wanting to change the world by our own mind. But the result is that we end up learning new marketable skills. I wrote about the importance of kids playing before, it helps them hone physical skills that you can't learn from a book. You have to climb the monkey bar at the park to develop the strength of your arms. In that same way, we need to build 3 quarters of a calculator to learn how to properly compartmentalize your util functions"
+          },
+          {
+            "type": "p",
+            "text": "DeepSeek \"thought\" for 38 seconds, and gave me a draft titled: \"Why Building Useless Tools is the Secret Sauce of Developer Growth\"."
+          },
+          {
+            "type": "quote",
+            "text": "First Draft:\n  \n  Title: Why Building Useless Tools is the Secret Sauce of Developer Growth  \n  \n  Hook:\n  Programmers don’t use calculators—they build them, abandon them three-quarters finished, and then accidentally invent the next big thing while trying to fix a typo in the README.  \n  \n  \n  \n  1. The Siren Song of a New Project\n  \n  Every developer knows the rush: you’re struck by a “life-altering” idea (your 14th this week), and suddenly, you’re setting up repositories, debating frameworks, and buying AWS servers at 2 AM. The blind spot? You’re convinced this time, you’ll finish. Spoiler: You won’t. But that’s okay.  \n  \n  “The first 90% of the project takes 10% of the time. The remaining 10% takes another lifetime.”\n  —Ancient Developer Proverb (probably).  \n  \n  \n  \n  2. The Blind Spot: A Fuel for Creative Chaos\n  \n  That initial blind spot isn’t a flaw—it’s rocket fuel. It lets you ignore the boring bits (user auth, error handling, documentation) and dive headfirst into the fun: prototyping wild features, inventing a “revolutionary” ORM named LazyLlama, or crafting custom HTML tags that’ll “change frontend development forever.” Sure, your enthusiasm fades faster than a free-tier server under load, but along the way, you’ve accidentally learned:\n  - How to optimize database queries (to make LazyLlama slightly less slow).\n  - Why shadow DOM exists (after your custom <sparkle-button> tag broke 14 legacy sites).  \n  \n  \n  \n  3. Resistance is Inevitable (and That’s the Point)\n  \n  As the blind spot clears, reality hits: your app needs more than CRUD and caffeine to survive. Suddenly, you’re procrastinating by rewriting config files or alphabetizing your npm dependencies. This resistance isn’t failure—it’s a teacher. Every abandoned project is a masterclass in:\n  - Scope creep: “Wait, should the calculator also solve quantum physics?”\n  - Tooling: “I spent 3 days building a CI/CD pipeline… for a todo app.”\n  - Prioritization: “The login page can wait—let’s add animated emojis first.”  \n  \n  \n  \n  4. Playtime for Grown-Ups: How Useless Projects Hone Skills\n  \n  Kids don’t climb monkey bars to “build upper body strength”—they do it because it’s fun. Likewise, developers don’t build half-finished tools to pad their résumés. We do it because playing with code is joyful. And just like kids, we walk away stronger:\n  - That abandoned Twitter-for-Cats app taught you websockets.\n  - The “ultra-efficient” ORM? Now you understand query optimization.\n  - The calculator left at 75%? You’ve mastered state management… and humility.  \n  \n  \n  \n  5. Embrace the Graveyard of Unfinished Ideas\n  \n  Your GitHub is a museum of “almosts,” and that’s beautiful. Every skeleton in your code closet taught you something. Remember:\n  - Instagram started as a check-in app.\n  - Slack was a gaming company’s side hustle.\n  - Your Blockchain-Based Pet Rock project? It taught you smart contracts—and that not every idea needs to see daylight.  \n  \n  \n  \n  6. Keep Building (and Abandoning)\n  \n  The next time guilt whispers, “You never finish anything,” laugh in its face. You’re not failing—you’re iterating. The world needs developers who’ve climbed the mountain of “useless” projects, survived the valleys of tech debt, and lived to code another day.  \n  \n  So go ahead: build that calculator. Abandon it at 75%. Then use what you learned to accidentally create something actually world-changing.  \n  \n  Final Thought:\n  The only thing better than a finished project? A dozen unfinished ones that turned you into a coding wizard.  \n  \n  \n  \n  Call to Action:\n  What’s your favorite abandoned project? Tag it #UselessButBrilliant and confess your coding sins. We’ve all got a LazyLlama in our closets."
+          },
+          {
+            "type": "p",
+            "text": "I've made some edits, asked to remove the headings, and this is what I got:"
+          },
+          {
+            "type": "quote",
+            "text": "Title: Why Building Useless Tools is the Secret Sauce of Developer Growth  \n  \n  Programmers don’t use calculators—they build them, abandon them three-quarters finished, and then accidentally invent the next big thing while trying to fix a typo in the README. Every developer knows the rush: you’re struck by a “life-altering” idea (your 14th this week), and suddenly, you’re setting up repositories, debating frameworks, and buying AWS servers at 2 AM. The blind spot? You’re convinced this time, you’ll finish. Spoiler: You won’t. But that’s okay.  \n  \n  That initial blind spot isn’t a flaw—it’s rocket fuel. It lets you ignore the boring bits (user auth, error handling, documentation) and dive headfirst into the fun: prototyping wild features, inventing a “revolutionary” ORM named LazyLlama, or crafting custom HTML tags that’ll “change frontend development forever.” Sure, your enthusiasm fades faster than a free-tier server under load, but along the way, you’ve accidentally learned how to optimize database queries (to make LazyLlama slightly less slow) or why shadow DOM exists (after your custom <sparkle-button> tag broke 14 legacy sites).  \n  \n  As the blind spot clears, reality hits: your app needs more than CRUD and caffeine to survive. Suddenly, you’re procrastinating by rewriting config files or alphabetizing your npm dependencies. This resistance isn’t failure—it’s a teacher. Every abandoned project is a masterclass in scope creep (“Wait, should the calculator also solve quantum physics?”), tooling (“I spent 3 days building a CI/CD pipeline… for a todo app”), and prioritization (“The login page can wait—let’s add animated emojis first”).  \n  \n  Kids don’t climb monkey bars to “build upper body strength”—they do it because it’s fun. Likewise, developers don’t build half-finished tools to pad their résumés. We do it because playing with code is joyful. And just like kids, we walk away stronger. That abandoned Twitter-for-Cats app taught you websockets. The “ultra-efficient” ORM? Now you understand query optimization. The calculator left at 75%? You’ve mastered state management… and humility.  \n  \n  Your GitHub is a museum of “almosts,” and that’s beautiful. Every skeleton in your code closet taught you something. Instagram started as a check-in app. Slack was a gaming company’s side hustle. Your Blockchain-Based Pet Rock project? It taught you smart contracts—and that not every idea needs to see daylight.  \n  \n  The next time guilt whispers, “You never finish anything,” laugh in its face. You’re not failing—you’re iterating. The world needs developers who’ve climbed the mountain of “useless” projects, survived the valleys of tech debt, and lived to code another day. So go ahead: build that calculator. Abandon it at 75%. Then use what you learned to accidentally create something actually world-changing.  \n  \n  The only thing better than a finished project? A dozen unfinished ones that turned you into a coding wizard."
+          },
+          {
+            "type": "p",
+            "text": "I've retitled it, removed the headings from the draft, edited it down, and published this version:"
+          },
+          {
+            "type": "quote",
+            "text": "Article Published on March 6th, 2025:\n  \n  Why Developers Build Unfinished Calculators\n  \n  \n  It's the only way to learn\n  \n  \n  Every developer knows the rush. You are driving and suddenly you’re struck by a “life-altering” idea (your 14th this week). At the next red light, you record an audio while driving, avoiding eye contact with what clearly looks like a cop’s car. At 2 AM, you wake abruptly remembering the recording. Now you’re setting up repositories, debating frameworks, and buying AWS servers in the middle of the night. The blind spot? You’re convinced this time, you’ll finish.\n  \n  Spoiler: You won’t. But that’s okay.\n  \n  Programmers don’t use calculators. They build them, abandon them three-quarters finished, and then accidentally invent the next big thing while trying to fix a typo in the README.\n  \n  That initial blind spot isn’t a flaw. It’s rocket fuel. It lets you ignore the boring bits (user auth, error handling, documentation) and dive headfirst into the fun: prototyping wild features, inventing a “revolutionary” ORM named LazyLlama, or crafting custom HTML tags that’ll “change frontend development forever.” Sure, your enthusiasm fades faster than a free-tier server under load, but along the way, you’ve accidentally learned how to optimize database queries (to make LazyLlama slightly less slow) or why shadow DOM exists (after your custom <sparkle-button> tag broke the browser's rendering engine).\n  \n  As the blind spot clears, reality hits: your app needs more than CRUD and caffeine to survive. Suddenly, you’re procrastinating by rewriting config files or alphabetizing your npm dependencies. This resistance isn’t failure. It’s a teacher. Every abandoned project is a masterclass in scope creep (“Wait, should the calculator also solve quantum physics?”), tooling (“I spent 3 days building a CI/CD pipeline… for a todo app”), and prioritization (“The login page can wait—let’s add animated emojis first”).\n  \n  Kids don’t climb monkey bars to “build upper body strength.” They do it because it’s fun. Likewise, developers don’t build half-finished tools to pad their résumés. We do it because playing with code is joyful. And just like kids, we walk away stronger. That abandoned Twitter-for-Cats app taught you websockets. The “ultra-efficient” ORM? Now you understand query optimization. The calculator left at 75%? You’ve mastered state management… and humility.\n  \n  Your GitHub is a museum of “almosts,” and that’s beautiful. Every skeleton in your code closet taught you something. Instagram started as a check-in app. Slack was a gaming company’s side hustle. Your Blockchain-Based Pet Rock project? It taught you smart contracts and that not every idea needs to see daylight.\n  \n  The next time guilt whispers, “You never finish anything,” laugh in its face. “You’ve got the wrong fellow,” you answer. You’re not failing, you’re iterating. The world needs developers who’ve climbed the mountain of “useless” projects, survived the valleys of tech debt, and lived to code another day. So go ahead: build that calculator. Abandon it at 75%. Then use what you learned to accidentally create something actually world-changing.\n  \n  The only thing better than a finished project? A dozen unfinished ones that turned you into a coding wizard."
+          },
+          {
+            "type": "p",
+            "text": "It sounds very much like any LLM, and I couldn't stand reading it. At the time, I was trying to save time with my heavy schedule of writing every other day for a whole year. But I ended with this. If you read it, it captures the idea I was trying to share."
+          },
+          {
+            "type": "p",
+            "text": "As far as being functional, it did exactly what it was supposed to do. But it wasn't my human experience with the subject. In my new edit, I've removed things that do not sound like me. Phrasings that are awkward to me. I'm happy with the result. It's not a banger, but it captures my sentiment on why developers build calculators."
+          },
+          {
+            "type": "p",
+            "text": "Read edited article here (May 1st 2026)"
+          }
+        ],
+        "translations": [
+          "去年，我借助 AI 来帮我撰写文章。正如我之前提到的，这样做确实很方便，因为它能为你节省时间。但问题在于，当你想引用这些文章时，会发现你自认为写下的内容其实并不存在于原文中。每次重读时，我都会感到一阵尴尬。",
+          "如前所述，我正在重写这些文章，目的是保留我的真实语调，并准确传达当初写作时的真实想法。我会向你展示文章在修改前后的完整过程——从最初的提示词，到最终发布的版本，再到最新的编辑内容。",
+          "提示词：2025年2月4日，关于 DeepSeek",
+          "我正在写一篇博客文章，请帮我润色。它应该是一篇轻松有趣的文字，旨在说服读者相信：构建无用的工具是开发者成长和职业发展旅程中不可或缺的一部分。\n\n程序员不用计算器，他们自己造出来，却在完成四分之三时就弃用了。\n\n项目启动总是令人兴奋的。你有一个绝妙的点子，具备实现它的技能，同时也存在认知盲区。正是这个盲区推动你踏上充满激情的旅程：搭建项目、选择框架、为 AWS 服务器付费。你甚至可以在项目的原型版本中测试一些想法。\n\n随着项目不断推进，解决那些容易处理的问题后，你会意识到仅靠 CRUD 功能无法真正让项目“活”起来。这时我们开始找借口了。认知盲区越清晰，我们的兴趣就越快消退。抗拒心理正是导致我们积累大量废弃项目的秘密所在。\n\n在我职业生涯的早期，几乎每周都会冒出改变人生的全新创意。我的周末都在笔记本电脑前度过，在 IDE 里敲代码，测试各种想法。我必须承认，我常常被“元编程”所吸引——比如开发一个超高效的 ORM，或一个能让我使用自定义 HTML 标签并实时渲染成组件的解析器。结果呢？我留下了一个功能完备的框架，却只完成了应用的四分之三，而且越来越提不起劲继续下去。\n\n但这并非要警告你说你的想法烂透了、不该去做。这更像是一种坦白：那些看似无用的项目，恰恰是开发者锤炼技能的必经之路。我们被自己的思维误导，以为能改变世界，但实际上，我们正是在这些过程中学到了市场上真正需要的技能。我曾写过关于孩子玩耍的重要性——它帮助他们锻炼书本上学不到的身体技能，比如要在公园的单杠上攀爬才能增强手臂力量。同样地，我们也必须亲手构建一个四分之三完成的计算器，才能真正学会如何合理封装实用函数。",
+          "DeepSeek 思考了 38 秒，为我生成了一个题为《为什么建造无用工具是开发者成长的秘诀》的草稿。",
+          "初稿：\n  \n  标题：建造无用的工具是开发者成长的秘诀\n  \n  钩子：\n  程序员不用计算器——他们自己造，造到四分之三就放弃，结果在试图修复 README 文件中的拼写错误时，意外发明了下一个大东西。\n  \n  \n  \n  1. 新项目的诱惑之歌\n  \n  每个开发者都知道那种冲动：你被一个“改变人生”的点子击中（这周已经是第 14 个了），突然就开始搭建仓库、争论框架，凌晨两点还在抢购 AWS 服务器。盲点是：你坚信这次一定能做完。剧透一下：你不会。但这没关系。\n  \n  “项目的前 90% 只花 10% 的时间，剩下的 10% 又花掉一辈子。”\n  — 古代程序员谚语（大概如此）。\n  \n  \n  \n  2. 盲区：创意混乱的燃料\n  \n  那个最初的盲点不是缺陷，而是火箭燃料。它让你忽略无聊的部分（用户认证、错误处理、文档），一头扎进有趣的领域：原型设计疯狂功能、发明一个名为 LazyLlama 的“革命性” ORM，或者打造自定义 HTML 标签，声称要“永远改变前端开发”。当然，你的热情消散得比负载下的免费服务器还快，但沿途你已经无意中学会了：\n  - 如何优化数据库查询（让 LazyLlama 稍微不那么慢一点）。\n  - 为什么存在 shadow DOM（因为你的自定义 <sparkle-button> 标签搞垮了 14 个遗留网站）。\n  \n  \n  \n  3. 阻力不可避免（而这正是关键）\n  \n  随着盲区逐渐消失，现实来了：你的应用不能只靠 CRUD 和咖啡因活着。突然之间，你开始通过重写配置文件或按字母顺序整理 npm 依赖来拖延时间。这种阻力不是失败，而是一位老师。每一个半途而废的项目都是一堂大师课：\n  - 范围蔓延：“等等，计算器是不是还得解量子物理？”\n  - 工具链：“我花了三天时间为一个待办事项应用搭建 CI/CD 流水线……”\n  - 优先级排序：“登录页面可以等等——先加个动画表情吧。”\n  \n  \n  \n  4. 成年人的游戏时间：无用项目如何打磨技能\n  \n  孩子爬单杠不是为了“锻炼上肢力量”——他们这么做是因为好玩。同样，开发者也不是为了充实简历才做半成品工具。我们这么做，是因为玩代码本身令人愉悦。就像孩子一样，我们也因此变得更强大：\n  - 那款废弃的“猫咪专属 Twitter”应用教会了你 websockets。\n  - 那个“超高效” ORM？现在你懂得了查询优化的真谛。\n  - 停在 75% 的计算器？你已掌握状态管理……还有谦逊。\n  \n  \n  \n  5. 拥抱未完成创意的墓地\n  \n  你的 GitHub 就是一座“几乎完成”的博物馆，这很美好。你代码柜子里每具骨架都教过你东西。记住：\n  - Instagram 最初是个签到应用。\n  - Slack 曾是游戏公司的副业。\n  - 你那基于区块链的宠物石头项目？它教会了你智能合约——也教会了你，并非每个想法都必须见光。\n  \n  \n  \n  6. 继续建造（然后放弃）\n  \n  下次内疚悄悄低语“你什么都完不成”时，请笑着把它赶走。你不是失败者，你是在迭代。世界需要那些翻越过“无用”项目高峰、穿越技术债务低谷、活下来继续写代码的开发者。\n  \n  所以去吧：造那个计算器。造到 75% 就放弃。然后用学到的东西，不经意间创造出真正改变世界的东西。\n  \n  最终思考：\n  比完成一个项目更好的是什么？是十二个半成品，它们把你变成了编程巫师。\n  \n  \n  \n  行动号召：\n  你最钟爱的废弃项目是哪一个？标记它 #UselessButBrilliant，坦白你的编程罪过。我们每个人都有个 LazyLlama 藏在衣柜里。",
+          "我做了些修改，要求删掉标题，这就是我得到的结果：",
+          "标题：为什么建造无用的工具是开发者成长的秘诀\n\n程序员不用计算器——他们自己造。造到四分之三就扔下不管，结果在试图修复 README 文件中的一个拼写错误时，意外发明了下一个大东西。每个开发者都知道那种感觉：你突然灵光一现，冒出个“改变人生”的点子（这周已经是第14个了），于是立刻开始搭建仓库、争论框架，凌晨2点还在买 AWS 服务器。盲区在哪？你坚信这次一定能做完。剧透一下：你不会。但没关系。\n\n这种最初的盲目自信不是缺陷，而是火箭燃料。它让你忽略那些无聊的部分（用户认证、错误处理、文档），一头扎进有趣的环节：疯狂的原型设计、发明一个名为 LazyLlama 的“革命性”ORM，或者创造自定义 HTML 标签，声称要“永远改变前端开发”。当然，你的热情消退得比负载下的免费服务器还快，但过程中你无意中学会了如何优化数据库查询（让 LazyLlama 稍微不那么慢）、为什么存在 shadow DOM（因为你的 <sparkle-button> 标签搞崩了14个遗留网站）。\n\n随着盲目期过去，现实来了：你的应用需要的不仅仅是 CRUD 和咖啡因就能活下来。突然你就开始拖延，重写配置文件，或者把 npm 依赖按字母顺序排列。这种抗拒不是失败，而是老师。每一个被放弃的项目都是关于范围蔓延（“等等，计算器是不是也该能解量子物理？”）、工具链（“我花了3天搭 CI/CD 流水线……就为了个待办事项应用”）和优先级判断（“登录页面可以等等——先加个带动画表情吧”）的精品课程。\n\n孩子爬单杠不是为了“练上肢力量”——他们觉得好玩才去爬。同样，开发者也不会为了充实简历而做半成品项目。我们这么做，是因为玩代码本身就很快乐。就像孩子一样，我们离开时变得更强大。那个半途而废的“猫咪版推特”应用教会了你 websockets。那个“超高效”ORM？现在你懂得了查询优化的重要性。那个只做到75%的计算器？你掌握了状态管理……还有谦逊。\n\n你的 GitHub 是个“几乎完成”的博物馆，这很美。你代码柜子里每个骨架都教过你东西。Instagram 最初只是个签到应用。Slack 曾是游戏公司的副业。你那基于区块链的宠物石项目？它教会了你智能合约，也让你明白不是每个想法都得见天日。\n\n下次当内疚小声说“你从来都做不完事”时，请笑着怼回去。你不是失败，而是在迭代。这个世界需要的是那些爬过“无用”项目高山、穿越技术债务低谷、活下来继续写代码的开发者。所以去吧：做个计算器。做到75%就扔。然后用学到的东西，不小心创造出真正改变世界的东西。\n\n比完成的项目更好的是什么？是一打半成品，它们把你变成了编程巫师。",
+          "我重新起了标题，从草稿里删掉了标题，编辑精简后发表了这个版本：",
+          "文章发表于2025年3月6日：\n\n为何开发者要构建未完成计算器\n\n这是唯一的学习方式\n\n每个程序员都经历过那种冲动。你正开车，突然灵光一现——“改变人生”的创意（本周第14个）。在下一个红灯前，你偷偷录下语音，避免与明显是警车的前方车辆对视。凌晨2点，你猛然惊醒，想起那段录音。此刻，你正在深夜搭建仓库、争论框架，甚至抢购AWS服务器。盲区在哪？你坚信这次一定能完成。\n\n剧透一下：你不会。但没关系。\n\n程序员不用计算器，他们自己造，造到四分之三就放弃，然后在试图修复README文件中的拼写错误时，意外发明了下一个重大技术。\n\n那个最初的盲区并非缺陷，而是火箭燃料。它让你忽略无聊的部分（用户认证、错误处理、文档），一头扎进有趣的环节：疯狂原型设计、发明一个名为LazyLlama的“革命性”ORM，或创造能“永远改变前端开发”的自定义HTML标签。当然，你的热情消散得比免费层服务器在高负载下更快，但过程中，你已无意中学会了如何优化数据库查询（让LazyLlama稍微不那么慢），以及为何存在shadow DOM（因为你的自定义<sparkle-button>标签搞崩了浏览器的渲染引擎）。\n\n随着盲区逐渐消失，现实接踵而至：你的应用需要的不仅仅是CRUD和咖啡因就能存活。突然之间，你开始通过重写配置文件或按字母顺序整理npm依赖来拖延工作。这种阻力不是失败，而是老师。每一个被抛弃的项目都是关于范围蔓延（“等等，计算器是不是还得解量子物理？”）、工具链（“我花了三天搭建CI/CD流水线……只为一个待办事项应用”）和优先级排序（“登录页面可以等等——先加动画表情吧”）的生动课程。\n\n孩子爬单杠不是为了“锻炼上肢力量”，而是因为好玩。同样，开发者构建半成品工具也不是为了充实简历。我们这么做，是因为玩代码本身令人愉悦。就像孩子一样，我们离开时变得更强大。那款被抛弃的“专为猫咪打造的Twitter”教会了你WebSocket；那个“超高效”的ORM？现在你懂得了查询优化的精髓；停在75%的？你已掌握状态管理……还有谦逊。\n\n你的GitHub是一座“几乎完成”的博物馆，这很美。你代码柜里的每一具骨架都曾教会你一些东西。Instagram最初是个签到应用，Slack曾是游戏公司的副业。你那基于区块链的宠物石项目？它教会了你智能合约，也让你明白并非每个想法都需要公之于众。\n\n下次当内疚低语“你从来都做不完任何事”时，请笑着回应：“找错人了。”你不是失败，而是在迭代。这个世界需要那些翻越过“无用”项目之山、穿越技术债务低谷、活下来继续写代码的开发者。所以去吧：构建那个计算器，做到75%就放手。然后用所学，意外创造出真正改变世界的东西。\n\n比完成项目更好的是什么？是一打未完成的项目，它们把你变成了编程大师。",
+          "听起来和任何大型语言模型（LLM）没什么两样，我实在读不下去。当时我正在赶稿，日程排得满满当当，每天写一篇，坚持了一年。结果却成了这样。如果你读了它，就能明白我当时想表达的核心思想。",
+          "从功能上讲，它确实完成了该做的事。但它没有体现我对这个主题的真实感受。在新版本中，我删掉了一些不像是我说的话，也调整了那些让我觉得拗口的表达。我对最终结果很满意。虽然不算惊艳，但准确传达了我对“开发者为何要造计算器”的看法。",
+          "阅读编辑后的文章（2026年5月1日）"
+        ]
+      }
+    },
+    {
+      "slug": "0903196675174418",
+      "title": "More on Apple’s Logically Elegant Tariff Refund Puzzle Solution",
+      "titleZh": "苹果关税退款谜题的逻辑优雅解决方案再探",
+      "link": "https://daringfireball.net/linked/2026/05/01/tim-cooks-clever-solution-to-the-tariff-refund-puzzle",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-02T01:06:31.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "tariff",
+        "Tim Cook"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Daringfireball 进一步分析了 Tim Cook 提出的关税退款方案：苹果承诺将任何退款用于‘美国创新与先进制造’，但这并不构成新增支出承诺。Cook 的解释巧妙规避了政治风险——若特朗普质疑苹果变相增加在美投资，该措辞反而成为防御盾牌。这种语言策略既满足合规要求，又避免激化贸易摩擦，展现了企业高管在复杂地缘政治下的高超沟通技巧。",
+      "summaryEn": "Daringfireball further analyzes Tim Cook's clever solution to Apple's tariff refund dilemma: while promising to reinvest any refund into 'U.S. innovation and advanced manufacturing,' this does not constitute a new spending commitment. Cook's wording cleverly avoids political backlash—if Trump questions Apple's increased U.S. investment, the phrasing becomes a defensive shield. This linguistic strategy satisfies compliance requirements while preventing escalation of trade tensions, showcasing executive communication skills under complex geopolitical pressures.",
+      "reason": "它深入剖析了企业如何在政治夹缝中运用精准话术化解危机，极具商业智慧参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "One more from Jason Snell, from his analysis of Apple’s quarterly results:"
+          },
+          {
+            "type": "quote",
+            "text": "During a complicated question from J.P. Morgan analyst Samik\nChatterjee about product margins, Parekh unusually half-answered\nthe question and then stopped and “turned it over to Tim” so that\nCook could read an obviously prepared statement about tariffs,\nwhich included this bit:\n\n\n  In terms of applying for a refund of tariffs paid, we’re\nfollowing the established processes, and we plan to reinvest any\namount we receive back into U.S. innovation and advanced\nmanufacturing. These would be new investments and would be in\naddition to our prior commitments in the U.S.\n\n\nThis is the sort of politics Cook will continue to be plying from\nthe boardroom. Sure, Apple’s going to try to get its tariff money\nback. But it’s going to do so using the perfectly normal and\nestablished process, and if it does get billions back from the\nU.S. government, it double-promises to reinvest that money in the\nUnited States, above and beyond its already stated commitments.\nTrump Administration, take note."
+          },
+          {
+            "type": "p",
+            "text": "The kind of logic puzzles I enjoy most are ones where, when the puzzle is posed, there’s no obvious solution. But once you see the solution, it seems profoundly obvious. Jason Kottke last week linked to 1D-Chess, a game from Rowan Monk that’s like that. Once you find the solution you can’t unsee it. (Don’t give up and peek at the posted answer!)"
+          },
+          {
+            "type": "p",
+            "text": "The question of tariff refunds is like that. Two months ago the Supreme Court ruled 6-3 that Trump’s obviously illegal tariffs last year, were, in fact, illegal. They left as an open question, however, whether importers who paid those tariffs should get refunds from the federal government. Apple, obviously, is one of those importers. The logic puzzle is this: if it turns out that Apple is eligible for a refund, how do they collect it without infuriating the petulant Donald Trump? Cook just spelled out the answer. Take the money but commit it all to their longstanding plan to spend $500 billion over the next few years to U.S. manufacturing efforts, a program they’ve maintained through the Trump 1, Biden, and now Trump 2 administrations, but which Cook has made dog-and-pony shows out of during both Trump terms to, as Trump himself describes it, “kiss his ass”."
+          },
+          {
+            "type": "p",
+            "text": "That’s so obvious, now that Cook spelled it out, that it doesn’t even seem like a puzzle."
+          },
+          {
+            "type": "p",
+            "text": "Update: “More on Apple’s Logically Elegant Tariff Refund Puzzle Solution”."
+          },
+          {
+            "type": "p",
+            "text": "★ Friday, 1 May 2026"
+          }
+        ],
+        "translations": [
+          "杰森·斯内尔（Jason Snell）在其对苹果公司季度业绩的分析中又提到了一点：",
+          "摩根大通分析师萨米赫·查特吉（Samik Chatterjee）在关于产品毛利率的复杂提问过程中，帕雷赫（Parekh）出人意料地只回答了半句，随后停顿下来，“把问题转交给了蒂姆”（Tim），以便库克能够宣读一份显然事先准备好的声明，其中涉及关税问题，内容如下：\n\n就申请退还已缴纳的关税而言，我们正在遵循既定的程序，并计划将收到的任何金额重新投入到美国的创新和先进制造业中。这些将是新的投资，并且将超出我们此前在美国作出的承诺。\n\n这正是库克将继续在董事会层面运用的政治策略。当然，苹果会尝试追回关税款项。但他们将通过完全正常且已确立的流程来实现这一目标；如果最终能从美国政府那里收回数十亿美元，他们还会再次承诺将这些资金全部投入美国本土，甚至超过其早已公开声明的承诺。特朗普政府请注意。",
+          "我最喜欢的逻辑谜题是那种一开始看起来毫无头绪、但当看到答案后又觉得无比明显的谜题。上周，杰森·科特克（Jason Kottke）推荐了 Rowan Monk 开发的一款名为 1D-Chess 的游戏，它正是这种类型的谜题。一旦你找到了解法，就再也无法忽视它的存在了。（别放弃，也别偷看已经公布的答案！）",
+          "关税退款的问题也是如此。两个月前，最高法院以6比3的投票结果裁定，特朗普去年明显违法征收的关税实际上属于违法行为。然而，法院并未明确回答一个关键问题：那些支付过此类关税的进口商是否有权向联邦政府申请退款？显然，苹果就是其中之一。这个逻辑谜题在于：如果事实证明苹果有权获得退款，那么他们该如何在不激怒那个脾气暴躁的特朗普的情况下取回这笔钱呢？库克刚刚给出了答案——接受这笔钱，但将其全部用于他们长期以来承诺在未来几年内投入500亿美元支持美国制造业的计划之中。该计划贯穿了特朗普第一任期、拜登政府，直至现在的特朗普第二任期，而库克在两次特朗普执政期间都曾高调宣传这一计划，正如特朗普本人所说，是为了“拍他的马屁”。",
+          "现在看来，库克既然已经把话说得这么清楚了，这个问题简直简单得不像个谜题。",
+          "更新：《关于苹果关税退款难题的逻辑优雅解决方案的更多内容》。",
+          "★ 2026年5月1日，星期五"
+        ]
+      }
+    },
+    {
+      "slug": "db322f342734b4a1",
+      "title": "Tim Cook’s Clever Solution to the Tariff Refund Puzzle",
+      "titleZh": "Tim Cook 对关税退款谜题的巧妙解法",
+      "link": "https://sixcolors.com/post/2026/04/apple-results-analysis-net-net-over-the-moon/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-01T20:30:47.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "earnings call",
+        "leadership"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "在苹果季度财报会议上，Tim Cook 针对分析师关于关税退款用途的提问作出精心准备回应：苹果将遵循既定流程申请退款，并计划将所得资金重新投入‘美国创新与先进制造’。这一声明既表明合规态度，又巧妙设定了资金用途框架，避免被解读为额外支出承诺。Cook 的表述成功平衡了财务操作与政治敏感性，体现了苹果高层的战略沟通能力。",
+      "summaryEn": "During Apple's quarterly earnings call, Tim Cook delivered a carefully prepared response to an analyst's question about tariff refund usage: the company will follow established procedures to claim refunds and intends to reinvest the funds into 'U.S. innovation and advanced manufacturing.' This statement demonstrates both compliance readiness and strategic framing of fund allocation, avoiding interpretation as additional spending commitments. Cook's delivery successfully balances financial operations with political sensitivity, showcasing Apple leadership's strategic communication skills.",
+      "reason": "它展示了企业高管如何在高压环境下用精准话术化解潜在政治风险，值得商业人士学习。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Apple, technology, and other stuff",
+        "siteName": "Six Colors",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Pretty soon, we aren’t going to have Tim Cook to kick around anymore. Or at least, when we kick him around, it’ll be a sort of executive chair kind of kicking. (Wait, I was told there would be no more kicking!)"
+          },
+          {
+            "type": "p",
+            "text": "Regardless of pending executive transitions, Apple released its corporate earnings for the second fiscal quarter of 2026, and Tim Cook got to bask in the sun — and dodge questions from analysts — for one of the last times."
+          },
+          {
+            "type": "p",
+            "text": "The charts have all been generated, and Tim Cook hasn’t yet regenerated into John Ternus, so here’s a quick set of additional observations about what’s going on in the business of Apple."
+          },
+          {
+            "type": "h2",
+            "text": "A new definition of boring"
+          },
+          {
+            "type": "p",
+            "text": "Apple’s business has been very, very seasonal for a long time—certainly back to the introduction of the iPod, if not before. Apple sells a lot of stuff in the last three months of the year, not only because it’s the holiday season, but these days because it’s also new iPhone season."
+          },
+          {
+            "type": "p",
+            "text": "Those holiday quarters are huge. They stand out on any chart you make. The other quarters, well, they’re the sag in the saddle. They’re important because you need 12 months to make a calendar, but they’ve never had the sizzle of the holiday quarter."
+          },
+          {
+            "type": "p",
+            "text": "Which is why it’s so impressive that, for two successive “boring” quarters, Apple has generated more than $100 billion in revenue. In 2020, Apple’s “boring” quarters averaged $60.9 billion in revenue. That a company this large can still grow this much in five years is astounding. When I describe Apple as the world’s foremost machine that generates cash, I am not kidding."
+          },
+          {
+            "type": "p",
+            "text": "Speaking of cash, back in 2018, Apple declared that its policy was to become “cash neutral over time,” because its cash flow had gotten so ridiculous that it was sitting on $163 billion in net cash. In practice, Apple attempted to spend its extra money largely through stock buybacks and shareholder dividends."
+          },
+          {
+            "type": "p",
+            "text": "Eight years later and more than a trillion dollars of cash return later, things are changing, at least a little. “As we move ahead, we are no longer providing net cash neutral as a formal target, and we will independently evaluate cash and debt,” Apple CFO Kevan Parekh said on Thursday’s call."
+          },
+          {
+            "type": "p",
+            "text": "Now, I’m sure there are a lot of complex financial reasons Apple has decided to back away from net cash neutral, and Parekh was quick to point out that Apple’s board had authorized $100 billion to be used in future stock buybacks. The company, he said, is still “very committed to returning excess cash to shareholders.”"
+          },
+          {
+            "type": "p",
+            "text": "The key concept here seems to be flexibility. It sure sounds to me like Apple wants the ability to, for example, stash a little extra cash away so that it’s capable of making big moves if it needs to. Maybe that’s capital expenditures involving AI stuff. Maybe it’s keeping enough cash ready to spring if there’s a company it feels like it can acquire, in whole or in part. (Apple’s cash flow is an enormous advantage should it come across a relevant company that’s in fiscal distress.)"
+          },
+          {
+            "type": "p",
+            "text": "I also have to wonder if the company might be considering larger investments to normalize its component supplies. Right now, RAM is at a premium, and Apple’s using every chip TSMC can manufacture for it. Maybe Apple wants the leeway to give billions of dollars to a partner to build a factory and pre-buy all the output of that factory for a certain number of years. Not cheap, but if you’ve got the cash, maybe a good longer-term investment."
+          },
+          {
+            "type": "p",
+            "text": "We’ll see what happens. I just think it’s interesting that Apple went to the trouble of formally disengaging from its old monetary policy so it can get a little more room to maneuver. Usually, if you’re looking for that, it means you are thinking of maneuvering, right?"
+          },
+          {
+            "type": "h2",
+            "text": "Memory costs are starting to affect Apple"
+          },
+          {
+            "type": "p",
+            "text": "Apple’s careful planning meant it could combat the rising cost of memory for a little while, but that time seems to be coming to an end. Here’s what Cook said Thursday:"
+          },
+          {
+            "type": "quote",
+            "text": "In the December quarter, we really had a minimal impact due to memory, and you can kind of see that in the gross margin results. We said it would be a bit more in the March quarter, and we did see higher memory costs in the March quarter, and they were partially offset by benefits from carry-in inventory that we had. For the June quarter and what’s embedded in the guidance that Kevan went through earlier, we expect significantly higher memory costs. They are also partly offset by the benefit of carry-in inventory. And then, where we don’t give color beyond June, I can tell you that beyond the June quarter, we believe memory costs will drive an increasing impact on our business. And we’ll continue to evaluate this, and as we’ve said before, we’ll look at a range of options."
+          },
+          {
+            "type": "p",
+            "text": "What are those options? Cook said he didn’t really want to go into it, but we can all probably guess: Lowering margins and/or raising prices. Apple tends to go about this in very careful ways—base prices may stay the same, with the cost of higher-end configurations seeing price increases. Its huge product margins give it room to maneuver, but Apple’s not ever going to want to give away margin. That’s not how it’s wired. Bottom line: Some Apple products are going to become more expensive in the near future, but it may be more complicated (and less obvious) than you expect."
+          },
+          {
+            "type": "h2",
+            "text": "Can’t sell ’em if you can’t make ’em"
+          },
+          {
+            "type": "p",
+            "text": "While having more demand for your products than you can fulfill is a good problem to have, it’s still a problem. Ideally, every person who wants to buy an Apple product would have their credit cards immediately charged and their product shipped. Unfortunately, we live in a world that suddenly has some dramatic tech supply constraints, and it bit Apple in the second quarter."
+          },
+          {
+            "type": "p",
+            "text": "Oh, it’s the memory thing again, you might be thinking. But no! Apple’s current supply constraints are actually at Taiwan Semiconductor (TSMC), which can’t make Apple’s key SoCs (Systems on Chips) fast enough to fulfill Apple’s demand. Apple uses TSMC’s most advanced nodes, and according to Cook, “we’re not at the point where we’re saying this is going to end anytime soon.” There’s no button to push to make the conveyor belt at TSMC run faster."
+          },
+          {
+            "type": "p",
+            "text": "Who does Cook blame? Himself, more or less. “We just under-called the demand,” he said. This constraint is hitting the iPhone as well as the Mac, and especially the Mac mini and Mac Studio, due to increased demands due to Apple silicon being a pretty great platform for agentic AI applications."
+          },
+          {
+            "type": "p",
+            "text": "The MacBook Neo was also constrained, which is interesting, since I’m not sure that’s a TSMC supply problem. But Apple rolled it into its description of all the other issues it’s having. “We were very bullish on the product before announcing it, but we undercalled the level of enthusiasm that would be with it,” Cook said."
+          },
+          {
+            "type": "p",
+            "text": "Memory is going to hit Apple, yes. And this quarter was already a record. And yet… if Apple had correctly forecast demand and made sure TSMC was able to supply that demand, it would’ve sold more iPhones and Macs in the last quarter. As I said, as bad stories go, it’s got good roots—but it’s still not ideal."
+          },
+          {
+            "type": "h2",
+            "text": "Tariff Talk with Tim"
+          },
+          {
+            "type": "p",
+            "text": "During a complicated question from J.P. Morgan analyst Samik Chatterjee about product margins, Parekh unusually half-answered the question and then stopped and “turned it over to Tim” so that Cook could read an obviously prepared statement about tariffs, which included this bit:"
+          },
+          {
+            "type": "quote",
+            "text": "In terms of applying for a refund of tariffs paid, we’re following the established processes, and we plan to reinvest any amount we receive back into U.S. innovation and advanced manufacturing. These would be new investments and would be in addition to our prior commitments in the U.S."
+          },
+          {
+            "type": "p",
+            "text": "This is the sort of politics Cook will continue to be plying from the boardroom. Sure, Apple’s going to try to get its tariff money back. But it’s going to do so using the perfectly normal and established process, and if it does get billions back from the U.S. government, it double-promises to reinvest that money in the United States, above and beyond its already stated commitments. Trump Administration, take note."
+          },
+          {
+            "type": "h2",
+            "text": "Remember this moment with Bullish Tim"
+          },
+          {
+            "type": "p",
+            "text": "I’m going to miss Cook on these quarterly calls. He pointed out that Thursday’s call was his 89th, which, yes, predates his era as CEO. (Steve Jobs only attended the calls occasionally, leaving Cook to preside over them even as Chief Operating Officer.)"
+          },
+          {
+            "type": "p",
+            "text": "Anyway, one of Cook’s signature earnings call moves is being bullish on emerging markets. So a tip o’ the cap to Wells Fargo analyst Aaron Rakers, who used his allotted two questions to ask Cook to play the hits—namely, to ask how he felt about Apple’s business in China and India."
+          },
+          {
+            "type": "p",
+            "text": "After a few years in the doldrums, Apple’s last two quarters in China have been solid. Cook was quick to point out that the iPhone was the top-selling phone in urban China, the Mac mini was the top desktop in China, and the MacBook Air was the top laptop."
+          },
+          {
+            "type": "p",
+            "text": "In terms of India, Cook got to point out (as he loves to do) that even with all of Apple’s growth there, it’s still got enormous growth potential:"
+          },
+          {
+            "type": "quote",
+            "text": "It’s the second-largest smartphone market in the world and the third-largest PC market, and despite doing extremely well there for quite some time, we still have a modest share. And so I think that really speaks to the opportunity that we have…. Net-net, I’m over the moon excited about India."
+          },
+          {
+            "type": "p",
+            "text": "I’m going to miss hearing from Tim Cook, the man who can generate the requisite enthusiasm about international business to use a phrase like “net-net over the moon.”"
+          },
+          {
+            "type": "h2",
+            "text": "Some advice for John Ternus"
+          },
+          {
+            "type": "p",
+            "text": "During Cook’s introductory remarks on the earnings call, he allowed future CEO John Ternus to drop in and read a 250-word prepared statement. It was a necessary mutual-admiration society where Cook praised Ternus (“a brilliant engineer, a deep thinker, a person of remarkable character, and a born leader”), followed by Ternus immediately praising Cook (“one of the greatest business leaders of all time”). The whole point of this is to send the message to Wall Street that Apple’s got this and nobody needs to be worried."
+          },
+          {
+            "type": "p",
+            "text": "What wasn’t quite as necessary was the door opened by Evercore analyst Amit Daryanani, who asked Cook if he could share any advice he had for John Ternus, given that Steve Jobs famously told Cook not to ask what he would do, but focus on doing what was right."
+          },
+          {
+            "type": "p",
+            "text": "Here was Cook’s response:"
+          },
+          {
+            "type": "quote",
+            "text": "I think Steve’s advice to me lifted a huge burden, and so that advice did well for me over the 15 years. For John… what I’ve told him is that one of the most important decisions he’ll make is where to spend his time. And I would spend it where the greatest benefit to the company and the users are, and never forget the north star for the company. We’re about making the best products in the world that really enrich other people’s lives, and if you keep focusing on that and make your decisions around that, it will produce a great business, and we’ll be able to build more products and do it all over again."
+          },
+          {
+            "type": "p",
+            "text": "Now don’t get all misty on us, Tim. There’s still your 90th analyst call to come, sometime in late July. I hope someone remembers to bake a cake for that one."
+          },
+          {
+            "type": "li",
+            "text": "Report a typo"
+          },
+          {
+            "type": "li",
+            "text": "Discuss in members Discord (app)"
+          },
+          {
+            "type": "p",
+            "text": "If you appreciate articles like this one, support us by becoming a Six Colors subscriber. Subscribers get access to an exclusive podcast, members-only stories, and a special community."
+          }
+        ],
+        "translations": [
+          "很快，我们就再也找不到蒂姆·库克来调侃了。或者说，即便我们调侃他，也不过是象征性地动动椅子上的扶手罢了。（等等，不是说不许再调侃了吗！）",
+          "尽管高层人事变动仍在进行中，苹果发布了2026财年第二季度的财报，而蒂姆·库克也得以最后一次在聚光灯下享受赞誉，同时巧妙地回避分析师的提问。",
+          "图表都已生成完毕，蒂姆·库克也尚未“再生”为约翰·特努斯，因此这里有一些关于苹果公司业务现状的补充观察。",
+          "无聊的新定义",
+          "长期以来，苹果的业务一直非常、非常具有季节性——至少可以追溯到 iPod 问世之时，甚至更早。每年最后三个月的销售额都相当可观，这不仅因为正值假日季，更因为这也是新款 iPhone 发布的季节。",
+          "这些假日季度的业绩极为亮眼，在任何图表上都清晰可见。而其他季度则显得平淡无奇，就像马鞍上的凹陷处一样。它们固然重要——毕竟一年有十二个月——但从未像假日季那样引人注目。",
+          "正因如此，连续两个“平淡”季度仍能创造超过1000亿美元的收入，才显得格外惊人。2020年，苹果的“平淡”季度平均收入约为609亿美元。一家如此庞大的企业，在五年内还能实现如此规模的增长，实在令人叹为观止。当我称苹果为全球最顶尖的“现金生成机器”时，绝非虚言。",
+          "说到现金流，早在2018年，苹果就宣布其目标是“逐步实现净现金中性”，因为其现金流已高得离谱，账上坐拥1630亿美元的净现金。实际上，苹果主要通过股票回购和股东分红来消耗多余资金。",
+          "八年过去，累计返还超万亿美元后，情况开始有所变化。周四的电话会议上，苹果首席财务官凯文·佩尔克表示：“展望未来，我们将不再把净现金中性作为正式目标，而是独立评估现金与债务状况。”",
+          "当然，苹果决定放弃净现金中性目标背后必然涉及复杂的财务考量，而佩尔克也迅速强调，董事会已授权未来可用于股票回购的资金高达1000亿美元。他表示，公司依然“坚定致力于将超额现金返还给股东”。",
+          "关键似乎在于灵活性。听起来苹果希望拥有一定的空间，比如预留一些额外现金，以便在必要时能够果断出手。也许是用于 AI 相关领域的资本支出？或者保留足够现金，随时准备收购某家心仪的公司（无论是整体还是部分）。一旦遇到陷入财政困境但极具潜力的企业，苹果的现金流优势将无可匹敌。",
+          "我还忍不住猜想，公司是否正在考虑进行更大规模的投资，以稳定其零部件供应链。目前内存芯片供不应求，苹果几乎用尽了台积电所能提供的所有芯片产能。也许苹果希望获得更多自主权，向合作伙伴投入数十亿美元建厂，并预先买下该工厂未来若干年的全部产出。这并非易事，但若资金充裕，或许是一笔值得长期布局的战略投资。",
+          "我们拭目以待。我只是觉得有意思的是，苹果特意正式脱离了原有的货币政策，以便获得更多操作空间。通常来说，如果你想要这种空间，那就说明你正打算采取行动，对吧？",
+          "内存成本开始影响苹果",
+          "苹果的精心规划使其一度能够应对不断上涨的内存价格，但这种情况似乎即将结束。库克周四表示：",
+          "在第四季度，由于内存问题，我们的影响微乎其微，这在毛利率数据中也有所体现。我们预计下季度会有所上升，而实际情况也确实如此——我们在三月季度看到了更高的内存成本，部分被前期库存带来的收益抵消。对于六月季度以及库范此前提到的指引，我们预计内存成本将显著增加，同样也会受到前期库存收益的部分抵消。至于六季度之后的情况，我无法提供更多信息，但可以肯定的是，我们相信内存成本将对我们的业务产生越来越大的影响。我们会持续评估这一情况，正如我们之前所说，我们将考虑一系列选项。",
+          "这些选项是什么？库克表示他不想详谈，但我们大概都能猜到：要么降低利润率，要么提高售价。苹果通常会谨慎行事——基础型号价格可能不变，高端配置则会上调价格。其庞大的产品利润空间为其提供了操作余地，但苹果绝不会轻易让出利润。这是它的天性使然。简而言之：未来一段时间内，部分苹果产品将变得更贵，但可能比你想象的更复杂、更隐蔽。",
+          "做不出来就卖不掉",
+          "虽然产品供不应求是好事，但这终究是个问题。理想情况下，每个想买苹果产品的人都能立即完成付款并收到货。可惜我们生活在一个突现重大科技供应链限制的世界里，而这正是苹果在第二季度遭遇的问题。",
+          "哦，又是内存问题？你可能这么想。但其实不是！苹果当前的供应限制主要来自台积电（TSMC），它无法以足够快的速度生产苹果的关键SoC（系统级芯片）来满足需求。苹果使用的是台积电最先进的制程节点，而库克表示：“目前我们还远未看到这种情况会在短期内结束的迹象。”没有按钮可以按下让台积电的生产线加速运转。",
+          "库克怪谁？某种程度上是他自己。“我们低估了需求，”他说。这一限制影响了iPhone和Mac，尤其是Mac mini和Mac Studio，因为苹果自研芯片作为代理AI应用的优秀平台，导致需求激增。",
+          "MacBook Neo也受到限制，这很有意思，因为我并不确定这是否是台积电的供应问题。但苹果将其归入了其他所有问题的描述中。“在发布前我们对这款产品非常乐观，但我们低估了市场对其的热情程度，”库克说。",
+          "内存对苹果来说确实是个问题，没错。而且本季度已经创下了纪录。不过……如果苹果当初准确预测了需求，并确保台积电能够满足这一需求，上个季度就能卖出更多 iPhone 和 Mac。正如我所说，虽然这不算什么好消息，但至少根源还不错——只是仍然不够理想。",
+          "关税话题与蒂姆",
+          "在摩根大通分析师萨米克·查特杰提出一个复杂问题时，帕雷赫出人意料地只做了半个回答，然后停下来“把话交给了蒂姆”，让库克宣读一份显然事先准备好的关于关税的声明，其中提到：",
+          "关于申请退还已付关税的问题，我们正在遵循既定的流程，并计划将收到的任何金额重新投入到美国的创新与先进制造业中。这些将是新的投资，并且会超出我们此前在美国已有的承诺。",
+          "这正是库克将从董事会层面继续周旋的政治游戏。当然，苹果会尝试拿回关税钱。但它将通过完全正常且已建立的程序来操作；而一旦从美国联邦政府收回数十亿美元，它还会再次承诺将这些资金投回美国，甚至超过其早已公开宣布的投资计划。特朗普政府，请注意。",
+          "记住这个“看涨蒂姆”的时刻",
+          "我会在每季度的电话会议上想念库克的。他指出，周四的电话会议是他参加的第89场，没错，早在他担任 CEO 之前就有了（史蒂夫·乔布斯也只是偶尔参加，库克甚至在担任首席运营官期间也主持过这些会议）。",
+          "无论如何，库克在财报电话会上最标志性的举动之一，就是对外国市场表现出乐观态度。因此，向富国银行分析师阿伦·拉克斯致敬——他利用 allotted two questions（ allotted 应为 allotted 的笔误，此处按原文保留）的时间，请库克重点谈谈他对苹果在中国和印度业务的看法。",
+          "沉寂多年后，苹果最近两个季度在中国的业绩相当稳健。库克迅速指出，iPhone 是中国城市地区销量最高的手机，Mac mini 是中国销量最高的台式机，MacBook Air 则是销量最高笔记本。",
+          "至于印度市场，库克得以（如他所乐此不疲地）强调：尽管苹果在当地实现了巨大增长，但仍有巨大的增长潜力：",
+          "它是全球第二大智能手机市场和第三大个人电脑市场，而我们在这里已经取得了非常出色的成绩，但市场份额依然很小。所以我认为这恰恰说明我们拥有巨大的机遇……总而言之，我对印度市场兴奋不已。",
+          "我会怀念听蒂姆·库克讲话，这位能用“总而言之，兴奋不已”这种表达方式来点燃国际市场热情的人。",
+          "给约翰·特努斯的建议",
+          "在库克开场发言时，他让未来的 CEO 约翰·特努斯插话，宣读了一份250字的预先准备的声明。这其实是一场必要的互相吹捧仪式——库克称赞特努斯（“一位杰出的工程师、深思熟虑的思想家、品格非凡的人，天生的领导者”），紧接着特努斯立刻回赞库克（“有史以来最伟大的商业领袖之一”）。整件事的目的就是向华尔街传递信号：苹果稳得很，没人需要担心。",
+          "但真正推动事态发展的，是 Evercore 分析师 Amit Daryanani 提出的问题——他询问库克是否愿意分享一些建议给 John Ternus，毕竟史蒂夫·乔布斯曾告诫库克不要纠结于“我会怎么做”，而应专注于做正确的事。",
+          "库克的回应如下：",
+          "我认为史蒂夫给我的建议减轻了巨大的压力，这十五年来对我帮助很大。至于约翰……我告诉他的是一件事：他最重要的决定之一，就是如何分配自己的时间。我会把时间花在能对公司用户带来最大价值的地方，永远不要忘记公司的北极星。我们的使命是打造世界上最优秀的产品，真正丰富他人的生活；只要始终聚焦于此，并围绕这一目标做出决策，就能成就卓越的业务，进而不断推出更多产品，循环往复。",
+          "别煽情了，蒂姆。七月底你还要面对第90场分析师电话会议呢。希望有人记得在那天烤个蛋糕庆祝一下。",
+          "报告错字",
+          "在成员 Discord（应用）中讨论",
+          "如果你喜欢这类文章，请通过成为 Six Colors 订阅者支持我们。订阅者可专享独家播客、会员专属内容以及特别社区。"
+        ]
+      }
+    },
+    {
+      "slug": "0bae931097500b6a",
+      "title": "Reading List 05/02/2026",
+      "titleZh": "建筑物理阅读清单 05/02/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-05022026",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-05-02T12:01:30.000Z",
+      "category": "engineering",
+      "keywords": [
+        "construction tech",
+        "robotics",
+        "energy policy"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "本期阅读清单涵盖多个建筑行业热点议题：租赁型建筑（build-to-rent）中的寒蝉效应、机器人制造规模化速度预测、PJM 新互联队列分析，以及储能技术遭遇的反弹现象。这些内容反映了当前建筑业面临的技术革新与市场阻力双重挑战。作者通过精选文章帮助读者把握行业动态与未来趋势。",
+      "summaryEn": "This reading list covers multiple hot topics in the construction industry: chilling effects in build-to-rent sectors, projections on robot manufacturing scalability, analysis of PJM's new interconnection queue, and growing backlash against battery storage technology. These selections reflect the dual challenges of technological innovation and market resistance facing the construction sector today. The curated articles help readers stay informed about industry dynamics and future trends.",
+      "reason": "它为建筑从业者提供了前沿行业洞察，涵盖技术、政策与市场多维视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure, and industrial technology. This week we look at chilling effects in the build-to-rent sector, how fast could robot manufacturing scale up, PJM’s new interconnection queue, the backlash against battery storage, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "The latest war-related supply chain disruption? Printed circuit boards. “Iran struck Saudi Arabia’s Jubail petrochemical complex in early April, ​forcing a halt in production of high-purity polyphenylene ether (PPE) resin — a critical base material used to ⁠manufacture PCB laminates…In April alone, PCB prices surged as much as 40% from March, Goldman Sachs ​analysts said in a recent note.” [Reuters]"
+          },
+          {
+            "type": "p",
+            "text": "Thanks to high jet fuel prices, India’s airlines are apparently “on the verge of closing down.” [SCMP] And the biggest US airlines collectively spent $1.2 billion more on jet fuel in the first quarter of 2026 compared to 2025. [Sherwood]"
+          },
+          {
+            "type": "p",
+            "text": "Shipping isn’t the only sort of Strait of Hormuz traffic that the war has the potential to disrupt. The strait also carries a large number of undersea cables that could possibly be damaged if damaged ships drag their anchors across them. ““In a situation of active military operations, the risk of unintentional damage increases, and the longer this conflict lasts, the higher the likelihood of unintentional damage,” Kotkin said. A similar incident occurred in 2024, when a commercial vessel attacked by Iran-aligned Houthis drifted in the Red Sea and severed cables with its anchor.” [Reuters]"
+          },
+          {
+            "type": "p",
+            "text": "One problem with ill-considered legislation is that negative consequences can sometimes be caused by the mere possibility that it passes. So if you have a housing bill with a provision that would make it much more difficult to build homes for rent (by requiring institutional owners to divest those homes after seven years), even the mere threat of it passing is enough to slow down rental housing construction. “Developer TerraLane Communities was about to start construction on two new housing communities in Arizona and Texas, projects that would create around 300 new single-family homes to rent out. But before any shovels got in the ground, the Senate passed a bill that severely restricts the build-to-rent business. Uncertain about the industry’s legislative future, investors demanded that TerraLane pause the project. The firm had five other potential build-to-rent deals that it is no longer pursuing.” [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "When is the best time to buy and sell a home? The graphic below tracks the conventional wisdom – better to buy in the summer when there’s more listings, and sell in the winter when there’s fewer — but it’s interesting to see the data. [Substack]"
+          },
+          {
+            "type": "p",
+            "text": "We previously looked at UK building standards which, if complied with, effectively require houses to have extremely small windows so they can be cleaned by an elderly woman without stretching. The Wall Street Journal takes a closer look at this requirement. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "Americans who are importing their homebuilding materials from China. [CNN]"
+          },
+          {
+            "type": "p",
+            "text": "So far this year Idaho has passed six bills to make it easier to build housing. [Sightline]"
+          },
+          {
+            "type": "p",
+            "text": "The data center buildout continues to put pressure on every related area of the supply chain for them. To meet the rising demand for AI chips, ASML is ramping up production of EUV machines. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "China is no longer the sole producer of a critical mineral, samarium, used to make military-grade magnets. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "AI-analysis nonprofit Epoch AI asks how quickly robot manufacturing could scale up. “Historical demand shocks such as WWII mobilization, or the production of drones following the war in Ukraine have accelerated production growth rates by 1.4–2.2x in the most comparable cases. This would imply doubling times of roughly 5–8 months for quadrupeds and 10–16 months for mature form factors. It’s unclear whether these cases are optimistic or pessimistic for robotics.” [Epoch]"
+          },
+          {
+            "type": "p",
+            "text": "The US’s recent…unreliability with regards to its foreign allies has apparently inspired European countries to take defense production more seriously. Germany has ramped up ammunition manufacturing, and is now producing more ammunition than the US. [Newsweek]"
+          },
+          {
+            "type": "p",
+            "text": "On the other hand, the US is apparently seriously considering using foreign shipyards for naval ship design and component manufacturing. [USNI News]"
+          }
+        ],
+        "translations": [
+          "欢迎阅读本周的资讯简报，这是一份关于建筑、基础设施和工业技术的每周新闻汇总。本周我们将关注租赁住宅领域的寒意效应、机器人制造能多快实现规模化扩张、PJM的新增并网项目队列、对电池储能的抵制情绪等话题。约三分之二的资讯内容设有付费墙，如需完整访问请订阅付费会员。",
+          "最新与战争相关的供应链中断是什么？答案是印刷电路板（PCB）。伊朗于4月初袭击了沙特阿拉伯朱拜勒石化综合体，导致高纯度聚苯醚（PPE）树脂的生产中断——这种材料是制造PCB覆铜板的关键基础原料……高盛分析师在一份近期报告中指出，仅4月份，PCB价格就从3月水平上涨了高达40%。[路透社]",
+          "由于航空燃油价格居高不下，印度航空公司 reportedly “濒临倒闭”。[南华早报] 而美国主要航空公司2026年第一季度在航空燃油上的支出合计比2025年同期增加了12亿美元。[Sherwood]",
+          "战争不仅可能扰乱霍尔木兹海峡的航运交通，还可能影响该区域大量海底光缆的安全。若受损船只拖锚而行，可能会意外切断这些光缆。“在军事行动活跃的情况下，无意造成损坏的风险会增加，且冲突持续时间越长，此类意外发生的可能性就越高。”科特金表示。类似事件曾在2024年发生，当时一艘遭胡塞武装袭击的商船在红海漂流，其锚链意外切断了多条海底电缆。[路透社]",
+          "考虑不周的立法带来的一个问题是：即使法案最终未通过，其存在本身也可能引发负面后果。例如，若某项住房法案中包含要求机构投资者在持有出租住宅七年后必须出售的规定，即便只是该法案可能通过的威胁，也足以抑制租赁住宅的建设活动。“开发商TerraLane Communities原本计划在亚利桑那州和德克萨斯州启动两个新项目，预计将建成约300套单户出租住宅。但在动工前，参议院已通过一项严重限制‘建后即租’模式的法案。由于对行业立法前景不确定，投资者要求TerraLane暂停项目。该公司此前还有五宗潜在的‘建后即租’交易也已放弃。”[华尔街日报]",
+          "什么时候是买卖房屋的最佳时机？下图展示了传统观点——夏季购房选择更多，冬季售房竞争更少——但实际数据却很有趣。[Substack]",
+          "我们此前曾探讨过英国的建筑规范，其中规定房屋窗户必须极小，以便老年女性无需踮脚即可清洁。华尔街日报对此要求进行了更深入的调查。[华尔街日报]",
+          "正在从中国进口建筑材料的美国人。[CNN]",
+          "截至目前，爱达荷州今年已通过了六项旨在简化住房建设的法案。[Sightline]",
+          "数据中心建设热潮持续对整个相关供应链施加压力。为满足对AI芯片日益增长的需求，ASML正加快EUV光刻机的生产步伐。[华尔街日报]",
+          "中国不再是制造军用级磁铁所需关键矿物钐的唯一生产国。[WSJ]",
+          "非营利组织 Epoch AI 通过人工智能分析，探讨机器人制造业的扩张速度。该组织指出：“历史性的需求冲击，如二战期间的动员或乌克兰战争后无人机的生产，在可比案例中使产量增长率提高了1.4至2.2倍。这意味着四足机器人的倍增时间约为5至8个月，成熟形态的机器人约为10至16个月。目前尚不清楚这些预测对机器人行业而言是乐观还是悲观。” [Epoch]",
+          "美国近期在与外国盟友合作方面的不可靠表现，显然促使欧洲国家更加重视国防生产。德国已加大弹药制造力度，目前其弹药产量已超过美国。[Newsweek]",
+          "另一方面，美国似乎正认真考虑利用外国造船厂进行军舰设计与零部件制造。[USNI News]"
+        ]
+      }
+    },
+    {
+      "slug": "be8d03e1633fe821",
+      "title": "Disable Auto-Update",
+      "titleZh": "如何禁用自动更新功能",
+      "link": "https://idiallo.com/blog/disable-auto-update?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-05-01T23:30:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "app updates",
+        "offline functionality",
+        "user experience"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "作者抱怨一款日常使用的健身应用突然移除了自动更新功能，尽管该应用完全离线运行且数据仅存储在本地手机中。他认为开发者本应保留此基础功能，因为维护成本几乎为零。此事件反映出移动应用在用户体验一致性方面的严重疏忽，尤其影响依赖离线功能的用户群体。",
+      "summaryEn": "The author complains about a fitness app suddenly removing its auto-update feature, despite running entirely offline with local phone storage and no third-party servers involved. He argues developers should maintain such basic functionality since maintenance costs are negligible. This incident reveals serious oversight in user experience consistency among mobile apps, particularly affecting users reliant on offline capabilities.",
+      "reason": "它揭示了主流应用频繁变更基础功能却缺乏透明沟通的问题，值得所有应用开发者警惕。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "How is it possible that a feature I use every day, in an app I rely on daily, entirely offline, just disappeared from my phone?"
+          },
+          {
+            "type": "p",
+            "text": "I use a fitness app. My metrics, such as steps, workout routines, heart rate, are collected from a wearable device like a smartwatch and sent to the app via Bluetooth. No third-party servers are involved in that transaction. The data lives on the phone. It costs the developer nothing to maintain, because there's nothing to maintain on their end."
+          },
+          {
+            "type": "p",
+            "text": "Then the app updates, just once, and that data is no longer accessible. Not because it was deleted or corrupted. Because the developer decided you now need to create an account on their servers to access information that already exists on your own device."
+          },
+          {
+            "type": "p",
+            "text": "That's why I have auto-update disabled on every device I own."
+          },
+          {
+            "type": "p",
+            "text": "Some of the apps on my phone are older than my children. You couldn't download them today even if you wanted to. The developer no longer offers that version. One of my apps is a single screen that displays information based on GPS data and compass orientation. I downloaded it in 2014. I've switched phones twice since then, and each time I've made sure to carry that app with me."
+          },
+          {
+            "type": "p",
+            "text": "I didn't keep it out of nostalgia, and because I have a hard time letting go. I kept it because the current version has three ads crammed onto that single screen. A full-screen ad hijacks the display at random intervals, complete with one of those countdown timers that slows down as it approaches zero. And of course, there are notifications now. None of that is for my benefit. I just need that one screen. Open the app, read the information, put it away."
+          },
+          {
+            "type": "p",
+            "text": "You might say I'm being cheap. That if I've used the app for over a decade, I clearly value it. So I should pay for the subscription and lose the ads. Fair point. But I have the old version. It was free, had no ads, and worked flawlessly. No future version can improve that. On top of it, those ads expose me. Advertising is one of the most common attack vectors in mobile security. Malvertising is a real thing. Updating to the ad-supported version wouldn't make my phone more secure."
+          },
+          {
+            "type": "p",
+            "text": "I don't update apps unless I've read about a specific vulnerability. Even then, I'll often delete the app rather than update it. I can't accept software that changes arbitrarily, especially when those changes almost never benefit me and almost always serve someone's bottom line."
+          },
+          {
+            "type": "p",
+            "text": "As a developer myself, I have the advantage of actually reading changelogs. When an update says \"bug fixes,\" that's not a reason for me to act, unless I've encountered those bugs personally. Every user engages with a different 20% of an app's features. Someone else's bugs may never be mine."
+          },
+          {
+            "type": "p",
+            "text": "And why do developers push account creation so aggressively? Because your account is the product. An account means data. Data means third-party revenue."
+          },
+          {
+            "type": "p",
+            "text": "Every update is a decision point for me. It requires me to set aside time, read about the changes, and think about what I'm about to embark into. My workflow matters. My data matters. My time matters. If a developer breaks what worked for me without a compelling reason, I'll find another app that respects those things. There's always one out there, probably one that hasn't been improved yet."
+          }
+        ],
+        "translations": [
+          "我每天在依赖的离线应用中使用的功能，怎么就突然从我的手机里消失了？",
+          "我用一个健身应用。步数、运动计划、心率等数据都来自智能手表这类可穿戴设备，通过蓝牙传送到手机应用里，全程不涉及第三方服务器。这些数据存在本地手机上，开发者根本无需维护，因为他们那边什么也不用管。",
+          "结果应用更新了一次，那些数据就再也访问不到了。不是因为被删了或坏了，而是开发者决定：现在你必须注册他们的服务器账户才能查看原本就在你设备上的信息。",
+          "所以我把所有设备上的自动更新都关掉了。",
+          "我手机里的有些应用比我的孩子还老。就算你想下，现在也下不到这些版本了。开发者早就不再提供旧版。其中有个应用只有一个屏幕，显示基于GPS数据和罗盘方向的信息。我2014年下的这个应用。之后换过两次手机，每次都确保把那个应用一起带上了。",
+          "我不是因为怀旧或舍不得才留着它。是因为新版在那唯一屏幕上塞了三条广告，还会随机弹出全屏广告，带倒计时那种，越接近零就越慢。现在还有通知骚扰。这些都不是为我服务的。我只需要那个界面——打开、看一眼、关掉。",
+          "有人可能会说我抠门。既然用了十多年，说明我肯定在乎这个应用，那该付订阅费、接受广告才对。这说法有道理。但我手头有免费版的老版本，没广告，运行完美。未来任何版本都不可能比它更好。而且，广告本身会暴露我的风险——广告是移动安全中最常见的攻击入口之一，恶意广告（malvertising）真实存在。换成带广告的升级版，反而不会让我的手机更安全。",
+          "除非读到具体漏洞报告，否则我不更新应用。即使如此，我也常选择直接卸载而不是升级。我无法接受软件随意改动，尤其是这些改动几乎从不为我带来好处，反而总是为了某个人的利益。",
+          "作为开发者，我还能看到更新日志。当更新写着“修复bug”时，对我没有说服力，除非我自己遇到过那些问题。每个用户只用到应用20%的功能，别人的bug未必是我的问题。",
+          "那为什么开发者这么急着让用户注册账号？因为你的账号就是产品本身。账号意味着数据，数据意味着第三方收入。",
+          "每次更新对我来说都是一次决策点。我必须抽出时间阅读变更内容，思考即将进入的新状态。我的工作流程重要，我的数据安全，我的时间宝贵。如果开发者在没有充分理由的情况下破坏了原本正常运作的东西，我会去找另一个尊重这些原则的应用。这样的应用总会有，很可能还是个没被“优化”过的原始版本。"
+        ]
+      }
+    },
+    {
+      "slug": "efd34165b2f8b9bb",
+      "title": "Pluralistic: The prehistory of the Democratic Nuremberg Caucus (02 May 2026)",
+      "titleZh": "民主党纽伦堡 caucus 的前史",
+      "link": "https://pluralistic.net/2026/05/02/denazification/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-05-02T11:22:11.000Z",
+      "category": "opinion",
+      "keywords": [
+        "politics",
+        "media",
+        "history"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Pluralistic 专栏追溯了民主党‘纽伦堡 caucus’的起源，提议设立 ICE 吹哨人悬赏制度。文章还包含 Colbert 与 GWB 的对比、袋鼠奶、Jay Rosen 的新闻准则、激进媒体概念、附带权益定义、鸽子传 TCP 协议、BNL 版权案、Joanna Russ 讣告及共和党迫使学生偿还诈骗贷款等内容。作者通过历史链接展现政治与文化的深层联系。",
+      "summaryEn": "Pluralistic traces the prehistory of the Democratic Nuremberg Caucus, proposing bounty programs for ICE whistleblowers. The article also includes comparisons between Colbert and GWB, wallaby milk, Jay Rosen's journalism principles, Radical Media(TM), carried interest definition, TCP over pigeons, BNL copyright case, Joanna Russ obituary, and GOP forcing students to repay scam loans. Through historical links, the author reveals deep connections between politics and culture.",
+      "reason": "它以独特视角连接历史事件与现代政治，提供丰富的思想启发和文化反思素材。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "The prehistory of the Democratic Nuremberg Caucus: Do bounties for ICE whistleblowers next!"
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Colbert v GWB; Wallaby milk; Jay Rosen's journalism precepts; Radical Media(TM); What is carried interest? TCP over pigeon; BNL v copyright; RIP Joanna Russ; GOP forcing students to repay scam loans."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Berlin, NYC, Barcelona, Hay-on-Wye, London, NYC."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "The prehistory of the Democratic Nuremberg Caucus (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Comrade Trump continues his unbroken streak of destroying the American empire's grip on the world, hastening the renewables transition, de-dollarizing global trade, and killing the world's suicidal habit of entrusting its digital life to America's defective, enshittified tech exports:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/20/praxis/#acceleration"
+          },
+          {
+            "type": "p",
+            "text": "But Comrade Trump's ambitious praxis knows no bounds. Now, he's helping to remake the Democratic Party as a muscular opposition with a serious commitment to workers' interests over billionaires. It's not merely that Trump has empowered the primary campaigns of leftist Democrats facing down corporate, AIPAC-backed sellouts:"
+          },
+          {
+            "type": "p",
+            "text": "https://prospect.org/2026/04/30/palestine-super-pac-new-jersey-12-district-adam-hamawy/"
+          },
+          {
+            "type": "p",
+            "text": "He's also stiffening normie sellout Democrats' spines, forcing them to confront the stark choice between socialism and barbarism! And Dem leaders don't come more normie sellout than Cory \"Big Pharma\" Booker, a disgrace to Corys everywhere:"
+          },
+          {
+            "type": "p",
+            "text": "https://web.archive.org/web/20170112224531/https://theintercept.com/2017/01/12/cory-booker-joins-senate-republicans-to-kill-measure-to-import-cheaper-medicine-from-canada/"
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, that very same (lesser) Cory has introduced legislation to unwind every illegal, corrupt merger that the Trump administration has waved through:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.booker.senate.gov/news/press/booker-introduces-legislation-to-review-and-unwind-anticompetitive-corporate-mergers-approved-under-second-trump-administration"
+          },
+          {
+            "type": "p",
+            "text": "Under the Correcting Lapsed Enforcement in Antitrust Norms for Mergers (CLEAN Mergers) Act, any company that was acquired in a deal worth $10b or more will have to break up with its merger partner if it turns out that these mergers were \"politically influenced.\" \"Politically influenced\" sums up every major merger under the Trump II regime:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/02/13/khanservatives/#kid-rock-eats-shit"
+          },
+          {
+            "type": "p",
+            "text": "You could be forgiven for assuming that this is just about reining in Wall Street greed, but that it isn't an especially political maneuver. That's not true: antitrust is the most consequentially political regulation (with the possible exception of regulations on elections). Every fascist power defeated in WWII relied on the backing of their national monopolists to take, hold and wield power. That's why the Marshall Plan technocrats who rewrote the laws of Europe, South Korea and Japan made sure to copy over US antitrust law onto those statute-books (that's also why the tech antitrust cases brought in Europe could be re-run in South Korea and Japan – their laws are all substantively similar, because they were harmonized with US antitrust in the 1950s):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/01/22/autocrats-of-trade/#dingo-babysitter"
+          },
+          {
+            "type": "p",
+            "text": "Fascism and monopolies go hand in hand, and smashing monopolies is key to the program of fighting fascism. After defeating fascism in the mid-20th century, the Allies oversaw a program of \"denazification,\" starting with the Nuremberg trials:"
+          },
+          {
+            "type": "p",
+            "text": "https://en.wikipedia.org/wiki/Nuremberg_trials"
+          },
+          {
+            "type": "p",
+            "text": "Inspired by those trials, I've proposed that Congressional Dems could form a \"Nuremberg Caucus\" that would publicly promise sweeping plans to denazify America after Trump and his allies have been swept from power:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/02/10/miller-in-the-dock/#denazification"
+          },
+          {
+            "type": "p",
+            "text": "The centerpiece of the Nuremberg Caucus playbook is a set of ready-to-file, public indictments against Trump officials who have violated the law, the Constitution, and the rights of the people of the USA. Dems should create and maintain a docket with exhibits and witness lists that gets updated every time one of these crooks runs their big, stupid mouths on Fox News or OANN or Twitter. The Nuremberg Caucus could even set dates for the trials of officials, with judicial calendars for each federal courtroom, starting on January 21, 2029."
+          },
+          {
+            "type": "p",
+            "text": "The idea here is to both demoralize Trump's collaborators and to stiffen the spines of the Democratic base who will have to be convinced that turning out for the coming elections, and defending them, will mean something, delivering the change and hope they've been promised since the Obama campaign, but which has never materialized."
+          },
+          {
+            "type": "p",
+            "text": "While trials and punishment for Trump's fascist goons are at the center of the Nuremberg Caucus plan, that's not all of it. The plan also calls for publicly announcing the intention to unwind every corrupt merger that was consummated under Trump. This serves two purposes: first, it promises the electorate that the monopolists who steal from them will face consequences for their crimes; but second, it also puts investors on notice that any gains from corrupt mergers will turn into massive losses once the next administration orders these companies to unscramble the inedible omelets they're cooking up, no matter what the cost."
+          },
+          {
+            "type": "p",
+            "text": "That's exactly what Booker's CLEAN Mergers Act – cosponsored by Elizabeth Warren (D-MA), Martin Heinrich (D-NM), Chris Murphy (D-CT), and Mazie Hirono (D-HI) – does. I don't think that Booker is listening to me, but I do think that Dems who are willing to introduce this kind of legislation can be cajoled, coerced and sweet-talked into more ambitious Nuremberg Caucus actions."
+          },
+          {
+            "type": "p",
+            "text": "For example, there could not be a better time to announce plans to unrig the Supreme Court, which has just gutted the Voting Rights Act:"
+          },
+          {
+            "type": "p",
+            "text": "https://prospect.org/2026/05/01/turning-civil-rights-inside-out-supreme-court-voting-rights/"
+          },
+          {
+            "type": "p",
+            "text": "The Supreme Court's legitimacy has been burned to the ground, and Trump's chud justices are pissing on the ashes. Packing the court is a very good idea:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2020/09/20/judicial-equilibria/#pack-the-court"
+          },
+          {
+            "type": "p",
+            "text": "It's also a very popular idea:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/10/18/the-people-no/#tell-ya-what-i-want-what-i-really-really-want"
+          },
+          {
+            "type": "p",
+            "text": "Which is why I included it in the Nuremberg Caucus plan. But packing the court is just table stakes. In his latest video, Jamelle Bouie lays out a detailed plan for denazifying the Supreme Court:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.youtube.com/watch?v=SRzS61buXkQ"
+          },
+          {
+            "type": "p",
+            "text": "As Bouie points out, \"as long as John Roberts has his majority, nothing the left of center in this country wants to do is safe or stable…We can have democracy and self-government in this country or we can have the Supreme Court as it exists, but we cannot have both.\""
+          },
+          {
+            "type": "p",
+            "text": "But packing the court – while a good place to start – isn't enough. Per Bouie, the problem isn't just the court's corruption – it's how powerful the court is. Article 3, Section 2 of the Constitution permits Congress to \"jurisdiction strip\" the Supremes: Congress can pass a law taking voting rights and racial discrimination away from the Supreme Court's jurisdiction. Congress can impose ethics reforms on the court, banning justices from taking bribes (I can't believe I have to type these words)."
+          },
+          {
+            "type": "p",
+            "text": "Congress can turn the Supreme Court's current building into a museum and move the Supreme Court back into its original home in Congress's basement. Congress can take away the Supremes' ability to select their clerks or which cases they hear. All the Constitution says is that there must be a Supreme Court, and it must adjudicate \"disputes between states, disputes involving ambassadors, impeachments, that kind of thing.\" Everything else is up to Congress to grant or withhold from SCOTUS."
+          },
+          {
+            "type": "p",
+            "text": "This is very good Nuremberg Caucus stuff. It would be an amazing campaign promise for anyone primarying a shitty normie Dem in the midterms: \"Vote for me, and I will be part of the legislative movement to make the Supreme Court weaker and thus more accountable.\""
+          },
+          {
+            "type": "p",
+            "text": "Now, as much as I like this, I'm really holding out for a Dem to go with my big ICE-melting idea: promising million-dollar bounties for ICE officers who rat out their buddies for violating the law:"
+          },
+          {
+            "type": "quote",
+            "text": "ICE agents are signing up with the promise of $50k hiring bonuses and $60k in student debt cancellation. That's peanuts. The Nuremberg Caucus could announce a Crimestoppers-style program with $1m bounties for any ICE officer who a) is themselves innocent of any human rights violations, and; b) provides evidence leading to the conviction of another ICE officer for committing human rights violations. That would certainly improve morale for (some) ICE officers."
+          },
+          {
+            "type": "p",
+            "text": "As I wrote in February:"
+          },
+          {
+            "type": "quote",
+            "text": "Critics of this plan will say that this will force Trump officials to try to steal the next election in order to avoid consequences for their actions. This is certainly true: confidence in a \"peaceful transfer of power\" is the bedrock of any kind of fair election.\n  But this bunch have already repeatedly signaled that they intend to steal the midterms and the next general election:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.nj.com/politics/2026/02/top-senate-republican-rejects-trumps-shocking-election-plan-i-think-thats-a-constitutional-issue.html"
+          },
+          {
+            "type": "quote",
+            "text": "ICE agents are straight up telling people that ICE is on the streets to arrest people in Democratic-leaning states (\"The more people that you lose in Minnesota, you then lose a voting right to stay blue\"):\n  https://unicornriot.ninja/2026/federal-agent-in-coon-rapids-the-more-people-that-you-lose-in-minnesota-you-then-lose-a-voting-right-to-stay-blue/\n  The only path to fair elections – and saving America – lies through mobilizing and energizing hundreds of millions of Americans. They are ready. They are begging for leadership. They want an electoral choice, something better than a return to the pre-Trump status quo. If you want giant crowds at every polling place, rising up against ICE and DHS voter-suppression, then you have to promise people that their vote will mean something."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "“The Mistake Will Not Recur [Until Two Sentences From Now]” https://www.loweringthebar.net/2026/04/the-mistake-will-not-recur.html"
+          },
+          {
+            "type": "li",
+            "text": "Why are the Artemis II photos on Flickr? https://www.anildash.com/2026/04/30/artemis-photos-flickr/"
+          },
+          {
+            "type": "li",
+            "text": "Your Dinner Got Worse On Purpose https://www.worseonpurpose.com/p/your-dinner-got-worse-on-purpose"
+          },
+          {
+            "type": "li",
+            "text": "Hadopi (2009–2026) https://www.laquadrature.net/en/2026/04/30/hadopi-2009-2026-2/"
+          },
+          {
+            "type": "li",
+            "text": "You’re Not Wrong, Babies Are Getting Worse: Enshittification Comes For A Once-Beloved Classic https://theonion.com/youre-not-wrong-babies-are-getting-worse-enshittification-comes-for-a-once-beloved-classic/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Implementing TCP over pigeon https://blug.linux.no/rfc1149/"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Barenaked Ladies frontman on copyright reform https://web.archive.org/web/20060505032617/http://www.canada.com/nationalpost/news/issuesideas/story.html?id=3367a219-f395-4161-a9b9-95256c613824"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Stephen Colbert kills at White House press corps dinner https://web.archive.org/web/20060501114431/http://www.editorandpublisher.com/eandp/news/article_display.jsp?vnu_content_id=1002425363"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Cinema owners try to lure us back to the movies https://web.archive.org/web/20060620140301/https://www.siliconvalley.com/mld/mercurynews/news/local/states/california/peninsula/14457900.htm?source=rss&amp;channel=mercurynews_peninsula"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Smithsonian’s sellout to Showtime slammed by Congress https://www.washingtonpost.com/wp-dyn/content/article/2006/04/28/AR2006042802213_2.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrago Wallaby milk: proof against antibiotic resistant bacteria https://web.archive.org/web/20060429102138/http://news.scotsman.com/scitech.cfm?id=593632006"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Documentary on radical free school https://www.youtube.com/watch?v=rgpuSo-GSfw"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Facebook celebrates royal wedding by nuking 50 protest groups https://anticutsspace.wordpress.com/2011/04/29/political-facebook-groups-deleted-on-royal-wedding-day/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Jay Rosen: What I Think I Know About Journalism https://pressthink.org/2011/04/what-i-think-i-know-about-journalism/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Companies should release the source code for discontinued products https://makezine.com/article/maker-news/if-youre-going-to-kill-it-open-source-it/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Scratch-built “freedom press” https://makezine.com/article/craft/freedom_press/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago HOWTO quilt a 3D Mad Tea Party set https://www.instructables.com/Quilted-Mad-Tea-Party-Set/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Online activism works: Canada delayed US-style copyright bill in fear of activist campaign https://web.archive.org/web/20110501103056/https://www.michaelgeist.ca/content/view/5763/125/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Ad agency to radicals: “We own radical media(TM)” https://web.archive.org/web/20110503045909/http://radicalmediaconference.wordpress.com/2011/04/27/we-make-radical-media-you-make-adverts/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Troubletwisters: Garth Nix and Sean Williams’ action-packed new kids’ fantasy https://memex.craphound.com/2011/04/30/troubletwisters-garth-nix-and-sean-williams-action-packed-new-kids-fantasy/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago RIP, Joanna Russ https://nielsenhayden.com/makinglight/archives/012974.html#547586"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Experian doxes the world (again) https://pluralistic.net/2021/04/30/dox-the-world/#experian"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Disney's writer wage-theft is far worse than reported https://pluralistic.net/2021/04/29/writers-must-be-paid/#pay-the-writer"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Korea set to break the Samsung dynasty https://pluralistic.net/2021/04/29/writers-must-be-paid/#dynasties"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago What the hell is \"carried interest\" https://pluralistic.net/2021/04/29/writers-must-be-paid/#carried-interest"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Mike Lee and Jim Jordan want to kill the law that bans companies from cheating you https://pluralistic.net/2025/04/29/cheaters-and-liars/#caveat-emptor-brainworms"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Republicans want to force students to pay off scam college loans https://pluralistic.net/2025/04/30/trump-u/#i-think-you-know-what-the-trustees-can-do-with-their-suggestions"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/speakers/"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: How to Disenshittify the Internet with Wendy Liu (EFF), May 14\nhttps://www.eff.org/event/effecting-change-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI with Jonathan Coulton (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "li",
+            "text": "The internet is getting worse (CBC The National)\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P"
+          },
+          {
+            "type": "li",
+            "text": "Do you feel screwed over by big tech?  (Ontario Today)\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "民主党纽伦堡大会的前史：接下来是不是该悬赏举报 ICE 的人了！",
+          "嘿，看看这个：令人愉悦的享受。",
+          "客体永久性：科尔伯特 vs GWB；袋鼠奶；杰伊·罗森的新闻准则；激进媒体（TM）；什么是附带权益？鸽子上的 TCP；BNL 与版权；RIP 乔安娜·罗素；GOP 强迫学生偿还诈骗贷款。",
+          "即将出席的活动：柏林、纽约、巴塞罗那、海伊-昂怀、伦敦、纽约。",
+          "近期活动回顾：我去了哪里。",
+          "最新书籍：你继续读，我就继续写。",
+          "即将出版的书：如我所说，我会一直写下去。",
+          "版权页：其余所有内容。",
+          "民主党纽伦堡大会的前史（永久链接）",
+          "同志特朗普继续着他不断摧毁美国帝国对世界控制的不败纪录，加速可再生能源转型，推动全球贸易去美元化，并终结各国将数字生活托付给美国缺陷重重、日益“垃圾化”的科技产品的自杀式习惯：",
+          "https://pluralistic.net/2026/04/20/praxis/#acceleration",
+          "但同志特朗普雄心勃勃的实践（praxis）毫无边界。如今，他正帮助重塑民主党为一个强大的反对力量，真正致力于工人利益而非亿万富翁。这不仅仅体现在他支持那些面对企业资助、AIPAC 支持的背叛者的左翼民主党初选候选人：",
+          "https://prospect.org/2026/04/30/palestine-super-pac-new-jersey-12-district-adam-hamawy/",
+          "他还让那些普通的、出卖原则的民主党人挺直脊梁，迫使他们直面社会主义与野蛮主义之间的明确选择！而像科里·“大药厂”·布克这样更典型的普通卖国贼，更是对科里家族的无尽羞辱：",
+          "https://web.archive.org/web/20170112224531/https://theintercept.com/2017/01/12/cory-booker-joins-senate-republicans-to-kill-measure-to-import-cheaper-medicine-from-canada/",
+          "然而，正是这位（稍逊色的）科里，提出了一项法案，旨在撤销特朗普政府批准的所有非法且腐败的企业合并案：",
+          "https://www.booker.senate.gov/news/press/booker-introduces-legislation-to-review-and-unwind-anticompetitive-corporate-mergers-approved-under-second-trump-administration",
+          "根据《纠正反垄断规范中并购监管缺失法案》（CLEAN Mergers Act），任何以十亿美元或以上价格完成收购的公司，若事后发现这些并购是“受政治影响”的，就必须与其合并伙伴解除关系。“受政治影响”概括了特朗普二世执政期间所有重大并购案的本质：",
+          "https://pluralistic.net/2026/02/13/khanservatives/#kid-rock-eats-shit",
+          "你或许会以为这只是为了遏制华尔街贪婪，但这并非特别的政治操作。事实并非如此：反垄断是最具政治后果性的监管（选举监管可能是例外）。二战中所有被击败的法西斯政权都依赖本国垄断资本的支持来夺取、维持和行使权力。正因如此，马歇尔计划的技术官僚们在改写欧洲、韩国和日本的法律时，确保将美国的反垄断法原样照搬进这些国家的法典（这也是为何欧洲发起的科技反垄断案件能在韩国和日本重演——它们的法规实质上与美国相似，因为它们在 1950 年代就已与美国反垄断法协调一致）：",
+          "https://pluralistic.net/2025/01/22/autocrats-of-trade/#dingo-babysitter",
+          "法西斯主义与垄断资本如影随形，打击垄断正是反法西斯斗争的核心任务。20世纪中叶击败法西斯后，盟国主导了一场“去纳粹化”运动，其开端便是著名的纽伦堡审判：",
+          "https://en.wikipedia.org/wiki/Nuremberg_trials",
+          "受这些审判启发，我提议国会民主党人可组建一个“纽伦堡 caucus”（ caucus 音译为“ caucus”，此处保留英文术语），公开承诺在特朗普及其盟友被彻底清除权力后，对美国进行彻底的“去纳粹化”改革：",
+          "https://pluralistic.net/2026/02/10/miller-in-the-dock/#denazification",
+          "纽伦堡 caucus 行动方案的核心是一套可随时提交、面向公众的起诉书，针对那些违反法律、宪法和美国人民权利的 Trump 政府官员。民主党应建立一个包含证据和证人名单的案件卷宗，并实时更新——每当这些罪犯在 Fox News、OANN 或 Twitter 上大放厥词时，就立即补充新内容。 caucus 甚至可以为这些官员设定审判日期，为每个联邦法院制定司法日程表，自2029年1月21日起正式启动。",
+          "此举旨在双重目的：一方面震慑 Trump 的共谋者，另一方面也向民主党基本盘表明，参与即将到来的选举并捍卫选举成果将具有实际意义——兑现他们自奥巴马竞选以来一直期待的变革与希望，而这从未真正实现过。",
+          "尽管对 Trump 法西斯帮凶的审判是纽伦堡 caucus 计划的核心，但这并非全部。该计划还要求公开宣布撤销特朗普时期完成的所有腐败并购案。此举有两重作用：首先，它向选民承诺，窃取他们利益的垄断企业必将为其罪行付出代价；其次，它也向投资者发出警告——任何通过腐败并购获得的收益，都将在下一届政府下令将这些公司“拆散重组”时化为乌有，无论代价多高。",
+          "这正是 Booker 提出的《CLEAN Mergers Act》法案所做的事——该法案由 Elizabeth Warren (D-MA)、Martin Heinrich (D-NM)、Chris Murphy (D-CT) 和 Mazie Hirono (D-HI) 联合发起。我不认为 Booker 会听我的，但我相信，愿意提出此类立法的民主党人，可以通过劝说、施压甚至甜言蜜语，推动他们采取更宏大的纽伦堡 caucus 行动。",
+          "例如，现在正是宣布“重塑最高法院”计划的绝佳时机——就在不久前，最高法院刚刚废除了《投票权法案》：",
+          "https://prospect.org/2026/05/01/turning-civil-rights-inside-out-supreme-court-voting-rights/",
+          "最高法院的公信力已荡然无存，而 Trump 任命的那些“chud justices”（此处保留英文术语，指极端保守法官）甚至不屑于掩饰他们的傲慢。扩大最高法院规模（pack the court）是一个非常明智的主意：",
+          "https://pluralistic.net/2020/09/20/judicial-equilibria/#pack-the-court",
+          "而且这个想法非常受欢迎：",
+          "https://pluralistic.net/2023/10/18/the-people-no/#tell-ya-what-i-want-what-i-really-really-want",
+          "正因如此，我才将其纳入纽伦堡 caucus 计划中。但扩大法院规模只是“入场券”。在最近的一段视频中，Jamelle Bouie 详细阐述了一套完整的“去纳粹化”最高法院方案：",
+          "https://www.youtube.com/watch?v=SRzS61buXkQ",
+          "正如布伊所指出的，“只要约翰·罗伯茨掌握多数席位，这个国家中间偏左的任何诉求都不安全或稳定……我们可以在这个国家实现民主与自治，也可以维持最高法院的现状，但二者不可兼得。”",
+          "但扩充法院阵容——虽然是个好起点——还远远不够。布伊认为问题不仅在于法院的腐败，更在于其权力过大。《宪法》第三条第二款授权国会对最高法院进行“管辖权剥离”：国会可通过法律将投票权和种族歧视案件从最高法院的管辖范围内移除。国会还可对法院实施伦理改革，禁止大法官收受贿赂（我简直不敢相信我得打出这些字）。",
+          "国会可以把最高法院目前的办公大楼改成博物馆，把最高法院迁回它最初位于国会地下的老地方。国会还可以剥夺最高法院自行挑选书记员或选择审理哪些案件的权力。而《宪法》只规定必须设立最高法院，并处理“州际争端、大使相关争议、弹劾案之类的事项”。其余的一切都由国会决定授予或剥夺给最高法院。",
+          "这简直是纽伦堡式 caucus（政治行动小组）的完美提案。对任何在中期选举中初选一个糟糕的建制派民主党人的候选人来说，这都是一句绝佳的竞选承诺：“投给我，我将参与立法运动，削弱最高法院的权力，从而使其更加负责。”",
+          "尽管我很喜欢这个想法，但我真正期待的是有民主党人采纳我的另一个大胆构想：承诺向举报同事违法的ICE官员支付百万美元赏金：",
+          "ICE特工们正踊跃报名，因为招聘时承诺提供5万美元入职奖金和6万美元学生贷款减免。这点钱太少了。纽伦堡式 caucus 可以宣布一项类似“犯罪举报者计划”的项目，对任何满足以下条件的ICE官员奖励100万美元：a) 自身无任何侵犯人权行为；b) 提供证据导致另一名ICE官员因犯有人权侵害罪被定罪。这无疑会提升（部分）ICE官员的士气。",
+          "正如我在二月份所写：",
+          "该计划批评者会说，此举将迫使特朗普时代的官员为了逃避后果而试图窃取下一届选举。这当然没错：对“和平权力交接”的信心是任何公平选举的基石。  \n但他们早已多次表明意图，要窃取中期选举和下一届大选：",
+          "https://www.nj.com/politics/2026/02/top-senate-republican-rejects-trumps-shocking-election-plan-i-think-thats-a-constitutional-issue.html",
+          "ICE 特工们直截了当地告诉人们，ICE 正在民主倾向州的街头抓人（“你在明尼苏达州失去的人越多，你就越失去留在蓝州的投票权”）：https://unicornriot.ninja/2026/federal-agent-in-coon-rapids-the-more-people-that-you-lose-in-minnesota-you-then-lose-a-voting-right-to-stay-blue/\n实现公平选举、拯救美国的唯一路径在于动员和激发数亿美国人的力量。他们已准备就绪，正迫切渴望领导。他们需要一个真正的选举选择，而不是回到特朗普之前的旧局面。如果你希望每个投票站都聚集起大规模人群，奋起反抗 ICE 和 DHS 对选民的压制，那你必须向民众承诺：他们的选票将具有实际意义。",
+          "嘿，看看这个（永久链接）",
+          "“错误不会重演 [直到接下来两句话为止]” https://www.loweringthebar.net/2026/04/the-mistake-will-not-recur.html",
+          "为什么阿尔忒弥斯 II 的照片会出现在 Flickr 上？https://www.anildash.com/2026/04/30/artemis-photos-flickr/",
+          "你的晚餐被故意搞砸了 https://www.worseonpurpose.com/p/your-dinner-got-worse-on-purpose",
+          "Hadopi（2009–2026）https://www.laquadrature.net/en/2026/04/30/hadopi-2009-2026-2/",
+          "你没错，婴儿确实变差了：“功能退化”降临到曾经备受喜爱的经典之上 https://theonion.com/youre-not-wrong-babies-are-getting-worse-enshittification-comes-for-a-once-beloved-classic/",
+          "客体永久性（永久链接）",
+          "#25年前 用鸽子实现 TCP 协议 https://blug.linux.no/rfc1149/",
+          "#20年前 Barenaked Ladies 主唱谈版权改革 https://web.archive.org/web/20060505032617/http://www.canada.com/nationalpost/news/issuesideas/story?id=3367a219-f395-4161-a9b9-95256c613824",
+          "#20年前 斯蒂芬·科尔伯特在白宫记者晚宴上大放异彩 https://web.archive.org/web/20060501114431/http://www.editorandpublisher.com/eandp/news/article_display.jsp?vnu_content_id=1002425363",
+          "#20年前 影院经营者试图把我们拉回电影院 https://web.archive.org/web/20060620140301/https://www.siliconvalley.com/mld/mercurynews/news/local/states/california/peninsula/14457900.htm?source=rss&amp;channel=mercurynews_peninsula",
+          "#20年前 国会抨击史密森尼学会向 Showtime 的妥协 https://www.washingtonpost.com/wp-dyn/content/article/2006/04/28/AR2006042802213_2.html",
+          "#20年前 袋鼠奶：对抗抗生素耐药细菌的证据 https://web.archive.org/web/20060429102138/http://news.scotsman.com/scitech.cfm?id=593632006",
+          "#20年前 关于激进自由学校的纪录片 https://www.youtube.com/watch?v=rgpuSo-GSfw",
+          "#15年前 Facebook 借皇室婚礼之机删除 50 个抗议群组 https://anticutsspace.wordpress.com/2011/04/29/political-facebook-groups-deleted-on-royal-wedding-day/",
+          "#15年前 杰伊·罗森：我所知的新闻业 https://pressthink.org/2011/04/what-i-think-i-know-about-journalism/",
+          "#15年前 公司应公开停产产品的源代码 https://makezine.com/article/maker-news/if-youre-going-to-kill-it-open-source-it/",
+          "#15年前 手工打造的“自由之 press” https://makezine.com/article/craft/freedom_press/",
+          "#15年前 如何缝制 3D 疯狂茶会套装 https://www.instructables.com/Quilted-Mad-Tea-Party-Set/",
+          "#15年前 网络行动主义奏效：加拿大因担心抗议活动而推迟类似美国的版权法案 https://web.archive.org/web/20110501103056/https://www.michaelgeist.ca/content/view/5763/125/",
+          "#15年前 广告代理向激进分子喊话：“我们拥有激进媒体（TM）” https://web.archive.org/web/20110503045909/http://radicalmediaconference.wordpress.com/2011/04/27/we-make-radical-media-you-make-adverts/",
+          "#15年前 Troubletwisters：加思·尼克斯与肖恩·威廉姆斯联手推出节奏紧凑的新儿童奇幻小说 https://memex.craphound.com/2011/04/30/troubletwisters-garth-nix-and-sean-williams-action-packed-new-kids-fantasy/",
+          "#15年前 悼念乔安娜·鲁丝 https://nielsenhayden.com/makinglight/archives/012974.html#547586",
+          "#5年前 Experian再次泄露全球数据 https://pluralistic.net/2021/04/30/dox-the-world/#experian",
+          "#5年前 迪士尼作家薪酬欺诈远比报道严重 https://pluralistic.net/2021/04/29/writers-must-be-paid/#pay-the-writer",
+          "#5年前 韩国或将终结三星王朝 https://pluralistic.net/2021/04/29/writers-must-be-paid/#dynasties",
+          "#5年前 “附带权益”到底是什么？ https://pluralistic.net/2021/04/29/writers-must-be-paid/#carried-interest",
+          "#1年前 迈克·李和吉姆·乔丹欲废除禁止企业欺骗消费者的法律 https://pluralistic.net/2025/04/29/cheaters-and-liars/#caveat-emptor-brainworms",
+          "#1年前 共和党人要求学生偿还诈骗性大学贷款 https://pluralistic.net/2025/04/30/trump-u/#i-think-you-know-what-the-trustees-can-do-with-their-suggestions",
+          "即将出席的活动（永久链接）",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日\nhttps://encuentroderechosdigitales.com/en/speakers/",
+          "线上：如何用 Wendy Liu（电子前沿基金会）的方式去“反 shitify”互联网，5月14日\nhttps://www.eff.org/event/effecting-change-enshittification",
+          "柏林：Re:publica，5月18–20日\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland书店《Enshittification》新书会，5月19日\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-怀伊：HowTheLightGetsIn，5月22–25日\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "伦敦SXSW，6月2日\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：与乔纳森·科尔顿一起探讨《AI之后的反半人马指南》（The Strand），6月24日\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "爱丁堡国际图书节，与吉米·威尔士对谈，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "近期活动（永久链接）",
+          "人工智能：终极颠覆者（CBC Ideas），与Astra Taylor、Yoshua Bengio对谈\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新转而开始榨取？（InnovEU）\nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "Pete \"市长\" Buttigieg访谈（No Gods No Mayors）\nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "互联网正在变得更糟（CBC《国家新闻》）\nhttps://youtu.be/dCVUCdg3Uqc?si=FMcA0EI_Mi13Lw-P",
+          "你是否被大科技公司坑了？（安大略今日）\nhttps://www.cbc.ca/listen/live-radio/1-45-ontario-today/clip/16203024-do-feel-screwed-big-tech",
+          "最新著作（永久链接）",
+          "《Canny Valley》：为Pluralistic创作的拼贴画限量合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为何一切突然变糟及如何应对》，Farrar, Straus, Giroux出版社，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：续作《Red Team Blues》，讲述个人电脑英雄时代的故事，Tor Books（美国）、Head of Zeus（英国），2025年2月（https://us.macmillan.com/books/9781250865908/picksandshovels）。",
+          "《The Bezzle》：续作《Red Team Blues》，聚焦监狱科技及其他骗局，Tor Books（美国）、Head of Zeus（英国），2024年2月（thebezzle.org）。",
+          "《The Lost Cause》：一部在气候危机中展现希望的太阳朋克小说，Tor Books（美国）、Head of Zeus（英国），2023年11月（http://lost-cause.org）。",
+          "《The Internet Con》：一本关于互操作性与大型科技公司运作的非虚构作品（Verso出版社），2023年9月出版（http://seizethemeansofcomputation.org）。签名本可在Book Soup书店购买（https://www.booksoup.com/book/9781804291245）。",
+          "《Red Team Blues》：“一部引人入胜、令人欲罢不能的惊悚小说，读完你会对世界运转方式有更深的了解。” Tor Books 出版，http://redteamblues.com。",
+          "《Chokepoint Capitalism：如何击败大型科技公司、驯服大型内容平台，并让艺术家获得应有报酬》（与Rebecca Giblin合著），探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe 2022年出版，https://chokepointcapitalism.com。",
+          "即将出版的书籍（永久链接）",
+          "《The Reverse-Centaur's Guide to AI》：一本关于如何成为更优秀AI评论者的短书，Farrar, Straus and Giroux出版社，2026年6月（https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/）。",
+          "《Enshittification, Why Everything Suddenly Got Worse and What to Do About It》（图像小说版），Firstsecond出版社，2026年出版。",
+          "《The Post-American Internet》：一部地缘政治意义上的续作，延续《Enshittification》的主题，Farrar, Straus and Giroux出版社，2027年出版。",
+          "《Unauthorized Bread》：一部改编自我关于难民、烤面包机和数字版权管理（DRM）的中篇小说的青少年图像小说，FirstSecond出版社，2027年4月20日出版。",
+          "《The Memex Method》，Farrar, Straus, Giroux出版社，2027年出版。",
+          "版权说明（永久链接）",
+          "今日主要来源：",
+          "当前写作项目：《The Post-American Internet》，作为《Enshittification》的续作，讲述特朗普摧毁美国后我们其余人所能拥有的更好世界。已完成第三稿，已提交编辑审阅。",
+          "《The Reverse Centaur's Guide to AI》：一本为Farrar, Straus and Giroux撰写的短书，旨在帮助读者成为有效的AI评论家。法律审核与校对已完成。",
+          "《The Post-American Internet》：一本关于特朗普主义时代互联网政策的短书。目前处于规划阶段。",
+          "《Little Brother》短篇故事：关于DIY胰岛素的创作，目前处于规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名4.0国际许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为Cory Doctorow，并提供指向pluralistic.net的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图片不在此许可范围内；它们要么属于版权限制或例外情况，要么基于单独的许可协议。请谨慎使用。",
+          "如何获取Pluralistic内容：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯订阅（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模发布，无限制，第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你SARS时，你就做sarsaparilla”——Joey \"Accordion Guy\" DeVilla",
+          "请仔细阅读：通过阅读本文件，您代表您的雇主，同意永久放弃我（译者）与贵雇主及其合作伙伴、许可方、代理人及受让人之间因任何未经协商达成的协议、许可证、服务条款、密封包装、点击包装、浏览包装、保密协议、不披露协议、竞业禁止协议和合规使用政策（统称“无效协议”）而产生的所有义务和弃权声明，且不影响我持续享有的权利和特权。您进一步声明，您有权代表雇主对我作出关于无效协议的上述弃权。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "32e9d7381bda3c9b",
+      "title": "Scaling, stretching and shifting sinusoids",
+      "titleZh": "正弦波的缩放、拉伸与位移",
+      "link": "https://eli.thegreenplace.net/2026/scaling-stretching-and-shifting-sinusoids/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-05-02T14:17:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "本文简要解释如何调整标准正弦函数 sin(x) 的振幅、频率和相位偏移。给定一般形式 y = A·sin(B(x - C)) + D，可通过改变参数 A（振幅）、B（角频率）、C（相位位移）和 D（垂直位移）来变换波形。这些变换是信号处理、振荡分析和波形合成的基础数学工具。",
+      "summaryEn": "This brief explanation covers how to adjust the standard sinusoid sin(x) to modify its amplitude, frequency, and phase shift. Given the general form y = A·sin(B(x - C)) + D, waveform transformation is achieved by changing parameters: A (amplitude), B (angular frequency), C (phase displacement), and D (vertical displacement). These transformations form the mathematical foundation for signal processing, oscillation analysis, and waveform synthesis.",
+      "reason": "它为理解波动现象和信号处理提供了清晰直观的数学基础，适合工程与科学学习者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a brief and simple [1] explanation of how to adjust the\nstandard sinusoid  to change its amplitude, frequency and\nphase shift. More precisely, given the general function:"
+          },
+          {
+            "type": "p",
+            "text": "We’ll see how adjusting the parameters ,  and\n affect the shape of . Each section below\ncovers one of these aspects mathematically, and you can use the demo at\nthe bottom to experiment with the topic visually."
+          },
+          {
+            "type": "p",
+            "text": "Scaling is conceptually the simplest change; we adjust  to\nincrease or decrease the amplitude (maximal height) of . Setting\n will make the  value twice as large (in both the positive\nand negative direction) as the original function."
+          },
+          {
+            "type": "h2",
+            "text": "Stretching"
+          },
+          {
+            "type": "p",
+            "text": "Stretching changes the frequency of , which is inverse\nproportional to its period. The baseline function  has a\nperiod of , meaning it repeats every . In other\nwords,  for any ."
+          },
+          {
+            "type": "p",
+            "text": "If we set , we get . This function repeats\nitself twice as fast as , because  is multiplied\nby 2 before being fed into the sinusoid. If  changes by\n, the sinusoid’s input changes by .\nTherefore, the period of  is , the period of\n is  and so on. [2]"
+          },
+          {
+            "type": "p",
+            "text": "More generally, the period of  is .\nPlay with the demo below to see this in action, by changing \nand observing how the waveform changes."
+          },
+          {
+            "type": "p",
+            "text": "If we know the period  we want, we can easily calculate the\n that gives us this period:"
+          },
+          {
+            "type": "h2",
+            "text": "Shifting"
+          },
+          {
+            "type": "p",
+            "text": "The final parameter we discuss is ; it’s called the\nphase of the sinusoid. In the baseline ,\n. The sinusoid is 0 at , achieves its\npositive peak at , crosses 0 again at\n, negative peak at  and returns to\nits original position at  where the repetition begins."
+          },
+          {
+            "type": "p",
+            "text": "By adding a non-zero , we don’t affect the sinusoid’s\namplitude or frequency, but we do shift it right or left along the\n axis. For example, suppose we use the function\n with . Then when\n, we have , so the sinusoid is\nalready at its positive peak; at , the sinusoid\ncrosses 0 into the negatives, etc. Everything happens earlier (by\nexactly the value of ) than in the baseline\nsinusoid. In other words, we’ve shifted the function left by\n. Similarly, when  is negative,\neverything happens later, and the function is shifted right."
+          },
+          {
+            "type": "h2",
+            "text": "Putting it all together"
+          },
+          {
+            "type": "p",
+            "text": "We’ve now gone over all the parameters for the function:"
+          },
+          {
+            "type": "li",
+            "text": "controls the scaling factor (amplitude)."
+          },
+          {
+            "type": "li",
+            "text": "is the frequency and controls the repetition period"
+          },
+          {
+            "type": "li",
+            "text": "controls the phase - how much the sinusoid is shifted\nleft or right"
+          },
+          {
+            "type": "p",
+            "text": "Use the demo below to adjust these parameters and observe their effect on\nthe sinusoid:"
+          },
+          {
+            "type": "p",
+            "text": "A\n        \n      \n\n      \n        ω\n        \n      \n\n      \n        θ"
+          }
+        ],
+        "translations": [
+          "这是关于如何调整标准正弦波以改变其振幅、频率和相位偏移的简要而简单的[1]解释。更准确地说，给定一般函数：",
+          "我们将看到调整参数 、 和 如何影响 的形状。以下每个部分从数学角度分别讲解这些方面，你可以使用底部的演示来直观地实验这些概念。",
+          "缩放在概念上是最简单的变化；我们通过调整 来增加或减小 的振幅（最大高度）。将 设为 会使 的值在原函数的基础上正负方向都扩大一倍。",
+          "拉伸",
+          "拉伸改变了 的频率，频率与其周期成反比。基准函数 的周期为 ，意味着它每 重复一次。换句话说，对于任意 ，都有 。",
+          "如果我们设置 ，就会得到 。这个函数比 快两倍地重复自身，因为 在输入正弦波之前被乘以了 2。当 变化 时，正弦波的输入变化 。因此， 的周期是 ， 的周期是 ，依此类推。[2]",
+          "更一般地， 的周期是 。请尝试下方的演示，通过改变 并观察波形的变化来直观理解这一点。",
+          "如果已知我们想要的周期 ，我们可以轻松计算出对应的 ：",
+          "平移",
+          "我们要讨论的最后一个参数是 ；它被称为正弦波的相位。在基准函数 中， 。正弦波在 时为 0，在 达到正峰值，在 再次穿过 0，在 达到负峰值，并在 回到起始位置，开始新一轮重复。",
+          "通过添加一个非零的 ，我们不会改变正弦波的振幅或频率，但会使其沿 轴向左或向右移动。例如，假设我们使用函数 且 。那么当 时，有 ，所以正弦波此时已处于正峰值；当 时，正弦波穿过 0 进入负值，等等。所有事件都比基准正弦波提前发生（提前量正好等于 的值）。换句话说，我们将函数向左平移了 。类似地，当 为负数时，所有事件都延后发生，函数则向右平移。",
+          "综合来看",
+          "现在我们已经涵盖了该函数的所有参数：",
+          "控制缩放因子（振幅）。",
+          "是频率，控制重复周期。",
+          "控制相位——即正弦波向左或向右平移的量。",
+          "使用下方的演示来调整这些参数，并观察它们对正弦波的影响：",
+          "A\n        \n      \n\n      \n        ω\n        \n      \n\n      \n        θ"
+        ]
+      }
+    },
+    {
+      "slug": "5c7b0a87b863d9d9",
+      "title": "iNaturalist Sightings",
+      "titleZh": "iNaturalist 观测记录查询工具",
+      "link": "https://simonwillison.net/2026/May/1/inat-sightings/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-01T19:35:41.000Z",
+      "category": "tools",
+      "keywords": [
+        "iNaturalist",
+        "data visualization",
+        "personal dashboard"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 4,
+        "timeliness": 5,
+        "total": 12
+      },
+      "summary": "Simon Willison 开发了一款名为 iNaturalist Sightings 的工具，可聚合他在两个账户中的所有观察记录并按时间分组。该工具完全基于 Claude Code for web 在手机上构建，展示了移动端 AI 编程工具的强大能力。用户现在可以直观查看自己的自然观察历史，便于追踪生态研究进展。",
+      "summaryEn": "Simon Willison created an iNaturalist Sightings tool that aggregates observations from two separate accounts and groups them chronologically. Built entirely on his phone using Claude Code for web, this demonstrates the powerful capabilities of mobile AI programming tools. Users can now visually track their natural observation history, facilitating ecological research progress monitoring.",
+      "reason": "它展示了如何用 AI 工具快速构建实用应用，为开发者提供了创新实践范例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I wanted to see my iNaturalist observations - across two separate accounts - grouped by when they occurred. I'm camping this weekend so I built this entirely on my phone using Claude Code for web."
+          },
+          {
+            "type": "p",
+            "text": "I started by building an inaturalist-clumper Python CLI for fetching and \"clumping\" observations - by default clumps use observations within 2 hours and 5km of each other."
+          },
+          {
+            "type": "p",
+            "text": "Then I setup simonw/inaturalist-clumps as a Git scraping repository to run that tool and record the result to clumps.json."
+          },
+          {
+            "type": "p",
+            "text": "That JSON file is hosted on GitHub, which means it can be fetched by JavaScript using CORS."
+          },
+          {
+            "type": "p",
+            "text": "Finally I ran this prompt against my simonw/tools repo:"
+          },
+          {
+            "type": "quote",
+            "text": "Build inat-sightings.html - an app that does a fetch() against https://raw.githubusercontent.com/simonw/inaturalist-clumps/refs/heads/main/clumps.json and then displays all of the observations on one page using the https://static.inaturalist.org/photos/538073008/small.jpg small.jpg URLs for the thumbnails - with loading=lazy - but when a thumbnail is clicked showing the large.jpg in an HTML modal. Both small and large should include the common species names if available"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "85906f191a7d20ef",
+      "title": "Sightings",
+      "titleZh": "目击记录",
+      "link": "https://simonwillison.net/2026/May/2/sightings/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-02T17:26:40.000Z",
+      "category": "other",
+      "keywords": [
+        "photography",
+        "wildlife",
+        "Canon"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 4,
+        "total": 9
+      },
+      "summary": "作者使用佳能 R6 Mark II 相机拍摄了大量鸟类照片，并将这些野生动物影像分享到 iNaturalist 平台。基于前一天成功运行的 prototype，他决定将这些照片添加到个人博客中展示。此举旨在通过视觉内容增强博客的互动性和自然观察记录功能。作者强调这是其摄影与科学观察结合的实践成果。",
+      "summaryEn": "The author, using a Canon R6 Mark II camera, has been photographing birds extensively and sharing his best wildlife photos on iNaturalist. Building on the success of a previous prototype from the day before, he decided to integrate these images into his personal blog. This initiative aims to enhance the blog's engagement through visual content and support scientific observation documentation. The post highlights the integration of photography with citizen science practices.",
+      "reason": "值得读，因为它展示了如何将个人摄影爱好与公民科学项目结合，并通过技术原型实现内容自动化发布。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "2nd May 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "/elsewhere/sightings/. I have a new camera (a Canon R6 Mark II) so I'm taking a lot more photos of birds. I share my best wildlife photos on iNaturalist, and based on yesterday's successful prototype  I decided to add those to my blog."
+          },
+          {
+            "type": "p",
+            "text": "I built this feature on my phone using Claude Code for web, as an extension of my beats system for syndicating external content. Here's the PR and prompt."
+          },
+          {
+            "type": "p",
+            "text": "As with my other forms of incoming syndicated content sightings show up on the homepage, the date archive pages, and in site search results."
+          },
+          {
+            "type": "p",
+            "text": "I back-populated over a decade of iNaturalist sightings, which means you can search for lemur you'll see my lemur photos from Madagascar in 2019!"
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
