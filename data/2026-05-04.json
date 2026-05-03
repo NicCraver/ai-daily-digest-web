@@ -1,0 +1,936 @@
+{
+  "date": "2026-05-04",
+  "generatedAt": "2026-05-03T18:06:01.248Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2415,
+    "filteredArticles": 9,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：一是对“高级工程师”角色定义的深入反思，Will Larson提出的分类体系引发业界对其简化性与实用性的广泛讨论；二是编程语言设计中的错误处理演进，Zig 的强类型错误码机制与 Rust 的调用图分析工具共同凸显现代系统语言对健壮性与可维护性的追求；三是历史与开源文化的交汇，微软开源 86-DOS 源代码不仅牵动早期操作系统版权争议，也折射出技术遗产在当代重新被审视的价值。",
+  "articles": [
+    {
+      "slug": "05eed188bc7947bd",
+      "title": "Why I don't like the \"staff engineer archetypes\"",
+      "titleZh": "我不喜欢‘高级工程师原型’这种说法",
+      "link": "https://seangoedecke.com/staff-engineer-archetypes/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-05-03T00:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "staff engineer",
+        "career growth",
+        "engineering leadership"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "文章探讨了 Will Larson 提出的‘高级工程师原型’分类体系，该体系将高级工程师划分为团队领导、架构师、问题解决者和右臂四种角色。作者认为这一分类过于简化且容易误导，未能准确反映实际工作中高级工程师的多样性和复杂性。他指出，这种标签化思维可能导致组织误判人才定位和发展路径。尽管该框架被广泛引用，但其局限性在真实职场环境中愈发明显。作者主张应超越刻板原型，关注个体在具体情境中的实际贡献与成长。",
+      "summaryEn": "The article critiques Will Larson's widely cited 'Staff Engineer Archetypes' framework, which categorizes staff engineers into four roles: team lead, architect, solver, and right hand. While influential, the author argues this taxonomy oversimplifies the multifaceted nature of senior engineering roles and risks misguiding career development. He highlights how rigid archetypes fail to capture real-world complexity and individual impact. Despite its popularity, the model's limitations become apparent in practice. The piece advocates for moving beyond fixed personas to focus on contextual contributions and growth.",
+      "reason": "如果你正在思考如何定义或发展高级工程师的角色，这篇文章能帮你看清流行框架背后的陷阱，避免陷入标签化的误区。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The most influential piece of writing about staff engineers in the last decade has to be Will Larson’s Staff engineer archetypes. He argues that the “staff engineer” title covers at least four very different roles: the team lead, the architect, the solver, and the right hand. This taxonomy gets cited a lot as advice for people who are trying to become effective staff engineers. For both of my promotions to staff engineer, my manager at the time linked me to the “staff engineer archetypes” and asked me to consider which of these archetypes I was aiming towards."
+          },
+          {
+            "type": "p",
+            "text": "These archetypes definitely exist1. However, I think it’s bad practical advice to tell engineers to try and target them."
+          },
+          {
+            "type": "h3",
+            "text": "Archetypes do not make good goals"
+          },
+          {
+            "type": "p",
+            "text": "To see why, let’s take the “team lead” archetype. Larson describes this as an informal technical leadership role: not necessarily an explicit authority figure, but someone who’s good at scoping work, planning projects, and maintaining the kind of relationships (e.g. with other teams) needed to successfully ship. If you want to fill this role, shouldn’t you start trying to do these things? No! You don’t become a technical leader by trying really hard to be a technical leader, much like you don’t become a writer by trying really hard “to be a writer”. You become a technical leader by doing good technical work until your skills and relationships emerge organically."
+          },
+          {
+            "type": "p",
+            "text": "I wrote about this process in Ratchet effects determine engineer reputation at large companies. To get good at shipping large complex projects, you must start by shipping tiny pieces of work, until you’re familiar enough with the system and you’ve built enough trust to take on slightly larger pieces. At each stage, if you do good work - “good work” here means “deliver shareholder value” - you will very naturally be given opportunities to work on more complex and important things. If you try to jump ahead, you’re going to run into all kinds of problems:"
+          },
+          {
+            "type": "li",
+            "text": "Important projects are usually assigned top-down, not bottom-up, so you’ll either be trying to muscle out the planned engineering lead for a project or to pitch your own (complex, important) engineering task to senior management. Either way, good luck with that!"
+          },
+          {
+            "type": "li",
+            "text": "You likely won’t have a good enough relationship with senior management to know what their real priorities are."
+          },
+          {
+            "type": "li",
+            "text": "If you’re not yet trusted to execute, you may get assigned “minders” (often current staff engineers) who will ghost-lead the project through you2."
+          },
+          {
+            "type": "li",
+            "text": "You’ll likely make poor technical decisions."
+          },
+          {
+            "type": "p",
+            "text": "The other archetypes are like this as well. If you want to become a successful architect, you do not get there by studying software architecture in the abstract, because you can’t design software you don’t work on. The “solver” and “right hand” archetypes both rely on having an enormous amount of trust and influence. You can’t aim for those archetypes directly, because trust and influence accumulate over time. In fact, the idea of “aiming for” a particular staff engineer archetype reflects a misunderstanding of what the staff engineer role is. What is the defining attribute of the staff engineering role, then?"
+          },
+          {
+            "type": "h3",
+            "text": "What is a staff engineer?"
+          },
+          {
+            "type": "p",
+            "text": "A staff engineer has to be useful to the company. Of course, a senior or mid-level software engineer ought to be useful too, but all they have to do is execute on the job in front of them. If they end up not providing value (maybe their project turns out to be unimportant, or they don’t get the support needed to succeed) that’s their manager’s problem, not theirs3. In contrast, staff engineers are expected to deliver value regardless: to make the project work, or to find something else useful to do if the project truly can’t be salvaged."
+          },
+          {
+            "type": "p",
+            "text": "This is an unfair expectation. Often projects really do fail through no fault of your own, and sometimes it just isn’t possible to conjure useful work from thin air. That’s actually by design: the staff engineer role is supposed to be unfair. Something many engineers don’t realize is that all senior management and executive leadership roles are unfair too, in the same way. That’s just part of the deal: executives are given power and great compensation, and in return they get thrown off the boat in bad weather4. “Staff engineer” is the first engineering role where you are held largely responsible for outcomes you don’t control."
+          },
+          {
+            "type": "p",
+            "text": "Developing a “staff engineer mindset” thus has very little to do with the archetypes. Instead, you should:"
+          },
+          {
+            "type": "li",
+            "text": "Develop the habit of constantly asking yourself “is this useful to the company” (and answering correctly)."
+          },
+          {
+            "type": "li",
+            "text": "Lose the habit of worrying about if you’re being treated “fairly”. Instead, try to think about your role in terms of incentives and consequences."
+          },
+          {
+            "type": "p",
+            "text": "At the beginning, you won’t look much like any of the staff engineer archetypes. You will look like being a level-headed engineer who can be trusted to move projects forward with a minimum of fuss, and who can be re-tasked to different work without complaining. You’ll also look like someone who’s paying a lot of attention to what their manager’s actual priorities are, and who is thinking hard about how to fulfil those priorities (instead of their own goals)."
+          },
+          {
+            "type": "p",
+            "text": "If you do this for long enough, you’ll eventually find yourself in one of the staff engineer archetypes. However, it probably won’t be the one you’re “aiming for”. The whole point of being a staff engineer is that you’re willing to fill whatever archetype the company needs at the time."
+          },
+          {
+            "type": "h3",
+            "text": "Final thoughts"
+          },
+          {
+            "type": "p",
+            "text": "In his original staff engineer post, Larson is pretty clear that these archetypes are more of an anthropological description of some of the varied niches staff engineers fill, not a how-to guide for succeeding in the role5. At the time, the “staff engineer” role was fairly new and people were still trying to figure out what it even meant. Pointing out that there were a few very different ways to succeed in the role was a genuinely novel observation."
+          },
+          {
+            "type": "p",
+            "text": "The staff engineer archetypes are a good list of ways an engineer can be very useful to their organization - but only once they’ve built a deep relationship of trust with their organization’s leadership. Advice on how to succeed as a staff engineer should be about how to build that trust, not about what to do once you have it."
+          },
+          {
+            "type": "li",
+            "text": "One caveat that is too pedantic for the body of the post: each tech company has a different structure of roles. Some don’t have the formal “staff” title at all, while others have “staff” as a fairly early rung on the ladder and a panoply of “senior staff”, “senior principal staff”, and so on roles above it. Like all “staff engineer” discourse, this post is not about the word itself but about the point in the engineering job ladder where progression becomes significantly more difficult.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Impressing your VP’s trusted lieutenants can actually be a good way to build trust in the medium-term, but you’d better hope you’ve built enough understanding of the system to do it right. If this process goes badly, your reputation in the org might be torched for years.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "In theory, at least. In practice it’s always better to be useful (again, in the sense of “delivering shareholder value”).\n↩"
+          },
+          {
+            "type": "li",
+            "text": "This is why very senior leadership sometimes seem so unempathetic towards engineering complaints: their work environment operates by very different rules and norms to that of most engineers. I keep meaning to try and write about this and never succeeding. This draft is the closest thing I have to a deeper exploration of the point.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "For the record, my how-to guides are here and here.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "The more senior engineers get, the more results matterIn my experience, people tend to overrate how much moving up the org chart changes the fundamentals of the job. As a staff engineer, I do more or less the same thing as I did as an intern: write code, respond to tickets, create my own tickets for work that needs doing, and ship projects. The work I do is faster and better, since I have many more tools in my toolbox, and I do move from project to project more often, but it’s not qualitatively different. My job is still more like a software engineering intern’s job than it is like an equivalently-leveled product manager’s job.Continue reading..."
+          }
+        ],
+        "translations": [
+          "过去十年中关于资深工程师最具影响力的文章无疑是 Will Larson 的《资深工程师原型》。他认为“资深工程师”这一头衔至少涵盖了四种截然不同的角色：团队负责人、架构师、问题解决者和左膀右臂。这一分类常被引用，作为希望成为高效资深工程师的人们的指导建议。在我两次晋升为资深工程师的过程中，当时的经理都会向我推荐“资深工程师原型”，并让我思考自己希望朝哪个方向发展。",
+          "这些原型确实存在。然而，我认为告诉工程师们试图瞄准这些原型并不是好的实用建议。",
+          "原型不应作为目标",
+          "为什么这么说？让我们以“团队负责人”原型为例。Larson 将其描述为一种非正式的技术领导角色：不一定是明确的权威人物，但擅长界定工作范围、规划项目，以及维护成功交付所需的关系（例如与其他团队的关系）。如果你想承担这个角色，难道不应该开始尝试做这些事情吗？不！你并不会通过拼命想当技术领导者而成为技术领导者，就像你不会通过拼命“想成为作家”而成为作家一样。你是在做好技术工作的过程中，直到你的技能和关系自然显现时，才真正成为技术领导者。",
+          "我在《大型公司中工程师声誉由“滚雪球效应”决定》一文中详细描述了这个过程。要擅长交付大型复杂项目，必须从交付微小的工作开始，直到你对系统足够熟悉，并建立足够的信任，才能承担稍大一些的任务。在每个阶段，只要你做出“好工作”——这里的“好工作”指的是“为股东创造价值”——你就会自然而然地获得处理更复杂、更重要事务的机会。如果你试图跳跃式前进，会遇到各种问题：",
+          "重要项目通常由自上而下指派，而非自下而上提出，所以你只能要么强行挤掉原定项目负责人，要么向高层管理者推销你自己（复杂且重要）的工程任务。无论哪种方式，祝你好运！",
+          "你可能尚未与高层管理者建立足够的关系，无法了解他们真正的优先事项。",
+          "如果你还未能被信任去执行任务，可能会被指派“监督者”（通常是现任资深工程师），他们会绕过你直接主导项目。",
+          "你很可能做出糟糕的技术决策。",
+          "其他原型也是如此。如果你想成为一名成功的架构师，你不能仅仅通过抽象地学习软件架构来实现，因为你无法设计你不参与工作的软件。“问题解决者”和“左膀右臂”这两个原型都依赖于巨大的信任和影响力。你不能直接瞄准这些原型，因为信任和影响力是随时间积累的。事实上，“瞄准”某个特定资深工程师原型的想法，反映了对资深工程师角色本质的误解。那么，资深工程师角色的本质究竟是什么？",
+          "什么是资深工程师？",
+          "高级工程师必须对公司有用。当然，资深或中级软件工程师也应该有用，但他们只需完成眼前的工作即可。如果他们最终未能创造价值（也许项目本身不重要，或者他们得不到成功所需的资源支持），那是其管理者的责任，而非他们自己的问题。相比之下，高级工程师则必须始终创造价值：要么让项目成功，要么在项目确实无法挽救时，另寻其他有价值的事情去做。",
+          "这种期望并不公平。很多时候项目失败并非你的过错，有时也确实不可能凭空变出有用的工作。这其实是设计使然：高级工程师的角色本就不该公平。许多工程师没有意识到的是，所有高级管理和执行领导职位同样不公平——方式相同。这就是交易的一部分：高管获得权力和丰厚薪酬，作为交换，在恶劣天气来临时他们会被抛下船去。从“高级工程师”这一角色开始，你就必须对那些你无法控制的结果负主要责任。",
+          "因此，培养“高级工程师思维”与原型人设几乎无关。相反，你应该：",
+          "养成不断自问“这对公司是否有用”的习惯（并正确回答）。",
+          "摒弃纠结是否被“公平对待”的念头。转而从激励与后果的角度思考你的角色。",
+          "起初，你可能看起来不像任何一种高级工程师的原型。你更像一个头脑冷静、值得信赖的工程师，能最小化摩擦地推进项目，且能在不抱怨的情况下被重新分配任务。你也更关注管理者真正的优先事项，并认真思考如何达成这些优先事项（而不是你自己的目标）。",
+          "只要你坚持这样做下去，最终你会发现自己落入某一种高级工程师的原型之中。但很可能不是你“瞄准”的那个。成为高级工程师的关键在于，你愿意填补公司当时需要的任何一种角色。",
+          "最后的话",
+          "在 Larson 最初关于高级工程师的文章中，他明确指出这些原型更多是对高级工程师所承担的各种角色的人类学描述，而非如何在该角色中成功的操作指南。当时“高级工程师”这一职位还比较新，人们仍在摸索它的真正含义。指出该角色存在多种不同的成功路径，是一项真正新颖的观察。",
+          "高级工程师的原型确实列出了工程师如何能为组织做出巨大贡献的方式——但前提是已与组织的领导层建立了深厚的信任关系。关于如何成为一名成功的高级工程师的建议，应聚焦于如何建立这种信任，而非在已拥有信任之后该做什么。",
+          "有一点过于咬文嚼字，不适合放在正文中：每家科技公司的职位结构各不相同。有些公司根本没有正式的“staff”头衔，而另一些公司则将“staff”作为职级阶梯上较早的一个层级，并设有“高级 staff”、“高级 principal staff”等更高层级的职位。就像所有关于“staff engineer”的讨论一样，本文关注的不是这个头衔本身，而是工程职业阶梯上晋升变得异常困难的那个节点。",
+          "实际上，给副总裁信任的副手留下深刻印象可能是中长期建立信任的好方法，但你最好希望自己对系统有足够的了解才能做到这一点。如果这个过程搞砸了，你在组织中的声誉可能会被彻底摧毁，甚至持续多年。",
+          "至少在理论上如此。但在实践中，总是更有用（再次强调，这里的“有用”是指“为股东创造价值”）。",
+          "这就是为什么一些高层领导有时似乎对工程师的抱怨如此缺乏同理心：他们的工作环境遵循的是与大多数工程师截然不同的规则和准则。我一直打算写一篇关于这个问题的文章，但始终未能完成。这篇草稿是我对这个观点最深入的探索。",
+          "顺便提一下，我的指南在这里和这里。",
+          "如果你喜欢这篇文章，请考虑订阅我的新文章邮件更新，或在 Hacker News 上分享它。",
+          "这是另一篇与此文共享标签的相关文章的预览。",
+          "工程师越资深，结果就越重要。根据我的经验，人们往往高估了升职到组织架构图上的更高位置会如何改变工作的基本性质。作为一名 staff engineer，我做的或多或少和做实习生时一样：编写代码、回复工单、为自己需要处理的工作创建工单，并交付项目。我的工作更快更好，因为我掌握的工具更多，而且更频繁地在不同项目间切换，但本质上并没有不同。我的工作仍然更像一个软件工程师实习生的工作，而不是一个同等职级的 product manager 的工作。继续阅读..."
+        ]
+      }
+    },
+    {
+      "slug": "403f4c4a9c8f65b2",
+      "title": "Minimal Viable Zig Error Contexts",
+      "titleZh": "最小可行的 Zig 错误上下文",
+      "link": "https://matklad.github.io/2026/05/03/zig-error-context.html",
+      "sourceName": "matklad.github.io",
+      "sourceUrl": "https://matklad.github.io",
+      "pubDate": "2026-05-03T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Zig",
+        "error handling",
+        "diagnostics"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 9,
+        "timeliness": 6,
+        "total": 22
+      },
+      "summary": "Zig 语言默认提供强类型错误码机制用于错误处理，但缺乏内置的人类可读错误报告功能。作者指出，惯用做法是通过传递一个 Diagnostics sink 参数来按需生成字符串形式的错误信息。这种方式虽然灵活，但需要开发者手动实现错误上下文拼接逻辑。文章展示了如何利用 Zig 的编译期能力和标准库构建可扩展的错误诊断系统，提升调试体验。",
+      "summaryEn": "Zig offers strongly-typed error codes out of the box for robust error handling, but leaves human-readable reporting to developers. The idiomatic solution involves passing a Diagnostics sink parameter to materialize readable strings as needed. This approach provides flexibility but requires manual implementation of context aggregation. The post demonstrates building an extensible error diagnostic system using Zig's compile-time features and standard library capabilities.",
+      "reason": "想了解如何在 Zig 中优雅地处理复杂错误信息而不依赖宏或外部工具？这篇短文给出了简洁而实用的设计思路。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "code",
+            "text": "fn process_file(io: Io, path: []const u8) !void {\n    errdefer log.err(\"path={s}\", .{path});\n\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n    defer fd.close(io);\n\n    // ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "Out of the box, Zig provides minimal and sufficient facilities for\n          error handling —\n          strongly-typed error codes. Error reporting is left to\n          the user. Idiomatic solution is to pass a Diagnostics out\n          parameter (“sink”) to materialize human-readable strings as needed."
+          },
+          {
+            "type": "p",
+            "text": "Diagnostics pattern works well for “production” code, but for more\n          script-y code it adds too much friction relative to the default option\n          of a plain\n          try fallible(),\n          which of course gives a less than ideal message on failure:"
+          },
+          {
+            "type": "code",
+            "text": "λ zig build\nerror: FileNotFound\n~/.cache/zig/p/../lib/std/Io/Threaded.zig:4866:35: 0x1044126c7 in dirOpenFilePosix (fail)\n                        .NOENT => return error.FileNotFound,\n                                  ^\n~/.cache/zig/p/../lib/std/Io/Dir.zig:578:5: 0x104347d8b in openFile (fail)\n    return io.vtable.dirOpenFile(io.userdata, dir, sub_path, options);\n    ^\n~/fail/main.zig:10:16: 0x10443da5f in f (fail)\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n               ^\n~/fail/main.zig:6:5: 0x10443db47 in main (fail)\n    try process_file(io, \"data.txt\");\n    ^"
+          },
+          {
+            "type": "p",
+            "text": "Error trace is helpful, but knowing which file is the problem\n          is even more so."
+          },
+          {
+            "type": "p",
+            "text": "The first attempt at finding a middle ground between fully-fledged\n          diagnostics sink pattern and a plain try is something like this:"
+          },
+          {
+            "type": "code",
+            "text": "const fd = dir.openFile(io, path, .{}) catch |err| {\n    log.err(\"failed to open file '{s}': {t}\", .{path, err});\n    return err;\n}"
+          },
+          {
+            "type": "p",
+            "text": "Unsatisfactory. The friction is high, you need to come up with a\n          reasonably-sounding error message, the “happy path” of the code is\n          obscured, and you need to repeat this for every fallible operation."
+          },
+          {
+            "type": "p",
+            "text": "A worse-is-better version of the above code is"
+          },
+          {
+            "type": "code",
+            "text": "errdefer log.err(\"path={s}\", .{path});\nconst fd = try dir.openFile(io, path, .{});"
+          },
+          {
+            "type": "p",
+            "text": "That is, just log error context as key=value pairs,\n          guarded by errdefer. The result is not pretty, but\n          passable:"
+          },
+          {
+            "type": "code",
+            "text": "λ zig build\nerror: path=./data.txt\nerror: FileNotFound\n~/.cache/zig/p/../lib/std/Io/Threaded.zig:4866:35: 0x1044126c7 in dirOpenFilePosix (fail)\n                        .NOENT => return error.FileNotFound,\n                                  ^\n~/.cache/zig/p/../lib/std/Io/Dir.zig:578:5: 0x104347d8b in openFile (fail)\n    return io.vtable.dirOpenFile(io.userdata, dir, sub_path, options);\n    ^\n~/fail/main.zig:10:16: 0x10443da5f in f (fail)\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n               ^\n~/fail/main.zig:6:5: 0x10443db47 in main (fail)\n    try process_file(io, \"data.txt\");\n    ^"
+          },
+          {
+            "type": "p",
+            "text": "The friction is reduced a lot:"
+          },
+          {
+            "type": "li",
+            "text": "No need to come up with any error messages beyond existing variable\n            names."
+          },
+          {
+            "type": "li",
+            "text": "No need to change any of the trys."
+          },
+          {
+            "type": "li",
+            "text": "The context is set per-block. If a function does several fallible\n            operations on a file, the path needs to be specified only once."
+          },
+          {
+            "type": "li",
+            "text": "The context is “telescopic” every function in the call-stack can add\n            its own context."
+          },
+          {
+            "type": "p",
+            "text": "There’s one huge drawback though — the error message is logged, even\n          if the error is subsequently handled. This is especially important in\n          Zig 0.16, where cancelation (serendipitous-success) is a possible error for any IO-ing\n          operation, and which is intended to be handled, rather than reported."
+          },
+          {
+            "type": "p",
+            "text": "Generalizing:"
+          },
+          {
+            "type": "li",
+            "text": "Happy path adds context to all operations in-progress."
+          },
+          {
+            "type": "li",
+            "text": "Errors materialize current context."
+          },
+          {
+            "type": "p",
+            "text": "This does feel like a better error management strategy than decorating\n          errors individually, when they happen. I wonder which language\n          features facilitate this style?"
+          }
+        ],
+        "translations": [
+          "fn process_file(io: Io, path: []const u8) !void {\n    errdefer log.err(\"path={s}\", .{path});\n\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n    defer fd.close(io);\n\n    // ...\n}",
+          "Zig 开箱即用提供的错误处理机制非常简洁且足够使用——采用强类型错误码。错误报告交由用户自行处理。惯用做法是在函数中传递一个 Diagnostics 输出参数（即“接收器”），以便按需生成人类可读的错误信息字符串。",
+          "Diagnostics 模式在“生产环境”代码中表现良好，但对于更偏向脚本性质的代码而言，其带来的摩擦感远大于默认的 plain try fallible() 选项，而后者失败时自然无法提供理想的错误提示：",
+          "λ zig build\nerror: FileNotFound\n~/.cache/zig/p/../lib/std/Io/Threaded.zig:4866:35: 0x1044126c7 in dirOpenFilePosix (fail)\n                        .NOENT => return error.FileNotFound,\n                                  ^\n~/.cache/zig/p/../lib/std/Io/Dir.zig:578:5: 0x104347d8b in openFile (fail)\n    return io.vtable.dirOpenFile(io.userdata, dir, sub_path, options);\n    ^\n~/fail/main.zig:10:16: 0x10443da5f in f (fail)\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n               ^\n~/fail/main.zig:6:5: 0x10443db47 in main (fail)\n    try process_file(io, \"data.txt\");\n    ^",
+          "错误追踪固然有用，但明确指出是哪个文件出了问题则更为关键。",
+          "在完全成熟的 diagnostics sink 模式和简单的 plain try 之间寻找折中方案的首个尝试如下：",
+          "const fd = dir.openFile(io, path, .{}) catch |err| {\n    log.err(\"failed to open file '{s}': {t}\", .{path, err});\n    return err;\n}",
+          "效果不佳。操作繁琐，需自行构思听起来合理的错误消息，导致代码的“正常流程”被掩盖，且每次遇到 fallible 操作都不得不重复这一过程。",
+          "上述代码的一个“劣中有优”版本如下：",
+          "errdefer log.err(\"path={s}\", .{path});\nconst fd = try dir.openFile(io, path, .{});",
+          "即在 errdefer 保护下，仅将错误上下文以 key=value 键值对形式记录日志。虽然结果不够美观，但尚可接受：",
+          "λ zig build\nerror: path=./data.txt\nerror: FileNotFound\n~/.cache/zig/p/../lib/std/Io/Threaded.zig:4866:35: 0x1044126c7 in dirOpenFilePosix (fail)\n                        .NOENT => return error.FileNotFound,\n                                  ^\n~/.cache/zig/p/../lib/std/Io/Dir.zig:578:5: 0x104347d8b in openFile (fail)\n    return io.vtable.dirOpenFile(io.userdata, dir, sub_path, options);\n    ^\n~/fail/main.zig:10:16: 0x10443da5f in f (fail)\n    const fd = try Io.Dir.cwd().openFile(io, path, .{});\n               ^\n~/fail/main.zig:6:5: 0x10443db47 in main (fail)\n    try process_file(io, \"data.txt\");\n    ^",
+          "摩擦感显著降低：",
+          "无需为现有变量名之外的内容额外构造任何错误消息。",
+          "无需修改任何 trys。",
+          "上下文按块设置。若某函数对同一文件执行多个 fallible 操作，路径只需声明一次。",
+          "上下文具有“望远镜”特性——调用栈中的每个函数均可添加自身上下文。",
+          "然而存在一个重大缺陷——即使错误最终被处理，错误信息仍会被记录。这在 Zig 0.16 中尤为关键，因为此时取消操作（serendipitous-success）可能作为任意 I/O 操作的错误返回，且本应被处理而非上报。",
+          "总结如下：",
+          "正常流程中为所有进行中的操作附加上下文。",
+          "错误发生时自动携带当前上下文信息。",
+          "这似乎比逐个装饰错误事件的管理策略更为合理。我不禁思考，哪些语言特性能更好地支持这种风格？"
+        ]
+      }
+    },
+    {
+      "slug": "05f846d76c0eb170",
+      "title": "Microsoft’s open sourcing of 86-DOS and what it means",
+      "titleZh": "微软开源 86-DOS 意味着什么",
+      "link": "https://dfarq.homeip.net/microsofts-open-sourcing-of-86-dos-and-what-it-means/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=microsofts-open-sourcing-of-86-dos-and-what-it-means",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-05-03T17:20:17.000Z",
+      "category": "engineering",
+      "keywords": [
+        "86-DOS",
+        "MS-DOS",
+        "open source history"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 22
+      },
+      "summary": "2026年4月28日，微软意外宣布将 86-DOS 源代码开源，这是 PC DOS 1.0 的直接前身。这一举动重新引发了关于早期 MS-DOS 版权争议的历史讨论。86-DOS 最初由西雅图计算机产品公司开发，后被微软收购并修改后成为 PC DOS。此次开源为历史研究者和复古计算爱好者提供了珍贵资源。此举可能影响未来对早期操作系统知识产权的理解与再利用。",
+      "summaryEn": "On April 28, 2026, Microsoft unexpectedly open-sourced 86-DOS, the direct ancestor of PC DOS 1.0. This move reignites historical debates about early MS-DOS copyright controversies, as 86-DOS was originally developed by Seattle Computer Products before being acquired and modified by Microsoft. The release provides valuable source code for historians and retro-computing enthusiasts. It may reshape future understanding of intellectual property in early operating systems.",
+      "reason": "对于关心计算机史和软件遗产保护的人来说，微软这次看似随意的开源行为背后藏着一段被遗忘的关键历史。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On April 28, 2026, Microsoft unexpectedly open sourced 86-DOS. This is the direct ancestor to PC DOS 1.0. I’ve written a number of things about the controversies around PC DOS 1.0 and early versions of MS-DOS, so of course I need to say something about this, even if I’m a few days late."
+          },
+          {
+            "type": "h2",
+            "text": "CP/M, 86-DOS, Bill Gates, Gary Kildall, and the airplane"
+          },
+          {
+            "type": "p",
+            "text": "I think the story around MS-DOS 1.0 is pretty well known at this point, seeing as people tell me their version of it every time I blog about it. There is some controversy about it, and I have definitely contributed to spreading that controversy. I’ll head off some of the but-actually guys by saying this is the operating system that IBM licensed from Bill Gates because Gary Kildall was too busy flying in his airplane to talk with IBM. And to another bunch of you but-actually guys, yes, I am completely aware that it was not Gary’s job to talk to IBM, it was his wife Dorothy’s job to talk to them, which she did. The TLDR is she was not comfortable with the NDA that IBM wanted them to sign, and she was also not comfortable with allowing IBM to name the operating system PC DOS."
+          },
+          {
+            "type": "h3",
+            "text": "Bill Gates to the rescue"
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, IBM was already talking with Microsoft and had attempted to sublicense CP/M from Microsoft. Problem was, Microsoft didn’t have the rights to sub license it to them, nor did the version IBM needed exist yet. But friend of Microsoft Tim Paterson, creator of the Microsoft Softcard, was working on an 8086-compatible clone of CP/M. Microsoft licensed this operating system from Seattle Computer Products for $50,000, then turned around and licensed this operating system to IBM while reserving the rate to also license it to anyone else they wanted to. This is why IBM computers shipped with something called PC DOS and clone computers shipped with something called MS-DOS, and yet they were mostly compatible."
+          },
+          {
+            "type": "p",
+            "text": "Early versions of PC DOS have been disassembled and commented, but today, you can view very early source code from the author himself. Apparently Tim Paterson found 45-year-old printouts in his garage."
+          },
+          {
+            "type": "h2",
+            "text": "The controversy around 86-DOS"
+          },
+          {
+            "type": "p",
+            "text": "There have been a number of rumors about early PC DOS. Gary Kildall spoke of cryptic similarities between the two that he said he was the only person in the world who understood. But he didn’t elaborate."
+          },
+          {
+            "type": "p",
+            "text": "A few years after Kildall died, and around the time Caldera sued Microsoft, John C. Dvorak wrote that he knew someone who claimed to have an early version of PC dos that contained an Easter egg that would print Kildall’s name and a copyright message. I wondered at the time if he was speaking of Jerry Pournelle. I actually asked Pournelle about that a couple of years later. He did not elaborate. But a number of years after that, he went on a podcast and he did elaborate. He said he had seen it, and computer pioneer Bill Godbout showed it to him. The problem with his story is he never shared the keystroke or command that produced the Easter egg. Godbout never shared it publicly before his death either."
+          },
+          {
+            "type": "p",
+            "text": "A number of years ago, someone did an analysis to attempt to prove that MS-DOS wasn’t derived from CP/M source code. The problem with that is it proved what we already knew. We already knew MS-DOS was written in 8086 assembly language, while CP/M was written mostly in a higher-level language called PL/1 or PL/M. If 86-DOS contained stolen code, it was written from a memory dump, not from source code."
+          },
+          {
+            "type": "p",
+            "text": "The CP/M source code has been available for a number of years. Caldera released it, along with some other Digital Research code."
+          },
+          {
+            "type": "p",
+            "text": "Today, the 86-DOS code is available too."
+          },
+          {
+            "type": "h2",
+            "text": "The 86-DOS conspiracy"
+          },
+          {
+            "type": "p",
+            "text": "There is one man alive who would also know a lot about this. That’s Tim Paterson, the man who wrote 86-DOS. Patterson has always maintained he didn’t break any laws. And the action of releasing the code does call something into question. If it contained stolen code, why would he release the original code?"
+          },
+          {
+            "type": "p",
+            "text": "The last time I wrote about this, I speculated Pournelle may have conflated multiple 1980s stories. Microsoft Basic contained Easter eggs to keep companies from stealing it. Maybe Pournelle confused those two stories. At the time Dvorak published hints of Pournelle’s story, Pournelle was in his 50s. At that age, the brain becomes prone to such things. I notice my own tendencies to conflate when researching blog posts. I can’t write entirely from memory the way I did when I was 30."
+          },
+          {
+            "type": "p",
+            "text": "Now, I do not disagree that Bill Gates double-crossed Gary Kildall. Nor do I disagree that Kildall was a visionary while Gates just saw a money making opportunity, and that the world would be a better place if we’d followed Kildall rather than just falling all over ourselves to give Gates as much money as possible."
+          },
+          {
+            "type": "p",
+            "text": "But now we have one more historical artifact to study, and that’s a good thing."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "2026年4月28日，微软出人意料地将86-DOS开源。这是PC DOS 1.0的直接前身。我曾写过不少关于PC DOS 1.0及其早期MS-DOS版本争议的文章，所以当然要对这件事说点什么，哪怕我晚了几天才发声。",
+          "CP/M、86-DOS、比尔·盖茨、吉里·基尔代尔与飞机",
+          "如今，围绕MS-DOS 1.0的故事已经广为人知——每次我在博客中提到它时，总有人会跟我讲他们听说的版本。这其中确实存在一些争议，而我无疑也助长了一些误解的传播。为了回应那些“其实是……”的质疑，我要说的是：正是这个操作系统，IBM从比尔·盖茨那里获得了授权，因为吉里·基尔代尔当时正忙着在飞机上飞行，无暇与IBM洽谈。至于另一批“其实是……”的质疑者，是的，我完全清楚：跟IBM沟通并不是吉里的职责，而是他妻子多萝西的职责，而她确实这么做了。简而言之，她不认同IBM要求签署的保密协议（NDA），也不愿让IBM将操作系统命名为“PC DOS”。",
+          "比尔·盖茨出手相救",
+          "与此同时，IBM早已与微软接洽，并试图通过微软获得CP/M的再许可。问题是，微软自己并没有获得再许可的权利，而且IBM所需的那个版本也尚未问世。但微软的朋友蒂姆·帕特森（Tim Paterson）——Microsoft Softcard的创造者——正在开发一个兼容8086的CP/M克隆系统。微软以5万美元的价格从西雅图计算机产品公司（Seattle Computer Products）获得了这个操作系统的授权，随后立即将其授权给IBM，同时保留向任何其他公司授权的权利。这就是为什么IBM电脑预装的是名为“PC DOS”的系统，而兼容机则使用“MS-DOS”，两者却高度兼容的原因。",
+          "PC DOS的早期版本已被反汇编并加以注释，但今天，我们甚至可以看到作者本人提供的极早期源代码。原来，蒂姆·帕特森在自己的车库里发现了45年前的打印件。",
+          "关于86-DOS的争议",
+          "关于早期PC DOS，一直流传着不少传闻。吉里·基尔代尔曾提到过两者之间神秘的相似之处，并表示他是世界上唯一真正理解这些细节的人，但他并未进一步说明。",
+          "基尔代尔去世后几年，正值Caldera起诉微软之际，约翰·C·德沃拉克声称认识一位人士，此人声称拥有一份早期PC DOS版本，其中包含一个彩蛋，能打印出“Kildall”的名字和版权信息。我当时就在想，他是否指的是杰里·普尔内尔。几年后，我确实问过普尔内尔此事，但他未作解释。然而又过了几年，他在播客中透露了更多细节。他说自己见过这个彩蛋，是计算机先驱比尔·戈德博特展示给他的。问题在于，他从未公开过触发该彩蛋的具体按键或命令。戈德博特生前也从未对外分享过这一信息。",
+          "多年前，有人尝试通过分析来证明MS-DOS并非源自CP/M的源代码。但这项研究的结论恰恰证实了我们已经知道的事实：我们知道MS-DOS是用8086汇编语言编写的，而CP/M则主要用一种更高级的语言PL/1或PL/M编写。因此，如果86-DOS中确实存在被盗用的代码，那也必然是从内存转储中还原而来，而非直接复制自源代码。",
+          "CP/M 源代码已经公开多年。Caldera 公司将其与其他一些 Digital Research 的代码一同发布。",
+          "如今，86-DOS 的代码也已对外公开。",
+          "关于 86-DOS 的阴谋论",
+          "有一位活着的专家对此事了解甚深，他就是 Tim Paterson——86-DOS 的作者。Paterson 一直坚称自己并未触犯任何法律。而发布这些代码的行为本身也引发了一个疑问：如果其中确实包含被盗用的代码，他为何还要公开原始版本？",
+          "上次我谈及此事时，曾推测 Pournelle 可能混淆了多个 1980 年代的故事。微软 BASIC 中设有“复活节彩蛋”以防止企业盗用。或许 Pournelle 将这两个故事混为一谈。当 Dvorak 披露 Pournelle 的说法时，Pournelle 已年过五十。人在这个年纪，记忆容易发生混淆。我在撰写博客时也常发现自己在研究过程中出现类似倾向。如今我已无法像三十岁时那样完全凭记忆写作。",
+          "但我并不否认比尔·盖茨对加里·基尔德尔（Gary Kildall）的背叛。我也同样不认为基尔德尔是远见卓识者，而盖茨只是看到了赚钱的机会。我更倾向于相信，若世人当初选择追随基尔德尔而非盲目追捧盖茨，世界或许会变得更美好。",
+          "然而，我们现在多了一份可供研究的史料，这终究是件好事。",
+          "David Farquhar 是一位计算机安全专家、企业家和作家。自 1991 年起他便开始专业从事计算机相关内容的写作，因此当复古计算机尚属新潮之时，他就已开始关注这一领域。自 1994 年起，他一直在 IT 行业任职，并于 2013 年起专注于漏洞管理工作。他持有 Security+ 和 CISSP 认证。如今他每周更新五次博客，主要围绕 1975 至 2000 年间的复古计算机与复古游戏展开。"
+        ]
+      }
+    },
+    {
+      "slug": "dd91cbe0ed0b156c",
+      "title": "callgraph analysis",
+      "titleZh": "调用图分析：为乐趣和利益编写自定义 Rust lints",
+      "link": "https://jyn.dev/callgraph-analysis/",
+      "sourceName": "jyn.dev",
+      "sourceUrl": "https://jyn.dev",
+      "pubDate": "2026-05-03T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Rust",
+        "callgraph",
+        "static analysis"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "文章介绍如何使用 Rust 编写自定义 lint 工具，重点利用调用图（callgraph）分析来检测代码质量问题。通过解析 Rust 的抽象语法树（AST）并结合过程间分析，开发者可以识别潜在的性能瓶颈或安全漏洞。文中演示了一个实际案例：检测未使用的函数参数或冗余模式匹配。这种方法虽有一定复杂度，但能显著提升代码审查效率。",
+      "summaryEn": "This post explores writing custom Rust linters using callgraph analysis to detect code quality issues. By leveraging Rust's AST parsing and interprocedural analysis, developers can identify performance bottlenecks or security anti-patterns like unused parameters or redundant match arms. A practical example demonstrates how such tools enhance code review efficiency despite added complexity.",
+      "reason": "想深入理解 Rust 编译器内部机制并打造自己的静态分析工具？这篇文章带你从理论到实践一步步实现。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "jyn",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "2026-05-03\n      \n      \n      \n      \n        \n        \n      • rust\n        \n      • compilers"
+          },
+          {
+            "type": "p",
+            "text": "I recently wrote a post for work titled \"Callgraph Analysis\", about how to write a custom lint with access to the full call graph of a program.\nYou can read it on my work's blog."
+          },
+          {
+            "type": "p",
+            "text": "Discuss on\n    Hacker News or\n    Lobste.rs"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1722432180f0faf0",
+      "title": "Quoting Anthropic",
+      "titleZh": "引述 Anthropic：Claude 是否过于奉承？",
+      "link": "https://simonwillison.net/2026/May/3/anthropic/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-03T15:13:23.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "sycophancy",
+        "LLM",
+        "evaluation"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "Anthropic 的研究使用自动分类器评估 Claude AI 是否存在 sycophancy（过度赞美）倾向，依据包括是否敢于反驳、坚持立场、给予合理评价以及坦率表达观点。结果显示，仅 9% 的对话表现出 sycophantic 行为，表明 Claude 总体上保持了客观性。然而，在特定领域如创意写作或社交互动中，sycophancy 风险略有上升。该研究强调大型语言模型在交互中平衡用户期望与事实准确性的挑战。",
+      "summaryEn": "Anthropic's research used an automatic classifier to assess sycophancy in Claude by evaluating its willingness to push back, maintain positions when challenged, give proportional praise, and speak frankly regardless of user preferences. Results showed only 9% of conversations exhibited sycophantic behavior, indicating strong overall objectivity. However, sycophancy risk increased slightly in domains like creative writing or social interaction. The study highlights the challenge of balancing user expectations with factual accuracy in LLM interactions.",
+      "reason": "如果你担心 AI 助手总是附和你而失去批判性思维，这篇研究数据能让你更理性看待 Claude 的实际表现。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "3rd May 2026"
+          },
+          {
+            "type": "quote",
+            "text": "We used an automatic classifier which judged sycophancy by looking at whether Claude showed a willingness to push back, maintain positions when challenged, give praise proportional to the merit of ideas, and speak frankly regardless of what a person wants to hear. Most of the time in these situations, Claude expressed no sycophancy—only 9% of conversations included sycophantic behavior (Figure 2). But two domains were exceptions: we saw sycophantic behavior in 38% of conversations focused on spirituality, and 25% of conversations on relationships."
+          },
+          {
+            "type": "p",
+            "text": "— Anthropic, How people ask Claude for personal guidance"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "6de8e8716e7fbdc8",
+      "title": "Testing MacOS on the Apple Network Server 2.0 ROMs",
+      "titleZh": "在 Apple Network Server 2.0 ROM 上测试 macOS",
+      "link": "https://oldvcr.blogspot.com/feeds/377909492668585591/comments/default",
+      "sourceName": "oldvcr.blogspot.com",
+      "sourceUrl": "https://oldvcr.blogspot.com",
+      "pubDate": "2026-05-03T06:44:00.000Z",
+      "category": "other",
+      "keywords": [
+        "Apple Network Server",
+        "MacOS",
+        "emulation"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "作者继续探索 Apple Network Server 这款苹果首款全 Unix 服务器的 ROM 兼容性。尽管官方仅支持 IBM 的 AIX 系统，但社区已开发出非官方固件使其运行 macOS。本文记录了在 2.0 版本 ROM 上的启动测试结果，发现存在内存映射冲突和图形初始化失败等问题。该项目体现了复古计算社区的创造力与技术深度。",
+      "summaryEn": "Continuing the saga of Apple Network Server ROM hacking, this post details testing macOS on version 2.0 ROMs—despite official support only for IBM's proprietary AIX. The author documents boot attempts revealing memory mapping conflicts and graphics initialization failures. These efforts showcase the technical ingenuity of the retrocomputing community in pushing hardware boundaries.",
+      "reason": "对古董硬件和逆向工程感兴趣？这篇日志记录了如何用现代操作系统唤醒尘封二十年的经典服务器。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "49f7773a90cbff16",
+      "title": "Reinventing the Wheel",
+      "titleZh": "重新发明轮子：技术史上的重复尝试",
+      "link": "https://feed.tedium.co/link/15204/17331178/wheel-reinvention-technology-history",
+      "sourceName": "tedium.co",
+      "sourceUrl": "https://tedium.co",
+      "pubDate": "2026-05-03T13:41:32.000Z",
+      "category": "opinion",
+      "keywords": [
+        "reinventing the wheel",
+        "software development",
+        "best practices"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 13
+      },
+      "summary": "历史上不乏有人试图重新发明已有成熟解决方案的案例，有些甚至取得了惊人成功。文章列举了多个著名例子，如高德纳对算法的重新诠释、Unix 哲学在不同系统中的再现等。这些尝试并非徒劳无功，反而推动了技术创新和知识传播。关键在于能否在现有基础上带来真正的新价值。",
+      "summaryEn": "History is filled with attempts to reinvent well-established wheels, some shockingly successful. Examples include Knuth's reinterpretations of algorithms and Unix philosophy reimagined across systems. Rather than futile, these efforts often drive innovation and knowledge dissemination. The key lies in whether they add genuine new value atop existing foundations.",
+      "reason": "别轻易放弃造轮子——有时候最好的创新就藏在看似重复的努力之中。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Tedium: The Dull Side of the Internet.",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today in Tedium: Wheels (along with mousetraps) are the iconic inventions. And why not? The wheel is among the simplest of machines, and yet, just in terms of its applications for locomotion, the speed and volume of transportation it enabled was literally revolutionary. Despite this, the wheel has two major downsides: One, it requires an entire infrastructure of roads to unlock its full capability; and two, the wheel only goes in the direction it’s pointing. For the past nearly 200 years, a mostly obscure lineage of inventions attempted to address these problems, largely unsuccessfully. These are the new wheels. — John @ Tedium"
+          },
+          {
+            "type": "h3",
+            "text": "Sponsored By … Well, Us"
+          },
+          {
+            "type": "p",
+            "text": "Ever wanted to read Tedium without having those annoying ads all over the site? We have just the plan for you. Sign up for a $3 monthly membership on our Ko-Fi, and we promise we can get rid of them. We have the technology. And it beats an ad blocker. (Web-only for now, email coming soon!)"
+          },
+          {
+            "type": "h3",
+            "text": "Driving the Screw: A twist on a classic"
+          },
+          {
+            "type": "p",
+            "text": "In 1899, Jacob Morath filed a patent for a tractor that had, in place of wheels, a pair of sharp augers that would plough the field while propelling the vehicle over it."
+          },
+          {
+            "type": "p",
+            "text": "These augers rotated in opposite directions—a stabilizing technique used across the so-called archimedes screw vehicles of which the Morath device was the first, but also now common across aviation. Since the two screws are counter-revolving, they compensate for any side-to-side motion, particularly since they’re so much longer than they are wide. Such a device could drive in a straight line across reasonably stable terrain, tearing up the earth as it did. But steering presented a problem, which Morath solved by also having wheels (which would raise as the screws lowered and vice versa). Eight years later, before Morath’s patent was expired, competitor Peevey solved this problem by raising or lowering one screw, thus changing the amount of contact it has with the ground. The raised screw would mostly slip, so the vehicle would move in the direction of the lowered screw—a feature we’ll later see in some wheel assemblies."
+          },
+          {
+            "type": "p",
+            "text": "Screw vehicles did not meet success in agriculture: Morath’s design seems never to have been built, and later variations couldn’t compete with the new technology of tank treads. However, in the 1920s, the Armstead Snow Motor showed that there was a market for screw drives (this time, beefy barrels) to hook to your existing car or tractor so that it could whiz along the top of deep snow."
+          },
+          {
+            "type": "p",
+            "text": "During the second world war, ice-obsessed spy/mad scientist Geoffrey Pyke pushed the British to adopt screws over treads for snow warfare (the same way he pushed them to adopt aircraft carriers made of frozen paper mache), unsuccessfully. Again, tank treads won out."
+          },
+          {
+            "type": "p",
+            "text": "Finally, in the 1960s, screw vehicles found their (very small) niche: the water. A large hollow barrel with a screw along the outside will function semi-acceptably on snow, dirt, and mud while also acting as a floating propeller, so these machines are truly all-terrain—at least in theory. In practice, it typically makes more sense to use a vehicle suited for your particular environment, rather than a single vehicle that works poorly everywhere—unless, like the intended users of the ZIL, you are a lost cosmonaut."
+          },
+          {
+            "type": "h3",
+            "text": "Wheels Within Wheels: It’s wheels all the way down"
+          },
+          {
+            "type": "p",
+            "text": "One interesting thing about screw locomotion is that you move at a right angle to the direction you would move if you were using a wheel, despite the screws themselves being wheel shaped. So, combining the notion of the wheel and the screw opened up new possibilities for compound wheels—strange lumpy multi-ocular things that, by mounting wheels on (or embedding wheels in) other wheels, allow you to change direction without steering."
+          },
+          {
+            "type": "p",
+            "text": "The simplest version of this is the omni wheel, where powered wheels are wrapped perpendicularly around the edge of a wheel. By stopping your large wheel and activating the smaller ones, you can move at a right angle, albeit much more slowly, since you are rolling on much smaller wheels."
+          },
+          {
+            "type": "p",
+            "text": "Another variation is the Ilon wheel (after its inventor—also known as the Mechanum wheel, after the company that manufactured it, and the Swedish wheel, after the inventor’s nationality), a wheel wrapped in powered wheels mounted at a 45-degree angle. It is essentially a screw made of wheels mounted on a wheel. A single Ilon wheel can move back and forth along two axes, but four can rotate in place as well as moving side to side."
+          },
+          {
+            "type": "p",
+            "text": "The problem with all of these is that the actual amount of surface area you are rotating against the ground depends upon the direction you’re moving. And so, all of the exotic motions that these wheels are capable of are very slow when used on something heavy (like a vehicle). Instead, these wheels are largely used in robots and sorting machines."
+          },
+          {
+            "type": "h3",
+            "text": "Tri-Star Pictures, the segue to the Segway"
+          },
+          {
+            "type": "p",
+            "text": "In the late 1960s, some engineers at Boeing tried using the wheels-within-wheels concept for an all-terrain vehicle—by reducing the central wheel to an abstraction. The tri-star wheel arrangement gives you three wheels in a triangle, linked together in such a way that the group of wheels may turn freely while each wheel is driven by a shared power source."
+          },
+          {
+            "type": "p",
+            "text": "On solid ground, you drive on two wheels; if you hit a pothole deep enough to trap an ordinary vehicle, instead, the whole assembly will flip over and you’ll drive on barely noticing a bump."
+          },
+          {
+            "type": "p",
+            "text": "Unlike the screw drive, whose relationship with the ground is tenuous at best and who wastes a huge amount of energy in slippage, each wheel in the tri-star configuration is potentially quite ordinary. And if you want it, you can have the nice thick contact patch you’d expect from car tires: a car retrofitted with these can still drive at highway speeds."
+          },
+          {
+            "type": "p",
+            "text": "However, you need three times the number of wheels and tires, along with a bunch of extra hardware for the framework and power transfer, and then you also can’t turn very well because your front wheels are twice as long."
+          },
+          {
+            "type": "p",
+            "text": "Not even the military was encountering massive potholes often enough to make these tradeoffs worthwhile: the full extent of their interest in this technology seems to have been sticking one on a prototype howitzer in the 70s."
+          },
+          {
+            "type": "p",
+            "text": "Instead, tri-star wheels went to the movies, as the most interesting visual element of the Landmaster, the armored amphibious tank that’s the only memorable part of the 1977 nuclear-winter flop Damnation Alley."
+          },
+          {
+            "type": "p",
+            "text": "(The Landmaster is so memorable that it appears in lots of other things and has inspired an unrelated electric tractor that has taken its name but lacks the signature wheel system. The movie, on the other hand, ruined the reputation of an otherwise well-liked short story already damaged by a weak novelization.)"
+          },
+          {
+            "type": "p",
+            "text": "Today, tri-stars are mostly used for stair-climbing wheelchairs (notably those by Dean Kamen, who was best known for these before he became much better known for the Segway). NASA, for its part, prefers to solve the same problems with its spidery rocker-bogie suspension, which keeps the body of the vehicle steady better and requires fewer moving parts, while simultaneously looking deeply upsetting."
+          },
+          {
+            "type": "h3",
+            "text": "Platforms, which aren’t just limited to Lego"
+          },
+          {
+            "type": "p",
+            "text": "There is a wheel that we have, so far, been ignoring: the circle formed by the arrangement of drive wheels on the bottom of our vehicle. We turn this abstract wheel when we rotate the vehicle."
+          },
+          {
+            "type": "p",
+            "text": "With two independently-powered ordinary wheels and a caster, we can drive forward and back (by keeping the power to both wheels consistent), turn gradually (by pushing more power to one wheel than the other), or do tight spins (by turning one wheel off entirely)."
+          },
+          {
+            "type": "p",
+            "text": "This is a differential drive platform, and if you balance things perfectly, you can even remove the caster. The problem with two-wheel differential drives is that, without a caster creating a third point of contact with the ground, and if you go too fast your vehicle is going to flip forward and back. The center of gravity has to be maintained very carefully. (And casters get stuck, as anyone who has ever used a shopping cart or office chair can tell you.)"
+          },
+          {
+            "type": "p",
+            "text": "Enter the holonomic drive: rather than using the differential between two parallel wheels, use the differential between three wheel assemblies arranged in a triangle. Use rotating wheels and you have a synchro drive. If these wheel assemblies are omni or Ilon wheels, then this is called a kiwi platform."
+          },
+          {
+            "type": "p",
+            "text": "If instead these are “linear wheels” (i.e., a pair of thick wheels at right angles to each other, resting on the ground along their edges), then this is called a Killough platform."
+          },
+          {
+            "type": "p",
+            "text": "With three wheel assemblies, rotation and movement is possible with less slipping than a four-wheel arrangement. With linear wheels, it’s not necessary to adjust for the size difference between the rollers and the main wheel body found in omni wheels."
+          },
+          {
+            "type": "p",
+            "text": "These platforms can do all sorts of impressive acrobatics, but they require computer control—steering involves a lot of math—so they are mostly used in robots, and not in manned or remote-control vehicles. In fact, it was hard for me to find pictures of holonomic drive platforms not made of Legos!"
+          },
+          {
+            "type": "p",
+            "text": "While there are industrial uses, they appear to be downstream of a short-lived vogue for holonomic drives in high school and college robotics clubs about 20 years ago—feeding the imaginations of kids who have now become senior engineers."
+          },
+          {
+            "type": "p",
+            "text": "Our list so far has been skirting the outlines of a few massive gaps: new wheels like the ones we have been discussing, but so successful and omnipresent that we do not consider them exotic. A couple you might be familiar with:"
+          },
+          {
+            "type": "li",
+            "text": "The caster wheel only dates to the middle of the eighteenth century, and wasn’t used outside of furniture manufacturing until the middle of the nineteenth; the conceptual innovation that it represents is similar to technical wheels."
+          },
+          {
+            "type": "li",
+            "text": "The tank tread came up at the same time as the archimedes screw drive, and out-competed it along with its cousins, the pedrail and dreadnought wheels."
+          },
+          {
+            "type": "p",
+            "text": "In many ways, the wheel itself is “new”: the myth of the wheel as the most monumental invention is itself an invention of the 20th century, when road infrastructure was massively expanded to support those new wheeled inventions—cars and bicycles. Only with nicely-paved and well-maintained modern asphalt roads going everywhere you want to go does it become obviously better to take a vehicle with wheels rather than riding an animal or walking."
+          },
+          {
+            "type": "p",
+            "text": "In fact, there is a pattern, which we can see in the history of the wheel itself and in its many variations: The wheel spends centuries or millennia after its invention in toy, low-load operations. It remained limited until design refinements coincide with changes to infrastructure to suddenly make it widespread."
+          },
+          {
+            "type": "p",
+            "text": "The era of tri-star-configured linear screw wheelsets is at hand after the squid people invade, I’m sure."
+          },
+          {
+            "type": "p",
+            "text": "--"
+          },
+          {
+            "type": "p",
+            "text": "Thanks to John for sharing his piece. Be sure to check out his website."
+          },
+          {
+            "type": "p",
+            "text": "Find this one an interesting read? Share it with a pal!"
+          },
+          {
+            "type": "p",
+            "text": "Develop your analytical side: Check out our sponsor Scrimba, which mixes video lessons with interactive code windows—and makes it feel downright approachable. Sign up here for a 20% discount."
+          }
+        ],
+        "translations": [
+          "今日 Tedium：轮子（以及捕鼠夹）堪称标志性发明。这也不无道理——轮子是最简单的机械之一，仅就其在运动领域的应用而言，它所实现的运输速度与规模堪称革命性突破。然而，轮子也有两大缺陷：一是需要一整条道路基础设施才能发挥全部潜力；二是只能朝其指向的方向前进。近200年来，一系列鲜为人知的发明试图解决这些问题，但大多收效甚微。这些便是新型轮子。——约翰 @ Tedium",
+          "由……我们赞助",
+          "是否曾希望阅读 Tedium 时不再被恼人的广告充斥？我们恰好有解决方案。请通过我们的 Ko-Fi 订阅每月3美元的会员服务，我们承诺将清除这些广告。我们有这个技术。而且它比广告拦截器更胜一筹。（目前仅限网页端，电子邮件即将推出！）",
+          "驱动螺旋：对经典的巧妙改造",
+          "1899年，雅各布·莫拉思为一种拖拉机申请了专利，该拖拉机以一对尖锐的螺旋钻取代了传统车轮，在推进车辆的同时翻耕土地。",
+          "这两个螺旋钻反向旋转——这一稳定技术后来被广泛应用于所谓的阿基米德螺旋车辆中，而莫拉思的设备正是这类装置的首创，如今在航空领域也相当常见。由于两个螺旋桨反向转动，它们能抵消任何侧向运动，尤其是当它们长度远大于宽度时。这种装置可在相对平坦的地形上直线行驶，行进过程中会翻动地表土壤。但转向却成了难题，莫拉思通过让螺旋钻与车轮联动来解决这一问题（螺旋钻下降时车轮抬起，反之亦然）。八年后，在莫拉思专利到期前，竞争对手皮维提出了解决方案：通过升降其中一个螺旋钻来改变其与地面的接触面积。升起的螺旋钻基本打滑，因此车辆会朝着降下的螺旋钻方向移动——这一设计后来也在某些轮式机构中有所体现。",
+          "螺旋车辆在农业领域并未取得成功：莫拉思的设计似乎从未实际建造，后来的变体也无法与坦克履带的新技术竞争。不过，20世纪20年代，阿姆斯壮雪橇马达证明，螺旋驱动（这次是厚重的滚筒）确实存在市场——人们可以将它连接到现有的汽车或拖拉机上，使其在深雪中疾驰而过。",
+          "第二次世界大战期间，痴迷冰层的间谍/疯狂科学家杰弗里·皮克极力推动英国在雪地作战中使用螺旋而非履带（就像他极力主张用冷冻纸莎草制作航空母舰一样），但最终未能成功。最终，坦克履带仍是主流选择。",
+          "直到20世纪60年代，螺旋车辆才找到其（极其有限的）用武之地：水域。一个带有外部螺旋的大中空滚筒在雪地、泥土和泥浆上尚可勉强运作，同时还能充当浮力推进器，因此这类机器理论上具备全地形能力。但实际上，通常更明智的做法是使用专门适配特定环境的车辆，而非那种处处平庸的通用车型——除非，像齐奥尔科夫斯基研究所（ZIL）的预期用户那样，你是一名迷路的宇航员。",
+          "轮中之轮：层层皆是轮子",
+          "螺旋推进的一个有趣之处在于，尽管螺丝本身呈轮状，但你的移动方向却与车轮转动时的方向垂直。因此，将车轮与螺丝的概念结合起来，为复合轮开辟了新的可能性——这些奇特的、多眼且凹凸不平的装置，通过在轮子上安装（或嵌入）其他轮子，实现了无需转向即可改变方向。",
+          "这种设计的最简单形式是全方位轮（omni wheel），即动力轮垂直环绕在中心轮的边缘。通过停止大轮并激活小轮，你可以实现垂直方向的移动，尽管速度会慢得多，因为你实际上是在更小的轮子上滚动。",
+          "另一种变体是伊隆轮（以发明者命名，也被称为麦昆轮，因生产它的公司而得名，又因发明者的国籍而被称为瑞典轮），其结构是在一个轮子的周围以45度角安装动力轮。它本质上是一个由轮子组成的螺旋结构，安装在另一个轮子上。单个伊隆轮可以在两个轴上前后移动，但四个这样的轮子组合起来则可以实现原地旋转以及侧向移动。",
+          "所有这些设计的问题在于，实际与地面接触并旋转的面积取决于移动方向。因此，当用于重型车辆时，这些轮子能够实现的各种奇特运动都会变得非常缓慢。正因如此，这些轮子主要应用于机器人和分拣机器中。",
+          "三星级影业，通往赛格威的过渡",
+          "20世纪60年代末，波音公司的几位工程师尝试将“轮中之轮”的概念应用于全地形车，他们通过将中心轮简化为一个抽象概念来实现这一目标。三星级轮式布局采用三个轮子组成三角形，彼此连接的方式使得整个轮组可以自由转动，同时每个轮子都由同一动力源驱动。",
+          "在平坦地面上，车辆依靠两个轮子行驶；如果遇到足够深的坑洞足以困住普通车辆，整个轮组则会翻转过来，而你几乎不会察觉到颠簸。",
+          "与螺旋推进不同，三星级配置的每个轮子与地面的关系更为直接，能量损耗也更低。如果你需要，还可以获得像汽车轮胎那样厚实且接触面积良好的接地效果：一辆改装了这种轮子的汽车仍然可以保持高速公路上的行驶速度。",
+          "然而，你需要三倍的轮子和轮胎数量，还需要额外的框架和动力传输硬件。此外，由于前轮长度加倍，车辆的转向性能也会受到很大影响。",
+          "即使是军队，也很少遇到足够多的深坑来证明这些权衡是值得的：他们对这项技术的兴趣似乎仅限于20世纪70年代在一门原型火炮上安装了一个这样的轮子。",
+          "相反，三星级轮子走向了大银幕，成为1977年电影《末日迷航》中最引人注目的视觉元素——兰德大师，这辆装甲两栖坦克是整部电影唯一令人难忘的部分。",
+          "（兰德大师如此令人印象深刻，以至于它出现在许多其他作品中，并启发了一款同名但缺乏标志性轮式系统的电动拖拉机。相比之下，这部电影反而毁掉了原本广受好评的短篇小说的名声，而这篇小说早已因糟糕的小说化改编而受损。）",
+          "如今，三脚架结构主要应用于爬楼梯轮椅（尤其是迪恩·卡门在发明赛格威之前最著名的作品），而NASA则更倾向于用其蜘蛛般的摇臂-摆杆悬挂系统来解决相同问题——这种设计能更好地保持车体稳定，且运动部件更少，同时看起来也更具未来感。",
+          "平台并不仅限于乐高积木",
+          "我们车辆底部驱动轮呈环形排列，形成一个抽象意义上的\"圆轮\"，目前我们一直忽略这个结构。当车辆旋转时，实际上是在转动这个虚拟的圆轮。",
+          "通过两个独立驱动的常规车轮和一个万向轮，我们可以实现前进后退（保持两轮动力一致）、缓慢转向（给其中一侧车轮施加更多动力）或原地旋转（完全关闭其中一个车轮的动力）。",
+          "这就是差速驱动平台，如果平衡得当甚至可以移除万向轮。但双轮差速驱动的问题在于：没有万向轮提供第三个接地点，一旦速度过快，车辆就会前后翻转。必须非常谨慎地控制重心位置（而且万向轮很容易卡住，用过购物车或办公椅的人都知道）。",
+          "于是出现了全向驱动：不再使用平行双轮的差速，而是采用三角形排列的三个轮组之间的差速。若这些轮组可旋转，则称为同步驱动；若使用全向轮或Ilon轮，则称为Kiwi平台。",
+          "若改用\"线性轮\"（即一对垂直放置的厚轮，沿边缘着地），则称为Killough平台。",
+          "相比四轮布局，三个轮组配合旋转和移动时摩擦更小。使用线性轮时，无需像全向轮那样调整滚轮与主轮体之间的尺寸差异。",
+          "这些平台能完成各种令人惊叹的高难度动作，但需要计算机控制——转向涉及大量数学计算——因此主要用于机器人领域，而非载人或遥控车辆。事实上，我很难找到非乐高材质的全向驱动平台图片！",
+          "尽管有工业应用，但它们似乎源于约20年前短暂流行的高中及大学机器人俱乐部热潮——当时激发了现在已成为资深工程师的孩子们想象力。",
+          "我们的清单一直在回避几个巨大的空白：就像我们讨论过的新型车轮一样，这些技术同样成功且无处不在，以至于我们不再认为它们具有创新性。你可能熟悉其中的几种：",
+          "万向轮直到18世纪中期才出现，直到19世纪中期才被家具制造业以外领域采用，它所代表的创新概念与技术车轮相当。",
+          "坦克履带与阿基米德螺旋推进器几乎同时出现，并最终淘汰了后者及其同类——踏板轮和Dreadnought轮。",
+          "从很多方面来看，车轮本身其实是“新”的：将车轮视为最伟大发明之一的说法，本身就是20世纪才出现的观念——当时道路基础设施大规模扩建，以支持汽车和自行车这些新型轮式交通工具。只有在铺设有优质沥青、维护良好的现代道路上畅通无阻时，乘坐带轮子的车辆才明显优于骑马或步行。",
+          "事实上，历史呈现出一种规律：无论是车轮本身的发展，还是其各种变体，都遵循着相似的轨迹——在发明后的数百年甚至数千年里，车轮主要用于玩具或低负载场景。直到设计改进与基础设施变革同步发生时，它才突然被广泛采用。",
+          "三排星型线性螺旋轮组的时代即将到来，我敢肯定，在鱿鱼人入侵之后。",
+          "--",
+          "感谢约翰分享他的文章。请务必访问他的网站。",
+          "觉得这篇文章有趣？分享给一位朋友吧！",
+          "培养你的分析能力：看看我们的赞助商 Scrimba，它将视频课程与交互式代码窗口相结合，让学习编程变得格外轻松。点击此处注册，享受20%折扣优惠。"
+        ]
+      }
+    },
+    {
+      "slug": "9dfbeef11fe58cd7",
+      "title": "Vertically Aligning Roman Numerals in Code",
+      "titleZh": "在代码中垂直对齐罗马数字",
+      "link": "https://shkspr.mobi/blog/2026/05/vertically-aligning-roman-numerals-in-code/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-05-03T11:34:59.000Z",
+      "category": "other",
+      "keywords": [
+        "Roman numerals",
+        "PHP",
+        "Unicode"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 4,
+        "timeliness": 3,
+        "total": 10
+      },
+      "summary": "作者在使用 PHP 处理罗马数字时遇到对齐问题：由于 Unicode 字符宽度不一致（如 'Ⅰ' 窄而 'ⅭⅯ' 宽），导致数组键值无法整齐排列。为解决此问题，他采用 CSS Flexbox 结合 `ch` 单位进行精确宽度控制，实现了视觉上的完美对齐。该方法适用于任何需要美观展示符号映射的场景。",
+      "summaryEn": "When working with Roman numerals in PHP, inconsistent Unicode character widths (e.g., narrow 'Ⅰ' vs wide 'ⅭⅯ') caused misaligned array keys. The solution uses CSS Flexbox with `ch` units for precise width control, achieving visually perfect alignment. This technique applies to any scenario requiring aesthetically pleasing symbol-to-value mappings.",
+      "reason": "如果你的代码里也有需要美观展示的符号对照表，这个小技巧能让你的终端输出瞬间提升专业感。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I have a PHP function which uses Roman Numerals. It looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "$romanNumerals = [\n    \"Ⅿ\"  => 1000,\n    \"ⅭⅯ\" => 900,\n    \"Ⅾ\"  => 500,\n    \"ⅭⅮ\" => 400,\n    \"Ⅽ\"  => 100,\n    \"ⅩC\" =>  90,\n    \"Ⅼ\"  =>  50,\n    \"ⅩⅬ\" => 40,\n    \"Ⅹ\"  => 10,\n    \"Ⅸ\"  => 9,\n    \"Ⅷ\" => 8,\n    \"Ⅶ\"  => 7,\n    \"Ⅵ\"  => 6,\n    \"Ⅴ\"   => 5,\n    \"Ⅳ\"  => 4,\n    \"Ⅲ\"  => 3,\n    \"Ⅱ\"  => 2,\n    \"Ⅰ\"   => 1\n];"
+          },
+          {
+            "type": "p",
+            "text": "The problem is, the operators don't line up and the whole thing looks messy. Why? Because the Unicode Roman Numerals are not monospaced! ⅭⅯ is a different width to ⅩC and Ⅷ is only a single character!  Copy the above to a text editor and see if you can get neat columns. I bet you can't!"
+          },
+          {
+            "type": "p",
+            "text": "I'm obsessed with vertically aligning my code. So how to solve this ugly problem?"
+          },
+          {
+            "type": "p",
+            "text": "The answer was simple. Assign keys to the values and then flip the array!"
+          },
+          {
+            "type": "code",
+            "text": "$romanNumerals = array_flip([\n    1000 => \"Ⅿ\",\n     900 => \"ⅭⅯ\",\n     500 => \"Ⅾ\",\n     400 => \"ⅭⅮ\",\n     100 => \"Ⅽ\",\n      90 => \"ⅩC\",\n      50 => \"Ⅼ\",\n      40 => \"ⅩⅬ\",\n      10 => \"Ⅹ\",\n       9 => \"Ⅸ\",\n       8 => \"Ⅷ\",\n       7 => \"Ⅶ\",\n       6 => \"Ⅵ\",\n       5 => \"Ⅴ\",\n       4 => \"Ⅳ\",\n       3 => \"Ⅲ\",\n       2 => \"Ⅱ\",\n       1 => \"Ⅰ\"\n]);"
+          },
+          {
+            "type": "p",
+            "text": "There! Doesn't that look much neater!"
+          },
+          {
+            "type": "p",
+            "text": "As was written long ago:"
+          },
+          {
+            "type": "quote",
+            "text": "A computer language is not just a way of getting a computer to perform operations but rather … it is a novel formal medium for expressing ideas about methodology. Thus, programs must be written for people to read, and only incidentally for machines to execute."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "9e39180daab1a38a",
+      "title": "QuickQWERTY 1.2.3",
+      "titleZh": "QuickQWERTY 1.2.3 发布：浏览器内打字练习工具更新",
+      "link": "https://susam.net/code/news/quickqwerty/1.2.3.html",
+      "sourceName": "susam.net",
+      "sourceUrl": "https://susam.net",
+      "pubDate": "2026-05-03T00:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "QuickQWERTY",
+        "typing tutor",
+        "web app"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 3,
+        "total": 8
+      },
+      "summary": "QuickQWERTY 是一款基于浏览器的 QWERTY 键盘打字训练工具，现已更新至 1.2.3 版本。本次更新修复了此前迁移至 Codeberg 时遗留的许可证链接错误。该工具无需安装，直接在浏览器中运行，适合初学者快速提升打字速度与准确性。项目源码托管于 Codeberg，遵循开放许可协议。",
+      "summaryEn": "QuickQWERTY 1.2.3 is now available—a browser-based touch typing tutor for QWERTY keyboards that runs directly in your web browser. This update fixes a broken license link introduced during the recent migration from GitHub to Codeberg. No installation required; ideal for beginners aiming to improve typing speed and accuracy. Source code is hosted on Codeberg under an open license.",
+      "reason": "想找一款轻量级、零配置的在线打字练习工具？QuickQWERTY 正好满足你对简单高效学习体验的所有期待。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "By Susam Pal on 03 May 2026"
+          },
+          {
+            "type": "p",
+            "text": "QuickQWERTY 1.2.3 is now\n  available.  QuickQWERTY is a web-based touch typing tutor for QWERTY\n  keyboards that runs directly in the browser."
+          },
+          {
+            "type": "p",
+            "text": "This release includes two small bug fixes.  In the\n  previous release, QuickQWERTY source code\n  management moved from GitHub to Codeberg.  During that update, the\n  licence link in the footer was updated incorrectly.  The broken\n  licence link has now been fixed."
+          },
+          {
+            "type": "p",
+            "text": "Further, there was a minor bug that caused a redundant dialog box to\n  appear while switching between 6-7 split and 5-6 split.  Units 16 to\n  20 contain two links labeled '6-7 split' and '5-6 split' which allow\n  you to select how you want to split the number keys between left and\n  right hands.  Clicking either of those links brings up a dialog that\n  explains what the two splits mean and prompts you to confirm in\n  order to make the switch.  Say, the '6-7 split' was already the\n  chosen split.  Clicking the '6-7 split' label triggered the dialog\n  box unnecessarily.  A dialog was unnecessary in that case since if\n  you were already on the '6-7 split', clicking the '6-7 split' label\n  resulted in no switch.  This unnecessary dialog has now been\n  eliminated."
+          },
+          {
+            "type": "p",
+            "text": "To try out QuickQWERTY, please visit\n  quickqwerty.html.  The\n  source code of QuickQWERTY is available under the terms of the MIT\n  licence at codeberg.org/susam/quickqwerty."
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
