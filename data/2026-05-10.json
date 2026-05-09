@@ -1,0 +1,1600 @@
+{
+  "date": "2026-05-10",
+  "generatedAt": "2026-05-09T18:09:17.265Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 81,
+    "totalArticles": 2414,
+    "filteredArticles": 9,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：AI 正重塑软件工程生态，既提升弱工程师效率，也加剧对顶尖人才的依赖；Web 开发理念持续演进，从 URL 设计到实时通信协议，开发者更强调语义准确与用户体验；同时，开源项目评估体系引发反思，业界呼吁超越表面指标，关注真实健康度。",
+  "articles": [
+    {
+      "slug": "4603f86027bf6141",
+      "title": "Using Claude Code: The Unreasonable Effectiveness of HTML",
+      "titleZh": "使用 Claude Code：HTML 的不合理有效性",
+      "link": "https://simonwillison.net/2026/May/8/unreasonable-effectiveness-of-html/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-08T21:00:11.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Claude Code",
+        "HTML",
+        "output format"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "文章探讨了为何在请求 Claude 输出结构化内容时，HTML 比 Markdown 更具优势。作者通过多个实际案例展示了 HTML 能够更精确地控制布局、样式和语义结构，从而生成更可靠、可维护的代码片段。文中还提供了针对 Claude 的提示词建议，以引导其输出高质量的 HTML。核心观点是：对于需要精确格式和功能的 AI 生成内容，HTML 是比 Markdown 更优的选择。",
+      "summaryEn": "The article argues that HTML is superior to Markdown for requesting structured output from Claude, due to its ability to precisely control layout, styling, and semantic structure. It presents multiple practical examples demonstrating how HTML generates more reliable and maintainable code snippets. The author also provides prompt suggestions for guiding Claude to produce high-quality HTML. The core argument is that for AI-generated content requiring exact formatting and functionality, HTML is a better choice than Markdown.",
+      "reason": "如果你正在寻找一种方法来提升与 Claude 等 AI 助手交互时的输出质量，特别是需要精确控制最终呈现效果，那么这篇文章提供的见解和实例将极具价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "8th May 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Using Claude Code: The Unreasonable Effectiveness of HTML. Thought-provoking piece by Thariq Shihipar (on the Claude Code team at Anthropic) advocating for HTML over Markdown as an output format to request from Claude."
+          },
+          {
+            "type": "p",
+            "text": "The article is crammed with interesting examples (collected on this site) and prompt suggestions like this one:"
+          },
+          {
+            "type": "quote",
+            "text": "Help me review this PR by creating an HTML artifact that describes it. I'm not very familiar with the streaming/backpressure logic so focus on that. Render the actual diff with inline margin annotations, color-code findings by severity and whatever else might be needed to convey the concept well."
+          },
+          {
+            "type": "p",
+            "text": "I've been defaulting to asking for most things in Markdown since the GPT-4 days, when the 8,192 token limit meant that Markdown's token-efficiency over HTML was extremely worthwhile."
+          },
+          {
+            "type": "p",
+            "text": "Thariq's piece here has caused me to reconsider that, especially for output. Asking Claude for an explanation in HTML means it can drop in SVG diagrams, interactive widgets, in-page navigation and all sorts of other neat ways of making the information more pleasant to navigate."
+          },
+          {
+            "type": "p",
+            "text": "I wrote about Useful patterns for building HTML tools last December, but that was focused very much on interactive utilities like the ones on my tools.simonwillison.net site. I'm excited to start experimenting more with rich HTML explanations in response to ad-hoc prompts."
+          },
+          {
+            "type": "h3",
+            "text": "Trying this out on copy.fail"
+          },
+          {
+            "type": "p",
+            "text": "copy.fail describes a recently discovered Linux security exploit, including a proof of concept distributed as obfuscated Python."
+          },
+          {
+            "type": "p",
+            "text": "I tried having GPT-5.5 create an HTML explanation of the exploit like this:"
+          },
+          {
+            "type": "quote",
+            "text": "curl https://copy.fail/exp | llm -m gpt-5.5 -s 'Explain this code in detail. Reformat it, expand out any confusing bits and go deep into what it does and how it works. Output HTML, neatly styled and using capabilities of HTML and CSS and JavaScript to make the explanation rich and interactive and as clear as possible'"
+          },
+          {
+            "type": "p",
+            "text": "Here's the resulting HTML page. It's pretty good, though I should have emphasized explaining the exploit over the Python harness around it."
+          }
+        ],
+        "translations": [
+          "2026年5月8日 - Link Blog",
+          "使用 Claude Code：HTML 的不可思议的有效性。Thariq Shihipar（Anthropic 公司 Claude Code 团队成员）撰写的一篇发人深省的短文，主张在与 Claude 交互时，应优先选择 HTML 而非 Markdown 作为输出格式。",
+          "文章中包含大量有趣的示例（可在该网站查阅）以及如下提示建议：",
+          "帮我审查这个 PR，通过创建一个描述它的 HTML 工件来实现。我对流式传输/背压逻辑不太熟悉，请重点关注这部分内容。以行内边距注释的形式渲染实际的差异，并根据严重程度对发现的问题进行颜色编码，以及其他任何有助于清晰传达概念的内容。",
+          "自 GPT-4 时代以来，我一直默认将大部分请求以 Markdown 格式提出，当时 8,192 个 token 的限制意味着 Markdown 在 token 效率上相对于 HTML 具有极大的优势。",
+          "Thariq 的这篇文章让我重新思考了这一做法，尤其是在输出方面。要求 Claude 用 HTML 解释某个概念，意味着它可以嵌入 SVG 图表、交互式组件、页面内导航等功能，从而让信息更易于浏览和理解。",
+          "我曾在去年十二月写过关于构建 HTML 工具的有用模式，但那篇文章主要聚焦于像 my tools.simonwillison.net 站点上的那些交互式实用工具。我很期待开始尝试更多针对临时提示的丰富 HTML 解释。",
+          "正在 copy.fail 上进行测试",
+          "copy.fail 描述了一个最近发现的 Linux 安全漏洞，并附带一个以混淆 Python 代码形式分发的概念验证程序。",
+          "我尝试让 GPT-5.5 按照以下方式生成该漏洞的 HTML 解释：",
+          "curl https://copy.fail/exp | llm -m gpt-5.5 -s '详细解释这段代码。重新格式化，展开所有令人困惑的部分，深入讲解其工作原理。输出为样式精美的 HTML，充分利用 HTML、CSS 和 JavaScript 的能力，使解释内容丰富、互动性强，尽可能清晰易懂'",
+          "这是生成的 HTML 页面。整体表现相当不错，不过我应该更强调解释漏洞本身，而不是围绕它的 Python 封装代码。"
+        ]
+      }
+    },
+    {
+      "slug": "48921cedb31507f8",
+      "title": "AI makes weak engineers less harmful",
+      "titleZh": "AI 让弱工程师的危害变小",
+      "link": "https://seangoedecke.com/ai-makes-weak-engineers-less-harmful/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-05-09T00:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "software engineering",
+        "productivity"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "软件工程能力分布呈强长尾特征，顶尖工程师产出远超平均水平，而最弱的工程师则常带来净负面影响。AI 工具通过自动化重复性任务、提供代码审查和建议，显著降低了弱工程师造成的错误和延误。文章认为，AI 并非取代人类工程师，而是通过赋能，使弱工程师能贡献更多，同时减轻团队负担。",
+      "summaryEn": "Software engineering ability follows a strong heavy-tailed distribution, with top engineers producing vastly more useful output than average, while the weakest often create net-negative problems for their teams. AI tools mitigate this by automating repetitive tasks, providing code reviews, and offering suggestions, significantly reducing errors and delays caused by weaker engineers. The article posits that AI doesn't replace human engineers but empowers them, allowing weaker ones to contribute more while alleviating team burdens.",
+      "reason": "理解 AI 如何改变软件工程团队中不同技能水平成员的角色和影响，对于技术管理者和技术从业者来说至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Like other kinds of puzzle-solving, software engineering ability is strongly heavy-tailed. The strongest engineers produce way more useful output than the average, and the weakest engineers often are actively net-negative: instead of moving projects along, they create problems that their colleagues have to spend time solving. That’s why many tech companies try to build a small, ludicrously well-paid team instead of a large team of more average engineers, and why so far this seems to be a winning strategy."
+          },
+          {
+            "type": "p",
+            "text": "Being effective in a large tech company is often about managing this phenomenon: trying to arrange things so that the most competent people land on projects you want to succeed, and the least competent are shunted out of the way1. For instance, if you’re technical lead on a project, you more or less have to ensure2 that the most critical pieces are in the hands of people who won’t screw them up (whether by directly assigning the work, or by making sure someone can “sit on the shoulder” of the engineer who you’re worried about)."
+          },
+          {
+            "type": "p",
+            "text": "Claude Code changed this. Frontier LLMs don’t have the taste or the system familiarity of a strong engineer, but they have absolutely raised the floor for weak engineers. Instead of getting a pull request that could never possibly work or would cause immediate problems, the worst you’ll now see is a standard LLM pull request: wrong in some ways, baffling in others, but at least functional on the line-by-line level and not so obviously incorrect that someone with no knowledge of the codebase could point it out. That is a huge improvement!"
+          },
+          {
+            "type": "p",
+            "text": "You can try this out yourself. If you attempt to deliberately make mistakes while working with a coding agent, you’ll find that the agent pushes back hard against many obvious errors (i.e. caching user data with a non-user-specific key, writing an infinite loop that might never terminate, or leaking open files). Of course, the agent will still miss subtle errors, particularly ones that require understanding other parts of the codebase."
+          },
+          {
+            "type": "p",
+            "text": "Working with the least effective engineers is now sometimes like working with a Claude Opus or Codex instance that you communicate with over Slack. Occasionally it’s literally that: your colleague is simply pasting your messages into Claude Code and pasting you the response. This is annoying, but it’s a much better experience than working with this kind of engineer directly. After all, you probably already work with a bunch of LLM instances. The Slack interface is not ideal - unlike using Claude Code directly, you sometimes wait hours or days for a response, and you don’t get visibility into the agent’s thought processes - but it’s still helpful on the margin. More compute being thrown at your problem is better than less."
+          },
+          {
+            "type": "p",
+            "text": "Of course, this isn’t a great state of affairs for the engineer in question, who is almost certainly learning less than if they were making their own (bad) decisions. It’s also a bad state of affairs for the company, who is paying a human salary and getting a Copilot subscription (which they’re likely also paying for)3. After the current push to figure out what value AI is adding to engineers, I suspect there will be a push to figure out what value engineers are adding to AI, and the engineers who aren’t adding much may find themselves out of a job."
+          },
+          {
+            "type": "p",
+            "text": "You can’t talk to Claude-over-Slack like you’d talk to normal Claude. If you tend to handle LLMs roughly (insulting them, or just being very curt), you’ll have to change your communication style. A human is going to read your messages, after all, even if you’re really interacting with a LLM. There’s no point being rude. But if, like me, you say please-and-thank-you to the models4, you can treat your LLM-using coworker as just another Copilot window or Codex tab. It’s far better than having to treat them as an unwitting saboteur."
+          },
+          {
+            "type": "p",
+            "text": "Not all net-negative engineers use AI tools like this. Many are strongly convinced in their own wrong opinions about how to build good software, or mistrust AI in general, or believe that relying heavily on LLMs is not a good way to improve5. But no strong engineers use AI tools like this. Even when they’re being lazy or sloppy, a capable engineer will have enough baseline taste to catch obvious AI-generated errors. So the phenomenon of engineers6 becoming thin wrappers around Claude Code is limited to the kind of engineers for whom this is an improvement in their work product."
+          },
+          {
+            "type": "li",
+            "text": "More charitably: many “least competent” engineers are just out of their comfort zone, and can be fine or even excel under the right circumstances (though in my view the best engineers are able to do good work in a wide variety of environments). Also, I don’t currently work with a lot of incompetent people. Much of this is based on past experience or talking to other engineers in the industry.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Since your managers are doing the same thing, this can sometimes feel like Moneyball: you’re trying to identify underappreciated talent who are strong enough to help you win without being so high-profile that your boss poaches them to lead something else.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I suppose it’s better to pay for nothing than to pay for net-negative output, but it still doesn’t seem good.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I think this is actually the right way to hold Claude Opus 4.7.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Is this true? I think relying on LLMs is not a great way for most engineers to improve, but if LLM output is consistently better than your own, it might be different. So long as you’re paying attention to where the LLM does better, it could actually be a good way to learn.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I don’t have as much experience (or anecdotes) about non-engineers falling into this trap, but this post has convinced me that it might be worse.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "Engineers do get promoted for writing simple codeIt’s a popular joke among software engineers that writing overcomplicated, unmaintainable code is a pathway to job security. After all, if you’re the only person who can work on a system, they can’t fire you. There’s a related take that “nobody gets promoted for simplicity”: in other words, engineers who deliver overcomplicated crap will be promoted, because their work looks more impressive to non-technical managers.Continue reading..."
+          }
+        ],
+        "translations": [
+          "和其他类型的解谜活动一样，软件工程能力也呈现出强烈的长尾分布。最优秀的工程师产出远超平均水平，而最差的工程师往往不仅毫无贡献，反而会制造问题，让同事不得不耗费时间解决。正因如此，许多科技公司选择组建小而高薪的团队，而非由普通工程师组成的大团队，而且目前看来这种策略确实奏效。",
+          "在大型科技公司中，高效运作的关键往往在于管理这种能力差异：设法让最有能力的人负责你希望成功的项目，同时把能力最弱的人排除在外。例如，如果你是一个项目的技术负责人，就必须确保最关键的部分由不会搞砸的人来负责——无论是直接分配任务，还是安排能“随时监督”你担心出问题的工程师。",
+          "Claude Code 改变了这一局面。前沿大语言模型虽然缺乏优秀工程师的品味和对系统的熟悉度，但它们显著提升了低水平工程师的下限。如今你看到的拉取请求，最差也就是一个标准的 LLM 生成的 PR：在某些方面出错，另一些地方令人困惑，但至少逐行来看是功能正常的，而且不会明显错误到连不了解代码库的人都能一眼看出问题。这已经是巨大的进步！",
+          "你可以亲自验证这一点。如果你故意在与编码代理合作时制造明显错误（比如用非用户专属的键缓存用户数据、编写可能永不终止的无限循环，或泄漏未关闭的文件），会发现代理会强烈抵制这些低级错误。当然，它仍可能遗漏那些需要理解整个代码库上下文的微妙错误。",
+          "现在与效率最低的工程师合作，有时就像通过 Slack 与 Claude Opus 或 Codex 这样的实例交流一样。偶尔甚至就是如此：你的同事只是把你的消息粘贴进 Claude Code，再把回复粘贴回来。这很烦人，但比起直接和这类工程师共事，体验已经好太多了。毕竟，你可能本来就在和各种 LLM 实例打交道。Slack 界面虽不理想——不像直接使用 Claude Code 那样能即时响应，也看不到代理的思考过程，有时甚至要等上几小时或几天——但总体上仍有帮助。多投入算力总比少投入强。",
+          "当然，对那位工程师而言，这种情况并不理想，因为他们几乎学不到东西，远不如自己做出（哪怕糟糕）的决定来得有益。对公司来说也不是好事——他们付着人类员工的薪水，却只换来一个 Copilot 订阅（很可能还要额外付费购买）。在搞清楚 AI 为工程师带来了多少价值之后，我怀疑接下来会转向研究：工程师能为 AI 带来什么价值？而那些无法创造价值的工程师，恐怕最终会面临失业。",
+          "你不能像对待普通 Claude 那样通过 Slack 与 Claude 交流。如果你习惯粗暴地对待大语言模型（比如辱骂它们，或者表现得非常敷衍），就必须改变沟通方式。毕竟，即使你是在和 LLM 交互，人类也会阅读你的消息。不礼貌毫无意义。但如果你像我一样，对模型使用“请”和“谢谢”，那么你可以把使用 LLM 的同事当作另一个 Copilot 窗口或 Codex 标签页来对待。这远比把他们当成无意识的破坏者要好得多。",
+          "并非所有净负工程师都会这样使用 AI 工具。许多人坚信自己关于如何构建优质软件的错误观点，或对 AI 普遍不信任，或认为过度依赖 LLM 并不是提升的有效途径。但强大的工程师绝不会这样使用 AI 工具。即使他们偶尔偷懒或粗心，一个有能力的工程师也具备足够的判断力来发现明显的 AI 生成错误。因此，工程师群体中“围绕 Claude Code 形成薄薄一层外壳”的现象，仅限于那些认为这种方式能改善其工作产出的工程师类型。",
+          "更善意地说：许多所谓“最不胜任”的工程师只是暂时不在舒适区内，在适当的环境下他们完全可以表现出色甚至超越他人（尽管我认为最优秀的工程师无论身处何种环境都能做出优秀成果）。另外，我目前并未与大量无能之辈共事。这部分内容更多基于过往经验，或是与行业内其他工程师的交流所得。\n↩",
+          "由于你的管理者也在做同样的事，这有时会让你感觉像是在打“魔球”（Moneyball）：你试图识别那些被低估的人才——他们足够强大以助你取胜，却又不够高调到会被老板挖走去领导其他项目。\n↩",
+          "当然，支付零成本总比为净负产出付费要好，但这仍不算理想状态。\n↩",
+          "我认为这实际上是评价 Claude Opus 4.7 的正确方式。\n↩",
+          "这真的成立吗？我认为对大多数工程师而言，依赖 LLM 并不是一个很好的提升途径；但如果 LLM 的输出始终优于你自己的成果，情况或许会有所不同。只要你关注 LLM 表现更优之处，它实际上可能成为一种不错的学习方式。\n↩",
+          "我对非工程师陷入此类陷阱的经验较少（也缺乏相关轶事），但本文让我相信，这种情况可能更严重。\n↩",
+          "如果你喜欢这篇文章，欢迎订阅我的邮件更新以获取新帖通知，或在 Hacker News 上分享它。",
+          "这里有一篇相关预告文章，包含与此文相同的标签。",
+          "工程师确实会因为编写简单代码而获得晋升。这是软件工程师圈子里的一个常见笑话：编写过度复杂、难以维护的代码反而能带来职位安全。毕竟，如果整个系统只有你能维护，公司就无法解雇你。还有一种说法是“没人会因为简洁性获得晋升”——换句话说，那些交付了过度复杂垃圾代码的工程师反而会被提拔，因为他们的成果在不懂技术的管理者眼中显得更具“技术含量”。继续阅读全文……"
+        ]
+      }
+    },
+    {
+      "slug": "ec7583402858e0ca",
+      "title": "I Will Not Add Query Strings to Your URLs",
+      "titleZh": "我不会在你的 URL 中添加查询字符串",
+      "link": "https://susam.net/no-query-strings.html",
+      "sourceName": "susam.net",
+      "sourceUrl": "https://susam.net",
+      "pubDate": "2026-05-09T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "URL design",
+        "query strings",
+        "web standards"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "作者 Chris Morgan 强烈反对在 URL 中使用查询字符串（query strings），认为它们是 Web 上的一个误设计。他主张使用路径（path）来传递参数，因为路径更符合 URL 作为资源标识符的本质，且更易于阅读、调试和缓存。文章回顾了 Web 早期的发展，并指出查询字符串虽然方便，但带来了诸如 SEO 问题、URL 长度限制和安全风险等弊端。",
+      "summaryEn": "Author Chris Morgan strongly advocates against using query strings in URLs, calling them a misfeature of the web. He argues for using paths instead, as they align better with URLs as resource identifiers and are easier to read, debug, and cache. The post traces the history of the web's early development and highlights drawbacks of query strings, such as SEO issues, URL length limits, and security risks.",
+      "reason": "对于关注 Web 开发最佳实践、SEO 优化和 URL 设计的开发者而言，这篇文章提供了一个值得深思的视角，挑战了常见的做法。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "By Susam Pal on 09 May 2026"
+          },
+          {
+            "type": "p",
+            "text": "Last evening, a short blog post appeared in my feed reader that felt\n  as if it spoke directly to me.  It is Chris Morgan's excellent post\n  I've banned\n  query strings."
+          },
+          {
+            "type": "h2",
+            "text": "Contents"
+          },
+          {
+            "type": "li",
+            "text": "Wisdom on the Web"
+          },
+          {
+            "type": "li",
+            "text": "Wander on the Web"
+          },
+          {
+            "type": "li",
+            "text": "Misfeature"
+          },
+          {
+            "type": "li",
+            "text": "Broken URLs"
+          },
+          {
+            "type": "li",
+            "text": "Qualms"
+          },
+          {
+            "type": "li",
+            "text": "Conclusion"
+          },
+          {
+            "type": "h2",
+            "text": "Wisdom on the Web"
+          },
+          {
+            "type": "p",
+            "text": "Chris is someone whose\n  Internet comments I have been reading for about half a decade now.\n  I first stumbled upon his comments when he left very detailed\n  feedback\n  on one of my collections of CSS rules on Hacker News.  I am by no\n  means a web developer.  I have spent most of my\n  professional life\n  doing systems programming in C and C++.  However, developing\n  websites and writing\n  small HTML tools has been a long-time\n  hobby for me.  I have learnt most of my web development skills as a\n  hobbyist by studying what other people do: first by viewing the\n  source of websites I liked in the early 2000s, and later by\n  occasionally getting possessed by the urge to implement a new game\n  or tool and searching\n  MDN Web\n  Docs to learn whatever I needed to make it work.  One problem\n  with learning a skill this way is that you sometimes pick up habits\n  and practices that are fashionable but not necessarily optimal or\n  correct.  So it was really valuable to me when Chris commented on my\n  collection of boilerplate CSS rules.  It helped me improve my CSS a\n  lot.  In fact, a few of the lessons from his comment have really\n  stuck with me; I keep them in mind whenever I make a hobby HTML\n  project: always retain underlines in links and\n  retain purple for\n  visited links."
+          },
+          {
+            "type": "p",
+            "text": "I have been following Chris's posts and comments on web-related\n  topics since then.  He often posts great feedback on web-related\n  projects.  Whenever I come across one, I make sure to read them\n  carefully, even when the project isn't mine.  I always end up\n  learning something nice and useful from his comments.  Here is one\n  such recent example from the Lobsters story\n  Adding\n  author context to RSS."
+          },
+          {
+            "type": "h2",
+            "text": "Wander on the Web"
+          },
+          {
+            "type": "p",
+            "text": "A couple of months ago, I created a new project called Wander\n  Console.  It is a small, decentralised, self-hosted web console\n  that lets visitors to your website explore interesting websites and\n  pages recommended by a community of independent personal website\n  owners.  For example, my console is here:\n  susam.net/wander/.  If you click the 'Wander'\n  button there, the tool loads a random personal web page recommended\n  by the Wander community."
+          },
+          {
+            "type": "p",
+            "text": "The tool consists of one HTML file that implements the console and\n  one JavaScript file where the website owner defines a list of\n  neighbouring consoles along with a list of web pages they recommend.\n  If you copy these two files to your web server, you instantly have a\n  Wander console live on the Web.  You don't need any server-side\n  logic or server-side software beyond a basic web server to run\n  Wander Console.  You can even host it in constrained environments\n  like Codeberg Pages or GitHub Pages.  When you click the 'Wander'\n  button, the console connects to other remote consoles, fetches web\n  page recommendations, picks one randomly and loads it in your web\n  browser.  It is a bit like the now defunct\n  StumbleUpon\n  but it is completely decentralised.  It is also a bit like web rings\n  except that the community network is not restricted to being a\n  cycle; it is a graph and it is flexible."
+          },
+          {
+            "type": "p",
+            "text": "There are currently over 50 websites hosting this tool.  Together,\n  they recommend over 1500 web pages.  You can find a recent snapshot\n  of the list of known consoles and the pages they recommend at\n  susam.codeberg.page/wcn/.\n  To learn more about this tool or to set it up on your website,\n  please see codeberg.org/susam/wander."
+          },
+          {
+            "type": "h2",
+            "text": "Misfeature"
+          },
+          {
+            "type": "p",
+            "text": "In case you were wondering why I suddenly plugged my project into\n  this post in the previous section, it is because I recently added a\n  dubious feature to that project that I myself was not entirely\n  convinced about.  That misfeature is relevant to this post."
+          },
+          {
+            "type": "p",
+            "text": "In version 0.4.0 of Wander Console, I added support for\n  a via= query parameter while loading web pages.  For\n  example, if you encountered midnight.pub\n  while using the console at susam.net/wander/,\n  the console loaded the page using the following URL:"
+          },
+          {
+            "type": "code",
+            "text": "https://midnight.pub/?via=https://susam.net/wander/"
+          },
+          {
+            "type": "p",
+            "text": "This allowed the owner of the recommended website to see, via their\n  access logs, that the visit originated from a Wander Console.\n  Chris's recent blog\n  post is critical of features like this.  He writes:"
+          },
+          {
+            "type": "quote",
+            "text": "I don't like people adding tracking stuff to URLs.  Still less do I\n    like people adding tracking stuff to my URLs.\n  \n  \n    https://chrismorgan.info/no-query-strings?ref=example.com?\n    Did I ask?  If I wanted to know I'd look at the\n    Referer header; and if it isn't there, it's probably\n    for a good reason.  You abuse your users by adding that to the\n    link."
+          },
+          {
+            "type": "p",
+            "text": "I mentioned earlier that I was not entirely convinced that adding a\n  referral query string was a good thing to do.  Why did I add it\n  anyway?  I succumbed to popular demand.  Let me briefly describe my\n  frame of mind when I considered and implemented that feature.  When\n  I first saw the\n  feature\n  request on Codeberg, my initial reaction was reluctance.  I\n  wasn't convinced it was a good feature.  But I was too busy with\n  some ongoing algebraic graph theory research, another recent hobby,\n  with a looming deadline, so I didn't have a lot of time to think\n  about it clearly.  In fact, everything about Wander Console has been\n  made in very little time during the short breaks I used to take from\n  my research.  I made the first version of the console in about one\n  and a half hours one early morning when my brain was too tired to\n  read more algebraic graph theory literature and I really needed a\n  break.  During another such break, I revisited that feature request\n  and, despite my reservations, decided to implement it anyway.\n  During yet another such break, I am writing this post."
+          },
+          {
+            "type": "p",
+            "text": "Normally, I don't like adding too many new features to my little\n  projects.  I want them to have a limited scope.  I also want them to\n  become stable over time.  After a project has fulfilled some\n  essential requirements I had, I just want to call it feature\n  complete and never add another feature to it again.  I'll fix bugs,\n  of course.  But I don't like to keep adding new features endlessly.\n  That's my style of maintaining my hobby projects.  So it should have\n  been very easy for me to ignore the feature request for adding a\n  referral query string to URLs loaded by the console tool.  But I\n  think a tired body and mind, worn down by long and intense research\n  work, took a toll on me."
+          },
+          {
+            "type": "p",
+            "text": "Although my gut feeling was telling me that it was not a good\n  feature, I couldn't articulate to myself exactly why.  So I\n  implemented the referral query string feature anyway.  While doing\n  so, I added an opt-out mechanism to the configuration, so that if\n  someone else didn't like the feature, they could disable it for\n  themselves.  This was another mistake.  A questionable feature like\n  this should be implemented as an opt-in feature, not an opt-out\n  feature, if implemented at all.  The fact that I didn't have a lot\n  of time to reason through the implications of this feature meant\n  that I just went ahead and implemented it without thinking about it\n  critically.  As the famous quote from Jurassic Park goes:"
+          },
+          {
+            "type": "quote",
+            "text": "Your scientists were so preoccupied with whether or not they could\n  that they didn't stop to think if they should."
+          },
+          {
+            "type": "h2",
+            "text": "Broken URLs"
+          },
+          {
+            "type": "p",
+            "text": "It soon turned out that my gut feeling was correct.  After I\n  implemented that feature, one of my favourite pages refused to load\n  in the console.  To illustrate the problem, here are two similar but\n  slightly different URLs:"
+          },
+          {
+            "type": "li",
+            "text": "https://int10h.org/oldschool-pc-fonts/fontlist/"
+          },
+          {
+            "type": "li",
+            "text": "https://int10h.org/oldschool-pc-fonts/fontlist/?foo"
+          },
+          {
+            "type": "p",
+            "text": "The first URL loads fine but the second URL returns an HTTP 404\n  error page.  So when my tool added the via= query\n  parameter to the first URL, the page failed to load.  Later, with a\n  little time to breathe and some hindsight, I could articulate why\n  adding referral query strings to a working URL was such a bad idea.\n  Altering a URL gives you a new URL.  The new URL could\n  point to a completely different resource, or to no resource at all,\n  even if the alteration is as small as adding a seemingly harmless\n  query string.  By adding the referral query string, I had\n  effectively broken a working URL from a website I am\n  very fond\n  of."
+          },
+          {
+            "type": "h2",
+            "text": "Qualms"
+          },
+          {
+            "type": "p",
+            "text": "It is also worth asking whether an HTML tool should concern itself\n  with referral query strings at all when web browsers already have a\n  mechanism for this: the HTTP Referer\n  header, governed by Referrer-Policy.\n  That policy can be set at the server level, the document level or\n  even on individual links.  The Web standards already provide\n  deliberate controls to decide how much referrer information should be\n  sent.  Appending referral query strings to URLs bypasses those controls.\n  It moves a privacy and attribution concern out of the\n  referrer mechanism and embeds it into the destination URL instead.\n  I don't think an HTML tool should do that."
+          },
+          {
+            "type": "p",
+            "text": "There is also a moral question here about whether it is\n  okay to modify a given URL on behalf of the user in order to insert\n  a referral query string into it.  I think it isn't."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "In the end, I decided to remove the referral query string feature\n  from Wander Console.  One might wonder why I couldn't simply leave\n  the feature in as an opt-in.  Well, the answer is that once I had\n  deemed the feature misguided, I no longer wanted it to be part of my\n  software in any form.  The project is still new and we are still in\n  the days of 0.x releases, so if there is a good time to remove\n  features, this is it.  But my ongoing research work left me with no\n  time to do it.  Finally, when the post\n  I've\n  banned query strings appeared in my feed reader last\n  evening, it pushed me enough to take a little time away from my\n  academic hobby and devote it to removing that ill-considered\n  feature.  The feature is now gone.  See commit b26d77c\n  for details.  The latest release, version 0.6.0, does not have it\n  anymore."
+          },
+          {
+            "type": "p",
+            "text": "This is a lesson I'll remember for any new hobby projects I happen\n  to make in the future.  If I ever load URLs again, I'll load them\n  exactly as the website's author intended.  I will never add query\n  strings to your URLs."
+          }
+        ],
+        "translations": [
+          "作者 Susam Pal，2026年5月9日",
+          "昨晚，我的阅读器里出现了一篇简短的博客文章，感觉就像是在直接对我说话。这是 Chris Morgan 的一篇精彩博文：《我禁用了查询字符串》。",
+          "目录",
+          "网络智慧",
+          "网络漫游",
+          "功能缺陷",
+          "损坏的 URL",
+          "疑虑",
+          "结论",
+          "网络智慧",
+          "Chris 是我大约五年前开始阅读其互联网评论的人。我第一次注意到他，是因为他在 Hacker News 上对我的一个 CSS 规则集合给出了非常详细的反馈。我绝对算不上是一名网页开发者。我的职业生涯大部分时间都在用 C 和 C++ 做系统编程。然而，开发网站、编写小型 HTML 工具一直是我多年的爱好。我主要通过自学掌握了网页开发技能：先是研究早期 2000 年代我喜欢网站的源代码，后来偶尔会突然想实现一个新游戏或工具，于是查阅 MDN Web 文档来学习所需的一切。但这种方式学习的问题在于，你有时会养成一些时髦但不一定最优甚至不正确的方法和习惯。所以当 Chris 评论我的 CSS 样板代码时，我觉得非常有价值。他的建议帮助我大幅提升了 CSS 水平。事实上，他的一些观点我一直铭记在心——每当我做一个业余的 HTML 项目时都会想起：始终保留链接的下划线，并为已访问的链接保留紫色。",
+          "自那以后，我一直在关注 Chris 关于网络相关主题的文章和评论。他经常在网页相关的项目中发表精彩的反馈。每当他发布一篇，我都会仔细阅读，即使项目不是我的。每次都能从他那里学到一些有趣且实用的东西。这里有一个最近的例子，来自 Lobsters 上的故事：《为 RSS 添加作者上下文》。",
+          "网络漫游",
+          "几个月前，我创建了一个名为 Wander Console 的新项目。这是一个小型、去中心化、可自托管的网页控制台，允许访问者探索由独立个人网站所有者组成的社区推荐的有趣网站和页面。例如，我的控制台在这里：susam.net/wander/。如果你点击那里的“Wander”按钮，该工具会加载 Wander 社区推荐的一个随机个人网页。",
+          "这个工具由一个 HTML 文件和一个 JavaScript 文件组成，前者实现了控制台界面，后者由网站所有者定义邻居控制台的列表以及他们推荐的网页列表。只要将这两个文件复制到你的 Web 服务器上，就能立即在 Web 上运行一个活跃的 Wander 控制台。你不需要任何服务端逻辑或软件，只需要一个基本的 Web 服务器即可运行 Wander Console。你甚至可以将其托管在受限环境中，比如 Codeberg Pages 或 GitHub Pages。当你点击“Wander”按钮时，控制台会连接到其他远程控制台，获取网页推荐，随机选择其中一个并在你的浏览器中加载。它有点像现已停服的 StumbleUpon，但它是完全去中心化的。它又有点像网页环，不同的是社区网络不限于循环结构；它是一个灵活的图状网络。",
+          "目前有超过50个网站托管此工具，它们共同推荐了1500多个网页。你可以通过 susam.codeberg.page/wcn/ 查看已知控制台及其推荐页面的最新快照。如需了解该工具的更多信息或将其部署到你的网站，请访问 codeberg.org/susam/wander。",
+          "误加功能",
+          "如果你好奇为什么我在上一节突然将项目关联到这篇文章，那是因为我最近为该项目添加了一个我自己也不太确信是否合适的可疑功能。而这个“误加功能”正是本文要讨论的内容。",
+          "在 Wander Console 的 0.4.0 版本中，我增加了对加载网页时 via= 查询参数的支持。例如，当你在 susam.net/wander/ 使用控制台时访问了 midnight.pub，控制台会通过以下 URL 加载页面：",
+          "https://midnight.pub/?via=https://susam.net/wander/",
+          "这使得被推荐网站的所有者可以通过访问日志得知此次访问来自一个 Wander Console。Chris 最近的博客文章就批评了这类功能。他写道：",
+          "我不喜欢人们在 URL 中添加追踪信息。更不喜欢的是，有人在我的 URL 里添加追踪信息。\n\nhttps://chrismorgan.info/no-query-strings?ref=example.com?\n我同意吗？如果我想知道，我会去看 Referer 头部；如果没有，那很可能有它的道理。你把这种东西加进链接里，是在滥用用户。",
+          "我之前提到过，我对添加引荐查询字符串这件事并不完全确信。但我还是加了，这是为什么？因为我屈服于大众的需求。让我简要描述一下我当时考虑并实现这个功能时的心理状态。当我第一次在 Codeberg 上看到这个功能请求时，我的第一反应是犹豫。我不认为这是个好功能。但当时我正在忙于代数图论的研究，另一个新爱好也临近截止日期，没有太多时间能冷静思考。事实上，Wander Console 的所有功能都是在从研究中短暂休息时匆忙完成的。我第一次编写控制台大约花了一个半小时，那是个清晨，我的大脑已经疲惫到无法继续阅读代数图论文献，急需休息。在另一次这样的休息中，我重新审视了这个功能请求，尽管心存疑虑，最终还是决定实现它。而这一次休息，我正在写这篇帖子。",
+          "通常来说，我不喜欢在自己的小项目中添加过多新功能。我希望它们保持有限的范围，并随着时间的推移变得稳定。当一个项目满足了最初设定的基本需求后，我就认为它已经完成，不再添加任何新功能。当然，我会修复 bug。但我并不喜欢无休止地添加新功能。这是我的业余项目维护风格。因此，忽略为控制台加载的 URL 添加引荐查询字符串的请求对我来说本该轻而易举。但我认为，长期高强度研究工作带来的身心疲惫确实影响了我。",
+          "尽管我的直觉告诉我这不是个好功能，但我当时无法明确说出原因。于是我还是实现了这个引荐查询字符串功能。在实现过程中，我为配置添加了一个禁用机制，这样如果有人不喜欢这个功能，就可以自行关闭它。这又是一个错误决定。像这样的可疑功能根本不该实现，如果非要实现，也应该做成“主动启用”而非“被动禁用”。由于我没有太多时间仔细思考这个功能的后果，我只是草率地直接实现了它，而没有深入批判性思考。正如《侏罗纪公园》那句名言所说：",
+          "你们的科学家总是忙着纠结能不能做到，却从不停下来想想该不该做。",
+          "损坏的 URL",
+          "很快我就发现我的直觉是对的。实现这个功能后，我最喜欢的一个页面在控制台里加载失败了。为了说明问题，这里有两个相似但略有不同的 URL：",
+          "https://int10h.org/oldschool-pc-fonts/fontlist/",
+          "https://int10h.org/oldschool-pc-fonts/fontlist/?foo",
+          "第一个 URL 可以正常加载，但第二个返回 HTTP 404 错误页面。因此，当我的工具向第一个 URL 添加了 via= 查询参数后，页面就无法加载了。后来有了更多时间和反思，我终于能清楚地解释为什么在一个正常工作的 URL 上添加引荐查询字符串是个糟糕的主意。修改一个 URL 就会得到一个新的 URL。新 URL 可能指向完全不同的资源，甚至根本不指向任何资源——哪怕改动只是添加一个看似无害的查询字符串。通过添加引荐查询字符串，我实际上破坏了我非常喜爱的网站上的一个有效 URL。",
+          "疑虑",
+          "还有一个值得探讨的问题是：HTML 工具是否应该关心引荐查询字符串，毕竟浏览器已经有现成的机制来处理这件事——HTTP Referer 头部，由 Referrer-Policy 控制。该策略可以在服务器层面、文档层面，甚至单个链接上设置。网络标准已经提供了明确的机制来决定应发送多少引荐者信息。而将引荐查询字符串附加到 URL 中，恰恰绕过了这些已有控制。这种做法把隐私和归属问题从引荐机制中剥离出来，反而嵌入到了目标 URL 本身。我认为 HTML 工具不应该这么做。",
+          "此外，还有一个道德层面的问题：以用户的名义修改 URL 来插入引荐查询字符串，这种做法是否正当？我认为不是。",
+          "结论",
+          "最终，我决定从Wander Console中移除引荐查询字符串功能。有人可能会问，为何不干脆将其保留为可选功能？其实，一旦认定该功能存在误导性，我便不再希望它以任何形式存在于我的软件中。该项目仍处于早期阶段，我们仍在发布0.x版本，因此若存在一个合适的时机来移除功能，那就是现在。然而，我持续的研究工作让我无暇顾及此事。直到昨晚，我在阅读器中看到一篇关于禁用查询字符串的文章，这才促使我从学术爱好中抽出一点时间，着手移除这个考虑不周的功能。如今，该功能已被彻底移除。详情参见提交记录b26d77c。最新版本0.6.0已不再包含此功能。",
+          "这将成为我未来所有新爱好项目的重要教训。若将来再次加载URL，我将严格按照网站作者原本的设计意图进行。我绝不会向你的URL中添加任何查询字符串。"
+        ]
+      }
+    },
+    {
+      "slug": "2ebf94b88cff59cf",
+      "title": "The Mismeasure of Open Source",
+      "titleZh": "开源的误测",
+      "link": "https://nesbitt.io/2026/05/09/the-mismeasure-of-open-source.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-05-09T10:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "open source",
+        "project health",
+        "metrics"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "文章探讨了开源项目健康度评估中的“路灯效应”（streetlight effect），即人们倾向于在容易观察的地方寻找数据，而忽略了真正重要的指标。它批评了当前许多基于提交频率、星标数量等表面数据的评分方法，这些方法无法准确反映项目的实际活力、可持续性或对社区的贡献。",
+      "summaryEn": "The article discusses the 'streetlight effect' in open-source project health scoring, where people tend to look for data in easily observable places, ignoring truly important metrics. It critiques current scoring methods based on superficial data like commit frequency and star counts, arguing these fail to accurately reflect a project's actual vitality, sustainability, or contribution to the community.",
+      "reason": "了解开源项目评估的局限性，有助于社区成员和资助者更全面地衡量项目的真实价值和长期潜力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Every attempt to score open source projects for criticality, risk, or funding need ends up built on roughly the same dozen signals, because those are the dozen signals you can get from a registry API and the GitHub REST endpoints in an afternoon. I wrote earlier this week about the 2015 CII census, whose formula scored xz-utils a 6 out of 13 and let it sink to row 254, and which nonetheless got more right than it’s usually given credit for."
+          },
+          {
+            "type": "p",
+            "text": "Ten years on there are several successor efforts running, from foundations, academics, and funders, and I’ve contributed data to most of them. With far more data and far more people working on the problem they are still largely built on the same inputs, so they inherit most of the same blind spots plus a few new ones, and I wanted to write those down in one place without picking on any single model."
+          },
+          {
+            "type": "h2",
+            "text": "Missing read as zero"
+          },
+          {
+            "type": "p",
+            "text": "The most consequential mistake is treating the absence of a signal as a low value of that signal. Go modules are fetched from version control via a proxy that publishes no per-module download counts. C libraries reach machines through apt, dnf, apk, vendoring, and static linking, none of which report to anyone. If a model’s entry filter is “top N by downloads”, or its importance weight is download-derived, both of these ecosystems are largely excluded before any risk scoring runs, and the output contains no indication that they were ever candidates."
+          },
+          {
+            "type": "p",
+            "text": "I mentioned Daniel Stenberg finding curl listed at ten thousand downloads a year, which is an accurate count of the channels that happen to be instrumented and bears no relation to the twenty billion or so installations curl actually has."
+          },
+          {
+            "type": "p",
+            "text": "Zero GitHub issues might mean zero users, or it might mean bugs are tracked in Bugzilla, a mailing list, Launchpad, or the Debian BTS. The absence of a FUNDING.yml could equally mean nobody is paying or that three full-time maintainers are on Red Hat’s payroll, and a missing OpenSSF Scorecard result tells you nothing about security if the project is hosted on cgit where Scorecard can’t run."
+          },
+          {
+            "type": "p",
+            "text": "Almost every model I’ve seen handles all of these cases by writing a zero into the cell, or by silently dropping the row, rather than by writing “unknown” and propagating the uncertainty. Once the dashboard renders, a null and a zero look identical, and the project that didn’t fit the schema is indistinguishable from the project that genuinely has nothing."
+          },
+          {
+            "type": "p",
+            "text": "The earlier, harsher version of the same failure is the entry filter that decides what gets scored at all. The scoring formula in a criticality model is the part that gets discussed, but the candidate set it runs over has usually made the bigger decision already. The 2015 census scored Debian packages above a popcon threshold, so sudo and polkit weren’t misranked by it, they were never in the input."
+          },
+          {
+            "type": "p",
+            "text": "Modern equivalents typically start from “top N% of registry downloads” or “packages with a resolvable GitHub URL”, and everything those filters exclude is excluded silently. There is no row in the output that says “not considered”, and a reader has no way to distinguish “scored as low risk” from “never entered the room”."
+          },
+          {
+            "type": "h2",
+            "text": "Easy to collect, so it must mean something"
+          },
+          {
+            "type": "p",
+            "text": "Availability gets mistaken for relevance: a metric is used because the API returns it, and the justification is worked out afterwards. This is the streetlight effect applied to software, with the GitHub and registry APIs as the lamp post and most of the actual risk lying out in the dark. Download counts are the universal example. The number an npm or PyPI API gives you is dominated by CI runners reinstalling the world on every push, with mirror traffic, bot scans, and the occasional human mixed in. It is not a count of users, or of installations, or of anything that maps cleanly to “how many people are affected if this breaks”. It correlates loosely with those things in the fat middle of the distribution and falls apart entirely at the edges, which is unfortunate because the edges are where you’re trying to look."
+          },
+          {
+            "type": "p",
+            "text": "GitHub stars measure the intersection of “people with GitHub accounts who clicked a button” and the project’s visibility in that demographic, which skews hard towards web frontend and developer tooling. ICU is linked into every browser, Android, the JDK, and Node, and has roughly 3,500 stars. c-ares does async DNS for curl, Node, and gRPC and has about 2,100. libxml2’s GitHub mirror has 735. Stars are also straightforwardly purchasable. He et al. identified around six million suspected fake stars on GitHub between 2019 and 2024, with the rate climbing sharply in the last year of that window, so any model weighting stars is partly weighting whoever paid for a campaign."
+          },
+          {
+            "type": "p",
+            "text": "CVE count is routinely used as a security signal and measures the opposite of what people assume. OpenSSL and the Linux kernel have hundreds of CVEs because security researchers look at them constantly, while an unfuzzed C parser that nobody has examined since 2014 has none and is more dangerous for it. Treated as a risk input the metric tracks audit attention received rather than vulnerabilities present, which rewards exactly the projects nobody has bothered to check."
+          },
+          {
+            "type": "p",
+            "text": "It also only counts the subset of fixed vulnerabilities where someone went through the CVE process. Plenty of maintainers find and fix security bugs and ship the patch in a routine release rather than spend a week arguing with a CNA about severity scoring, and none of that history shows up in the column."
+          },
+          {
+            "type": "p",
+            "text": "Code complexity metrics get used as a proxy for how hard a project would be to replace, but cyclomatic and Halstead scores count branches and operators, which is what a static analyser can see and only loosely tracks what a human would find difficult. Vlad-Stefan Harbuz pointed me at the regex engine he wrote for Hare’s standard library, which reads to any such tool as unremarkable loops over arrays. The loops are executing a virtual machine for pattern matching, and all of the difficulty is in the automaton they encode, where no metric is looking."
+          },
+          {
+            "type": "p",
+            "text": "Commit cadence and “last activity” penalise software that is finished. TeX is the canonical case, and bzip2, libogg, and a lot of format-parsing and crypto code that implements a frozen specification are deliberately low-churn because the format is stable and churn is itself a risk. The same metric is trivially gamed in the other direction by Dependabot and Renovate, which will happily keep a repository’s activity graph green for years after the last human stopped reading the notifications. That at least leaves a recognisable bot author in the log."
+          },
+          {
+            "type": "p",
+            "text": "Claude Code and similar coding agents now support scheduled and repeating tasks, so a repository can accumulate a steady stream of plausible-looking maintenance commits authored under a human’s name with no human in the loop, and commit frequency stops distinguishing maintained from automated entirely. I’ve been trying to count how often that Weekend at Bernie’s condition actually holds across the most-depended-on packages, and the bot-only category is large enough that any activity metric ignoring authorship is measuring the bots."
+          },
+          {
+            "type": "h2",
+            "text": "One number, many units"
+          },
+          {
+            "type": "p",
+            "text": "Comparing absolute values of any of these metrics across ecosystems produces nonsense, because the units are different even when the column header is the same. An npm “download” is mostly a count of CI cache misses, the Homebrew analytics equivalent is a ping from a macOS developer laptop, and a Debian popcon install is an opt-in report from a shrinking population that was never representative of servers or containers. Adding these together, or fitting a coefficient that converts one into another, puts a precise-looking number on a quantity that doesn’t exist."
+          },
+          {
+            "type": "p",
+            "text": "Dependent counts behave the same way: npm’s culture of tiny single-purpose packages means a string-padding helper can have tens of thousands of declared dependents. A C compression library that is statically linked into every browser, every database engine, and most games on the planet might have a few dozen, because C dependencies are expressed as #include, a vendored source file, a git submodule, or a line in a CMake script, none of which produce a manifest edge that a registry crawler can follow. Ranking these two projects against each other by dependent count tells you about packaging conventions in their respective ecosystems and nothing about which one matters more."
+          },
+          {
+            "type": "p",
+            "text": "Even within the set of things that do produce manifest edges, package granularity varies enough to break comparisons. A Rust workspace might publish forty crates from one repository and one team where a Python project of the same size would publish a single package, so the Rust project shows up as forty times as many nodes in the graph, internal edges between them inflate its PageRank, and the same handful of maintainers gets counted forty times in any bus-factor sum."
+          },
+          {
+            "type": "h2",
+            "text": "GitHub as the visible universe"
+          },
+          {
+            "type": "p",
+            "text": "Most models lean on the GitHub API for everything that isn’t a registry field: contributors, issues, stars, security policy, sponsors, Scorecard. By package count most open source is on GitHub, so this is a reasonable place to start, but the projects hosted elsewhere are disproportionately the old low-level infrastructure that the models exist to find."
+          },
+          {
+            "type": "p",
+            "text": "PostgreSQL, SQLite, GnuPG, glibc, FFmpeg, and most GNU projects run primary development on mailing lists, self-hosted cgit, Gerrit, or Savannah. Some have read-only GitHub mirrors, which is its own trap. The mirror has stars and a contributor graph, so the API happily returns numbers for it, but pull requests opened there go nowhere and the contributor graph reflects whoever pushes the sync rather than who writes the code. Nothing in the API response distinguishes a mirror from a primary, so the mirror gets scored as if it were the project."
+          },
+          {
+            "type": "p",
+            "text": "The GitHub /contributors endpoint only counts commit authors it can link to a GitHub account. curl’s own THANKS file lists over 3,600 contributors, but the API returns a few hundred, because most of the people in curl’s history sent patches from an email address that GitHub has never seen. Bus-factor formulas built on the same data then report curl as 1, since Daniel Stenberg has authored over half the commits, and the formula has no way to distinguish a prolific founder working alongside dozens of active people from a solo maintainer with nobody else around."
+          },
+          {
+            "type": "p",
+            "text": "The same endpoint misleads in the opposite direction by returning lifetime totals, so a project that had eighty contributors in 2012 and has one exhausted person today shows a reassuring headcount, and there is no field anywhere in the API or the registry metadata for whether that one person is close to walking away."
+          },
+          {
+            "type": "p",
+            "text": "OpenSSF Scorecard is widely consumed as a security score even though several of its checks (Branch-Protection, Token-Permissions, Dependency-Update-Tool, CI-Tests) detect GitHub features rather than security properties. A project with self-hosted Buildbot CI, mailing-list patch review, and twenty years of careful security process scores worse than a weekend template repo with the default Actions workflow enabled. In the other direction, a project that does tick every box comes out near ten, and that gets read downstream as “secure”, as though the checklist covered the whole of security rather than the slice of it a repository scan can reach. And once a score like this becomes an input to funding decisions, Goodhart kicks in: projects start enabling the checkboxes that move the number rather than doing the work the checkboxes were meant to proxy for."
+          },
+          {
+            "type": "h2",
+            "text": "Which project is this"
+          },
+          {
+            "type": "p",
+            "text": "Identity is harder than it looks, and almost every model gets it wrong in at least one direction, starting with the fact that the same code shows up under different names in different places. libcurl is curl on Homebrew, libcurl4 on Debian, pycurl on PyPI, curl-sys on crates.io, and curl/curl on GitHub. A model that doesn’t unify these holds five separate low-scoring entries for one risk surface, and any funding or attention directed by the output gets split five ways or pointed at the wrapper instead of the thing being wrapped."
+          },
+          {
+            "type": "p",
+            "text": "The opposite mapping also breaks things, since LLVM, GCC, coreutils, util-linux, and BusyBox each ship dozens of separately-named artifacts from a single repository. A model that assumes one package maps to one repo either picks one artifact and ignores the rest, or counts the same maintainer team dozens of times. Several models I’ve looked at simply exclude these projects because computing complexity metrics over a repository that size times out, which means the criticality scoring has a hole exactly where the most critical projects sit."
+          },
+          {
+            "type": "p",
+            "text": "Forks confuse things further, because when a package’s listed repository URL points at a fork, or the original is archived and development has moved to a fork that the registry metadata doesn’t know about, every repository-derived metric is describing the wrong tree."
+          },
+          {
+            "type": "h2",
+            "text": "Funding you can’t see"
+          },
+          {
+            "type": "p",
+            "text": "Project health and funding models tend to look for GitHub Sponsors, FUNDING.yml, Open Collective, and foundation membership lists, because those are public and machine-readable. The most common funding arrangement for critical infrastructure is none of those. It’s a maintainer employed by Red Hat, Google, Intel, Canonical, or a hardware vendor, with the project as some or all of their job, and that arrangement leaves no trace in any file a crawler can fetch. The second most common is consulting and support contracts around the project, which is similarly invisible."
+          },
+          {
+            "type": "p",
+            "text": "Ben Nickolls and I gave a talk on this at FOSDEM 2025: when we tried to assemble a picture of where open source funding actually comes from and where it goes, the public tip-jar layer that everyone measures turned out to be a thin film over a much larger and almost entirely opaque body of corporate salary, foundation grants disbursed without public reporting, and support revenue. A model reading only the public layer will mark a project with a salaried team as unfunded while treating an enabled but barely-used Sponsors button as evidence of sustainability."
+          },
+          {
+            "type": "h2",
+            "text": "The compound case"
+          },
+          {
+            "type": "p",
+            "text": "Individually, each of these mismeasures some projects in some direction, and for the bulk of modern, registry-published, GitHub-hosted packages the errors roughly cancel out. The trouble is that the errors correlate, because a project old enough to predate GitHub is disproportionately likely to be written in C, distributed by vendoring rather than a manifest dependency, developed over a mailing list, funded through someone’s salary, and low-churn because the format it implements stopped changing years ago."
+          },
+          {
+            "type": "p",
+            "text": "So the same project gets undercounted on downloads, dropped from the dependency graph, nulled on contributor metrics, scored low on Scorecard, marked unfunded, and flagged as inactive, all at once, for six different expressions of the same underlying fact: it doesn’t look like an npm package. The quiet system library with one tired maintainer and no dashboard footprint is exactly what we built all of this tooling to find, and it remains the thing the tooling is structurally worst at seeing."
+          }
+        ],
+        "translations": [
+          "任何试图对开源项目进行关键性、风险或资金需求评分的尝试，最终都基于大致相同的十几个信号，因为这些信号是你在一天之内可以从注册中心 API 和 GitHub REST 端点获取到的。本周早些时候我写过关于 2015 年 CII 普查的内容，其公式给 xz-utils 打了 6 分（满分 13 分），导致它排在第 254 位，但总体而言，它的判断比人们通常认为的要准确得多。",
+          "十年过去了，如今已有多个由基金会、学术界和资助方推动的后续项目，我也为其中大部分贡献了数据。尽管拥有的数据和参与人员都大幅增加，但这些模型仍主要依赖相同的输入，因此继承了大部分原有的盲点，并新增了一些。我想把这些盲点集中整理出来，而不针对某个特定模型进行批评。",
+          "缺失即视为零",
+          "最严重的错误之一是将信号的缺失当作该信号的低值处理。Go 模块通过代理从版本控制系统中获取，而该代理并不发布每个模块的下载量统计。C 语言库则通过 apt、dnf、apk、vendoring 或静态链接等方式分发，这些方式均不向任何人报告数据。如果一个模型的筛选条件是“按下载量排名前 N”，或其重要性权重基于下载量，那么这两个生态系统在很大程度上就会被排除在评估之外，且输出结果中不会显示它们曾被纳入考虑。",
+          "我曾提到 Daniel Stenberg 发现 curl 的年下载量被记录为一万次，这实际上只是被监控渠道的准确计数，与 curl 实际安装量达二十亿次的事实毫无关系。",
+          "零个 GitHub issue 可能意味着没有用户使用该项目，也可能意味着问题跟踪在 Bugzilla、邮件列表、Launchpad 或 Debian BTS 中进行。缺少 FUNDING.yml 文件既可能表示无人付费，也可能表示有三位全职维护者受雇于 Red Hat，而缺少 OpenSSF Scorecard 的结果则无法说明项目的安全性，因为如果项目托管在 cgit 上，Scorecard 根本无法运行。",
+          "我所见过的几乎所有模型都是通过将单元格设为零，或静默删除整行来处理这些情况，而不是标记为“未知”并传播不确定性。一旦仪表盘渲染完成，空值和零值看起来完全相同，未能符合模式的项目与真正没有任何内容的项目也无法区分。",
+          "更早期的、更为严苛的同类错误体现在准入过滤器上——它决定了哪些项目会被纳入评分。虽然人们常讨论的是关键性模型中的评分公式，但实际上，候选集的选择往往已经做出了更重要的决策。2015 年的普查设定了 popcon 阈值来筛选 Debian 软件包，因此 sudo 和 polkit 并非被错误排名，而是根本未被纳入输入。",
+          "现代等效模型通常以“注册表下载量前 N%”或“具有可解析 GitHub URL 的软件包”作为起点，所有被这些过滤器排除的项目都会被静默剔除。输出结果中没有一行标明“未考虑”，读者也无法区分“被评为低风险”和“从未进入评估范围”。",
+          "易于收集，所以它一定有意义",
+          "可用性常被误认为相关性：人们使用某个指标，仅仅是因为 API 能提供它，而理由往往是事后才想出来的。这就像把 GitHub 和注册表 API 当作路灯，而大部分实际风险却藏在黑暗之中。下载量就是最典型的例子。npm 或 PyPI 提供的数字主要由 CI 运行器每次推送时重新安装所有依赖、镜像流量、机器人扫描以及偶尔的人类用户构成，它既不是用户数量，也不是安装次数，更无法清晰映射到“如果出问题会影响多少人”。该指标在分布的中段与这些因素有一定相关性，但在边缘区域完全失效，而这恰恰是我们最需要关注的地方。",
+          "GitHub 星标反映的是“拥有 GitHub 账号并点击按钮的人”与项目在该群体中的可见度之间的交集，因此明显偏向 Web 前端和开发者工具领域。ICU 被集成到每个浏览器、Android、JDK 和 Node 中，却只有约 3,500 颗星；c-ares 为 curl、Node 和 gRPC 提供异步 DNS 功能，也有约 2,100 颗星；libxml2 的 GitHub 镜像更是仅有 735 颗星。此外，星标还可以直接购买。He 等人发现，在 2019 至 2024 年间，GitHub 上存在约六百万个疑似虚假星标，且近一年增速迅猛，因此任何基于星标的模型实际上也在部分衡量花钱买推广的人。",
+          "CVE 数量常被用作安全信号，但它衡量的恰恰是人们所假设的反面。OpenSSL 和 Linux 内核有数百个 CVE，是因为安全研究人员持续关注它们；而一个自 2014 年以来无人检查过的未模糊测试的 C 解析器则可能零 CVE，反而更危险。若将其视为风险输入，该指标反映的是审计关注度而非实际漏洞数量，从而奖励那些根本没人愿意去审查的项目。",
+          "此外，它仅统计那些走完 CVE 流程的已修复漏洞。许多维护者会自行发现并修复安全问题，并在常规发布中直接部署补丁，而不是花一周时间与 CNA 争论严重性评分——但这些历史记录在数据列中完全看不到。",
+          "代码复杂度指标常被当作项目难以替换程度的代理变量，但圈复杂度和 Halstead 分数只计算分支和操作符，这是静态分析器能看到的，与人类感知的难度仅有松散关联。Vlad-Stefan Harbuz 向我指出他为 Hare 标准库编写的正则表达式引擎：任何此类工具都会将其视为对数组的普通循环遍历。然而这些循环实际上是在执行一个用于模式匹配的虚拟机，所有难点都隐藏在它们编码的自动机逻辑中，而没有任何度量指标能捕捉到这一点。",
+          "提交频率和“最后活动时间”会惩罚已经完成维护的软件。TeX 是经典案例，bzip2、libogg 以及大量实现冻结规范的格式解析和加密代码也刻意保持低活跃度，因为规范稳定，改动本身即构成风险。相反，Dependabot 和 Renovate 等工具可以轻松反向操纵该指标，在被人类停止查看通知多年后仍让仓库的活动图保持绿色。至少日志中还能识别出机器人作者。",
+          "Claude Code 等类似代码代理现在支持计划任务和重复执行任务，因此一个仓库可以持续生成大量看似合理的维护提交记录，这些提交都署名于某位人类开发者名下，但实际上全程无人参与。提交频率已完全无法区分哪些是人工维护、哪些是自动化操作。我一直在尝试统计这种现象在依赖最广泛的包中出现的频率，而仅由机器人产生的类别已经足够庞大，以至于任何忽略作者身份的活跃度指标实际上都在衡量机器人的行为。",
+          "一个数字，多种单位",
+          "跨生态系统比较这些指标的数值毫无意义，因为即使列标题相同，其计量单位也不同。npm 的“下载量”主要是 CI 缓存未命中的计数；Homebrew 分析数据则来自 macOS 开发者笔记本发出的 ping 请求；Debian 的 popcon 安装数则是来自一个非代表性群体（且规模不断缩小）的自愿上报数据——该群体既不能代表服务器环境，也不能代表容器化部署。将这些不同本质的数据加总或拟合转换系数，只是在给一个根本不存在的量赋予精确的数字外观。",
+          "依赖数量也面临同样的问题：npm 文化推崇细粒度、单一职责的小包，一个字符串填充工具可能拥有数万声明依赖者。而像 C 语言压缩库这样被浏览器、数据库引擎乃至全球大多数游戏静态链接的基础库，可能仅有几十个依赖者。这是因为 C 语言的依赖关系通过 #include、内嵌源码文件、git submodule 或 CMake 脚本中的某行配置表达，这些方式都无法生成注册表爬虫能追踪的清单边。因此，按依赖数量对这两个项目进行排序，反映的是各自生态系统的打包约定，而非哪个项目更重要。",
+          "即使在那些确实产生清单边的场景中，包的粒度差异也会破坏可比性。一个 Rust workspace 可能从一个仓库和团队发布四十个 crate，而同等规模的 Python 项目只会发布一个包。这使得 Rust 项目在图谱中显示为四十倍节点，内部边会拉高其 PageRank 值，同时同一批维护者在 bus-factor 计算中被重复计数四十次。",
+          "GitHub 作为可见宇宙",
+          "大多数模型都依赖 GitHub API 获取除注册信息外的所有数据：贡献者、issue、star、安全策略、赞助者、Scorecard。按包数量算，大多数开源项目都在 GitHub 上，因此这是一个合理的起点。但那些托管在其他平台的项目，恰恰是模型旨在发现的重要底层基础设施——它们往往历史悠久且处于核心地位。",
+          "PostgreSQL、SQLite、GnuPG、glibc、FFmpeg 以及大多数 GNU 项目的主要开发活动发生在邮件列表、自托管 cgit、Gerrit 或 Savannah 上。有些项目虽有只读的 GitHub 镜像，但这本身就是一个陷阱。镜像有 star 数和贡献者图谱，API 会 happily 返回相关数字，但提交到那里的 pull request 毫无作用，贡献者图谱反映的也只是同步推送者，而非实际编写代码的人。API 响应中没有任何字段能区分镜像与主仓库，于是镜像被当作主项目来评分。",
+          "GitHub 的 /contributors 端点仅统计能关联到 GitHub 账户的提交作者。curl 自身的 THANKS 文件列出了超过 3,600 名贡献者，但 API 只返回几百人，因为 curl 历史中大多数补丁是由 GitHub 从未见过的邮箱地址发送的。基于相同数据构建的“人员流失率”公式因此将 curl 报告为 1，因为 Daniel Stenberg 撰写了半数以上的提交，而该公式无法区分一位高产创始人与数十位活跃协作者共同工作，还是独自维护且无人协助的情况。",
+          "同一端点在相反方向上也造成误导，因为它返回的是终身累计值——例如一个项目在 2012 年有八十位贡献者，如今只剩一人仍在维护，API 却显示一个令人安心的总人数，且 API 或注册元数据中没有任何字段表明此人是否即将退出。",
+          "OpenSSF Scorecard 常被用作安全评分，尽管其多项检查（Branch-Protection、Token-Permissions、Dependency-Update-Tool、CI-Tests）检测的是 GitHub 功能而非实际安全属性。一个使用自建 Buildbot CI、邮件列表补丁审查并拥有二十年严谨安全流程的项目，得分反而低于启用默认 Actions 工作流的周末模板仓库。另一方面，某个项目若每项都勾选，得分接近十，下游系统便将其解读为“安全”，仿佛清单覆盖了全部安全范畴，实则仅反映仓库扫描可触及的那一部分。一旦此类分数成为资助决策的依据，Goodhart 定律便开始生效：项目开始只为提升数值而启用复选框，而非完成这些复选框原本旨在代表的实际工作。",
+          "这是哪个项目？",
+          "身份识别远比表面复杂，几乎所有模型至少在一个方向上都出错，首要问题在于同一段代码在不同平台以不同名称出现：libcurl 在 Homebrew 上叫 curl，Debian 上是 libcurl4，PyPI 上是 pycurl，crates.io 上是 curl-sys，GitHub 上则是 curl/curl。未能统一这些映射的模型会为同一风险面生成五个低分条目，导致任何由输出引导的资金或关注被分散五次，或指向封装层而非被封装的核心组件。",
+          "反之亦然：LLVM、GCC、coreutils、util-linux 和 BusyBox 等每个项目都从单一仓库发布数十个命名不同的工件。假设“一个包对应一个仓库”的模型要么只选取其中一个工件而忽略其余，要么将同一维护团队重复计数数十次。我曾考察的多数模型干脆排除这些项目，因为对如此庞大的仓库计算复杂度指标会超时——这意味着关键性评分恰好在这些最关键的项目上留下漏洞。",
+          "分叉进一步加剧混乱：当软件包的登记库中列出的仓库 URL 指向一个 fork，或原项目已归档而开发转移至一个登记信息未更新的新 fork 时，所有基于仓库的指标都在描述错误的树结构。",
+          "看不见的资金",
+          "项目健康状况和资金模型通常会寻找 GitHub Sponsors、FUNDING.yml、Open Collective 以及基金会成员名单，因为这些信息是公开且可被机器读取的。但对于关键基础设施而言，最常见的资金安排恰恰不属于上述任何一种。通常是维护者受雇于 Red Hat、Google、Intel、Canonical 或某家硬件厂商，并将该项目作为其工作的一部分（甚至全部），而这种安排不会在爬虫可获取的任何文件中留下痕迹。其次是围绕该项目提供咨询和支持服务的合同，同样难以追踪。",
+          "我和本·尼科尔兹在2025年FOSDEM上就此主题发表演讲：当我们试图描绘开源资金的实际来源与流向时，发现公众所依赖的“捐款箱”层面——即人人都在测量的那一层——其实只是覆盖在一个规模大得多、几乎完全不可见的资金池之上，其中包括企业薪资、基金会拨款（未公开披露）以及支持服务收入。若仅依据公开层面建模，系统会将拥有专职团队的项目标记为“无资助”，却将一个虽已启用但几乎无人使用的赞助按钮视为可持续发展的证据。",
+          "复合情况",
+          "单独来看，每种测量方式都会在某些方向上对部分项目进行误判；而对于大多数现代、托管在注册中心并通过GitHub发布的包来说，这些误差大致相互抵消。问题在于这些误差具有相关性——因为一个足够古老以至于早于GitHub出现的项目，更有可能用C语言编写、通过捆绑而非清单依赖分发、在邮件列表中开发、由某人薪水中资助，并且由于其所实现的格式多年未变而更新频率极低。",
+          "因此，同一个项目会同时在六个方面被低估或忽略：下载量统计偏低、从依赖图中消失、贡献者指标归零、Scorecard评分低下、被标记为“无资助”、并被判定为“不活跃”。这一切都源于同一个根本事实：它看起来不像一个npm包。那个只有一个疲惫维护者、没有仪表盘足迹的静默系统库，正是我们构建所有这些工具所要找的对象，而这类项目恰恰是现有工具体系最难以识别的。"
+        ]
+      }
+    },
+    {
+      "slug": "3eb04cdf5dff7818",
+      "title": "Quoting Luke Curley",
+      "titleZh": "引用卢克·库里",
+      "link": "https://simonwillison.net/2026/May/9/luke-curley/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-09T01:03:58.000Z",
+      "category": "engineering",
+      "keywords": [
+        "WebRTC",
+        "networking",
+        "latency"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "文章引用了卢克·库里关于 WebRTC 的言论，指出 WebRTC 的设计目标是在网络条件不佳时主动丢弃音频数据包以保持低延迟。作者对此表示惊讶，因为对于像语音通话这样的实时应用，用户通常更愿意等待完整的数据包以确保音频质量，而不是接受因丢包导致的失真。",
+      "summaryEn": "The article quotes Luke Curley on WebRTC, noting its design purpose is to aggressively drop audio packets during poor network conditions to maintain low latency. The author expresses surprise, as users of real-time applications like voice calls typically prefer waiting for complete packets to ensure audio quality rather than accepting distorted audio due to packet loss.",
+      "reason": "对于从事实时通信或音视频传输技术的人来说，了解 WebRTC 的设计权衡及其对用户体验的影响非常重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "9th May 2026"
+          },
+          {
+            "type": "quote",
+            "text": "WebRTC is designed to degrade and drop my prompt during poor network conditions.\nwtf my dude\nWebRTC aggressively drops audio packets to keep latency low. If you’ve ever heard distorted audio on a conference call, that’s WebRTC baybee. The idea is that conference calls depend on rapid back-and-forth, so pausing to wait for audio is unacceptable.\n…but as a user, I would much rather wait an extra 200ms for my slow/expensive prompt to be accurate. After all, I’m paying good money to boil the ocean, and a garbage prompt means a garbage response. It’s not like LLMs are particularly responsive anyway.\nBut I’m not allowed to wait. It’s impossible to even retransmit a WebRTC audio packet within a browser; we tried at Discord. The implementation is hard-coded for real-time latency or else."
+          },
+          {
+            "type": "p",
+            "text": "— Luke Curley, OpenAI’s WebRTC Problem, in response to How OpenAI delivers low-latency voice AI at scale"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4a60f37721326a35",
+      "title": "Reading List 05/09/2026",
+      "titleZh": "阅读清单 05/09/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-05092026",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-05-09T12:02:50.000Z",
+      "category": "other",
+      "keywords": [
+        "construction",
+        "data centers",
+        "military drones"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "本期阅读清单涵盖了多个领域的内容，包括被困建筑、家庭数据中心、纸板军事无人机、Brightline 潜在的破产风险等。这些话题涉及建筑安全、信息技术、军事科技和交通行业，展示了科技与社会发展的多方面动态。",
+      "summaryEn": "This reading list covers various topics including trapped buildings, home data centers, cardboard military drones, and Brightline's potential bankruptcy. These subjects span building safety, information technology, military tech, and transportation industry, showcasing diverse dynamics of technological and societal development.",
+      "reason": "如果你对科技新闻、社会热点和行业趋势感兴趣，这份清单提供了一个快速浏览当日重要话题的窗口。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a list of news and links related to buildings, infrastructure, and industrial technology. This week we look at trapped buildings, in-home data centers, cardboard military drones, Brightline’s potential bankruptcy, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "Housekeeping items:"
+          },
+          {
+            "type": "p",
+            "text": "In this week’s newsletter about how early inventions could have appeared, I flagged the safety pin as an invention that could have been invented much earlier, and would have been useful had someone thought of it. The major inventions list (which I sourced from Wikipedia) lists the invention date for the safety pin as 1849, but Claude thought there was no reason that the safety pin couldn’t have been invented as early as 500 BC. Turns out Claude was right, and safety pin-like devices were around 3000 years ago."
+          },
+          {
+            "type": "p",
+            "text": "This raises my confidence in the rest of Claude’s timeline estimates."
+          },
+          {
+            "type": "p",
+            "text": "Amazon says that repairs to its damaged Middle East cloud operations could take months. [Reuters] And Iran attacked a UAE petroleum complex. [Reuters]"
+          },
+          {
+            "type": "p",
+            "text": "The closure of the Strait of Hormuz has caused investors to funnel more funding into clean energy stocks. [FT]"
+          },
+          {
+            "type": "p",
+            "text": "Due to the risk of damage to undersea cables going through the Strait of Hormuz, hyperscalars like Google and Microsoft are buying capacity on fiber-optic cables strung alongside Iraqi oil pipelines as a backup. [Rest of World]"
+          },
+          {
+            "type": "p",
+            "text": "How many buildings are “trapped buildings” — buildings that wouldn’t be allowed to be rebuilt because they don’t meet modern code requirements, but also can’t be torn down or substantially modified because of historic preservation laws? [X]"
+          },
+          {
+            "type": "p",
+            "text": "Using AI as an interior design tool predates the modern AI revolution — I believe AI tools were being used for “virtual staging” of real estate listings before the rise of LLMs — but it’s worth keeping an eye on its progress. Homedesign.AI lets you reimagine some interior space by uploading a picture and having the AI modify it. [HomeDesigns AI]"
+          },
+          {
+            "type": "p",
+            "text": "I had to see this news item three or four times before I realized it was serious and not someone doing a bit. A startup is working on micro-data centers that can be installed in people’s homes, taking advantage of their extra electricity capacity. “Span is a California-based startup that originally launched with “smart” electrical panels designed to help homeowners save money on their electricity bills. Now, with the help of Nvidia, it has come up with something new — small, fractional data centers, or “nodes,” called XFRA units, that can be put on the side of residential homes and small commercial businesses. The idea is to take advantage of unused electrical capacity on local grids, which the Span smart panels can pinpoint.” [CNBC]"
+          },
+          {
+            "type": "p",
+            "text": "The Wall Street Journal has a piece on Ford’s efforts to build a $30k electric truck, which despite the company’s enormous losses on EVs is still going forward. “With its new truck, Ford says it has eliminated thousands of feet of heavy copper wiring, cut out hundreds of parts and made it 15% more aerodynamic than its other pickups. The process included rethinking the assembly line, which Ford helped to pioneer. That process is traditionally iterative, slow and depends on scores of outside partners. On Ford’s new “assembly tree,” a modular system stamps out two massive, aluminum castings and a battery that get merged at the end of the process—closer to how Tesla and China’s automakers build EVs. “We’ve never blown the whole thing up before and just started over,” Coffey said. “If and when we build this, we will rewire Ford.”” [WSJ] And another similar article in the New York Times. [NYT] Presumably some PR firm is earning their keep getting these articles placed."
+          },
+          {
+            "type": "p",
+            "text": "There’s lots of debate about how fast the economy might grow if we truly develop Artificial General Intelligence (AGI) that can do anything a person can do. The big divide in this debate tends to be between the economists, who think growth rates might be a few percentage points, and the technologists, who think growth rates might be vastly higher. Here’s an interesting contribution to the debate, an estimate of how fast the economy could theoretically grow based on analysis of actual industrial production rates. “In this post, I compute the maximum rate at which an autonomous AI economy could grow, once its production is concentrated in the sectors most important for self-replication. I take the conservative case for this calculation: full automation, but no other technological improvement. Using US input-output data, I find this economy could double in about a year…” One interesting item in this analysis: under this rate of growth, construction would be a much larger share of GDP than it is currently. [Defenses in Depth]"
+          },
+          {
+            "type": "p",
+            "text": "The NYT on Geely, the Chinese car manufacturer jockeying with giant BYD. “In an unexpected development, Geely beat BYD in sales in the first two months of the year and is rapidly broadening its lineup. Geely is now pushing overseas, more than doubling exports to Europe, the Middle East and elsewhere in the past year and taking on global rivals on their home turf.” [NYT]"
+          }
+        ],
+        "translations": [
+          "欢迎阅读本周的资讯列表，内容涵盖建筑、基础设施及工业技术相关的新闻与链接。本期我们关注被困建筑、家庭数据中心、纸板军用无人机、Brightline潜在的破产危机等话题。约三分之二的资讯受付费墙限制，如需完整访问，请订阅付费会员。",
+          "例行事项：",
+          "在本周关于早期发明可能更早出现的通讯中，我提到安全别针是一项本可更早发明且极具实用价值的发明。维基百科来源的“重大发明”列表中，安全别针的发明年份为1849年，但克劳德认为其完全可能在公元前500年就已被发明。事实证明克劳德是对的——类似安全别针的装置早在3000年前就已存在。",
+          "这增强了我对克劳德其余时间线估算的信心。",
+          "亚马逊表示，其受损的中东云业务修复可能需要数月时间。[路透社] 伊朗袭击了阿联酋的一个石油综合体。[路透社]",
+          "霍尔木兹海峡关闭导致投资者将更多资金注入清洁能源股票。[金融时报]",
+          "由于霍尔木兹海峡海底电缆面临损坏风险，谷歌和微软等超大规模数据中心运营商正在租用沿伊拉克输油管道铺设的光纤电缆作为备用线路。[Rest of World]",
+          "有多少建筑属于“被困建筑”——即因不符合现代规范而无法重建，又因文物保护法限制无法拆除或大幅改造的建筑？[X]",
+          "使用人工智能进行室内设计早于当前的AI革命——我认为在大型语言模型（LLM）兴起之前，AI工具已被用于房地产挂牌中的“虚拟布置”。不过仍需密切关注其发展进程。Homedesign.AI允许用户上传室内图片，由AI对其进行修改以重新设计空间布局。[HomeDesigns AI]",
+          "这条新闻我反复看了三四遍才意识到它是真的，而不是有人在开玩笑。一家初创公司正在研发微型数据中心，可安装在居民家中，充分利用其富余的电力容量。“Span是一家总部位于加利福尼亚的初创公司，最初推出的是‘智能’电表面板，旨在帮助房主节省电费。如今，在英伟达的协助下，该公司开发出一种新产品——小型、分体式数据中心，或称‘节点’，名为XFRA单元，可安装于住宅和商业建筑的侧面。其理念是利用当地电网中未被充分利用的电力容量，而Span的智能面板正能精准定位这些资源。”[CNBC]",
+          "《华尔街日报》报道了福特公司致力于打造一款售价3万美元的电动皮卡，尽管该公司在电动汽车领域亏损严重，但仍坚持推进该项目。“福特表示，这款新车已省去数千英尺沉重的铜线，减少数百个零部件，其空气动力学性能比现有皮卡提升15%。这一过程包括重新设计装配线——福特曾在此领域率先探索。传统上，此类改进是渐进、缓慢且依赖数十家外部合作伙伴的。而在福特新的‘装配树’系统中，一个模块化流程会先冲压出两块大型铝铸件和一块电池，最后将它们合并——更接近特斯拉和中国汽车制造商的电动汽车生产方式。‘我们从未像这样彻底推倒重来过，’科菲说道，‘如果真的建成，我们将彻底重塑福特。’[WSJ] 《纽约时报》也发表了类似文章。[NYT] 显然，某些公关公司正借此机会大赚一笔。",
+          "关于人工智能通用智能（AGI）一旦真正发展起来，经济可能以多快的速度增长，目前存在诸多争论。这场辩论中的主要分歧通常出现在经济学家与技术专家之间：前者认为增长率可能仅提高几个百分点，而后者则相信增速将远超于此。一篇有趣的分析文章从实际工业生产率的角度出发，估算了经济体理论上可能达到的最大增长速度。“本文计算了在AI自主经济中，当其生产集中于自我复制最关键的部门时，可能实现的最高增长率。我采用保守假设进行测算：即全面自动化，但无其他技术进步。利用美国投入产出数据，我发现该经济体可在一年内翻倍……” 分析中一个引人注目的观点是：按此增速发展，建筑业占GDP的比重将远高于当前水平。[Defenses in Depth]",
+          "《纽约时报》报道了中国吉利汽车与比亚迪之间的竞争态势。“出人意料的是，今年前两个月，吉利销量已超过比亚迪，并正迅速扩充产品线。吉利正大力拓展海外市场，过去一年对欧洲、中东等地的出口量翻了一番多，在全球竞争对手的主场展开正面交锋。”[NYT]"
+        ]
+      }
+    },
+    {
+      "slug": "8df7a24aff325f61",
+      "title": "George Orwell's review of Russel's Power: A New Social Analysis",
+      "titleZh": "乔治·奥威尔对伯特兰·罗素《权力：一项新的社会分析》的评论",
+      "link": "https://berthub.eu/articles/posts/orwell-review-bertrand-russells-power/",
+      "sourceName": "berthub.eu",
+      "sourceUrl": "https://berthub.eu",
+      "pubDate": "2026-05-08T20:35:10.000Z",
+      "category": "other",
+      "keywords": [
+        "George Orwell",
+        "Russell",
+        "social analysis"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "作者重新发现了乔治·奥威尔于1939年发表在《The Adelphi》上的书评，该评论实际上远不止是对一本书的评价。奥威尔的书评深入探讨了权力的本质及其在社会中的作用，具有超越书评本身的深刻洞察力。",
+      "summaryEn": "The author rediscovered George Orwell's 1939 book review published in The Adelphi, which is actually much more than just a book review. Orwell's review delves into the nature of power and its role in society, offering profound insights that extend beyond the book itself.",
+      "reason": "对于历史、政治哲学或对经典文本感兴趣的读者，这篇重新发现的书评提供了一个深入了解奥威尔思想以及20世纪30年代社会思潮的宝贵机会。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bert Hubert's writings",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I had previously learned a lot from this book review by George Orwell, which is actually a lot more than a book review."
+          },
+          {
+            "type": "p",
+            "text": "Recently I had cause to look it up again and found it had vanished from the searchable internet. With some sleuthing I have recovered a copy of the review from the internet archive."
+          },
+          {
+            "type": "p",
+            "text": "Orwell’s review was first published in The Adelphi in January 1939. The review can also be found in its original (scanned) form, also on the internet archive."
+          },
+          {
+            "type": "p",
+            "text": "I can recommend reading this review highly since it touches on a lot of points that are again relevant in 2026. Sadly."
+          },
+          {
+            "type": "p",
+            "text": "A key quote: “Underlying this is the idea that common sense always wins in the end. And yet the peculiar horror of the present moment is that we cannot be sure that this is so”."
+          },
+          {
+            "type": "p",
+            "text": "If there are certain pages of Mr. Bertrand Russell’s book, Power, which seem rather empty, that is merely to say that we have now sunk to a depth at which the restatement of the obvious is the first duty of intelligent men (ed. I know). It is not merely that at present the rule of naked force obtains almost everywhere. Probably that has always been the case."
+          },
+          {
+            "type": "p",
+            "text": "Where this age differs from those immediately preceding it is that a liberal intelligentsia is lacking. Bully-worship, under various disguises, has become a universal religion, and such truism as that a machine-gun is still a machine-gun even when a “good” man is squeezing the trigger—and that in effect is what Mr. Russell is saying—have turned into heresies which is it actually becoming dangerous to utter."
+          },
+          {
+            "type": "p",
+            "text": "The most interesting part of Mr. Russell’s book is the earlier chapters in which he analyses the various types of power—priestly, oligarchical, dictatorial, and so forth. In dealing with the contemporary situation he is less satisfactory, because like all liberals he is better at pointing out what is desirable than at explaining how to achieve it. He sees clearly enough that the essential problem of today is “the taming of power” and that no system except democracy can be trusted to save us from unspeakable horrors."
+          },
+          {
+            "type": "p",
+            "text": "Also that democracy has very little meaning without approximate economic equality and an educational system tending to promote tolerance and tough-mindedness. But unfortunately he does not tell us how we are to set about getting these things; he merely utter what amounts to a pious hope that the present state of things will not endure. He is inclined to point to the past; all tyrannies have collapsed sooner or later, and “there is no reason to suppose (Hitler) more permanent than his predecessors.”"
+          },
+          {
+            "type": "p",
+            "text": "Underlying this is the idea that common sense always wins in the end. And yet the peculiar horror of the present moment is that we cannot be sure that this is so. It is quite possible that we are descending into an age in which two and two will make five when the Leader says so. Mr. Russell points out that the huge system of organized lying upon which the dictators depend keeps their followers out of contact with reality and therefore tends to put them at a disadvantage as against those who know the facts."
+          },
+          {
+            "type": "p",
+            "text": "This is true so far as it goes, but it does not prove that the slave-society at which the dictator is aiming will be unstable. It is quite easy to imagine a state in which the ruling caste deceive their followers without deceiving themselves. Dare anyone be sure that something of the kind is not coming into existence already? One has only to think of the sinister possibilities of the radio, state-controlled education and so forth, to realize that “the truth is great and will prevail” is a prayer rather than an axiom."
+          },
+          {
+            "type": "p",
+            "text": "Mr. Russell is one of the most readable of living writers, and it is very reassuring to know that he exists. So long as he and a few others like him are alive and out of jail, we know that the world is still sane in parts. He has rather an eclectic mind, his is capable of saying shallow things and profoundly interesting things in alternate sentences, and sometimes, even in this book, he is less serious than his subject deserves."
+          },
+          {
+            "type": "p",
+            "text": "But he has an essentially decent intellect, a kind of intellectual chivalry which is far rarer than mere cleverness. Few people during the past thirty years have been so consistently impervious to the fashionable bunk of the moment. In a time of universal panic and lying he is a good person to make contact with. For that reason this book, though it is not as good as Freedom and Organization, is very well worth reading."
+          },
+          {
+            "type": "p",
+            "text": "Adelphi, January 1939"
+          }
+        ],
+        "translations": [
+          "我此前曾从乔治·奥威尔的一篇书评中学到很多，而这篇书评实际上远不止是一篇书评。",
+          "最近我因故再次查阅时，发现它已从可搜索的互联网上消失。经过一番追查，我在互联网档案馆中找到了这篇评论的一个副本。",
+          "奥威尔的评论最初发表于1939年1月的《阿德菲》杂志。该评论的原始（扫描）版本也保存在互联网档案馆中。",
+          "我强烈推荐大家阅读这篇评论，因为它触及了许多在2026年依然相关的问题——尽管令人遗憾。",
+          "一个关键引述是：“其核心理念是，最终常识总会胜出。然而当下特有的恐怖之处在于，我们无法确定这一点。”",
+          "伯特兰·罗素先生《权力》一书中某些看似空洞的章节，仅仅说明我们现在已堕落到如此境地：重申显而易见的事实，已成为智识之士的首要职责（注：我知道）。这不仅在于当前赤裸裸的强权统治几乎无处不在，或许这种情况一直存在。",
+          "与此前时代的不同之处在于，缺乏自由派知识分子。各种伪装下的“ bully-worship”（对强者的崇拜）已成为普遍信仰，而诸如“即使是由‘好人’扣动扳机，机关枪仍是机关枪”这类陈词滥调——这实际上正是罗素先生所表达的意思——如今却成了异端邪说，甚至说出这些话都可能变得危险。",
+          "罗素先生著作中最有趣的部分是早期章节，他在其中分析了各种类型的权力——神权、寡头、独裁等。但在分析当代局势时，他的论述就不那么令人满意了，因为像所有自由主义者一样，他更擅长指出什么是理想状态，而非解释如何实现。他清楚地认识到当今社会的核心问题是“驯服权力”，并认为唯有民主制度才能避免陷入难以言喻的恐怖之中。",
+          "他还指出，若没有大致平等的经济状况和倾向于培养宽容与务实精神的教育体系，民主便毫无意义。但遗憾的是，他并未告诉我们如何着手实现这些目标；他只是表达了某种虔诚的愿望，即希望当前的局面不会持续下去。他倾向于回顾过去：所有暴政最终都会崩溃，“没有理由认为希特勒会比他的前任更持久”。",
+          "其核心理念是，最终常识总会胜出。然而当下特有的恐怖之处在于，我们无法确定这一点。我们完全可能正滑向一个领袖说二加二等于五，它就等于五的时代。罗素先生指出，独裁者赖以维系统治的大规模系统性谎言，使追随者脱离现实，因而相较于掌握事实的人处于劣势。",
+          "这话在某种程度上没错，但并不能证明独裁者所追求的奴隶制社会将是不稳定的。人们很容易想象一个统治阶层欺骗追随者却不自欺的状态。谁敢断言这种状况尚未出现？只要想想广播、国家控制的教育等阴森的可能性，就会意识到“真理伟大且终将胜利”与其说是公理，不如说是一种祈祷。",
+          "罗素先生是当代最富可读性的作家之一，得知他尚在人世且未入狱，令人倍感安心。只要他和少数与他相似的人还活着，我们就知道世界仍有清醒的部分。他的思想相当 eclectic（ eclectic 在此处保留原文），既能说出浅薄之语，也能道出深刻洞见，交替出现在句子中；有时，即便在这本书里，他也显得不够严肃，而其所论述的主题本应更受重视。",
+          "但他本质上拥有正直的 intellect（intellect 在此处保留原文），一种远比 mere cleverness（mere cleverness 在此处保留原文）更为稀有的 intellectual chivalry（intellectual chivalry 在此处保留原文）。在过去三十年间，很少有人能如此一贯地不为时下的浮夸之谈所动。在一个全民恐慌与谎言的时代，他是值得与之联系的人。正因如此，尽管这本书不如《自由与组织》那般出色，仍非常值得一读。",
+          "《阿德菲》，1939年1月"
+        ]
+      }
+    },
+    {
+      "slug": "4791c6b06eb7bb5f",
+      "title": "Pluralistic: Trump's fruitless search for a goreable ox (09 May 2026)",
+      "titleZh": "Pluralistic：特朗普徒劳地寻找一个可以被凌辱的公牛 (2026年5月9日)",
+      "link": "https://pluralistic.net/2026/05/09/cossie-livvie-crissie/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-05-09T12:51:02.000Z",
+      "category": "other",
+      "keywords": [
+        "politics",
+        "economics",
+        "cost of living"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 12
+      },
+      "summary": "文章讨论了特朗普在寻求政治支持与应对生活成本危机之间的两难境地。它列举了一系列其他新闻亮点，包括 Phrack 杂志的新一期、巴拿马文件吹哨人发言、PRO 法案以及扎克伯格的“心灵控制射线”。",
+      "summaryEn": "The article discusses Trump's futile search for political support versus addressing the cost-of-living crisis. It lists other news highlights, including a new issue of Phrack magazine, Panama Papers whistleblower statements, the PRO Act, and Zuckerberg's 'mind-control ray'.",
+      "reason": "对于关注国际政治、经济政策以及科技巨头动态的读者来说，这篇文章提供了一个综合性的时事概览。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Trump's fruitless search for a goreable ox: You can keep billionaires happy, or you can fight the cost of living crisis, but not both."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Typewriter bust; Phrack's new issue; Panama Papers whistleblower speaks; The PRO Act; Zuck's new mind-control ray."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Barcelona, Berlin, Hay-on-Wye, London, NYC, Edinburgh."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Trump's fruitless search for a goreable ox (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "I've got good news and bad news for Trump. The good news: you can get elected by promising to do something about the cost of living crisis, and the president actually has a lot of ways to improve people's daily costs. The bad news: everything you could do to fix working people's cost of living will make an oligarch worse off."
+          },
+          {
+            "type": "p",
+            "text": "This is the essential conundrum of Trumpismo: to keep his base happy, he needs to make their lives better; but to make their lives better, he'll have to make oligarchs angry. The oligarchs' wealth bonanza caused the cost of living crisis. Oligarchs' pleasure causes our suffering, so alleviating our suffering will reduce their pleasure."
+          },
+          {
+            "type": "p",
+            "text": "This means that while Trump can promise help with prices, all he can deliver is union-busting, ICE lynchings, and pointless wars, none of which have any hope of materially improving the lives of working people. Indeed, all of this stuff makes working people materially worse off, as wages fall, crops rot in the fields, and gas prices shoot through the roof."
+          },
+          {
+            "type": "p",
+            "text": "Trump would dearly love to find an ox he can safely gore, but all the good oxen are owned by his oligarch chums. Trump can't punish Ticketmaster, because the billions Ticketmaster steals from the WWE, F1 and football fans in his base all land in the pocket of oligarchs who own stock in Ticketmaster, and Trump can't afford to upset those oligarchs:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/06/03/aoi-aoi-oh/#concentrated-gains-vast-diffused-losses"
+          },
+          {
+            "type": "p",
+            "text": "Indeed, I can't think of a single corrupt racket that Trump can afford to do something about. Not even the only cost of living metric that can approach gas prices in the hierarchy of American electoral salience: grocery prices."
+          },
+          {
+            "type": "p",
+            "text": "Your grocery bill went up because oligarchs price-gouge you. Eggflation was caused by Cal-Maine, the monopolist that owns every brand of eggs in your grocer's fridge, who jacked up prices because they knew they could:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/03/10/demand-and-supply/#keep-cal-maine-and-carry-on"
+          },
+          {
+            "type": "p",
+            "text": "Pepsi and Walmart conspired to force every retailer to jack up the prices of all Pepsi products (including Frito-Lay, Gatorade, Aquafina, etc) at every retailer's store, so that Walmart could also jack up their prices and still undersell their competition (naturally, Trump let them get away with it):"
+          },
+          {
+            "type": "p",
+            "text": "https://www.thebignewsletter.com/p/secret-documents-show-pepsi-and-walmart"
+          },
+          {
+            "type": "p",
+            "text": "This stuff isn't exactly a secret. Grocery store owners hold earnings calls with their investors where they boast about the fact that they can raise their prices far in excess of their increased costs, and blame it on inflation:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/03/11/price-over-volume/#pepsi-pricing-power"
+          },
+          {
+            "type": "p",
+            "text": "They boast about their \"personalized pricing\" swindles, whereby they use surveillance data to figure out how desperate you are and jack up the prices you see in their apps:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography"
+          },
+          {
+            "type": "p",
+            "text": "Trump has the power to put a stop to all of this, but still, he can't, because his oligarch pals would squeal, and when they squeal, Trump jumps. In theory, Trump has lots of power, but in practice, Trump can't do anything."
+          },
+          {
+            "type": "p",
+            "text": "Which brings me to the cost of meat. Meat inflation has raced ahead of other forms of food inflation, even as the payments to ranchers and other producers fell sharply, leading to waves of bankruptcies:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.thebignewsletter.com/p/beef-is-expensive-so-why-are-cattle"
+          },
+          {
+            "type": "p",
+            "text": "Partly, that's because meat processing is controlled by cartels, with 85% of all the beef being processed by four packers, and nearly every chicken going through one of four poultry processors. These middlemen jack up prices to grocers while colluding to push down the payments to their suppliers."
+          },
+          {
+            "type": "p",
+            "text": "How do they rig those prices? After all, it's very illegal for these four companies to get together around a table to rig prices. Instead, they use a \"price consultancy\" called Agri Stats that does the price-rigging for them. Every week, the packers send a detailed list of all their costs and prices into Agri Stats, and Agri Stats \"advises\" them all to raise all their prices at once, and anyone who doesn't play along is pushed out of the Agri Stats cartel. Everyone wins – except families paying for groceries:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/10/04/dont-let-your-meat-loaf/#meaty-beaty-big-and-bouncy"
+          },
+          {
+            "type": "p",
+            "text": "Agri Stats has been doing this since the Reagan years, but they grew steadily more brazen, until, back in 2023, Biden's DOJ brought history's most obvious, easily won antitrust case against them:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.meatpoultry.com/articles/29124-doj-sues-agri-stats-for-complicity-in-meat-market-manipulation"
+          },
+          {
+            "type": "p",
+            "text": "And wouldn't you know it, Trump just settled that case, in a way that will make Agri Stats much, much richer and give them far more opportunities to rig prices:"
+          },
+          {
+            "type": "p",
+            "text": "https://prospect.org/2026/05/08/meat-industry-agri-stats-department-of-justice-price-fix-trump/"
+          },
+          {
+            "type": "p",
+            "text": "Under the terms of the settlement, Agri Stats must \"allow\" restaurants, farmers, and other parts of the supply chain to pay it for the data it consolidates. This will allow more parties to collude to rig prices, and provide more income to Agri Stats. As David Dayen writes in The American Prospect, they've been \"sentenced to make money.\""
+          },
+          {
+            "type": "p",
+            "text": "Agri Stats isn't the only \"price consultancy\" that is used to launder a price-fixing cartel that's driving up the cost of living for all Americans, including Trump's base, in order to make oligarchs better off. Companies like Realpage do the same thing for residential rents:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/12/11/nimby-yimby-fimby/#home-team-advantage"
+          },
+          {
+            "type": "p",
+            "text": "Trump can't do anything about any of these scams, not without goring some oligarch's precious ox. But, as Dayen points out, there are dozens of Democratic state Attorneys General who can kill Trump's sweetheart deal for Agri Stats using the Tunney Act, which gives them standing to sue to force a federal judge to review the settlement and determine whether it is fair."
+          },
+          {
+            "type": "p",
+            "text": "Whether any AG will seize the moment remains to be seen, of course, but it would be very good politics to do so – after all, the path to political power in America runs through credible promises to do something about the cost of living crisis."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The simple statistical error Republican Supreme Court justices used to gut the VRA https://www.gelliottmorris.com/p/2026-05-08-simple-math-error-scotus-callais-vra"
+          },
+          {
+            "type": "li",
+            "text": "Message to Congress on Curbing Monopolies. https://www.presidency.ucsb.edu/documents/message-congress-curbing-monopolies"
+          },
+          {
+            "type": "li",
+            "text": "The Scam Artistry of the Right’s Dirty Rotten Scoundrels https://jacobin.com/2026/05/peterson-musk-tate-right-victimization"
+          },
+          {
+            "type": "li",
+            "text": "Ploopy Bean Pointing Stick  https://ploopy.co/shop/bean-pointing-stick/"
+          },
+          {
+            "type": "p",
+            "text": "'The Biggest Student Data Privacy Disaster in History': Canvas Hack Shows the Danger of Centralized EdTech https://www.404media.co/the-biggest-student-data-privacy-disaster-in-history-canvas-hack-shows-the-danger-of-centralized-edtech/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago A dotcom founder's tale (funny) https://features.slashdot.org/story/01/05/04/1541239/the-worst-of-times"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Shell UK abandons chip-and-pin after £1M fraud https://web.archive.org/web/20060508044110/https://www.snakeoillabs.com/2006/05/07/shell-stops-accepting-chip-and-pin-in-fraud-fiasco-bp-to-follow/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Typewriter bust: Grandfather https://web.archive.org/web/20110511033756/http://jemayer.tumblr.com/post/5260317696"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Kobo “upgrade” deprives readers of hundreds of DRM-locked ebooks https://www.teleread.com/drm-nightmare-after-recent-upgrade-kobo-customers-report-losing-sony-books-from-their-libraries/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Venerable hacker zine Phrack publishes its first issue in four years https://phrack.org/issues/69/1"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Panama Papers whistleblower issues statement, naming and shaming failed states and institutions https://web.archive.org/web/20160506180902/https://panamapapers.icij.org/20160506-john-doe-statement.html"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The FTC's (kick-ass) Right to Repair report https://pluralistic.net/2021/05/07/pro-act-class-war/#we-fixit"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The PRO Act and worker misclassification https://pluralistic.net/2021/05/07/pro-act-class-war/#sectoral-balances"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Mark Zuckerberg announces mind-control ray (again) https://pluralistic.net/2025/05/07/rah-rah-rasputin/#credulous-dolts"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/speakers/"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: How to Disenshittify the Internet with Wendy Liu (EFF), May 14\nhttps://www.eff.org/event/effecting-change-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 18\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow-in-der-friesenstrasse-23-kreuzberg-praesentiert-von-otherland.html"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI with Jonathan Coulton (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The “Enshittification” of Everything (Bioneers)\nhttps://bioneers.org/cory-doctorow-enshittification-of-everything-zstf2605/"
+          },
+          {
+            "type": "li",
+            "text": "Enshittification (99% Invisible)\nhttps://99percentinvisible.org/episode/666-enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "特朗普徒劳地寻找一头可宰杀的公牛：你可以取悦亿万富翁，也可以应对生活成本危机，但两者不可兼得。",
+          "嘿，来看看这个：令人愉悦的惊喜。",
+          "客体永久性：打字机雕像；《Phrack》新刊；巴拿马文件举报人发声；《PRO法案》；扎克伯格的新式精神控制射线。",
+          "即将出席的活动：巴塞罗那、柏林、海伊-昂怀、伦敦、纽约、爱丁堡。",
+          "近期活动回顾：我去了哪里。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所说，我会一直写下去。",
+          "版权说明：其余内容。",
+          "特朗普徒劳地寻找一头可宰杀的公牛（永久链接）",
+          "我给特朗普带来了好消息和坏消息。好消息是：你可以通过承诺解决生活成本危机而当选，总统确实有很多方法可以降低民众的日常开支。坏消息是：任何帮助工薪阶层降低生活成本的措施，都会让寡头们受损。",
+          "这就是“特朗普主义”的核心困境：为了取悦他的基本盘，他必须改善他们的生活；但要改善他们的生活，又必须激怒寡头。正是寡头的财富暴增引发了生活成本危机。寡头的快乐源于我们的痛苦，因此缓解我们的痛苦，就会减少他们的快乐。",
+          "这意味着，尽管特朗普可以承诺帮助控制物价，但他能做的只有打击工会、纵容ICE（移民与海关执法局）滥权，以及发动毫无意义的战争——这些举措无一能真正改善工薪阶层的生活。事实上，这些做法只会让工薪阶层的生活更加艰难，因为工资下降，农作物烂在地里，油价飙升。",
+          "特朗普非常希望能找到一头可以安全宰杀的公牛，但所有好牛都归他的寡头朋友所有。他无法惩罚Ticketmaster，因为Ticketmaster从他基本盘中窃取数十亿美元——来自WWE、F1和足球球迷的钱——最终都落入了拥有Ticketmaster股票的寡头口袋，而特朗普不敢得罪这些寡头：",
+          "https://pluralistic.net/2024/06/03/aoi-aoi-oh/#concentrated-gains-vast-diffused-losses",
+          "事实上，我想不出特朗普能对其采取任何行动的腐败行径。甚至连在衡量美国选举重要性层级中仅次于汽油价格的唯一生活成本指标——食品杂货价格——他也无能为力。",
+          "你的食品杂货账单上涨是因为寡头们在价格欺诈你。鸡蛋通胀是由Cal-Maine造成的，这家垄断企业掌控了你超市冷柜里的所有鸡蛋品牌，他们抬高价格是因为知道可以这样做：",
+          "https://pluralistic.net/2025/03/10/demand-and-supply/#keep-cal-maine-and-carry-on",
+          "百事可乐和沃尔玛合谋，迫使所有零售商提高包括乐事薯片、佳得乐、Aquafina在内的所有百事产品售价，这样沃尔玛也能抬高价格但仍能击败竞争对手（自然，特朗普对此视而不见）：",
+          "https://www.thebignewsletter.com/p/secret-documents-show-pepsi-and-walmart",
+          "这并非什么秘密。超市老板在与投资者的财报电话会议上吹嘘，他们可以将价格上涨幅度远远超过成本增加，并归咎于通货膨胀：",
+          "https://pluralistic.net/2023/03/11/price-over-volume/#pepsi-pricing-power",
+          "他们还吹嘘自己的“个性化定价”骗局，利用监控数据判断你的迫切程度，然后在他们的App上对你显示更高的价格。",
+          "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography",
+          "特朗普本有能力阻止这一切，但他做不到，因为他的寡头朋友们会抗议，而一旦他们抗议，特朗普就会退缩。理论上，特朗普拥有巨大的权力，但实际上，他什么都做不了。",
+          "这让我想到肉类的价格问题。肉类通胀远超其他食品类别的涨幅，与此同时，牧场主和其他生产者的收入却大幅下降，导致一波又一波的破产潮：",
+          "https://www.thebignewsletter.com/p/beef-is-expensive-so-why-are-cattle",
+          "部分原因在于肉类加工被少数几家公司垄断，85%的牛肉由四家屠宰企业处理，几乎每只鸡都要经过四家禽类加工厂之一。这些中间商哄抬超市售价，同时串通压低对供应商的支付价格。",
+          "他们是如何操纵价格的？毕竟这四家公司在桌边合谋操纵价格是严重违法的。于是他们使用了一家名为 Agri Stats 的“价格咨询公司”来代劳。每周，屠宰企业都会向 Agri Stats 提交详细的成本和定价信息，该公司随后“建议”所有成员同步提高价格，不配合者将被踢出 Agri Stats 的价格卡特尔。所有人都赢了——除了那些为 groceries 买单的家庭：",
+          "https://pluralistic.net/2023/10/04/dont-let-your-meat-loaf/#meaty-beaty-big-and-bouncy",
+          "Agri Stats 自里根时代就开始干这事，但近年来愈发肆无忌惮，直到2023年，拜登政府的司法部才对这起史上最为明目张胆、极易胜诉的反垄断案件提起诉讼：",
+          "https://www.meatpoultry.com/articles/29124-doj-sues-agri-stats-for-complicity-in-meat-market-manipulation",
+          "你猜怎么着？特朗普竟然刚刚与该案达成和解，此举将使 Agri Stats 更加富有，并为其提供更多操纵价格的机会：",
+          "https://prospect.org/2026/05/08/meat-industry-agri-stats-department-of-justice-price-fix-trump/",
+          "根据和解条款，Agri Stats 必须“允许”餐馆、农民和供应链其他环节付费获取其整合的数据。这将使更多参与者得以串通操纵价格，同时为 Agri Stats 带来更多收入。正如 David Dayen 在《美国展望》中所写，他们被“判了赚钱”。",
+          "Agri Stats 并非唯一被用于掩盖价格操纵卡特尔的“价格咨询公司”。Realpage 等公司也如法炮制，操纵住宅租金：",
+          "https://pluralistic.net/2024/12/11/nimby-yimby-fimby/#home-team-advantage",
+          "除非触怒某位寡头的利益，否则特朗普对这些骗局无能为力。但正如 Dayen 所指出的那样，有数十位民主党籍州检察长可以依据《特纳法案》（Tunney Act）采取行动，推翻特朗普为 Agri Stats 提供的特殊待遇。该法案赋予他们起诉联邦法官审查和解协议是否公平的权利。",
+          "当然，究竟是否有哪位检察长会抓住这个机会尚待观察，但从政治角度看这样做非常有利——毕竟，在美国通往政治权力的道路上，关键在于做出解决生活成本危机的可信承诺。",
+          "嘿，看看这个（永久链接）",
+          "共和党最高法院大法官们用来废除《投票权法案》的简单统计错误 https://www.gelliottmorris.com/p/2026-05-08-simple-math-error-scotus-callais-vra",
+          "致国会关于遏制垄断的信件。https://www.presidency.ucsb.edu/documents/message-congress-curbing-monopolies",
+          "右翼“肮脏恶棍”的骗局艺术 https://jacobin.com/2026/05/peterson-musk-tate-right-victimization",
+          "Ploopy 豆形指点棒 https://ploopy.co/shop/bean-pointing-stick/",
+          "“史上最大学生数据隐私灾难”：Canvas 黑客事件揭示集中化教育科技的危险性 https://www.404media.co/the-biggest-student-data-privacy-disaster-in-history-canvas-hack-shows-the-danger-of-centralized-edtech/",
+          "客体永久性（永久链接）",
+          "#25年前 一位 dotcom 创始人的故事（有趣）https://features.slashdot.org/story/01/05/04/1541239/the-worst-of-times",
+          "#20年前 Shell UK 因芯片和密码欺诈损失百万英镑后放弃使用 https://web.archive.org/web/20060508044110/https://www.snakeoillabs.com/2006/05/07/shell-stops-accepting-chip-and-pin-in-fraud-fiasco-bp-to-follow/",
+          "#15年前 打字机被砸：祖父的故事 https://web.archive.org/web/20110511033756/http://jemayer.tumblr.com/post/5260317696",
+          "#10年前 Kobo “升级”剥夺读者数百本 DRM 锁定的电子书 https://www.teleread.com/drm-nightmare-after-recent-upgrade-kobo-customers-report-losing-sony-books-from-their-libraries/",
+          "#10年前 老牌黑客杂志 Phrack 时隔四年发布首期 https://phrack.org/issues/69/1",
+          "#10年前 巴拿马文件泄密者发表声明，点名批评失败国家和机构 https://web.archive.org/web/20160506180902/https://panamapapers.icij.org/20160506-john-doe-statement.html",
+          "#5年前 FTC 的（超赞的）维修权报告 https://pluralistic.net/2021/05/07/pro-act-class-war/#we-fixit",
+          "#5年前 PRO 法案与工人身份误分类问题 https://pluralistic.net/2021/05/07/pro-act-class-war/#sectoral-balances",
+          "#1年前 马克·扎克伯格再次宣布意念控制射线 https://pluralistic.net/2025/05/07/rah-rah-rasputin/#credulous-dolts",
+          "即将举行的活动（永久链接）",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日 https://encuentroderechosdigitales.com/en/speakers/",
+          "线上：如何用 Wendy Liu 的方式“去 shitify”互联网（电子前哨基金会），5月14日 https://www.eff.org/event/effecting-change-enshittification",
+          "柏林：Re:publica，5月18-20日 https://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland 书店“去 shitify”活动，5月18日 https://www.otherland-berlin.de/de/event-details/cory-doctorow-in-der-friesenstrasse-23-kreuzberg-praesentiert-von-otherland.html",
+          "柏林：Otherland 书店“去 shitify”活动，5月19日 https://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-Wye：HowTheLightGetsIn，5月22-25日 https://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "SXSW 伦敦，6月2日 https://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：《反向半人马的生活指南：AI 之后的人生》与 Jonathan Coulton 对谈（The Strand），6月24日 https://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "爱丁堡国际图书节与 Jimmy Wales 对谈，8月17日 https://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "近期活动（永久链接）",
+          "一切的“去 shitify”化（Bioneers）https://bioneers.org/cory-doctorow-enshittification-of-everything-zstf2605/",
+          "“恶化”（99% Invisible）https://99percentinvisible.org/episode/666-enshittification/",
+          "人工智能：终极颠覆者，与阿斯特拉·泰勒和约书亚·本吉奥对话（CBC Ideas）https://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新而开始榨取？（InnovEU）https://www.youtube.com/watch?v=cccDR0YaMt8",
+          "皮特“市长”·布蒂吉格（No Gods No Mayors）https://www.patreon.com/posts/pete-mayor-with-155614612",
+          "最新书籍（永久链接）",
+          "“坎尼谷”：我为《多元主义》创作的拼贴画限量特装版，自出版于2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《恶化：为何一切突然变得更糟及如何应对》，Farrar, Straus, Giroux 出版社，2025年10月7日出版 https://us.macmillan.com/books/9780374619329/enshittification/",
+          "《镐与铲》：一部关于个人电脑英雄时代的续作，Tor Books（美国），Head of Zeus（英国），2025年2月（https://us.macmillan.com/books/9781250865908/picksandshovels）。",
+          "《骗局》：一部关于监狱科技及其他骗局的续作，Tor Books（美国），Head of Zeus（英国），2024年2月（thebezzle.org）。",
+          "《失乐园》：一部在气候紧急背景下充满希望的太阳朋克小说，Tor Books（美国），Head of Zeus（英国），2023年11月（http://lost-cause.org）。",
+          "《互联网垄断》：一本探讨互操作性与大型科技公司影响的非虚构作品（Verso出版社），2023年9月出版（http://seizethemeansofcomputation.org）。签名版可在Book Soup书店购买（https://www.booksoup.com/book/9781804291245）。",
+          "《红队蓝调》：“一部引人入胜、令人欲罢不能的惊悚小说，读完你将比以往更了解世界如何运转。” Tor Books 出版，http://redteamblues.com。",
+          "《 chokepoint capitalism》：与丽贝卡·吉布琳合著，探讨如何打破创意劳动市场的扭曲机制，Beacon Press/Scribe 2022 出版，https://chokepointcapitalism.com",
+          "即将出版的著作（永久链接）",
+          "《半人马的逆转指南：AI时代如何成为更好的AI批评者》，一部关于有效批判人工智能的短书，Farrar, Straus and Giroux 出版社，2026年6月出版（https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/）",
+          "《恶化》（图像小说版），Firstsecond 出版社，2026年出版",
+          "《后美国互联网》：一部地缘政治意义上的续作，延续《恶化》的主题，Farrar, Straus and Giroux 出版社，2027年出版",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机与数字版权管理的中篇小说的青少年图像小说，FirstSecond 出版社，2027年4月20日出版",
+          "《墨克斯方法》，Farrar, Straus, Giroux 出版社，2027年出版",
+          "出版说明（永久链接）",
+          "今日主要资讯来源：",
+          "当前创作中：《后美国互联网》——一部《恶化》的续作，讲述特朗普摧毁美国后我们其余人所能拥有的美好未来。已完成第三稿，已提交编辑审阅。",
+          "《半人马逆转指南：AI时代如何成为有效的AI批评者》——一部为 Farrar, Straus and Giroux 撰写的短书。法律审查与文字润色全部完成。",
+          "《后美国互联网》——一部探讨特朗普主义时代互联网政策的短书。正在规划阶段。",
+          "《小兄弟》短篇故事之一，主题围绕DIY胰岛素。正在规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名4.0国际许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图像不在此许可范围内；它们要么属于版权限制或例外情况，要么基于单独的许可协议。请谨慎对待。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、无追踪、无数据收集）：",
+          "Pluralistic.net",
+          "通讯（无广告、无追踪、无数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、无追踪、无数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模发布，无限制，第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你 SARS，你就做 sarsaparilla”——Joey \"Accordion Guy\" DeVilla",
+          "仔细阅读：通过阅读本内容，您代表您的雇主，承诺永久免除我因与贵雇主及其合作伙伴、许可方、代理人及受让人之间签订的任何未经协商的协议、许可、服务条款、密封包装（shrinkwrap）、点击包装（clickwrap）、浏览包装（browsewrap）、保密协议、保密义务、竞业禁止及可接受使用政策（统称“虚假协议”）而产生的所有义务和弃权声明，且不影响我持续享有的权利和特权。您进一步确认，您有权代表雇主解除任何“虚假协议”。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "131ea40870835dba",
+      "title": "Book Review: The Names by Florence Knapp ★★⯪☆☆",
+      "titleZh": "书评：弗洛伦斯·卡普尔的《名字》★★☆☆☆",
+      "link": "https://shkspr.mobi/blog/2026/05/book-review-the-names-by-florence-knapp/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-05-09T11:34:20.000Z",
+      "category": "other",
+      "keywords": [
+        "book review",
+        "fiction",
+        "domestic violence"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 6,
+        "timeliness": 3,
+        "total": 11
+      },
+      "summary": "这本书拥有出色的叙事结构和优美的文笔，但作者个人并不享受阅读过程。故事融合了《滑动门》和《同一时间下一年》的元素，并包含令人不安的家庭暴力情节。故事围绕一位母亲面临艰难抉择展开：是否应该用她施暴的丈夫的名字为孩子命名？",
+      "summaryEn": "This book has an excellent narrative structure and beautiful prose, but the reviewer personally did not enjoy it. The story blends elements of Sliding Doors and Same Time Next Year with a distressing amount of domestic violence. It revolves around a mother facing a difficult choice: should she name her child after her abusive and violent husband?",
+      "reason": "如果你喜欢复杂叙事和文学性强的小说，但对家庭暴力主题敏感，或者想了解这部作品的争议性，这篇书评可以提供一些背景信息。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This has an excellent narrative structure, some beautiful prose, and I just didn't enjoy it."
+          },
+          {
+            "type": "p",
+            "text": "The story is Sliding Doors meets Same Time Next Year mixed with a distressing amount of domestic violence."
+          },
+          {
+            "type": "p",
+            "text": "A mother faces a difficult choice. Should she name her child after her abusive and violent husband? In one strand she does, in another she doesn't, and in the third she makes a compromise. We rejoin the story every few years to see how our protagonists are progressing."
+          },
+          {
+            "type": "p",
+            "text": "It mostly works and pushes us to consider how much the path of our life is influenced by factors outside of our control."
+          },
+          {
+            "type": "p",
+            "text": "I have a real difficulty with books about violence. All of the characters are unsympathetic - trapped by tyrant but also trapped by their own inaction. I also struggled with how pedestrian and limited it was. In a world where you can read anything, why would you choose to spy on your horrible neighbours?  Like a tawdry soap-opera it offered nothing more than misery and heartbreak. Fine if you need that sort of substitute empathy, but it left me feeling grubby and unsatisfied."
+          },
+          {
+            "type": "p",
+            "text": "To be fair, the characters in the book address this:"
+          },
+          {
+            "type": "quote",
+            "text": "‘Why read them if they make you feel bad?’\n\t\t\t\t\t\t‘Because I’m hoping one of them might feel like me,’"
+          },
+          {
+            "type": "p",
+            "text": "It isn't a bad book - although it does veer into cliché a little too often - and the structure is interesting enough. But I found its subject matter too distressing to be enjoyable,"
+          },
+          {
+            "type": "h2",
+            "text": "Book Club Discussion"
+          },
+          {
+            "type": "p",
+            "text": "This isn't the sort of book I'd normally pick up - but it was chosen by the book club I attend.  The majority of readers rated it higher than I did. Here are some of the things we discussed."
+          },
+          {
+            "type": "p",
+            "text": "The central message sees to be that, no matter how hard you try, the tragedy which infects your life can never be escaped. I found that depressing and disempowering. The domestic dreariness was stifling and just left me irritated with the passivity of the characters."
+          },
+          {
+            "type": "p",
+            "text": "The evil father is an arsehole - but a one-dimensional arsehole. I get that there's a risk to humanising an antagonist, but other than a brief mention of his back-story there's nothing about him. I didn't want a justification for his actions, but he felt like a cartoon villain."
+          },
+          {
+            "type": "p",
+            "text": "Even when one character gains a moment of happiness, it is offset by another's misery. No matter which path is chosen, someone always ends up broken."
+          },
+          {
+            "type": "p",
+            "text": "Are we \"destined\" to meet the same people, no matter what path we take?"
+          }
+        ],
+        "translations": [
+          "这部作品叙事结构出色，文笔优美，但我实在提不起兴趣。",
+          "故事融合了《双面情人》与《明年此时》的元素，还夹杂着令人不安的家庭暴力情节。",
+          "一位母亲面临艰难抉择：是否该以她施暴的丈夫之名为孩子命名？在一条线索中她这样做了，另一条则没有，第三条线索则采取折中方案。每隔几年，我们都会回到故事中，看看主角们的命运如何发展。",
+          "整体效果尚可，促使我们思考人生轨迹究竟有多少受到不可控因素的影响。",
+          "我对描写暴力的书籍一直难以接受。书中所有角色都缺乏同情心——既被暴君压迫，又被自身的消极所困。此外，故事内容也显得平庸乏味。在这个可以阅读任何作品的年代，为何要选择窥探邻居的悲惨生活？这更像一部低劣的肥皂剧，除了痛苦与心碎之外别无他物。诚然，这类作品或许能满足某些人对共情的替代需求，但读完只让我感到肮脏和空虚。",
+          "公平地说，书中的人物自己也意识到了这一点：",
+          "“既然它们让你难受，为什么还要读？”  \n　　“因为我希望其中某个角色能像我一样。”",
+          "这本书不算糟糕——尽管它时常陷入陈词滥调，结构也足够有趣。但我觉得题材太过沉重，实在无法享受阅读过程。",
+          "读书会讨论",
+          "这种书通常不会是我主动选择的类型——但它恰好是我们读书会选中的书目。大多数读者评分比我高得多。以下是我们的部分讨论内容。",
+          "核心信息似乎是：无论你多么努力，生命中注定要遭遇的悲剧永远无法摆脱。这让我感到压抑且无力。沉闷的家庭氛围令人窒息，角色们的被动更让我恼火。",
+          "邪恶的父亲就是个混蛋——而且是个单薄扁平的混蛋。我理解不宜过度美化反派，但除了简短提及他的过往经历外，再无其他背景交代。我不需要为他开脱，但他更像漫画里的恶棍。",
+          "即便某个角色获得片刻幸福，也会立刻被另一个人的不幸抵消。无论选择哪条道路，总有人最终支离破碎。",
+          "我们是否注定会遇见相同的人，无论走哪条路？"
+        ]
+      }
+    }
+  ]
+}
