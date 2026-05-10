@@ -1,0 +1,983 @@
+{
+  "date": "2026-05-11",
+  "generatedAt": "2026-05-10T18:07:55.524Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2411,
+    "filteredArticles": 6,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：Meta 启动员工行为数据采集，用于训练 AI 模型，引发对隐私与生产力平衡的讨论；工程领域持续探索算法逆向与安全边界，Mersenne Twister 的线性代数破解揭示伪随机数生成器的脆弱性；同时，企业级 SaaS 基础设施需求升温，WorkOS 等身份认证方案成为 B2B 产品标配，而语义化版本工具 Madame Semver 的预告则预示开发流程自动化的新动向。",
+  "articles": [
+    {
+      "slug": "5a3ad80a42381070",
+      "title": "Meta to Start Capturing Employee Mouse Movements, Keystrokes for AI Training Data",
+      "titleZh": "Meta 开始收集员工鼠标移动和键盘输入以训练 AI",
+      "link": "https://www.reuters.com/sustainability/boards-policy-regulation/meta-start-capturing-employee-mouse-movements-keystrokes-ai-training-data-2026-04-21/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-10T14:04:19.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI training data",
+        "employee monitoring",
+        "privacy"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "Meta 正在美国员工的电脑上安装新的追踪软件，用于捕捉鼠标移动、点击和击键数据，以训练其人工智能模型。该项目名为“能力模型计划”（MCI），仅针对工作相关的应用和网站运行。此举是 Meta 构建能自主执行工作任务的人工智能代理的广泛战略的一部分。公司向员工发送的内部备忘录显示，该工具旨在提升 AI 在办公场景中的自动化能力。此举引发了关于员工隐私和数据使用的关注。",
+      "summaryEn": "Meta is deploying new tracking software on U.S. employees' computers to capture mouse movements, clicks, and keystrokes for training its AI models. Known as the Model Capability Initiative (MCI), the tool runs only on work-related applications and websites. This move is part of a broader strategy to build autonomous AI agents capable of performing office tasks. Internal memos sent to staff confirm the initiative aims to enhance AI's workplace automation capabilities. The practice raises concerns about employee privacy and data usage.",
+      "reason": "揭示了科技巨头在开发 AI 过程中对员工行为数据的系统性采集，触及职场监控与隐私伦理的核心议题。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "08407cf57b1ac92a",
+      "title": "Reverse engineering Mersenne Twister with Linear Algebra",
+      "titleZh": "用线性代数逆向工程 Mersenne Twister",
+      "link": "https://www.johndcook.com/blog/2026/05/10/reverse-mersenne-twister/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-05-10T17:32:02.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Mersenne Twister",
+        "linear algebra",
+        "random number generator"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 6,
+        "total": 24
+      },
+      "summary": "Mersenne Twister（MT）是一种具有良好统计特性的伪随机数生成器，但不具备加密安全性。本文展示了如何通过线性代数方法从 MT 的输出中恢复其内部状态。作者指出，尽管位操作技术也能实现类似效果，但线性代数提供了一种更系统且可解释的破解路径。该方法可用于分析依赖 MT 作为随机源的弱安全系统。文章强调，MT 不应被用作密码学安全的 PRNG（CSPRNG）。",
+      "summaryEn": "The Mersenne Twister (MT) is a popular pseudorandom number generator with strong statistical properties but poor cryptographic security. This post demonstrates how to recover the internal state of an MT generator from its output using linear algebra—a more systematic approach than bit-twiddling techniques. While both methods are effective, linear algebra offers greater transparency and scalability. The technique can be used to break systems that rely on MT for weak randomness. The author stresses that MT should never be used as a cryptographically secure PRNG (CSPRNG).",
+      "reason": "为理解伪随机数生成器的安全漏洞提供了数学层面的深入解析，适合对密码学与算法安全感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The Mersenne Twister (MT) is a random number generator with good statistical properties but bad cryptographic properties. In buzzwords, it’s a PRNG but not a CSPRNG."
+          },
+          {
+            "type": "p",
+            "text": "This post will show how the internal state of a MT generator can be recovered from its output. We’ll do this using linear algebra. The bit twiddling approach is more common and more efficient, but the linear algebra approach is conceptually simpler."
+          },
+          {
+            "type": "h2",
+            "text": "How MT works"
+          },
+          {
+            "type": "p",
+            "text": "There are numerous variations on the Mersenne Twister. We’ll focus on the original version that had internal state consists of vector x of length 640 filled with 32-bit numbers. The ideas in this post would apply equally to all MT versions."
+          },
+          {
+            "type": "p",
+            "text": "The first call to MT returns a “tempered” version of x[0]. The next call returned a tempered version of x[1], and so on. After every 640 calls, the state is scrambled. This scrambling is where the “twist” in the name Mersenne Twister comes from. (The Mersenne part comes from the fact that the period of an MT generator is a Mersenne prime.)"
+          },
+          {
+            "type": "h2",
+            "text": "Tempering"
+          },
+          {
+            "type": "p",
+            "text": "Here is Python code for performing the tempering step."
+          },
+          {
+            "type": "code",
+            "text": "def temper(y):\n    y ^= (y >> 11) \n    y ^= (y <<  7) & 0x9d2c5680 \n    y ^= (y << 15) & 0xefc60000 \n    y ^= (y >> 18)  \n    return y"
+          },
+          {
+            "type": "p",
+            "text": "Each step is reversible, and so the temper function is reversible."
+          },
+          {
+            "type": "p",
+            "text": "Because the tempering step is reversible, the first output can be used to infer the first element of the internal state, the second output to infer the second element, and so on. After 640 calls one can know the entire internal state and predict the rest of the generator’s output from then on."
+          },
+          {
+            "type": "p",
+            "text": "The bitwise operations above all correspond to linear operations over GF(2), the field with just two elements, 0 and 1. Addition in this field is XOR and multiplication is AND."
+          },
+          {
+            "type": "p",
+            "text": "Each step corresponds to multiplying a vector of 32 bits on the left by a 32 × 32 matrix with entries that are 0’s and 1’s, with the understanding that the sum of two bits is their XOR and the product of two bits is their AND. Equivalently, arithmetic is carried out mod 2. So you can compute the matrix-vector product as ordinary integers if you then reduce every integer mod 2."
+          },
+          {
+            "type": "p",
+            "text": "We will find the matrix M that corresponds to the temper operation and prove that it is invertible by finding its inverse. This proves that tempering is invertible, and one could compute the inverse of tempering by multiplying by M−1, though it would be more efficient to undo temporing by bit twiddling."
+          },
+          {
+            "type": "p",
+            "text": "One way to recover a matrix is to multiplying by unit vectors ei where the ith component of ei is 1 and the rest of the components are zero. Then"
+          },
+          {
+            "type": "p",
+            "text": "M ei"
+          },
+          {
+            "type": "p",
+            "text": "is the ith column of M."
+          },
+          {
+            "type": "p",
+            "text": "So we can find the nth column of M by tempering 1 << n = 2n."
+          },
+          {
+            "type": "code",
+            "text": "M = np.zeros((32, 32), dtype=int)\nfor i in range(32):\n    t = temper(1 << (31-i))\n    s = f\"{t:032b}\"\n    for j in range(32):\n        M[j, i] = int(s[j])"
+          },
+          {
+            "type": "p",
+            "text": "Let’s generate a random number and compute its tempered form two ways: directly and matrix multiplication."
+          },
+          {
+            "type": "code",
+            "text": "x = random.getrandbits(32)\ny = temper(x)\nprint(f\"{y:032b}\")\n\nvx = np.array([int(b) for b in f\"{x:032b}\"]) # vector form of x\nvy = M @ vx % 2 # vector form of y\nprint(\"\".join(str(b) for b in vy))"
+          },
+          {
+            "type": "p",
+            "text": "Both produce the same bits:"
+          },
+          {
+            "type": "code",
+            "text": "10100101100101101100110101000110\n10100101100101101100110101000110"
+          },
+          {
+            "type": "p",
+            "text": "We can find the matrix representation of the untemper function by inverting the matrix M. However, we need to invert it over the field GF(2), not over the integers or reals."
+          },
+          {
+            "type": "code",
+            "text": "import galois\nGF2 = galois.GF(2)\nMinv = np.linalg.inv(GF2(M))"
+          },
+          {
+            "type": "p",
+            "text": "Here are visualizations of M and its inverse using a black square for a 1 and a white square for a 0."
+          },
+          {
+            "type": "p",
+            "text": "M:"
+          },
+          {
+            "type": "p",
+            "text": "M−1:"
+          },
+          {
+            "type": "p",
+            "text": "The next post will back up and look at the linear algebra of the components that comprise the Mersenne Twister."
+          }
+        ],
+        "translations": [
+          "Mersenne Twister（MT）是一种具有良好统计特性的随机数生成器，但加密安全性较差。用术语来说，它是一种伪随机数生成器（PRNG），但不是密码学安全的伪随机数生成器（CSPRNG）。",
+          "本文将展示如何通过线性代数从 MT 生成器的输出来恢复其内部状态。我们将使用线性代数方法来实现这一点。虽然位操作的方法更常见且更高效，但线性代数的方法在概念上更简单。",
+          "MT 的工作原理",
+          "Mersenne Twister 有多种变体。我们将重点讨论原始版本，其内部状态是一个长度为 640 的向量 x，其中填充了 32 位数字。本文中的思想同样适用于所有 MT 版本。",
+          "MT 的第一次调用返回的是 x[0] 的“ tempered”版本。下一次调用返回 x[1] 的 tempered 版本，依此类推。每经过 640 次调用后，状态会被打乱。这种打乱操作就是“Mersenne Twister”名称中“twist”的来源。（“Mersenne”部分来源于 MT 生成器的周期是一个梅森素数这一事实。）",
+          "Tempering（扰动）",
+          "以下是执行 tempering 步骤的 Python 代码。",
+          "def temper(y):\n    y ^= (y >> 11) \n    y ^= (y <<  7) & 0x9d2c5680 \n    y ^= (y << 15) & 0xefc60000 \n    y ^= (y >> 18)  \n    return y",
+          "每一步都是可逆的，因此 temper 函数本身也是可逆的。",
+          "由于 tempering 步骤是可逆的，第一个输出可用于推断内部状态的第一个元素，第二个输出用于推断第二个元素，依此类推。经过 640 次调用后，即可完全获知内部状态，并从此预测后续的所有输出。",
+          "上述所有位运算都对应于 GF(2) 域上的线性运算，该域仅包含两个元素：0 和 1。在此域中，加法是异或（XOR），乘法是与（AND）。",
+          "每一步相当于将一个 32 位的向量左乘一个 32×32 的矩阵，矩阵元素为 0 或 1；理解时需将两个比特的和视为它们的异或，乘积视为它们的与。等价地，所有算术运算都在模 2 下进行。因此，你可以像处理普通整数一样计算矩阵-向量乘积，只要在最后将每个整数对 2 取模即可。",
+          "我们将找到对应于 temper 操作的矩阵 M，并通过求其逆矩阵来证明它是可逆的。这证明了 tempering 是可逆的，理论上可以通过乘以 M⁻¹ 来计算其逆操作，尽管实际中通过位操作来撤销 tempering 会更高效。",
+          "一种恢复矩阵的方法是将它与单位向量 ei 相乘，其中 ei 的第 i 个分量为 1，其余分量为 0。于是",
+          "M ei",
+          "就是 M 的第 i 列。",
+          "因此，我们可以通过对 1 << n = 2ⁿ 进行 tempering 来得到 M 的第 n 列。",
+          "M = np.zeros((32, 32), dtype=int)\nfor i in range(32):\n    t = temper(1 << (31-i))\n    s = f\"{t:032b}\"\n    for j in range(32):\n        M[j, i] = int(s[j])",
+          "让我们生成一个随机数，并以两种方式计算其 tempered 形式：直接计算和使用矩阵乘法。",
+          "x = random.getrandbits(32)\ny = temper(x)\nprint(f\"{y:032b}\")\n\nvx = np.array([int(b) for b in f\"{x:032b}\"]) # vector form of x\nvy = M @ vx % 2 # vector form of y\nprint(\"\".join(str(b) for b in vy))",
+          "两者产生相同的比特结果：",
+          "10100101100101101100110101000110\n10100101100101101100110101000110",
+          "我们可以通过求矩阵 M 的逆来找到 untemper 函数的矩阵表示。但这次我们需要在 GF(2) 域上求逆，而不是在整数或实数域上。",
+          "import galois\nGF2 = galois.GF(2)\nMinv = np.linalg.inv(GF2(M))",
+          "以下是使用黑色方块表示 1、白色方块表示 0 的方式可视化 M 及其逆矩阵。",
+          "M：",
+          "M⁻¹：",
+          "下一篇文章将回溯，研究构成 Mersenne Twister 各组件的线性代数原理。"
+        ]
+      }
+    },
+    {
+      "slug": "39de93b61c35a6e0",
+      "title": "WorkOS",
+      "titleZh": "WorkOS：企业级 SaaS 身份认证解决方案",
+      "link": "https://workos.com/?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q22026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-10T14:05:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "auth",
+        "SSO",
+        "enterprise"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 21
+      },
+      "summary": "WorkOS 为企业提供生产就绪的身份认证与访问控制 API，帮助 B2B SaaS 产品快速集成 SSO、SCIM 和审计日志等企业级功能。对于专注于 AI 或通用 SaaS 的开发团队而言，无需重复造轮子即可满足企业客户的安全合规需求。其标准化接口显著降低开发周期和维护成本，使团队能聚焦于核心产品创新。WorkOS 已成为许多初创公司进入企业级市场的关键基础设施组件。",
+      "summaryEn": "WorkOS provides production-ready APIs for authentication and access control, enabling B2B SaaS companies to quickly add enterprise features like SSO, SCIM, and audit logs. Instead of rebuilding these systems from scratch, developers can focus on what makes their product unique. The platform is especially valuable for AI-focused startups targeting enterprise clients. By abstracting complex identity infrastructure, WorkOS accelerates time-to-market and ensures compliance.",
+      "reason": "为准备服务企业级客户的 SaaS 创业者提供了高效解决身份认证的成熟方案，避免从零搭建带来的资源浪费。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Guillermo RauchFounder & CEO",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Bot Blocking"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Agent Auth"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Audit Logs"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Enterprise SSO"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "SCIM"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "RBAC"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Connectors"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Bot Blocking"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Agent Auth"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Audit Logs"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Enterprise SSO"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "SCIM"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "RBAC"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Connectors"
+          },
+          {
+            "type": "p",
+            "text": "Ready"
+          },
+          {
+            "type": "p",
+            "text": "Enabled"
+          },
+          {
+            "type": "p",
+            "text": "Trusted by"
+          },
+          {
+            "type": "h3",
+            "text": "Auth for all SSO providers"
+          },
+          {
+            "type": "p",
+            "text": "Support any SAML or OIDC identity provider with a single integration"
+          },
+          {
+            "type": "h3",
+            "text": "Complete User Management"
+          },
+          {
+            "type": "p",
+            "text": "Manage users and organizations, set policies, and support all auth types"
+          },
+          {
+            "type": "h3",
+            "text": "Social authentication"
+          },
+          {
+            "type": "p",
+            "text": "Sign in to your app with Microsoft, Google, and more"
+          },
+          {
+            "type": "h3",
+            "text": "AuthKit"
+          },
+          {
+            "type": "p",
+            "text": "Flexible authentication UI powered by WorkOS and Radix"
+          },
+          {
+            "type": "h3",
+            "text": "Magic Auth"
+          },
+          {
+            "type": "p",
+            "text": "Passwordless auth with a six-digit code sent via email"
+          },
+          {
+            "type": "h3",
+            "text": "Multi-Factor Auth"
+          },
+          {
+            "type": "p",
+            "text": "Manage users and organizations, set policies, and support all auth types"
+          },
+          {
+            "type": "p",
+            "text": "WorkOS provides a single, elegant interface that abstracts dozens of enterprise integrations."
+          },
+          {
+            "type": "p",
+            "text": "RESTful APIs, JSON responses, and normalized objects"
+          },
+          {
+            "type": "p",
+            "text": "Dashboard seamlessly integrates WorkOS into your application"
+          },
+          {
+            "type": "p",
+            "text": "Realtime updates from directory services with webhook events"
+          },
+          {
+            "type": "p",
+            "text": "Modern SDKs for Node.js, Ruby, Python, .NET, Go and more"
+          },
+          {
+            "type": "p",
+            "text": "Multiple environments to map to your application development process"
+          },
+          {
+            "type": "p",
+            "text": "Supports 20+ enterprise services with a single integration point"
+          },
+          {
+            "type": "code",
+            "text": "\n// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport WorkOS from '@workos-inc/node';\n\nconst workos = new WorkOS('sk_example_123456789');\n\nconst profile = await workos.sso.getProfileAndToken({\n  code: '01E2RJ4C05B52KKZ8FSRDAP23J',\n  clientID: 'client_123456789',\n});"
+          },
+          {
+            "type": "code",
+            "text": "\n# Get a user’s access token and\n# profile data from an Identity Provider\n\nrequire 'workos'\n\nWorkOS.key = 'sk_example_123456789'\n\nWorkOS::SSO.profile_and_token(\n  code: '01E2RJ4C05B52KKZ8FSRDAP23J',\n  client_id: 'client_123456789',\n)"
+          },
+          {
+            "type": "code",
+            "text": "\n# Get a user’s access token and\n# profile data from an Identity Provider\n\nimport workos\nfrom workos import client\n\nworkos.api_key = 'sk_example_123456789'\nworkos.client_id = 'client_123456789'\n\nclient.sso.get_profile_and_token('01E2RJ4C05B52KKZ8FSRDAP23J')"
+          },
+          {
+            "type": "code",
+            "text": "\n// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport \"github.com/workos/workos-go/pkg/sso\"\n\nsso.SetAPIKey(\"sk_example_123456789\")\n\nsso.GetProfileAndToken(\n  context.Background(),\n  sso.GetProfileAndTokenOptions{\n    Code: \"01E2RJ4C05B52KKZ8FSRDAP23J\",\n  }\n)"
+          },
+          {
+            "type": "code",
+            "text": "\n// Get a user’s access token and\n// profile data from an Identity Provider\n\n$this->sso = new WorkOS\\SSO();\n\n$profile = $this->sso->getProfileAndToken(\"01E2RJ4C05B52KKZ8FSRDAP23J\");"
+          },
+          {
+            "type": "code",
+            "text": "\n// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport com.workos.WorkOS;\n\nWorkOS workos = new WorkOS(\"sk_example_123456\");\n\nProfileAndToken profileAndToken = workos.sso.getProfileAndToken(\"01E2RJ4C05B52KKZ8FSRDAP23J\", \"client_123456789\");\n\nProfile profile = profileAndToken.profile;"
+          },
+          {
+            "type": "code",
+            "text": "\n// Get a user’s access token and\n// profile data from an Identity Provider\n\nWorkOS.SetApiKey(\"sk_example_123456\");\n\nvar ssoService = new SSOService();\nvar options = new GetProfileAndTokenOptions\n{\n    ClientId = \"client_123456789\",\n    Code = \"01E2RJ4C05B52KKZ8FSRDAP23J\",\n};\n\nvar profile = await ssoService.GetProfileAndToken(options);"
+          },
+          {
+            "type": "code",
+            "text": "\ncurl --request POST \\\n  --url \"https://api.workos.com/sso/token? \\\n  client_id=client_123456789& \\\n  client_secret=sk_example_123456789& \\\n  grant_type=authorization_code& \\\n  code=01E2RJ4C05B52KKZ8FSRDAP23J\"\n  \n  \n  \n  \n  \n  \n  "
+          },
+          {
+            "type": "p",
+            "text": "HTTP 200"
+          },
+          {
+            "type": "code",
+            "text": "\nResponse {...}\n  \"access_token\": \"01DMEK0J53CVMC32CK5SE0KZ8Q\",\n  \"profile\": {\n    \"id\": \"prof_01DMC79VCBZ0NY2099737PSVF1\",\n    \"connection_id\": \"conn_01E4ZCR3C56J083X43JQXF3JK5\",\n    \"connection_type\": \"okta\",\n    \"email\": \"alan@foo-corp.com\",\n    \"first_name\": \"Alan\",\n    \"last_name\": \"Turing\",\n    \"idp_id\": \"00u1a0ufowBJlzPlk357\",\n    \"object\": \"profile\",\n    \"raw_attributes\": {...}\n  }"
+          },
+          {
+            "type": "p",
+            "text": "WorkOS"
+          },
+          {
+            "type": "h3",
+            "text": "SCIM provisioning"
+          },
+          {
+            "type": "p",
+            "text": "with Okta, Entra ID, ADFS, and more"
+          },
+          {
+            "type": "h3",
+            "text": "HRIS integration"
+          },
+          {
+            "type": "p",
+            "text": "with Bamboo, Rippling, and others"
+          },
+          {
+            "type": "p",
+            "text": "Effortlessly connect any identity provider or directory"
+          },
+          {
+            "type": "p",
+            "text": "Customize the look and feel to match your brand"
+          },
+          {
+            "type": "p",
+            "text": "Host on your custom domain (CNAME)"
+          },
+          {
+            "type": "p",
+            "text": "A polished experience for IT administrators"
+          },
+          {
+            "type": "p",
+            "text": "Step-by-step setup guides with detailed screenshots"
+          },
+          {
+            "type": "p",
+            "text": "Seamlessly integrates into your existing application"
+          },
+          {
+            "type": "quote",
+            "text": "“I think we could have done even more business if we had partnered with WorkOS earlier, it's been incredibly well received.”"
+          },
+          {
+            "type": "quote",
+            "text": "“The WorkOS team was right there with us every step of the way. Their support ensured those final migrations were just as smooth as the rest.”"
+          },
+          {
+            "type": "quote",
+            "text": "“Cursor now completely runs on WorkOS. Login times are much faster, the signup page looks much better, and we’re not subject to Auth0's customer-hostile and opaque pricing anymore. Plus, we’re excited to add SSO for our business tier soon.”"
+          },
+          {
+            "type": "quote",
+            "text": "“SSO is a crucial part of our Enterprise Pro plan, and with WorkOS we could roll it out in less than a week. Docs are comprehensive, the Admin Portal has made customer onboarding a breeze, and the level of support we received directly in Slack has been phenomenal.”"
+          },
+          {
+            "type": "p",
+            "text": "Dmitry Shevelenko"
+          },
+          {
+            "type": "p",
+            "text": "Chief Business Officer"
+          },
+          {
+            "type": "p",
+            "text": "Read more"
+          },
+          {
+            "type": "quote",
+            "text": "“Integrating was straightforward, pleasant, and fun. The team answered my questions quickly, and went above and beyond to help when I ran into issues.”"
+          },
+          {
+            "type": "quote",
+            "text": "“When I asked the team, how was the experience with WorkOS? They were just like, this is incredible.”"
+          },
+          {
+            "type": "quote",
+            "text": "“WorkOS simplified the complexity of implementing single sign-on (SSO) with multiple identity providers.”"
+          },
+          {
+            "type": "quote",
+            "text": "“With our in-house solution we had to spend 2-4 hours provisioning each SSO connection. I wanted to find a solution that would allow us to focus on building core-products.”"
+          },
+          {
+            "type": "quote",
+            "text": "“We did consider open source, but WorkOS provided a far superior developer experience.”"
+          },
+          {
+            "type": "quote",
+            "text": "“With Audit Logs, we were able to launch the storage, querying, and export capabilities we needed into production in just a matter of days.”"
+          },
+          {
+            "type": "quote",
+            "text": "“We viewed WorkOS’ connections-based pricing as a more viable option aligned with our projected growth. The Admin Portal has also been a critical feature allowing us to save engineering time and provide a more polished enterprise experience.”"
+          },
+          {
+            "type": "quote",
+            "text": "“WorkOS’ SCIM API has been a game-changer, enabling us to meet the user lifecycle management needs of our largest enterprise customers.”"
+          },
+          {
+            "type": "quote",
+            "text": "“The decision to use WorkOS was straightforward. We saw good feedback from existing customers and reviewing the documentation made us confident that our needs would be addressed.”"
+          },
+          {
+            "type": "quote",
+            "text": "“WorkOS was super easy to self serve and get up and running. It provided us super easy-to-implement must-have functionality out of the box.”"
+          },
+          {
+            "type": "quote",
+            "text": "“What sold WorkOS was the Admin Portal. Our UI gives customers a link; they go to the Admin Portal, complete onboarding steps at their leisure, and never have to talk to us, making the onboarding process a breeze.”"
+          },
+          {
+            "type": "quote",
+            "text": "“SCIM is a game-changer for our customers, saving them a lot of time and reducing friction. It's crucial because, without SCIM, customers would likely get frustrated and might even switch to another provider with a smoother experience.”"
+          },
+          {
+            "type": "quote",
+            "text": "“The onboarding process has been excellent. I love sending IT admins the link to set it up themselves and getting an email notification when it's completed. It's so efficient not having to get into meetings or go back and forth via email with IT personnel. ”"
+          },
+          {
+            "type": "quote",
+            "text": "“​​If you work with another provider, you probably won’t get the same level of support that WorkOS provides. We'd get immediate responses to technical questions we posted in Slack.”"
+          },
+          {
+            "type": "p",
+            "text": "Hannah Han-Ciaravella"
+          },
+          {
+            "type": "p",
+            "text": "Senior Product Manager"
+          },
+          {
+            "type": "p",
+            "text": "Read more"
+          }
+        ],
+        "translations": [
+          "机器人拦截",
+          "就绪",
+          "已启用",
+          "代理身份验证",
+          "就绪",
+          "已启用",
+          "审计日志",
+          "就绪",
+          "已启用",
+          "企业单点登录（SSO）",
+          "就绪",
+          "已启用",
+          "SCIM 配置",
+          "就绪",
+          "已启用",
+          "基于角色的访问控制（RBAC）",
+          "就绪",
+          "已启用",
+          "连接器",
+          "就绪",
+          "已启用",
+          "机器人拦截",
+          "就绪",
+          "已启用",
+          "代理身份验证",
+          "就绪",
+          "已启用",
+          "审计日志",
+          "就绪",
+          "已启用",
+          "企业单点登录（SSO）",
+          "就绪",
+          "已启用",
+          "SCIM 配置",
+          "就绪",
+          "已启用",
+          "基于角色的访问控制（RBAC）",
+          "就绪",
+          "已启用",
+          "连接器",
+          "就绪",
+          "已启用",
+          "受以下机构信赖：",
+          "支持所有 SSO 提供商的身份验证",
+          "通过单一集成支持任意 SAML 或 OIDC 身份提供商",
+          "完整的用户管理",
+          "管理用户和组织，设置策略，并支持所有认证类型",
+          "社交认证",
+          "使用 Microsoft、Google 等账号登录您的应用",
+          "AuthKit",
+          "由 WorkOS 和 Radix 驱动，提供灵活的认证界面",
+          "Magic Auth",
+          "通过电子邮件发送六位验证码的无密码认证",
+          "多因素认证（MFA）",
+          "管理用户和组织，设置策略，并支持所有认证类型",
+          "WorkOS 提供了一个统一而优雅的接口，抽象了数十项企业级集成。",
+          "RESTful API、JSON 响应和标准化对象",
+          "仪表板无缝集成 WorkOS 到您的应用中",
+          "通过 webhook 事件从目录服务获取实时更新",
+          "适用于 Node.js、Ruby、Python、.NET、Go 等现代 SDK",
+          "多种环境映射至您的应用开发流程",
+          "通过单一集成点支持 20 多项企业服务",
+          "// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport WorkOS from '@workos-inc/node';\n\nconst workos = new WorkOS('sk_example_123456789');\n\nconst profile = await workos.sso.getProfileAndToken({\n  code: '01E2RJ4C05B52KKZ8FSRDAP23J',\n  clientID: 'client_123456789',\n});",
+          "# Get a user’s access token and\n# profile data from an Identity Provider\n\nrequire 'workos'\n\nWorkOS.key = 'sk_example_123456789'\n\nWorkOS::SSO.profile_and_token(\n  code: '01E2RJ4C05B52KKZ8FSRDAP23J',\n  client_id: 'client_123456789',\n)",
+          "# Get a user’s access token and\n# profile data from an Identity Provider\n\nimport workos\nfrom workos import client\n\nworkos.api_key = 'sk_example_123456789'\nworkos.client_id = 'client_123456789'\n\nclient.sso.get_profile_and_token('01E2RJ4C05B52KKZ8FSRDAP23J')",
+          "// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport \"github.com/workos/workos-go/pkg/sso\"\n\nsso.SetAPIKey(\"sk_example_123456789\")\n\nsso.GetProfileAndToken(\n  context.Background(),\n  sso.GetProfileAndTokenOptions{\n    Code: \"01E2RJ4C05B52KKZ8FSRDAP23J\",\n  }\n)",
+          "// Get a user’s access token and\n// profile data from an Identity Provider\n\n$this->sso = new WorkOS\\SSO();\n\n$profile = $this->sso->getProfileAndToken(\"01E2RJ4C05B52KKZ8FSRDAP23J\");",
+          "// Get a user’s access token and\n// profile data from an Identity Provider\n\nimport com.workos.WorkOS;\n\nWorkOS workos = new WorkOS(\"sk_example_123456\");\n\nProfileAndToken profileAndToken = workos.sso.getProfileAndToken(\"01E2RJ4C05B52KKZ8FSRDAP23J\", \"client_123456789\");\n\nProfile profile = profileAndToken.profile;",
+          "// Get a user’s access token and\n// profile data from an Identity Provider\n\nWorkOS.SetApiKey(\"sk_example_123456\");\n\nvar ssoService = new SSOService();\nvar options = new GetProfileAndTokenOptions\n{\n    ClientId = \"client_123456789\",\n    Code = \"01E2RJ4C05B52KKZ8FSRDAP23J\",\n};\n\nvar profile = await ssoService.GetProfileAndToken(options);",
+          "curl --request POST \\\n  --url \"https://api.workos.com/sso/token? \\\n  client_id=client_123456789& \\\n  client_secret=sk_example_123456789& \\\n  grant_type=authorization_code& \\\n  code=01E2RJ4C05B52KKZ8FSRDAP23J\"",
+          "HTTP 200",
+          "Response {...}\n  \"access_token\": \"01DMEK0J53CVMC32CK5SE0KZ8Q\",\n  \"profile\": {\n    \"id\": \"prof_01DMC79VCBZ0NY2099737PSVF1\",\n    \"connection_id\": \"conn_01E4ZCR3C56J083X43JQXF3JK5\",\n    \"connection_type\": \"okta\",\n    \"email\": \"alan@foo-corp.com\",\n    \"first_name\": \"Alan\",\n    \"last_name\": \"Turing\",\n    \"idp_id\": \"00u1a0ufowBJlzPlk357\",\n    \"object\": \"profile\",\n    \"raw_attributes\": {...}\n  }",
+          "WorkOS",
+          "SCIM 配置",
+          "与 Okta、Entra ID、ADFS 等集成",
+          "HRIS 集成",
+          "与 Bamboo、Rippling 等系统对接",
+          "轻松连接任何身份提供商或目录服务",
+          "自定义外观以匹配您的品牌风格",
+          "在自定义域名上托管（CNAME）",
+          "为 IT 管理员打造的流畅体验",
+          "配有详细截图的分步设置指南",
+          "无缝融入您现有的应用程序",
+          "“如果我们更早与 WorkOS 合作，我认为我们本可以拓展更多业务，它的反响一直非常好。”",
+          "“WorkOS 团队始终与我们并肩作战，他们的支持确保了最后几次迁移同样顺利。”",
+          "“现在 Cursor 完全运行在 WorkOS 之上。登录速度大幅提升，注册页面也美观得多，再也不用受制于 Auth0 那种对客户不友好且定价不透明的收费模式。而且，我们还期待尽快为企业版推出 SSO 功能。”",
+          "“SSO 是我们企业专业版的核心功能之一，借助 WorkOS，我们在一周内就完成了部署。文档非常全面，管理门户让新客户接入变得轻而易举，甚至在 Slack 中直接获得的支持也堪称出色。”",
+          "德米特里·谢韦连科",
+          "首席商务官",
+          "阅读更多",
+          "“集成过程简单、愉快又有趣。团队迅速解答了我的问题，并在我遇到问题时主动提供帮助。”",
+          "“当我问团队对 WorkOS 的体验如何时，他们只说了一句话——太棒了。”",
+          "“WorkOS 简化了在多个身份提供商之间实现单点登录（SSO）的复杂性。”",
+          "“使用内部解决方案时，每次配置 SSO 连接需要花费 2-4 小时。我们希望找到一种能让我们专注于核心产品开发的方案。”",
+          "“我们确实考虑过开源方案，但 WorkOS 提供的开发者体验明显更胜一筹。”",
+          "“借助审计日志功能，我们仅用几天时间就将存储、查询和导出能力成功上线生产环境。”",
+          "“我们认为 WorkOS 的连接式计费模式更符合我们的增长预期。管理门户也是一大关键特性，帮助我们节省了工程资源，并提升了企业级用户体验。”",
+          "“WorkOS 的 SCIM API 彻底改变了我们的工作方式，帮助我们满足了最大企业客户在用户生命周期管理方面的需求。”",
+          "“选择 WorkOS 非常直接。我们看到了现有客户的积极反馈，同时审阅文档也让我们确信他们的需求会得到充分满足。”",
+          "“WorkOS 的自服务接入极其简单，能够快速上手。它开箱即用地提供了我们急需且易于实现的核心功能。”",
+          "“真正打动我们的是 Admin Portal。我们的界面会为客户提供一个链接，他们可以自行前往 Admin Portal，按自己的节奏完成入职流程，完全不需要与我们沟通，让整个入职过程变得轻松顺畅。”",
+          "“SCIM 对我们客户来说是一场变革，为他们节省了大量时间并减少了摩擦。这一点至关重要——如果没有 SCIM，客户很可能会感到挫败，甚至可能转向提供更流畅体验的其他供应商。”",
+          "“入职流程非常出色。我喜欢直接给 IT 管理员发送设置链接，并在完成后收到邮件通知。整个过程高效便捷，无需安排会议或反复通过邮件与 IT 人员沟通。”",
+          "“如果你使用其他供应商，很可能无法获得 WorkOS 所提供的同等水平的支持。我们在 Slack 上提出的技术问题都能得到即时回复。”",
+          "Hannah Han-Ciaravella",
+          "Senior Product Manager",
+          "Read more"
+        ]
+      }
+    },
+    {
+      "slug": "ab9e4fc2df465311",
+      "title": "Madame Semver Will See You Now",
+      "titleZh": "Madame Semver 即将上线",
+      "link": "https://nesbitt.io/2026/05/10/madame-semver-will-see-you-now.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-05-10T10:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "semver",
+        "versioning",
+        "npm"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "文章标题引用了一句神秘宣言：“卡片不会说谎。”结合上下文推测，这可能是在预告一位名为 Madame Semver 的新角色或工具即将发布。SemVer（语义化版本）是软件开发中广泛采用的标准，因此该名称暗示这可能是一个与版本管理相关的新项目或测试版服务。尽管内容极简，但标题本身具有强烈的悬念感和期待感。",
+      "summaryEn": "The title 'Madame Semver Will See You Now' hints at an upcoming project or service related to semantic versioning (SemVer). Though the post contains minimal text beyond this phrase, the dramatic phrasing suggests a playful or theatrical introduction to a new tool. Given the context of version control practices in software development, it likely refers to a SemVer-compliant validator, linter, or assistant. The brevity adds intrigue rather than clarity.",
+      "reason": "简洁有力的标题制造了足够悬念，吸引对版本控制或新兴工具感兴趣的读者一探究竟。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The tent is at the back of the fairground, past the fudge stall. The velvet over the entrance is the exact red of a failed CI badge."
+          },
+          {
+            "type": "p",
+            "text": "Madame Semver is already shuffling when you sit. She does not ask your question. She turns the first card and it says ^1.0.0, just that, black ink on cream."
+          },
+          {
+            "type": "p",
+            "text": "“The caret. It permits everything that comes after, and you put it there yourself, which is the part people forget.” She sets it down. “You came here to ask if you should archive the repository. You will not. We both know you will not. So let me tell you what happens instead.”"
+          },
+          {
+            "type": "h2",
+            "text": "🃏"
+          },
+          {
+            "type": "p",
+            "text": "She turns three cards in a row and barely glances at them."
+          },
+          {
+            "type": "p",
+            "text": "“In June you receive a pull request. It is polite. It has tests. The tests pass. The code is wrong in a way that costs you most of a Saturday, and at the bottom of the description there is a co-author you cannot find a photograph of. You will merge two more from him before you learn to check.”"
+          },
+          {
+            "type": "p",
+            "text": "“In August a stranger opens an issue explaining what your library does. He is mistaken but very sure, and cites a source you cannot argue with. The next week somebody else publishes the package he was describing, under a name one letter from yours, and by September it has the downloads.”"
+          },
+          {
+            "type": "p",
+            "text": "She turns the Tower, and of course it is the Tower, the tall thing on the tiny base, Nebraska, 2003. She does not explain it because she knows you have it on a mug."
+          },
+          {
+            "type": "p",
+            "text": "“There is a scan in October. The report is long, confident, and formatted beautifully, with severity scores you did not ask for and an executive summary. Eleven of the twelve findings are your own documented behaviour described back to you as flaws. The twelfth is real, which is the only reason you read the other eleven, and the only reason it happens again in November.”"
+          },
+          {
+            "type": "p",
+            "text": "She turns one more and her hand stops over it. A figure at your gate, helpful, carrying tools. “This one stays. He fixes the small things and asks for nothing and answers the questions you are tired of answering. He is patient in a way you will admire and then, later, look up. In the third year he asks for the keys.” She puts the card face down, which she has not done with any of the others."
+          },
+          {
+            "type": "h2",
+            "text": "🔮"
+          },
+          {
+            "type": "p",
+            "text": "She pushes the deck aside and pulls the crystal ball forward."
+          },
+          {
+            "type": "p",
+            "text": "“Further out. Something with a very long memory has read an old version of your README and will go on recommending a function you removed in March, with total conviction, for about two years. You will add the function back. Don’t look at me like that. You will mark it deprecated, and the warning will be reported to you as a bug.”"
+          },
+          {
+            "type": "p",
+            "text": "“There will be a file in your root, all capitals, instructions addressed to no one in particular. It is read more carefully than anything else you have ever written. After a while you find you are writing your other documents in the same voice, and you do not remember deciding to.”"
+          },
+          {
+            "type": "p",
+            "text": "“Something in Virginia fetches your tarball eleven thousand times one Tuesday afternoon. It is not an attack. It is somebody’s enthusiasm, running in a circle, and the circle has your name in it. The same month you hire a servant to close the doors you cannot bring yourself to close, and another servant you did not hire arrives to hold them open, and between the two of them a door will open and shut for a year while you watch.”"
+          },
+          {
+            "type": "p",
+            "text": "She lets go of the ball and the tent is briefly very quiet."
+          },
+          {
+            "type": "p",
+            "text": "“There is a fork. Not soon. The maintainer is tireless and responsive and merges everything within the hour and you will know exactly what he is the moment you see the avatar. A number of people will prefer him.” She almost smiles. “He pins to you with a caret. It permits everything that comes after.”"
+          },
+          {
+            "type": "p",
+            "text": "The reading has a length, and you have reached it. The board outside lists three tiers, one dollar, five, twenty-five with a small enamel badge. You pay the dollar, which is what everyone pays."
+          },
+          {
+            "type": "p",
+            "text": "“Come back,” she says, holding the velvet aside, “when the next major version comes for you.” She does not say whose."
+          }
+        ],
+        "translations": [
+          "帐篷位于展会场地的后方，经过软糖摊位。入口的丝绒帘幕的颜色，正如同一个失败的 CI 徽章。",
+          "你刚坐下，梅纳德·塞维尔就已经在洗牌了。她没问你问题，直接翻开第一张牌——上面只写着 ^1.0.0，黑墨印在奶油色的纸上。",
+          "“这是插入符。它允许后面的一切都被包含进来，而你自己把它加进去的——这就是人们常忽略的部分。”她把牌放下。“你是来问要不要归档这个仓库的。你不会这么做。我们都知道你不会。”于是让我告诉你接下来会发生什么。",
+          "🃏",
+          "她接连翻了三张牌，几乎没看一眼。",
+          "“六月，你会收到一个拉取请求。很礼貌，有测试，测试通过。代码虽然错了，但会让你整个周六都白忙活。在描述的最底下，有一个你找不到照片的共同作者。在你学会检查之前，你会合并他另外两个提交。”",
+          "“八月，一个陌生人开了个 issue，解释你的库是做什么的。他搞错了，但非常确信，还引用了一个你无法反驳的来源。下周，另一个人发布了那个包，名字只差你一个字母，到九月时下载量就超过了你。”",
+          "她翻出‘高塔’，当然就是那张高塔牌——那根细柱上顶着巨石的模样，内布拉斯加，2003年。她没解释，因为她知道你已经把它印在马克杯上了。",
+          "“十月有个扫描报告。篇幅很长，语气自信，排版精美，附带你没要求的严重性评分和摘要。十二项发现里有十一项是你自己文档里写过的行为，被原封不动地指认为缺陷。第十二项是真的——这才是你读前十一项的原因，也是十一月它再次发生的原因。”",
+          "她又翻了一张，手停在牌面上。一个身影站在你的门前，带着工具，乐于助人。“这张留下。他会修那些小问题，什么都不求，还回答你最不想回答的问题。他的耐心会让你欣赏，之后又会去查证。第三年，他会要钥匙。”她把牌正面朝下扣住——这是唯一一次。",
+          "🔮",
+          "她把牌堆推到一边，把水晶球推了过来。",
+          "“再往后看。某个记忆超长的东西读过你 README 的旧版本，会持续两年多，无比坚定地推荐你三月删掉的函数。你会把它加回来。别这样看着我，你会标记它为废弃，然后警告信息会被你当成 bug 上报。”",
+          "“根目录会出现一个全大写的文件，写给不特定的人看的。它比你写过的任何东西都更仔细地被人阅读。过一阵子你会发现，你开始用同样的口吻写其他文档，而你根本不记得自己做过这个决定。”",
+          "“弗吉尼亚的某样东西会在某个周二下午，把你的 tarball 下载十一万次。这不是攻击，是某人的热情在打转，而那个圈子里有你。同月，你雇了个仆人关上门——你实在不忍心关——另一个没被你雇的人却来开门，两人夹在中间，门会开开关关一整年，你看着。”",
+          "她松开水晶球，帐篷里突然安静得让人心慌。",
+          "“有个分叉。不急。维护者精力充沛，反应迅速，一小时内就能合并所有提交，你一看头像就立刻明白他是谁。很多人会选他。”她几乎要笑了。“他会用 caret 标记你，允许你之后的所有操作。”",
+          "阅读是有长度的，你已经读完了。外面的牌子上写着三个等级：一美元、五美元、二十五美元，还配有一枚小珐琅徽章。你付了一美元，这是每个人都付的金额。",
+          "“下次大版本更新时再回来吧，”她把天鹅绒布掀到一边说道，“到时候你自己就知道是谁了。”"
+        ]
+      }
+    },
+    {
+      "slug": "95424f2dd1206188",
+      "title": "Quoting Andrew Quinn",
+      "titleZh": "Andrew Quinn 谈编程中的历史包袱与技术债务",
+      "link": "https://simonwillison.net/2026/May/10/andrew-quinn/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-10T14:59:17.000Z",
+      "category": "other",
+      "keywords": [
+        "personal",
+        "reflection",
+        "programming"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 4,
+        "timeliness": 2,
+        "total": 9
+      },
+      "summary": "Andrew Quinn 分享了他长达四分之一世纪的编程心路历程，坦言始终存在一种焦虑：自己正在开发的工具是否已被 30–40 年前更优的实现所取代。他以将 3GB 的 SQLite 数据库替换为仅 7MB 的 FST（有限状态转换器）二进制文件为例，说明现代开发者常陷入重复造轮子的困境。这种反思揭示了技术演进中的认知滞后与知识传承断裂问题。",
+      "summaryEn": "Andrew Quinn reflects on two decades of programming anxiety: constantly wondering if his current tools are obsolete compared to better implementations from 30–40 years ago. He illustrates this with a case study where replacing a 3GB SQLite database with a compact 7MB FST binary saved significant space and complexity. His experience highlights how modern developers often reinvent solutions without knowing superior historical alternatives exist. This points to gaps in technical knowledge transfer across generations of programmers.",
+      "reason": "深刻揭示了开发者普遍面临的‘重复发明轮子’困境，促使人们重新审视已有技术的价值与学习历史的必要性。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "10th May 2026"
+          },
+          {
+            "type": "quote",
+            "text": "One could say in the first quarter-century of my life, that while I was always fascinated by programming, I could never overcome the guilt of not really knowing whether the tool I am building right now isn’t already superceded by some much better implementation someone else has already written 30 or 40 years ago; I could write a TSV-aware search and replace, or I could find out about awk and solve that entire class of problems in one fell swoop, for example. My central conceit is that this is a trap. You need to reinvent a couple of wheels to get to the edge of what we know about wheel-making, not a thousand wheels, and not zero; probably four or five is sufficient in most domains, maybe closer to twenty or thirty in the most epistemically rigorous and developed fields like mathematics or computer science. Each wheel you reinvent, and every directed question you ask along the way, will propel you faster to the true frontier than that same amount of time spend in idle study, or even five times that amount."
+          },
+          {
+            "type": "p",
+            "text": "— Andrew Quinn, footnote on Replacing a 3 GB SQLite database with a 10 MB FST (finite state transducer) binary"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "c59971f3c34dc433",
+      "title": "[RSS Club] A Sneak Preview of Upcoming Posts",
+      "titleZh": "RSS Club 会员专享：下期博客预告",
+      "link": "https://shkspr.mobi/blog/2026/05/rss-club-a-sneak-preview-of-upcoming-posts/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-05-10T11:34:38.000Z",
+      "category": "other",
+      "keywords": [
+        "RSS",
+        "blogging",
+        "content"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 3,
+        "total": 8
+      },
+      "summary": "博主通过 RSS Club 向订阅者提前泄露即将发布的博客内容，以示感谢。他使用 Editorial Calendar Plugin 来管理定时发布的文章，并透露未来一个月将集中写作后分散发布。这种‘爆发式写作+间隔发布’的模式有助于维持创作节奏并减少日常压力。预告虽简短，却体现了对忠实读者的重视与互动诚意。",
+      "summaryEn": "The author shares upcoming blog posts exclusively with RSS Club subscribers as a thank-you gesture. Using the Editorial Calendar Plugin, he manages scheduled content and admits to writing in bursts followed by spaced publication. This workflow helps maintain momentum while avoiding burnout. The sneak peek fosters community engagement and rewards loyal readers who prefer RSS feeds over social media algorithms.",
+      "reason": "展现了创作者与核心受众之间真诚的情感连接，以及利用 RSS 绕过平台算法限制的实际价值。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    }
+  ]
+}
