@@ -1,0 +1,1896 @@
+{
+  "date": "2026-05-12",
+  "generatedAt": "2026-05-11T19:15:06.309Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2436,
+    "filteredArticles": 18,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：一是AI在开发工具中的深度渗透，从嵌入shebang行的实验性编程到Shopify公开编码代理River的协作实践，凸显生成式AI正重塑软件开发流程；二是安全领域持续高压，哥斯达黎加政府接入HIBP数据库强化数据泄露监控，而Instructure遭“付费或泄露”威胁事件则暴露企业数据防护的脆弱性；三是轻量化与跨生态工具兴起，proxy缓存中间件支持多语言环境统一缓存管理，同时AVR微控制器建站案例展现嵌入式系统向边缘计算拓展的新可能。",
+  "articles": [
+    {
+      "slug": "266d557f1a0bc70e",
+      "title": "Welcoming the Costa Rican Government to Have I Been Pwned",
+      "titleZh": "欢迎哥斯达黎加政府加入 Have I Been Pwned",
+      "link": "https://www.troyhunt.com/welcoming-the-costa-rican-government-to-have-i-been-pwned/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-05-11T00:24:17.000Z",
+      "category": "security",
+      "keywords": [
+        "Have I Been Pwned",
+        "government security",
+        "data breach",
+        "cybersecurity"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "Have I Been Pwned (HIBP) 宣布其免费政府服务新增第42个成员国——哥斯达黎加。该国计算机应急响应小组（CSIRT）现已可访问 HIBP 数据库，用于监控政府域名是否遭遇数据泄露。此举将帮助哥斯达黎加的国家网络安全事件响应团队及时发现潜在的安全暴露风险。",
+      "summaryEn": "Have I Been Pwned (HIBP) has welcomed the Government of Costa Rica as its 42nd government partner in its free public service. The country's Computer Security Incident Response Team (CSIRT) now has access to monitor government domains against known data breaches in HIBP, enabling faster detection of potential cybersecurity exposures.",
+      "reason": "这标志着全球数字安全协作的重要进展，展示了开源威胁情报如何赋能主权国家提升关键基础设施防护能力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today, we welcome the 42nd government onboarded to Have I Been Pwned’s free gov service: Costa Rica."
+          },
+          {
+            "type": "p",
+            "text": "The CSIRT of the Government of Costa Rica now has access to monitor government domains against the data in HIBP. This enables their national cybersecurity incident response team to identify exposure of government email addresses in data breach, support prevention and analysis activities, and respond more quickly when new incidents appear."
+          },
+          {
+            "type": "p",
+            "text": "Costa Rica’s CSIRT plays a national role in cybersecurity incident response, helping coordinate, analyse, and respond to threats affecting the government and the broader digital ecosystem. We’re very happy to support that mission by providing visibility into breached government accounts and helping them proactively reduce risk across public sector services."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d1b0467c32cd4f5e",
+      "title": "Using LLM in the shebang line of a script",
+      "titleZh": "在脚本的 shebang 行中使用 LLM",
+      "link": "https://simonwillison.net/2026/May/11/llm-shebang/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-11T18:48:57.000Z",
+      "category": "engineering",
+      "keywords": [
+        "LLM",
+        "shebang",
+        "scripting"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Simon Willison 探讨了将大型语言模型（LLM）直接嵌入脚本 shebang 行的可能性，这是一种前沿但极具实验性的编程实践。通过特定工具链，开发者现在可以在英文文本文件中设置 shebang 指向 LLM 解释器，实现自然语言驱动的自动化任务处理。该模式仍处于探索阶段，适合具备高度技术勇气的开发者尝试。",
+      "summaryEn": "Simon Willison explores the experimental practice of embedding Large Language Models (LLMs) directly into a script's shebang line, allowing natural language instructions to drive automation. This cutting-edge approach requires specialized tooling and is intended for technically brave developers willing to push programming boundaries.",
+      "reason": "它为未来人机交互和自动化脚本开辟了新思路，是理解 AI 与系统底层融合潜力的重要案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Kim_Bruning on Hacker News:"
+          },
+          {
+            "type": "quote",
+            "text": "But seriously, you can put a shebang on an english text file now (if you're sufficiently brave) [...]"
+          },
+          {
+            "type": "p",
+            "text": "This inspired me to look at patterns for doing exactly that with LLM. Here's the simplest:"
+          },
+          {
+            "type": "code",
+            "text": "#!/usr/bin/env -S llm -f\nGenerate an SVG of a pelican riding a bicycle"
+          },
+          {
+            "type": "p",
+            "text": "But you can also incorporate tool calls:"
+          },
+          {
+            "type": "code",
+            "text": "#!/usr/bin/env -S llm -T llm_time -f\nWrite a haiku that mentions the exact current time"
+          },
+          {
+            "type": "p",
+            "text": "Or even execute YAML templates directly that define extra tools as Python functions:"
+          },
+          {
+            "type": "code",
+            "text": "#!/usr/bin/env -S llm -t\nmodel: gpt-5.4-mini\nsystem: |\n  Use tools to run calculations\nfunctions: |\n  def add(a: int, b: int) -> int:\n      return a + b\n  def multiply(a: int, b: int) -> int:\n      return a * b"
+          },
+          {
+            "type": "p",
+            "text": "Then:"
+          },
+          {
+            "type": "code",
+            "text": "./calc.sh 'what is 2344 * 5252 + 134' --td"
+          },
+          {
+            "type": "p",
+            "text": "Which outputs (thanks to that --td tools debug option):"
+          },
+          {
+            "type": "code",
+            "text": "Tool call: multiply({'a': 2344, 'b': 5252})\n  12310688\n\nTool call: add({'a': 12310688, 'b': 134})\n  12310822\n\n2344 × 5252 + 134 = **12,310,822**"
+          },
+          {
+            "type": "p",
+            "text": "Read the full TIL for a more complex example that uses the Datasette SQL API to answer questions about content on my blog."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1a74a2c9ae2058d6",
+      "title": "proxy",
+      "titleZh": "proxy：轻量级多生态缓存包",
+      "link": "https://nesbitt.io/2026/05/11/proxy.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-05-11T10:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "caching",
+        "proxy",
+        "multi-ecosystem"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "nesbitt.io 发布了一款名为 proxy 的轻量级缓存中间件，支持跨多个生态系统（如不同编程语言或框架）进行高效缓存管理。该工具旨在简化分布式系统中的数据复用问题，提供统一接口以降低异构环境下的集成复杂度。",
+      "summaryEn": "A lightweight caching package called 'proxy' has been released by nesbitt.io, designed to provide cross-ecosystem caching capabilities across different programming environments and frameworks. It aims to simplify data reuse in distributed systems with a unified interface.",
+      "reason": "对于需要整合多种技术栈的项目而言，这是一个值得关注的通用型缓存解决方案。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Building tools that talk to package registries means making thousands of requests to npm, RubyGems, PyPI, and crates.io while you iterate, and at some point you start to feel bad about it. Recorded HTTP fixtures go stale, mocking sixteen different registry protocols by hand is its own project, and pointing the test suite at the real thing means every red-green cycle is a few hundred more requests to infrastructure other people are paying for. I wanted something I could point git-pkgs and brief at locally that would answer like the real registries do but only fetch from upstream once."
+          },
+          {
+            "type": "p",
+            "text": "proxy is a single Go binary that speaks the wire protocols of npm, PyPI, RubyGems, Cargo, Go modules, Maven, NuGet, Composer, Hex, pub.dev, Conan, Conda, CRAN, Debian, RPM, and the OCI container registry. Start it, point a package manager at localhost:8080, and the first install fetches from upstream and writes the artifact to local storage; every install after that is served from the cache. Metadata responses are rewritten on the way through so tarball URLs point back at the proxy rather than the origin, which is the part most simple HTTP caches get wrong."
+          },
+          {
+            "type": "code",
+            "text": "proxy &\nnpm_config_registry=http://localhost:8080/npm/ npm install\nGOPROXY=http://localhost:8080/go,direct go build\npip install --index-url http://localhost:8080/pypi/simple/ requests"
+          },
+          {
+            "type": "p",
+            "text": "That’s all I originally wanted from it, a local set of registry endpoints I could hammer from tests without bothering anyone. It’s still a side project for me, mostly a test bed where I can try package-registry experiments against real protocol handlers without first convincing sixteen upstream teams to ship them."
+          },
+          {
+            "type": "p",
+            "text": "But sitting between a package manager and its registry turns out to be a useful place to stand, and once those handlers existed it was also most of the way to being a free, single-binary alternative to Artifactory or Nexus for people who just want a caching mirror without the rest of the platform attached."
+          },
+          {
+            "type": "h3",
+            "text": "CI"
+          },
+          {
+            "type": "p",
+            "text": "The dependency caching built into GitHub Actions and its equivalents works at the filesystem level: tar up ~/.npm or ~/.cargo, key it on a hash of the lockfile, restore it next time. That’s fine until the lockfile changes by one package and the whole cache key misses, or a matrix build spreads the same dependency set across six OS and runtime combinations that each get their own tarball."
+          },
+          {
+            "type": "p",
+            "text": "A registry-protocol cache sits one level up, keyed on package coordinates rather than filesystem layout, so lodash-4.17.21.tgz is stored once and served to every job that wants it regardless of what else changed in the lockfile or which runner is asking. Point it at S3 or Postgres instead of the default SQLite-and-local-disk and it can be shared across runners. Longer term I’d like to see this wired directly into something like Forgejo’s CI runner, so every job on an instance gets a shared package cache and a cooldown policy by default rather than every repo having to configure it."
+          },
+          {
+            "type": "h3",
+            "text": "Mirroring"
+          },
+          {
+            "type": "p",
+            "text": "The proxy can be told to fetch packages before anything asks for them. proxy mirror takes PURLs, or a CycloneDX or SPDX SBOM, and pulls every listed artifact into the cache:"
+          },
+          {
+            "type": "p",
+            "text": "Feed it the SBOM for a repository and you have an offline mirror of exactly that project’s dependency tree, which is the shape you want for air-gapped builds or for warming a cache before a CI fleet starts pulling. The same operation is exposed as POST /api/mirror on the running server for driving it from a pipeline."
+          },
+          {
+            "type": "h3",
+            "text": "Cooldowns"
+          },
+          {
+            "type": "p",
+            "text": "Because the proxy is rewriting metadata responses anyway, it can also edit them. The cooldown setting strips any version younger than a configured age from the version lists it returns:"
+          },
+          {
+            "type": "code",
+            "text": "cooldown:\n  default: \"3d\"\n  ecosystems:\n    npm: \"7d\"\n  packages:\n    \"pkg:npm/lodash\": \"0\""
+          },
+          {
+            "type": "p",
+            "text": "With that config, a version published to npm an hour ago doesn’t exist as far as anything behind the proxy is concerned, and won’t for a week. I wrote about why I think cooldowns are the single most effective supply-chain control most projects aren’t using; the short version is that almost every malicious-package incident is caught within a day or two of publish, so a build that can’t see anything younger than three days was never exposed in the first place."
+          },
+          {
+            "type": "p",
+            "text": "A few package managers have grown a native setting for this since I wrote that post, but doing it at the proxy means one config covers every ecosystem at once, including the ones that haven’t."
+          },
+          {
+            "type": "h3",
+            "text": "Web UI"
+          },
+          {
+            "type": "p",
+            "text": "There’s a web UI on / for browsing what’s in the cache: packages by ecosystem, hit counts, size, a source browser for reading files inside cached tarballs without extracting them, and a diff view for comparing two cached versions of the same package file by file. The enrichment API behind it (/api/package/{ecosystem}/{name}/{version}) returns licence, publish date, latest version, and any OSV advisories for a given coordinate, which is the same lookup git-pkgs needs, so the two share that code."
+          },
+          {
+            "type": "p",
+            "text": "There’s a lot more I want the UI to do, most of it on the list of things worth stealing from npmx: bundle composition, install-size sunbursts, typosquat warnings. A registry frontend that only shows you packages you’ve actually installed is a slightly different design problem from one that fronts all four million packages on npm, and I haven’t fully worked out what that should look like yet."
+          },
+          {
+            "type": "h3",
+            "text": "Next"
+          },
+          {
+            "type": "p",
+            "text": "Upstream merging would put an internal index and the public registry behind one URL, with the internal names shadowing the public ones, which is the dependency-confusion defence that pip in particular has no native answer for. I’d also like the proxy to enforce dependency policy more broadly than just cooldowns (licence allowlists, blocked package names, version floors), though there’s no shared format for writing those policies down, so whatever config the proxy grows will be yet another one, and I’d rather that problem got solved upstream of any individual tool."
+          },
+          {
+            "type": "p",
+            "text": "The experiment I’m most looking forward to is a wrapper mode, proxy npm install express, where the binary finds or starts a server, sets NPM_CONFIG_REGISTRY or GOPROXY or PIP_INDEX_URL as appropriate, and execs the underlying command. Add alias npm=\"proxy npm\" to your shell and every install on your machine is cached and cooled down without ever touching an .npmrc."
+          },
+          {
+            "type": "p",
+            "text": "Most of the heavy lifting is in modules shared with the rest of the git-pkgs tooling: the manifest and lockfile parsers, the PURL handling, the SBOM readers, the OSV client. Each new registry backend is a few hundred lines of protocol handler on top of that, plus a config snippet for the install page."
+          },
+          {
+            "type": "p",
+            "text": "Contributions are very welcome on this one, particularly protocol handlers for the registries still unticked in the README (Helm, Swift, Alpine, Arch) and anything that makes the browse UI more useful. Tell me what you’d want it to do on Mastodon or the issue tracker."
+          },
+          {
+            "type": "p",
+            "text": "brew install git-pkgs/git-pkgs/proxy / github.com/git-pkgs/proxy"
+          }
+        ],
+        "translations": [
+          "构建需要与包注册中心通信的工具，意味着在迭代过程中会向 npm、RubyGems、PyPI 和 crates.io 发起数千次请求，久而久之就会产生心理负担。录制的 HTTP 测试桩会过期，手动模拟十六种不同的注册协议本身就是一项工程，而让测试套件直接指向真实服务则意味着每次红绿循环都会为他人付费的基础设施多带来数百次请求。我想要的是一个本地可运行的 git-pkgs 和 brief，它能像真实注册中心一样响应，但只会在首次安装时从上游获取数据。",
+          "proxy 是一个独立的 Go 程序，支持 npm、PyPI、RubyGems、Cargo、Go modules、Maven、NuGet、Composer、Hex、pub.dev、Conan、Conda、CRAN、Debian、RPM 以及 OCI 容器注册表等所有主流协议的底层通信。启动后，只需将包管理器指向 localhost:8080，首次安装会从上游获取并写入本地存储，之后的所有安装都直接从缓存提供。同时它会重写元数据响应，使 tarball 的 URL 指向代理而非原始源，这是大多数简单 HTTP 缓存最容易出错的部分。",
+          "proxy &\nnpm_config_registry=http://localhost:8080/npm/ npm install\nGOPROXY=http://localhost:8080/go,direct go build\npip install --index-url http://localhost:8080/pypi/simple/ requests",
+          "这原本就是我想要的全部功能——一个可以从测试中随意调用的本地注册端点，不会惊扰任何人。它至今仍是我的副项目，主要作为实验平台，让我能在真实协议处理器上测试包注册相关的新想法，而无需先说服十六个上游团队发布它们。",
+          "但事实证明，位于包管理器和其注册中心之间是个很有用的位置。一旦这些处理器就绪，它实际上就具备了成为 Artifactory 或 Nexus 的免费替代品的大部分条件——对只需要缓存镜像而不想要完整平台的人来说，一个单二进制方案就足够了。",
+          "CI",
+          "GitHub Actions 及其同类工具内置的依赖缓存是在文件系统层面工作的：将 ~/.npm 或 ~/.cargo 打包，以 lockfile 的哈希值作为键，下次运行时恢复。这在 lockfile 仅因一个包发生变化而导致整个缓存键失效时就不够理想，或者在矩阵构建中将相同依赖集分散到六个不同操作系统和运行时组合（每个组合都有自己的 tarball）时也会出现问题。",
+          "注册协议级别的缓存则更上一层楼，它以包坐标而非文件系统布局作为键，因此 lodash-4.17.21.tgz 只存储一次，无论 lockfile 中其他内容如何变化或哪个 runner 请求，都能被所有任务共享。将其配置为使用 S3 或 Postgres 替代默认的 SQLite 和本地磁盘，即可跨 runner 共享。从长远来看，我希望看到它直接集成到类似 Forgejo CI runner 的机制中，这样实例上的每个作业默认就能获得共享包缓存和冷却策略，而不是每个仓库都需要单独配置。",
+          "镜像",
+          "可以告诉 proxy 在有人请求之前就主动拉取包。proxy mirror 接受 PURL 或 CycloneDX/SPDX SBOM，并将其中列出的所有工件拉取到缓存中：",
+          "输入仓库的 SBOM，即可获得该项目的依赖树精确离线镜像——这正是气隙构建所需，或在 CI 集群开始拉取前预热缓存的理想形态。该操作也通过运行中的服务器暴露为 POST /api/mirror 接口，便于流水线驱动。",
+          "冷却期",
+          "由于 proxy 本身就在重写元数据响应，它也可以编辑这些响应。cooldown 设置会从返回的版本列表中剔除比设定年龄更新的版本：",
+          "cooldown:\n  default: \"3d\"\n  ecosystems:\n    npm: \"7d\"\n  packages:\n    \"pkg:npm/lodash\": \"0\"",
+          "按照这种配置，从 npm 发布一小时前起，代理后端就认为该版本不存在，且一周内都不会存在。我写过一篇文章阐述为何我认为冷却期（cooldowns）是大多数项目尚未采用的最有效的供应链控制手段；简而言之，几乎所有恶意软件包事件都在发布后一两天内被发现，因此一个无法访问三天以内任何内容的构建过程从一开始就没有暴露风险。",
+          "自从我写那篇文章以来，已有几个包管理器原生支持此功能，但在代理层面实现意味着一条配置即可覆盖所有生态系统，包括那些尚未支持的。",
+          "Web UI",
+          "在 / 路径下有一个用于浏览缓存内容的 Web UI：按生态系统分类的包、命中次数、大小信息，以及无需解压即可读取缓存 tarball 内部文件的源码浏览器，还能逐文件对比同一软件包的两个缓存版本。其背后的增强 API (/api/package/{ecosystem}/{name}/{version}) 会返回指定坐标（coordinate）的许可证、发布日期、最新版本及任何 OSV 安全公告，这正是 git-pkgs 所需的查询内容，因此两者共享这部分代码。",
+          "UI 还有很多想做的事，大部分来自值得借鉴的 npmx 功能列表：依赖树构成分析、安装体积环形图、拼写混淆警告等。仅展示你实际安装过的包的注册表前端，与面向 npm 上四百万个全部包的方案相比属于不同的设计范畴，我还没完全想清楚它应该长什么样。",
+          "下一步",
+          "上游合并会将内部索引和公共注册表现在置于同一 URL 之下，内部名称会遮蔽公共名称——这是 pip 尤其缺乏原生的防御依赖混淆攻击的方案。我还希望代理能更广泛地强制执行依赖策略（如许可证白名单、禁止包名、最低版本限制），但目前尚无统一格式来编写这些策略，因此无论代理新增何种配置都会成为又一个独立方案，我更希望这个问题能在工具上游解决。",
+          "我最期待进行的实验是“包装模式”：proxy npm install express，此时二进制程序会启动或找到服务器，根据情况设置 NPM_CONFIG_REGISTRY、GOPROXY 或 PIP_INDEX_URL，然后执行底层命令。只需在你的 shell 中添加别名 alias npm=\"proxy npm\"，即可让机器上的每次安装都被缓存并进入冷却状态，全程无需触碰 .npmrc。",
+          "大部分繁重工作都集中在与 git-pkgs 其余工具链共享的模块中：清单和锁定文件解析器、PURL 处理、SBOM 读取器、OSV 客户端。每个新的注册表后端都只需在其基础上添加几百行协议处理器，再加上安装页面的配置片段。",
+          "非常欢迎对此项目的贡献，尤其是 README 中尚未打勾的注册表协议处理器（Helm、Swift、Alpine、Arch），以及让浏览 UI 变得更实用的功能。请在 Mastodon 或 issue tracker 上告诉我你想要的功能。",
+          "brew install git-pkgs/git-pkgs/proxy / github.com/git-pkgs/proxy"
+        ]
+      }
+    },
+    {
+      "slug": "b76f751c930bfd0b",
+      "title": "Weekly Update 503",
+      "titleZh": "每周更新 503：Instructure 仍未回应‘付费或泄露’威胁",
+      "link": "https://www.troyhunt.com/weekly-update-503/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-05-10T23:52:52.000Z",
+      "category": "security",
+      "keywords": [
+        "data breach",
+        "Instructure",
+        "leak",
+        "ransomware"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "Troy Hunt 在其博客中通报，尽管澳大利亚时间下 Instructure 公司面临‘付费或泄露’数据的最后期限，该公司仍从 ShinyHunters 网站上被移除。取而代之的是一份官方声明，内容空洞，仅表示‘暂无进一步说明’。目前尚无证据表明该公司已采取补救措施或支付赎金。",
+      "summaryEn": "Instructure remains absent from the ShinyHunters website despite a deadline for payment or data leak, according to Troy Hunt's weekly update. Instead, a press statement offers no meaningful information, leaving the situation unresolved and raising concerns about corporate accountability.",
+      "reason": "这是当前高调网络勒索事件的实时追踪，对关注企业数据安全和网络犯罪动态的读者具有重要参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Well, it's the day before the Instructure \"pay or leak\" deadline (at least by my Aussie watch), and the company remains removed from the ShinyHunters website. In its place sits a press statement that amounts to \"we're not making any statements\". So did they pay? And if so, what lofty figure would an incident of this scale command? The lawsuits are already being prepared (search for \"instructure class action lawsuit\"), so perhaps that will be the catalyst for transparency. What a crazy time."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "b700fbbcba5df9ba",
+      "title": "We Are Not Going to Agree on AI",
+      "titleZh": "我们无法就人工智能达成一致",
+      "link": "https://idiallo.com/blog/we-are-not-going-to-agree-on-ai?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-05-11T12:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI skepticism",
+        "developer productivity",
+        "Medvi"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "作者通过对比两位开发者的极端立场揭示 AI 在软件开发中的争议性：一位每月产出三万行代码并依赖 AI，另一位则坚称 AI 毫无用处且导致项目失败。文章引用《纽约时报》对 Medivis 的报道称其年收入有望达18亿美元，同时指出微软承认至少30%的代码由 AI 生成，凸显行业对 AI 效能的认知分裂。",
+      "summaryEn": "The author contrasts two developers—one producing 30,000 lines of code monthly using AI, another claiming AI makes projects fail—to illustrate deep divisions in the software industry. While companies like Medivis project $1.8 billion revenue using AI, Microsoft admits 30% of its code is AI-generated, highlighting inconsistent outcomes and skepticism.",
+      "reason": "直面 AI 在生产环境中真实而矛盾的应用现状，为评估技术投资回报提供了鲜活样本。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On one hand, I know a developer producing 30,000 lines of code a month. On the other, I know a developer who says AI is stupid. Each swears by their stance and has evidence to back it up. One has a working product and the other has a broken one."
+          },
+          {
+            "type": "p",
+            "text": "The New York Times profiled Medvi and reported they're on track to make $1.8 billion this year. Clearly AI worked for them... if you ignore the alleged fraud for just a second. And while Microsoft now claims that at least 30% of their code is AI-generated, GitHub logged 89 incidents in 90 days (as of this writing). That doesn't exactly paint a bright picture of a technology firing on all cylinders."
+          },
+          {
+            "type": "p",
+            "text": "If you're sitting on the sidelines trying to decide whether AI works or not, you're not going to get a clean answer. But it's still the right question to be asking."
+          },
+          {
+            "type": "p",
+            "text": "I don't think we'll ever reach a consensus, because after all the hype, what we're left with is a capable tool. And apparently, that's not enough. For AI companies, it's supposed to be the alpha and the omega. Something that will both kill us and save us, take all our jobs and liberate us at the same time. For the rest of us, if we're not afraid, it's proof we don't understand it well enough, and we'll be left behind."
+          },
+          {
+            "type": "p",
+            "text": "I think of AI as a capable tool. That's it."
+          },
+          {
+            "type": "p",
+            "text": "I went to Home Depot once to buy what I needed to mount a TV. I asked an employee for a stud finder, and instead of just pointing me to the aisle, he walked me there himself. I hate when they do that, it usually means they're about to try to sell you something."
+          },
+          {
+            "type": "p",
+            "text": "Sure enough, in Aisle 17, his coworker was manning a caged shelf stocked with expensive-looking tools. When the cage opened, he didn't reach for the simple one I wanted. He grabbed the model loaded with 13 additional sensors. I asked if the basic one could do the job. The first employee took my side and made the case for simplicity. The second shot back: \"Sure, if you don't mind drilling through a live wire!\""
+          },
+          {
+            "type": "p",
+            "text": "I stood there watching these two argue, trading field stories like they were one-upping each other at a bar. One of them claimed he'd worked with a guy who didn't even need a stud finder, he'd just knock on the wall three times and know exactly where to drill. I put both stud finders in my basket, thanked them both, and walked away."
+          },
+          {
+            "type": "p",
+            "text": "I circled the store a few times to make sure neither of them could see me before I quietly dropped the expensive one into an empty basket near the checkout. To this day, I'm a little afraid to go back to that Home Depot."
+          },
+          {
+            "type": "p",
+            "text": "The only thing that matters to me is what I can do with a tool, not what the tool can theoretically do. When a tooltip pops up on my screen, I dismiss it before I've even finished reading it. I don't care about Jira's latest feature update on the sidebar. I don't care that AI can rewrite my already written ticket. I just want the stud finder to help me hang the TV. Everything else it can do holds no interest for me, especially when I'll use it for ten minutes and not touch it again for three years."
+          },
+          {
+            "type": "p",
+            "text": "When I have a goal, I reach for whatever helps me get there. If you're waiting for a tool to do the work for you, you're going to be disappointed. A tool's job is to make your work easier, and sometimes it does, sometimes it doesn't. Figuring out when to reach for it is on you."
+          }
+        ],
+        "translations": [
+          "一方面，我认识一位开发者每月能产出3万行代码；另一方面，我也认识一位声称AI很愚蠢的开发者。两人都坚信自己的立场，并且都有证据支持。一个做出了可用的产品，另一个则做坏了。",
+          "《纽约时报》对Medvi进行了报道，称他们今年有望实现18亿美元的收入。显然，AI对他们有效……如果你暂时忽略所谓的欺诈行为的话。而微软现在宣称其至少30%的代码由AI生成，但GitHub在90天内记录了89起事故（截至本文撰写时）。这并不完全描绘出一幅技术全面爆发的光明图景。",
+          "如果你还在观望，试图判断AI是否真的有用，那你可能得不到明确的答案。但这仍然是你应该问的正确问题。",
+          "我认为我们永远不会达成共识，因为在经历了一轮又一轮的炒作之后，剩下的只是一个能力不错的工具。而显然，这还不够。对AI公司而言，它本应是万物的开端与终结——既能毁灭我们，也能拯救我们；既能夺走我们的工作，也能解放我们。对我们其他人来说，如果我们不害怕，那说明我们根本没真正理解它，最终只能被甩在后面。",
+          "我把AI看作一个能力不错的工具。仅此而已。",
+          "我曾经去家得宝买挂电视要用到的东西。我问了一位员工要一个寻梁仪，他没有只是指给我货架的方向，而是亲自带我过去了。我讨厌这样，通常这意味着他马上要推销东西给我。",
+          "果然，在第17号货架区，另一位员工守着一个笼子，里面堆满了看起来昂贵的工具。当笼门打开时，他没有拿我想要的基础款，而是抓了一个带13个额外传感器的型号。我问基础款能不能完成任务。第一位员工站在我这边，主张简单至上。第二位立刻反驳：“当然可以，只要你不在乎钻头穿过电线就行！”",
+          "我站在那儿看着他们争论，像酒吧里互相较劲一样交换着现场经验。其中一人说他认识一个人，连寻梁仪都不用，敲三下墙就知道该往哪儿钻。我把两个寻梁仪都放进购物篮，感谢了他们，然后离开了。",
+          "我在店里绕了几圈，确认他们谁也看不见我之后，才悄悄地把那个贵的那个放进收银台附近一个空着的购物篮里。直到今天，我还有点不敢再去那家家得宝。",
+          "对我来说唯一重要的是我能用这个工具做什么，而不是它理论上能做什么。当屏幕上的提示框弹出来时，我甚至还没读完就把它关掉了。我不关心Jira侧边栏的最新功能更新，也不在乎AI能不能重写我已经写好的工单。我只希望寻梁仪能帮我挂好电视。除此之外它能做的任何事我都毫无兴趣，尤其是那些我只会用十分钟，接下来三年都不会再碰的功能。",
+          "当我有一个目标时，我会拿起任何能帮助我达成它的工具。如果你指望工具替你完成工作，那你注定会失望。工具的作用是让你的工作更容易，有时确实如此，有时则不然。什么时候该用它，你自己心里要有数。"
+        ]
+      }
+    },
+    {
+      "slug": "bedbfee3562cd928",
+      "title": "Additional notes on controlling which handles are inherited by Create­Process",
+      "titleZh": "控制 CreateProcess 继承句柄的附加说明",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260511-00/?p=112313",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-05-11T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Windows API",
+        "CreateProcess",
+        "handle inheritance"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "Raymond Chen 在微软旧闻博客中深入解析 Windows API 中 CreateProcess 函数的句柄继承机制。文章提出一种新方案：使用私有容器存储需继承的句柄，从而更精细地控制子进程可访问的系统资源，提升安全性与隔离性。",
+      "summaryEn": "Raymond Chen explains an advanced technique for controlling which handles are inherited by child processes created via CreateProcess in Windows. By placing handles in a private container, developers gain finer-grained control over resource access, improving security and process isolation.",
+      "reason": "对系统级程序员和安全工程师而言，这是优化进程权限管理和防御横向移动攻击的关键技术细节。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Some time ago, I wrote about  programmatically controlling which handles are inherited by new processes in Win32 by using the PROC_THREAD_ATTRIBUTE_HANDLE_LIST to limit exactly which handles are inherited. That way, when you create a new process, you have precise control over which handles get inherited and don’t accidentally inherit handles created by unrelated components in your process."
+          },
+          {
+            "type": "p",
+            "text": "A collegue of mine pointed out that you still have the reverse problem: Since handles must be marked as inheritable for them to participate in PROC_THREAD_ATTRIBUTE_HANDLE_LIST, if another thread calls Create­Process with bInheritHandles = TRUE but without using PROC_THREAD_ATTRIBUTE_HANDLE_LIST, then they will accidentally inherit all of your handles."
+          },
+          {
+            "type": "p",
+            "text": "This problem could have been avoided if the PROC_THREAD_ATTRIBUTE_HANDLE_LIST allowed you to include non-inheritable handles, in which case they would be non-inheritable by normal Create­Process but inheritable if explicitly opted back in. But alas, that’s not how it was designed."
+          },
+          {
+            "type": "p",
+            "text": "Instead, you can create a helper process. All this helper process does is wait for the main process to exit, and then exit itself."
+          },
+          {
+            "type": "code",
+            "text": "WaitForSingleObject(hMainProcess, INFINITE);\nExitProcess(0);"
+          },
+          {
+            "type": "p",
+            "text": "This process doesn’t sound like it’s doing anything useful, and it’s not. But what makes it useful is not what it’s doing but rather what is done to it."
+          },
+          {
+            "type": "p",
+            "text": "The components in the main process create their handles as non-inheritable. When they wants to create a process with specific inherited handles, they duplicate the desired handles into the helper process (as inheritable), and then build a PROC_THREAD_ATTRIBUTE_HANDLE_LIST that lists those duplicates as handles to inherit. They also use the PROC_THREAD_ATTRIBUTE_PARENT_PROCESS to specify that the helper process is the parent process that the handles should be inherited from. Then they pass those thread attributes to Create­Process, and the new process will inherit exactly those handles. Then they clean up by closing the handles in the helper process with the help of Duplicate­Handle and DUPLICATE_CLOSE_SOURCE."
+          },
+          {
+            "type": "p",
+            "text": "Notice that multiple threads can simultaneously be operating on the helper process in this way, so you need only one helper process to service all your handle-inheritance-control needs."
+          },
+          {
+            "type": "p",
+            "text": "This avoids the accidental inheritance problem because the handles that belong to the components in the main process are still marked non-inheritable, so any other code in the main process that does a Create­Process will not inherit them."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "之前我曾写过关于如何使用 PROC_THREAD_ATTRIBUTE_HANDLE_LIST 来编程控制 Win32 中哪些句柄会被新进程继承，从而精确限制可继承的句柄范围。这样，在创建新进程时，就能准确控制哪些句柄被继承，避免意外继承进程中无关组件创建的句柄。",
+          "我的同事指出，问题其实并未完全解决：由于只有被标记为可继承的句柄才能参与 PROC_THREAD_ATTRIBUTE_HANDLE_LIST，如果其他线程调用 CreateProcess 时设置 bInheritHandles = TRUE，但未使用 PROC_THREAD_ATTRIBUTE_HANDLE_LIST，就会意外继承所有标记为可继承的句柄。",
+          "若能允许 PROC_THREAD_ATTRIBUTE_HANDLE_LIST 包含非可继承句柄——即这些句柄在普通 CreateProcess 中不可继承，但可通过显式指定重新变为可继承——本可以避免此问题。可惜设计之初并未如此安排。",
+          "替代方案是创建一个辅助进程。该进程唯一的作用是等待主进程退出后，自身也随之退出。",
+          "WaitForSingleObject(hMainProcess, INFINITE);\nExitProcess(0);",
+          "这个进程看似毫无用处，确实如此。但它之所以有用，并非因为它做了什么，而是因为对它做了什么。",
+          "主进程中的组件将句柄创建为非可继承类型。当需要创建具有特定继承句柄的新进程时，它们会将所需句柄复制到辅助进程（设为可继承），然后在 PROC_THREAD_ATTRIBUTE_HANDLE_LIST 中列出这些副本作为待继承句柄。同时使用 PROC_THREAD_ATTRIBUTE_PARENT_PROCESS 指定辅助进程为父进程，句柄应从中继承。接着将这些线程属性传递给 CreateProcess，新进程将恰好继承这些句柄。最后借助 DuplicateHandle 和 DUPLICATE_CLOSE_SOURCE 清理辅助进程中的句柄。",
+          "注意，多个线程可同时以这种方式操作辅助进程，因此只需一个辅助进程即可满足所有句柄继承控制需求。",
+          "这避免了意外继承问题，因为主进程中各组件的句柄仍标记为非可继承，故主进程中任何其他执行 CreateProcess 的代码都不会继承它们。",
+          "作者",
+          "Raymond 参与 Windows 系统演进已超过 30 年。2003 年，他创办了名为 The Old New Thing 的网站，其受欢迎程度远超他的想象，至今仍让他感到些许不安。该网站催生了一本同名书籍《The Old New Thing》（Addison Wesley, 2007）。他偶尔会在 Windows Dev Docs 的 Twitter 账号上出现，讲述一些毫无实用价值的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "af3b18e61db2cb7d",
+      "title": "Learning on the Shop floor",
+      "titleZh": "车间学习：Shopify 公开编码代理 River 的实践",
+      "link": "https://simonwillison.net/2026/May/11/learning-on-the-shop-floor/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-11T15:46:36.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Shopify",
+        "River",
+        "coding agent"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Shopify CEO Tobias Lütke 分享了内部 AI 工具 River 的实际运作方式：该代理完全在公共 Slack 频道中运行，拒绝私信请求，鼓励用户创建公开频道协作。Lütke 本人常在 #tobi_river 频道中与 River 互动，体现了 Shopify 对透明化 AI 协作的文化坚持。",
+      "summaryEn": "Shopify's River, an internal coding agent, operates entirely in public Slack channels, refusing direct messages to maintain transparency. CEO Tobias Lütke works with it in the #tobi_river channel, exemplifying Shopify's culture of open collaboration with AI tools.",
+      "reason": "展示了企业级 AI 工具如何融入日常工作流，并为组织级 AI 治理提供了可借鉴的透明实践模式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "11th May 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Learning on the Shop floor. Tobias Lütke describes Shopify's internal coding agent tool, River, which operates entirely in public on their Slack:"
+          },
+          {
+            "type": "quote",
+            "text": "River does not respond to direct messages. She politely declines and suggests to create a public channel for you and her to start working in. I myself work with river in #tobi_river channel and many followed this pattern.  Every conversation is therefore searchable.  Anyone at Shopify  can jump in. In my own channel, there are over 100 people who, react to threads, add color and add context, pick up the torch, help with the reviews, remind me how rusty I am, and importantly, learn from watching. [...]\nAs so often with German, there is a word for the kind of environment: Lehrwerkstatt. Literally: A teaching workshop. The whole shop floor is the classroom. You learn by being near the work. Being a constant learner is one of the core values of the firm.\nShopify wants to be a Lehrwerkstatt at scale and River has now gotten us closer to this ideal than ever. It’s osmosis learning, because it does not require a curriculum, a training plan, or a manager. It just requires everyone's work to be visible to the maximum extent possible. Everyone learns from each other."
+          },
+          {
+            "type": "p",
+            "text": "I'm reminded of how Midjourney spent its first few years with the primary interface being public Discord channels, forcing users to share their prompts and learn from each other's experiments. I continue to believe that the early success of Midjourney was tied to this mechanism, helping to compensate for how weird and finicky text-to-image prompting is."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a883ab376f9bdf02",
+      "title": "Probability that a random binary matrix is invertible",
+      "titleZh": "随机二进制矩阵可逆的概率分析",
+      "link": "https://www.johndcook.com/blog/2026/05/11/random-binary-matrices/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-05-11T13:25:13.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "binary matrix",
+        "invertibility",
+        "probability",
+        "linear algebra"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 21
+      },
+      "summary": "John D. Cook 探讨了在 n×n 矩阵中随机填入 0 和 1 时，该矩阵可逆的概率问题。研究显示，随着维度增加，可逆概率趋近于一个稳定值，具体取决于所采用的数域（如有无模运算）。这一结果对密码学与线性代数应用具有重要意义。",
+      "summaryEn": "John D. Cook analyzes the probability that a randomly filled n×n binary matrix (with entries 0 or 1) is invertible. The likelihood approaches a constant value as matrix size increases, depending on whether arithmetic is performed over real numbers or modulo a prime, with implications for cryptography and linear algebra.",
+      "reason": "该数学结论为理解随机结构在加密算法和编码理论中的行为提供了基础洞见。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The two latest posts have involved invertible matrices with 0 and 1 entries. If you fill an n × n matrix with 0s and 1s randomly, how likely is it to be invertible?"
+          },
+          {
+            "type": "h2",
+            "text": "What kind of inverse?"
+          },
+          {
+            "type": "p",
+            "text": "There are a couple ways to find the probability that a binary matrix is invertible, depending on what you mean by the inverse."
+          },
+          {
+            "type": "p",
+            "text": "Suppose you have a matrix M filled with 0s and 1s and you’re looking for a matrix N such that MN is the identity matrix. Do you want the entries of N to also be 0s and 1s? And when you multiply the matrices, are you doing ordinary integer arithmetic or are you working mod 2?"
+          },
+          {
+            "type": "p",
+            "text": "In the previous posts we were working over GF(2), the field with two elements, 0 and 1. All the elements of a matrix are either 0 or 1, and arithmetic is carried out mod 2. In that context there’s a nice expression for the probability a square matrix is invertible."
+          },
+          {
+            "type": "p",
+            "text": "If you’re working over the real numbers, the probability of binary matrix being invertible is higher. One way to see this is that the inverse of a binary matrix is allowed to be binary but it isn’t required to be."
+          },
+          {
+            "type": "p",
+            "text": "Another way to see this is to look at determinants. If you think of a matrix M as a real matrix whose entries happen to only be 0 or 1, M is invertible if and only its determinant is non-zero. But if you think of M as a matrix over GF(2), the entries are either 0 or 1 out of necessity, and M is invertible if and only if its determinant, computed in GF(2), is non-zero. If the determinant of M as a real matrix is a non-zero even number, then M is invertible as a real matrix but not as a matrix over GF(2)."
+          },
+          {
+            "type": "h2",
+            "text": "Probability of invertibility in GF(2)"
+          },
+          {
+            "type": "p",
+            "text": "Working over GF(2), what is the probability that a random matrix is invertible? Turns out it’s just as easy to answer a more general question: what is the probability that a random n × n matrix over GF(q), a finite field with q elements, is invertible? This is"
+          },
+          {
+            "type": "p",
+            "text": "When q = 2 and n = 8 this probability is 0.289919. The probability is roughly the same for all larger values of n, converging to approximately 0.288788 as n → ∞."
+          },
+          {
+            "type": "h2",
+            "text": "Probability of invertibility in ℝ"
+          },
+          {
+            "type": "p",
+            "text": "What is the probability that an 8 × 8 matrix with random 0 and 1 entries is invertible as a real matrix? We can estimate this by simulation."
+          },
+          {
+            "type": "code",
+            "text": "import numpy as np\n\ndef simulate_prob_invertible_real(n, numreps=1000):\n    s = 0\n    for _ in range(numreps):\n        M = np.random.randint(0, 2, size=(n, n))\n        det = np.linalg.det(M)\n        if abs(det) > 1e-9:\n            s += 1\n    return s/numreps"
+          },
+          {
+            "type": "p",
+            "text": "When n = 8, I got 0.5477 when running the code with 10,000 reps."
+          },
+          {
+            "type": "p",
+            "text": "When n = 32, I got a probability of 1. Obviously it is possible for a 32 × 32 binary matrix to be singular, but it’s very unlikely: it didn’t happen in 10,000 random draws."
+          }
+        ],
+        "translations": [
+          "最近两篇帖子都涉及元素为0和1的可逆矩阵。如果随机填充一个n×n的0-1矩阵，它可逆的概率有多大？",
+          "什么样的逆矩阵？",
+          "要计算二进制矩阵可逆的概率，有几种方法，具体取决于你对“逆”的定义。",
+          "假设你有一个由0和1构成的矩阵M，正在寻找一个矩阵N，使得MN等于单位矩阵。你是否希望N的元素也必须是0或1？另外，你在进行矩阵乘法时，是执行普通的整数运算，还是在模2下进行？",
+          "在之前的文章中，我们是在GF(2)（包含两个元素0和1的有限域）上进行的运算。矩阵中的所有元素只能是0或1，且所有算术运算都在模2下进行。在这种设定下，可以得出一个关于方阵可逆概率的简洁表达式。",
+          "如果你是在实数域上工作，那么一个二进制矩阵可逆的概率会更高。一种理解方式是：一个二进制矩阵的逆矩阵可以是二进制的，但这并非必须满足的条件。",
+          "另一种理解方式是观察行列式。如果你将一个矩阵M视为一个实数矩阵，其元素碰巧只有0或1，那么M可逆当且仅当其行列式非零。但如果你将M视为GF(2)上的矩阵，其元素只能是0或1，那么M可逆当且仅当它在GF(2)下的行列式非零。如果M作为实数矩阵的行列式是一个非零偶数，那么M在实数域上是可逆的，但在GF(2)上不可逆。",
+          "GF(2)上的可逆概率",
+          "在GF(2)上，一个随机矩阵可逆的概率是多少？实际上，更容易回答一个更一般的问题：一个在GF(q)（包含q个元素的有限域）上的随机n×n矩阵可逆的概率是多少？这个概率是",
+          "当q=2且n=8时，这个概率约为0.289919。对于更大的n值，这个概率大致相同，并随着n→∞而收敛到约0.288788。",
+          "ℝ上的可逆概率",
+          "一个8×8的、元素为随机0和1的矩阵在实数域上可逆的概率是多少？我们可以通过模拟来估计这个概率。",
+          "import numpy as np\n\ndef simulate_prob_invertible_real(n, numreps=1000):\n    s = 0\n    for _ in range(numreps):\n        M = np.random.randint(0, 2, size=(n, n))\n        det = np.linalg.det(M)\n        if abs(det) > 1e-9:\n            s += 1\n    return s/numreps",
+          "当n=8时，我运行了10,000次代码，得到的概率约为0.5477。",
+          "当n=32时，我得到的概率是1。显然，一个32×32的二进制矩阵有可能是奇异的，但在10,000次随机抽取中，这种情况并未发生。"
+        ]
+      }
+    },
+    {
+      "slug": "d6a858e1377126e6",
+      "title": "Hosting a website on an AVR",
+      "titleZh": "在 AVR 微控制器上托管网站",
+      "link": "https://maurycyz.com/projects/mcusite/",
+      "sourceName": "maurycyz.com",
+      "sourceUrl": "https://maurycyz.com",
+      "pubDate": "2026-05-11T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "AVR",
+        "microcontroller",
+        "web hosting"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "Maurycy Zysk 演示了如何在 AVR64DD32 微控制器（类似 Arduino Atmega328）上搭建简易网站服务器。该设备配备 8KB RAM、64KB Flash 和 24MHz 单核 CPU，虽资源有限，但仍能运行基本 HTTP 服务，展示了嵌入式系统在极简场景下的可行性。",
+      "summaryEn": "Maurycy Zysk demonstrates running a basic web server on an AVR64DD32 microcontroller—similar to the classic Arduino ATmega328—featuring 8KB RAM, 64KB flash, and a single 8-bit core at 24 MHz. Despite severe resource constraints, it can serve simple web content, showcasing edge computing possibilities.",
+      "reason": "为硬件极客和物联网开发者提供了极具创意的低成本部署范例，激发对嵌入式 Web 技术的重新思考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In today's episode of \"dumb things to do with an 8-bit microcontroller\":"
+          },
+          {
+            "type": "p",
+            "text": "MCU website demo\n(may go down if this gets posted to HN)"
+          },
+          {
+            "type": "p",
+            "text": "My victim is the AVR64DD32 which is quite similar to the Atmega328 of Arduino fame.\nCompared to the older Atmega, these are cheaper for the same memory, use a single programming pin and have nicer peripherals:"
+          },
+          {
+            "type": "p",
+            "text": "So that's the computer (and a rather spacious one at that) but it'll need an internet connection to host a website."
+          },
+          {
+            "type": "p",
+            "text": "The obvious choice is Ethernet, but even the slowest version (10BASE-T) still runs at 10 megabits/second.\nWorse, it uses Manchester encoding:\na zero is sent as \"10\" and a one as \"01\", so 10 megabits of data is actually 20 megabits at the wire."
+          },
+          {
+            "type": "p",
+            "text": "This is simply too fast for the AVR to generate.\nWhile it's processor can run at 24 MHz, but all the peripherals and IO pins max out at 12 MHz.\n(although some other 8-bit chips can manage it)"
+          },
+          {
+            "type": "p",
+            "text": "The proper solution is to buy a dedicated ethernet chip from DigiKey, but then I'd be waiting weeks to finish this project."
+          },
+          {
+            "type": "p",
+            "text": "... and ethernet is far from the only option:"
+          },
+          {
+            "type": "p",
+            "text": "Serial Line Internet Protocol (RFC 1055) is a very old and very simple standard for running networks over serial:"
+          },
+          {
+            "type": "p",
+            "text": "Before sending a packet, wrap it in 0xC0 bytes.\nIf the packet contains any 0xC0 bytes, replace them with 0xDB 0xDC.\nTo avoid ambiguity, any pre-existing 0xDB bytes are replaced with 0xDB 0xDD."
+          },
+          {
+            "type": "p",
+            "text": "This scheme was widely used for connecting to the internet over modems:\nA old-school dial up modem just runs a serial link over a phone line, and it's up the the computer to do anything with it."
+          },
+          {
+            "type": "p",
+            "text": "... which is why SLIP is still supported by modern Linux:"
+          },
+          {
+            "type": "code",
+            "text": "# Just a normal USB to Serial adapter\nstty -F /dev/ttyUSB0 115200 raw cs8\nslattach -m -F -L -p slip /dev/ttyUSB0\n# ... and now it's a network interface"
+          },
+          {
+            "type": "p",
+            "text": "The hardware on the microcontroller's end is trivial:"
+          },
+          {
+            "type": "p",
+            "text": "It does work with no external components, but I wanted some blinkenlights, and an idiot-proofing diode\nfor when I inevitably connect the power backwards."
+          },
+          {
+            "type": "p",
+            "text": "Because it only draws a few milliwatts, it's perfectly fine to run the server of the serial adapter's 5 volt rail:\nit's really nice to only have one cable to deal with."
+          },
+          {
+            "type": "p",
+            "text": "Now it has an internet connection, but that's hardly a server."
+          },
+          {
+            "type": "p",
+            "text": "In order for my web page to get to your computer, it needs to pass through dozens of different networks."
+          },
+          {
+            "type": "p",
+            "text": "To do this, each packet has an IP header:\n40 bytes that contain the address of the source and destination computers, and some other stuff I don't really care about."
+          },
+          {
+            "type": "p",
+            "text": "The protocol used to be a lot more complex, with features like packet fragmentation\nthat require a lot of memory to handle correctly, but I don't have to:\nevery modern operating system disables fragmentation and IPv6 removed it entirely."
+          },
+          {
+            "type": "p",
+            "text": "This makes implementing it very easy:\nJust swap around the source and destination of a recieved packet to generate the header for the response.\n(and reset the TTL counter)"
+          },
+          {
+            "type": "p",
+            "text": "The other protocol, TCP is a lot harder:\nImplementing it requires the microcontroller to track connection states,\nperiodically retransmit lost packets and handle a huge number edge cases."
+          },
+          {
+            "type": "p",
+            "text": "It took several days to get my custom implementation working well enough, and it's\nstill got a few bugs."
+          },
+          {
+            "type": "p",
+            "text": "As for implementing HTTP, I didn't:\nThe server always sends a hardcoded \"response\" back to the client.\nThis works fine as long as there's only a single URL on the site."
+          },
+          {
+            "type": "p",
+            "text": "[Video of the page loading. See web or files directory: loading.mp4]"
+          },
+          {
+            "type": "p",
+            "text": "Ok great, but what if I want to share it with friends?\nUnfortunately, to do that, it needs a publically routable IPv4 address.\nNot only are these expensive (there's a limited number) but it's impossible to get a good internet connection at my place."
+          },
+          {
+            "type": "p",
+            "text": "(no, Starlink is not good)"
+          },
+          {
+            "type": "p",
+            "text": "I do have a machine with a publically routable address,\nbut it's at a datacenter near Helsinki:\nI'd need a very long serial cable..."
+          },
+          {
+            "type": "p",
+            "text": "Another cool thing Linux supports is wireguard, which creates a virtual network link over the internet.\nThis works even if one of the machines is behind (CG)NAT or other annoyances."
+          },
+          {
+            "type": "p",
+            "text": "Problem solved:"
+          },
+          {
+            "type": "p",
+            "text": "have the Linux router box connect to the VPS to get a proper internet connection?"
+          },
+          {
+            "type": "p",
+            "text": "... except the MCU still doesn't have it's own IP address:\nI could forward everything from my VPS's address to it, but that would break my normal website."
+          },
+          {
+            "type": "p",
+            "text": "Instead, I setup the server to proxy any requests under /mcu to the server using a local address block.\nThis means that visitors aren't directly connecting to the MCU's TCP/IP stack...\nbut hey, it's the same setup that the Vape Server uses and no one complained."
+          },
+          {
+            "type": "p",
+            "text": "(It also makes it slightly harder to break by sending SYN packets, but\nit's not exactly hard to DDoS a server connected over what's effectively dial-up)"
+          },
+          {
+            "type": "h2",
+            "text": "Related:"
+          },
+          {
+            "type": "li",
+            "text": "/mcu: The page hosted from the microcontroller."
+          },
+          {
+            "type": "li",
+            "text": "http://ewaste.fka.wtf/: The Vape Server, a website hosted off a 32-bit MCU pulled from the trash."
+          },
+          {
+            "type": "li",
+            "text": "https://lcamtuf.substack.com/p/psa-if-youre-a-fan-of-atmega-try:\nlcamtuf on the AVR Dx line."
+          }
+        ],
+        "translations": [
+          "本期节目是“用8位微控制器做蠢事”：",
+          "MCU网站演示（如果发布到HN可能会宕机）",
+          "我的“受害者”是AVR64DD32，它与著名的Arduino Atmega328非常相似。  \n相比旧款Atmega，这些芯片在相同内存下更便宜，仅需一个编程引脚，且外围设备也更完善：",
+          "这就是计算机（而且相当宽敞），但它需要一个互联网连接来托管网站。",
+          "显而易见的选择是以太网，但即使是最低速版本（10BASE-T）仍能以10兆比特/秒运行。  \n更糟的是它使用曼彻斯特编码：  \n零被发送为“10”，一被发送为“01”，因此10兆比特的数据实际上在电线上传输的是20兆比特。",
+          "这对AVR来说太快了。  \n虽然它的处理器可以运行在24MHz，但所有外设和IO引脚最高只能达到12MHz。  \n（尽管有些其他8位芯片可以做到这一点）",
+          "正确的解决方案是从DigiKey购买专用的以太网芯片，但这意味着我要等几周才能完成这个项目。",
+          "...而且以太网远非唯一选择：",
+          "串行线路互联网协议（RFC 1055）是一个非常古老且简单的通过串行线路运行网络的协议：",
+          "在发送数据包之前，用0xC0字节将其封装起来。  \n如果数据包中包含任何0xC0字节，则将其替换为0xDB 0xDC。  \n为避免歧义，任何原有的0xDB字节都会被替换为0xDB 0xDD。",
+          "这种方案曾广泛用于通过调制解调器连接到互联网：  \n老式拨号调制解调器只需在电话线上建立串行链路，至于计算机如何处理则由计算机自行决定。",
+          "...这也是为什么SLIP至今仍在现代Linux中受支持的原因：",
+          "# Just a normal USB to Serial adapter\nstty -F /dev/ttyUSB0 115200 raw cs8\nslattach -m -F -L -p slip /dev/ttyUSB0\n# ... and now it's a network interface",
+          "微控制器端的硬件极其简单：",
+          "它无需外部元件即可工作，但我想要一些指示灯，以及一个防呆二极管——以防我 inevitably 接反电源。",
+          "因为它只消耗几毫瓦功率，所以完全可以从串口适配器的5伏轨直接供电：  \n只用一根线真是太方便了。",
+          "现在它有了一个互联网连接，但这几乎算不上是一个真正的服务器。",
+          "为了让我的网页能到达你的电脑，它必须经过数十个不同的网络。",
+          "为此，每个数据包都包含一个IP头部：  \n40字节的内容包括源地址和目标地址，以及其他我不太关心的信息。",
+          "这个协议曾经复杂得多，具有像分片这样的功能，需要大量内存才能正确处理，但我不必担心：  \n每个现代操作系统都会禁用分片，而IPv6更是彻底移除了这一特性。",
+          "这使得实现变得非常简单：  \n只需交换接收到的数据包中的源与目标地址，就能生成响应的头部（并重置TTL计数器）。",
+          "另一个协议TCP则困难得多：  \n实现它要求微控制器跟踪连接状态、定期重传丢失的数据包，并处理大量边缘情况。",
+          "我花了几天时间才让自定义实现正常工作，目前仍有几个bug。",
+          "至于HTTP的实现，我没有做：  \n服务器总是向客户端返回一个硬编码的“响应”。  \n只要网站上只有一个URL，这样就没问题。",
+          "[视频：页面加载过程。详见web或files目录下的loading.mp4]",
+          "好了，但如果我想和朋友分享呢？  \n遗憾的是，要做到这一点，它需要一个公开可路由的IPv4地址。  \n这些地址不仅昂贵（数量有限），而且我在家里也搞不到好的互联网连接。",
+          "(不，Starlink 并不好用)",
+          "我确实有一台拥有公网可路由地址的机器，\n但它位于赫尔辛基附近的数据中心：\n我需要一条非常长的串口线……",
+          "Linux 还支持另一件很酷的事——WireGuard，它能在互联网上创建一个虚拟网络链路。\n即使其中一台机器位于（CG）NAT 或其他网络障碍之后，也能正常工作。",
+          "问题解决了：",
+          "让 Linux 路由器通过 VPS 连接以获得正常的互联网访问？",
+          "……但 MCU 仍然没有自己的 IP 地址：\n我可以把 VPS 的地址转发给它，但这会破坏我的正常网站。",
+          "相反，我设置了服务器，将 /mcu 路径下的所有请求代理到本地地址块中的服务器。\n这意味着访客不会直接连接到 MCU 的 TCP/IP 栈……\n不过话说回来，这和 Vape Server 用的是同样的配置，也没人抱怨过。",
+          "（这也让通过发送 SYN 包来攻击稍微难一点，\n但 DDoS 一个实际上是通过拨号方式连接的服务器，其实也不太难）",
+          "相关：",
+          "/mcu：从微控制器托管的页面。",
+          "http://ewaste.fka.wtf/：Vape Server，一个运行在从垃圾堆里捡来的 32 位 MCU 上的网站。",
+          "https://lcamtuf.substack.com/p/psa-if-youre-a-fan-of-atmega-try：\nlcamtuf 谈 AVR Dx 系列。"
+        ]
+      }
+    },
+    {
+      "slug": "1db81495aa910213",
+      "title": "Pluralistic: 2024 (apart from the obvious) (11 May 2026)",
+      "titleZh": "多元主义：2024年回顾（除明显错误外）（2026年5月11日）",
+      "link": "https://pluralistic.net/2026/05/11/postmortem/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-05-11T09:43:59.000Z",
+      "category": "opinion",
+      "keywords": [
+        "pluralistic",
+        "links",
+        "tech commentary"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "Pluralistic 专栏汇总了2024年的关键社会与技术议题，涵盖丹麦合法化音乐交易、Babysuit 专利争议、DRM 抗议、科学教‘超能力’骗局、佛罗里达禁止儿科医生提供枪支安全建议等事件。作者强调版权过滤系统和工资盗窃问题尤为严重，呼吁加强数字权利保护。",
+      "summaryEn": "This Pluralistic post recaps major 2024 events including Denmark legalizing music trading, Babysuit patent battles, DRM protests, Scientology 'superpower' scams, and Florida banning pediatricians from discussing gun safety. The author highlights copyright filters and wage theft as critical threats to digital rights.",
+      "reason": "作为深度社会观察合集，它揭示了科技政策背后的权力博弈，适合关心数字自由与公共利益的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "2024 (apart from the obvious): Some unforced errors."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Denmark legalizing music trading; Babysuit; Patent Office invites \"peer review\"; DRM protest at the Bastille; Scientology's \"super powers\"; Banana Dalek; Florida v pediatricians' gun safety advice; Copyright filters and wage theft; \"Who Broke the Internet?\" Vatican astronomer v Creationism; Teens, privacy and Facebook; Čapek's graveside robot; Save iTunes; NZ laundered money for Latinamerica's looters; Memex Method."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Barcelona, Berlin, Hay-on-Wye, London, NYC, Edinburgh."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "2024 (apart from the obvious) (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Just as Hillary Clinton positioned her run as a third term for Obama (\"America is already great\"), so did Biden (and then Harris) position their campaigns as a second Biden term. As Biden said (in 2019): \"Nothing would fundamentally change\":"
+          },
+          {
+            "type": "p",
+            "text": "https://www.salon.com/2019/06/19/joe-biden-to-rich-donors-nothing-would-fundamentally-change-if-hes-elected/"
+          },
+          {
+            "type": "p",
+            "text": "So a vote for Biden would be a vote for another four years of forceful, material support for genocide; another four years of compromise with Democratic establishment on student debt and healthcare gouging; and another four years of a president who was obviously in mental decline."
+          },
+          {
+            "type": "p",
+            "text": "Harris's campaign was, \"A vote for me is a vote for all of the above (minus the cognitive decline).\" Actually, it was worse: by conspicuously failing to campaign on the Biden administration's record on reining in corporate power, a vote for Harris was \"A vote for all of the above, minus the mental decline and the antitrust.\""
+          },
+          {
+            "type": "p",
+            "text": "Whereas a vote for Trump was a vote for change, a vote to give the establishment a black eye. It was also a vote for genocide and racist pogroms and gangster kleptocracy, which is why many voters stayed home, casting a ballot for America's all-time favorite candidate, \"None of the above,\" while any number of furious people and/or vicious racists turned out for Trump."
+          },
+          {
+            "type": "p",
+            "text": "There's one book that crystallizes my thoughts on this better than any other: Naomi Klein's 2023 Doppelganger, which analyzes our politics in terms of (warped) \"mirror images.\" One of the mirror world pairings that Klein analyzes is the progressive movement, a coalition of liberals and leftists (led by liberals)."
+          },
+          {
+            "type": "p",
+            "text": "Like every coalition, the two main groups that constitute \"the progressives\" do not agree on many important issues, though they do have common goals. Both groups support equality for people of all genders and races, but for liberals, an equal world is one that fixes the problem that 150 straight white men own everything by replacing 75 of them with racialized people, women and queer people (whereas the leftist fix is abolishing the system in which 150 people own everything)."
+          },
+          {
+            "type": "p",
+            "text": "Biden set himself up as a peacemaker for this coalition, and his \"unity task force\" divided up the appointments in his administration between the Warren-Sanders leftists and liberals, including those who clearly belonged to the Manchin-Sinematic universe. This meant that his administration worked at cross-purposes to itself, neutering its boldest initiatives, rendering them impotent."
+          },
+          {
+            "type": "p",
+            "text": "Take Biden's plan to finally allow Medicare to negotiate drug prices with pharma companies, a move that was very long overdue. Before this, the way the system worked was: pharma companies named a price – any price! – and then Uncle Sucker paid it. No other country in the world operates this way, and, of course, the lion's share of pharma R&D costs are already borne by the American public (or they were, until Musk DOGEd the US research budget to death)."
+          },
+          {
+            "type": "p",
+            "text": "So the American public pays more than anyone else in the world to develop these drugs, and then they pay more than anyone else in the world to buy these drugs. This is madness, and putting an end to it is an obvious political win. But Biden found a way to do it that \"balanced\" the leftist principle of protecting people from capitalist exploitation with the liberal principle of protecting businesses lest the essential function of developing life-saving drugs become a state activity (rather than a market one)."
+          },
+          {
+            "type": "p",
+            "text": "Biden's solution? A \"Build Back Better\" plan that would allow the federal government to negotiate up to ten drug prices (and as few as zero drug prices), but the new prices would only kick in after the 2024 election, so no one would see the benefit of this in time for the next general election:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2021/11/18/bipartisan-consensus/#corruption"
+          },
+          {
+            "type": "p",
+            "text": "This is a solution that pleases no one – and that's the point. Biden and his team viewed the presidency as an institution for making sure everyone was equally unhappy, a philosophy that Anat Shenker-Osorio calls \"pizzaburger politics.\" This is named for a thought-experiment in which half your family wants pizza and the other half wants burgers, so you serve them \"pizzaburgers\" and make everyone miserable and declare yourself to have the fair-handed wisdom of Solomon (yes, I'm aware that this analogy has a fatal flaw in that pizzaburgers actually sound delicious, but work with me here)."
+          },
+          {
+            "type": "p",
+            "text": "Biden prided himself on running a pizzaburger presidency, in which every move that satisfied the left of his party was neutralized by a concession to the party's right wing establishment:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/05/29/sub-bushel-comms-strategy/#nothing-would-fundamentally-change"
+          },
+          {
+            "type": "p",
+            "text": "(Trump enacted mirror-world version of Biden's pharma price controls: TrumpRx, a program that claims to lower drug prices while those prices actually go up):"
+          },
+          {
+            "type": "p",
+            "text": "https://democrats-energycommerce.house.gov/sites/evo-subsites/democrats-energycommerce.house.gov/files/evo-media-document/e-c-democrats-trumprx-big-talk-little-savings.pdf"
+          },
+          {
+            "type": "p",
+            "text": "Biden's pizzaburger compromises made everyone unhappy. He appointed generational talents like Lina Khan, Jonathan Kanter and Rohit Chopra to run key agencies charged with crushing corporate power, and then gave lifetime appointments to corporate-friendly judges who blocked their rulemakings and penalties:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.aljazeera.com/news/2023/7/11/us-judge-turns-down-challenge-to-microsoft-merger-with-activision"
+          },
+          {
+            "type": "p",
+            "text": "Of course, it wasn't just Biden's own judicial appointees who stood in his way; from the Supreme Court on down, on issues from student debt cancellation to noncompetes, judges blocked the Biden administration. When this happened, Biden somehow couldn't find his way to his bully pulpit. Rather than working the refs – the way Trump does, in ways that energize his base, stiffens his legislators' resolve and intimidates other judges – Biden tinkered in the margins to find ways to advance half-measures and stayed mum in public."
+          },
+          {
+            "type": "p",
+            "text": "This compromise-oriented meekness carried over into Biden's relationship with Democratic lawmakers who sold out the American people. Rather than campaigning for the primary opponents of monsters like Fetterman, Sinema and Manchin, Biden worked behind the scenes to broker compromises, delivering yet another inedible pizzaburger (and acting hurt and bewildered when no one thanked him for it). The alternative? Constitutional hardball:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/10/18/states-rights/#cold-civil-war"
+          },
+          {
+            "type": "p",
+            "text": "It's not clear whether Harris's abbreviated campaign could have made the public case that she would govern in a more muscular fashion as befitted the polycrisis facing the nation, but she didn't even try. A couple Democratic Party insiders of my acquaintance tell me that Biden only agreed to step aside on the condition that Harris not criticize his record. I don't know if that's true, but even within that hypothetical constraint, Harris hardly presented herself as an avatar of change. She carried on Biden's tradition of conspicuously failing to campaign on the significant achievements of Biden's own trustbusters, and put her brother-in-law, the lawyer who helped Uber crush labor rights in California, in charge of her campaign:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.nytimes.com/2024/08/04/us/politics/kamala-harris-tony-west.html"
+          },
+          {
+            "type": "p",
+            "text": "The point of all this is that the American people have, on two occasions, comprehensively rejected the \"America is already great\"/\"Nothing would fundamentally change\" politics of a liberal-dominated left/liberal progressive coalition. The senior partners in that coalition have driven the country into a ditch, letting Trump stage a fascist takeover that has us fighting not to win another election, but just to have another one."
+          },
+          {
+            "type": "p",
+            "text": "Americans are sick of being told that their politicians can't do anything because \"they're not the Green Lantern:\""
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/01/10/the-courage-to-govern/#whos-in-charge"
+          },
+          {
+            "type": "p",
+            "text": "America isn't already great. If we are to have more elections – much less win them – we will need to mobilize millions of people. You don't do that by telling them to oppose Trumpismo – you get them out in the streets by giving them something to support. That was Mamdani's winning message: \"I know what a politician can do, and I will do it\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/02/24/mamdani-thought/#public-excellence"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "taken. https://sinceyouarrived.world/taken"
+          },
+          {
+            "type": "li",
+            "text": "Big Finance Might Be Dooming the SPLC — Even Before Its Day in Court https://theintercept.com/2026/05/08/splc-donations-banks-censorship/"
+          },
+          {
+            "type": "li",
+            "text": "Four Theses on the Conservative Legal Movement https://www.programmablemutter.com/p/four-theses-on-the-conservative-legal"
+          },
+          {
+            "type": "li",
+            "text": "Hearts and Minds: An Ambivalent Review of “Project Hail Mary” https://www.rifters.com/crawl/?p=11659"
+          },
+          {
+            "type": "li",
+            "text": "Meta Is Dying. It’s About Time. https://www.nytimes.com/2026/05/08/opinion/meta-facebook-zuckerberg.html"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Denmark plans to legalize music trading https://edition.cnn.com/2001/TECH/internet/05/07/denmark.downloads.idg/index.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Babysuit https://web.archive.org/web/20060513013815/https://www.gildlilies.com/pop_ups/phillip_toledano_kaleidoscope.htm"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Patent office will ask the public to “peer review” inventions https://web.archive.org/web/20060512051743/http://www.dotank.nyls.edu/communitypatent/"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Report from France’s DRM protest at Place de la Bastille https://web.archive.org/web/20170902135411/https://tofz.org/?dir=Paris%2Fevents%2FMarch"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Interactive maps show your city’s floodline when the sea rises https://flood.firetree.net/"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Scientology to open “Super Power” training center in FL https://web.archive.org/web/20060522112457/http://www.sptimes.com/2006/05/06/Tampabay/Scientology_nearly_re.shtml/\n#20yrsago Homemade radios http://www.duntemann.com/radiogallery.htm"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Vatican astronomer denounces Creationism as “paganism” https://web.archive.org/web/20060517013332/http://news.scotsman.com/international.cfm?id=674042006"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Canada’s New Democratic Party embraces copyfighting musicians https://web.archive.org/web/20060520024734/http://www.ndp.ca/page/3713"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Teens and privacy online: using Facebook is compatible with valuing privacy https://www.zephoria.org/thoughts/archives/2011/05/09/how-teens-understand-privacy.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Ann Arbor library acquires lending, sharing and copying rights to Creative Commons music catalog https://annarborchronicle.com/2011/04/28/ann-arbor-library-signs-digital-music-deal/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Tin robot on Karel Čapek’s grave https://www.gilesorr.com/travels/Prague2011/BestPrague.20110421.6142.GO.CanonSX10.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Just look at this banana Dalek. https://web.archive.org/web/20110716022131/https://www.daleksoftheday.com/2011/05/banana-dalek.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago NRA and Florida gag pediatricians: no more firearm safety advice for parents https://www.npr.org/2011/05/07/136063523/florida-bill-could-muzzle-doctors-on-gun-safety"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Conservative economics: what’s happened to the UK economy after a year of Tory rule https://web.archive.org/web/20160509113126/https://www.independent.co.uk/news/business/news/what-has-happened-to-the-economy-under-the-tories-in-six-charts-a7017131.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Save iTunes: how the W3C’s argument for web-wide DRM would have killed iTunes https://www.eff.org/deeplinks/2016/04/save-itunes"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago America’s courts are going dark https://www.justsecurity.org/30920/courts-going-dark/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsaogo Australian government issues report calling for copyright and patent liberalisation https://www.eff.org/deeplinks/2016/05/australian-productivity-commission-slams-protectionist-copyright-and-patent-laws"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Panama Papers: New Zealand is the go-to money launderer for crooked Latin Americans https://www.rnz.co.nz/news/panama-papers/303356/nz-at-heart-of-panama-money-go-round"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Safe Patient Project: searchable spreadsheet tells Californians whether their doc is on probation, and why https://web.archive.org/web/20160507002350/http://consumersunion.org/research/california-doctors-on-probation/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The Memex Method https://pluralistic.net/2021/05/09/the-memex-method/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago How copyright filters lead to wage-theft https://pluralistic.net/2021/05/08/copyfraud/#beethoven-just-wrote-music"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Who broke the internet? https://pluralistic.net/2025/05/08/who-broke-the-internet/#bruce-lehman"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Barcelona: Internet no tiene que ser un vertedero (Global Digital Rights Forum), May 13\nhttps://encuentroderechosdigitales.com/en/speakers/"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: How to Disenshittify the Internet with Wendy Liu (EFF), May 14\nhttps://www.eff.org/event/effecting-change-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Re:publica, May 18-20\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 18\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow-in-der-friesenstrasse-23-kreuzberg-praesentiert-von-otherland.html"
+          },
+          {
+            "type": "li",
+            "text": "Berlin: Enshittification at Otherland Books, May 19\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html"
+          },
+          {
+            "type": "li",
+            "text": "Hay-on-Wye: HowTheLightGetsIn, May 22-25\nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2"
+          },
+          {
+            "type": "li",
+            "text": "SXSW London, Jun 2\nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI with Jonathan Coulton (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The “Enshittification” of Everything (Bioneers)\nhttps://bioneers.org/cory-doctorow-enshittification-of-everything-zstf2605/"
+          },
+          {
+            "type": "li",
+            "text": "Enshittification (99% Invisible)\nhttps://99percentinvisible.org/episode/666-enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "Artificial Intelligence: The Ultimate Disruptor, with Astra Taylor and Yoshua Bengio (CBC Ideas)\nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor"
+          },
+          {
+            "type": "li",
+            "text": "When Do Platforms Stop Innovating and Start Extracting? (InnovEU)\nhttps://www.youtube.com/watch?v=cccDR0YaMt8"
+          },
+          {
+            "type": "li",
+            "text": "Pete \"Mayor\" Buttigieg (No Gods No Mayors)\nhttps://www.patreon.com/posts/pete-mayor-with-155614612"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Third draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今天的链接",
+          "2024年（除了显而易见的那些）：一些无心之失。",
+          "嘿，看看这个：令人愉悦的惊喜。",
+          "客体永久性：丹麦合法化音乐交易；婴儿连体衣；专利局邀请“同行评审”；在巴士底狱举行DRM抗议；科学教所谓的“超能力”；香蕉达莱克；佛罗里达州起诉儿科医生关于枪支安全的建议；版权过滤与工资盗窃；《谁搞砸了互联网？》；梵蒂冈天文学家 vs 创世论；青少年、隐私与Facebook；卡佩克墓前的机器人；拯救iTunes；新西兰为拉丁美洲的劫掠者洗钱；Memex方法。",
+          "即将出席的活动：巴塞罗那、柏林、海伊-on-怀伊、伦敦、纽约、爱丁堡。",
+          "近期活动回顾：我去过的地方。",
+          "最新著作：你继续读，我就继续写。",
+          "即将出版的书：如我所说，我会一直写下去。",
+          "版权页：其余所有内容。",
+          "2024年（除了显而易见的那些）（永久链接）",
+          "正如希拉里·克林顿将她的竞选定位为奥巴马的第三任期（“美国已经足够强大”），拜登（以及后来的哈里斯）也将他们的竞选定位为拜登的第二个任期。正如拜登在2019年所说：“根本不会有任何改变”：",
+          "https://www.salon.com/2019/06/19/joe-biden-to-rich-donors-nothing-would-fundamentally-change-if-hes-elected/",
+          "因此，投票支持拜登等于支持再延续四年对种族灭绝的有力且实质性的援助；再延续四年与学生贷款和医疗价格剥削问题上的民主党建制派妥协；再延续四年一位明显处于精神衰退期的总统执政。",
+          "哈里斯的竞选口号是：“投我一票就是支持上述所有政策（除了认知衰退）。”实际上，情况更糟：她 conspicuously（显眼地）没有围绕拜登政府遏制企业权力的记录展开竞选，因此投给哈里斯等于“支持上述所有政策，但少了反垄断”。",
+          "相比之下，投票支持特朗普意味着支持变革，意味着给建制派一记耳光。这也意味着支持种族灭绝、种族迫害和匪帮式盗贼统治——这也是许多选民选择留在家里的原因，他们投给了美国历史上最受欢迎的候选人“以上皆非”，而无数愤怒的人甚至恶毒的种族主义者则涌向特朗普。",
+          "有一本书比其他任何一本书都更能清晰表达我对这一问题的看法：娜奥米·克莱恩2023年的著作《分身》，她用（扭曲的）“镜像图像”来分析我们的政治格局。克莱恩分析的镜像世界配对之一就是进步主义运动，一个由自由派和左翼人士组成的联盟（由自由派主导）。",
+          "像所有联盟一样，构成“进步派”的两大群体在许多重要问题上并不一致，尽管他们有共同目标。两方都支持所有性别和种族的平等，但对自由派而言，一个平等的社会是将150位连续的白人男性掌控一切的问题通过用有色人种、女性和酷儿群体替换其中75人来解决（而左翼的方案则是彻底废除150人掌控一切的系统）。",
+          "拜登将自己塑造成这个联盟的调停者，他的“团结任务组”在他的政府任命中分别分配给沃伦-桑德斯左翼和自由派，包括那些显然属于曼钦-西内马宇宙的人。这意味着他的政府内部各行其是，削弱了其最激进的举措，使其变得无力。",
+          "拜登计划最终允许医疗保险与制药公司协商药品价格，这一举措早已刻不容缓。此前，该体系运作方式是：制药公司随意定价——爱多少就定多少！然后联邦政府照单全收。世界上没有哪个国家采用这种模式，当然，制药业研发成本的大头早已由美国公众承担（至少过去如此，直到马斯克将美国科研预算彻底掏空）。",
+          "因此，美国公众不仅承担了全球最高的药物研发费用，还要支付全球最高的购药价格。这简直是荒谬至极，终结这一局面显然是政治上的胜利。但拜登找到了一种方法，既能体现左翼保护民众免受资本剥削的原则，又兼顾自由主义保护企业、防止救命药物研发沦为政府垄断职能的理念。",
+          "拜登的解决方案是什么？即“重建更美好未来”计划，允许联邦政府协商最多十种药品价格（也可能一种都不涉及），但新价格要到2024年大选之后才生效——这意味着没人能在下次普选前看到实际好处。",
+          "https://pluralistic.net/2021/11/18/bipartisan-consensus/#corruption",
+          "这个方案谁都不得罪——而这正是关键所在。拜登及其团队将总统职位视为确保所有人同等不满的机构，这种哲学被安纳特·申克-奥索里奥称为“披萨汉堡政治”。这个名字源于一个思想实验：你家一半人想吃披萨，另一半想 burgers，于是你端上“披萨汉堡”，让全家都痛苦不堪，却自诩为公正如所罗门的智慧之王（是的，我知道这个类比存在致命缺陷——披萨汉堡听起来其实很美味，但请暂时忽略这点）。",
+          "拜登以推行“披萨汉堡式”总统任期为荣，每当他满足党内左翼诉求时，总会用对右翼既得利益集团的让步来抵消其影响。",
+          "https://pluralistic.net/2024/05/29/sub-bushel-comms-strategy/#nothing-would-fundamentally-change",
+          "（特朗普则实施了拜登医药价格管控政策的镜像版本：TrumpRx计划声称降低药价，实则导致价格飙升）",
+          "https://democrats-energycommerce.house.gov/sites/evo-subsites/democrats-energycommerce.house.gov/files/evo-media-document/e-c-democrats-trumprx-big-talk-little-savings.pdf",
+          "拜登的披萨汉堡式妥协让所有人都感到不满。他任命了莉娜·汗、乔纳森·坎特和罗希特· Chopra 等杰出人才执掌反垄断机构，却又给予亲企业法官终身任职资格，使其阻挠他们的法规制定和处罚措施。",
+          "https://www.aljazeera.com/news/2023/7/11/us-judge-turns-down-challenge-to-microsoft-merger-with-activision",
+          "当然，阻碍拜登的不仅是他自己任命的法官；从最高法院到下级法院，在学生贷款减免、竞业禁止等问题上，各级法官都否决了拜登政府的政策。每当此时，拜登似乎无法调动他的“ bully pulpit”（舆论威慑力）。不像特朗普那样通过动员基本盘、坚定议员决心、震慑其他法官等方式积极周旋，拜登只是在边缘试探，寻找半吊子方案推进，并在公开场合保持沉默。",
+          "这种妥协导向的软弱态度也体现在拜登与那些背叛美国人民的民主党议员的关系中。他没有去竞选挑战像费特曼、西内马和曼钦这样的“怪物”的初选对手，而是幕后斡旋达成妥协，结果又推出一个难以下咽的披萨汉堡（而当没人感谢他时，他又表现得受伤又困惑）。那替代方案呢？宪政硬球：",
+          "https://pluralistic.net/2024/10/18/states-rights/#cold-civil-war",
+          "尚不清楚哈里斯短暂竞选是否能让公众相信她会以更强硬的姿态执政，以应对国家面临的复合型危机，但她甚至没有尝试。我认识的一些民主党内部人士告诉我，拜登之所以同意退位，条件就是哈里斯不得批评他的政绩。我不知道这是否属实，但即便在这个假设性限制下，哈里斯也几乎没有将自己塑造成变革的象征。她延续了拜登公然不为其反垄断成就进行竞选宣传的传统，并让她的妹夫——那位帮助优步在加州打压劳工权利的法律顾问——掌管她的竞选团队：",
+          "https://www.nytimes.com/2024/08/04/us/politics/kamala-harris-tony-west.html",
+          "这一切的关键在于，美国民众两次全面拒绝了由自由派主导的自由进步联盟所鼓吹的“美国本来就很伟大”“一切都不会根本改变”的政治路线。该联盟的核心成员已将国家推入困境，纵容特朗普发动法西斯式夺权，如今我们已不是在争取赢得另一场选举，而只是在为能否再举行一次选举而战。",
+          "美国人早已厌倦了被告知他们的政客什么都做不了，因为“他们不是绿灯侠”：",
+          "https://pluralistic.net/2023/01/10/the-courage-to-govern/#whos-in-charge",
+          "美国本来就不伟大。如果我们还想举行更多选举——更不用说赢得它们——就必须动员数百万人。你不能靠让他们反对特朗普主义来实现这一点；你必须给他们真正支持的东西，才能把他们拉到街头。这就是曼达尼胜出的信息：“我知道政客能做什么，而我将去做”：",
+          "https://pluralistic.net/2026/02/24/mamdani-thought/#public-excellence",
+          "嘿，看看这个（永久链接）",
+          "taken. https://sinceyouarrived.world/taken",
+          "大金融可能正在扼杀SPLC——甚至在它上庭之前 https://theintercept.com/2026/05/08/splc-donations-banks-censorship/",
+          "保守法律运动的四个论点 https://www.programmablemutter.com/p/four-theses-on-the-conservative-legal",
+          "心灵与思想：《挽救任务》的矛盾评价 https://www.rifters.com/crawl/?p=11659",
+          "Meta正在消亡。真是时候了。https://www.nytimes.com/2026/05/08/opinion/meta-facebook-zuckerberg.html",
+          "物体恒存性（永久链接）",
+          "#25年前丹麦计划将音乐交易合法化 https://edition.cnn.com/2001/TECH/internet/05/07/denmark.downloads.idg/index.html",
+          "#20年前婴儿连体衣 https://web.archive.org/web/20060513013815/https://www.gildlilies.com/pop_ups/phillip_toledano_kaleidoscope.htm",
+          "#20年前专利局将向公众征求对发明的“同行评审” https://web.archive.org/web/20060512051743/http://www.dotank.nyls.edu/communitypatent/",
+          "#20年前法国DRM抗议活动报道——巴士底广场 https://web.archive.org/web/20170902135411/https://tofz.org/?dir=Paris%2Fevents%2FMarch",
+          "#20年前 交互式地图显示海平面上升时你所在城市的洪水线 https://flood.firetree.net/",
+          "#20年前 科学教将在佛罗里达州开设“超级力量”培训中心 https://web.archive.org/web/20060522112457/http://www.sptimes.com/2006/05/06/Tampabay/Scientology_nearly_re.shtml/\n#20年前 自制收音机 http://www.duntemann.com/radiogallery.htm",
+          "#20年前 梵蒂冈天文学家谴责神创论为“异教主义” https://web.archive.org/web/20060517013332/http://news.scotsman.com/international.cfm?id=674042006",
+          "#20年前 加拿大新民主党支持版权争议中的音乐人 https://web.archive.org/web/20060520024734/http://www.ndp.ca/page/3713",
+          "#15年前 青少年与在线隐私：使用Facebook与重视隐私并不冲突 https://www.zephoria.org/thoughts/archives/2011/05/09/how-teens-understand-privacy.html",
+          "#15年前 安娜堡图书馆获得Creative Commons音乐目录的借阅、共享和复制权 https://annarborchronicle.com/2011/04/28/ann-arbor-library-signs-digital-music-deal/",
+          "#15年前 锡制机器人安放在卡夫卡·恰佩克的墓前 https://www.gilesorr.com/travels/Prague2011/BestPrague.20110421.6142.GO.CanonSX10.html",
+          "#15年前 看看这个香蕉达莱克。https://web.archive.org/web/20110716022131/https://www.daleksoftheday.com/2011/05/banana-dalek.html",
+          "#15年前 NRA与佛罗里达州禁止儿科医生讨论枪支安全 https://www.npr.org/2011/05/07/136063523/florida-bill-could-muzzle-doctors-on-gun-safety",
+          "#10年前 保守经济学：英国经济在保守党执政一年后发生了什么 https://web.archive.org/web/20160509113126/https://www.independent.co.uk/news/business/news/what-has-happened-to-the-economy-under-the-tories-in-six-charts-a7017131.html",
+          "#10年前 拯救iTunes：W3C关于全网DRM的主张本将扼杀iTunes https://www.eff.org/deeplinks/2016/04/save-itunes",
+          "#10年前 美国的法院正在“变暗” https://www.justsecurity.org/30920/courts-going-dark/",
+          "#10年前 澳大利亚政府发布报告呼吁放宽版权与专利保护 https://www.eff.org/deeplinks/2016/05/australian-productivity-commission-slams-protectionist-copyright-and-patent-laws",
+          "#10年前 巴拿马文件：新西兰成为拉美腐败分子洗钱首选地 https://www.rnz.co.nz/news/panama-papers/303356/nz-at-heart-of-panama-money-go-round",
+          "#10年前 Safe Patient Project：可搜索表格告知加州居民其医生是否处于 probation（监管期），原因何在 https://web.archive.org/web/20160507002350/http://consumersunion.org/research/california-doctors-on-probation/",
+          "#5年前 The Memex Method https://pluralistic.net/2021/05/09/the-memex-method/",
+          "#5年前 版权过滤器如何导致工资盗窃 https://pluralistic.net/2021/05/08/copyfraud/#beethoven-just-wrote-music",
+          "#1年前 谁搞砸了互联网？https://pluralistic.net/2025/05/08/who-broke-the-internet/#bruce-lehman",
+          "即将出席的活动（永久链接）",
+          "巴塞罗那：互联网不应成为垃圾场（全球数字权利论坛），5月13日\nhttps://encuentroderechosdigitales.com/en/speakers/",
+          "线上：如何用 Wendy Liu（EFF）的方式去“反 shitification”互联网，5月14日\nhttps://www.eff.org/event/effecting-change-enshittification",
+          "柏林：Re:publica，5月18–20日\nhttps://re-publica.com/de/news/rp26-sprecher-cory-doctorow",
+          "柏林：Otherland书店举办“Enshittification”活动，5月18日\nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow-in-der-friesenstrasse-23-kreuzberg-praesentiert-von-otherland.html",
+          "柏林：其他之地出版社的“去人性化”现象，5月19日  \nhttps://www.otherland-berlin.de/de/event-details/cory-doctorow.html",
+          "海伊-on-怀伊：《光如何获得意义》，5月22日至25日  \nhttps://howthelightgetsin.org/festivals/hay/big-ideas-2",
+          "SXSW伦敦，6月2日  \nhttps://www.sxswlondon.com/session/how-big-tech-broke-the-internet-b3c4a901",
+          "纽约：乔纳森·科尔顿携《半人马的反向指南：AI之后的生活》（斯特兰德书店），6月24日  \nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "爱丁堡国际图书节，与吉米·威尔士对话，8月17日  \nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "近期活动（永久链接）",
+          "《一切的去人性化》（Bioneers）  \nhttps://bioneers.org/cory-doctorow-enshittification-of-everything-zstf2605/",
+          "《去人性化》（99% Invisible）  \nhttps://99percentinvisible.org/episode/666-enshittification/",
+          "人工智能：终极颠覆者，与艾丝特·泰勒和优舒亚·本吉奥对谈（CBC Ideas）  \nhttps://www.cbc.ca/listen/live-radio/1-23-ideas/clip/16210039-artificial-intelligence-the-ultimate-disruptor",
+          "平台何时停止创新而开始榨取？(InnovEU)  \nhttps://www.youtube.com/watch?v=cccDR0YaMt8",
+          "皮特“市长”·布蒂吉格（无神论者无市长）  \nhttps://www.patreon.com/posts/pete-mayor-with-155614612",
+          "最新著作（永久链接）",
+          "《卡尼谷地》：为《多元主义》创作的拼贴画限量合集，自出版，2025年9月  \nhttps://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《去人性化：为何一切突然变得更糟及如何应对》，Farrar, Straus, Giroux，2025年10月7日  \nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《铲子与镐头》：《红队蓝调》续作，讲述个人电脑英雄时代，Tor Books（美国），Head of Zeus（英国），2025年2月  \nhttps://us.macmillan.com/books/9781250865908/picksandshovels",
+          "《骗局》：《红队蓝调》续作，探讨监狱科技等骗局，Tor Books（美国），Head of Zeus（英国），2024年2月（thebezzle.org）",
+          "《失乐园》：一部关于希望的光伏朋克小说，应对气候紧急状态，Tor Books（美国），Head of Zeus（英国），2023年11月（http://lost-cause.org）",
+          "《互联网枷锁》：关于互操作性与大型科技公司的一部非虚构作品（Verso），2023年9月（http://seizethemeansofcomputation.org）。签名版可在Book Soup购买（https://www.booksoup.com/book/9781804291245）",
+          "《红队蓝调》：“引人入胜、令人欲罢不能的惊悚小说，读完你将更了解世界运作的真相。” Tor Books（http://redteamblues.com）",
+          "《 chokepoint capitalism：如何击败大型科技公司、驯服大型内容并让艺术家获得报酬》，与丽贝卡·吉布林合著，探讨如何纠正创意劳动市场的扭曲，Beacon Press/Scribe，2022年（https://chokepointcapitalism.com）",
+          "即将出版的著作（永久链接）",
+          "《半人马的反向指南：AI时代的生活》，一本关于如何成为更好AI批评家的短书，Farrar, Straus and Giroux，2026年6月  \nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《去人性化》（图像小说版），Firstsecond，2026年",
+          "《后美帝国互联网》：一部地缘政治意义上的《去人性化》续作，Farrar, Straus and Giroux，2027年",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机和数字版权管理的中篇小说的青少年图像小说，FirstSecond，2027年4月20日",
+          "《梅梅克斯方法》，Farrar, Straus, Giroux，2027年",
+          "版本说明（永久链接）",
+          "今日主要来源：",
+          "正在撰写《后美国互联网》，作为《去平台化》的续作，讲述特朗普摧毁美国后我们其余人所能拥有的美好世界。已完成第三稿，提交编辑审阅。",
+          "《反向半人马AI指南》，一本面向Farrar, Straus and Giroux出版社的短书，旨在帮助读者成为高效的AI评论家。法律审核与文字润色全部完成。",
+          "《后美国互联网》，一本探讨特朗普主义时代网络政策的短书。目前处于规划阶段。",
+          "《小兄弟》短篇故事之一，关于DIY胰岛素。目前处于规划阶段。",
+          "本作品（不包括任何连载小说）采用知识共享署名4.0国际许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，但必须注明作者为科里·多克托罗（Cory Doctorow），并提供指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图片不在此许可范围内；它们要么属于版权限制或例外情况，要么基于单独的许可协议。请谨慎处理。",
+          "如何获取Pluralistic内容：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能存在追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙限制）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制，第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给你SARS时，你就做酸味饮料”——乔伊“手风琴男”德维拉",
+          "仔细阅读：通过阅读此内容，你代表你的雇主同意，永久且无损于我的既有权利与特权，解除我与你雇主及其合作伙伴、许可方、代理人及受让人之间因任何未经协商达成的协议、许可、服务条款、密封包装、点击包装、浏览包装、保密、非披露、竞业禁止和可接受使用政策（统称“虚假协议”）而产生的所有义务与弃权声明。你进一步声明，你有权代表你的雇主解除任何“虚假协议”。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "76071ca7a0edcf2c",
+      "title": "Find blog posts with missing featured images - and missing alt text - without a plugin",
+      "titleZh": "无需插件：用 WP CLI 查找缺失特色图片和 alt 文本的博客文章",
+      "link": "https://shkspr.mobi/blog/2026/05/find-blog-posts-with-missing-featured-images-and-missing-alt-text-without-a-plugin/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-05-11T11:34:39.000Z",
+      "category": "tools",
+      "keywords": [
+        "WordPress",
+        "WP CLI",
+        "featured image"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "本文介绍如何使用 WP CLI（WordPress 命令行工具）快速识别 WordPress 网站中缺少特色图片或 alt 文本的博客文章。作者演示了通过命令行执行自定义查询，直接获取这些不符合 SEO 最佳实践的帖子列表。该方法避免了安装额外插件的需求，适合开发者或运维人员批量检查和修复内容问题。使用 WP CLI 能显著提升内容审核效率，尤其适用于拥有大量文章的站点。",
+      "summaryEn": "This article explains how to use WP CLI (WordPress Command Line Interface) to quickly identify blog posts missing featured images or alt text without installing any plugins. The author demonstrates running custom queries via the command line to retrieve a list of such posts, which often violate SEO best practices. This approach eliminates the need for third-party tools and is ideal for developers or site administrators managing large volumes of content. Using WP CLI streamlines content auditing and improves overall site quality.",
+      "reason": "对于需要高效管理 WordPress 内容的技术用户来说，掌握 WP CLI 这一原生工具远比依赖插件更轻量、可控且可持续。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "WordPress has the concept of \"Featured Images\". They are the images which show up when you share a blog post on social media or, on some themes, as the \"hero\" image."
+          },
+          {
+            "type": "p",
+            "text": "How can you quickly and easily find any posts which don't have a featured image?"
+          },
+          {
+            "type": "p",
+            "text": "For this, I use WP CLI - it allows you to run complex WordPress actions and queries using the command line.  After you have installed WP CLI you can get started."
+          },
+          {
+            "type": "h2",
+            "text": "Missing Images"
+          },
+          {
+            "type": "p",
+            "text": "On the command line, run:"
+          },
+          {
+            "type": "code",
+            "text": "wp eval 'foreach(get_posts(array(\"post_type\"=>\"post\",\"post_status\"=>array(\"publish\"),\"posts_per_page\"=>-1,)) as $post){if(get_the_post_thumbnail($post)==\"\"){$post_type_object=get_post_type_object($post->post_type);$link=admin_url(sprintf($post_type_object->_edit_link . \"&action=edit\", $post->ID));echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";}}'"
+          },
+          {
+            "type": "p",
+            "text": "Here's the code in a slightly more readable format:"
+          },
+          {
+            "type": "code",
+            "text": "foreach ( \n   get_posts( \n       array( \"post_type\"      => \"post\", \n              \"post_status\"    => array(\"publish\"), \n              \"posts_per_page\" => -1,\n       ) \n   ) as $post) { \n      if( get_the_post_thumbnail( $post)== \"\" ) { \n         $post_type_object = get_post_type_object( $post->post_type ); \n         $link = admin_url( sprintf( $post_type_object->_edit_link . \"&action=edit\", $post->ID ) ) ;\n         echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";\n      } \n}"
+          },
+          {
+            "type": "p",
+            "text": "That will print out:"
+          },
+          {
+            "type": "code",
+            "text": "2024-05-02 12:34:11 https://example.com/wp-admin/post.php?post=123&action=edit \"A post about sausages\" \n2023-09-13 20:55:52 https://example.com/wp-admin/post.php?post=456&action=edit \"I like cheese\"\n2021-12-31 15:43:33 https://example.com/wp-admin/post.php?post=789&action=edit \"Touching computers\""
+          },
+          {
+            "type": "p",
+            "text": "You can then go and edit each of those posts to add a featured image."
+          },
+          {
+            "type": "h2",
+            "text": "Missing Alt Text"
+          },
+          {
+            "type": "p",
+            "text": "Adding alt text means that people who can't see images will still be able to understand what the picture represents. Here's another one-lines to find all featured images with missing alt text:"
+          },
+          {
+            "type": "code",
+            "text": "wp eval 'foreach (get_posts(array(\"post_type\"=>\"post\",\"post_status\"=>array(\"publish\"),\"posts_per_page\" => -1,)) as $post){if(simplexml_load_string(get_the_post_thumbnail($post))[\"alt\"]==\"\"){$post_type_object=get_post_type_object($post->post_type);$link=admin_url(sprintf($post_type_object->_edit_link . \"&action=edit\",$post->ID));echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";}}'"
+          },
+          {
+            "type": "p",
+            "text": "And, in slightly more readable form:"
+          },
+          {
+            "type": "code",
+            "text": "foreach (\n   get_posts( \n      array( \"post_type\"      => \"post\", \n             \"post_status\"    => array(\"publish\"), \n             \"posts_per_page\" => -1,\n           ) \n   ) as $post) { \n      if( simplexml_load_string( get_the_post_thumbnail( $post ) )[\"alt\"] == \"\") { \n         $post_type_object = get_post_type_object( $post->post_type ); \n         $link = admin_url( sprintf( $post_type_object->_edit_link . \"&action=edit\", $post->ID ) ) ;\n         echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\"; \n      } \n}"
+          },
+          {
+            "type": "p",
+            "text": "Again, that lists the datetime of the post, its edit link, and its title."
+          },
+          {
+            "type": "p",
+            "text": "Now, if you'll excuse me, I have about 873 posts which need updating 🤯"
+          }
+        ],
+        "translations": [
+          "WordPress 有“特色图片”的概念，这些图片在社交媒体上分享博客文章时会显示出来，在某些主题中还会作为“英雄图”出现。",
+          "如何快速轻松地找到没有特色图片的文章？",
+          "为此，我使用 WP CLI——它允许你通过命令行运行复杂的 WordPress 操作和查询。安装 WP CLI 后就可以开始使用了。",
+          "缺失的图片",
+          "在命令行中运行：",
+          "wp eval 'foreach(get_posts(array(\"post_type\"=>\"post\",\"post_status\"=>array(\"publish\"),\"posts_per_page\"=>-1,)) as $post){if(get_the_post_thumbnail($post)==\"\"){$post_type_object=get_post_type_object($post->post_type);$link=admin_url(sprintf($post_type_object->_edit_link . \"&action=edit\", $post->ID));echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";}}'",
+          "以下是代码，格式稍微更易读一些：",
+          "foreach ( \n   get_posts( \n       array( \"post_type\"      => \"post\", \n              \"post_status\"    => array(\"publish\"), \n              \"posts_per_page\" => -1,\n       ) \n   ) as $post) { \n      if( get_the_post_thumbnail( $post)== \"\" ) { \n         $post_type_object = get_post_type_object( $post->post_type ); \n         $link = admin_url( sprintf( $post_type_object->_edit_link . \"&action=edit\", $post->ID ) ) ;\n         echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";\n      } \n}",
+          "这将输出：",
+          "2024-05-02 12:34:11 https://example.com/wp-admin/post.php?post=123&action=edit \"A post about sausages\" \n2023-09-13 20:55:52 https://example.com/wp-admin/post.php?post=456&action=edit \"I like cheese\"\n2021-12-31 15:43:33 https://example.com/wp-admin/post.php?post=789&action=edit \"Touching computers\"",
+          "然后你可以逐一编辑这些文章，添加特色图片。",
+          "缺失的替代文本（Alt Text）",
+          "添加替代文本意味着无法看到图片的人仍能理解图片所代表的内容。以下是一条命令，用于查找所有缺少替代文本的特色图片：",
+          "wp eval 'foreach (get_posts(array(\"post_type\"=>\"post\",\"post_status\"=>array(\"publish\"),\"posts_per_page\" => -1,)) as $post){if(simplexml_load_string(get_the_post_thumbnail($post))[\"alt\"]==\"\"){$post_type_object=get_post_type_object($post->post_type);$link=admin_url(sprintf($post_type_object->_edit_link . \"&action=edit\",$post->ID));echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\";}}'",
+          "以更易读的形式如下：",
+          "foreach (\n   get_posts( \n      array( \"post_type\"      => \"post\", \n             \"post_status\"    => array(\"publish\"), \n             \"posts_per_page\" => -1,\n           ) \n   ) as $post) { \n      if( simplexml_load_string( get_the_post_thumbnail( $post ) )[\"alt\"] == \"\") { \n         $post_type_object = get_post_type_object( $post->post_type ); \n         $link = admin_url( sprintf( $post_type_object->_edit_link . \"&action=edit\", $post->ID ) ) ;\n         echo $post->post_date . \" \" . $link . \" \" . $post->post_title . \"\\n\"; \n      } \n}",
+          "同样，它会列出文章的发布时间、编辑链接和标题。",
+          "现在，请原谅我，我有大约 873 篇文章需要更新 🤯"
+        ]
+      }
+    },
+    {
+      "slug": "fdaf19544702bb34",
+      "title": "Quoting New York Times Editors’ Note",
+      "titleZh": "引用《纽约时报》编辑说明：AI 生成引述需核实",
+      "link": "https://simonwillison.net/2026/May/10/new-york-times-editors-note/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-10T23:58:49.000Z",
+      "category": "other",
+      "keywords": [
+        "AI-generated",
+        "misinformation",
+        "journalism"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "《纽约时报》在报道加拿大保守党领袖 Pierre Poilievre 时因 AI 生成的虚假引述而发布更正声明。该文章最初错误地引用了一段由 AI 合成的言论，后被发现并非真实演讲内容。编辑部强调记者必须核查 AI 工具输出的准确性，否则可能导致误导性报道。此事件凸显了在新闻写作中审慎使用 AI 工具的必要性。",
+      "summaryEn": "The New York Times issued an editors' note admitting it had incorrectly quoted Canadian Conservative leader Pierre Poilievre after using an AI tool that fabricated a statement attributed to him. The correction followed internal verification that the quote was not from his actual speech in April. The incident underscores the critical importance of fact-checking outputs from AI tools before publication in journalism.",
+      "reason": "在 AI 深度介入内容生产的当下，这篇报道为媒体从业者敲响警钟——技术便利不能以牺牲真实性为代价。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "10th May 2026"
+          },
+          {
+            "type": "quote",
+            "text": "This article was updated after The Times learned that a remark attributed to Pierre Poilievre, the Conservative leader, was in fact an A.I.-generated summary of his views about Canadian politics that A.I. rendered as a quotation. The reporter should have checked the accuracy of what the A.I. tool returned.  The article now accurately quotes from a speech delivered by Mr. Poilievre in April. [...] He did not refer to politicians who changed allegiances as turncoats in that speech."
+          },
+          {
+            "type": "p",
+            "text": "— New York Times Editors’ Note"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4be69e2909d378bf",
+      "title": "Inverse shift",
+      "titleZh": "逆位移操作：右移后再左移无法完全恢复原序列",
+      "link": "https://www.johndcook.com/blog/2026/05/11/inverse-shift/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-05-11T15:30:30.000Z",
+      "category": "engineering",
+      "keywords": [
+        "bit shifting",
+        "sequence inversion",
+        "binary operations"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "John D. Cook 探讨了二进制序列位移操作的不可逆性问题。以八位序列 abcdefgh 为例，右移一位得 0abcdefg，再左移一位却变为 abcdefg0，原始末尾字符 h 永久丢失。这说明简单的左移并不能作为右移的可靠逆运算。该现象揭示了数字信号处理中边界处理的重要性，尤其在循环缓冲区或编码理论中需特别注意数据完整性。",
+      "summaryEn": "John D. Cook examines why left-shifting a right-shifted binary sequence does not fully recover the original data. For example, shifting 'abcdefgh' right by one yields '0abcdefg', but shifting that result left returns 'abcdefg0', losing the last character 'h'. This demonstrates that simple left shifts are not a reliable inverse of right shifts. The post highlights the importance of boundary handling in digital signal processing and data integrity.",
+      "reason": "理解这类基础位操作陷阱对嵌入式开发、通信协议设计和算法优化至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "What is the inverse of shifting a sequence to the right? Shifting it to the left, obviously."
+          },
+          {
+            "type": "p",
+            "text": "But wait a minute. Suppose you have a sequence of eight bits"
+          },
+          {
+            "type": "p",
+            "text": "abcdefgh"
+          },
+          {
+            "type": "p",
+            "text": "and you shift it to the right. You get"
+          },
+          {
+            "type": "p",
+            "text": "0abcdefg."
+          },
+          {
+            "type": "p",
+            "text": "If you shift this sequence to the left you get"
+          },
+          {
+            "type": "p",
+            "text": "abcdefg0"
+          },
+          {
+            "type": "p",
+            "text": "You can’t recover the last element h because the right-shift destroyed information about h."
+          },
+          {
+            "type": "p",
+            "text": "A left-shift doesn’t fully recover a right-shift, and yet surely left shift and right shift are in some sense inverses."
+          },
+          {
+            "type": "p",
+            "text": "Yesterday I wrote a post about representing bit manipulations, including shifts, as matrix operators. The matrix corresponding to shifting right by k bits has 1s on the kth diagonal above the main diagonal and 0s everywhere else. For example, here is the matrix for shifting an 8-bit number right two bits. A black square represents a 1 and a white square represents a 0."
+          },
+          {
+            "type": "p",
+            "text": "This matrix isn’t invertible. When you’d like to take the inverse of a non-invertible matrix, your kneejerk response should be to compute the pseudoinverse. (Technically the Moore-Penrose pseudoinverse. There are other pseudoinverses, but Moore-Penrose is the most common.)"
+          },
+          {
+            "type": "p",
+            "text": "As you might hope/expect, the pseudoinverse of a right-shift matrix is a left-shift matrix. In this case the pseudoinverse is simply the transpose, though of course that isn’t always the case."
+          },
+          {
+            "type": "p",
+            "text": "If you’d like to prove that the pseudoinverse of a matrix that shifts right by k places is a matrix that shifts left by k places, you don’t have to compute the pseudo inverse per se: you can verify your guess. This post gives four requirements for a pseudoinverse. You can prove that left shift is the inverse of right shift by showing that it satisfies the four equations."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a9efaf6ebce4e5d6",
+      "title": "Tahoe’s UI Issues Have Nothing to Do With Display Technology, and Maybe, Just Maybe, We Should Stop Assuming Gurman Knows Anything About Apple’s Vision Hardware Roadmap",
+      "titleZh": "Tahoe UI 问题根源不在显示技术，质疑 Gurman 对 Vision 硬件路线图的预测能力",
+      "link": "https://www.bloomberg.com/news/newsletters/2026-05-10/apple-plans-macos-27-design-changes-latest-on-ios-27-visionos-safari-wwdc-26-mozuaz9m?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc3ODQyMTgwOSwiZXhwIjoxNzc5MDI2NjA5LCJhcnRpY2xlSWQiOiJURVRRVzFLR0NURkwwMCIsImJjb25uZWN0SWQiOiJDNEVEQ0FFMUZBMDU0MEJFQTI0QTlGMjExQzFFOTA4MCJ9.VPDmd_jJhdzOBKvj1AUZTernGpGdF1zR9kGgFIF-9Hw&amp;leadSource=uverify%20wall",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-11T17:55:47.000Z",
+      "category": "opinion",
+      "keywords": [
+        "UI design",
+        "Mark Gurman",
+        "Apple Vision"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "彭博社专栏作家 Mark Gurman 在 Power On 通讯中指出，macOS 移植 iOS 26 的 Liquid Glass 界面效果不佳，并非因为桌面设备屏幕素质不足，而是该设计语言专为 iPhone/iPad 等小尺寸 OLED 屏打造，难以适配键鼠交互环境。文章进一步质疑 Gurman 此前关于 Apple Vision 硬件路线图的可信度，认为其假设过于依赖苹果保密文化。",
+      "summaryEn": "In his Power On newsletter, Bloomberg's Mark Gurman argues that macOS's poor adaptation of iOS 26's Liquid Glass interface stems not from display limitations but from its design being tailored for small OLED screens like those on iPhones and iPads, making it awkward for desktop input methods. The piece also questions Gurman's credibility regarding Apple's Vision hardware roadmap, suggesting his assumptions rely too heavily on unverified insider speculation.",
+      "reason": "如果你关注苹果生态设计哲学与跨平台体验一致性，这篇文章提供了难得的批判视角。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "51d5214e5e6f441a",
+      "title": "The Problem of Pedagogy in Advanced Mathematics",
+      "titleZh": "高等数学教学中的 pedagogy 困境：如何激发学生兴趣？",
+      "link": "https://susam.net/advanced-mathematics-pedagogy.html",
+      "sourceName": "susam.net",
+      "sourceUrl": "https://susam.net",
+      "pubDate": "2026-05-11T00:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "pedagogy",
+        "mathematics education",
+        "teaching"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "Susam 指出当前高等教育机构在数学教学法上存在严重不足，尤其是在入门阶段未能有效传达数学之美与逻辑严谨性。糟糕的教学方式会让学生过早放弃这门学科，仅少数有强烈动机者得以坚持。作者呼吁改革教学方法，强调清晰表达、激发好奇心比单纯传授技巧更重要。",
+      "summaryEn": "Susam argues that higher education institutions fail to improve mathematics pedagogy, particularly at introductory levels where poor exposition drives students away from the subject despite its beauty and rigor. Only highly motivated learners persist, which is unfortunate given math's intellectual richness. The essay calls for better teaching methods that prioritize clarity and curiosity over rote instruction.",
+      "reason": "无论你是数学教师、研究者还是自学者，这篇文章都值得思考：什么样的教学才能真正点燃学生对抽象思维的热情？",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "By Susam Pal on 11 May 2026"
+          },
+          {
+            "type": "p",
+            "text": "It is a commonly held opinion that educational institutions could do\n  more to improve the pedagogy of mathematics.  This is especially\n  true in school, when students are first exposed to new subjects.\n  Poor exposition can turn students away from mathematics for a\n  lifetime.  Only the highly motivated ones continue to engage with\n  the subject.  This is very unfortunate because mathematics is a\n  beautiful subject and it is filled with wonder.  It also teaches\n  rigour in reasoning, clarity of thought and the discipline of\n  constructing arguments from first principles to obtain intricate and\n  often beautiful results."
+          },
+          {
+            "type": "p",
+            "text": "What is perhaps less known is that pedagogy is a problem even for\n  graduate-level mathematics students and professional mathematicians.\n  The proofs in many graduate-level mathematics textbooks are, in my\n  humble opinion, not really proofs at all.  They are closer to\n  high-level outlines of proofs.  The authors simply do not show their\n  work.  The student then has to put in an extraordinary amount of\n  effort to understand and justify each line.  Sometimes a 10-line\n  argument in a textbook might expand into a 10-page proof if the\n  student really wants to convince themselves that the argument works."
+          },
+          {
+            "type": "p",
+            "text": "I am not a mathematician, but out of personal interest, I have\n  worked with professional mathematicians in the past to help refine\n  notes that explain certain intermediate steps in textbooks (for\n  example, Galois Theory by Stewart, in a specific case).  I was\n  surprised to find that it was not just me who found the intermediate\n  steps of certain proofs obscure.  Even professional mathematicians\n  who had studied the subject for much of their lives found them\n  obscure.  It took us two days of working together to untangle a\n  complicated argument and present it in a way that satisfied three\n  properties: correctness, completeness and accessibility to a\n  reasonably motivated student."
+          },
+          {
+            "type": "p",
+            "text": "I don't mean that the books merely omit basic results from\n  elementary topics like group theory or field theory, which students\n  typically learn in their undergraduate courses.  Even if we take all\n  the elementary results from undergraduate courses for granted, the\n  proofs presented in graduate-level textbooks are often nowhere near\n  a complete explanation of why the arguments work.  They are\n  high-level outlines at best.  I find this hugely problematic,\n  especially because students often have to learn a topic under\n  difficult deadlines.  If the exposition does not include sufficient\n  detail, some students might never learn exactly why the proof works,\n  because not everyone has the time to work out a 10-page proof for\n  every 10 lines in the book."
+          },
+          {
+            "type": "p",
+            "text": "Many good universities provide accompanying notes that expand the\n  difficult arguments by giving rigorous proofs and adding commentary\n  to aid intuition. I think that is a great practice. I have studied\n  several graduate-level textbooks in the last few years, and while\n  these textbooks are a boon to the world because textbooks that\n  expose the subject are better than no textbooks at all, I am also\n  disappointed by how inaccessible such material often is.  If I had\n  unlimited time, I would write accompaniments to those textbooks that\n  provide a detailed exposition of all the arguments.  But of course,\n  I don't have unlimited time.  Even so, I am thinking of at least\n  making a start by writing accompaniment notes for some topics whose\n  exposition quality I feel strongly about, such as s-arc transitivity\n  of graphs, field extensions and related topics."
+          }
+        ],
+        "translations": [
+          "苏萨姆·帕尔于2026年5月11日发表",
+          "普遍认为，教育机构在改进数学教学方法方面还有很大提升空间。这一点在学校阶段尤为明显，因为学生正是在此时首次接触新学科。糟糕的讲解方式可能让学生一生都对数学望而却步，只有那些极具学习动力的人才会继续深入钻研。这实在令人惋惜，因为数学是一门充满魅力的学科，蕴含着无穷的奇妙与美感。它不仅能培养严密的逻辑推理能力、清晰的思维表达，还能训练人们从基本原理出发，通过严谨论证得出精妙结论的能力。",
+          "鲜为人知的是，即使是研究生阶段的数学学生和职业数学家，也面临着教学法的问题。在我看来，许多研究生教材中的证明其实并不真正算作完整的证明，而更像是高级别的概要说明。作者往往省略了关键推导过程，导致学生不得不付出巨大努力去理解并验证每一步。有时书中仅十行的论证，若学生希望彻底弄清其合理性，可能需要展开成长达十页的详细证明。",
+          "我并非数学家，但出于个人兴趣，过去曾与职业数学家合作，协助完善某些教材中解释中间步骤的笔记（例如斯图尔特所著的《伽罗瓦理论》中的特定案例）。令我惊讶的是，我发现不仅是我对某些证明的中间步骤感到晦涩难懂——就连那些毕生研究该领域的专业数学家也常常觉得它们难以捉摸。我们花了整整两天时间共同梳理一个复杂的论证，最终将其呈现为既正确完整、又足以被具备一定学习动机的学生理解的形式。",
+          "我并不是说这些书籍在群论或域论等本科阶段的基础内容上遗漏了基本定理。即便我们默认掌握所有本科阶段的初等结果，研究生教材中呈现的证明往往也远未达到充分解释论证为何成立的程度，充其量只是高层级的概要。我认为这问题极为严重，尤其考虑到学生在面临紧迫截止日期时往往需要快速掌握某一主题。如果讲解缺乏足够细节，部分学生可能永远无法真正理解某个证明为何成立——毕竟并非每个人都有时间将书中的每一行都展开成十页的详细推导。",
+          "许多优秀的大学会提供配套的笔记，通过严谨的证明和补充说明来扩展那些难以理解的论点，以帮助读者建立直观认识。我认为这种做法非常值得推崇。过去几年里，我研读过几本研究生水平的教材，尽管这些教材对学界大有裨益——毕竟有系统的教材总比没有强——但我也常常感到这类资料的可读性实在有限。如果时间充裕，我一定会为这些教材撰写详细的补充说明，把其中的所有论证都讲透。可惜现实是我并没有无限的时间。即便如此，我仍打算至少从一些自己特别在意的主题入手，比如图的 s-弧传递性、域扩张及相关内容，开始撰写配套笔记。"
+        ]
+      }
+    }
+  ]
+}
