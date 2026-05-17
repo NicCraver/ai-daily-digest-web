@@ -1,0 +1,1546 @@
+{
+  "date": "2026-05-18",
+  "generatedAt": "2026-05-17T18:13:38.028Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2415,
+    "filteredArticles": 15,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦三大趋势：AI应用深化引发伦理与责任讨论，资深工程师加速整合LLM提升研发效率，同时学界对AI生成内容的学术诚信提出新规；开源生态面临挑战，英国政府内部罕见公开反对NHS退出开源项目，凸显公共部门对开放标准的立场分歧；平台治理争议持续发酵，Reddit强制用户下载App遭批损害开放性，Meta则因纵容诈骗广告被起诉获利70亿美元，反映科技公司在商业利益与用户安全间的深层矛盾。",
+  "articles": [
+    {
+      "slug": "45e571f6eda50357",
+      "title": "How I use LLMs as a staff engineer in 2026",
+      "titleZh": "2026年我作为资深工程师如何使用LLM",
+      "link": "https://seangoedecke.com/how-i-use-llms-in-2026/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-05-17T00:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "staff engineer",
+        "Copilot"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "文章探讨了资深工程师在2026年如何利用大型语言模型（LLMs）提升工作效率。作者主要使用Copilot进行智能代码补全，在熟悉度低的领域实施经过专家审核的小型战术性修改，并大量编写一次性研究代码。此外，他频繁向LLM提问以快速学习新主题如Unity游戏引擎，并将LLM作为最后的调试工具。作者强调所有AI生成内容均需人工复核，尤其涉及关键系统时。其核心观点是：LLM应被视为增强人类能力的工具而非替代者，合理使用可显著加速开发流程。",
+      "summaryEn": "The article outlines how a senior engineer leveraged large language models (LLMs) in 2026 to enhance productivity. Key uses included smart code autocompletion via Copilot, implementing minor tactical changes in unfamiliar domains (always reviewed by SMEs), and writing disposable research scripts. The author also relied on LLMs for rapid learning of new topics like the Unity engine and as a last-resort debugging aid. All AI-generated outputs were subject to human review, especially for critical systems. The central argument is that LLMs serve best as collaborative tools—amplifying human capability rather than replacing it—when used judiciously with appropriate safeguards.",
+      "reason": "它为技术领导者提供了真实、可操作的AI集成策略，展示了如何在保持质量控制的前提下高效利用LLM加速工程实践。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A bit over a year ago I wrote How I use LLMs as a staff engineer. Here’s a brief summary of what I used AI for last year:"
+          },
+          {
+            "type": "li",
+            "text": "Smart autocomplete with Copilot"
+          },
+          {
+            "type": "li",
+            "text": "Short tactical changes in areas I don’t know well (always reviewed by a SME)"
+          },
+          {
+            "type": "li",
+            "text": "Writing lots of use-once-and-throwaway research code"
+          },
+          {
+            "type": "li",
+            "text": "Asking lots of questions to learn about new topics (e.g. the Unity game engine)"
+          },
+          {
+            "type": "li",
+            "text": "Last-resort bugfixes, just in case it can figure it out immediately"
+          },
+          {
+            "type": "li",
+            "text": "Big-picture proofreading for long-form English communication"
+          },
+          {
+            "type": "p",
+            "text": "Here are some tasks I explicitly didn’t use AI for last year:"
+          },
+          {
+            "type": "li",
+            "text": "Writing whole PRs for me in areas I’m familiar with"
+          },
+          {
+            "type": "li",
+            "text": "Writing ADRs or other technical communications"
+          },
+          {
+            "type": "li",
+            "text": "Research in large codebases and finding out how things are done"
+          },
+          {
+            "type": "p",
+            "text": "February 2025 was a long time ago. Back then the best model was the first reasoning model, OpenAI’s o1. Agents sort of worked, but would often get stuck or thrown off by compaction. What’s changed since then?"
+          },
+          {
+            "type": "h3",
+            "text": "Agents are good now"
+          },
+          {
+            "type": "p",
+            "text": "The biggest change is that I now use LLMs to produce entire PRs in areas I’m familiar with. A year ago I would very occasionally ask an agent to make changes to a single file if it was a simple change I couldn’t be bothered typing out. Sometimes I would copy a function I wrote into a LLM chat window for feedback. But now I start every single change by asking an agent to solve the problem, and usually push the PR after a single editing pass."
+          },
+          {
+            "type": "p",
+            "text": "In late 2025 I used a lot of open VSCode windows. In early 2026, that changed to terminal tabs with the Copilot CLI, particularly when I needed to make changes across multiple repos at the same time. Now I use the GitHub Copilot app a lot (tens of sessions per day)."
+          },
+          {
+            "type": "p",
+            "text": "This reflects a shift from having to line-edit the agent basically as it went to only doing an editing pass right at the end. Early agents would go wrong a lot and not be able to recover, so it was valuable to keep an eye on their thought processes and step in to pause them and set them right. In my experience, current agents move too fast to do this, and recover their own mistakes most of the time anyway."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes I don’t even need to make edits and I can just push the change as-is, though this is rare: if nothing else, I typically go through and remove some of the over-commenting and other LLM-isms."
+          },
+          {
+            "type": "p",
+            "text": "I do a lot of skimming through and evaluating agent changes. Most of the time I reject them entirely, just based on “eh, that’s not what I was thinking”. On average it takes me about thirty seconds to make this initial assessment. If the change looks alright after that, I’ll dig in and do a proper review to make sure I understand it and it’s doing the right thing. For difficult tasks, I’ll often reject five or six (or more!) agent attempts before accepting one as good enough to work with, or giving up and making the change by hand."
+          },
+          {
+            "type": "h3",
+            "text": "Investigating bugs"
+          },
+          {
+            "type": "p",
+            "text": "I rely on LLMs even more for bug-hunting than I do for making changes. In 2025, I used to throw the occasional bug at a LLM, just in case it was able to rapidly come up with an explanation. Now I throw every bug at a LLM (typically by opening a new agent session and pasting in the bug report), because it’s able to correctly diagnose 80% of issues on its own. Current agents are really good at chasing down bugs, particularly when you give them a vantage point across multiple repositories."
+          },
+          {
+            "type": "p",
+            "text": "I’m still better at it. Just last week I had a tricky bug that took about fourteen agent sessions before one finally figured it out. What was I doing in between and around those sessions?"
+          },
+          {
+            "type": "li",
+            "text": "Digging up extra context on the bug (from logs, Slack, etc) and reporting it to the agents"
+          },
+          {
+            "type": "li",
+            "text": "Building my own mental model of the problem, of course"
+          },
+          {
+            "type": "li",
+            "text": "Setting up my own reproduction of the bug (in parallel with the agents’ efforts)"
+          },
+          {
+            "type": "li",
+            "text": "Responding to agent sessions with “no, your theory can’t be right because of X” (or just killing and restarting the session with that extra hint)"
+          },
+          {
+            "type": "p",
+            "text": "Ultimately an agent was the one to catch the bug. But I still count it as my find, because by that point I had narrowed the search space tightly enough that agent session #14 had a significantly easier problem to solve than agent session #1. In other words, human expertise still matters a lot for investigating bugs."
+          },
+          {
+            "type": "h3",
+            "text": "Writing"
+          },
+          {
+            "type": "p",
+            "text": "I almost always write my own PR descriptions, since LLMs over-communicate and are bad at expressing the “core idea” behind a change. Writing the PR description by hand also signals to reviewers that I’ve reviewed the change myself, and I’m not asking them to be the first human to read the diff. The only time when I don’t write the PR description is when the change is trivial and the agent-generated description is one sentence. At that point I just leave it alone."
+          },
+          {
+            "type": "p",
+            "text": "I still don’t use LLMs to write Slack messages, ADRs, issues and so forth. I believe I have a better sense of what’s important to communicate, and I want to signal that there’s a human being thinking about the content."
+          },
+          {
+            "type": "p",
+            "text": "I still never use LLMs to write blog posts, though I do run each draft post through a LLM for feedback. OpenAI models used to be terrible at this and have only very recently gotten acceptable with GPT-5.5. Both OpenAI and Anthropic models still try to water down my arguments, but I’ve accepted that as part of the LLM “house style” and just ignore that part of the feedback."
+          },
+          {
+            "type": "h3",
+            "text": "Testing and setup"
+          },
+          {
+            "type": "p",
+            "text": "Another thing I do now is try and push as much testing and setup work as possible onto the agents. In 2025, I used to sometimes ask a LLM to produce a test script of curl commands that I could run against my dev server. In 2026, I just ask an agent to go and test my change, then read the log of what it did."
+          },
+          {
+            "type": "p",
+            "text": "I don’t test UI work like this, partly because it’s more fiddly and partly because I don’t trust agents to be sensitive to the subtle look-and-feel aspects of a change."
+          },
+          {
+            "type": "p",
+            "text": "Agents will write expansive unit tests without having to be told, but I do sometimes ask them to put together broader integration tests for a change. In general I now consider test code to be cheap: if I’m wondering whether a test would be useful, I just add it (so long as I know it won’t be flaky). Of course LLMs sometimes produce strange and unsatisfying test code - I do read it to catch obvious blunders - but I review it with a more generous eye than my actual production code."
+          },
+          {
+            "type": "p",
+            "text": "I’ll also task an agent with annoying local setup tasks that involve config wrangling on my machine. For instance, if my nvm installation is not switching my Node version correctly, I will often open a Copilot CLI agent and ask it to figure it out. This is a more-or-less direct replacement for Googling the problem, and is much quicker since the agent can run the trivial bash commands to diagnose and fix the problem itself."
+          },
+          {
+            "type": "h3",
+            "text": "Summary"
+          },
+          {
+            "type": "p",
+            "text": "The main thing that’s changed in the last fifteen months is that agents are really good now. They’ve gone from something I used occasionally and suspiciously to something I use constantly and with light supervision."
+          },
+          {
+            "type": "p",
+            "text": "The core of my job is still the same: shipping projects, exercising my judgement, influencing tech company politics. But I now have a much wider net for small pieces of work that I’m willing to take on, which includes basically anything I can hand off to an agent and expect it to get more or less right."
+          },
+          {
+            "type": "p",
+            "text": "I used to spend a lot of time putting work off, either by delegating it or just saying “sorry, I don’t have time to do that now”. Now I get to say “yes” a lot more (at least when it comes to minor low-risk tweaks)1."
+          },
+          {
+            "type": "p",
+            "text": "Overall, here’s what I now use AI for:"
+          },
+          {
+            "type": "li",
+            "text": "Writing (or drafting, depending on complexity) every code change I make"
+          },
+          {
+            "type": "li",
+            "text": "Investigating and fixing bugs, either autonomously for most bugs or with my close involvement for trickier ones"
+          },
+          {
+            "type": "li",
+            "text": "Research in large codebases, since current agents are now good enough to give the right answer almost all the time (and when they’re wrong, it’s clear from reading the explanation that they’ve missed something)"
+          },
+          {
+            "type": "li",
+            "text": "Manual testing and local-machine setup or troubleshooting"
+          },
+          {
+            "type": "li",
+            "text": "I still use AI for asking lots of questions to learn about topics, and for proofreading"
+          },
+          {
+            "type": "p",
+            "text": "Here’s what I still don’t use AI for:"
+          },
+          {
+            "type": "li",
+            "text": "Writing any kind of public communication for me (PR descriptions, ADRs, messages) with the exception of trivial two-line PRs"
+          },
+          {
+            "type": "li",
+            "text": "Writing code that I don’t carefully review"
+          },
+          {
+            "type": "li",
+            "text": "Testing any kind of UI"
+          },
+          {
+            "type": "p",
+            "text": "In my view, the current core AI skill is shifting as much work onto AI agents as possible, without going too far. Many people are under-utilizing agents: not allowing them to investigate bugs or test their changes, or not throwing enough simple tasks at them. Other people are over-utilizing them: using them to write messages that ought to be hand-written, or trusting them to make sweeping changes that need careful human review. Since my last post, the balance has tilted more towards the agents, but finding the balance remains as tricky as ever."
+          },
+          {
+            "type": "li",
+            "text": "For once I can actually give an example, since it’s in a public repository. Someone internal wanted to be able to use the actions/ai-inference GitHub Action with Copilot-backed inference (for various reasons), and instead of saying “sorry, I don’t have time to get to it”, I was able to throw it at an agent. If a human had to do this, the output would likely have been better, but it wouldn’t have gotten done for weeks (if at all).\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "How I use LLMs to learn new subjectsIf you want to learn about a new subject in 2025, one of the best ways to do it is to ask a strong language model.The reason this method is so good is not that LLMs are smarter than your average Google search result, but that you can ask infinite follow-up questions. I often start by asking a general question (like “how does Kafka work”) and then digging in with many, many follow-up questions: both specific questions, like “what happens if a broker crashes”, and confirmation questions, like “it sounds like Kafka relies on clients to track which events are processed, is that right?”. I think this is a pretty intuitive way to learn something from a LLM, because it’s essentially treating it like a well-informed friend.Continue reading..."
+          }
+        ],
+        "translations": [
+          "大约一年前，我写了《作为高级工程师，我是如何使用大语言模型的》。以下是去年我为 AI 所做的事情的简要总结：",
+          "使用 Copilot 进行智能自动补全",
+          "在我不太熟悉的领域进行一些短期的战术性修改（始终由相关领域的专家审核）",
+          "编写大量一次性使用的研究代码",
+          "向 AI 提出很多问题以了解新主题（例如 Unity 游戏引擎）",
+          "最后的 bug 修复手段——万一它能立刻解决呢？",
+          "对长篇英文内容进行整体校对",
+          "以下是我去年明确没有使用 AI 的任务：",
+          "在我熟悉的领域为我撰写完整的 PR",
+          "撰写 ADR 或其他技术文档",
+          "在大规模代码库中进行研究并查明实现方式",
+          "2025 年 2 月仿佛已是遥远的过去。那时最好的模型还是 OpenAI 的首个推理模型 o1，智能体（agent）勉强能用，但经常陷入僵局或被上下文压缩干扰。自那以后，究竟发生了什么变化？",
+          "现在的智能体已经非常出色了",
+          "最大的变化在于，我现在会利用大语言模型生成整个 PR，尤其是在我熟悉的领域。一年前，我偶尔会让智能体修改单个文件中的简单变更，如果懒得手动输入的话。有时我会把写好的函数复制到 LLM 聊天窗口中寻求反馈。而现在，我每次改动都从让智能体解决问题开始，通常只需一次编辑就能直接推送 PR。",
+          "2025 年底，我频繁打开多个 VSCode 窗口；到了 2026 年初，则改用终端标签页配合 Copilot CLI，特别是在需要同时跨多个仓库进行修改时。如今，我大量使用 GitHub Copilot 应用（每天几十次会话）。",
+          "这反映出一种转变：不再需要在智能体运行过程中实时逐行编辑，而是只在最后进行一次整体编辑。早期的智能体容易出错且难以恢复，因此有必要密切关注其思考过程，及时干预、暂停或纠正。而据我的经验，现在的智能体速度太快，大多数错误都能自行修正，反而难以介入。",
+          "有时候我甚至不需要做任何修改，可以直接推送变更——虽然这种情况很少见：无论如何，我通常会顺手删掉那些过度注释和其他典型的“LLM 风格”的内容。",
+          "我经常快速浏览并评估智能体提出的修改。大多数时候，仅凭“嗯，这不是我想要的”就全盘拒绝。平均而言，初步判断只需三十秒左右。如果看起来还不错，我再深入审查，确保自己理解其逻辑，并确认它确实在做正确的事。对于复杂任务，我常常要拒绝五六次（甚至更多！）智能体的尝试，才会接受一个足够好的版本，或者干脆放弃，自己动手实现。",
+          "调查 bug",
+          "我在排查 bug 方面对大语言模型的依赖甚至超过了在代码修改上的依赖。2025 年时，我只是偶尔会把 bug 抛给 LLM，碰碰运气看能否快速解释清楚。现在，我会把所有 bug 都交给 LLM（通常是新建一个智能体会话，粘贴 bug 报告），因为它能独立诊断出约 80% 的问题。当前的智能体在追查 bug 方面表现尤为出色，尤其是当你能提供跨多个仓库的视角时。",
+          "我依然更擅长处理这类问题。就在上周，我遇到一个棘手的 bug，前前后后用了大约十四次智能体会话，才终于让它搞明白。在这期间和之间，我到底做了些什么？",
+          "从日志、Slack 等渠道挖掘更多上下文信息，并将问题报告给智能体",
+          "当然，我也会构建自己对问题的认知模型",
+          "同时，我会尝试复现该 bug（与智能体的排查工作并行进行）",
+          "在智能体会话中回应“不，你的假设肯定不对，因为 X”（或者直接终止并重启会话，附带这条额外线索）",
+          "最终是某个智能体发现了这个 bug。但我仍将其视为我的发现，因为到那时，我已经足够缩小了搜索范围，使得第 14 次智能体会话所面对的问题，远比第一次会话简单得多。换句话说，人类的专业知识在 bug 排查中依然至关重要",
+          "编写文档",
+          "我几乎总是自己撰写 PR 描述，因为 LLM 往往过度表达，难以准确传达改动背后的核心思想。手动撰写 PR 描述也能向评审者表明我已审阅过代码变更，而不是让他们成为第一个阅读 diff 的人类。只有在改动微不足道且智能体生成的描述仅一句话时，我才不会重写——这时我通常就保留原样",
+          "我仍然不用 LLM 来写 Slack 消息、ADR、issue 等。我认为自己对哪些内容重要有更好的判断力，而且我希望传达出这是经过人类思考的内容",
+          "尽管我会让每个草稿博客都经过 LLM 反馈，但我从不直接用 LLM 写博客文章。过去 OpenAI 的模型在这方面表现极差，直到最近 GPT-5.5 才达到可用水平。无论是 OpenAI 还是 Anthropic 的模型，仍倾向于弱化我的论点，但我已接受这属于 LLM 的“写作风格”，并选择忽略这部分反馈",
+          "测试与配置",
+          "现在我还尽量把尽可能多的测试和配置工作交给智能体完成。2025 年时，我有时会要求 LLM 生成一组 curl 命令脚本供我在开发服务器上运行；而到了 2026 年，我只需让智能体去测试我的变更，然后读取它执行过程中产生的日志即可",
+          "我不这样处理 UI 相关的测试，部分原因是这类任务更繁琐，另一部分原因是我不信任智能体能敏锐察觉改动带来的微妙视觉与交互体验变化",
+          "智能体会主动编写详尽的单元测试，无需我特别指示。但有时我也会请它们为某项变更搭建更广泛的集成测试。如今我认为测试代码成本很低：只要不确定是否有用，我就直接加上（前提是知道它不会不稳定）。当然，LLM 有时也会写出奇怪或不够理想的测试代码——我会阅读以捕捉明显错误，但对它们的审查比对生产代码更宽容",
+          "我还会让智能体处理那些令人厌烦的本地配置任务，比如在我机器上调整 nvm 导致 Node 版本切换失败时，我常会打开 Copilot CLI 智能体让它自己搞定。这基本上是对“上网搜索解决方案”的直接替代，而且更快，因为智能体能自行运行简单的 bash 命令来诊断并修复问题",
+          "总结",
+          "过去十五个月最大的变化在于：智能体现在真的很强了。它们已经从我曾偶尔怀疑使用的工具，变成了我现在频繁使用、仅需轻度监督就能高效工作的伙伴",
+          "我的工作核心依然没变：交付项目、做出判断、影响科技公司里的技术决策。但现在，我承接小型工作的范围更广了，只要我能放心交给 AI 代理处理并期望它大致做对，基本上什么活儿我都接。",
+          "过去我经常把事情推掉，要么是转手给别人，要么就是干脆说“抱歉，我现在没时间做这个”。现在，我更多时候会说“行”（至少对于风险低的小改动是这样）。",
+          "总体来看，我现在使用 AI 的用途如下：",
+          "撰写或起草我所做的每一处代码变更。",
+          "自主排查和修复大多数 bug，或对较复杂的 bug 在密切参与下完成。",
+          "在大规模代码库中进行研究——因为现在的 AI 代理已经足够可靠，几乎总能给出正确答案（而当他们出错时，通过阅读解释就能明显看出他们遗漏了什么）。",
+          "手动测试以及本地机器的设置与故障排除。",
+          "我仍然用 AI 来提出大量问题以学习新领域，也用于校对。",
+          "以下是我目前仍不使用 AI 的场景：",
+          "撰写任何形式的对外公开沟通内容（如 PR 描述、ADR、消息），除非是微不足道的两行 PR。",
+          "编写未经仔细审查的代码。",
+          "进行任何形式的 UI 测试。",
+          "在我看来，当前 AI 的核心能力正朝着尽可能多地将工作交给 AI 代理的方向发展，但又不至于越界。很多人其实没有充分利用代理：不让它们去查 bug 或验证修改，或者没有给它们分配足够多的简单任务。另一些人则过度依赖：让他们写本应由人撰写的消息，或信任他们做出需要细致人工审核的大规模改动。自从我上次发文以来，这种平衡更偏向于代理一方，但找到合适的平衡点依然像以往一样棘手。",
+          "这次我可以举个具体例子，因为它出现在公开仓库里。内部有人希望能在 actions/ai-inference GitHub Action 中使用 Copilot 支持的推理功能（出于各种原因），与其说我“抱歉，我没时间处理”，不如说我直接扔给了 AI 代理。如果是人类来做，结果可能更好，但很可能要拖上几周（甚至根本完不成）。",
+          "如果你喜欢这篇文章，欢迎订阅邮件更新以获取我的新帖通知，或在 Hacker News 上分享它。",
+          "这里有一篇相关帖子，标签与此文部分重叠。",
+          "我是如何用大语言模型学习新领域的  \n如果你想在 2025 年学习一个新领域，最好的方法之一就是向一个强大的语言模型提问。  \n这种方法之所以有效，并不是因为大语言模型比普通谷歌搜索结果更聪明，而是因为你能够提出无限个后续问题。我通常先问一个宽泛的问题（比如“Kafka 是怎么工作的？”），然后围绕它提出大量后续问题：既有具体问题，比如“如果 broker 崩溃了会怎样？”，也有确认性问题，比如“听起来 Kafka 依赖客户端来跟踪哪些事件已被处理，对吗？”。我认为这是一种相当直观的学习方式，因为它本质上是在把 LLM 当作一个知识渊博的朋友来对待。继续阅读……"
+        ]
+      }
+    },
+    {
+      "slug": "91e12355544ce4c2",
+      "title": "ArXiv to Ban Researchers for a Year if They Submit AI Slop",
+      "titleZh": "ArXiv新规：若论文含AI生成不当内容将禁投一年",
+      "link": "https://www.404media.co/new-arxiv-rules-ai-generated-papers-ban/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-16T19:27:34.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "ArXiv",
+        "AI slop",
+        "research integrity"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "ArXiv近日宣布新规，若提交的科研论文包含由生成式AI产生的 plagiarized、biased、错误或误导性内容且无作者责任声明，作者将被禁止投稿一年。该政策针对的是未明确标注AI使用情况或放任AI输出低质内容的学术行为。此举旨在维护学术诚信与内容可靠性，尤其防范AI生成的虚假引用和事实错误。新规反映了学术界对AI滥用的日益担忧，标志着开放科学平台开始强化内容治理机制。",
+      "summaryEn": "ArXiv has implemented a new policy stating that authors who submit papers containing AI-generated inappropriate, plagiarized, biased, erroneous, or misleading content without proper attribution will face a one-year submission ban. This rule targets submissions where generative AI tools produce low-quality or inaccurate material that authors fail to verify or disclose. The move aims to uphold academic integrity and ensure reliability in preprint publications, particularly addressing issues like fabricated references and factual errors common in AI-assisted writing. It reflects growing concerns within the scientific community about unchecked AI usage in scholarly work.",
+      "reason": "这一政策为研究人员敲响警钟，提醒他们在AI辅助写作时必须承担最终责任，避免因疏忽导致学术声誉受损。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Samantha Cole",
+        "siteName": "404 Media",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "ArXiv, the open-access repository of preprint academic research, will ban authors of papers for a year if they submit obviously AI-generated work."
+          },
+          {
+            "type": "p",
+            "text": "Late Thursday evening, Thomas Dietterich, chair of the computer science section of ArXiv, wrote on X: “If generative AI tools generate inappropriate language, plagiarized content, biased content, errors, mistakes, incorrect references, or misleading content, and that output is included in scientific works, it is the responsibility of the author(s). We have recently clarified our penalties for this. If a submission contains incontrovertible evidence that the authors did not check the results of LLM generation, this means we can't trust anything in the paper.”"
+          },
+          {
+            "type": "p",
+            "text": "Examples of incontrovertible evidence, he wrote, include “hallucinated references, meta-comments from the LLM (‘here is a 200 word summary; would you like me to make any changes?’; ‘the data in this table is illustrative, fill it in with the real numbers from your experiments’.”"
+          },
+          {
+            "type": "p",
+            "text": "“The penalty is a 1-year ban from arXiv followed by the requirement that subsequent arXiv submissions must first be accepted at a reputable peer-reviewed venue,” Dietterich wrote."
+          },
+          {
+            "type": "h2",
+            "text": "This post is for paid members only"
+          },
+          {
+            "type": "p",
+            "text": "Become a paid member for unlimited ad-free access to articles, bonus podcast content, and more."
+          },
+          {
+            "type": "p",
+            "text": "Subscribe"
+          },
+          {
+            "type": "h2",
+            "text": "Sign up for free access to this post"
+          },
+          {
+            "type": "p",
+            "text": "Free members get access to posts like this one along with an email round-up of our week's stories."
+          },
+          {
+            "type": "p",
+            "text": "Subscribe"
+          },
+          {
+            "type": "p",
+            "text": "Already have an account? Sign in"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d8cb63d017bb6c95",
+      "title": "Warelay -> OpenClaw",
+      "titleZh": "OpenClaw项目命名历史考据",
+      "link": "https://simonwillison.net/2026/May/16/openclaw-names/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-16T20:23:30.000Z",
+      "category": "tools",
+      "keywords": [
+        "OpenClaw",
+        "Python",
+        "PyCon US"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Simon Willison 通过分析GitHub提交历史发现，自2025年11月首次提交以来，OpenClaw项目实际使用过超过40个不同名称。他利用自定义工具 first_line_history.py 提取了每个仓库初始提交的第一行信息，揭示了项目在早期阶段频繁更名的事实。这一现象暴露了开源社区中命名混乱的问题，也引发对项目身份一致性的思考。Willison 的研究方法展示了如何通过代码历史追溯软件演化轨迹。",
+      "summaryEn": "Simon Willison analyzed GitHub commit histories to determine how many names the OpenClaw project has actually had since its November 2025 inception. Using his custom tool first_line_history.py, he extracted the first-line messages from each repository's initial commits and found over 40 distinct names were used during early development. This reveals significant naming instability in open-source projects and raises questions about identity consistency in software ecosystems. His approach demonstrates how code history can be mined to trace project evolution patterns.",
+      "reason": "这项研究不仅有趣地揭示了开源项目的命名乱象，还为理解软件演化提供了实用的数据分析方法。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th May 2026"
+          },
+          {
+            "type": "p",
+            "text": "In preparation for a lightning talk I'm giving at PyCon US this afternoon I decided to figure out how many names OpenClaw has actually had since that first commit back in November."
+          },
+          {
+            "type": "p",
+            "text": "Thanks to this first_line_history.py tool (code here) the answer, according to the Git history of the OpenClaw README, is:"
+          },
+          {
+            "type": "p",
+            "text": "Warelay → CLAWDIS → CLAWDBOT → Clawdbot → Moltbot →🦞 OpenClaw"
+          },
+          {
+            "type": "p",
+            "text": "Or in detail (the output from the tool):"
+          },
+          {
+            "type": "code",
+            "text": "2025-11-24T11:23:15+01:00 16dfc1a # Warelay — WhatsApp Relay CLI (Twilio)\n2025-11-24T11:41:37+01:00 d4153da # 📡 Warelay — WhatsApp Relay CLI (Twilio)\n2025-11-24T17:47:57+01:00 343ef9b # 📡 warelay — WhatsApp Relay CLI (Twilio)\n2025-11-25T04:44:10+01:00 14b3c6f # 📡 warelay — WhatsApp Relay CLI\n2025-11-25T12:48:40+01:00 4814021 # 📡 warelay — Send, receive, and auto-reply on WhatsApp—Twilio-backed or QR-linked.\n2025-11-25T13:50:18+01:00 d51a3e9 # warelay 📡 - Send, receive, and auto-reply on WhatsApp via Twilio or QR-linked WhatsApp Web; webhook setup in one command\n2025-11-25T13:51:13+01:00 4d2a8a8 # 📡 warelay — Send, receive, and auto-reply on WhatsApp—Twilio-backed or QR-linked.\n2025-11-25T14:52:43+01:00 1ef7f4d # 📡 warelay — Send, receive, and auto-reply on WhatsApp.\n2025-12-03T15:45:32+00:00 a27ee23 # 🦞 CLAWDIS — WhatsApp Gateway for AI Agents\n2025-12-08T12:43:13+01:00 17fa2f4 # 🦞 CLAWDIS — WhatsApp & Telegram Gateway for AI Agents\n2025-12-19T18:41:17+01:00 7710439 # 🦞 CLAWDIS — Personal AI Assistant\n2026-01-04T14:32:47+00:00 246adaa # 🦞 CLAWDBOT — Personal AI Assistant\n2026-01-10T05:14:09+01:00 cdb915d # 🦞 Clawdbot — Personal AI Assistant\n2026-01-27T13:37:47-05:00 3fe4b25 # 🦞 Moltbot — Personal AI Assistant\n2026-01-30T03:15:10+01:00 9a71607 # 🦞 OpenClaw — Personal AI Assistant"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d8287434f79437b9",
+      "title": "Notes on pretraining parallelisms and failed training runs.",
+      "titleZh": "预训练并行化技术与失败训练运行的分析笔记",
+      "link": "https://www.dwarkesh.com/p/notes-on-pretraining-parallelisms",
+      "sourceName": "dwarkesh.com",
+      "sourceUrl": "https://dwarkesh.com",
+      "pubDate": "2026-05-16T19:01:16.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "pretraining",
+        "parallelism",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 9,
+        "timeliness": 7,
+        "total": 24
+      },
+      "summary": "Dwarkesh Patel 深入分析了大规模模型预训练中的并行化策略及其在实际训练中的失效原因。他指出，尽管数据并行、模型并行和张量并行等技术能提升计算效率，但通信开销、负载不均衡和硬件限制常导致训练失败。作者结合多个失败案例总结出关键教训：合理的并行策略必须匹配具体模型架构与集群配置，否则反而会降低稳定性。这些经验对构建高可用训练基础设施具有重要参考价值。",
+      "summaryEn": "Dwarkesh Patel provides detailed notes on pretraining parallelization techniques and the causes behind failed training runs. He highlights how communication overhead, load imbalance, and hardware constraints often undermine the benefits of data, model, and tensor parallelism despite their theoretical advantages. Through analysis of multiple failure cases, he emphasizes that effective parallel strategies must align precisely with both model architecture and cluster configuration to avoid destabilizing training. These insights offer practical guidance for building robust large-scale training infrastructure.",
+      "reason": "对于从事分布式机器学习系统的工程师而言，这些基于真实失败案例的经验极具借鉴意义，能帮助规避常见陷阱。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dwarkesh Patel",
+        "siteName": "Dwarkesh Podcast",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Wrote up some flashcards here to help myself retain all the stuff below."
+          },
+          {
+            "type": "p",
+            "text": "Had an interesting chat with someone on why pretraining runs often fail. It was very interesting to get a sense of all the tangible ways that things can get fucked, and why training is such a precarious operation. At a high level, breaking causality, and adding bias, seem to be key culprits."
+          },
+          {
+            "type": "p",
+            "text": "Breaking causality:"
+          },
+          {
+            "type": "li",
+            "text": "When you do expert routing, you first go through the router, which gives you a score of how much each token wants each expert. There’s two ways to proceed from here: 1. Token routing, where you read the scores from the token’s perspective, and allocate to each token’s top k experts. Problem is that you could end up with wildly unbalanced allocation across experts, which is terrible for performance. Alternatively, you could (and only in training) do expert choice, where you just split the tokens by which are more relatively preferred by each expert. This way you can enforce that each expert gets roughly the same number of tokens. But the big problem is that this breaks causality, because which expert token n gets allocated to may depend on which expert token n + k might be router to. And breaking causality is very bad, because you’re getting information in training (and updating based on it) that you wouldn’t see in deployment.Rumor is that this explains why Llama 4 was underwhelming.I guess you could do expert choice during prefill inference? But maybe it doesn’t work well in practice to allocate tokens to experts which would not have received that token in actual training.Tbh I don’t fully understand why breaking causality is so bad. I understand you can’t see beyond causality in real inference. But why is this minor deviation such a big issue?"
+          },
+          {
+            "type": "li",
+            "text": "Another thing that can break causality is token dropping. Where experts just ignore the tokens in the batch that they’re supposed to process, but which rank not so strongly, and cutting whom would spare going outside padding. This breaks causality cause a later token being more strongly matched to this expert might lead to an earlier token getting ignored.Apparently this was an issue with Gemini 2 Pro."
+          },
+          {
+            "type": "p",
+            "text": "Adding bias:"
+          },
+          {
+            "type": "li",
+            "text": "Bias much worse than variance - variance can average out, but bias compounds"
+          },
+          {
+            "type": "li",
+            "text": "Apparently the original GPT 4 training was slow and got initially fucked because of the following bug: they were using FP16 on their collectives like all-reduce. FP16 distributes its granularity according to logarithmic density - between 1 and 2, the mantissa bits carve the interval ~0.001 apart. But 1024 and up, the mantissa might be carving the interval by multiple whole number values. Suppose some collective involves adding 1 + 1 … 10,000 times - you could get in a situation where as soon as you get to 1024, you add 1, it goes to 1025, you round down to the nearest interval at 1024, add one again. And so the calculated value is 10x off the real value. Huge issue if you’re trying to sum many small gradients into a large accumulator. And imagine how hard the bug must have been to find!"
+          },
+          {
+            "type": "p",
+            "text": "Implications for AI training:"
+          },
+          {
+            "type": "li",
+            "text": "Some of the people who think we can cure aging argue that there’s basically 5 different ways people die of old age (heart disease, cancer, etc), and that if we cure these 5 different diseases, then we’d basically have solved again. You could ask a similar question about these failed pretraining runs - are there 5 different ways training runs fail, in which case once a lab figures out numerics and , you’ll just have smooth sailing, or will you keep seeing new bespoke issues emerge at each new level of scale? The person I talked to seemed to think the later - he pointed out that even within numerics, there’s so many ways you can fuck things up. And new ones will keep emerging at scale."
+          },
+          {
+            "type": "li",
+            "text": "Bearish on AI fully automating kernel writing anytime soon. Presumably this is because he thinks it’s more of an AGI complete problem than some give it credit for. There’s another school of thought that says, “Hey, which kernel gets attention or MLP to run fastest on this scaleup is a super verifiable domain, thus we can RL to superhuman performance easily.” But he says, it took Nvidia, which has the best kernel engineers in the world, a long time to optimize for Blackwell, which suggests that actually it’s quite hard, and might not be super easy to close the loop on."
+          },
+          {
+            "type": "li",
+            "text": "Sometimes people say inference for RL generation and inference for end user generation is basically the same. But this person pointed out that in RL inference, numerical drift between inference and training engine can cause these subtle off policy biases, which matter a ton for highest quality training. But are not an issue if just serving to users."
+          },
+          {
+            "type": "li",
+            "text": "Emphasized how important it is to have a disciplined process for amalgamating compute multipliers, because of the risks of stacking up bugs with subtle biases."
+          },
+          {
+            "type": "p",
+            "text": "Notes from an excellent lecture that Horace He gave my friends and me."
+          },
+          {
+            "type": "p",
+            "text": "What made this lecture so good is that Horace built up the whole topic as a chain of problems and solutions: here’s what we want to do, here’s why it breaks, here’s how we fix it, here’s why that fix eventually breaks too. Most explanations just list out a hodge podge of different strategies, without ever connecting them to the problems they solve or explaining why you’d pick one over another."
+          },
+          {
+            "type": "li",
+            "text": "Equation for pretraining flops = 6ND. 2 FLOPs per parameter per token for the forward pass (multiply + add). Backward pass is 2× forward because you compute gradients w.r.t. both input matrices. So 2 + 4 = 6."
+          },
+          {
+            "type": "li",
+            "text": "Okay we can’t do all this on one GPU. So how do we split up this problem? The obvious solution is to do data parallel - where you copy the model weights across each GPU, and you just do a part of the batch on each GPU.The obvious problem is that each GPU only has a limited amount of HBM - B300 is 288GB - and this is not enough to store the weights as models get bigger and bigger, much less their activations."
+          },
+          {
+            "type": "li",
+            "text": "Okay so next thing we try is fully sharded data parallel - each GPU only stores 1/N of the parameters of each layer - before processing each layer, you all-gather the full layer’s parameters from all GPUs (each GPU only stores 1/N of each layer). After processing, each GPU discards the gathered parameters.It was emphasized that this is the go to default. And you only move on from this when having too many GPUs forces you to move on, for reasons explained later. The reason this is the default is that it’s trivial to overlap compute and communication time - that’s because the only thing being communicated is the weights, which are not dependent on what happened in the layer before, so you can start all gathering the next layer while you’re still computing this layer. Compare this against tensor or expert parallelism, which do need to share activations for one layer before you can process the next one. The problem with pipeline parallelism is bubbles as explained below.From a comms volume perspective, FSDP looks insanely expensive at first — you all-gather every layer’s full weights across all GPUs, use them for one matmul, then throw them away. But this ignores what regular data parallelism already costs you - in regular DP, you still need to do an all reduce after every layer of the backwards pass in order to sync the batch’s gradients across all the GPUs. That all-reduce has comms volume of params × 2. FSDP adds all-gathers — one per layer in the forward pass, one per layer in the backward pass. But an all-gather is half the comms volume of an all-reduce. So naive FSDP comms volume ends up being # params * 4 (all gather forward and back, plus all reduce on back). You can do even better: since each gradient shard only needs to end up on the one GPU that owns it, replace the all-reduce with a reduce-scatter (which skips the final broadcast step). That gets you to params × 3 total — a 50% overhead over vanilla DP."
+          },
+          {
+            "type": "li",
+            "text": "So why can’t you always just do FSDP?Comms crossover: You want your compute time to be greater than your comms time - you don’t want to be bottlenecked on comms. But since compute time for FSDP decreases as you increase the number of GPUs, and comms time does not, as you scale the number of GPUs on FSDP, your MFU can totally crater. When this happens, you need to add pipeline parallelism too.Compute time = (6 * # tokens * active params) / (compute per GPU * number of GPUs)This decreases as you increase number of GPUsComms time = (# total params * 3) / (nv link domain size * infiniband BW)Comms time does not increase as you add more domains. This was really confusing to me. Each domain collectively holds all the parameters, and you need to sync gradients across domains after each layer of the backward pass. You’d think that adding more domains means more hops in the ring, so the all-reduce gets slower. But the standard ring algorithm splits the message into one chunk per participant. More domains means more hops, but proportionally smaller chunks per hop. (This breaks down when chunks get so small that per-hop latency dominates, at which point you switch to tree algorithms.)Technically, you can do better than a naive single all reduce for the gradients between all the domains. You do a hierarchical collective to optimize comms time across multiple NVLink domains. Key thing to remember is that each GPU in the domain gets its own bandwidth access to infiniband. So you wanna use it all up since interconnect bandwidth is the bottleneck. You do this by trying to do as much as possible within a scaleup before you move out. So you do reduce scatter within a scale up to give each GPU the domain-level reduced gradients for a shard of the layer, then all reduce these shards across corresponding GPUs across domains, then all gather within a domain. This shifts the comms time line down, thus moving the crossover point to the right.Made an animation to illustrate it using Cursor and Composer 2:If you look at the equations, you can see that if you increase batch size, crossover point moves to right, and if you make the model more sparse, moves to the left.Also why TPUs are better at FSDP - because more accelerators within a domain."
+          },
+          {
+            "type": "li",
+            "text": "Batch size floor: FSDP is data-parallel, so each GPU processes at least one sequence. Attention is computed within a sequence and can’t (easily) be split across GPUs. If your critical batch size is 10M tokens and sequence length is 10K, you only have 1K sequences — so you can’t scale beyond 1K GPUs with pure FSDP, even if you have plenty of comms bandwidth left."
+          },
+          {
+            "type": "li",
+            "text": "Problems with pipeline parallelism (the next addition you’d make to FSDP in order to deal with these issues):The problem with pipeline parallelism is different - there you have bubbles that emerge from the fact that at the beginning of the batch, the GPUs dedicated to the final layers are not being used, and conversely at the end of the batch, the GPUs dedicated to the first layers are not being used. The reason you can’t overlap batches in training to solve pipeline bubbles is that you need to consolidate gradients and update the model before you process the next batch.But also you’re adding architecture constraints - things like Kimi’s attention-to-residuals (where each block attends to all previous layers’ residuals) become very difficult when those residuals live on different pipeline stages. Similarly, interleaving sliding-window and global attention layers could cause load imbalance across stages. Dealing with all this slows down research iteration, which is the greatest sin you can commit."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "在这里整理了一些闪卡，帮助自己记住以下内容。",
+          "和某人聊了聊预训练经常失败的原因，很有意思。能真切感受到各种可能导致事情搞砸的具体方式，以及为何训练如此脆弱。从宏观上看，破坏因果性和引入偏差似乎是两大元凶。",
+          "破坏因果性：",
+          "在做专家路由时，首先会经过路由器，它会为每对 token 和 expert 打分，表示该 token 希望由哪个 expert 处理。接下来有两种处理方式：1. Token 路由，即从 token 的视角读取分数，并为每个 token 分配其 top k 个专家。问题是，这可能导致专家之间的分配极度不均衡，严重影响性能。另一种选择是（仅在训练中）采用专家选择（expert choice），即根据每个专家相对更偏好的 token 来划分 token。这样就能确保每个专家获得大致相同数量的 token。但一个大问题是破坏了因果性——因为 token n 被分配到哪个专家，可能取决于 token n + k 会被路由到哪个专家。而破坏因果性非常糟糕，因为在训练过程中你会接收到在部署时根本看不到的信息，并据此更新模型。有传言说 Llama 4 表现平平正是因为这个原因。也许你可以在预填充推理阶段也做专家选择？但实际操作中，将 token 分配给那些在真实训练中本不会收到该 token 的专家，可能效果不佳。说实话，我还没完全理解为什么破坏因果性这么严重。我知道在真实推理中无法超越因果关系，但这种微小的偏离为何会造成如此大的问题呢？",
+          "另一个破坏因果性的情况是 token 丢弃。即某些专家会忽略批次中它们本该处理的、但匹配度不够强的 token，从而避免超出填充长度。但如果后续某个 token 与这个专家匹配度更高，就可能导致前面的 token 被忽略，这就破坏了因果性。据说 Gemini 2 Pro 就存在这个问题。",
+          "引入偏差：",
+          "偏差比方差更可怕——方差可以通过平均化来缓解，但偏差会不断累积。",
+          "据说原始 GPT-4 的训练初期进展缓慢，就是因为以下 bug：他们在集体通信操作（如 all-reduce）中使用了 FP16 格式。FP16 的分数粒度是按对数密度分布的——在 1 到 2 之间，尾数比特会将区间划分为约 0.001 的间隔；但在 1024 及以上时，尾数可能将区间划分为多个整数值。假设某个集体操作需要累加 1 + 1……共 10,000 次——一旦达到 1024，你加 1 变成 1025，再向下取整到最近的区间就是 1024，再加一次。结果计算值会比真实值大 10 倍。如果你试图将许多小梯度累加到一个大累加器中，这将是灾难性的。想象一下要找出这个 bug 有多难！",
+          "对 AI 训练的启示：",
+          "认为我们能治愈衰老的人中，有些提出一个观点：人类衰老死亡的原因基本上有五种（如心脏病、癌症等），若能攻克这五种疾病，衰老问题就基本解决了。类似地，我们也可以问这些失败的预训练运行是否也有五种失败模式——如果是，那么一旦某个实验室解决了数值计算等问题，后续进展就会一帆风顺；还是说在每个新的规模层级上，仍会不断涌现全新的定制化难题？与我交谈的人似乎倾向于后者，他指出即使在数值计算领域，就有无数种可能导致失败的方式，而且随着规模扩大，新的问题也会持续出现。",
+          "对 AI 短期内完全自动化编写内核持悲观态度。他推测这是因为他认为内核编写更像是一个 AGI 完整问题，而非一些人认为的那么简单。另一种观点则认为：嘿，在这个扩展规模下，哪个内核或 MLP 运行得最快是一个高度可验证的领域，因此我们可以通过强化学习轻松达到超人类性能。但他指出，即使是拥有全球顶尖内核工程师的英伟达，也花了很长时间才优化出 Blackwell，这表明这项工作其实相当困难，可能并不容易实现闭环优化。",
+          "有时人们会说 RL 生成中的推理和面向最终用户的推理本质上是一样的。但此人指出，在 RL 推理中，推理引擎与训练引擎之间的数值漂移会导致这些微妙的非策略偏差，这对高质量训练至关重要；然而，如果只是用于向用户提供服务，这些问题则无关紧要。",
+          "强调了制定严谨流程来整合计算乘数的重要性，因为累积带有微妙偏差的 bug 会带来风险。",
+          "来自 Horace He 为我们朋友和我所做的一场精彩讲座的笔记。",
+          "这场讲座之所以出色，是因为 Horace 将整个主题构建成一系列问题与解决方案的链条：我们想做什么，为什么会失败，我们如何修复，以及为何这种修复最终也会失效。大多数解释都只是罗列各种策略，从未将它们与所解决的问题联系起来，也未说明为何选择其中一种而非另一种。",
+          "预训练 FLOPs 公式为 6ND。前向传播每参数每 token 需要 2 次浮点运算（乘加各一次）。反向传播是前向的 2 倍，因为要分别计算两个输入矩阵的梯度。所以总共有 2 + 4 = 6 次 FLOPs。",
+          "好吧，我们无法在一块 GPU 上完成所有这些计算。那该如何拆分这个问题呢？显而易见的方案是数据并行——即把模型权重复制到每个 GPU 上，每个 GPU 只处理批次的一部分。显而易见的问题是每个 GPU 上的高带宽内存（HBM）容量有限——B300 是 288GB——这不足以存储越来越大的模型的权重，更不用说激活值了。",
+          "接下来我们尝试的是完全分片数据并行（FSDP）——每个 GPU 只存储每层参数的 1/N。在处理每一层之前，所有 GPU 会通过 all-gather 操作获取该层的完整参数（此时每个 GPU 仍只持有该层的 1/N）。处理完成后，各 GPU 会丢弃已收集到的参数。这一点被强调为首选默认方案，只有当 GPU 数量过多迫使你升级策略时（原因稍后说明），才考虑其他方式。之所以成为默认，是因为计算与通信时间极易重叠——因为传输的只是权重，而这些权重不依赖于当前层之前的计算结果，因此可以在当前层仍在计算的同时，就开始对下一层进行 all-gather。相比之下，张量并行或专家并行需要在处理下一层前共享本层的激活值。而流水线并行的主要问题在于存在气泡（如下所述）。\n\n从通信量角度看，FSDP 初看似乎代价极高——每层都要在所有 GPU 间 all-gather 完整的权重，用于一次矩阵乘法后即丢弃。但这忽略了常规数据并行本身已有的开销：在标准 DP 中，反向传播时仍需对每层的梯度执行 all-reduce 以同步各 GPU 上的批次梯度，其通信量为 params × 2。FSDP 则额外增加了两次 all-gather：正向和反向各一次，每层一次。但 all-gather 的通信量仅为 all-reduce 的一半。因此，粗略估算下 FSDP 的总通信量为 params × 4（正向 all-gather + 反向 all-gather + 反向 all-reduce）。实际上还能进一步优化：由于每个梯度分片只需最终出现在拥有它的那个 GPU 上，可将 all-reduce 替换为 reduce-scatter（省去最后的广播步骤），这样总通信量降至 params × 3，仅比 vanilla DP 多出 50%。",
+          "那为什么不能总是使用 FSDP 呢？通信交叉点：我们希望计算时间大于通信时间——不希望被通信所限制。但随着 GPU 数量的增加，FSDP 的计算时间会减少，而通信时间不会随之下降。因此，在扩展 FSDP 的 GPU 数量时，MFU（模型利用效率）可能会急剧下降。当这种情况发生时，还需要引入流水线并行。计算时间 = (6 × token 数 × 激活参数) / (每 GPU 算力 × GPU 数量)，随着 GPU 数量增加而减少。通信时间 = (总参数量 × 3) / (NVLink 域大小 × InfiniBand 带宽)，通信时间不会随域的增加而上升。这一点曾让我非常困惑。每个域共同持有所有参数，并在反向传播每一层后同步梯度。直觉上，增加域意味着环中跳数增多，all-reduce 会变慢。但标准的环形算法将消息分割为每个参与者一个分片。更多域意味着更多跳数，但每跳的分片也更小。（当分片小到足以让每跳延迟占主导时，这种优势就消失了，此时会切换到树形算法。）技术上，可以对所有域之间的梯度进行比朴素单次 all-reduce 更优的操作。采用分层集体通信来优化跨多个 NVLink 域的通信时间。关键是要记住：每个域中的 GPU 都能独立访问 InfiniBand 带宽。因此，应充分利用这一带宽，因为互连带宽是瓶颈所在。为此，尽量在一个扩展开销内完成尽可能多的操作，再向外迁移。具体做法是：在扩展开销内执行 reduce scatter，使每个 GPU 获得该层分片的域级归约梯度；然后在各域对应的 GPU 之间执行 all-reduce；最后在域内执行 all gather。这降低了通信时间线，从而将交叉点右移。用 Cursor 和 Composer 2 制作了一个动画来演示这个过程：从公式可以看出，增大 batch size 会使交叉点右移，而提高模型稀疏性则会使交叉点左移。此外，TPUs 在 FSDP 上表现更好，是因为一个域内有更多加速器。",
+          "Batch size 下限：FSDP 是数据并行的，因此每个 GPU 至少处理一个序列。注意力机制是在序列内部计算的，且无法（轻易地）跨 GPU 拆分。如果你的关键 batch size 是 1000 万个 tokens，序列长度为 1 万，那么你只有 1000 个序列——即使还有充足的通信带宽，纯 FSDP 也无法扩展到超过 1000 个 GPU。",
+          "流水线并行的问题（这是你接下来要添加到 FSDP 中解决这些问题的方法）：流水线并行的不同之处在于，开始时负责最后几层的 GPU 未被使用，而结束时负责前几层的 GPU 也未被使用，从而产生“气泡”。在训练过程中无法重叠批次来解决流水线气泡问题，因为必须在处理下一批数据之前完成梯度的聚合和模型的更新。此外，这样做还会引入架构限制——例如 Kimi 的注意力到残差机制（每个块都关注所有先前层的残差）在残差分布在不同流水线阶段时会变得非常困难。同样，交错滑动窗口和全注意力层可能会导致各阶段的负载不平衡。处理所有这些情况会减缓研究迭代速度，这是你所犯的最大错误。",
+          "没有帖子"
+        ]
+      }
+    },
+    {
+      "slug": "13681beb5db79fbe",
+      "title": "Reddit Is Blocking Some Users From Accessing Its Website From Mobile Devices",
+      "titleZh": "Reddit强制移动端用户下载App引发争议",
+      "link": "https://arstechnica.com/information-technology/2026/05/why-reddit-blocked-my-daily-visit-to-its-mobile-website/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-16T21:22:38.000Z",
+      "category": "other",
+      "keywords": [
+        "Reddit",
+        "mobile access",
+        "app enforcement"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "Reddit近期在移动浏览器上部署全屏弹窗，强制要求用户下载官方App才能继续使用网站功能。该弹窗无法关闭或绕过，仅提供‘获取App’按钮，严重干扰了依赖移动网页访问的用户体验。此举被批评为牺牲开放性换取用户增长指标，损害了Web平台的互操作性原则。事件凸显了科技公司对用户选择权的控制倾向及其对去中心化网络生态的潜在威胁。",
+      "summaryEn": "Reddit recently introduced an intrusive full-screen overlay on its mobile website that forces users to download the official app to continue accessing the site. The popup cannot be dismissed or bypassed, offering only a 'Get App' button, severely disrupting the experience for users who rely on mobile web access. This move has been criticized as prioritizing app metrics over user choice and undermining the interoperability principles of the open web. The incident highlights tech companies' increasing control over user pathways and potential threats to decentralized web ecosystems.",
+      "reason": "它揭示了主流社交平台如何通过技术手段限制用户自由，值得关注数字权利和网络中立性的读者深思。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Nate Anderson",
+        "siteName": "Ars Technica",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The company confirmed to me that it is moving in a direction that other platforms have taken: converting users to the app. Reddit says that the test aims to find out if people like me—those who use the service but aren’t generally logged in—get a better experience with the app."
+          },
+          {
+            "type": "p",
+            "text": "I often prefer the open web and don’t really want one more app cluttering up my phone. And while I’m open to learning about the “much better” experience in the app, hardball blocking tactics seem an odd way to educate users about something supposedly in their own interests. (After clearing cookies in my browser, I was able to access the mobile website again. It sounds like you can alternately log in to Reddit, though the overlay says nothing about this; I cleared cookies before I could try it.)"
+          },
+          {
+            "type": "p",
+            "text": "User reaction to the move seems somewhat negative. Futurism ran an angry article last week saying that Reddit “Intentionally Breaks Its Mobile Website.” And redditors have posted numerous complaints in places like r/bugs, r/help, and (naturally) r/enshittification. (Representative sample comment: “Reddit is a Website; why is it forcing me to the app?”)"
+          },
+          {
+            "type": "p",
+            "text": "Some of this carping does feel a bit strident for a free and (generally) useful service. Perhaps I should switch to the app. Perhaps I should browse while logged in to enable a truly customized feed. Perhaps I really would love the better search options."
+          },
+          {
+            "type": "p",
+            "text": "But as I mentioned at the beginning, I often wonder if I could spend my Reddit time in more productive ways; signing up for a more targeted feed that better plays on my dopamine triggers doesn’t actually sound helpful. I think that’s one reason I resist these pushes to log in, to customize, to spend even more time on site. Indeed, if more force continues to be applied, perhaps the better choice would simply be to walk away altogether."
+          },
+          {
+            "type": "p",
+            "text": "Disclosure: Advance Publications, which owns Ars Technica parent Condé Nast, is the largest shareholder in Reddit."
+          }
+        ],
+        "translations": [
+          "该公司向我确认，他们正朝着其他平台已经采取的方向发展：将用户引导至应用程序。Reddit 表示，此次测试旨在了解像我这样使用服务但通常未登录的用户，在应用程序中是否能获得更好的体验。",
+          "我通常更喜欢开放的网页，并不希望手机上再增加一个应用来占用空间。虽然我对所谓“好得多”的应用体验持开放态度，但采用强硬封锁手段似乎并不是向用户介绍此类服务的合理方式——尤其是当这些服务据称对用户有利时。（清除浏览器 Cookie 后，我重新访问了移动网站。看起来你也可以选择登录 Reddit，尽管提示框并未提及这一点；我是在尝试之前清除了 Cookie。）",
+          "用户对此举的反应似乎偏向负面。《未来主义》上周发表了一篇愤怒的文章，称 Reddit“故意破坏其移动网站”。而 redditors 也在 r/bugs、r/help 以及（理所当然地）r/enshittification 等板块发布了大量投诉。（代表性评论节选：“Reddit 是一个网站，为什么要强迫我用应用？”）",
+          "尽管部分抱怨略显苛刻——毕竟 Reddit 是一项免费且（总体而言）有用的服务——但我或许应该改用应用。也许我应该登录以启用真正个性化的信息流。也许我确实会喜欢更好的搜索选项。",
+          "但正如我在开头提到的，我常常怀疑自己是否可以将花在 Reddit 上的时间用于更有成效的事情；注册一个更能刺激多巴胺的信息流，听起来并不能真正帮到我。这或许是我抗拒登录、定制内容、甚至进一步沉迷于平台的原因之一。事实上，如果这种强制趋势持续下去，也许最好的选择就是彻底离开。",
+          "披露声明：Advance Publications（拥有 Ars Technica 母公司 Condé Nast）是 Reddit 的最大股东。"
+        ]
+      }
+    },
+    {
+      "slug": "95dc351f9d359e00",
+      "title": "★ AI Is Technology, Not a Product",
+      "titleZh": "AI是技术而非产品——重新定义人工智能的角色",
+      "link": "https://daringfireball.net/2026/05/ai_is_technology_not_a_product",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-16T20:32:51.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "technology",
+        "philosophy"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 22
+      },
+      "summary": "John Gruber 在文章中明确指出，AI本质上是一种通用技术，不应被包装成独立产品或营销噱头。他认为当前许多‘AI驱动的产品’只是将传统软件功能贴上AI标签，并未真正体现技术的核心价值。作者主张应以技术视角看待AI，聚焦其底层能力而非表面应用。这一观点呼吁行业回归理性，重视AI的实际工程价值而非炒作概念。",
+      "summaryEn": "John Gruber argues that artificial intelligence is fundamentally a general-purpose technology, not a product category or marketing gimmick. He criticizes the current trend of branding existing software features as 'AI-powered' without meaningful innovation, urging industry stakeholders to view AI through an engineering lens rather than a commercial one. By reframing AI as infrastructure rather than a feature, he advocates for focusing on its core capabilities rather than superficial applications. This perspective encourages a more grounded understanding of AI's role in technological advancement.",
+      "reason": "它为科技评论者和从业者提供了清晰的框架，帮助区分真正的AI创新与概念炒作，具有启发意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Saturday, 16 May 2026",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Steven Levy, writing for Wired last month after Apple’s CEO transition was announced, under the provocative headline “Apple’s Next CEO Needs to Launch a Killer AI Product” (News+ link to get around Wired’s miserly paywall):"
+          },
+          {
+            "type": "quote",
+            "text": "Much more recently, I quizzed Ternus and global marketing\nhead Greg Joswiak about Apple’s future, specifically its plans to\nget ahead of the AI transformation. Ternus acknowledged that AI is\n“an immense kind of inflection point,” but couched it as one of\nmany leaps that Apple has navigated. Each hit product — the Apple\nII, the Mac, iTunes, the iPod, the iPhone, iPad — piggybacked on\na previous product. “We never think about shipping a technology,”\nhe said. “We want to ship amazing products, features, and\nexperiences, and we don’t want our customers to think about what\n[underlying] technology makes it possible. That’s the way we think\nabout AI.”\n\nThat’s fine, but I look back to the mid-2000s when everybody was\nwaiting for Apple to come out with a phone. When Jobs finally\ndelivered in January 2007, the product defined the mobile era.\nIt’s a big ask for Ternus to do something similar for the AI age — but it’s an opportunity that must be seized. AI threatens to\ndisrupt the entire iPhone ecosystem. By the end of this decade,\nit’s unlikely that people will swipe on their phones to tap on\nUber or Lyft. They will just tell their always-on AI agent to get\nthem home. Or that agent will have already figured out where they\nneed to go, and the car will be waiting without the friction of a\nrequest. “There’s an app for that,” may be replaced by “Let the\nagent do that.”"
+          },
+          {
+            "type": "p",
+            "text": "I’m a huge longtime Steven Levy fan, but this is nonsense. It’s hard to read this and not worry that he too has lost his mind to the AI snake-oil hypesters. What Ternus told him is exactly right. The Apple way is never to ship a technology. The iPod wasn’t about MP3 files. It wasn’t about 1.8-inch hard drives. It was about music. The iPhone did define the mobile era (which we’re still very much in), but Apple doesn’t need to capitalize on every single market the mobile era opened up. Social media is a defining component of the mobile era. It comprises the entirety of Meta’s value and a sizable slice of Google’s (via YouTube). Apple doesn’t have a social network business. It’s fine — because the way people consume and create social media is using their phones."
+          },
+          {
+            "type": "p",
+            "text": "Does AI “threaten to disrupt the entire iPhone ecosystem”? It’s possible, but it doesn’t seem nearly as likely to me as Levy asserts. Changing the iPhone ecosystem? Sure — that’s already true. Obviating the iPhone ecosystem? I don’t see it. Levy’s argument reminds me of the hype around “the cloud” when that first became a term. It’s so meaningless when used broadly (e.g. “Everything will soon be in the cloud”) that it could mean anything. It’s step #2 in the gnomes-stealing-underpants master plan."
+          },
+          {
+            "type": "p",
+            "text": "The idea that AI agents “will have already figured out where [we] need to go, and the car will be waiting without the friction of a request” strikes me as pure fever dream high-on-the-hype fantasy. I’m just going to step outside a restaurant when I’m done eating a meal and a ride-share is going to be there, waiting for me, without my having hailed it? Every time? And I’m going to find this pleasing, not creepy? And ride-share drivers are going to respond to all these requests, because the requests will never be wrong? And this is going to happen, somehow, without my carrying a phone with me? And this is going to happen in the next four years? I don’t think I’d want this even if it were plausible, but it doesn’t sound plausible."
+          },
+          {
+            "type": "p",
+            "text": "Actual products have to be real. Actual experiences have to rely on actual products. How exactly in Levy’s end-of-this-decade scenario will we tell our “always-on AI agent” to get us home? What microphone is listening to the command? What speaker is telling us the request was understood and acted upon? What screen do we look at to see how far away the hailed car is? I’d bet a pretty large sum of money that in 2030, when someone hails a ride-share vehicle to take them home, the most common product they’ll use to do that will be their phone. Whether they’re doing it via a verbal command issued to an “always-on AI agent” or good old tapping and swiping, it’ll be a phone."
+          },
+          {
+            "type": "p",
+            "text": "If you think that people will buy smaller devices to replace their phones, and use those to talk to “always-on AI agents” instead, you have to answer some questions. What company is the best in the world at making smaller-than-phone personal computing devices? What device will people use as their camera? What device will people use as their screen, for watching videos, playing games, texting, and (one hopes) reading? My answers to those three questions: Apple, phone, phone. Why would smaller devices — you know, like watches, earbuds, and, say, glasses — work independently rather than pair with the phone that you’re almost certainly still going to be carrying with you?"
+          },
+          {
+            "type": "p",
+            "text": "Only a fool would argue that Apple can stand on the sidelines and ignore AI. It’s very different from, say, social media that way. Social media doesn’t pervade everything in technology. You can ignore social media as a user. (And you’re probably more productive, and happier, if you do.) A company can eschew social media as a business. AI, on the other hand, is pervasive. It can’t be ignored. But it’s just technology."
+          },
+          {
+            "type": "p",
+            "text": "Wireless networking is pervasive too. But Apple doesn’t have “a killer wireless networking product”.1 Wireless networking simply pervades everything Apple makes. I’m hard pressed to think of a single product Apple makes that doesn’t use some combination of Wi-Fi, cellular, Bluetooth, and proprietary wireless protocols. There was a time, not too long ago, when Apple didn’t make a single product with wireless connectivity. Now it’s pervasive in all their devices. That’s more what AI is going to be like. There’s not going to be one “killer AI device”. Everything is going to be an AI device, to some extent, just like how everything today is a wireless connectivity device, to some extent."
+          },
+          {
+            "type": "li",
+            "text": "AirPort qualified, arguably. But Apple walked away from it, alas. ↩︎"
+          }
+        ],
+        "translations": [
+          "上个月苹果宣布CEO交接后，史蒂文·利维（Steven Levy）在《连线》杂志上发表了一篇颇具挑衅性的文章，标题为“苹果下一任CEO需要推出一款杀手级AI产品”（通过News+订阅可绕过《连线》吝啬的付费墙）：",
+          "最近我专门采访了Ternus以及全球营销负责人Greg Joswiak，向他们请教苹果的未来规划，特别是其在AI转型中的布局。Ternus承认AI确实是一个“巨大的拐点”，但他将其视为苹果发展历程中众多跨越之一。每一款成功的产品——Apple II、Mac、iTunes、iPod、iPhone、iPad——都建立在前一产品的基础之上。“我们从不考虑发布某种技术，”他说，“我们想推出令人惊叹的产品、功能和体验，而且不希望用户去思考背后支撑的技术是什么。这就是我们对AI的理解方式。”\n\n这当然无可厚非，但我回想起2000年代中期，所有人都翘首以盼苹果推出手机。直到2007年1月乔布斯终于发布iPhone时，这款产品定义了整个移动时代。如今，Ternus若想为AI时代做出同样颠覆性的贡献——虽然任务艰巨——但机会必须抓住。AI有可能颠覆整个iPhone生态系统。到本世纪末，人们很可能不再滑动手机屏幕来叫Uber或Lyft，而是直接对那个始终在线的AI助手说“送我回家”。或者更理想的情况是，这个AI早已预判你的需求，车子会准时出现在你面前，无需任何操作请求。“有应用可以实现”可能会被“让助手搞定”所取代。",
+          "我是史蒂文·利维的长期忠实读者，但这次他的观点实在荒谬。很难不让人怀疑，连他是否也被AI的虚假宣传所蛊惑。Ternus的回答完全正确：苹果的理念从来不是发布技术本身。iPod关注的不是MP3文件，也不是1.8英寸硬盘，而是音乐本身。iPhone确实定义了移动时代（我们至今仍在其中），但苹果不必也不应该去抢占移动时代开启的每一个细分市场。社交媒体正是移动时代的标志性产物，它构成了Meta的全部价值，也占据了Google相当大的一部分（主要通过YouTube）。苹果没有社交网络业务，这完全没问题——因为人们使用和创造社交媒体内容的方式，就是依靠他们的手机。",
+          "AI真的会“威胁颠覆整个iPhone生态系统”吗？或许有可能，但我觉得远不如利维说得那么迫在眉睫。改变iPhone生态系统？当然，这已经发生了。彻底取代iPhone生态系统？我看不到这种可能性。利维的观点让我想起当初“云端”概念刚兴起时的狂热。当这个词被泛化使用时（比如“一切都将进入云端”），它几乎毫无意义，可以指代任何事情。这不过是精灵偷内裤计划的第二步罢了。",
+          "“AI 代理已经搞清楚了我们应该去哪里，而汽车会在那里等着，无需通过请求来启动”这种设想在我看来纯粹是痴人说梦——一种被过度炒作冲昏头脑的幻想。我吃完饭走出餐厅时，一辆网约车正好停在那里等我，而且是我没叫车的情况下？每次都是这样？而我竟然会觉得这很惬意，而不是毛骨悚然？网约车司机都会响应这些请求，因为请求永远不会出错？这一切居然发生在我不带手机的情况下？而且还要在四年内实现？即便这设想本身合理，我也不想要这样的未来，更何况它根本不合理。",
+          "真正的产品必须是真实存在的。真实的体验必须依赖真实的产品。那么，莱维（Levy）所描绘的这个十年末的场景中，我们究竟该如何向“始终在线的 AI 代理”下达回家指令呢？哪个麦克风在监听命令？哪个扬声器在告诉我们请求已被理解并执行？我们该看哪个屏幕才能看到叫来的车离自己有多远？我可以赌上一大笔钱：到 2030 年，当有人叫网约车回家时，他们最可能使用的设备就是手机。无论是通过语音命令与“始终在线的 AI 代理”交互，还是像过去那样简单地点击滑动，用的都将是手机。",
+          "如果你认为人们会购买更小的设备来取代手机，并用它们与“始终在线的 AI 代理”对话，那你得回答几个问题。世界上哪家公司在制造比手机更小的个人计算设备方面最出色？人们会用哪种设备作为摄像头？人们又会用哪种设备来看视频、玩游戏、发消息（希望还能用来阅读）？我对这三个问题的答案是：苹果、手机、手机。为什么像手表、耳机、眼镜这类更小的设备能独立运行，而不是与几乎肯定仍随身携带的手机配对使用呢？",
+          "只有傻瓜才会认为苹果可以置身事外、对 AI 视而不见。这一点和社交媒体截然不同。作为用户，你可以忽略社交媒体（这样做或许效率更高、心情更好）。作为企业，也可以放弃社交媒体。但 AI 则无处不在，无法回避。不过说到底，AI 也不过是技术罢了。",
+          "无线联网同样无处不在。但苹果并没有“一款杀手级的无线联网产品”。无线联网只是渗透到了苹果制造的每一件产品中。我很难想到哪款苹果产品不采用 Wi-Fi、蜂窝网络、蓝牙或专有无线协议中的任何一种组合。就在不久之前，苹果甚至没有一款具备无线连接功能的产品。如今，无线连接已遍布其所有设备。AI 的发展路径很可能也是如此——不会有一款“杀手级 AI 设备”，而是每一款产品都会在某种程度上成为 AI 设备，正如今天每一款产品都在某种程度上是无线联网设备一样。",
+          "AirPort 或许算得上合格。但遗憾的是，苹果最终退出了这一领域。↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "ee5c8b92f06184c7",
+      "title": "Santa Clara County Sues Meta Over Alleged Scam Ads",
+      "titleZh": "圣克拉拉县起诉Meta纵容诈骗广告获利70亿美元",
+      "link": "https://sanjosespotlight.com/santa-clara-county-sues-meta-over-alleged-scam-ads/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-16T21:17:15.000Z",
+      "category": "security",
+      "keywords": [
+        "Meta",
+        "fraud ads",
+        "legal action"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "加州圣克拉拉县提起集体诉讼，指控Meta明知其平台充斥欺诈性广告却故意削弱反欺诈团队，导致虚假公司每年通过广告骗取用户钱财并从中获得约70亿美元收入。诉讼指出Meta为追求广告收益最大化而忽视用户安全，违反了虚假广告法。此案可能开创地方政府追究科技巨头助长网络诈骗的先例，推动更严格的内容监管立法。",
+      "summaryEn": "Santa Clara County filed a lawsuit against Meta alleging the company deliberately weakened its anti-fraud teams to allow deceptive scam ads to flourish, generating approximately $7 billion in annual ad revenue from fraudulent operations. The suit claims Meta prioritized profit over consumer protection by enabling fake businesses to bypass its filters, violating false advertising laws. This case could set a precedent for government accountability of tech platforms for facilitating online fraud and spur stricter content regulation legislation.",
+      "reason": "此案揭示了社交媒体平台在商业利益与安全责任之间的深层矛盾，对政策制定者和公众都具有警示作用。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brandon Pho",
+        "siteName": "San José Spotlight",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Santa Clara County is suing Meta, Facebook's parent company, for allowing scammer ads to filter through the system and deceive users to the company's financial benefit (AP Photo/Jeff Chiu, File)."
+          },
+          {
+            "type": "p",
+            "text": "Santa Clara County leaders are suing Meta, alleging the company has engaged in a worldwide, systematic campaign to litter vulnerable Facebook and Instagram users’ feeds with billions of scam ads by fraudulent companies."
+          },
+          {
+            "type": "p",
+            "text": "The lawsuit filed Monday alleges that instead of cracking down on deceptive ads designed to trick users out of their money, Meta has hamstrung its own fraud prevention teams and helped fake companies bypass its filters to enable the tech powerhouse to enjoy an estimated $7 billion in ad revenue from the scams every year."
+          },
+          {
+            "type": "p",
+            "text": "“There can be no confusion about it — Meta is on the take,” County Counsel Tony LoPresti said at a Monday news conference announcing the lawsuit. “This case is about accountability — it’s about ensuring that as behemoth tech companies open up new frontiers in our society, they aren’t lawless frontiers. Meta has lied to its users and violated the law for years.”"
+          },
+          {
+            "type": "p",
+            "text": "The county lawsuit seeks attorney fees and a ruling barring Meta from further alleged violations of false advertising and unfair competition laws. Much of the lawsuit’s allegations stem from a 2025 Reuters investigation suggesting Meta was at one point involved in one-third of all successful Internet scams in the U.S."
+          },
+          {
+            "type": "p",
+            "text": "The company has vowed to fight the lawsuit."
+          },
+          {
+            "type": "p",
+            "text": "“This claim relies on Reuters reporting that distorts our motives and ignores the full range of actions we take to combat scams every day,” a spokesperson for the company told San José Spotlight. “We aggressively fight scams on and off our platforms because they’re not good for us or the people and businesses that rely on our services.”"
+          },
+          {
+            "type": "p",
+            "text": "The county lawsuit alleges scammers who generated significant advertising revenue remained on the platform despite being flagged more than 500 times. More notably, the lawsuit alleges Meta sets “revenue guardrails” to protect profits from scam ads. This was allegedly done through policies preventing Meta’s team that vets advertisers from restricting scam ads if it would cost the company more than 0.15% of its total revenue."
+          },
+          {
+            "type": "p",
+            "text": "“What we’ve seen is a lot of financial scams, cryptocurrency scams, people impersonating famous folks or military personnel, asking folks for money, advertising miracle cures for incurable diseases,” LoPresti said. “Meta is taking very deliberate measures to make sure many of those scam ads get through, and charging a premium price to scammers to post those ads.”"
+          },
+          {
+            "type": "p",
+            "text": "County officials said their lawsuit is the first of its kind in California and the first brought by a local civil prosecutor in the U.S. Santa Clara County sits at the heart of Silicon Valley and is home to the headquarters of tech titans such as Apple and Google. Meta is headquartered in Menlo Park in San Mateo County."
+          },
+          {
+            "type": "p",
+            "text": "“While our region has certainly benefited from the tech boom, we can’t sit idly by when we know good and well that a tech giant is swindling the public to hit a revenue target,” LoPresti said. “Tech might be the lifeblood of Silicon Valley … but we can’t allow poison into that bloodstream.”"
+          },
+          {
+            "type": "p",
+            "text": "The company argues it’s removed more than 159 million scam ads last year and launched new tools and law enforcement partnerships to disrupt fraudsters."
+          },
+          {
+            "type": "p",
+            "text": "“We will fight this lawsuit,” the spokesperson said."
+          },
+          {
+            "type": "p",
+            "text": "Contact Brandon Pho at [email protected] or @brandonphooo on X."
+          },
+          {
+            "type": "h2",
+            "text": "Subscribe To Our Newsletter"
+          },
+          {
+            "type": "p",
+            "text": "Join our mailing list to receive the latest news and updates from our team."
+          },
+          {
+            "type": "p",
+            "text": "Comment Policy (updated 5/10/2023): Readers are required to log in through a social media or email platform to confirm authenticity. We reserve the right to delete comments or ban users who engage in personal attacks, hate speech, excess profanity or make verifiably false statements. Comments are moderated and approved by admin."
+          }
+        ],
+        "translations": [
+          "圣克拉拉县正在起诉 Meta（Facebook 的母公司），指控其纵容诈骗广告通过系统审核，欺骗用户以谋取公司利益（美联社照片/杰夫·丘伊，档案资料）。",
+          "圣克拉拉县的官员们提起诉讼，指控 Meta 在全球范围内系统性策划了一场行动，向 Facebook 和 Instagram 上易受伤害的用户推送数十亿条由欺诈企业发布的诈骗广告。",
+          "周一提起的诉讼指出，Meta 并未严厉打击那些旨在骗取用户钱财的虚假广告，反而削弱了其自身的防欺诈团队，并帮助虚假公司绕过平台过滤器，使这家科技巨头每年能从这些骗局中获取约70亿美元的广告收入。",
+          "“毫无疑问，Meta 是在收受贿赂。”该县总法律顾问托尼·洛普雷斯蒂在周一宣布诉讼的新闻发布会上表示。“此案关乎问责——确保当这些科技巨擘在社会中开辟新领域时，这些领域并非无法无天的地带。Meta 多年来一直在欺骗用户、违反法律。”",
+          "该县的诉讼请求包括律师费，并要求法院裁定禁止 Meta 进一步违反虚假广告和不正当竞争相关法律。诉讼中的许多指控源于2025年路透社的一项调查，该调查显示 Meta 曾参与美国三分之一成功的网络诈骗活动。",
+          "该公司已誓言将对此诉讼进行反击。",
+          "“这一指控依据的是路透社带有偏见的报道，歪曲了我们的动机，无视我们每天为打击诈骗所采取的全面措施。”该公司发言人向圣何塞 spotlight 表示，“我们在平台和平台外都积极打击诈骗行为，因为它们对我们以及依赖我们服务的个人和企业都没有好处。”",
+          "县政府的诉讼指出，尽管一些诈骗者因发布大量广告而获得巨额收入，但他们仍被标记超过500次后依然留在平台上。更值得注意的是，诉讼指控 Meta 设置了“收入护栏”来保护诈骗广告带来的利润。据称，这是通过政策实现的：如果限制诈骗广告会导致公司损失超过其总收入的0.15%，Meta 的审核团队就不会阻止这些广告。",
+          "“我们看到很多金融诈骗、加密货币诈骗，有人冒充名人或军人，向他人索要钱财，还宣传对不治之症有神奇疗效的产品。”洛普雷斯蒂说。“Meta 采取了非常明确的措施，确保许多此类诈骗广告得以通过，并向诈骗者收取高价发布广告的费用。”",
+          "县官员表示，他们的诉讼是加州首例此类案件，也是美国首次由地方民事检察官提起的类似诉讼。圣克拉拉县位于硅谷中心，是苹果和谷歌等科技巨头的总部所在地。Meta 总部位于圣马特奥县的门洛帕克。",
+          "“虽然我们的地区无疑从科技繁荣中受益，但我们不能坐视不管，眼睁睁看着一家科技巨头为了达成收入目标而欺骗公众。”洛普雷斯蒂说。“科技或许是硅谷的生命线……但我们绝不能让毒素渗入这条生命线。”",
+          "该公司辩称，去年已移除超过1.59亿条诈骗广告，并推出了新的工具和执法合作伙伴关系，以打击诈骗分子。",
+          "“我们将对此诉讼进行反击。”发言人表示。",
+          "联系布兰登·福 (@brandonphooo)：[email protected]",
+          "订阅我们的新闻通讯",
+          "加入我们的邮件列表，获取团队最新的新闻和动态更新。",
+          "评论政策（2023年5月10日更新）：读者需通过社交媒体或电子邮件平台登录以确认身份。我们保留删除进行人身攻击、发表仇恨言论、使用过度粗俗语言或发布经证实的虚假陈述的评论，以及封禁相关用户的权利。所有评论均由管理员审核并批准后方可显示。"
+        ]
+      }
+    },
+    {
+      "slug": "08f69edd9596a0f5",
+      "title": "RLVR might be disproportionately bad at science",
+      "titleZh": "RLVR在科学验证方面可能存在系统性缺陷",
+      "link": "https://www.dwarkesh.com/p/rlvr-might-be-disproportionately",
+      "sourceName": "dwarkesh.com",
+      "sourceUrl": "https://dwarkesh.com",
+      "pubDate": "2026-05-16T19:00:59.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "RLVR",
+        "verification",
+        "science"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "Dwarkesh Patel 提出理论验证循环（RLVR）可能在科学推理中存在结构性弱点。他指出，即使经过数十年甚至数百年的检验，某些曾被认为是更优的理论实际上可能做出更差的预测。这种滞后性与偏差表明，依赖经验积累的传统科学验证机制在面对复杂系统时可能失效。作者警告，过度信任长期公认的‘真理’可能导致认知盲区，建议引入更多元化的验证范式。",
+      "summaryEn": "Dwarkesh Patel argues that the verification loop for scientific theories—traditionally relying on decades or centuries of empirical testing—may have systemic flaws. He points out that some theories once considered superior have later proven to make worse predictions than initially thought, revealing inherent biases in how science validates knowledge. This lagging effect suggests traditional validation mechanisms may fail when dealing with complex systems. The author cautions against uncritical acceptance of long-standing 'truths' and advocates for incorporating more diverse verification approaches to avoid cognitive blind spots.",
+      "reason": "它对科学哲学和科研方法论提出了深刻质疑，促使人们反思现有知识体系的可靠性边界。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dwarkesh Patel",
+        "siteName": "Dwarkesh Podcast",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’m writing up some threads that we explored in my interview with Michael Nielson. That episode was one of my favorite."
+          },
+          {
+            "type": "p",
+            "text": "The organizing question from my interview with Michael Nielson was, “How do we recognize scientific progress?” It’s especially relevant to thinking about what it would take for AI to close the RL verification loop on scientific discovery. But it’s also a surprisingly mysterious and elusive question when thinking about the history of human science."
+          },
+          {
+            "type": "p",
+            "text": "Some people have this idea that AI is going to be disproportionately good at making scientific breakthroughs. The reason they think this is that 1. Science is ‘verifiable’, 2. AI is absolutely crushing domains that have a tight verification loop - coding, math, etc - because you can RL on these loops."
+          },
+          {
+            "type": "p",
+            "text": "But the history of human science shows that the verification loop for theories can be on the order of decades and centuries, and even then experiments do not definitely rule out alternatives: Ancient Athenians dismissed Aristarchus (2nd century BC) on heliocentrism because it would imply stellar parallax. The first successful measurement of stellar parallax was in 1838, achieved by Friedrich Wilhelm Bessel."
+          },
+          {
+            "type": "p",
+            "text": "What we know today as the better theory can often actually make worse predictions: it’s well known that Copernicus’s model of circular orbits around the sun was less accurate than Ptolemy’s geocentric model, which had accumulated millenia of correcting epicycles. What is not well known is that Copernicus’s theory wasn’t even simpler (Ptolemy’s model interpreted the true elliptical nature of orbits using an equant trick where other planets are not moving in uniform circular motion around Earth exactly, but rather an off center point. Copernicus didn’t like this, because it violated his Platonic heuristics  - so he discarded the quant trick, which led to a less parsimonious model, since Copernicus had to add more epicycles and epicyclets to make up for it.)"
+          },
+          {
+            "type": "p",
+            "text": "So in what sense was it a better theory in 1543? In some sense, it wasn’t! You couldn’t have known ex ante that heliocentrism married with Kepler’s 3 laws (1619) is a much cleaner and more accurate theory, or that there’s a very beautiful unification of heliocentric orbits and terrestrial gravity (Newton in 1686)."
+          },
+          {
+            "type": "p",
+            "text": "There was one ex ante reason that you should have preferred Copernicus in 1543: his theory required retrograde motion as a natural consequence of his theory, whereas for Ptolemy it was an ad hoc addition. Even more impressively, his theory, developed in 1543, actually predicted the phases of Venus before they were observed by Galileo in 1610. But both of these things were also implied by Brahe’s model, which had set the sun to orbit the earth and then all the planets to orbit the sun."
+          },
+          {
+            "type": "p",
+            "text": "Under a naive falsificationist framework, you’d have to wait until Stellar parallax was observed in 1838 to know that Brahe was wrong. But obviously the scientific community was able to make progress faster than this. There is some mixture of judgment and heuristics in the progress of science that we don’t even understand well enough to actually articulate, much less codify into an RL loop."
+          },
+          {
+            "type": "p",
+            "text": "Or consider the case of the discovery of Neptune in 1846. Uranus deviated from its predicted Newtonian path. Le Verrier predicted that an unknown perturbing planet must exist, calculated its mass and orbit, and Neptune was found almost exactly where predicted."
+          },
+          {
+            "type": "p",
+            "text": "But the Neptune story is symmetric to a failure case. Mercury had an anomalous precession, where the ellipse that shows its orbit would rotate 43 arcseconds more per century than should be implied by the impact of other planets using Newtonian mechanics. This led astronomers to speculate that there’s an unknown planet Vulcan within Mercury’s orbit. But it was resolved in 1915 with Einstein’s General Relativity."
+          },
+          {
+            "type": "p",
+            "text": "A proper Newtonian would still proceed with the research agenda, but modify it as follows. First, you predict some unknown planet. If it can’t be found, you say it’s so small, it must require a bigger telescope, and you build a bigger telescope. And if you still can’t find it, maybe there’s a cloud of cosmic dust occluding it. If still not found, maybe the satellite’s instruments are being screwed by some unknown magnetic field, and you send a new satellite. At each of these steps, had you discovered a new planet, or some unknown cosmic dust, or some new magnetic field, that would have been a sensational victory for Newtonians."
+          },
+          {
+            "type": "p",
+            "text": "Ex ante, this is not unreasonable to do! It is only after decades or maybe centuries of patchwork that we can then analyze, are we simply adding epicycles, or is this theoretical framework progressive, in that it makes predictions we wouldn’t otherwise be able to."
+          },
+          {
+            "type": "p",
+            "text": "What do these examples illustrate? That ex ante it is almost impossible to determine which research programs are progressive (will predict and explain unanticipated new phenomenon) and which are regressive (need to be contorted repeatedly to accommodate seemingly disconfirming new phenomenon)."
+          },
+          {
+            "type": "p",
+            "text": "But the verification loop is often extremely long and weirdly hostile, and even then, experiments do not definitely rule out alternatives (see the discussion in the Nielson episode about how physicist contemporaneous with the 1880s Michelson-Morley experiments thought that it simply ruled out a particular theory of ether. Only Einstein made the full conceptual leap to discard the ether altogether)."
+          },
+          {
+            "type": "p",
+            "text": "This means that big conceptual breakthroughs cannot be easily verified. They are recognized decades  or centuries later, when it turns out they were much more productive than the alternatives available. What this means for AI for science is that 1. You can’t easily train an RL loop for big conceptual breakthroughs."
+          },
+          {
+            "type": "p",
+            "text": "And 2. the society of AI scientists will still need individual AI instances that have idiosyncratic biases and heuristics, and to pursue them unrelentingly for decades on end - for example, like the one Einstein had in insisting that there shouldn’t be some arbitrary inertial reference frame. There should be dedicated people to keep a bunch of dormant research agendas alive in case they turn out to be productive upon further investigation. To understand the kind of intransigent dedication to hypotheses that is needed to preserve correct scientific idea - even in the face of disconfirming evidence - consider the following story: In 1815, Prout hypothesized that the atomic weights of all pure chemical elements are whole numbers, because experimentally, most elements seem to come out like this. But there’s many anomalies - for example Chlorine’s atomic weight is measured at 35.5. And so Prout’s school claimed that maybe the chemical substance in which these elements appeared were impure. But there seemed to be no chemical reaction that could get rid of the impurities. And then they said, maybe it’s fractions of full atomic weights - but the closer you measure, the less natural the fractions seem to get - Chlorine goes from 35.5 to 35.46. It takes until almost a century later for people to realize that these measurements are showing multiple isotopes of the same element, which can be separated physically, but have no chemical distinguishing characteristics."
+          },
+          {
+            "type": "p",
+            "text": "What I’m trying to say is that ex ante, one couldn’t have known which research program would be more productive. We need to invest in all of them concurrently. But that investment looks like a bunch of different individual scientists being super unreasonable and obstinate about propping up their preferred research agenda."
+          },
+          {
+            "type": "p",
+            "text": "The Origin of Species was published in 1859. Principia Mathematica was published in 1687, two centuries earlier. Conceptually, it seems like natural selection is much simpler than the theory of gravity. A contemporary of Darwin’s, Thomas Huxley, read the Origin of Species and said, “How extremely stupid not to have thought of that!” Nobody ever said the same for not beating Newton to the Principia. I wonder if the reason this happened is that, while Darwin’s theory is conceptually simpler, it cannot be decisively tested. The evidence is circumstantial, retrospective, and cumulative. There’s no equivalent of Newton running the numbers on the moon’s orbital period and radius, and confirming that it corresponds to his equations."
+          },
+          {
+            "type": "p",
+            "text": "Also you need this concept of deep time. Charles Lyell published the Principles of Geology in 1830, which gave Darwin the vast stretches of time that natural selection needed. And the fact that Darwin and Wallace basically arrived at evolution at the same time (and both credited Lyell’s contribution) does suggest that these underrated intellectual footholds were quite important (geology, paleontology of ancient extinct species which showed intermediate species (in some cases between apes and humans), biogeography from voyages and age of colonization, more sophisticated artificial selection like pigeon breeding). It’s interesting that an idea whose essence must have been obvious to herders and parents for thousands of years actually required many millennia of ancillary intuition pumps to fully spell out."
+          },
+          {
+            "type": "p",
+            "text": "The pattern of parallel discovery in science and technology is very interesting, and seems to contradict this vibe that certain innovations could have happened earlier much earlier than they really did."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "我正在整理与迈克尔·尼尔森（Michael Nielson）访谈中探讨的一些观点。那期节目是我最喜欢的之一。",
+          "我和迈克尔·尼尔森访谈的核心问题是：“我们如何识别科学进步？”这个问题在思考人工智能能否完成强化学习（RL）验证闭环以推动科学发现时尤为关键。然而，从人类科学史的角度来看，这又是一个令人惊讶地神秘且难以捉摸的问题。",
+          "有些人认为人工智能在实现科学突破方面将具有不成比例的优势。他们认为的原因有两个：第一，科学是‘可验证的’；第二，AI 在那些具有紧密验证循环的领域——如编程、数学等——表现出色，因为可以在这些循环中进行强化学习。",
+          "但人类科学的历史表明，理论的验证周期可能长达数十年甚至数百年，而且即使如此，实验也未必能彻底排除其他可能性：古希腊人（公元前2世纪）就因日心说暗示了恒星视差而否定了阿里斯塔克斯（Aristarchus）的观点。直到1838年，弗里德里希·威廉·贝塞尔（Friedrich Wilhelm Bessel）才首次成功测量到恒星视差。",
+          "今天我们认为是更优的理论，在当时往往反而做出了更差的预测：众所周知，哥白尼（Copernicus）关于行星绕太阳做圆周运动的模型，其精度不如托勒密（Ptolemy）的地心模型，后者通过积累数千年的本轮修正来提升准确性。鲜为人知的是，哥白尼的学说在简洁性上也不占优势——托勒密的模型用偏心匀速点（equant）解释轨道的真实椭圆性质，即其他行星并非严格围绕地球做匀速圆周运动，而是围绕一个偏离中心的点运动。哥白尼对此不满，因为这违背了他的柏拉图式启发法，所以他摒弃了偏心匀速点技巧，导致模型变得不够简约，为此他不得不添加更多本轮和次本轮来弥补。",
+          "那么，1543年时它为何被视为更好的理论呢？某种意义上，它并不是！你无法预知日心说结合开普勒三定律（1619年）会形成一个更加清晰准确的体系，也无法预知日心轨道与地面引力之间存在如此优美的统一性（牛顿于1686年提出）。",
+          "但在1543年，确实有一个先验理由支持选择哥白尼：他的理论自然推导出行星的逆行现象，而托勒密则需要将其作为特设性补充。更令人印象深刻的是，哥白尼在1543年提出的理论实际上预言了金星的相位变化，而这些相位直到1610年才被伽利略观测到。不过，这两个结论同样可以从第谷·布拉赫（Brahe）的模型中推导出来——该模型设定太阳绕地球运行，而所有行星又绕太阳运行。",
+          "按照朴素证伪主义框架，人们必须等到1838年观测到恒星视差后，才能确定第谷是错误的。但显然，科学界的发展速度远快于此。科学进步过程中存在着某种判断与启发式的混合机制，我们对它的理解尚不足以清晰表述，更不用说将其编码进强化学习循环中了。",
+          "再比如1846年海王星的发现：天王星偏离了其牛顿力学预测的轨道轨迹。勒维耶（Le Verrier）推算出必有一颗未知扰动行星存在，并计算出它的质量与轨道位置，结果海王星几乎精确地出现在预测的位置上。",
+          "但海王星的故事是对失败案例的对称。水星存在异常进动——根据牛顿力学计算其他行星的引力影响，其轨道椭圆应每世纪旋转43角秒，而实际观测值多出这一数值。这促使天文学家推测水星轨道内存在一颗未知行星“维纳斯”。然而，1915年爱因斯坦提出广义相对论后，问题得以解决。",
+          "一个真正的牛顿主义者仍会推进研究议程，但会做出如下调整：首先预测存在一颗未知行星；若无法找到，则声称它太小，需要更大望远镜，于是建造更大望远镜；若依然找不到，可能解释为存在遮挡它的宇宙尘埃云；若仍未发现，则怀疑卫星仪器受某种未知磁场干扰，于是发射新卫星。每一步骤中，若能发现新行星、未知尘埃或新磁场，都将是对牛顿主义的重大胜利。",
+          "从先验角度看，这种做法并非不合理！只有在经历数十年甚至数百年修补后，我们才能分析：这些修正只是增加本轮，还是该理论框架具有进步性——即能预测原本无法预见的现象。",
+          "这些例子说明了什么？从先验角度看，几乎不可能判断哪些研究纲领是进步的（能预测并解释意外的新现象），哪些是退步的（需反复扭曲自身以容纳看似否证的新现象）。",
+          "但验证周期往往极其漫长且充满敌意，即便如此，实验也未必能明确排除替代理论（参见尼尔森播客中关于1880年代迈克尔逊-莫雷实验的讨论：当时物理学家认为它仅排除了以太的特定理论，唯有爱因斯坦彻底抛弃以太概念才完成这一认知飞跃）。",
+          "这意味着重大概念突破难以被轻易验证。它们通常在数十年或数百年后才被承认——届时发现这些突破远比当时可用的替代方案更具生产力。这对AI在科学中的应用意味着：1. 很难为重大概念突破训练强化学习循环。",
+          "而2. AI科学家的社会仍需要具备独特偏见和启发式方法的个体AI实例，并应数十年如一日地不懈追求——例如像爱因斯坦坚持不存在任意惯性参考系那样。应当有专门人员维持若干休眠的研究议程，以防其在后续探索中显现出价值。要理解这种为保留正确科学理念所需的顽固执着（即便面对反证），可参考以下故事：1815年，普劳特提出所有纯化学元素的相对原子质量均为整数，因为实验显示大多数元素确实如此。但存在诸多异常——例如氯的原子量实测为35.5。于是普劳特学派推测这些元素可能存在于不纯的化学物质中。然而似乎找不到能去除杂质的化学反应。后来他们又提出可能是完整原子量的分数形式，但随着测量精度提高，这些分数反而显得愈发不自然——氯从35.5变为35.46。直到近一个世纪后人们才意识到，这些测量值揭示的是同一元素的不同同位素，它们可通过物理方法分离，却无化学性质上的区别。",
+          "我想表达的是，事前无法预知哪个研究项目更具成效。我们必须同时投资所有方向。但这种投入在表象上，就像是一群科学家固执地坚持各自偏好的研究议程，显得极其不合理且冥顽不灵。",
+          "《物种起源》出版于1859年，而《数学原理》则发表于1687年，两者相隔两个世纪。从概念上看，自然选择理论似乎比引力理论简单得多。达尔文的同时代人托马斯·赫胥黎阅读《物种起源》后感叹：“竟然没想到这一点，真是太蠢了！”但从未有人对没能先于牛顿发现《数学原理》发出过同样感慨。我怀疑之所以如此，是因为虽然达尔文理论在概念上更简单，却无法被决定性验证。证据是间接的、回顾性的、累积性的。没有类似牛顿通过计算月球轨道周期和半径来验证其方程式的案例。",
+          "此外还需要\"深时\"（deep time）这一概念。查尔斯·莱伊尔于1830年出版《地质学原理》，为达尔文提供了自然选择所需的时间尺度。达尔文和华莱士几乎同时提出进化论（两人都承认莱伊尔的贡献），这确实表明这些被低估的思想支点至关重要（地质学、古生物学中的灭绝物种化石显示过渡类型（部分介于猿与人之间）、生物地理学基于航海与殖民时代的地理分布、更精细的人工选择实践如鸽子育种等）。有趣的是，一个数千年来对牧民和父母而言显然易见的观念，竟需历经数千年辅助性直觉思维才能完整阐明。",
+          "科学与技术领域的并行发现模式非常有趣，似乎与某些创新本可以更早发生的观点相矛盾。",
+          "无帖子"
+        ]
+      }
+    },
+    {
+      "slug": "cd10f9ca291ae347",
+      "title": "GDS weighs in on the NHS's decision to retreat from Open Source",
+      "titleZh": "英国GDS就NHS退出开源表态：内部争议公开化",
+      "link": "https://simonwillison.net/2026/May/17/gds-weighs-in/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-17T15:59:41.000Z",
+      "category": "other",
+      "keywords": [
+        "NHS",
+        "open source",
+        "GDS"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "英国政府数字化服务（GDS）罕见就NHS关闭开源仓库的决定发表公开批评，称其决策‘缺乏深思熟虑’。GDS认为此举违背了公共部门倡导开放标准的承诺，损害了开发者社区的协作精神。此次内部异议公开化反映了英国公共IT治理中的理念冲突：安全优先 vs. 开放创新。事件凸显了政府机构在网络安全与开源生态之间的艰难平衡。",
+      "summaryEn": "The UK Government Digital Service (GDS) publicly criticized the NHS's decision to close its open-source repositories, calling it 'poorly considered' and contrary to public sector commitments to open standards. This rare internal dissent highlights tensions between security concerns and collaborative innovation in national IT governance. The incident exposes the challenge governments face in balancing cybersecurity imperatives with the benefits of open-source ecosystems, marking a notable shift toward transparency in civil service disagreements.",
+      "reason": "它为观察英国公共数字政策演变提供了独特窗口，展示了技术官僚体系内部的价值观碰撞。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "17th May 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "GDS weighs in on the NHS's decision to retreat from Open Source. Terence Eden continues his coverage of the NHS' poorly considered decision to close down access to their open source repositories in response to vulnerabilities reported to them as part of Project Glasswing."
+          },
+          {
+            "type": "p",
+            "text": "Now the Government Digital Service have joined the conversation with AI, open code and vulnerability risk in the public sector, published May 14th. Their key recommendation:"
+          },
+          {
+            "type": "quote",
+            "text": "Keep open by default. Making everything private adds additional delivery and policy costs, and can reduce reuse and scrutiny. Openness should remain the default posture, with closure used sparingly and deliberately."
+          },
+          {
+            "type": "p",
+            "text": "While they don't mention the NHS by name, Terence speaks the language of the civil service and interprets this as a major escalation:"
+          },
+          {
+            "type": "quote",
+            "text": "Within the UK's Civil Service you occasionally hear the expression \"being invited to a meeting without biscuits\". It implies a rather frosty discussion without any of the polite niceties of a normal meeting. In general though, even when people have severe disagreements, it is rare for tempers to fray. It is even rarer for those internal disagreements to spill over into public."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7818d61b86b5c6ac",
+      "title": "GDS weighs in on the NHS's decision to retreat from Open Source",
+      "titleZh": "GDS就NHS退出开源发表 frosty 回应",
+      "link": "https://shkspr.mobi/blog/2026/05/gds-weighs-in-on-the-nhss-decision-to-retreat-from-open-source/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-05-17T11:34:30.000Z",
+      "category": "other",
+      "keywords": [
+        "NHS",
+        "open source",
+        "UK government"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "Terence Eden 描述GDS对NHS关闭开源仓库的回应如同‘没有饼干的会议’——表面礼貌实则冰冷疏离。尽管双方同属公务员体系，此类内部重大分歧公开化极为罕见，反映出对开放源代码原则的根本分歧。Eden 暗示NHS的决策可能源于对漏洞风险的过度反应，而GDS则坚持开放协作的价值。这一事件标志着英国公共IT政策走向更加分裂。",
+      "summaryEn": "Terence Eden characterizes the GDS response to the NHS's retreat from open source as a 'meeting without biscuits'—formally polite but emotionally distant and substantive. Such public airing of internal civil service disputes is exceptionally rare, underscoring deep philosophical divides about open collaboration versus risk management. Eden suggests the NHS acted out of disproportionate fear of vulnerabilities, while GDS champions the virtues of transparent development. This incident signals a growing rift in UK public sector digital strategy.",
+      "reason": "它生动描绘了政府机构间的技术路线之争，为理解公共部门数字化转型中的政治博弈提供了细腻注脚。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Within the UK's Civil Service you occasionally hear the expression \"being invited to a meeting without biscuits\". It implies a rather frosty discussion without any of the polite niceties of a normal meeting0. In general though, even when people have severe disagreements, it is rare for tempers to fray. It is even rarer for those internal disagreements to spill over into public."
+          },
+          {
+            "type": "p",
+            "text": "Which is what makes GDS's latest guidance so surprising. At the start of the month, NHS England made the bizarre and irresponsible decision to close all their Open Source repositories due to unfounded fears of AI hacking1. Lots of people within the NHS were outraged. As were many outside - with this petition against the move gathering over 2,000 signatures."
+          },
+          {
+            "type": "p",
+            "text": "Within other parts of government there was also alarm. Although I no longer work for Government Digital Service, I was contacted by several concerned people there who remembered all my work on Open Source. The brilliant team in Whitechapel have now published their guidance \"AI, open code and vulnerability risk in the public sector\"."
+          },
+          {
+            "type": "p",
+            "text": "It is brutal."
+          },
+          {
+            "type": "p",
+            "text": "They utterly repudiate the NHS's stance and forensically eviscerate it. I'll let you read the whole thing, but here are a few choice excerpts:"
+          },
+          {
+            "type": "quote",
+            "text": "Recent public reporting about organisations restricting access to public repositories due to AI-enabled code analysis illustrates how quickly leaders may reach for blanket closure in response to uncertainty."
+          },
+          {
+            "type": "p",
+            "text": "Basically, non-technical managers need to stop over-reacting."
+          },
+          {
+            "type": "quote",
+            "text": "Private repositories can create a false sense of security."
+          },
+          {
+            "type": "p",
+            "text": "I think that's the crux of the argument. Closing code doesn't solve the underlying problems."
+          },
+          {
+            "type": "quote",
+            "text": "Making code private is not an appropriate mitigation for lack of ownership, patching capability, or operational assurance, so systems that cannot be safely maintained should be remediated or retired."
+          },
+          {
+            "type": "p",
+            "text": "If you are so concerned about the poor security of your systems, you should shut them down completely to mitigate the threat."
+          },
+          {
+            "type": "quote",
+            "text": "Closure can become a one-way door."
+          },
+          {
+            "type": "p",
+            "text": "As I said to the BMJ, \"nothing lasts longer than a temporary fix\"."
+          },
+          {
+            "type": "quote",
+            "text": "Where code has been developed in the open, making a repository private later may not remove access for a capable adversary as popular repositories are often mirrored or forked"
+          },
+          {
+            "type": "p",
+            "text": "Indeed. A friend of mine has already archived all of the NHS's repositories. You can see the ones they've tried to hide."
+          },
+          {
+            "type": "p",
+            "text": "But the killer blow, I think, is this:"
+          },
+          {
+            "type": "quote",
+            "text": "Moving code from public to private as a substitute for investment in secure-by-design delivery, ownership and remediation is a warning sign because it reduces sharing and scrutiny, can slow coordinated improvement across government and suppliers, and does not remove the underlying weaknesses in a running service."
+          },
+          {
+            "type": "p",
+            "text": "Exactly! Coding in the open has been shown time and again to produce high quality and secure work. The looming threat of AI vulnerability scanners doesn't change that - security is a shared responsibility. Technical teams need to be well enough resourced to create secure systems; hiding code is as reliable as papering over structural cracks."
+          },
+          {
+            "type": "p",
+            "text": "GDS was created was to be a strong centre with vast technology expertise. This was to counter the frankly shoddy approach to tech in other departments. Back then, a Service Assessment was a way for a department to prove that they were actually capable of designing, launching, and managing a complex IT project."
+          },
+          {
+            "type": "p",
+            "text": "Most departments have become significantly better at the development and running of these sorts of projects, so the raison d'etre of GDS has somewhat waned. Departments feel more confident in running off on their own. Usually I'd celebrate that - it's important that GDS doesn't become a bottleneck and that the talent is distributed throughout the whole Civil Service."
+          },
+          {
+            "type": "p",
+            "text": "But NHS England has always been a bit of a weird one. One of the reasons NHSX was created2 was to ensure that the health service had strong expertise in technology and its deployment. As the Head of Open Technology there, I helped craft the policies which embedded Open Source and Open Standards within it3."
+          },
+          {
+            "type": "p",
+            "text": "I don't know what discussions have taken place within NHS England - although I looking forward to receiving a response to my FOI request. It looks to me like a small group within NHS England have received a report showing some potential vulnerabilities discovered by Mythos. Rather than following their own internal guidance, they've over-reacted and slapped a blanket ban on coding in the open."
+          },
+          {
+            "type": "p",
+            "text": "I fervently hope that this new guidance will encourage DHSC to bring NHS England into line with best practice. If not, perhaps GDS ought to reassert itself as the technical authority with power to veto a department's incomprehensible decisions?"
+          },
+          {
+            "type": "li",
+            "text": "Of course, all the budget cuts mean that biscuits cannot be purchased for any meetings. Which may explain some of the morale issues within the Civil Service. Thanks Austerity. Thausterity. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "As of today, they've shut down nearly 200 repositories. More may be coming. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "I was there right before the start of NHSX and helped set it up. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "Which, I suppose, is why I'm bitter and angry that all our hard work is being undone. ↩︎"
+          }
+        ],
+        "translations": [
+          "在英国公务员体系中，偶尔会听到“被邀请开会却连饼干都没有”这种说法。它暗示的是一场毫无礼貌客套的冰冷讨论——与正常会议应有的礼节相去甚远。总体而言，即使存在严重分歧，也很少出现情绪失控的情况；更罕见的是，这些内部争执会演变为公开冲突。",
+          "正因如此，英国数字服务署（GDS）最新发布的指导意见才显得格外令人震惊。月初时，英格兰国家医疗服务体系（NHS England）做出了一个离奇且不负责任的决定：因毫无根据的AI黑客恐惧，关闭其所有开源代码仓库。此举引发 NHS 内部人士的强烈愤慨，外界也纷纷表示不满——反对该举措的请愿书已征集到超过2000个签名。",
+          "政府其他部门同样感到不安。虽然我早已不在政府数字服务署（Government Digital Service）任职，但仍有几位关心此事的同仁联系我，他们记得我曾参与开源项目的工作。如今，位于怀特查佩尔（Whitechapel）的这支优秀团队已发布题为《公共部门中的AI、开放代码与漏洞风险》的指导文件。",
+          "这份文件毫不留情。",
+          "它彻底否定了 NHS 的立场，并对其进行了细致入微的批判。你可以通读全文，以下是其中几段关键摘录：",
+          "近期有公开报道指出，一些组织因担心AI驱动代码分析而限制对公共代码库的访问，这反映出领导层在面对不确定性时可能迅速采取一刀切的封闭策略。",
+          "简而言之，非技术背景的管理者需要停止过度反应。",
+          "私有代码库可能会让人产生虚假的安全感。",
+          "我认为这才是核心论点所在：关闭代码并不能解决根本问题。",
+          "将代码设为私有，并不能有效弥补缺乏所有权归属、补丁更新能力或运维保障等问题，因此那些无法安全维护的系统应予以修复或退役。",
+          "如果你真的担忧系统安全状况堪忧，那就应该彻底关停这些系统以消除威胁。",
+          "关闭操作往往成为一扇单向门。",
+          "正如我对《英国医学杂志》（BMJ）所说：“没有任何临时措施能比得过一个持久的解决方案。”",
+          "若代码原本就是公开开发的，之后将其转为私有状态，未必能阻止具备能力的攻击者获取访问权限——因为热门代码库常被镜像复制或分叉使用。",
+          "确实如此。我的朋友已经归档了 NHS 所有的代码仓库，你甚至可以看到他们试图隐藏的部分。",
+          "但我认为最具杀伤力的一句话是：",
+          "将代码从公开转为私有的做法，本质上是将投资不足转嫁给安全设计、责任归属和漏洞修复——这种做法会削弱协作审查，减缓政府和供应商之间的协同改进速度，同时也不会消除运行服务中存在的潜在弱点。",
+          "没错！实践反复证明，开放编码能够产出高质量且安全的成果。AI漏洞扫描工具带来的威胁并不会改变这一事实——安全本就是共同责任。技术团队必须获得足够资源来构建安全可靠的系统；而隐藏代码的做法，就像用纸糊住结构性裂缝一样不可靠。",
+          "GDS 成立的初衷是建立一个拥有强大技术专长的中心，用以纠正其他部门在科技应用上的敷衍态度。当时，服务评估（Service Assessment）是各部门证明自己有能力设计、上线并管理复杂IT项目的关键手段。",
+          "大多数部门在开发和运行这类项目方面已经变得相当熟练，因此 GDS 存在的理由在一定程度上有所减弱。各部门更自信地独立运作。我通常会为此感到高兴——GDS 不应成为瓶颈，且人才应遍布整个公务员体系，这一点至关重要。",
+          "但英格兰 NHS 一直有些特殊。NHSX 成立的其中一个原因是为了确保卫生服务体系拥有强大的技术和部署专业知识。作为开放技术负责人，我曾参与制定将开源和开放标准嵌入其中的政策。",
+          "我不知道 NHS England 内部进行了哪些讨论——尽管我很期待收到我对信息公开请求的回复。在我看来，NHS England 内部一小部分人收到了一份由 Mythos 发现的潜在漏洞报告。他们没有遵循自身的内部指导方针，而是反应过度，全面禁止公开编码。",
+          "我热切希望这份新指南能促使 DHSC 将 NHS England 纳入最佳实践轨道。否则，也许 GDS 应该重新确立其作为技术权威的地位，并有权否决某个部门那些难以理解的决定？",
+          "当然，所有预算削减意味着无法为任何会议购买饼干。这可能解释了公务员体系内的一些士气问题。感谢紧缩政策。Thausterity。↩︎",
+          "截至目前，他们已关闭近 200 个代码仓库。可能还会有更多。↩︎",
+          "我正是在 NHSX 成立前夕在那里工作，并参与了其组建。↩︎",
+          "我想，这就是为什么我对我们辛苦工作的成果被推翻而感到愤怒和怨恨。↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "e0c3310598b7682b",
+      "title": "The mistake of conflating intelligence and power",
+      "titleZh": "混淆智慧与权力的错误",
+      "link": "https://www.dwarkesh.com/p/the-mistake-of-conflating-intelligence",
+      "sourceName": "dwarkesh.com",
+      "sourceUrl": "https://dwarkesh.com",
+      "pubDate": "2026-05-16T19:04:16.000Z",
+      "category": "opinion",
+      "keywords": [
+        "intelligence",
+        "power",
+        "philosophy"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 15
+      },
+      "summary": "文章探讨了将‘智慧’简单定义为‘在多种领域中实现目标的能力’所带来的误导性。作者指出，若以此标准衡量，斯大林可被视为历史上最聪明的人，但这显然违背了我们对‘智慧’的常规理解。核心论点是：真正的智慧应包含道德判断、同理心和对长期后果的考量，而非仅追求权力与控制。作者通过历史案例说明，忽视伦理的智慧可能导致灾难性后果。结论是：我们必须区分工具性能力与真正的人类智慧。",
+      "summaryEn": "The article critiques the flawed definition of intelligence as merely the ability to achieve goals across diverse domains. It argues that under this metric, Stalin could be considered the smartest person ever, which contradicts our intuitive understanding of wisdom. The key point is that true intelligence must include ethical judgment, empathy, and consideration of long-term consequences—not just domination. Historical examples show how amoral 'intelligence' leads to catastrophe. The conclusion is that we must distinguish between instrumental capability and genuine human wisdom.",
+      "reason": "这是一篇发人深省的哲学反思，挑战你对‘聪明’的传统定义，尤其适合思考AI时代下‘智能’的真正含义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dwarkesh Patel",
+        "siteName": "Dwarkesh Podcast",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I had an interesting discussion recently. Someone asked me, what is intelligence? I said, the ability to achieve your goals across a wide range of domains. Okay, he says, then by that definition isn’t Donald Trump the intelligent person in the world, followed in quick succession by Xi Jinping and Vladimir Putin?"
+          },
+          {
+            "type": "p",
+            "text": "To be clear, these people are obviously very competent and clever. But when you think of ASI, you don’t think of Trump, but more so."
+          },
+          {
+            "type": "p",
+            "text": "The person who kept pressing this question was correctly pointing out that I basically defined intelligence as power. And by this definition, Stalin was the most intelligent person who ever lived."
+          },
+          {
+            "type": "p",
+            "text": "Now, of course, you could change the definition of intelligence to something more like, manipulate abstract concepts and rotate shapes."
+          },
+          {
+            "type": "p",
+            "text": "But notice that the most powerful people in the world do not max out this quantity. The correlation between extreme power and this kind of intelligence might be even weaker than the correlation between extreme power and height. The physicists are not running the world."
+          },
+          {
+            "type": "p",
+            "text": "We tend to conflate power-seeking AI and superintelligent (in science and tech) AI. I’m not denying that AI can be power-seeking. Whatever skills and drives Donald Trump has could be embodied in a digital mind. I’m simply pointing out that the way AI systems are currently becoming smarter (by getting trained to be to be really good at specific economically valuable tasks like coding) is not that strongly correlated with power."
+          },
+          {
+            "type": "p",
+            "text": "We often talk about power in this way that misunderstands how it is actually derived in our world. Our intuitions are primed by games like Diplomacy or Go, which are designed to isolate and reward a g loaded kind of strategic reasoning."
+          },
+          {
+            "type": "p",
+            "text": "But in the real world, power is more the product of having the authority and trust to get lots of people to collaborate with you, rather than some galaxy brain scheming capability. Trump is not powerful because his brain, considered in isolation, is the most effective optimization engine on Earth. He is powerful because the government which hundreds of millions of people consider legitimate gives him a lot of authority."
+          },
+          {
+            "type": "p",
+            "text": "A group versus individual level analysis is useful here. As Garett Jones has written a lot about, individual IQ is only modestly correlated with individual income, but national IQ is strongly correlated with national outcomes. This is because intelligence has a lot of spillover effects - smarter societies cooperate more, save more, and can coordinate to build things like space shuttles and semiconductors."
+          },
+          {
+            "type": "p",
+            "text": "Richard Trevithick, who invented the high-pressure steam engine, died in poverty, buried in an unmarked pauper’s grave. But the fact that 18th and 19th century Britain had lots and lots of people like Trevithick contributed to Britain being able to set up a global empire and outcompete lots of backwards principalities around the world."
+          },
+          {
+            "type": "p",
+            "text": "It seems to me that the right mental model is that automated firms will outcompete everyone else in normal capitalist ways, rather than a single AI outthinking everyone else."
+          },
+          {
+            "type": "p",
+            "text": "No posts"
+          }
+        ],
+        "translations": [
+          "最近我参加了一场有趣的讨论。有人问我，什么是智能？我说，就是在广泛的领域中达成目标的能力。好吧，他说，按照这个定义，难道唐纳德·特朗普不是世界上最聪明的人吗？紧接着又提到了习近平和弗拉基米尔·普京。",
+          "需要澄清的是，这些人无疑都非常有能力和聪明。但当你想到 ASI（人工超级智能）时，你不会想到特朗普，而是更……",
+          "不断追问这个问题的人其实说得没错，我基本上是把智能定义为权力。按照这个定义，斯大林就是有史以来最聪明的人。",
+          "当然，你也可以把智能的定义改成更像“操纵抽象概念和旋转形状”之类的。",
+          "但请注意，世界上最有权势的人并没有最大化这种能力。极端权力与这种智能之间的相关性，甚至可能比极端权力与身高之间的相关性还要弱。物理学家并没有在统治世界。",
+          "我们往往将追求权力的 AI 与超级智能（在科技领域）AI 混为一谈。我并不否认 AI 可以具有追求权力的倾向。无论唐纳德·特朗普具备什么样的技能和驱动力，都可以体现在一个数字思维中。我只是指出，目前 AI 系统通过训练来擅长特定经济上有价值的任务（比如编程），从而变得更聪明的这种方式，与权力之间的关联性并不强。",
+          "我们常常以一种误解了权力实际来源的方式来谈论权力。我们的直觉被像《外交》或围棋这样的游戏所塑造，这些游戏的设计目的是孤立并奖励某种特定的战略推理能力。",
+          "但在现实世界中，权力更多来自于拥有权威和信任，从而让很多人愿意与你合作，而不是某种超级大脑的谋划能力。特朗普之所以有权力，并不是因为他的大脑单独来看是地球上最有效的优化引擎，而是因为数百万人认为合法的政府赋予了他大量权威。",
+          "在这里，群体与个体层面的分析是有用的。正如加里特·琼斯写了很多关于这方面的内容，个体的智商与个人收入之间只有适度的相关性，但国家层面的智商与国家层面的结果却有着强烈的相关性。这是因为智力具有很强的溢出效应——更聪明的社会更善于合作、储蓄，并能协调建设诸如航天飞机和半导体之类的东西。",
+          "理查德·特里维西克发明了高压蒸汽机，却死于贫困，被埋葬在一个没有标记的贫民墓穴里。但18世纪和19世纪英国拥有许多像特里维西克这样的人，这促成了英国能够建立一个全球帝国，并在世界各地胜过许多落后的公国。",
+          "在我看来，正确的思维模型应该是自动化公司会通过正常的资本主义方式胜过所有人，而不是单个 AI 胜过所有人。",
+          "没有帖子"
+        ]
+      }
+    },
+    {
+      "slug": "84af72ebf9a77251",
+      "title": "The Applicability of Spaced Repetition",
+      "titleZh": "间隔重复的适用性",
+      "link": "https://borretti.me/article/the-applicability-of-spaced-repetition",
+      "sourceName": "borretti.me",
+      "sourceUrl": "https://borretti.me",
+      "pubDate": "2026-05-17T00:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "spaced repetition",
+        "learning",
+        "knowledge"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "文章分析了间隔重复学习法在不同知识类型中的有效性差异。研究表明，对于事实性知识（如词汇、日期），间隔重复显著提升记忆保持率；但对于概念性理解（如数学原理、理论框架），其效果有限甚至可能适得其反。作者建议结合主动回忆与深度解释来强化概念掌握。关键发现是：学习方法需匹配知识本质，不能一概而论。结论是：优化学习策略应区分知识类型并采用混合方法。",
+      "summaryEn": "This piece examines the effectiveness of spaced repetition across different types of knowledge. Research shows it greatly improves retention for factual information like vocabulary or dates, but has limited impact on conceptual understanding such as mathematical principles. The author recommends combining active recall with deep explanation for better mastery of abstract ideas. A key finding is that learning strategies must align with the nature of the knowledge itself. The conclusion is that optimal study methods should differentiate between knowledge types and use hybrid approaches.",
+      "reason": "为自学者和教育家提供了实证支持的实用指南，教你如何根据知识类型选择最有效的记忆策略。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Fernando Borretti",
+        "siteName": "Fernando Borretti",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Spaced repetition has a natural domain of applicability: information that is\nsystematically organized as an unambiguous key-value mapping with short keys and\nvalues. The “Hello, world!” of flashcards is the NATO phonetic alphabet:\nA → alpha, B → bravo, etc.  Similarly, the periodic table can be thought of as\ndefining a collection of mappings: element name ↔ symbol, element name ↔ atomic\nnumber, etc. You can just drill these cards and memorize the facts without a\nprior step of understanding, or building a conceptual model."
+          },
+          {
+            "type": "p",
+            "text": "Applying spaced repetition is trivial for this kind of information. That’s why\nmost people who use spaced repetition are either language learners or medical\nstudents. In biology the main intuition you need is for “3D shapes bumping\naround in Brownian motion”, which comes free with your human brain, and\nafterwards it’s mostly just a lot of facts you have to memorize. Analogously\nwith language: you already have a language center, you just need to drill\nvocabulary and grammar."
+          },
+          {
+            "type": "p",
+            "text": "And the further you go from this domain, the harder it is to apply spaced\nrepetition."
+          },
+          {
+            "type": "p",
+            "text": "Highly conceptual knowledge, like math, is hard to encode. You have to spend a\nlot of time just understanding the information, and building a conceptual model\nin your head, and then you start writing flashcards to solidify that model, like\ntaking tomographic cuts of some complex object. And coming up with questions\nthat make good flashcards (short, unambiguous, etc.) out of this highly abstract\nknowledge is very hard. Often you have some deceptively simple fact, a simple\nassertion, but there’s no good way to encode it as a flashcard, so you have to\nencode “around it” by asking questions that assume or require that knowledge\n(e.g. asking why X is true), and hoping that in drilling those, your brain will\nremember the actual target."
+          },
+          {
+            "type": "p",
+            "text": "In general, relational facts are easier to encode, since a binary predicate\nlike $\\text{Property}(\\text{Object}, \\text{Value})$ readily becomes a\nquestion. “Caffeine is metabolized by cytochrome 1A2”, in\nProlog, is $\\text{Metabolism}(\\text{Caffeine}, \\text{CYP1A2})$, and\nbecomes “Q: What is the cytochrome that metabolizes caffeine? A: 1A2”. But how\ndo you encode stand-alone assertions like “all unitary matrices are\ninvertible”? You could encode that as a yes-or-no question, but that’s\nuseless, because rationally you can expect such questions to be biased towards\nyes. Both “what is a property of unitary matrices?” and “what kinds of matrices\nare invertible?” are useless because they have hundreds of possible\nequally-valid answers, so they’re ambiguous. You have to be creative and find\nall kinds of tricks and stratagems to encode around the knowledge."
+          },
+          {
+            "type": "p",
+            "text": "Tangentially: this, I think, is why using AI to write flashcards is often\nmisguided. In highly systematized domains, you don’t need AI in the first place,\nbecause there’s nothing for the AI to do except import a CSV into Anki. In\ndomains that are highly conceptual and abstract, you’re not memorizing a set of\nobjectively-knowable facts, you’re trying to solidify a private, internal mental\nmodel that you build by reading and thinking and solving problems. You can give\nthe AI all kinds of general rules on how to write good flashcards, but the AI\ncan’t look into your mind and know which facts are salient for you, what you\nalready know, which micro-volumes of knowledge can be encoded lightly with just\na few flashcards, and which things need more shoring up and consequently more\ncoverage."
+          },
+          {
+            "type": "p",
+            "text": "Can this situation be improved, or is this just an intrinsic limitation of\nspaced repetition? I don’t know. But it seems reasonable to think some limited\ngains are possible. I think not a lot of people are using spaced repetition on\nthese more “conceptual” domains, and (by the rule that most people in a\ncommunity are lurkers) even fewer of those people are writing, in detail,\nto share their knowledge. Plenty of people have written about how\nto write good flashcards in general, what I want to read is closer to case\nstudies where someone sits down with a text (or, even better, a textbook) and\ndescribes the process by which they turned that text into flashcards, like\nthis from Michael Nielsen. From a corpus of similar case studies we\nmight derive general rules for, not how to write effective flashcards, but how\nto encode complex, conceptual knowledge into question-answer form."
+          }
+        ],
+        "translations": [
+          "间隔重复法有一个自然的应用领域：那些以明确键值对形式系统组织的信息，其键和值都较短。闪卡界的“Hello, world!”就是北约音标字母表：A → alpha，B → bravo，等等。类似地，元素周期表也可以看作是一系列映射关系的集合：元素名称 ↔ 符号，元素名称 ↔ 原子序数，等等。你可以直接死记硬背这些卡片上的事实，而无需先理解或构建概念模型。",
+          "对于这类信息，应用间隔重复法非常简单。正因如此，大多数使用间隔重复法的人要么是语言学习者，要么是医学生。在生物学中，你需要的主要直觉是“三维形状在布朗运动中四处碰撞”——这已经内置于你的大脑之中；之后的大部分内容就只是需要记忆的事实。语言学习也类似：你已经有语言中枢，只需要反复练习词汇和语法即可。",
+          "而且，当你越远离这个应用领域，就越难将间隔重复法付诸实践。",
+          "高度概念化的知识（如数学）很难编码。你必须花大量时间先理解信息，并在脑海中构建一个概念模型，然后才开始制作闪卡来巩固这个模型，就像对某个复杂物体进行断层扫描一样。从这种高度抽象的知识中提炼出好的问题（简短、无歧义等）作为闪卡非常困难。很多时候你面对的是一个看似简单的断言，但很难将其直接编码为一张有效的闪卡，因此你不得不“绕道而行”，通过提问来假设或要求掌握该知识（例如问“为什么X成立？”），并寄希望于通过反复练习这些题目，你的大脑能记住真正要掌握的目标。",
+          "一般来说，关系型事实更容易编码，因为像 $\\text{Property}(\\text{Object}, \\text{Value})$ 这样的二元谓词很容易转化为一个问题。“咖啡因由细胞色素1A2代谢”在Prolog中表示为 $\\text{Metabolism}(\\text{Caffeine}, \\text{CYP1A2})$，可转化为“Q: 哪种细胞色素代谢咖啡因？A: 1A2”。但你如何编码像“所有酉矩阵都可逆”这样的独立断言呢？你可以把它做成是非题，但这毫无用处，因为理性上你会预期这类问题偏向肯定答案。无论是“酉矩阵有什么性质？”还是“哪些类型的矩阵是可逆的？”都无用，因为它们有数百个同样有效的答案，因而具有歧义性。你必须发挥创造力，想出各种技巧和策略来“绕开”这些知识进行编码。",
+          "顺便说一句：我认为，这就是为什么用AI生成闪卡常常误入歧途的原因。在高度系统化的领域中，你根本不需要AI，因为除了把CSV文件导入Anki之外，AI无事可做。而在高度概念化和抽象的领域，你不是在记忆一组客观可知的事实，而是在努力巩固一个通过阅读、思考和解决问题所构建的私人内部心理模型。你可以给AI提供各种关于如何编写优质闪卡的通用规则，但AI无法洞察你的内心，不知道哪些对你而言是重点，哪些你已经掌握，哪些知识点可以用少量闪卡轻描淡写地带过，哪些又需要更多强化和更全面的覆盖。",
+          "这种情况能否改善，还是说这仅仅是间隔重复系统固有的局限性？我不知道。但可以合理推测，即使有限的改进也是可能的。我认为，在这些更“概念性”的领域中使用间隔重复的人并不多，而根据社区中大多数人是潜水者的规律，这些人中更少有人会详细记录并分享他们的知识。很多人已经写过关于如何制作优质闪卡的一般性建议，而我更想看到的是类似迈克尔·尼尔森这样的案例研究——即某人如何坐下来，将一本书（最好是教科书）中的内容转化为闪卡，并描述这一过程。如果我们能收集到一系列类似的案例研究，或许就能提炼出一些通用规则：不是教人如何写出有效的闪卡，而是如何将复杂、概念性的知识编码为问答形式。"
+        ]
+      }
+    },
+    {
+      "slug": "3b2474978c9572d9",
+      "title": "Drata",
+      "titleZh": "Drata：用自主AI代理自动化合规管理",
+      "link": "https://drata.com/daring",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-17T17:59:15.000Z",
+      "category": "security",
+      "keywords": [
+        "Drata",
+        "compliance",
+        "AI agents"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 3,
+        "timeliness": 5,
+        "total": 12
+      },
+      "summary": "本文介绍Drata平台如何通过自主AI代理帮助企业实现合规自动化。该平台能持续监控内部与第三方风险，自动生成审计证据，并实时证明安全态势。相比传统手动合规流程，Drata可将审计准备时间减少80%以上。它支持SOC 2、ISO 27001等主流框架，适用于中大型企业。核心优势在于将被动响应转为主动预防，降低人为错误风险。作者强调这是未来企业安全运营的关键基础设施。",
+      "summaryEn": "This post introduces Drata, a platform using autonomous AI agents to automate compliance management. It continuously monitors internal and third-party risks, generates audit evidence automatically, and proves security posture in real time. Compared to manual compliance processes, Drata reduces audit preparation time by over 80%. Supporting frameworks like SOC 2 and ISO 27001, it's designed for mid-to-large enterprises. Its main advantage is shifting from reactive to proactive risk management while minimizing human error. The author positions it as essential infrastructure for future enterprise security operations.",
+      "reason": "如果你负责企业合规或信息安全，这篇赞助内容展示了如何用AI彻底改变传统繁琐的合规工作流。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "a1be449061e728d1",
+      "title": "The Tomy Tutor and the state of 1983 home computers",
+      "titleZh": "我的第一台电脑：Tomy Tutor与1983年家用计算机生态",
+      "link": "https://oldvcr.blogspot.com/feeds/7725068542078818117/comments/default",
+      "sourceName": "oldvcr.blogspot.com",
+      "sourceUrl": "https://oldvcr.blogspot.com",
+      "pubDate": "2026-05-17T01:09:46.083Z",
+      "category": "other",
+      "keywords": [
+        "Tomy Tutor",
+        "retro computing",
+        "history"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 3,
+        "total": 11
+      },
+      "summary": "作者回顾了自己1983年在七岁时获得的Tomy Tutor电脑，至今仍能完美运行。这款日本产的教育型计算机代表了当时家用电脑市场的边缘尝试，主打儿童编程教学。尽管性能远逊于同期Apple II或Commodore 64，但它在特定用户群体中有一定影响力。文章还简要对比了1983年主流家用电脑的技术规格与市场格局，揭示了早期PC生态的多样性与不均衡发展。",
+      "summaryEn": "The author recounts receiving his first computer, the Tomy Tutor, in late 1983 at age seven—a device that still works perfectly after 41 years. This Japanese-made educational computer represented a niche attempt in the home computing market of 1983, focusing on children's programming education. While vastly inferior in performance to contemporaries like the Apple II or Commodore 64, it had some influence among specific user groups. The post also briefly compares technical specs and market dynamics of mainstream home computers in 1983, revealing the diversity and uneven development of early PC ecosystems.",
+      "reason": "对复古科技爱好者而言，这是一段珍贵的个人记忆与硬件考古记录，展现了早期计算机文化的另一面。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "9f66bb772df9f301",
+      "title": "In the Empire's Defense",
+      "titleZh": "帝国的胜利：重读《星球大战》的反派魅力",
+      "link": "https://idiallo.com/blog/the-empire-won?src=feed",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-05-17T12:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "Star Wars",
+        "Darth Vader",
+        "nostalgia"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 4,
+        "timeliness": 2,
+        "total": 8
+      },
+      "summary": "作者分享了自己虽未在首映时观看《星球大战》的经历，却仍被达斯·维达这一反派角色深深吸引。他认为维达的出场瞬间即奠定其不可战胜的气场，无需言语便传递出压迫感。文章分析电影如何通过视觉、音效与表演塑造反派权威，并探讨为何这类‘纯粹邪恶’的角色反而更具戏剧张力。最终指出：优秀的反派不是简单的坏人，而是能激发观众敬畏的存在。",
+      "summaryEn": "Despite not watching Star Wars at its original release, the author developed a lasting appreciation for the film, particularly the iconic villain Darth Vader. He argues that Vader's mere appearance establishes an aura of invincibility, conveying menace without words through visuals, voice, and music. The piece analyzes how the movie crafts villainous authority through cinematic techniques and explores why 'pure evil' characters can generate more dramatic tension than nuanced antagonists. Ultimately, it concludes that great villains are not simple bad guys but entities that inspire awe and fear.",
+      "reason": "如果你喜欢电影叙事或角色心理学，这篇文章提供了一种新鲜视角来理解经典反派为何如此令人难忘。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I didn't watch Star Wars when it was released. I wasn't even born. By the time we popped the cassette tape in the VCR, it was at least 15 years old. But I liked the movie all the same. It was not my favorite film by any means, but it was memorable. The first time you see Darth Vader appear on screen, you know this villain is not going to be easy to defeat. \"Villain\" because no one needs to tell you who the good guys and bad guys are in this movie. The visuals, the voices, the music, everything tells you that Darth Vader and the Empire are up to no good."
+          },
+          {
+            "type": "p",
+            "text": "Now I get to watch the movie with my kids. I quickly pointed out to my sons that this is the bad guy. Stating the obvious. One of them asked, \"Why is he the bad guy?\" I had to pause for a second to come up with an explanation. I didn't have an answer. Instead I said, \"Because he is mean as hell!\""
+          },
+          {
+            "type": "p",
+            "text": "They fell asleep before the movie ended. I think they enjoyed it. But I really couldn't tell you exactly why Darth Vader was the bad guy. This is just a thought experiment, don't go telling the world that I am pro-Galactic Empire, OK?"
+          },
+          {
+            "type": "p",
+            "text": "I'm not digging into the lore of Star Wars. I did that already with the Galactic Timezones piece and it was exhausting. What I want to do is draw some parallels with real life. First, I think if a real-world government behaved like the Galactic Empire, they would clearly be the bad guys. But in real life, we don't have good guys or bad guys."
+          },
+          {
+            "type": "p",
+            "text": "I want to focus on just one aspect. The Empire's goal is to maintain order, or at least to try to. And the rebels are clearly creating chaos, with their freedom and what not (bear with me)."
+          },
+          {
+            "type": "p",
+            "text": "Imagine what it takes to develop a system that keeps several star systems all in sync. The political process to elect senators, not just from different races, but different species. And then some religious zealots want you to throw everything you've built aside and just \"feel\" the force. You want to expel them as far from the system as possible."
+          },
+          {
+            "type": "quote",
+            "text": "“Can one ever be too aggressive in preserving order?” — Syril Karn"
+          },
+          {
+            "type": "p",
+            "text": "The rebels sabotage missions, attack army bases, and create chaos. On the surface, these rebels are clearly disruptive. I can already hear politicians calling them names and requesting additional funding for their \"ally\" to eradicate the threat. If the rebel attacks were broadcast on TV, even citizens of the many worlds would agree that the rebels need to be dealt with."
+          },
+          {
+            "type": "p",
+            "text": "Writers would write poems on the supposed virtues of keeping order as Kipling did in \"The White Man's Burden\". All they are doing is bringing railways, law, and civilization to chaotic planets."
+          },
+          {
+            "type": "p",
+            "text": "Just think about rebels carelessly destroying a base on a remote planet whose only purpose was to track and sync time across a multi-star time zone system. Madness! But then I watched Andor."
+          },
+          {
+            "type": "p",
+            "text": "If you watch Star Wars as an adult and don't suspend your disbelief for a second (contrasting it with real life) then yes, the rebels are the bad guys. Which is exactly why Andor was a fantastic addition to the Star Wars universe. A more grounded show that I watched without my kids, and thoroughly enjoyed for how it depicted the inner workings of the Empire. Rather than focusing on the Empire as a whole, Andor zooms in on a small faction, the ISB, and shows how ordinary people end up joining the rebellion."
+          },
+          {
+            "type": "p",
+            "text": "The rebels are no longer just David fighting Goliath. Instead, you see the individual faces of people suffering at the hands of the Empire. You see the surveillance, the strong-arming, the unfair treatment, the killings. You see innocent people caught in the crossfire, labeled terrorists at the first sign of dissent. One man's rebel is another man's freedom fighter, and the Empire controls the broadcast. And the rebellion is not a single organization with a single leader. Anyone oppressed and frustrated with the Empire is a rebel in their own way."
+          },
+          {
+            "type": "p",
+            "text": "It's not good guys versus bad guys anymore. It is power exerting a crushing weight on its subjects. To hell with keeping time in sync, fight back! To hell with keeping order when all it means is blind obedience or else. Bring back those Jedis, the so-called religious zealots."
+          },
+          {
+            "type": "p",
+            "text": "But alas, it's just fiction. Real life is not the same. In our world, the Empire wins every time. Ask the Indians. Ask the so-called independent nations of West Africa. My sons, when I try to speak French with them, tell me that they are not French and neither am I. They are right, because the Empire won."
+          }
+        ],
+        "translations": [
+          "我并没有在《星球大战》上映时观看这部电影，甚至我那时都还没出生。等到我们把录像带放进VCR播放时，它至少已经发行15年了。但我依然喜欢这部电影。它绝不是我最喜欢的电影，但确实令人难忘。当你第一次看到达斯·维达出现在银幕上时，你就知道这个反派绝非等闲之辈。“反派”是因为没人需要告诉你这部电影里的正邪阵营——画面、声音、音乐，一切都在诉说：达斯·维达和银河帝国绝非善类。",
+          "现在我有了孩子，可以和他们一起看电影了。我很快向儿子们指出，这就是坏人。这显而易见。其中一个问：“他为什么是坏人？”我得停顿一下才能给出解释。其实我也答不上来。我只是说：“因为他他妈的特别凶！”",
+          "他们在电影结束前就睡着了。我想他们应该挺喜欢的。但我真说不清为什么达斯·维达就是坏人。这只是一个思想实验，别告诉全世界我是个银河帝国支持者，好吗？",
+          "我不会再去深挖《星球大战》的背景故事了。之前我在《银河时区》那篇文章里已经做过了，太累了。这次我想把重点放在现实生活上。首先我觉得，如果一个现实中的政府像银河帝国那样行事，那它显然就是坏蛋。但在现实中，我们既没有绝对的好人，也没有绝对的坏人。",
+          "我只想聚焦一个方面。帝国的目标是维持秩序，或者说至少试图维持秩序。而反抗军显然在制造混乱，他们追求自由什么的（请原谅我的简化）。",
+          "想象一下，要建立一个让多个恒星系保持同步的系统有多难。政治程序要选举参议员，不仅来自不同种族，还来自不同物种。然后有些宗教狂热分子却要你推翻一切，只靠“感受原力”。你想把这些极端分子驱逐到系统最边缘的地方。",
+          "“维护秩序难道还能过分激进吗？”——西利尔·卡恩",
+          "反抗军破坏任务、袭击军事基地、制造混乱。表面上，这些反抗军明显是在捣乱。我都能预见到政客们会给他们起各种外号，并要求为他们的“盟友”追加资金，以根除威胁。如果反抗军的袭击被电视转播，就连那些多星球世界的公民也会同意：必须处理掉这些反抗军。",
+          "作家们会像吉卜林在《白人的负担》中那样，写下关于维持秩序的美德诗篇。他们所做的不过是给混乱的星球带来铁路、法律和文明。",
+          "想想看，一群反抗军在遥远的星球上肆意摧毁一个唯一功能就是追踪并同步跨恒星时区系统的基地。真是疯狂！但接着我看了《安多》。",
+          "如果你成年后再看《星球大战》，而且完全不怀疑地接受设定（与现实生活形成对比），那么没错，反抗军就是坏人。而这正是《安多》成为《星球大战》宇宙中精彩补充的原因。这是一部更写实的剧集，我独自观看，非常享受它对帝国运作方式的描绘。它没有把焦点放在整个帝国上，而是聚焦于一个小派系ISB，展示了普通人如何最终加入反抗运动。",
+          "反抗者不再只是大卫对抗歌利亚。如今，我们看到的是在帝国压迫下受苦的个体面孔。我们目睹了监控、胁迫、不公待遇和杀戮。无辜者在交火中丧生，稍有异议便被打上恐怖分子的标签。一人眼中的叛乱分子，可能是另一人心中的自由斗士，而帝国掌控着舆论。这场反抗并非由单一组织或领袖领导，任何受压迫并对帝国感到愤怒的人，都是自己方式的反抗者。",
+          "如今已不再是正邪对立。这是权力对民众施加的沉重压迫。去他的时间同步，奋起反抗！去他的秩序，那不过是盲从或镇压的代名词。重拾那些绝地武士吧，这些所谓的宗教狂热分子。",
+          "但唉，终究只是虚构。现实世界并非如此。在我们所处的现实中，帝国总是赢家。问问印度人吧。问问所谓西非的独立国家吧。我的孩子们，当我试着用法语和他们交流时，他们告诉我，他们不是法国人，我也不是。他们说得对，因为帝国赢了。"
+        ]
+      }
+    }
+  ]
+}
