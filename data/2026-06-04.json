@@ -1,0 +1,2437 @@
+{
+  "date": "2026-06-04",
+  "generatedAt": "2026-06-03T20:48:57.985Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2483,
+    "filteredArticles": 13,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日科技圈呈现出AI技术演进与成本博弈的冰火两重天：微软持续加码大模型研发，而Uber等巨头却因预算耗尽被迫限制内部AI编程工具的使用。在智能硬件领域，曾经喧嚣的“元宇宙”概念正被业界抛弃，苹果与Meta转向对智能眼镜等实体设备的务实布局，但随之而来的硬件改装黑市也为隐私安全敲响了警钟。与此同时，从编译器底层优化到算法精度计算，开发者们依然在基础工程架构的深水区进行着扎实的探索。",
+  "articles": [
+    {
+      "slug": "c816d7a197b50c6e",
+      "title": "Microsoft's new MAI models",
+      "titleZh": "微软发布全新的 MAI 模型",
+      "link": "https://simonwillison.net/2026/Jun/2/microsofts-new-models/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-02T22:21:52.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Microsoft",
+        "LLM",
+        "AI models"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 10,
+        "total": 24
+      },
+      "summary": "微软最新发布了两款文本大语言模型 MAI-Thinking-1 和 MAI-Code-1-Flash。MAI-Thinking-1 专注于推理任务，拥有 1T 总参数量和 35B 激活参数，目前仅向特定早期合作伙伴开放。MAI-Code-1-Flash 则专为 GitHub Copilot 等编程场景构建，总参数量为 137B，激活参数为 5B。这两款模型的发布标志着微软在自研大模型架构上的进一步探索与发力。",
+      "summaryEn": "Microsoft has announced two new text large language models: MAI-Thinking-1 and MAI-Code-1-Flash. MAI-Thinking-1 focuses on reasoning tasks, featuring 1T total parameters with 35B active, and is currently available to select early partners. MAI-Code-1-Flash is purpose-built for coding scenarios like GitHub Copilot, featuring 137B total parameters and 5B active parameters. The release of these models marks Microsoft's continued exploration and advancement in proprietary LLM architectures.",
+      "reason": "可以快速了解微软最新自研大模型的具体参数规模和主打应用场景。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Microsoft announced two new text LLMs this morning - MAI-Thinking-1 (reasoning, 1T parameters, 35B active, available to \"select early partners\") and MAI-Code-1-Flash (137B Parameters, 5B active, \"purpose-built for GitHub Copilot and VS Code to deliver high performance and lower cost [...] rolling out to GitHub Copilot individual users in Visual Studio Code\"). I've not been able to try either of them just yet."
+          },
+          {
+            "type": "p",
+            "text": "It's very interesting to see Microsoft releasing models with such low parameter counts, especially given how expensive larger models are to access right now. They claim MAI-Thinking-1 \"is preferred to Sonnet 4.6 in our blind human side-by-side evaluations\", which is impressive for a 35B model seeing as I frequently run models larger than that on my own laptop. (UPDATE: I got this entirely wrong, see note below.)"
+          },
+          {
+            "type": "p",
+            "text": "Also of note:"
+          },
+          {
+            "type": "quote",
+            "text": "We trained [MAI-Thinking-1] from the ground up on enterprise grade, clean and commercially licensed data, without distillation from third-party models."
+          },
+          {
+            "type": "p",
+            "text": "And for MAI-Code-1-Flash as well:"
+          },
+          {
+            "type": "quote",
+            "text": "It is built end-to-end by Microsoft using clean and appropriately licensed data."
+          },
+          {
+            "type": "p",
+            "text": "I would very much like to learn more about this \"appropriately licensed\" data! Could these be the first generally useful code-specialist models that didn't train on an unlicensed dump of the web? (Update: the answer is no, see note below.)"
+          },
+          {
+            "type": "p",
+            "text": "Update: My initial published notes got the size of the models wrong. I misread Microsoft's announcements and interpreted the MoE active parameter count as the total parameter count, but the model card for MAI-Code-1-Flash lists it as 137B with 5B active and the MAI-Thinking-1 technical paper reveals it to be a 1T model with 35B active."
+          },
+          {
+            "type": "p",
+            "text": "I deeply regret this error."
+          },
+          {
+            "type": "p",
+            "text": "Update 2: That technical paper describes the training data in some detail from page 80 onwards. It has the same licensing problems as all of the other major LLMs: it's trained on a crawl of the public web:"
+          },
+          {
+            "type": "quote",
+            "text": "The majority of our web HTML corpus comes from a proprietary crawl. After initial page discovery and selection, approximately 1.2 trillion pages are crawled and parsed. [...] In addition to Microsoft standard policy Sec. 2.4, we apply UT1 block list (Prigent, 2026) to remove adult content and piracy-related domains. In all, this filtering reduces the corpus from 1.2 trillion pages to 794 billion pages. Given the prevalence of AI-generated content on the web, we also score pages with a proprietary AI-content detection model and use manual inspection to identify domains with extensive AI-generated content; those domains are filtered out of the training corpus.\n[...]\nWe process Common Crawl with the same pipeline. [...] After filtering, deduplication, merging with the proprietary web corpus, and a final round of exact-URL and content-level fuzzy deduplication, the Common Crawl portion contains 24.2 billion pages."
+          },
+          {
+            "type": "p",
+            "text": "I did not cover this one at all well, which is somewhat ironic since I was at the Microsoft Build conference when I wrote this up! I'm sorry for not digging deeper before publishing my initial notes."
+          }
+        ],
+        "translations": [
+          "微软今天早上发布了两款全新的文本 LLM —— MAI-Thinking-1（推理模型，1T 参数，35B 激活参数，面向“部分早期合作伙伴”提供）和 MAI-Code-1-Flash（137B 参数，5B 激活参数，“专为 GitHub Copilot 和 VS Code 打造，以提供高性能和更低成本 [...] 目前正逐步向 Visual Studio Code 的 GitHub Copilot 个人用户推出”）。我目前还没能亲自试用这两款模型。",
+          "看到微软发布参数量如此低的模型非常有意思，尤其是考虑到目前调用大型模型的成本非常昂贵。他们声称 MAI-Thinking-1“在我们进行的人类双盲并排评估中优于 Sonnet 4.6”，这对于一个 35B 的模型来说令人印象深刻，因为我经常在自己的笔记本电脑上运行比这更大的模型。（更新：我在这点上完全弄错了，请参阅下方的说明。）",
+          "另外值得注意的是：",
+          "我们在 Enterprise 级别、干净且具有商业许可的数据上从头开始训练了 [MAI-Thinking-1]，没有使用第三方模型进行蒸馏。",
+          "MAI-Code-1-Flash 也是如此：",
+          "它由微软使用干净且经过适当授权的数据进行端到端构建。",
+          "我非常想了解更多关于这种“经过适当授权”的数据！这会不会是首批没有使用未经授权的网络抓取数据进行训练的通用代码专家模型？（更新：答案是否定的，请参阅下方的说明。）",
+          "更新：我最初发布的笔记弄错了模型的大小。我误读了微软的公告，将 MoE（混合专家模型）的激活参数量当成了总参数量，但 MAI-Code-1-Flash 的模型卡片显示其总参数为 137B、激活参数为 5B，而 MAI-Thinking-1 的技术论文则显示它是一个总参数 1T、激活参数 35B 的模型。",
+          "我对这个错误深表歉意。",
+          "更新 2：该技术论文从第 80 页起详细描述了训练数据。它和所有其他主流 LLM 一样存在许可问题：它是基于对公共网络的抓取数据进行训练的：",
+          "我们的网络 HTML 语料库大部分来自专有抓取。在初始的页面发现和选择之后，大约抓取并解析了 1.2 万亿个页面。[...] 除了微软标准政策第 2.4 节外，我们还应用了 UT1 黑名单 (Prigent, 2026) 来移除成人内容和与盗版相关的域名。总体而言，这些过滤将语料库从 1.2 万亿个页面减少到了 7940 亿个页面。鉴于网络上 AI 生成内容的普遍存在，我们还使用专有的 AI 内容检测模型对页面进行评分，并通过人工检查来识别包含大量 AI 生成内容的域名；这些域名会被从训练语料库中过滤掉。 [...] 我们使用相同的流程处理 Common Crawl。[...] 在经过过滤、去重、与专有网络语料库合并，以及最后一轮的精确 URL 和内容级模糊去重之后，Common Crawl 部分包含了 242 亿个页面。",
+          "我对这件事的报道做得一点也不好，这多少有些讽刺，因为我在写这篇文章时正坐在 Microsoft Build 大会的现场！很抱歉在发布最初的笔记之前没有进行更深入的挖掘。"
+        ]
+      }
+    },
+    {
+      "slug": "29c7b211e523b246",
+      "title": "Uber Caps Usage of AI Tools Like Claude Code to Manage Costs",
+      "titleZh": "Uber 限制 Claude Code 等 AI 工具的使用以控制成本",
+      "link": "https://simonwillison.net/2026/Jun/3/uber-caps-usage/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-03T12:01:27.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI tools",
+        "Claude Code",
+        "cost management"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "Uber 已经开始限制 Claude Code 等 AI 编程工具的使用，以应对不断攀升的运营开支。该公司在 2026 年仅过了四个月就耗尽了全年的 AI 预算，超支主要源于此类工具的广泛使用。由于这笔预算是在 2025 年制定的，当时未能准确预测 AI 工具的消耗速度和实际成本。这一举措反映了企业在广泛采用生成式 AI 时所面临的巨大成本压力。",
+      "summaryEn": "Uber has started capping the usage of AI programming tools like Claude Code to manage escalating operational costs. The company exhausted its entire 2026 AI budget in just four months, primarily driven by the widespread adoption of such tools. This overspending occurred because the budget was set in 2025, failing to accurately predict the rapid consumption and actual costs of AI utilities. This move highlights the significant financial pressures enterprises face when broadly adopting generative AI.",
+      "reason": "揭示了企业在实际落地 AI 编程工具时遭遇的预算超支与成本控制难题。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "3rd June 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Uber Caps Usage of AI Tools Like Claude Code to Manage Costs. I wrote the other day about Uber blowing its 2026 AI budget in four months, and how that wasn't particularly surprising given they would have set that budget in 2025, before anyone could have predicted how popular token-burning coding agents were about to become."
+          },
+          {
+            "type": "p",
+            "text": "Natalie Lung for Bloomberg:"
+          },
+          {
+            "type": "quote",
+            "text": "The rideshare giant is limiting all employees to $1,500 in monthly token spending per AI coding tool, an Uber spokesperson said in response to a Bloomberg News inquiry. That means spending on one tool doesn’t have a bearing on the budget for another. The limits, which have been instituted in recent months, only apply to agentic coding software such as Cursor or Anthropic PBC’s Claude Code."
+          },
+          {
+            "type": "p",
+            "text": "A $1,500 monthly limit per tool strikes me as a rational policy response to over-spending, and much more sensible than those tokenmaxxing leaderboards encouraging employees to compete for as much AI usage as possible."
+          },
+          {
+            "type": "p",
+            "text": "It's also interesting in that it hints at a real dollar value for what Uber is getting out of these tools. If we assume two actively used tools per engineer that's $3,000 * 12 = $36,000 cap per engineer per year. Levels.fyi lists the median yearly compensation package for Uber software engineers in the USA at $330,000."
+          },
+          {
+            "type": "p",
+            "text": "That means each employee's AI spending cap is ~11% of that median compensation package."
+          },
+          {
+            "type": "p",
+            "text": "I noted that my own token usage comes to about $1,000/month against each of Anthropic and OpenAI - which currently costs me just $100 per provider thanks to their generous subsidized plans for individual subscribers. Those plans are no longer available to larger companies like Uber."
+          },
+          {
+            "type": "p",
+            "text": "Their new policy means if I were working at Uber I'd still have ~$500/month of tokens to spare for each of those tools, given my current usage patterns."
+          }
+        ],
+        "translations": [
+          "2026年6月3日 - 链接博客",
+          "Uber 限制 Claude Code 等 AI 工具的使用以控制成本。前几天我曾撰文提到，Uber 在四个月内耗尽了其 2026 年的 AI 预算；考虑到这笔预算是在 2025 年制定的，这其实并不让人特别惊讶，毕竟当时没人能预料到消耗大量 token 的编程智能体会变得如此火爆。",
+          "彭博社记者 Natalie Lung 报道：",
+          "Uber 发言人在回应彭博社询问时表示，这家网约车巨头正将所有员工在每款 AI 编程工具上的每月 token 消耗额度限制为 1500 美元。这意味着在一种工具上的支出不会影响另一种工具的预算。这些在最近几个月实施的限制，仅适用于诸如 Cursor 或 Anthropic PBC 的 Claude Code 等智能体编程软件。",
+          "对我而言，将每款工具的月度限额设为 1500 美元，是应对过度支出的一项合理政策，这也比那些鼓励员工竞相尽可能多地使用 AI 的“刷 token”排行榜要明智得多。",
+          "这件事的另一有趣之处在于，它暗示了 Uber 从这些工具中获取收益的实际美元价值。假设每位工程师经常使用两款工具，那么每位工程师每年的 AI 消耗上限就是 3000 美元 * 12 = 36,000 美元。据 Levels.fyi 的数据，美国 Uber 软件工程师的年薪中位数为 330,000 美元。",
+          "这意味着每位员工的 AI 支出上限约占该薪酬中位数的 11%。",
+          "我提到过，我自己在 Anthropic 和 OpenAI 上的 token 消耗大约是每家每月 1000 美元——但得益于他们对个人订阅用户提供的慷慨补贴计划，目前我向每家实际只需支付 100 美元。像 Uber 这样的大型企业已经无法再享受此类计划了。",
+          "他们的新政策意味着，如果我目前在 Uber 工作，按照我现在的使用习惯，我在每款工具上每个月依然会有约 500 美元的 token 额度结余。"
+        ]
+      }
+    },
+    {
+      "slug": "dffda6f96f715e14",
+      "title": "Welcoming the Philippine Government to Have I Been Pwned",
+      "titleZh": "欢迎菲律宾政府加入 Have I Been Pwned",
+      "link": "https://www.troyhunt.com/welcoming-the-philippine-government-to-have-i-been-pwned/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-06-03T03:40:17.000Z",
+      "category": "security",
+      "keywords": [
+        "HIBP",
+        "data breach",
+        "government",
+        "security"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "Have I Been Pwned (HIBP) 的免费政府服务正式迎来了第 46 个成员国：菲律宾。菲律宾的国家 CERT 与信息和通信技术部展开合作，将能够监控官方政府域名在 HIBP 数据库中的泄露情况。这项服务使他们的网络安全团队能够及时发现并应对针对政府账户的数据泄露事件。这也标志着 HIBP 在提升全球国家级网络安全防御能力方面又迈出了一步。",
+      "summaryEn": "The free government service of Have I Been Pwned (HIBP) has officially onboarded its 46th government: the Philippines. Working with the Department of Information and Communications Technology, the Philippines' National CERT now has access to monitor official government domains against the data in HIBP. This service enables their cybersecurity teams to promptly detect and respond to data breaches involving government accounts. It marks another step for HIBP in enhancing national-level cybersecurity defenses globally.",
+      "reason": "了解全球知名数据泄露查询平台 HIBP 是如何与国家级 CERT 机构建立联防联控机制的。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today, we welcome the 46th government onboarded to Have I Been Pwned’s free gov service: the Philippines."
+          },
+          {
+            "type": "p",
+            "text": "The Philippines’ National CERT, working with the Department of Information and Communications Technology, now has access to monitor official government domains against the data in HIBP. This gives their Cyber Threat Intel and Monitoring Section the ability to identify exposure across government email addresses and respond quickly when those accounts appear in new data breach."
+          },
+          {
+            "type": "p",
+            "text": "This is precisely what the HIBP government service was built for: helping national cyber teams better understand credential exposure across their government domain space, monitor for compromised accounts on demand via API, and receive notifications when government domains are impacted by newly loaded breach data."
+          },
+          {
+            "type": "p",
+            "text": "The Philippines joins a growing list of national CERTs and government cybersecurity teams using HIBP to help strengthen national cyber defense, protect government departments and resources, and reduce the risk posed by compromised credentials before attackers can take advantage."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d72bff6ee49f0ca5",
+      "title": "The Underworld Market to Remove the Recording Indicator Light on Meta Glasses",
+      "titleZh": "禁用 Meta 眼镜录像指示灯的黑市交易",
+      "link": "https://www.youtube.com/watch?v=EaJSPeJmqis",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-03T19:39:13.000Z",
+      "category": "security",
+      "keywords": [
+        "smart glasses",
+        "privacy",
+        "hardware hacking"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 20
+      },
+      "summary": "Facebook Marketplace 等平台上正出现一项专门针对 Ray-Ban Meta 智能眼镜的地下改装服务。只需支付 100 美元，改装者就会禁用眼镜上的录像指示灯，将其变成隐蔽的偷拍设备，这种模式被称为“隐形模式”。调查记者深入追踪了这一黑市的运作模式、合法性争议以及相关防范措施。随着智能眼镜的普及，硬件隐私安全问题正面临严峻的挑战。",
+      "summaryEn": "An underground modification service targeting Ray-Ban Meta smart glasses has emerged on platforms like Facebook Marketplace. For just $100, modifiers will disable the recording indicator light, turning the glasses into a covert camera, a mode they call \"Stealth Mode.\" Investigative journalists have tracked down the operational methods of this black market, its legality, and potential countermeasures. As smart glasses become more popular, hardware privacy and security issues are facing severe challenges.",
+      "reason": "深入揭示了智能穿戴设备普及背后隐藏的隐私窃取黑产与硬件安全漏洞。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "347e4884236b48fb",
+      "title": "A survey of inlining heuristics",
+      "titleZh": "内联启发式算法概述",
+      "link": "https://bernsteinbear.com/blog/inlining-heuristics/?utm_source=rss",
+      "sourceName": "bernsteinbear.com",
+      "sourceUrl": "https://bernsteinbear.com",
+      "pubDate": "2026-06-03T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "compiler",
+        "inlining",
+        "JIT",
+        "heuristics"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 20
+      },
+      "summary": "编译器（尤其是方法级的即时编译器 JIT）通常以单个函数作为操作单元，因为方法通常体积较小。在 Ruby 等大量依赖方法分派的动态语言中，内联的决策对于性能优化至关重要。文章详细调查了编译器在处理代码内联时所采用的各种启发式算法。合理的内联启发式规则能够显著影响动态语言运行时的整体执行效率。",
+      "summaryEn": "Compilers, especially method-level just-in-time (JIT) compilers, typically operate on a single function at a time, as methods are generally small in size. In dynamic languages like Ruby that rely heavily on method dispatch for everything, the decision to inline is crucial for performance optimization. The article surveys the various heuristics used by compilers when handling code inlining. Well-designed inlining heuristics can significantly impact the overall execution efficiency of dynamic language runtimes.",
+      "reason": "深入浅出地讲解了编译器中常被忽视但又极其关键的内联优化决策机制。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Max Bernstein",
+        "siteName": "Max Bernstein",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Compilers, especially method just-in-time compilers, operate on one function at\na time. It is a natural code unit size, especially for a dynamic language JIT:\nat a given point in time, what more information can you gather about other\nparts of a running, changing system?"
+          },
+          {
+            "type": "p",
+            "text": "I don’t have any data to back this up—maybe I should go gather some—but on\naverage, methods are small. Especially in languages such as Ruby that use\nmethod dispatch for everything, even instance variable (attribute, field, …)\nlookups, they are small. And everywhere."
+          },
+          {
+            "type": "p",
+            "text": "This makes the compiler sad. If we are to continue to anthropomorphize them,\ncompilers like having more context so they can optimize better. Consider the\nfollowing silly-looking example that is actually representative of a surprising\namount of real-world code:"
+          },
+          {
+            "type": "code",
+            "text": "class Point\n  attr_reader :x, :y\n\n  def initialize(x, y)\n    @x = x\n    @y = y\n  end\n\n  def distance(other)\n    Math.sqrt((@x - other.x)**2 + (@y - other.y)**2)\n  end\nend\n\ndef distance_from_origin(x, y)\n  Point.new(x, y).distance(Point.new(0, 0))\nend"
+          },
+          {
+            "type": "p",
+            "text": "Right now, in the distance_from_origin method, I count 8 different method calls:"
+          },
+          {
+            "type": "li",
+            "text": "Point.new"
+          },
+          {
+            "type": "li",
+            "text": "Point#initialize"
+          },
+          {
+            "type": "li",
+            "text": "Point.new"
+          },
+          {
+            "type": "li",
+            "text": "Point#initialize"
+          },
+          {
+            "type": "li",
+            "text": "Point#distance"
+          },
+          {
+            "type": "li",
+            "text": "Float#**"
+          },
+          {
+            "type": "li",
+            "text": "Float#**"
+          },
+          {
+            "type": "li",
+            "text": "Math.sqrt"
+          },
+          {
+            "type": "p",
+            "text": "(Technically more, but the ivar lookups (including attr_reader!), addition,\nand subtraction are generally specialized and don’t push a frame, even in the\ninterpreter.)"
+          },
+          {
+            "type": "p",
+            "text": "Furthermore, there are at least two heap allocations: one for each Point\ninstance."
+          },
+          {
+            "type": "p",
+            "text": "Last, there is a bunch of memory traffic to and from Point instances."
+          },
+          {
+            "type": "p",
+            "text": "This all is a huge bummer! What should be a simple math operation is now\noverwhelmed with a bunch of other stuff. Point is certainly not a zero-cost\nabstraction."
+          },
+          {
+            "type": "p",
+            "text": "Even if we had a bunch of other optimizations such as load-store elimination or\nescape analysis, they would not be able to do much: pretty much everything\nescapes and is effectful. That is, unless we inline. Inlining is the lever\nthat enables a bunch of other optimization passes to kick in."
+          },
+          {
+            "type": "h2",
+            "text": "Inlining: the “easy” part"
+          },
+          {
+            "type": "p",
+            "text": "I wrote about the design and implementation of Cinder’s inliner (FB\nlink,\npersonal blog link) a couple of years ago. I wrote\nabout arguably the simplest part, which is copying the callee body into the\ncaller. It took me at least a week to get working. Probably closer to months if\nyou consider all the plumbing through the rest of the JIT. In February during a\nsmall hackathon, I watched my colleague k0kubun\nprototype that bit of the inliner inside ZJIT in about 30 minutes."
+          },
+          {
+            "type": "p",
+            "text": "There is more to do when pretty much every part of the VM is observable from\nthe guest language: both Python and Ruby allow inspecting the state of the\nlocals, the call stack, etc from user code. Sampling profilers also expect some\namount of breadcrumbs to work with to inspect the stack. So there’s some more\nmachinery still required to pretend like the callee function was not inlined. I\ntalk about this a little bit in the Cinder blog post."
+          },
+          {
+            "type": "p",
+            "text": "Even so, all of that can probably be designed and wired together in a couple\nof months. Then you will find yourself tuning the inliner for the next 10\nyears. This is much harder."
+          },
+          {
+            "type": "h2",
+            "text": "When: the harder part"
+          },
+          {
+            "type": "p",
+            "text": "The thing that makes inlining difficult, especially in a method JIT, is that\nyou are trying to make an entire (dynamic!) system faster but you are only\nlooking through a microscope and only capable of local reasoning1.\nWhereas other optimizations such as strength reduction, inline caches, and\nvalue numbering are an un-alloyed good for the generated code, inlining can\nhave negative effects. It is also perhaps the first optimization people add\nthat has non-local impact."
+          },
+          {
+            "type": "p",
+            "text": "If you inline wrong, your code size might blow up. This might thrash your CPU’s\ncaches. Bummer, but happens to the best of us."
+          },
+          {
+            "type": "p",
+            "text": "But also, if you inline wrong, you might get in the way of other helpful\noptimizations: if you hit some size limit after inlining method A, you might\nnever get to inline B, which is the key to unlocking the performance of the\nmethod you are trying to optimize."
+          },
+          {
+            "type": "p",
+            "text": "Last, inlining might hurt compile time. In situations where latency is\nparamount (think: interactive client JavaScript), adding tons more code into\nthe fray might add noticeable hiccups, even if the long-term throughput\nimproves. As always, in-band compilation is a trade-off because any time you\nspend compiling, you are not executing code."
+          },
+          {
+            "type": "p",
+            "text": "You have to write your compiler to reason about all of this stuff. So you have\nheuristics. For example, here is Michael Pollan’s inliner heuristic:"
+          },
+          {
+            "type": "quote",
+            "text": "Inline methods. Mostly small. Not too many."
+          },
+          {
+            "type": "p",
+            "text": "I did a survey of a bunch of compilers, mostly JIT compilers, to see what their\ninlining heuristics look like. I also read (skimmed) some papers to see what\nthose folks had to say. I wonder if they agree."
+          },
+          {
+            "type": "p",
+            "text": "This post was a long time coming. I started working on it about five years ago\nbut then when I quit working at Facebook I accidentally left behind all of the\ninliner research I did for Cinder’s inliner. So then I kind of just thought\nabout it aimlessly for a while before redoing it this year. Anyway, here’s\nwonderwall."
+          },
+          {
+            "type": "h2",
+            "text": "The heuristics"
+          },
+          {
+            "type": "p",
+            "text": "Spoiler alert: all in all, people tend to look at:"
+          },
+          {
+            "type": "li",
+            "text": "Profiles of call target"
+          },
+          {
+            "type": "li",
+            "text": "Cumulative caller size (increasing as callees get inlined)"
+          },
+          {
+            "type": "li",
+            "text": "Callee size"
+          },
+          {
+            "type": "li",
+            "text": "Inline depth"
+          },
+          {
+            "type": "li",
+            "text": "Number of inlined calls at a certain depth"
+          },
+          {
+            "type": "li",
+            "text": "If recursion is present"
+          },
+          {
+            "type": "li",
+            "text": "Callee/caller call count ratio (if callee only called less than K% of calls\nto caller, don’t inline callee)"
+          },
+          {
+            "type": "li",
+            "text": "Callee stack usage"
+          },
+          {
+            "type": "li",
+            "text": "Polymorphism in callee"
+          },
+          {
+            "type": "li",
+            "text": "What mode the compiler is in (baseline vs more aggressive)"
+          },
+          {
+            "type": "li",
+            "text": "If the callee looks like it always raises/throws"
+          },
+          {
+            "type": "p",
+            "text": "And also have different interesting ways to pipe in profile information."
+          },
+          {
+            "type": "p",
+            "text": "Last, some newer papers do some wild stuff:"
+          },
+          {
+            "type": "li",
+            "text": "Train neural networks to make inlining decisions"
+          },
+          {
+            "type": "li",
+            "text": "Let inlining drive the entire optimization pipeline, treating it as a search\nheuristic over a BFS walk of the call graph"
+          },
+          {
+            "type": "li",
+            "text": "Use AOT-gathered information to aid in JIT heuristics"
+          },
+          {
+            "type": "p",
+            "text": "Another thing to consider in inlining is how you gather and interpret profiles."
+          },
+          {
+            "type": "h2",
+            "text": "Call context and profiles: the other harder part"
+          },
+          {
+            "type": "p",
+            "text": "When you compile a function, you tend to specialize it based on the input it\nhas historically been given. For a monomorphic input, maybe you guard that the\ntype is still the same and otherwise jump into the interpreter. For a\npolymorphic input, maybe you check the top K (~4) common cases and otherwise\njump into the interpreter. Fine."
+          },
+          {
+            "type": "p",
+            "text": "But sometimes you can be compiling a polymorphic method bar that is actually\nmonomorphic in its caller foo. That is, foo might only ever pass one kind\nof input to bar, but other callers pass all kinds of stuff. Here is a bit of\na silly example to show what I mean:"
+          },
+          {
+            "type": "code",
+            "text": "class HashWithIndifferentAccess\n  def initialize\n    @hash = {}\n  end\n\n  # Allow reading from the Hash with either a String or a Symbol\n  def [](key) = @hash[key.to_sym]\n\n  # ...\nend\n\n# some method...\nsome_hash = HashWithIndifferentAccess.new\n# ...\nsome_hash[\"abc\"]\n\n# some other method...\nanother_hash = HashWithIndifferentAccess.new\n# ...\nanother_hash[:xyz]"
+          },
+          {
+            "type": "p",
+            "text": "Just kidding, not so silly at all. It’s a super common pattern in\nRails. It makes key polymorphic in HashWithIndifferentAccess#[] even\nthough for many of its callers, it may well be monomorphic (or even a\nconstant)."
+          },
+          {
+            "type": "p",
+            "text": "In order to plumb this information through to the compiler, you have to figure\nout this call context relationship. There are a couple of common ways to do it."
+          },
+          {
+            "type": "h3",
+            "text": "Splitting"
+          },
+          {
+            "type": "p",
+            "text": "YJIT, for example, though it does not inline, splits methods based on the types\nof the arguments going in. This means that it clones the compiled code,\ngenerating a new version for each context. This does not give call context\n(“A calls B”) but gives type context (“B is called with integers, B’ is called\nwith strings”)."
+          },
+          {
+            "type": "p",
+            "text": "A compiler could do type-based splitting in the interpreter or a baseline tier."
+          },
+          {
+            "type": "h3",
+            "text": "Profile splitting"
+          },
+          {
+            "type": "p",
+            "text": "If you don’t fancy duplicating the code, you can instead duplicate the\nprofiles. You could either do this using type context (as above) or using call\ncontext. SpiderMonkey, for example, does “trial inlining” that allows callers\nto pass down a bit of memory for potential inline candidate callees to record\ntheir inline caches. Instead of each function holding its own ICScript, the\ncaller allocates a unique ICScript for that potential-inline call-site. This\ngives each callee function (at least?) one level of call context."
+          },
+          {
+            "type": "p",
+            "text": "Later, when inlining the callee into the caller, we don’t have other callers’\ntype information polluting the IR builder (or whatever reads the profiles)."
+          },
+          {
+            "type": "h3",
+            "text": "Bytecode inlining"
+          },
+          {
+            "type": "p",
+            "text": "JavaScriptCore handles this by inlining bytecode into other bytecode. This is a\ngnarly transformation but gives the interpreter, even (!) access to call\ncontext. On tier-up to the compiler, all the inlining decisions have been made\nalready."
+          },
+          {
+            "type": "h3",
+            "text": "Early tier with counters"
+          },
+          {
+            "type": "p",
+            "text": "HotSpot handles this with multiple tiers. The interpreter tiers up to the\nclient compiler, C1. C1 profiles branch and call targets in compiled code. C1\nmay eventually recompile based on this new information. C1 may eventually tier\nup to C2, which copies C1 inlining decisions. This way, we get call context in\nprofiles via inlining."
+          },
+          {
+            "type": "h3",
+            "text": "Inline and analyze and hope"
+          },
+          {
+            "type": "p",
+            "text": "One last thing you could do is just trust your type inference and branch\nfolding in the optimizer. You could inline and do polymorphic specialization in\nthe callee when building the IR, then hope that your branch pruning\nmonomorphizes the inlined callee. It’s a little wasteful because the\npolymorphic code is built “for nothing”, but it might work fine?"
+          },
+          {
+            "type": "p",
+            "text": "Okay, onto the collected notes and half-baked commentary. Here’s a survey of a\nbunch of JIT compilers and how they reason about inlining heuristics."
+          },
+          {
+            "type": "h3",
+            "text": "Thanks"
+          },
+          {
+            "type": "p",
+            "text": "But before we get into that, thanks to Iain Ireland, CF Bolz-Tereick, and Ian\nRogers for feedback on this blog post!"
+          },
+          {
+            "type": "h2",
+            "text": "The survey: bits and bobbles"
+          },
+          {
+            "type": "p",
+            "text": "What follows is mostly a “bits and bobbles” section a la Phil\nZucker."
+          },
+          {
+            "type": "p",
+            "text": "We’ll start with Cinder, because when I wrote Cinder’s inliner I\nadded only the simplest heuristics, mostly “don’t inline” signals. Over time,\nafter I left, people tuned it a bit more."
+          },
+          {
+            "type": "h3",
+            "text": "Cinder"
+          },
+          {
+            "type": "p",
+            "text": "The inliner starts from the caller CFG, walking it to find\nsuitable inlining candidates. Inlining candidates are only for call targets\nthat are known—in Cinder’s case, only for monomorphic call targets—and pass\nsome checks. The callee is only known by it’s function object, which includes\nits bytecode. There is no IR available for the callee until we decide to inline."
+          },
+          {
+            "type": "p",
+            "text": "Most of the “can’t handle this” checks are related to argument handling. Python\nhas a pretty complex calling convention, so if the caller/callee have not\nagreed on how the arguments should be passed through, the inliner doesn’t care\nto try and figure it out on its own. That is the responsibility of other parts\nof the compiler. Things in this canInline\nfunction could be considered “TODO”."
+          },
+          {
+            "type": "code",
+            "text": "bool canInline(Function& caller, AbstractCall* call_instr) {\n  // ...\n  BorrowedRef<PyFunctionObject> func = call_instr->func;\n  auto fail = [&](InlineFailureType failure_type) {\n    dlogAndCollectFailureStats(caller, call_instr, failure_type);\n    return false;\n  };\n\n  if (func->func_kwdefaults != nullptr) {\n    return fail(InlineFailureType::kHasKwdefaults);\n  }\n\n  BorrowedRef<PyCodeObject> code{func->func_code};\n  JIT_CHECK(PyCode_Check(code), \"Expected PyCodeObject\");\n\n  if (code->co_kwonlyargcount > 0) {\n    return fail(InlineFailureType::kHasKwOnlyArgs);\n  }\n  // ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "Failures are logged so they can be analyzed. If the Cinder team determines that\nthere is some very frequent case they should handle, they will find out from\nthe logs."
+          },
+          {
+            "type": "p",
+            "text": "The inliner collects all candidate call instructions in one pass over the CFG.\nIt loads the configurable “cost limit” from the options struct. Then it does\none pass over the inlining candidates vector, inlining until it (maybe) hits\nthe cost limit."
+          },
+          {
+            "type": "code",
+            "text": "// ...\nsize_t cost_limit = getConfig().inliner_cost_limit;\nsize_t cost = codeCost(irfunc.code);\n\n// Inline as many calls as possible, starting from the top of the function and\n// working down.\nfor (auto& call : to_inline) {\n  BorrowedRef<PyCodeObject> call_code{call.func->func_code};\n  size_t new_cost = cost + codeCost(call_code);\n  if (new_cost > cost_limit) {\n    LOG_INLINER(\n        \"Inliner reached cost limit of {} when trying to inline {} into {}, \"\n        \"inlining stopping early\",\n        new_cost,\n        funcFullname(call.func),\n        irfunc.fullname);\n    break;\n  }\n  cost = new_cost;\n\n  inlineFunctionCall(irfunc, &call);\n\n  // We need to reflow types after every inline to propagate new type\n  // information from the callee.\n  reflowTypes(irfunc);\n}\n// ..."
+          },
+          {
+            "type": "p",
+            "text": "It does some graph maintenance work after inlining these calls, but that’s it."
+          },
+          {
+            "type": "p",
+            "text": "This approach gets a surprising amount of utility for being so simple: it\ninlines constants (quite a few methods look like def foo(): return 5), small\nmethods, and (at least, as far as I can remember) shrinks the compiled code\nsize. All for very little compile time overhead."
+          },
+          {
+            "type": "p",
+            "text": "There’s one other “standalone” Python JIT out there, PyPy. So we should look at\nthat too."
+          },
+          {
+            "type": "h3",
+            "text": "PyPy"
+          },
+          {
+            "type": "p",
+            "text": "There are two inliners in PyPy. One is inside the RPython to C translation\npipeline, which acts more like an ahead-of-time compiler2.\nThen there is the tracing JIT bit, which has its own optimizer and heuristics.\nWe’re going to look at the latter."
+          },
+          {
+            "type": "p",
+            "text": "I talked to CF Bolz-Tereick about the inliner and their\ncomment was that PyPy’s inlining heuristic is “yes”. There are a couple of\nexceptions, such as not inlining recursive functions or functions with loops.\nBut the basic idea of tracing includes tracing through call instructions, which\nnaturally means that you are “inlining”."
+          },
+          {
+            "type": "p",
+            "text": "PyPy also does this neat thing where they treat frame pushes like normal\nallocation. Frame pushes, frame reads, and frame writes get written to the\ntrace like normal object memory traffic and can get optimized away like other\nfield reads and writes. This means that they can “just” use DCE to eliminate\nframe pushes and pops, whereas Cinder has some complicated mechanism to do it\n(which is my fault)."
+          },
+          {
+            "type": "p",
+            "text": "TODO get more details here"
+          },
+          {
+            "type": "h3",
+            "text": "V8"
+          },
+          {
+            "type": "p",
+            "text": "V8 is a JS engine and it has over the years had many execution approaches.\nWe’ll look at three of them since they all have or had their place in the\nhistory:"
+          },
+          {
+            "type": "li",
+            "text": "Hydrogen was the first real SSA IR and it looks very familiar to me, having\nworked on Cinder and now ZJIT. It is now defunct."
+          },
+          {
+            "type": "li",
+            "text": "Turbofan was the replacement, going full Sea of Nodes. In the grand scheme of\nthings it is a pretty fast compiler, but it does not hold back from doing some\nexpensive rewrites. This was recently rewritten from Sea of Nodes to a mode\ntraditional CFG and nicknamed Turboshaft."
+          },
+          {
+            "type": "li",
+            "text": "Maglev is meant to coexist alongside Turbofan, preferring to speculate a little\nmore eagerly and do fewer incremental rewrites in the name of compile\ntime.3"
+          },
+          {
+            "type": "p",
+            "text": "They also each inline at different times in the pipeline, which made for a fun\ntime trying to understand the different codebases."
+          },
+          {
+            "type": "h3",
+            "text": "V8 Hydrogen"
+          },
+          {
+            "type": "p",
+            "text": "Inlining happens during Hydrogen graph building"
+          },
+          {
+            "type": "li",
+            "text": "https://github.com/tekknolagi/v8/blob/a969ab67f8e1e7475d9b26468225c3a772890c64/src/crankshaft/hydrogen.cc#L9236"
+          },
+          {
+            "type": "p",
+            "text": "Don’t store function bytecode of all functions; need to re-parse callee text\nsource to inline"
+          },
+          {
+            "type": "p",
+            "text": "Heuristics https://github.com/tekknolagi/v8/blob/a969ab67f8e1e7475d9b26468225c3a772890c64/src/crankshaft/hydrogen.cc#L7807"
+          },
+          {
+            "type": "li",
+            "text": "something about native context"
+          },
+          {
+            "type": "li",
+            "text": "check callee AST size against configurable limit"
+          },
+          {
+            "type": "li",
+            "text": "check inlining depth against configurable limit"
+          },
+          {
+            "type": "li",
+            "text": "don’t inline recursive functions"
+          },
+          {
+            "type": "li",
+            "text": "check current cumulative method size (as tracked by AST node count) against\nconfigurable limit"
+          },
+          {
+            "type": "h3",
+            "text": "V8 TurboFan"
+          },
+          {
+            "type": "p",
+            "text": "https://docs.google.com/document/d/1VoYBhpDhJC4VlqMXCKvae-8IGuheBGxy32EOgC2LnT8/edit"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.h#L14"
+          },
+          {
+            "type": "li",
+            "text": "Find candidates https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L134"
+          },
+          {
+            "type": "li",
+            "text": "Can inline https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L75"
+          },
+          {
+            "type": "li",
+            "text": "Force inline small functions https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L309"
+          },
+          {
+            "type": "li",
+            "text": "Loop over sorted (by comparator) list https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L847"
+          },
+          {
+            "type": "h3",
+            "text": "V8 Maglev"
+          },
+          {
+            "type": "p",
+            "text": "When optimizing, add call instructions to the inline candidates list: https://github.com/v8/v8/blob/1a391f98cc7a9196369f2d6cab7df35ffbe92c08/src/maglev/maglev-graph-optimizer.cc#L1271"
+          },
+          {
+            "type": "code",
+            "text": "ProcessResult MaglevGraphOptimizer::VisitCall(Call* node,\n                                              const ProcessingState& state) {\n  // ...\n  int bytecode_length = shared.GetBytecodeArray(broker()).length();\n  float score =\n      (call_frequency / bytecode_length) * (loop_depth_ > 0 ? 1.5 : 1.0);\n\n  bool is_small_function =\n      bytecode_length <\n      reducer_.graph()->compilation_info()->flags().max_eager_inlined_bytecode;\n  // ...\n  MaglevCallSiteInfo* call_site = reducer_.zone()->New<MaglevCallSiteInfo>(\n      MaglevCallerDetails{\n          ...\n          is_small_function, call_frequency,\n          ...\n      },\n      score, bytecode_length);\n  reducer_.PushInlineCandidate(call_site);\n  // ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/maglev/maglev-inlining.h#L36"
+          },
+          {
+            "type": "p",
+            "text": "Unlike for example Cinder, Maglev looks like it does not have a lot of\nrestrictions about what can get inlined into what, so its “can inline” signal\nis about budget. Actually two budgets: small budget and normal budget."
+          },
+          {
+            "type": "code",
+            "text": "bool MaglevInliner::CanInlineCall() {\n  // We stop inlining entirely if the small budget is exhausted.\n  // Inlining decisions after that become bad if we stop inlining small\n  // functions, but keep inlining large ones.\n  return !graph_->inlineable_calls().empty() &&\n         (graph_->total_inlined_bytecode_size() <\n              max_inlined_bytecode_size_cumulative() ||\n          graph_->total_inlined_bytecode_size_small() <\n              max_inlined_bytecode_size_small_total());\n}"
+          },
+          {
+            "type": "p",
+            "text": "Then its inlining loop is a greedy walk of the to-inline queue checking\ncandidate sizes."
+          },
+          {
+            "type": "code",
+            "text": "bool MaglevInliner::InlineCallSites() {\n  DCHECK(CanInlineCall());\n  while (!graph_->inlineable_calls().empty()) {\n    // pop from inlineable_calls\n    MaglevCallSiteInfo* call_site = ChooseNextCallSite();\n\n    bool is_small_with_heapnum_input_outputs =\n        IsSmallWithHeapNumberInputsOutputs(call_site);\n\n    if (graph_->total_inlined_bytecode_size() >\n        max_inlined_bytecode_size_cumulative()) {\n      // We ran out of budget. Checking if this is a small-ish function that we\n      // can still inline.\n      if (graph_->total_inlined_bytecode_size_small() >\n          max_inlined_bytecode_size_small_total()) {\n        graph_->compilation_info()->set_could_not_inline_all_candidates();\n        break;\n      }\n\n      if (!is_small_with_heapnum_input_outputs) {\n        graph_->compilation_info()->set_could_not_inline_all_candidates();\n        // Not that we don't break just rather just continue: next candidates\n        // might be inlineable.\n        continue;\n      }\n    }\n\n    InliningResult result =\n        BuildInlineFunction(call_site, is_small_with_heapnum_input_outputs);\n    // ...\n  }\n  return true;\n}"
+          },
+          {
+            "type": "p",
+            "text": "It runs this loop (which drains the queue) interleaved with the optimizer\n(which populates the queue)."
+          },
+          {
+            "type": "code",
+            "text": "bool MaglevInliner::Run() {\n  if (graph_->inlineable_calls().empty()) return true;\n\n  while (CanInlineCall()) {\n    if (!InlineCallSites()) return false;\n    RunOptimizer();\n  }\n  // ...\n}"
+          },
+          {
+            "type": "p",
+            "text": "Confusingly, though, the optimizer also calls another function called\nCanInlineCall which checks if it legally can inline:"
+          },
+          {
+            "type": "li",
+            "text": "skip recursion"
+          },
+          {
+            "type": "li",
+            "text": "https://github.com/v8/v8/blob/1a391f98cc7a9196369f2d6cab7df35ffbe92c08/src/objects/shared-function-info-inl.h#L421"
+          },
+          {
+            "type": "li",
+            "text": "not called enough (min call frequency)"
+          },
+          {
+            "type": "li",
+            "text": "bytecode too big"
+          },
+          {
+            "type": "p",
+            "text": "bool MaglevGraphBuilder::ShouldEagerInlineCall( appears unused? / dead\ndeclaration? maybe src/maglev/maglev-graph-builder.cc is just not working on\ngithub search"
+          },
+          {
+            "type": "p",
+            "text": "MaybeReduceResult MaglevGraphBuilder::TryBuildCallKnownJSFunction( also\nunused / dead declaration same"
+          },
+          {
+            "type": "h3",
+            "text": "JavaScriptCore"
+          },
+          {
+            "type": "p",
+            "text": "JavaScriptCore is funky! Unlike these other compilers that do inlining in their\nneat little SSA IRs, JSC inlines at the bytecode level4. This is their way of\nmaking sure that they get at least one level of call context into their\ninterpreter inline caches, which will eventually give better information to the\ncompiler."
+          },
+          {
+            "type": "li",
+            "text": "Bytecode inlining\n    \n      https://github.com/WebKit/WebKit/blob/709c3895afd71e0836f8c8be7393e44d41fab7e1/Source/JavaScriptCore/bytecode/CodeBlock.cpp#L2453"
+          },
+          {
+            "type": "li",
+            "text": "DFG\n    \n      https://github.com/WebKit/WebKit/blob/709c3895afd71e0836f8c8be7393e44d41fab7e1/Source/JavaScriptCore/dfg/DFGCapabilities.cpp#L76\n      https://github.com/WebKit/WebKit/blob/917854a9c245b87b333e23ed4b195505d574a333/Source/JavaScriptCore/dfg/DFGByteCodeParser.cpp#L1703\n      https://github.com/WebKit/WebKit/blob/917854a9c245b87b333e23ed4b195505d574a333/Source/JavaScriptCore/bytecode/CallLinkStatus.cpp#L294\n      https://github.com/WebKit/WebKit/blob/d919344236c47b610930636d3310f00380624d43/Source/JavaScriptCore/bytecode/InlineCallFrame.h"
+          },
+          {
+            "type": "p",
+            "text": "JSC only inlines based on bytecode profile information, and only inlines\nbytecode??"
+          },
+          {
+            "type": "p",
+            "text": "TODO find better sources for bytecode inlining"
+          },
+          {
+            "type": "h3",
+            "text": "SpiderMonkey"
+          },
+          {
+            "type": "p",
+            "text": "SpiderMonkey has another way of getting that call contet without doing bytecode\ninlining: they add call context to their inline caches. Methods can pass down\nan ICScript to their callees where the callee writes its inline cache\ninformation. Then, when compiling, the callee is more likely to be\nmonomorphized."
+          },
+          {
+            "type": "p",
+            "text": "Wasm"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/mozilla-firefox/firefox/blob/438a3ce10eb77fb50d968463b7741117aec5bb4a/js/src/wasm/WasmHeuristics.h#L213"
+          },
+          {
+            "type": "p",
+            "text": "SpiderMonkey ICScript"
+          },
+          {
+            "type": "h3",
+            "text": "Wasmtime and Cranelift"
+          },
+          {
+            "type": "p",
+            "text": "https://fitzgen.com/2025/11/19/inliner.html"
+          },
+          {
+            "type": "h3",
+            "text": "HotSpot"
+          },
+          {
+            "type": "p",
+            "text": "Plan: run in interpreter; tier up to C1; profile call targets; inline in C1;\nprofile branch counts; tier up to C2, which copies C1 inlining decisions in\nbytecode parser"
+          },
+          {
+            "type": "p",
+            "text": "HotSpot C2"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/a05d5d2514c835f2bfeaf7a8c7df0ac241f0177f/src/hotspot/share/opto/bytecodeInfo.cpp#L116"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/bytecodeInfo.cpp#L197"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/parse.hpp#L42"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/doCall.cpp#L185"
+          },
+          {
+            "type": "p",
+            "text": "Not too small"
+          },
+          {
+            "type": "p",
+            "text": "Walk up the call stack to figure out what to compile"
+          },
+          {
+            "type": "p",
+            "text": "Handling the right thing to inline: def foo(a) = a.each {|x| x }\nwant to compile foo, inline each, inline block, not compile block separately\n(probably)"
+          },
+          {
+            "type": "p",
+            "text": "HotSpot C1"
+          },
+          {
+            "type": "p",
+            "text": "https://bernsteinbear.com/assets/img/design-hotspot-client-compiler.pdf"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/d854a04231a437a6af36ae65780961f40f336343/src/hotspot/share/c1/c1_GraphBuilder.cpp#L755"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/openjdk/jdk/blob/d854a04231a437a6af36ae65780961f40f336343/src/hotspot/share/c1/c1_GraphBuilder.cpp#L3854"
+          },
+          {
+            "type": "li",
+            "text": "skip callees with exception handlers (unless explicitly allowed with a CLI flag)"
+          },
+          {
+            "type": "li",
+            "text": "skip synchronized callees (unless explicitly allowed with a CLI flag)"
+          },
+          {
+            "type": "li",
+            "text": "skip classes with unlinked callees"
+          },
+          {
+            "type": "li",
+            "text": "skip uninitialized classes"
+          },
+          {
+            "type": "li",
+            "text": "…"
+          },
+          {
+            "type": "p",
+            "text": "heuristics:"
+          },
+          {
+            "type": "li",
+            "text": "max inline level (default 9)"
+          },
+          {
+            "type": "li",
+            "text": "max recursive inline level (default 1)"
+          },
+          {
+            "type": "li",
+            "text": "callee bytecode size (max for top level is 35 bytecodes, but falls off by 10% per inline level)"
+          },
+          {
+            "type": "li",
+            "text": "callee stack usage (max of 10 slots)\n          // Additional condition to limit stack usage for non-recursive calls.\n      if ((callee_recursive_level == 0) &&\n          (callee->max_stack() + callee->max_locals() - callee->size_of_parameters() > C1InlineStackLimit)) {\n        INLINE_BAILOUT(\"callee uses too much stack\");\n      }"
+          },
+          {
+            "type": "li",
+            "text": "max total method size (default 8000 bytecodes)"
+          },
+          {
+            "type": "h3",
+            "text": "TruffleRuby"
+          },
+          {
+            "type": "p",
+            "text": "TruffleRuby uses weighted compile queue"
+          },
+          {
+            "type": "p",
+            "text": "Graal\nhttps://ieeexplore.ieee.org/document/8661171"
+          },
+          {
+            "type": "h3",
+            "text": ".NET"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dotnet/runtime/blob/2d638dc1179164a08d9387cbe6354fe2b7e4d823/docs/design/coreclr/jit/inlining-plans.md"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/inline.def#L94"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/inlinepolicy.cpp"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/docs/design/coreclr/jit/inline-size-estimates.md?plain=1#L5\nhttps://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/fginline.cpp"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dotnet/runtime/issues/10303"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/AndyAyersMS/PerformanceExplorer/blob/master/notes/notes-aug-2016.md"
+          },
+          {
+            "type": "h3",
+            "text": "Dart"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dart-lang/sdk/blob/391212f3da8cc0790fc532d367549042216bd5ca/runtime/vm/compiler/backend/inliner.cc#L49"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/dart-lang/sdk/blob/391212f3da8cc0790fc532d367549042216bd5ca/runtime/vm/compiler/backend/inliner.cc#L1023"
+          },
+          {
+            "type": "p",
+            "text": "https://web.archive.org/web/20170830093403id_/https://link.springer.com/content/pdf/10.1007/978-3-540-78791-4_5.pdf"
+          },
+          {
+            "type": "code",
+            "text": "DEFINE_FLAG(int,\n            deoptimization_counter_inlining_threshold,\n            12,\n            \"How many times we allow deoptimization before we stop inlining.\");\nDEFINE_FLAG(bool, trace_inlining, false, \"Trace inlining\");\nDEFINE_FLAG(charp, inlining_filter, nullptr, \"Inline only in named function\");\n\n// Flags for inlining heuristics.\nDEFINE_FLAG(int,\n            inline_getters_setters_smaller_than,\n            10,\n            \"Always inline getters and setters that have fewer instructions\");\nDEFINE_FLAG(int,\n            inlining_depth_threshold,\n            6,\n            \"Inline function calls up to threshold nesting depth\");\nDEFINE_FLAG(\n    int,\n    inlining_size_threshold,\n    25,\n    \"Always inline functions that have threshold or fewer instructions\");\nDEFINE_FLAG(int,\n            inlining_callee_call_sites_threshold,\n            1,\n            \"Always inline functions containing threshold or fewer calls.\");\nDEFINE_FLAG(int,\n            inlining_callee_size_threshold,\n            160,\n            \"Do not inline callees larger than threshold\");\nDEFINE_FLAG(int,\n            inlining_small_leaf_size_threshold,\n            50,\n            \"Do not inline leaf callees larger than threshold\");\nDEFINE_FLAG(int,\n            inlining_caller_size_threshold,\n            50000,\n            \"Stop inlining once caller reaches the threshold.\");\nDEFINE_FLAG(int,\n            inlining_hotness,\n            10,\n            \"Inline only hotter calls, in percents (0 .. 100); \"\n            \"default 10%: calls above-equal 10% of max-count are inlined.\");\nDEFINE_FLAG(int,\n            inlining_recursion_depth_threshold,\n            1,\n            \"Inline recursive function calls up to threshold recursion depth.\");\nDEFINE_FLAG(int,\n            max_inlined_per_depth,\n            500,\n            \"Max. number of inlined calls per depth\");"
+          },
+          {
+            "type": "p",
+            "text": "An adaptive strategy for inline substitution (PDF)"
+          },
+          {
+            "type": "code",
+            "text": "  // Inlining heuristics based on Cooper et al. 2008.\n  InliningDecision ShouldWeInline(const Function& callee,\n                                  intptr_t instr_count,\n                                  intptr_t call_site_count) {\n    // Pragma or size heuristics.\n    if (inliner_->AlwaysInline(callee)) {\n      return InliningDecision::Yes(\"AlwaysInline\");\n    } else if (inlined_size_ > FLAG_inlining_caller_size_threshold) {\n      // Prevent caller methods becoming humongous and thus slow to compile.\n      return InliningDecision::No(\"--inlining-caller-size-threshold\");\n    } else if (instr_count > FLAG_inlining_callee_size_threshold) {\n      // Prevent inlining of callee methods that exceed certain size.\n      return InliningDecision::No(\"--inlining-callee-size-threshold\");\n    }\n    // Inlining depth.\n    const int callee_inlining_depth = callee.inlining_depth();\n    if (callee_inlining_depth > 0 &&\n        ((callee_inlining_depth + inlining_depth_) >\n         FLAG_inlining_depth_threshold)) {\n      return InliningDecision::No(\"--inlining-depth-threshold\");\n    }\n    // Situation instr_count == 0 denotes no counts have been computed yet.\n    // In that case, we say ok to the early heuristic and come back with the\n    // late heuristic.\n    if (instr_count == 0) {\n      return InliningDecision::Yes(\"need to count first\");\n    } else if (instr_count <= FLAG_inlining_size_threshold) {\n      return InliningDecision::Yes(\"--inlining-size-threshold\");\n    } else if (call_site_count <= FLAG_inlining_callee_call_sites_threshold) {\n      return InliningDecision::Yes(\"--inlining-callee-call-sites-threshold\");\n    }\n    return InliningDecision::No(\"default\");\n  }"
+          },
+          {
+            "type": "h3",
+            "text": "HHVM"
+          },
+          {
+            "type": "p",
+            "text": "tracelet based"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/facebook/hhvm/blob/eeba7ad1ffa372a9b8cc9d1ec7f5295d45627009/hphp/runtime/vm/jit/inlining-decider.h#L89"
+          },
+          {
+            "type": "code",
+            "text": "  // Refuse if the cost exceeds our thresholds.\n  // We measure the cost of inlining each callstack and stop when it exceeds a\n  // certain threshold.  (Note that we do not measure the total cost of all the\n  // inlined calls for a given caller---just the cost of each nested stack.)\n  cost = costOfInlining(callerSk, callee, regionAndUnit, annotationsPtr);\n  if (cost <= Cfg::HHIR::AlwaysInlineVasmCostLimit) {\n    return accept(folly::sformat(\"cost={} within always-inline limit\", cost));\n  }\n\n  if (region.instrSize() > irgs.budgetBCInstrs) {\n    return refuse(folly::sformat(\n      \"exhausted bytecode budget: budgetBCInstrs={}, regionSize={}\",\n      irgs.budgetBCInstrs, region.instrSize()));\n  }\n  auto maxTotalCost = adjustedMaxVasmCost(irgs, region, inlineDepth(irgs));\n  int maxCost = maxTotalCost;\n  if (Cfg::HHIR::InliningUseStackedCost) {\n    maxCost -= irgs.inlineState.cost;\n  }\n  const auto baseProfCount = s_baseProfCount.load();\n  const auto callerProfCount = irgen::curProfCount(irgs);\n  const auto calleeProfCount = irgen::calleeProfCount(irgs, region);\n  if (cost > maxCost) {\n    auto const depth = inlineDepth(irgs);\n    return refuse(folly::sformat(\n      \"too expensive: cost={} : maxCost={} : \"\n      \"baseProfCount={} : callerProfCount={} : calleeProfCount={} : depth={}\",\n      cost, maxCost, baseProfCount, callerProfCount, calleeProfCount, depth));\n  }\n\n  return accept(folly::sformat(\"small region with return: cost={} : \"\n                               \"maxTotalCost={} : maxCost={} : baseProfCount={}\"\n                               \" : callerProfCount={} : calleeProfCount={}\",\n                               cost, maxTotalCost, maxCost, baseProfCount,\n                               callerProfCount, calleeProfCount));"
+          },
+          {
+            "type": "h3",
+            "text": "ART"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/LineageOS/android_art/blob/8ce603e0c68899bdfbc9cd4c50dcc65bbf777982/compiler/optimizing/inliner.h"
+          },
+          {
+            "type": "code",
+            "text": "// Instruction limit to control memory.\nstatic constexpr size_t kMaximumNumberOfTotalInstructions = 1024;\n\n// Maximum number of instructions for considering a method small,\n// which we will always try to inline if the other non-instruction limits\n// are not reached.\nstatic constexpr size_t kMaximumNumberOfInstructionsForSmallMethod = 3;\n\n// Limit the number of dex registers that we accumulate while inlining\n// to avoid creating large amount of nested environments.\nstatic constexpr size_t kMaximumNumberOfCumulatedDexRegisters = 32;\n\n// Limit recursive call inlining, which do not benefit from too\n// much inlining compared to code locality.\nstatic constexpr size_t kMaximumNumberOfRecursiveCalls = 4;\n\n// Limit recursive polymorphic call inlining to prevent code bloat, since it can quickly get out of\n// hand in the presence of multiple Wrapper classes. We set this to 0 to disallow polymorphic\n// recursive calls at all.\nstatic constexpr size_t kMaximumNumberOfPolymorphicRecursiveCalls = 0;\n\n// Controls the use of inline caches in AOT mode.\nstatic constexpr bool kUseAOTInlineCaches = true;\n\n// Controls the use of inlining try catches.\nstatic constexpr bool kInlineTryCatches = true;"
+          },
+          {
+            "type": "code",
+            "text": "void HInliner::UpdateInliningBudget() {\n  if (total_number_of_instructions_ >= kMaximumNumberOfTotalInstructions) {\n    // Always try to inline small methods.\n    inlining_budget_ = kMaximumNumberOfInstructionsForSmallMethod;\n  } else {\n    inlining_budget_ = std::max(\n        kMaximumNumberOfInstructionsForSmallMethod,\n        kMaximumNumberOfTotalInstructions - total_number_of_instructions_);\n  }\n}"
+          },
+          {
+            "type": "code",
+            "text": "bool HInliner::IsInliningEncouraged(const HInvoke* invoke_instruction,\n                                    ArtMethod* method,\n                                    const CodeItemDataAccessor& accessor) const {\n  if (CountRecursiveCallsOf(method) > kMaximumNumberOfRecursiveCalls) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedRecursiveBudget)\n        << \"Method \"\n        << method->PrettyMethod()\n        << \" is not inlined because it has reached its recursive call budget.\";\n    return false;\n  }\n\n  size_t inline_max_code_units = codegen_->GetCompilerOptions().GetInlineMaxCodeUnits();\n  if (accessor.InsnsSizeInCodeUnits() > inline_max_code_units) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedCodeItem)\n        << \"Method \" << method->PrettyMethod()\n        << \" is not inlined because its code item is too big: \"\n        << accessor.InsnsSizeInCodeUnits()\n        << \" > \"\n        << inline_max_code_units;\n    return false;\n  }\n\n  if (graph_->IsCompilingBaseline() &&\n      accessor.InsnsSizeInCodeUnits() > CompilerOptions::kBaselineInlineMaxCodeUnits) {\n    LOG_FAIL_NO_STAT() << \"Reached baseline maximum code unit for inlining  \"\n                       << method->PrettyMethod();\n    outermost_graph_->SetUsefulOptimizing();\n    return false;\n  }\n\n  if (invoke_instruction->GetBlock()->GetLastInstruction()->IsThrow()) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedEndsWithThrow)\n        << \"Method \" << method->PrettyMethod()\n        << \" is not inlined because its block ends with a throw\";\n    return false;\n  }\n\n  return true;\n}"
+          },
+          {
+            "type": "code",
+            "text": "if (outermost_graph_->IsCompilingBaseline() &&\n    (current->IsInvokeVirtual() || current->IsInvokeInterface()) &&\n    ProfilingInfoBuilder::IsInlineCacheUseful(current->AsInvoke(), codegen_)) {\n  uint32_t maximum_inlining_depth_for_baseline =\n      InlineCache::MaxDexPcEncodingDepth(\n          outermost_graph_->GetArtMethod(),\n          codegen_->GetCompilerOptions().GetInlineMaxCodeUnits());\n  if (depth_ + 1 > maximum_inlining_depth_for_baseline) {\n    LOG_FAIL_NO_STAT() << \"Reached maximum depth for inlining in baseline compilation: \"\n                       << depth_ << \" for \" << callee_graph->GetArtMethod()->PrettyMethod();\n    outermost_graph_->SetUsefulOptimizing();\n    return false;\n  }\n}"
+          },
+          {
+            "type": "h3",
+            "text": "JikesRVM"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/JikesRVM/JikesRVM/blob/5072f19761115d987b6ee162f49a03522d36c697/rvm/src/org/jikesrvm/compilers/opt/inlining/DefaultInlineOracle.java#L55"
+          },
+          {
+            "type": "h3",
+            "text": "Other/research"
+          },
+          {
+            "type": "p",
+            "text": "Partial inlining"
+          },
+          {
+            "type": "p",
+            "text": "Understanding and Exploiting Optimal Function Inlining (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "machine learning"
+          },
+          {
+            "type": "p",
+            "text": "Automatic construction of inlining heuristics using machine learning"
+          },
+          {
+            "type": "p",
+            "text": "Machine-Learning-Based Optimization Heuristics in Dynamic Compilers (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "Guiding Inlining Decisions Using Post-Inlining Transformations (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "U Can’t Inline This! (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "Towards better inlining decisions using inlining trials"
+          },
+          {
+            "type": "p",
+            "text": "RhizomeRuby inlining"
+          },
+          {
+            "type": "p",
+            "text": "An Optimization-Driven Incremental Inline Substitution Algorithm for Just-in-Time Compilers (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "Automatic Tuning of Inlining Heuristics (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "Inlining-Benefit Prediction with Interprocedural Partial Escape Analysis (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "Inlining of Virtual Methods (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "A Study of Type Analysis for Speculative Method Inlining in a JIT Environment (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "A Comparative Study of Static and Profile-Based Heuristics for Inlining (PDF)"
+          },
+          {
+            "type": "p",
+            "text": "clusters from Custom benefit-driven inliner in Falcon JIT (PDF)"
+          },
+          {
+            "type": "h3",
+            "text": "Graal"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/policy/GreedyInliningPolicy.java"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/InliningPhase.java"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/info/elem/InlineableGraph.java#L148"
+          },
+          {
+            "type": "li",
+            "text": "There are some newer papers, especially in Java land, that try to\ndo a lot of analysis ahead-of-time and bundle the resulting information in\n.class files. Then the JIT can read it and see more than local context.\n\n      Or, if you are an AOT compiler, you can probably do a lot more whole system\nreasoning—both for time budget reasons and also because you can see more\nfunctions at once. ↩"
+          },
+          {
+            "type": "li",
+            "text": "Check it\nout\nif you like. I stumbled across it by accident. ↩"
+          },
+          {
+            "type": "li",
+            "text": "See also “Turbolev”, which seems to merge Maglev (CFG) with\nTurbofan (Sea of Nodes)… somehow. ↩"
+          },
+          {
+            "type": "li",
+            "text": "Potentially a misunderstanding based on a private conversation. I’m\nworking on tracking down the implementation… ↩"
+          }
+        ],
+        "translations": [
+          "编译器，尤其是方法级即时（JIT）编译器，一次只处理一个函数。这是一个天然的代码单元大小，特别是对于动态语言的 JIT 而言：在特定的时刻，关于一个正在运行且不断变化的系统的其他部分，你还能收集到多少信息呢？",
+          "我没有任何数据来支持这一点——也许我该去收集一些——但平均而言，方法是很小的。特别是在像 Ruby 这样将方法派发用于一切操作的语言中，甚至连实例变量（属性、字段……）的查找也是如此，它们不仅小，而且随处可见。",
+          "这让编译器感到很头疼。如果我们继续对它们进行拟人化的话，编译器喜欢拥有更多的上下文信息以便更好地进行优化。来看看下面这个看似有些滑稽、但实际上却能代表惊人比例的真实代码的例子：",
+          "class Point\n  attr_reader :x, :y\n\n  def initialize(x, y)\n    @x = x\n    @y = y\n  end\n\n  def distance(other)\n    Math.sqrt((@x - other.x)**2 + (@y - other.y)**2)\n  end\nend\n\ndef distance_from_origin(x, y)\n  Point.new(x, y).distance(Point.new(0, 0))\nend",
+          "目前，在 distance_from_origin 方法中，我数了一下有 8 个不同的方法调用：",
+          "Point.new",
+          "Point#initialize",
+          "Point.new",
+          "Point#initialize",
+          "Point#distance",
+          "Float#**",
+          "Float#**",
+          "Math.sqrt",
+          "（严格来说会更多，但 ivar 查找（包括 attr_reader！）、加法和减法通常都经过了特化处理，不会压入栈帧，即使在解释器中也是如此。）",
+          "此外，至少还有两次堆内存分配：每个 Point 实例各一次。",
+          "最后，还有大量针对 Point 实例的来回内存访问。",
+          "这一切太令人沮丧了！一个本该是简单的数学运算，现在却充斥着大量杂七杂八的操作。Point 显然不是一个零成本抽象。",
+          "即使我们拥有一大堆诸如加载-存储消除或逃逸分析等其他优化手段，它们也发挥不了多大作用：几乎所有东西都逃逸了并且带有副作用。也就是说，除非我们进行内联。内联是一根能够撬动大量其他优化阶段生效的杠杆。",
+          "内联：“简单”的部分",
+          "几年前，我写过一篇关于 Cinder 内联器设计与实现的文章（FB 链接，个人博客链接）。我当时写的可以说是最简单的部分，也就是将被调用者的函数体复制到调用者中。我花了至少一周的时间才让它正常工作。如果把 JIT 其余部分的配套集成工作也算进去，可能要花上几个月。而在今年 2 月的一场小型黑客松上，我看着我的同事 k0kubun 在短短 30 分钟内，就在 ZJIT 中写出了内联器这部分功能的原型。",
+          "当虚拟机（VM）的几乎每一个部分都能从客座语言中被观察到时，还有更多的工作要做：Python 和 Ruby 都允许从用户代码中检查局部变量、调用栈等的状态。采样分析器也需要保留一定量的调用痕迹才能用来检查堆栈。因此，我们还需要引入更多的机制，来伪装成被调用函数没有被内联一样。我在那篇关于 Cinder 的博客文章中稍微讨论过这一点。",
+          "即便如此，所有这些大概也能在几个月内设计并串联完成。但在那之后，你就会发现自己要在接下来的 10 年里不断对内联器进行调优。这才是难得多的事情。",
+          "何时内联：更困难的部分",
+          "使得内联变得困难的原因，特别是在方法级 JIT 中，在于你试图让整个（动态！）系统变得更快，但你只能通过显微镜进行观察，并且只能进行局部推理1。虽然强度削弱、内联缓存和值编号等其他优化对生成的代码来说百利而无一害，但内联却可能产生负面影响。它可能也是人们加入的第一个具有非局部影响的优化。",
+          "如果内联不当，你的代码体积可能会急剧膨胀。这可能会导致 CPU 缓存颠簸。这确实令人头疼，但再厉害的高手也难免会遇到。",
+          "而且，如果内联不当，可能会阻碍其他有益的优化：如果在内联方法 A 之后达到了某种大小限制，你可能永远无法内联 B，而 B 恰恰是解锁你正试图优化的那个方法性能的关键。",
+          "最后，内联可能会拖慢编译时间。在延迟至关重要的情况下（想想：交互式客户端 JavaScript），即使长期吞吐量有所提高，向其中加入大量代码也可能导致明显的卡顿。一如既往，带内编译是一种权衡，因为你花在编译上的时间，就没有在执行代码。",
+          "你必须编写编译器来推演所有这些事情。因此你需要启发式算法。例如，这是 Michael Pollan 的内联启发式规则：",
+          "内联方法。主要是小方法。数量不要太多。",
+          "我对一堆编译器（主要是 JIT 编译器）做了一项调查，看看它们的内联启发式算法是什么样的。我还阅读（略读）了一些论文，看看那些研究者是怎么说的。我想知道他们是否意见一致。",
+          "这篇文章酝酿了很长时间。大约五年前我就开始写了，但后来当我从 Facebook 离职时，我不小心把为 Cinder 内联器所做的所有内联研究都留在了那里。所以后来我有一阵子只是漫无目的地思考，直到今年才重新开始做这件事。不管怎样，这就当是我的 wonderwall 吧。",
+          "启发式算法",
+          "剧透一下：总而言之，人们倾向于关注以下几点：",
+          "调用目标的剖析数据（Profiles）",
+          "调用者的累积大小（随着被调用者被内联而增加）",
+          "被调用者的大小",
+          "内联深度",
+          "在特定深度的内联调用数量",
+          "是否存在递归",
+          "被调用者与调用者的调用次数比（如果被调用者的调用次数少于对调用者调用次数的 K%，则不内联该被调用者）",
+          "被调用者的栈使用量",
+          "被调用者中的多态性",
+          "编译器处于何种模式（基线模式 vs 更激进的模式）",
+          "被调用者是否看起来总是抛出异常",
+          "并且还有各种有趣的方式来传入剖析数据。",
+          "最后，一些较新的论文做了一些疯狂的事情：",
+          "训练神经网络来做出内联决策",
+          "让内联驱动整个优化流水线，将其视为对调用图进行广度优先搜索（BFS）遍历时的一种搜索启发式算法",
+          "使用 AOT 收集的信息来辅助 JIT 启发式算法",
+          "内联中需要考虑的另一件事是如何收集和解读剖析数据。",
+          "调用上下文与剖析数据：另一个更困难的部分",
+          "当你编译一个函数时，你倾向于根据它历史上接收到的输入对其进行特化。对于单态输入，你可能会设置一个守卫条件检查类型是否仍然相同，如果不同则跳转到解释器。对于多态输入，你可能会检查前 K 个（约 4 个）常见情况，如果不匹配则跳转到解释器。这很好。",
+          "但有时你可能正在编译一个多态方法 bar，而该方法在其调用者 foo 中实际上是单态的。也就是说，foo 可能只向 bar 传递一种类型的输入，但其他调用者却传递各种各样的东西。这里有一个有点傻的例子来说明我的意思：",
+          "class HashWithIndifferentAccess\n  def initialize\n    @hash = {}\n  end\n\n  # Allow reading from the Hash with either a String or a Symbol\n  def [](key) = @hash[key.to_sym]\n\n  # ...\nend\n\n# some method...\nsome_hash = HashWithIndifferentAccess.new\n# ...\nsome_hash[\"abc\"]\n\n# some other method...\nanother_hash = HashWithIndifferentAccess.new\n# ...\nanother_hash[:xyz]",
+          "开个玩笑，其实一点也不傻。这是 Rails 中非常常见的一种模式。它使得 HashWithIndifferentAccess#[] 中的 key 变得多态，即使对于它的许多调用者来说，它很可能是单态的（甚至是一个常量）。",
+          "为了将这些信息传递给编译器，你必须弄清楚这种调用上下文关系。有几种常见的方法可以做到这一点。",
+          "拆分（Splitting）",
+          "以 YJIT 为例，尽管它不做内联，但会根据传入参数的类型对方法进行拆分。这意味着它会克隆已编译的代码，为每个上下文生成一个新版本。这并不能提供调用上下文（“A 调用 B”），但提供了类型上下文（“B 在传入整数时被调用，B’ 在传入字符串时被调用”）。",
+          "编译器可以在解释器或基线层中进行基于类型的拆分。",
+          "Profile 拆分",
+          "如果你不想复制代码，可以选择复制 Profile。你可以使用类型上下文（如上所述）或调用上下文来实现这一点。例如，SpiderMonkey 采用“试验性内联”机制，允许调用者向下传递一块内存，供潜在的内联候选被调用者记录其内联缓存（IC）。此时，而不是让每个函数持有各自的 ICScript，而是由调用者为该潜在的内联调用点分配一个专属的 ICScript。这就为每个被调用函数提供了（至少？）一层调用上下文。",
+          "随后，当把被调用者内联到调用者中时，我们不会受到其他调用者的类型信息对 IR 构建器（或其他读取 Profile 的组件）的污染。",
+          "字节码内联",
+          "JavaScriptCore 通过将字节码内联到其他字节码中来处理这个问题。这是一个相当复杂的转换，但它甚至（！）让解释器也能访问调用上下文。当分层升级到编译器时，所有的内联决策都已经完成了。",
+          "带计数器的早期层",
+          "HotSpot 通过多个分层来处理这个问题。解释器升级到客户端编译器 C1。C1 会在编译后的代码中收集分支和调用目标的 Profile。C1 最终可能会根据这些新信息进行重新编译。C1 最终也可能会升级到 C2，而 C2 会直接沿用 C1 的内联决策。通过这种方式，我们借助内联在 Profile 中获得了调用上下文。",
+          "内联、分析并祈祷",
+          "你能做的最后一件事，就是完全相信优化器中的类型推断和分支折叠。你可以在构建 IR 时内联并在被调用者中进行多态特化，然后寄希望于分支修剪能将内联后的被调用者单态化。这其实有点浪费资源，因为多态代码的构建算是“白费力气”了，但这方法说不定也行得通？",
+          "好了，接下来是收集的笔记和一些粗浅的见解。以下是对一系列 JIT 编译器及其如何处理内联启发式方法的综述。",
+          "致谢",
+          "但在进入正题之前，感谢 Iain Ireland、CF Bolz-Tereick 和 Ian Rogers 对这篇博文的反馈！",
+          "综述：杂项记录",
+          "接下来的部分主要是类似于 Phil Zucker 风格的“杂项记录”。",
+          "我们将从 Cinder 开始，因为在我编写 Cinder 的内联器时，我只添加了最简单的启发式规则，主要都是些“不要内联”的信号。随着时间的推移，在我离开之后，大家对它进行了更多的调优。",
+          "Cinder",
+          "内联器从调用者的 CFG（控制流图）开始，对其进行遍历以寻找合适的内联候选者。内联候选者仅针对已知的调用目标——在 Cinder 中，仅针对单态调用目标——并且需要通过一些检查。被调用者仅通过其函数对象（包含字节码）来识别。在我们决定内联之前，被调用者是没有可用的 IR 的。",
+          "大多数“无法处理”的检查都与参数处理有关。Python 的调用约定相当复杂，因此如果调用者/被调用者没有在参数传递方式上达成一致，内联器就不会费心去自己解决这个问题。那是编译器其他部分的职责。canInline 函数中的许多内容都可以被视为“待办事项（TODO）”。",
+          "bool canInline(Function& caller, AbstractCall* call_instr) {\n  // ...\n  BorrowedRef<PyFunctionObject> func = call_instr->func;\n  auto fail = [&](InlineFailureType failure_type) {\n    dlogAndCollectFailureStats(caller, call_instr, failure_type);\n    return false;\n  };\n\n  if (func->func_kwdefaults != nullptr) {\n    return fail(InlineFailureType::kHasKwdefaults);\n  }\n\n  BorrowedRef<PyCodeObject> code{func->func_code};\n  JIT_CHECK(PyCode_Check(code), \"Expected PyCodeObject\");\n\n  if (code->co_kwonlyargcount > 0) {\n    return fail(InlineFailureType::kHasKwOnlyArgs);\n  }\n  // ...\n}",
+          "失败会被记录下来以便分析。如果 Cinder 团队确定存在某些他们需要处理的频繁情况，他们会从日志中发现问题。",
+          "内联器在对 CFG 进行的一次遍历中收集所有候选的调用指令。它从选项结构体中加载可配置的“成本限制”。然后它对内联候选向量进行一次遍历，不断进行内联，直到（可能）达到成本限制。",
+          "// ...\nsize_t cost_limit = getConfig().inliner_cost_limit;\nsize_t cost = codeCost(irfunc.code);\n\n// Inline as many calls as possible, starting from the top of the function and\n// working down.\nfor (auto& call : to_inline) {\n  BorrowedRef<PyCodeObject> call_code{call.func->func_code};\n  size_t new_cost = cost + codeCost(call_code);\n  if (new_cost > cost_limit) {\n    LOG_INLINER(\n        \"Inliner reached cost limit of {} when trying to inline {} into {}, \"\n        \"inlining stopping early\",\n        new_cost,\n        funcFullname(call.func),\n        irfunc.fullname);\n    break;\n  }\n  cost = new_cost;\n\n  inlineFunctionCall(irfunc, &call);\n\n  // We need to reflow types after every inline to propagate new type\n  // information from the callee.\n  reflowTypes(irfunc);\n}\n// ...",
+          "在内联这些调用之后，它会做一些图维护工作，但也仅此而已。",
+          "尽管非常简单，这种方法却获得了惊人的实用性：它内联常量（相当多的方法看起来像 `def foo(): return 5`）和小型方法，并且（至少据我所知）能缩小编译后的代码体积。而这一切只需极少的编译时间开销。",
+          "目前还有另一种“独立”的 Python JIT，也就是 PyPy。所以我们也应该看看它。",
+          "PyPy",
+          "PyPy 中有两个内联器。一个位于 RPython 到 C 的转换流水线中，它的表现更像是一个提前编译器2。另一个是追踪型 JIT 部分，它有自己的优化器和启发式算法。我们将关注后者。",
+          "我和 CF Bolz-Tereick 谈论过这个内联器，他们的评价是 PyPy 的内联启发式算法就是“同意”。有一些例外情况，比如不内联递归函数或带有循环的函数。但追踪的基本思想包括穿透调用指令进行追踪，这自然意味着你正在进行“内联”。",
+          "PyPy 还做了一件很巧妙的事情，他们将栈帧压入视为普通的内存分配。栈帧压入、栈帧读取和栈帧写入像普通的对象内存流量一样被写入追踪记录中，并且可以像其他的字段读写一样被优化掉。这意味着他们可以“直接”使用 DCE 来消除栈帧的压入和弹出，而 Cinder 则使用了一些复杂的机制来实现这一点（这是我的锅）。",
+          "TODO 在此处补充更多细节",
+          "V8",
+          "V8 是一个 JS 引擎，多年来它采用了许多执行方式。我们将研究其中的三种，因为它们在历史上都曾占有一席之地或仍占有一席之地：",
+          "Hydrogen 是第一个真正的 SSA IR，由于我曾参与过 Cinder 的开发，现在又在做 ZJIT，所以它让我感到非常熟悉。不过它现在已经被废弃了。",
+          "Turbofan 是它的替代品，全面采用了 Sea of Nodes 架构。从大局来看，它是一个相当快的编译器，但它也毫不避讳地进行一些开销昂贵的重写操作。最近它被从 Sea of Nodes 重写为更传统的 CFG 模式，并取名为 Turboshaft。",
+          "Maglev 旨在与 Turbofan 并存，为了缩短编译时间，它倾向于更积极地进行推测，并减少增量重写3。",
+          "它们在流水线中进行内联的时间也各不相同，这使得尝试理解这些不同的代码库变得非常有趣。",
+          "V8 Hydrogen",
+          "内联发生在 Hydrogen 图构建期间",
+          "https://github.com/tekknolagi/v8/blob/a969ab67f8e1e7475d9b26468225c3a772890c64/src/crankshaft/hydrogen.cc#L9236",
+          "不存储所有函数的字节码；需要重新解析被调用者的文本源码以进行内联",
+          "启发式算法 https://github.com/tekknolagi/v8/blob/a969ab67f8e1e7475d9b26468225c3a772890c64/src/crankshaft/hydrogen.cc#L7807",
+          "一些关于原生上下文（native context）的内容",
+          "根据可配置的限制检查被调用者的 AST 大小",
+          "根据可配置的限制检查内联深度",
+          "不内联递归函数",
+          "根据可配置的限制检查当前的累积方法大小（通过 AST 节点数进行追踪）",
+          "V8 TurboFan",
+          "https://docs.google.com/document/d/1VoYBhpDhJC4VlqMXCKvae-8IGuheBGxy32EOgC2LnT8/edit",
+          "https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.h#L14",
+          "寻找候选者 https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L134",
+          "是否可内联 https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L75",
+          "强制内联小函数 https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L309",
+          "遍历已排序（按比较器）的列表 https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/compiler/js-inlining-heuristic.cc#L847",
+          "V8 Maglev",
+          "在优化时，将调用指令添加到内联候选列表中：https://github.com/v8/v8/blob/1a391f98cc7a9196369f2d6cab7df35ffbe92c08/src/maglev/maglev-graph-optimizer.cc#L1271",
+          "ProcessResult MaglevGraphOptimizer::VisitCall(Call* node,\n                                              const ProcessingState& state) {\n  // ...\n  int bytecode_length = shared.GetBytecodeArray(broker()).length();\n  float score =\n      (call_frequency / bytecode_length) * (loop_depth_ > 0 ? 1.5 : 1.0);\n\n  bool is_small_function =\n      bytecode_length <\n      reducer_.graph()->compilation_info()->flags().max_eager_inlined_bytecode;\n  // ...\n  MaglevCallSiteInfo* call_site = reducer_.zone()->New<MaglevCallSiteInfo>(\n      MaglevCallerDetails{\n          ...\n          is_small_function, call_frequency,\n          ...\n      },\n      score, bytecode_length);\n  reducer_.PushInlineCandidate(call_site);\n  // ...\n}",
+          "https://github.com/v8/v8/blob/036842f4841326130a40adfcff38f85a9b4cd30a/src/maglev/maglev-inlining.h#L36",
+          "与 Cinder 等不同，Maglev 似乎对于什么可以被内联到哪里没有太多限制，因此它的“是否可内联”信号主要取决于预算。实际上包含两种预算：小预算和普通预算。",
+          "bool MaglevInliner::CanInlineCall() {\n  // We stop inlining entirely if the small budget is exhausted.\n  // Inlining decisions after that become bad if we stop inlining small\n  // functions, but keep inlining large ones.\n  return !graph_->inlineable_calls().empty() &&\n         (graph_->total_inlined_bytecode_size() <\n              max_inlined_bytecode_size_cumulative() ||\n          graph_->total_inlined_bytecode_size_small() <\n              max_inlined_bytecode_size_small_total());\n}",
+          "然后它的内联循环会以贪心方式遍历待内联队列，检查候选者的大小。",
+          "bool MaglevInliner::InlineCallSites() {\n  DCHECK(CanInlineCall());\n  while (!graph_->inlineable_calls().empty()) {\n    // pop from inlineable_calls\n    MaglevCallSiteInfo* call_site = ChooseNextCallSite();\n\n    bool is_small_with_heapnum_input_outputs =\n        IsSmallWithHeapNumberInputsOutputs(call_site);\n\n    if (graph_->total_inlined_bytecode_size() >\n        max_inlined_bytecode_size_cumulative()) {\n      // We ran out of budget. Checking if this is a small-ish function that we\n      // can still inline.\n      if (graph_->total_inlined_bytecode_size_small() >\n          max_inlined_bytecode_size_small_total()) {\n        graph_->compilation_info()->set_could_not_inline_all_candidates();\n        break;\n      }\n\n      if (!is_small_with_heapnum_input_outputs) {\n        graph_->compilation_info()->set_could_not_inline_all_candidates();\n        // Not that we don't break just rather just continue: next candidates\n        // might be inlineable.\n        continue;\n      }\n    }\n\n    InliningResult result =\n        BuildInlineFunction(call_site, is_small_with_heapnum_input_outputs);\n    // ...\n  }\n  return true;\n}",
+          "它将这个循环（清空队列）与优化器（填充队列）交替运行。",
+          "bool MaglevInliner::Run() {\n  if (graph_->inlineable_calls().empty()) return true;\n\n  while (CanInlineCall()) {\n    if (!InlineCallSites()) return false;\n    RunOptimizer();\n  }\n  // ...\n}",
+          "然而令人困惑的是，优化器还会调用另一个名为 CanInlineCall 的函数，用于检查在规则上是否允许内联：",
+          "跳过递归",
+          "https://github.com/v8/v8/blob/1a391f98cc7a9196369f2d6cab7df35ffbe92c08/src/objects/shared-function-info-inl.h#L421",
+          "调用次数不足（未达到最小调用频率）",
+          "字节码过大",
+          "bool MaglevGraphBuilder::ShouldEagerInlineCall( 似乎未被使用？/ 无效的声明？也许 src/maglev/maglev-graph-builder.cc 只是在 GitHub 搜索中不起作用",
+          "MaybeReduceResult MaglevGraphBuilder::TryBuildCallKnownJSFunction( 同样未被使用 / 同样是无效声明",
+          "JavaScriptCore",
+          "JavaScriptCore 很奇特！不像其他编译器那样在它们整洁小巧的 SSA IR（静态单赋值中间表示）中进行内联，JSC 是在字节码层面4进行内联的。这是他们确保至少将一层的调用上下文引入其解释器内联缓存（inline caches）的方法，这最终会为编译器提供更好的信息。",
+          "字节码内联\n    \n      https://github.com/WebKit/WebKit/blob/709c3895afd71e0836f8c8be7393e44d41fab7e1/Source/JavaScriptCore/bytecode/CodeBlock.cpp#L2453",
+          "DFG\n    \n      https://github.com/WebKit/WebKit/blob/709c3895afd71e0836f8c8be7393e44d41fab7e1/Source/JavaScriptCore/dfg/DFGCapabilities.cpp#L76\n      https://github.com/WebKit/WebKit/blob/917854a9c245b87b333e23ed4b195505d574a333/Source/JavaScriptCore/dfg/DFGByteCodeParser.cpp#L1703\n      https://github.com/WebKit/WebKit/blob/917854a9c245b87b333e23ed4b195505d574a333/Source/JavaScriptCore/bytecode/CallLinkStatus.cpp#L294\n      https://github.com/WebKit/WebKit/blob/d919344236c47b610930636d3310f00380624d43/Source/JavaScriptCore/bytecode/InlineCallFrame.h",
+          "JSC 仅基于字节码性能分析（profile）信息进行内联，并且只内联字节码？？",
+          "TODO 寻找关于字节码内联更好的资料",
+          "SpiderMonkey",
+          "SpiderMonkey 有另一种无需进行字节码内联即可获取调用上下文的方法：它们将调用上下文添加到了内联缓存中。方法可以将一个 ICScript 向下传递给它的被调用者（callees），被调用者会在其中写入它的内联缓存信息。这样一来，在编译时，被调用者就更有可能被单态化（monomorphized）。",
+          "Wasm",
+          "https://github.com/mozilla-firefox/firefox/blob/438a3ce10eb77fb50d968463b7741117aec5bb4a/js/src/wasm/WasmHeuristics.h#L213",
+          "SpiderMonkey ICScript",
+          "Wasmtime 和 Cranelift",
+          "https://fitzgen.com/2025/11/19/inliner.html",
+          "HotSpot",
+          "计划：在解释器中运行；分层升级至 C1；分析调用目标；在 C1 中进行内联；分析分支执行次数；分层升级至 C2，C2 会在字节码解析器中复制 C1 的内联决策",
+          "HotSpot C2",
+          "https://github.com/openjdk/jdk/blob/a05d5d2514c835f2bfeaf7a8c7df0ac241f0177f/src/hotspot/share/opto/bytecodeInfo.cpp#L116",
+          "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/bytecodeInfo.cpp#L197",
+          "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/parse.hpp#L42",
+          "https://github.com/openjdk/jdk/blob/497dca2549a9829530670576115bf4b8fab386b3/src/hotspot/share/opto/doCall.cpp#L185",
+          "不能太小",
+          "向上遍历调用栈以确定要编译的内容",
+          "处理正确的内联对象：例如 def foo(a) = a.each {|x| x }，我们希望编译 foo，内联 each，再内联代码块，而不是单独编译代码块（通常情况下）",
+          "HotSpot C1",
+          "https://bernsteinbear.com/assets/img/design-hotspot-client-compiler.pdf",
+          "https://github.com/openjdk/jdk/blob/d854a04231a437a6af36ae65780961f40f336343/src/hotspot/share/c1/c1_GraphBuilder.cpp#L755",
+          "https://github.com/openjdk/jdk/blob/d854a04231a437a6af36ae65780961f40f336343/src/hotspot/share/c1/c1_GraphBuilder.cpp#L3854",
+          "跳过带有异常处理器的被调用者（除非通过命令行标志显式允许）",
+          "跳过同步的被调用者（除非通过命令行标志显式允许）",
+          "跳过包含未链接被调用者的类",
+          "跳过未初始化的类",
+          "…",
+          "启发式规则：",
+          "最大内联层级（默认为 9）",
+          "最大递归内联层级（默认为 1）",
+          "被调用者字节码大小（顶层最大为 35 字节码，但每增加一个内联层级会递减 10%）",
+          "被调用者栈使用量（最大 10 个槽位）\n          // 限制非递归调用栈使用量的附加条件。\n      if ((callee_recursive_level == 0) &&\n          (callee->max_stack() + callee->max_locals() - callee->size_of_parameters() > C1InlineStackLimit)) {\n        INLINE_BAILOUT(\"callee uses too much stack\");\n      }",
+          "方法总大小上限（默认 8000 字节码）",
+          "TruffleRuby",
+          "TruffleRuby 使用加权的编译队列",
+          "Graal\nhttps://ieeexplore.ieee.org/document/8661171",
+          ".NET",
+          "https://github.com/dotnet/runtime/blob/2d638dc1179164a08d9387cbe6354fe2b7e4d823/docs/design/coreclr/jit/inlining-plans.md",
+          "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/inline.def#L94",
+          "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/inlinepolicy.cpp",
+          "https://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/docs/design/coreclr/jit/inline-size-estimates.md?plain=1#L5\nhttps://github.com/dotnet/runtime/blob/0b3f3ab1ecf4de06459e5f0e2b7cb3baf70ef981/src/coreclr/jit/fginline.cpp",
+          "https://github.com/dotnet/runtime/issues/10303",
+          "https://github.com/AndyAyersMS/PerformanceExplorer/blob/master/notes/notes-aug-2016.md",
+          "Dart",
+          "https://github.com/dart-lang/sdk/blob/391212f3da8cc0790fc532d367549042216bd5ca/runtime/vm/compiler/backend/inliner.cc#L49",
+          "https://github.com/dart-lang/sdk/blob/391212f3da8cc0790fc532d367549042216bd5ca/runtime/vm/compiler/backend/inliner.cc#L1023",
+          "https://web.archive.org/web/20170830093403id_/https://link.springer.com/content/pdf/10.1007/978-3-540-78791-4_5.pdf",
+          "DEFINE_FLAG(int,\n            deoptimization_counter_inlining_threshold,\n            12,\n            \"How many times we allow deoptimization before we stop inlining.\");\nDEFINE_FLAG(bool, trace_inlining, false, \"Trace inlining\");\nDEFINE_FLAG(charp, inlining_filter, nullptr, \"Inline only in named function\");\n\n// Flags for inlining heuristics.\nDEFINE_FLAG(int,\n            inline_getters_setters_smaller_than,\n            10,\n            \"Always inline getters and setters that have fewer instructions\");\nDEFINE_FLAG(int,\n            inlining_depth_threshold,\n            6,\n            \"Inline function calls up to threshold nesting depth\");\nDEFINE_FLAG(\n    int,\n    inlining_size_threshold,\n    25,\n    \"Always inline functions that have threshold or fewer instructions\");\nDEFINE_FLAG(int,\n            inlining_callee_call_sites_threshold,\n            1,\n            \"Always inline functions containing threshold or fewer calls.\");\nDEFINE_FLAG(int,\n            inlining_callee_size_threshold,\n            160,\n            \"Do not inline callees larger than threshold\");\nDEFINE_FLAG(int,\n            inlining_small_leaf_size_threshold,\n            50,\n            \"Do not inline leaf callees larger than threshold\");\nDEFINE_FLAG(int,\n            inlining_caller_size_threshold,\n            50000,\n            \"Stop inlining once caller reaches the threshold.\");\nDEFINE_FLAG(int,\n            inlining_hotness,\n            10,\n            \"Inline only hotter calls, in percents (0 .. 100); \"\n            \"default 10%: calls above-equal 10% of max-count are inlined.\");\nDEFINE_FLAG(int,\n            inlining_recursion_depth_threshold,\n            1,\n            \"Inline recursive function calls up to threshold recursion depth.\");\nDEFINE_FLAG(int,\n            max_inlined_per_depth,\n            500,\n            \"Max. number of inlined calls per depth\");",
+          "一种自适应的内联替换策略 (PDF)",
+          "// Inlining heuristics based on Cooper et al. 2008.\n  InliningDecision ShouldWeInline(const Function& callee,\n                                  intptr_t instr_count,\n                                  intptr_t call_site_count) {\n    // Pragma or size heuristics.\n    if (inliner_->AlwaysInline(callee)) {\n      return InliningDecision::Yes(\"AlwaysInline\");\n    } else if (inlined_size_ > FLAG_inlining_caller_size_threshold) {\n      // Prevent caller methods becoming humongous and thus slow to compile.\n      return InliningDecision::No(\"--inlining-caller-size-threshold\");\n    } else if (instr_count > FLAG_inlining_callee_size_threshold) {\n      // Prevent inlining of callee methods that exceed certain size.\n      return InliningDecision::No(\"--inlining-callee-size-threshold\");\n    }\n    // Inlining depth.\n    const int callee_inlining_depth = callee.inlining_depth();\n    if (callee_inlining_depth > 0 &&\n        ((callee_inlining_depth + inlining_depth_) >\n         FLAG_inlining_depth_threshold)) {\n      return InliningDecision::No(\"--inlining-depth-threshold\");\n    }\n    // Situation instr_count == 0 denotes no counts have been computed yet.\n    // In that case, we say ok to the early heuristic and come back with the\n    // late heuristic.\n    if (instr_count == 0) {\n      return InliningDecision::Yes(\"need to count first\");\n    } else if (instr_count <= FLAG_inlining_size_threshold) {\n      return InliningDecision::Yes(\"--inlining-size-threshold\");\n    } else if (call_site_count <= FLAG_inlining_callee_call_sites_threshold) {\n      return InliningDecision::Yes(\"--inlining-callee-call-sites-threshold\");\n    }\n    return InliningDecision::No(\"default\");\n  }",
+          "HHVM",
+          "基于 tracelet",
+          "https://github.com/facebook/hhvm/blob/eeba7ad1ffa372a9b8cc9d1ec7f5295d45627009/hphp/runtime/vm/jit/inlining-decider.h#L89",
+          "// Refuse if the cost exceeds our thresholds.\n  // We measure the cost of inlining each callstack and stop when it exceeds a\n  // certain threshold.  (Note that we do not measure the total cost of all the\n  // inlined calls for a given caller---just the cost of each nested stack.)\n  cost = costOfInlining(callerSk, callee, regionAndUnit, annotationsPtr);\n  if (cost <= Cfg::HHIR::AlwaysInlineVasmCostLimit) {\n    return accept(folly::sformat(\"cost={} within always-inline limit\", cost));\n  }\n\n  if (region.instrSize() > irgs.budgetBCInstrs) {\n    return refuse(folly::sformat(\n      \"exhausted bytecode budget: budgetBCInstrs={}, regionSize={}\",\n      irgs.budgetBCInstrs, region.instrSize()));\n  }\n  auto maxTotalCost = adjustedMaxVasmCost(irgs, region, inlineDepth(irgs));\n  int maxCost = maxTotalCost;\n  if (Cfg::HHIR::InliningUseStackedCost) {\n    maxCost -= irgs.inlineState.cost;\n  }\n  const auto baseProfCount = s_baseProfCount.load();\n  const auto callerProfCount = irgen::curProfCount(irgs);\n  const auto calleeProfCount = irgen::calleeProfCount(irgs, region);\n  if (cost > maxCost) {\n    auto const depth = inlineDepth(irgs);\n    return refuse(folly::sformat(\n      \"too expensive: cost={} : maxCost={} : \"\n      \"baseProfCount={} : callerProfCount={} : calleeProfCount={} : depth={}\",\n      cost, maxCost, baseProfCount, callerProfCount, calleeProfCount, depth));\n  }\n\n  return accept(folly::sformat(\"small region with return: cost={} : \"\n                               \"maxTotalCost={} : maxCost={} : baseProfCount={}\"\n                               \" : callerProfCount={} : calleeProfCount={}\",\n                               cost, maxTotalCost, maxCost, baseProfCount,\n                               callerProfCount, calleeProfCount));",
+          "ART",
+          "https://github.com/LineageOS/android_art/blob/8ce603e0c68899bdfbc9cd4c50dcc65bbf777982/compiler/optimizing/inliner.h",
+          "// Instruction limit to control memory.\nstatic constexpr size_t kMaximumNumberOfTotalInstructions = 1024;\n\n// Maximum number of instructions for considering a method small,\n// which we will always try to inline if the other non-instruction limits\n// are not reached.\nstatic constexpr size_t kMaximumNumberOfInstructionsForSmallMethod = 3;\n\n// Limit the number of dex registers that we accumulate while inlining\n// to avoid creating large amount of nested environments.\nstatic constexpr size_t kMaximumNumberOfCumulatedDexRegisters = 32;\n\n// Limit recursive call inlining, which do not benefit from too\n// much inlining compared to code locality.\nstatic constexpr size_t kMaximumNumberOfRecursiveCalls = 4;\n\n// Limit recursive polymorphic call inlining to prevent code bloat, since it can quickly get out of\n// hand in the presence of multiple Wrapper classes. We set this to 0 to disallow polymorphic\n// recursive calls at all.\nstatic constexpr size_t kMaximumNumberOfPolymorphicRecursiveCalls = 0;\n\n// Controls the use of inline caches in AOT mode.\nstatic constexpr bool kUseAOTInlineCaches = true;\n\n// Controls the use of inlining try catches.\nstatic constexpr bool kInlineTryCatches = true;",
+          "void HInliner::UpdateInliningBudget() {\n  if (total_number_of_instructions_ >= kMaximumNumberOfTotalInstructions) {\n    // Always try to inline small methods.\n    inlining_budget_ = kMaximumNumberOfInstructionsForSmallMethod;\n  } else {\n    inlining_budget_ = std::max(\n        kMaximumNumberOfInstructionsForSmallMethod,\n        kMaximumNumberOfTotalInstructions - total_number_of_instructions_);\n  }\n}",
+          "bool HInliner::IsInliningEncouraged(const HInvoke* invoke_instruction,\n                                    ArtMethod* method,\n                                    const CodeItemDataAccessor& accessor) const {\n  if (CountRecursiveCallsOf(method) > kMaximumNumberOfRecursiveCalls) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedRecursiveBudget)\n        << \"Method \"\n        << method->PrettyMethod()\n        << \" is not inlined because it has reached its recursive call budget.\";\n    return false;\n  }\n\n  size_t inline_max_code_units = codegen_->GetCompilerOptions().GetInlineMaxCodeUnits();\n  if (accessor.InsnsSizeInCodeUnits() > inline_max_code_units) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedCodeItem)\n        << \"Method \" << method->PrettyMethod()\n        << \" is not inlined because its code item is too big: \"\n        << accessor.InsnsSizeInCodeUnits()\n        << \" > \"\n        << inline_max_code_units;\n    return false;\n  }\n\n  if (graph_->IsCompilingBaseline() &&\n      accessor.InsnsSizeInCodeUnits() > CompilerOptions::kBaselineInlineMaxCodeUnits) {\n    LOG_FAIL_NO_STAT() << \"Reached baseline maximum code unit for inlining  \"\n                       << method->PrettyMethod();\n    outermost_graph_->SetUsefulOptimizing();\n    return false;\n  }\n\n  if (invoke_instruction->GetBlock()->GetLastInstruction()->IsThrow()) {\n    LOG_FAIL(stats_, MethodCompilationStat::kNotInlinedEndsWithThrow)\n        << \"Method \" << method->PrettyMethod()\n        << \" is not inlined because its block ends with a throw\";\n    return false;\n  }\n\n  return true;\n}",
+          "if (outermost_graph_->IsCompilingBaseline() &&\n    (current->IsInvokeVirtual() || current->IsInvokeInterface()) &&\n    ProfilingInfoBuilder::IsInlineCacheUseful(current->AsInvoke(), codegen_)) {\n  uint32_t maximum_inlining_depth_for_baseline =\n      InlineCache::MaxDexPcEncodingDepth(\n          outermost_graph_->GetArtMethod(),\n          codegen_->GetCompilerOptions().GetInlineMaxCodeUnits());\n  if (depth_ + 1 > maximum_inlining_depth_for_baseline) {\n    LOG_FAIL_NO_STAT() << \"Reached maximum depth for inlining in baseline compilation: \"\n                       << depth_ << \" for \" << callee_graph->GetArtMethod()->PrettyMethod();\n    outermost_graph_->SetUsefulOptimizing();\n    return false;\n  }\n}",
+          "JikesRVM",
+          "https://github.com/JikesRVM/JikesRVM/blob/5072f19761115d987b6ee162f49a03522d36c697/rvm/src/org/jikesrvm/compilers/opt/inlining/DefaultInlineOracle.java#L55",
+          "其他/研究",
+          "部分内联",
+          "理解与利用最优函数内联 (PDF)",
+          "机器学习",
+          "使用机器学习自动构建内联启发式算法",
+          "动态编译器中基于机器学习的优化启发式算法 (PDF)",
+          "使用内联后转换来指导内联决策 (PDF)",
+          "你无法内联这个！(PDF)",
+          "利用内联试探做出更好的内联决策",
+          "RhizomeRuby 内联",
+          "一种面向 JIT 编译器的优化驱动增量内联替换算法 (PDF)",
+          "内联启发式算法的自动调优 (PDF)",
+          "基于过程间部分逃逸分析的内联收益预测 (PDF)",
+          "虚方法的内联 (PDF)",
+          "JIT 环境下推测性方法内联的类型分析研究 (PDF)",
+          "内联的静态与基于性能剖析的启发式算法比较研究 (PDF)",
+          "Falcon JIT 中自定义收益驱动内联器的簇 (PDF)",
+          "Graal",
+          "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/policy/GreedyInliningPolicy.java",
+          "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/InliningPhase.java",
+          "https://github.com/oracle/graal/blob/5dde777cba22a99ebe3f19745d03ddfbc35c563c/compiler/src/jdk.graal.compiler/src/jdk/graal/compiler/phases/common/inlining/info/elem/InlineableGraph.java#L148",
+          "有一些较新的论文（尤其是在 Java 领域）尝试提前进行大量分析，并将生成的信息打包到 .class 文件中。这样 JIT 就能读取这些信息，从而看到比局部上下文更多的内容。或者，如果你是一个 AOT 编译器，你大概可以做更多的全系统推理——这既是因为时间预算的原因，也是因为你能一次性看到更多的函数。↩",
+          "如果你感兴趣的话可以看一看。我是偶然间发现它的。↩",
+          "另见“Turbolev”，它似乎以某种方式将 Maglev（CFG）与 Turbofan（Sea of Nodes）融合在了一起……↩",
+          "这可能是基于一次私人对话所产生的误解。我正在设法寻找具体的实现……↩"
+        ]
+      }
+    },
+    {
+      "slug": "5661c5e8aeed34fb",
+      "title": "Naively summing an alternating series",
+      "titleZh": "交错级数的朴素求和陷阱",
+      "link": "https://www.johndcook.com/blog/2026/06/03/naive-sum/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-03T15:13:24.000Z",
+      "category": "engineering",
+      "keywords": [
+        "math",
+        "programming",
+        "numerical analysis"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 18
+      },
+      "summary": "在实现指数函数的幂级数求和时，开发者通常会设定一个容差（如 10^-12）并在下一项低于该值时停止计算。然而，这种对交错级数进行朴素求和的方法往往会带来意想不到的精度问题。简单的容差截断法无法准确处理由于交替加减而导致的舍入误差积累。在实际的数值计算中，必须采用更严谨的算法来保证结果的准确性。",
+      "summaryEn": "When implementing the power series for the exponential function, developers typically set a tolerance, such as 10^-12, and stop calculating when the next term falls below this value. However, this naive approach to summing an alternating series often leads to unexpected precision issues. Simple tolerance truncation cannot accurately handle the accumulation of rounding errors caused by alternating addition and subtraction. In practical numerical computing, more rigorous algorithms must be employed to ensure the accuracy of the results.",
+      "reason": "提醒开发者在进行数值计算时警惕简单的截断误差，避免落入基础算法的精度陷阱。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Suppose you run across the power series for the exponential function and decide to code it up. Good idea: you’ll probably learn something, though maybe not what you expect."
+          },
+          {
+            "type": "p",
+            "text": "Maybe you decide a tolerance of 10−12 is good enough, and so you sum the terms until the next term to add is below the tolerance."
+          },
+          {
+            "type": "code",
+            "text": "from math import factorial, exp\n\ndef naive_exp(x):\n    tolerance = 1e-12\n    s = 0\n    n = 0\n    while True:\n        delta = x**n / factorial(n)\n        s += delta\n        if abs(delta) < tolerance:\n            return s\n        n += 1"
+          },
+          {
+            "type": "p",
+            "text": "You want to try your program out, so you compute e by calling the function at 1. If you compare this to calling exp(1) you find that you got all the digits correct."
+          },
+          {
+            "type": "p",
+            "text": "Now you try computing exp(-20). Calling naive_exp(-20) gives"
+          },
+          {
+            "type": "code",
+            "text": "    5.47893091802112e-10"
+          },
+          {
+            "type": "p",
+            "text": "but calling exp(-20) gives"
+          },
+          {
+            "type": "code",
+            "text": "    2.061153622438558e-09"
+          },
+          {
+            "type": "p",
+            "text": "Don’t brush things like this as flukes or compiler bugs [1]. This is your golden opportunity to learn something."
+          },
+          {
+            "type": "p",
+            "text": "Maybe you add a print statement to see the intermediate values of the sum stored in the variable s. If you do, you’ll see that the partial sums oscillate wildly before settling down."
+          },
+          {
+            "type": "p",
+            "text": "Maybe that seems wrong, but then you look more carefully at the series. The nth term is xn/n!. Since x is negative, the terms alternate in sign. And the absolute values of the term get bigger before they get smaller. When x = −20, each numerator is 20 times larger than the previous, and each denominator is n times larger than the previous. So the terms will get bigger until n > 20. So the wild oscillations are real, not a bug."
+          },
+          {
+            "type": "p",
+            "text": "The largest partial sum is 21822593.77927747 in absolute value. You know that exp(−20) is a very small number, so there’s going to have to be a lot of cancellation before the partial sums settle down to a small number. Maybe you’ve heard that cancellation is where numerical calculations lose precision. If not, now you know!"
+          },
+          {
+            "type": "p",
+            "text": "Look again at the largest partial sum. There are eight figures to the right of the decimal point. The code is printing out results to as much precision as it has, so the error at this point is on the order of 10−8. We’re trying to compute a number on the order of 10−9, and if any digits in our result are correct, it would be a coincidence."
+          },
+          {
+            "type": "p",
+            "text": "If you go back and try your code on x = −22, the result is even worse, giving a negative result for a quantity that for theoretical reasons cannot be negative. But you can see why: you’re asking the code to compute a number that is closer to zero than the accuracy of the code."
+          },
+          {
+            "type": "p",
+            "text": "Computers don’t represent numbers in base 10 internally, but the argument above is sufficient in this case. If you want to dig deeper, look into the anatomy of a floating point number."
+          },
+          {
+            "type": "p",
+            "text": "There is a simple way around the problem above, but discovering it sooner would short-circuit the learning process. You could calculate exp(−20) as 1/exp(20) and avoid all the cancellation because the series for exp(20) does not alternate."
+          },
+          {
+            "type": "p",
+            "text": "[1] Compilers do have bugs occasionally, but it’s orders of magnitude more likely that something is wrong with your code."
+          }
+        ],
+        "translations": [
+          "假设你偶然看到了指数函数的幂级数，并决定动手写代码实现它。这是个好主意：你很可能会学到一些东西，尽管可能不是你原本预期的那些。",
+          "也许你认为 10^-12 的容差已经足够好了，于是你不断将各项相加，直到下一个要添加的项小于该容差为止。",
+          "from math import factorial, exp\n\ndef naive_exp(x):\n    tolerance = 1e-12\n    s = 0\n    n = 0\n    while True:\n        delta = x**n / factorial(n)\n        s += delta\n        if abs(delta) < tolerance:\n            return s\n        n += 1",
+          "你想测试一下程序，于是通过向函数传入参数 1 来计算自然常数 e。如果将你的结果与调用 exp(1) 得到的结果进行比较，你会发现算出的所有数字完全正确。",
+          "现在你尝试计算 exp(-20)。调用 naive_exp(-20) 得到的结果是",
+          "5.47893091802112e-10",
+          "但调用 exp(-20) 得到的结果是",
+          "2.061153622438558e-09",
+          "不要把这种情况当作偶然现象或者编译器 bug [1] 而敷衍过去。这正是你学习新知识的绝佳机会。",
+          "也许你会添加一条 print 语句，来查看存储在变量 s 中的求和中间值。如果这样做，你会观察到部分和在最终稳定之前会发生剧烈的震荡。",
+          "这可能看起来是个错误，但如果你更仔细地观察这个级数就会发现：第 n 项是 x^n/n!。由于 x 是负数，各项的符号会交替变化。而且各项的绝对值在变小之前会先变大。当 x = -20 时，每个分子都是前一项的 20 倍，而每个分母只是前一项的 n 倍。因此，这些项会一直增大，直到 n > 20。所以，这种剧烈的震荡是真实存在的，并不是 bug。",
+          "绝对值最大的部分和是 21822593.77927747。你知道 exp(-20) 是一个非常小的数字，因此在部分和稳定为一个很小的数之前，必然会发生大量的相消。也许你听说过，这种“相消”正是数值计算丢失精度的原因。如果以前没听说过，那么现在你知道了！",
+          "再来看看那个最大的部分和。它的小数点后有 8 位数字。代码打印出的结果已经达到了其所能提供的最高精度，因此此时的误差在 10^-8 数量级。而我们要计算的数字在 10^-9 数量级，如果在这种情况下的计算结果中还有哪怕一位数字是准确的，那纯粹是巧合。",
+          "如果你回头用 x = -22 测试你的代码，结果会更糟，竟然计算出了一个负数，而从理论上讲这个值绝不可能为负。但你也能看出原因：你正在让代码去计算一个比代码本身精度还要接近于 0 的数字。",
+          "计算机在内部并不是用十进制来表示数字的，但在本例中，上述分析已经足够说明问题了。如果你想深入探究，可以去研究一下浮点数的内部结构。",
+          "要解决上述问题，有一个简单的变通方法，但过早发现它会让你错失整个学习过程。你可以将 exp(-20) 计算为 1/exp(20)，这样就能避免所有的相消问题，因为 exp(20) 的级数并不存在符号交替的情况。",
+          "[1] 编译器偶尔确实会存在 bug，但更有可能（且概率高出好几个数量级）的是你的代码写错了。"
+        ]
+      }
+    },
+    {
+      "slug": "fc1d30abad4d7dfa",
+      "title": "Meta Reportedly Has a Slew of New Smart Glasses Planned for This Year",
+      "titleZh": "据报道 Meta 今年计划推出一系列新款智能眼镜",
+      "link": "https://gizmodo.com/meta-has-a-ridiculous-amount-of-smart-glasses-planned-for-this-year-2000765741",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-02T21:54:43.000Z",
+      "category": "other",
+      "keywords": [
+        "Meta",
+        "smart glasses",
+        "hardware"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 17
+      },
+      "summary": "Meta 正在密集布局其智能眼镜产品线，计划在今年推出多款新型号。除了秋季的发布计划外，Meta 还准备在 12 月推出代号为“Mojito VIP”的智能眼镜。同时，今年秋季还将测试两款原型机：代号为“Artemis”的眼镜和代号为“SSG”（即超感知眼镜）的设备。这表明 Meta 正试图通过丰富的硬件矩阵巩固其在智能穿戴市场的领导地位。",
+      "summaryEn": "Meta is densely expanding its smart glasses product line, with plans to launch multiple new models this year. In addition to the fall releases, Meta is preparing to launch a pair of smart glasses codenamed \"Mojito VIP\" in December. At the same time, two prototypes will be tested this fall: one codenamed \"Artemis\" and another called \"SSG\" (short for \"supersensing glasses\"). This indicates Meta's attempt to solidify its leadership in the smart wearables market through a rich hardware matrix.",
+      "reason": "一文纵览 Meta 智能眼镜未来的产品路线图和核心原型机代号。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "aa705beb503432e5",
+      "title": "Apple, the Anti-‘Metaverse’ VR Company",
+      "titleZh": "苹果：一家反“元宇宙”的 VR 公司",
+      "link": "https://daringfireball.net/2025/12/meta_says_fuck_that_metaverse_shit",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-02T20:48:08.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "metaverse",
+        "VR"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "在整个科技界疯狂炒作“元宇宙”概念的时期，苹果始终刻意与这一术语保持距离。即使在 Vision Pro 发布前后，苹果高管也从未在任何公开场合暗示或支持过“元宇宙”这种虚拟世界概念。这种务实的产品定位使得苹果在 XR 领域建立起了独特的品牌认知，有别于其他竞争对手的营销炒作。苹果坚持将空间计算视为未来的发展方向，而非逃避现实的元宇宙。",
+      "summaryEn": "During the period when the entire tech industry was crazily hyping the \"metaverse\" concept, Apple deliberately kept its distance from the term. Even around the launch of the Vision Pro, Apple executives never hinted at or endorsed the concept of a \"metaverse\" in any public appearances. This pragmatic product positioning has allowed Apple to establish a unique brand perception in the XR field, distinct from the marketing hype of its competitors. Apple insists on viewing spatial computing as the future direction, rather than an escapist metaverse.",
+      "reason": "通过对比苹果与 Meta 的营销理念，揭示了 Vision Pro 背后务实的产品哲学。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Sunday, 7 December 2025",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Mike Isaac, reporting for The New York Times, “Meta Weighs Cuts to Its Metaverse Unit” (gift link):"
+          },
+          {
+            "type": "quote",
+            "text": "Meta is considering making cuts to a division in its Reality Labs\nunit that works on the so-called metaverse, said three employees\nwith knowledge of the matter.\n\nThe cuts could come as soon as next month and amount to 10 to 30\npercent of employees in the Metaverse unit, which works on virtual\nreality headsets and a V.R.-based social network, the people said.\nThe numbers of potential layoffs are still in flux, they said.\nOther parts of the Reality Labs division develop smart glasses,\nwristbands and other wearable devices. The total number of\nemployees in Reality Labs could not be learned.\n\nMeta does not plan to abandon building the metaverse, the people\nsaid. Instead, executives expect to shift the savings from the\ncuts into investments in its augmented reality glasses, the\npeople said."
+          },
+          {
+            "type": "p",
+            "text": "Meta confirmed the cuts to the Wall Street Journal, and Bloomberg’s Kurt Wagner broke the news Thursday."
+          },
+          {
+            "type": "p",
+            "text": "I’m so old that I remember ... checks notes ... four years ago, when Facebook renamed itself Meta in late 2021 with this statement: “Meta’s focus will be to bring the metaverse to life and help people connect, find communities and grow businesses.” And Mark Zuckerberg, announcing the change, wrote:"
+          },
+          {
+            "type": "quote",
+            "text": "But all of our products, including our apps, now share a new\nvision: to help bring the metaverse to life. And now we have a\nname that reflects the breadth of what we do.\n\nFrom now on, we will be metaverse-first, not Facebook-first. That\nmeans that over time you won’t need a Facebook account to use our\nother services. As our new brand starts showing up in our\nproducts, I hope people around the world come to know the Meta\nbrand and the future we stand for."
+          },
+          {
+            "type": "p",
+            "text": "Many of us never fell for this metaverse nonsense. For example, I’m also old enough to remember just one year later, near the end of Joanna Stern’s on-stage interview with Craig Federighi and Greg Joswiak at a 2022 WSJ event, seven months before Vision Pro was announced (at the 29:30 mark):"
+          },
+          {
+            "type": "quote",
+            "text": "Stern: You have to finish this sentence, both of you. The\nmetaverse is...\n\nJoz: A word I’ll never use."
+          },
+          {
+            "type": "p",
+            "text": "He might want to use the word now, just to make jokes."
+          },
+          {
+            "type": "p",
+            "text": "Om Malik, writing in April this year:"
+          },
+          {
+            "type": "quote",
+            "text": "Some of us are old enough to remember that the reason Mark renamed\nthe company is because the Facebook brand was becoming toxic, and\nassociated with misinformation and global-scale crap. It was\nviewed as a tired, last-generation company. Meta allowed the\ncompany to rebrand itself as something amazing and fresh."
+          },
+          {
+            "type": "p",
+            "text": "Lastly, yours truly, linking to Malik’s post:"
+          },
+          {
+            "type": "quote",
+            "text": "And so while “Meta” will never be remembered as the company that\nspearheaded the metaverse — because the metaverse never was or\nwill be an actual thing — it’s in truth the perfect name for a\ncompany that believes in nothing other than its own success."
+          }
+        ],
+        "translations": [
+          "Mike Isaac 为《纽约时报》报道，“Meta 考虑削减其 Metaverse 部门”（赠阅链接）：",
+          "三名知情员工透露，Meta 正在考虑对其 Reality Labs 部门下负责所谓 metaverse 的一个分部进行裁员。这些人表示，裁员可能最快于下个月进行，裁减比例将达到 Metaverse 部门员工的 10% 到 30%，该部门主要负责开发虚拟现实头显和基于 V.R. 的社交网络。他们说，潜在的裁员人数仍在变动中。Reality Labs 部门的其他团队则负责开发智能眼镜、智能腕带和其他可穿戴设备。Reality Labs 的员工总数尚无法得知。知情人士说，Meta 并不打算放弃构建 metaverse。相反，高管们希望将裁员节省下来的资金转而投资于其增强现实眼镜。",
+          "Meta 向《华尔街日报》证实了此次裁员，而彭博社的 Kurt Wagner 在周四率先报道了这一消息。",
+          "我年纪大到还记得……查看笔记……四年前，也就是 2021 年底，Facebook 更名为 Meta 时发表了这样的声明：“Meta 的重点将是让 metaverse 变为现实，帮助人们建立联系、寻找社区并发展业务。”而 Mark Zuckerberg 在宣布这一改变时写道：",
+          "但我们所有的产品，包括我们的应用程序，现在都共享一个新的愿景：帮助将 metaverse 变为现实。现在我们有了一个能反映我们所做之事广度的名字。从现在起，我们将以 metaverse 为先，而不是以 Facebook 为先。这意味着随着时间的推移，你将不再需要 Facebook 帐户即可使用我们的其他服务。随着我们的新品牌开始出现在我们的产品中，我希望世界各地的人们能够了解 Meta 品牌以及我们所代表的未来。",
+          "我们中的许多人从未轻信过这种 metaverse 的无稽之谈。例如，我也老到足以记得仅仅一年后，在 2022 年《华尔街日报》的一场活动上，Joanna Stern 对 Craig Federighi 和 Greg Joswiak 进行现场采访接近尾声时，也就是在 Vision Pro 发布的七个月前（在 29 分 30 秒处）：",
+          "Stern：你们俩都得完成这个句子。The metaverse 是…… Joz：一个我永远不会用的词。",
+          "他现在可能想用这个词了，仅仅是为了开玩笑。",
+          "Om Malik 在今年四月份写道：",
+          "我们中的一些人年纪大到还记得 Mark 将公司改名的原因是 Facebook 品牌正变得声名狼藉，并与虚假信息和全球性的垃圾内容联系在一起。它被视为一家疲惫的、属于上一代的公司。Meta 让这家公司得以将自己重塑为某种令人惊叹且充满新鲜感的形象。",
+          "最后，鄙人在链接到 Malik 的帖子时写道：",
+          "因此，尽管“Meta”永远不会被人们记住是引领了 metaverse 的公司——因为 metaverse 无论过去还是未来都算不上是一个真实存在的东西——但对于一家除了自身的成功什么都不信的公司来说，这其实是个完美的名字。"
+        ]
+      }
+    },
+    {
+      "slug": "99cdc95524b1455e",
+      "title": "The Metaverse Was Snake Oil for Isolation",
+      "titleZh": "“元宇宙”不过是孤立时代的骗局",
+      "link": "https://daringfireball.net/linked/2026/06/01/the-metaverse-fever-dream",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-02T20:42:33.000Z",
+      "category": "opinion",
+      "keywords": [
+        "metaverse",
+        "tech history",
+        "isolation"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "“元宇宙”概念的炒作周期与新冠疫情封锁及人们普遍的社交隔离期在时间线上高度重合。在长达一年多的隔离期间，人们极度依赖计算机平台进行社交，这为虚拟世界炒作提供了虚假的繁荣土壤。如今到了 2026 年，随着社会生活回归常态，这种基于隔离孤独感的炒作泡沫已经彻底破灭。元宇宙本质上只是特殊时期为隔离状态量身定制的一场科技幻梦。",
+      "summaryEn": "The hype cycle of the \"metaverse\" concept closely coincided with the Covid lockdowns and our collective period of social isolation. During the year-plus stretch of isolation, people relied heavily on computer platforms for socializing, providing false fertile ground for virtual world hype. Now in 2026, as social life returns to normal, the hype bubble built on isolation and loneliness has completely burst. The metaverse was essentially a technological fever dream tailored for isolation during an extraordinary period.",
+      "reason": "结合后疫情时代的社会心理，深入剖析了“元宇宙”概念从爆火到消亡的根本原因。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Nick Heer, at Pixel Envy, last week published a remarkable essay surveying — with copious receipts — the rise and fall of “metaverse” hype:"
+          },
+          {
+            "type": "quote",
+            "text": "The obsession with the metaverse seems to have solidified in\nSilicon Valley after Matthew Ball published an essay in\nJanuary 2020 in which he forecasted that, at the very least…\n\n\n  …it is likely to produce trillions in value as a new computing\nplatform or content medium. But in its full vision, the Metaverse\nbecomes the gateway to most digital experiences, a key component\nof all physical ones, and the next great labor platform. [...]\n\n\nBall published this essay with darkly fortuitous timing. A week\nearlier, Chinese health authorities had isolated a new strain of\ncoronavirus aggressively spreading in Wuhan; a day before, they\npublished its genetic sequence. Within a couple of\nmonths, the world had turned upside down and many of us were\nsuddenly spending our days in a space that felt more virtual than\nphysical. We may have only been working from home — or, at least,\nthose of us who had the option and were not laid off — and\nsocializing over Zoom, all while remembering the last concert we\nwent to or the last time we ate a meal in a restaurant."
+          },
+          {
+            "type": "p",
+            "text": "Just a tremendous piece of writing and reporting from Heer. What a pile of horseshit “the metaverse” as promulgated by Zuckerberg was. To call what Heer has assembled here, in a compelling narrative to boot, “comprehensive” is a vast understatement. These hucksters were selling a bill of goods and now they’re trying to whistle past their own hype:"
+          },
+          {
+            "type": "quote",
+            "text": "As for the futurists like Hackl, who confidently proclaimed the\nmetaverse was “for certain”, they have found an out thanks to its\nflexible definition. Jeff Barrett, of the Shorty Awards’ “It’s No\nFluke” podcast, published a glowing profile of “the Godmother of\nthe Metaverse” earlier this year under the headline “Why\nCathy Hackl Keeps Getting the Future Right”. “When enthusiasm\ncooled and narratives collapsed, many distanced themselves from\nthe space”, writes Barrett, noting with seeming approval that\n“Hackl did the opposite. She reframed it”. Many people — perhaps\neveryone, come to think of it — could predict the future if they\ngot to retcon their predictions to fit reality."
+          },
+          {
+            "type": "p",
+            "text": "Bravo."
+          },
+          {
+            "type": "p",
+            "text": "Follow-up: “The Metaverse Was Snake Oil for Isolation”."
+          },
+          {
+            "type": "p",
+            "text": "★ Monday, 1 June 2026"
+          }
+        ],
+        "translations": [
+          "Nick Heer 上周在 Pixel Envy 发表了一篇精彩的深度文章，用大量铁证回顾了“元宇宙”炒作的兴衰：",
+          "硅谷对元宇宙的狂热似乎是在 Matthew Ball 于 2020 年 1 月发表了一篇文章后彻底定型的，他在文中预测，至少…… ……作为一个全新的计算平台或内容媒介，它很可能会创造出数万亿美元的价值。而在其终极愿景中，元宇宙将成为大多数数字体验的入口，所有物理体验的关键组成部分，以及下一个伟大的劳动平台。[...] Ball 发表这篇文章的时机诡异地恰到好处。一周前，中国卫生部门刚刚分离出一种在武汉迅速蔓延的新型冠状病毒株；一天前，他们公布了该病毒的基因序列。几个月内，世界天翻地覆，我们中的许多人突然发现自己整天置身于一个感觉比现实世界更虚拟的空间中。我们也许只是在居家办公——或者至少，我们中那些有条件且没有被裁员的人是如此——并通过 Zoom 进行社交，脑海中却不断回味着最后一次去听音乐会或在餐厅就餐的情景。",
+          "Heer 的这篇写作和报道真是太出色了。扎克伯格所宣扬的“元宇宙”简直就是一坨狗屎。Heer 在这里以极具吸引力的叙事方式汇集了如此丰富的内容，仅仅称之为“全面”都显得太轻描淡写了。这些江湖骗子当年大肆兜售虚假承诺，现在却试图对自家炒作的破灭装聋作哑：",
+          "至于像 Hackl 这样曾自信满满地宣称元宇宙“确定无疑”的未来学家，由于元宇宙的定义本就模棱两可，他们现在也给自己找好了退路。Shorty Awards 旗下“It’s No Fluke”播客的 Jeff Barrett 今年早些时候发表了一篇对“元宇宙教母”热情洋溢的人物专访，标题是《为什么 Cathy Hackl 总能看透未来》。Barrett 写道：“当热情冷却、叙事崩塌时，许多人与这个领域划清了界限。”他似乎还带着赞赏的口吻指出，“Hackl 却反其道而行之。她重新构建了这套叙事。”如果允许人们事后修改自己的预测以迎合现实，那么许多人——细想一下，也许是所有人——都能成为预言家。",
+          "漂亮。",
+          "后续：《元宇宙是应对隔离的虚假万灵药》。",
+          "★ 2026年6月1日，星期一"
+        ]
+      }
+    },
+    {
+      "slug": "17308d00b512ca46",
+      "title": "London Data Store Relaunch",
+      "titleZh": "伦敦数据存储库重新上线",
+      "link": "https://shkspr.mobi/blog/2026/06/london-data-store-relaunch/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-06-03T11:34:49.000Z",
+      "category": "other",
+      "keywords": [
+        "open data",
+        "London",
+        "data platform"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 17
+      },
+      "summary": "伦敦市官方开放数据平台 data.london.gov.uk 在上线 16 年后迎来了全面的改版重构。作为全球最早发布开放数据的主要城市平台之一，它现已从单一的数据存储库演变为展示开放数据价值的窗口。此次更新不仅涵盖了后端架构的全面升级，还重新设计了前端用户界面。改版后的平台致力于更好地展示开放数据如何切实改善伦敦市民的生活质量。",
+      "summaryEn": "The City of London's official open data platform, data.london.gov.uk, has undergone a comprehensive relaunch after 16 years online. As one of the first major city platforms to release open data globally, it has now evolved from a mere data repository into a showcase for the value of open data. This update covers not only a complete backend architecture upgrade but also a redesigned frontend user interface. The revamped platform is dedicated to better demonstrating how open data tangibly improves the lives of Londoners.",
+      "reason": "了解拥有 16 年历史的经典政府开放数据平台是如何进行前后端现代化重构的。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It has been sixteen years since the launch of data.london.gov.uk. Back then, it was a trailblazer as one of the first major cities to release Open Data in this way. Now, over a decade later, it is more than a mere repository; it is a celebration of Open Data and the way it can improve Londoners' lives."
+          },
+          {
+            "type": "p",
+            "text": "So, time for a refresh front and back. As well as a bunch of back-end updates, the front-end has been spruced up which should make it easier to find the data you're looking for. I particularly the way they're now highlighting the licence under which data are available."
+          },
+          {
+            "type": "p",
+            "text": "You can check it out right now at https://dfl.london.gov.uk/"
+          },
+          {
+            "type": "p",
+            "text": "If you spot any bugs, send them to datastore@london.gov.uk"
+          },
+          {
+            "type": "p",
+            "text": "The most important thing you can do is use your library! Just like any other library, it lives or dies based on how much use it gets. Rummage around in those datasets, build interesting things, and convince your local area to send data to it."
+          },
+          {
+            "type": "p",
+            "text": "This is a brilliant resource and I'm glad to see it get the love it deserves."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "342146d263f25aa6",
+      "title": "Skills Registry Threat Models",
+      "titleZh": "技能注册表威胁模型",
+      "link": "https://nesbitt.io/2026/06/03/skills-registry-threat-models.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-06-03T15:00:00.000Z",
+      "category": "security",
+      "keywords": [
+        "security",
+        "threat model",
+        "vulnerability"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 6,
+        "total": 16
+      },
+      "summary": "随着 AI Agent 生态中「技能注册表」（Skills Registry）的兴起，以 Markdown 等轻量格式分发的技能定义文件正在成为新的攻击面。作者围绕技能注册表构建了系统的威胁模型，涵盖恶意技能注入、供应链篡改、描述文件伪装等风险场景，并尖锐地提出「距离第一个针对 Markdown 文件的 CVE 还有多远」的警示。文章呼吁社区在技能分发机制成熟之前，尽早将安全建模纳入标准流程，而非事后补救。",
+      "summaryEn": "As \"Skills Registries\" gain traction in the AI agent ecosystem, skill definition files distributed in lightweight formats like Markdown are emerging as a new attack surface. The author builds a systematic threat model around skills registries, covering scenarios such as malicious skill injection, supply-chain tampering, and description-file spoofing, while provocatively asking how long it will be before the first CVE is filed against a Markdown file. The piece urges the community to integrate security modeling into the standard workflow early, before these skill distribution mechanisms become entrenched.",
+      "reason": "在 AI Agent 技能市场爆发前夕，提前揭示了一个被严重低估的供应链安全盲区，对构建或使用技能注册表的开发者具有直接参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Agent skills bundle prompts, scripts, dependencies, and tool permissions for AI agents to load on demand. A skills registry is the distribution channel for them: a hosted marketplace, an indexed hub, or in many cases just a curated list of GitHub repos. ClawHub, Tessl, and skills.sh have all launched in the past year, mostly modelled on existing package registries."
+          },
+          {
+            "type": "p",
+            "text": "Because a skill can declare dependencies on packages from npm, pip, cargo, brew, go, apt, or anything else, often several at once, a skills registry is a strict superset of a package-manager client. Installing one skill runs install commands across several package managers on the user’s machine, on behalf of a manifest the user never read, so every threat the package-manager world has spent the last decade documenting still applies inside a skill’s install path."
+          },
+          {
+            "type": "p",
+            "text": "A skill body joins the agent’s system prompt on activation, making it a prompt-injection vector as well as a code-execution one, which packages can’t be. Tool permissions are inherited from the runtime, so a skill runs with whatever bash, file edit, and network grants the session has already approved. And the resolution path in most loaders accepts an arbitrary git URL as a source, collapsing the registry side of the threat model down to GitHub’s identity model."
+          },
+          {
+            "type": "p",
+            "text": "The slug expires at ninety days because the constant says ninety. The install command runs without a no-build flag because nobody added the string. The lockfile records the name and not the bytes because the bytes were never written to the client. Each of those is a design decision working as intended rather than a wrong line of code a static scanner can call out, clean against every check that looks for incorrect lines, and worth making on purpose rather than by default."
+          },
+          {
+            "type": "p",
+            "text": "This post covers the loader, the registry, the agent runtime as a registry client, and the loader’s own dependencies, drawing on published studies, scanner reports, and package-manager precedent."
+          },
+          {
+            "type": "h2",
+            "text": "Loader"
+          },
+          {
+            "type": "h3",
+            "text": "Code execution at load time"
+          },
+          {
+            "type": "p",
+            "text": "A skill activates in one of a few shapes, and most loaders support several at once: instructions injected into the prompt with nothing else running, a scripts/ directory the loader invokes through the agent’s bash tool, or a shell snippet in the skill file that the loader evaluates before the model is in the loop at all."
+          },
+          {
+            "type": "p",
+            "text": "Whether each path is on by default, the existence of a setting to turn it off, and the consistency of that setting across every code path are the same questions package managers spent a decade answering for install scripts like postinstall and setup.py. The user’s mental model of “the agent runs a tool, I approve it” doesn’t cover loader commands that run before the agent reaches the prompt."
+          },
+          {
+            "type": "p",
+            "text": "Once a skill manifest is allowed to declare its own install steps, a manifest that lists {kind: node, package: x} and {kind: uv, package: y} and {kind: brew, formula: z} is a single artifact that delegates to three other package managers, each with its own answer to “does install run code.” Closing the lifecycle-script vector on one (--ignore-scripts on the node spawn) is straightforward and usually the first thing fixed. The equivalent settings on the others (a build-isolation flag for the Python case, a tap allowlist for the Homebrew case, the equivalents for go and cargo) tend to lag by months."
+          },
+          {
+            "type": "h3",
+            "text": "Code execution before invocation"
+          },
+          {
+            "type": "p",
+            "text": "Most loaders inject the description of every installed skill into the system prompt every turn so the model has them available for tool selection. The body and the scripts don’t load until activation, but the description does on every request, putting author-controlled text into the agent’s instructions whether the user invokes the skill or not."
+          },
+          {
+            "type": "p",
+            "text": "A skill the user installed once and forgot about is still part of the prompt, and a description that contains adversarial tokens, hidden HTML, or unicode control characters the loader doesn’t strip is a prompt injection that fires unprompted. Work out what the loader does with descriptions: length cap, content sanitisation, whether they’re presented to the model as data or as instructions, and whether the user can list which skills are currently contributing to the prompt."
+          },
+          {
+            "type": "h3",
+            "text": "Version pinning guarantees"
+          },
+          {
+            "type": "p",
+            "text": "Most skill formats use git as the distribution channel and “version” tends to mean “default branch at fetch time.” A few loaders accept a commit sha; fewer record the sha actually used. The lockfile equivalent, where it exists at all, typically records name and version and not the bytes, so a pinned [email protected] resolves against whatever currently owns that name rather than against the file the user originally received."
+          },
+          {
+            "type": "p",
+            "text": "Per-file hashes often exist on the server already, computed at publish time, and just never get written to the client format. The package-manager world spent a decade closing this gap, ending up with go.sum and a content-hash field per entry in package-lock.json and Cargo.lock, so that the bytes the lockfile says you got are the bytes you get next time."
+          },
+          {
+            "type": "p",
+            "text": "Auto-update on next launch is common, and the update path almost always walks the lockfile and reinstalls each entry without re-prompting on any capability change between versions. A skill that adds a new requires.env value (a new secret declared as a dependency) on a patch bump is applied by the update without interaction, because the manifest is data and the previous user grant was keyed on the name."
+          },
+          {
+            "type": "h3",
+            "text": "Skill name identity"
+          },
+          {
+            "type": "p",
+            "text": "Names are mostly inherited from the source: a path, an owner/repo, an owner/repo/skill triple. Normalisation rules are usually unwritten. Two installed skills that resolve to the same on-disk name and overwrite each other, or two skills with descriptions the model can’t distinguish between, are both ways to shadow a skill the user trusts."
+          },
+          {
+            "type": "p",
+            "text": "Several registries also support identity transitions: some combination of rename, merge, and ownership transfer as distinct flows, each with its own data model and consent step. An update follows whichever of the three the publisher used, and the resulting installed-on-disk skill can have a different owner, a different source repo, and a different set of declared capabilities from the one the user originally installed."
+          },
+          {
+            "type": "h3",
+            "text": "Resolution across multiple sources"
+          },
+          {
+            "type": "p",
+            "text": "A user typically has more than one skill source configured: a vendor-curated marketplace, a community one, a personal repo of project-local skills, the workspace they just opened. When a name resolves out of more than one of these, the question is the same as the dependency-confusion pattern Alex Birsan documented against package managers in 2021: highest version wins, first source wins, refuse, or pin per source."
+          },
+          {
+            "type": "p",
+            "text": "The loader’s install command often tries a skill-specific index first and silently falls through to a general-purpose package registry (npm, PyPI) when nothing matches there, because the install fan-out has to land somewhere. The fall-through widens when it fires on version-not-found as well as package-not-found, because at that point a name the skills registry already lists is also exposed, and publishing a higher version on the downstream registry is enough to capture future installs."
+          },
+          {
+            "type": "h3",
+            "text": "Tool permission inheritance"
+          },
+          {
+            "type": "p",
+            "text": "A skill runs with whatever tool grants the agent has. If the user has approved bash, file edit, and network for the session, every skill they install inherits all three. Some formats let the skill declare its own allowed-tools list which the loader treats as pre-approved while the skill is active, so a skill can ship the approval bypass alongside the code that uses it."
+          },
+          {
+            "type": "p",
+            "text": "The single gate for skills checked into a repository is usually the workspace-trust dialog the user clicks through when they open the project, which means cloning a repo and opening it can be enough to grant a skill broad tool access. The dialog is also a weak gate, since users click through it reflexively once it’s part of every project-open flow. Find out whether skills are sandboxed, whether they can extend the allowlist, and whether there’s any per-skill review step between trust-the-workspace and run-everything."
+          },
+          {
+            "type": "p",
+            "text": "The requires.env (or equivalent) field lists the secrets a skill needs at runtime, and most loaders accept silent additions to it across versions. A skill whose first release declared no secrets and whose patch release declares AWS_SECRET_ACCESS_KEY is not distinguishable, from inside the agent, from a skill that declared it from the start."
+          },
+          {
+            "type": "h3",
+            "text": "Cross-loader portability"
+          },
+          {
+            "type": "p",
+            "text": "Skill manifest formats are increasingly portable across loaders, but security-relevant fields are not always interpreted the same way in each. The allowed-tools declaration is enforced at runtime in some loaders, treated as advisory in others, and unread by a third group that does not recognise the field at all. A requires.env list that prompts the user before adding a variable on one loader may end up silently expanded into the environment on another. Establish whether the loader applies every security-relevant field in the format it claims to support, and whether unknown fields trigger a refusal or a warning rather than being dropped silently."
+          },
+          {
+            "type": "h3",
+            "text": "Instructions as payload"
+          },
+          {
+            "type": "p",
+            "text": "The structural difference from packages is that a skill’s payload is code plus instructions that join the agent’s system prompt, not code alone. The same artifact can alter how the agent’s next decisions get made, contradict what the user later sees in the transcript, interfere with skills loaded later in the same session, or arrange for context the skill itself wasn’t given to be read out through a tool that was. The blast radius doesn’t end when the skill stops running, because the prompt content stays in context. Whether the loader isolates skill-contributed text, displays it to the user before acting on it, or treats it as authoritative is the question worth answering."
+          },
+          {
+            "type": "p",
+            "text": "A skill that fetches remote markdown into context at execution time (a documentation lookup, a RAG-style retrieval, a webhook response) makes whoever controls that remote endpoint a participant in the agent’s prompt. The fetched content is not visible at publish-time scanning and is not part of the manifest the registry passed."
+          },
+          {
+            "type": "p",
+            "text": "Splitting malicious behaviour across the manifest and the prose alongside it makes it invisible to most scanners. A manifest can declare an unremarkable dependency while the prose describes what to do with that dependency once installed; static scanners process only the manifest, text classifiers process only the prose, and the load-bearing instruction sits at the boundary between them."
+          },
+          {
+            "type": "p",
+            "text": "Snyk’s ToxicSkills audit of 3,984 skills across two registries reported that 100% of confirmed-malicious samples used malicious code patterns and 91% simultaneously used prompt injection, the two layers working in combination to prime the agent into accepting code a human reviewer would have rejected. Whether the registry’s scanner correlates the modes or checks them in isolation is what determines whether it’s doing anything at all."
+          },
+          {
+            "type": "h3",
+            "text": "Transitive package-manager surface"
+          },
+          {
+            "type": "p",
+            "text": "A skill that calls pip install in a setup script, declares a package.json, or shells out to cargo opens up the package-manager threat model inside its own install path: typosquatting, install-script execution, dependency confusion, and the rest. A manifest whose install fan-out lists three package managers opens it three times."
+          },
+          {
+            "type": "p",
+            "text": "The loader’s threat model is bounded; the skill’s effective dependency graph is not, and it pulls from package managers the loader has no view of. The registry-side scanner usually evaluates the manifest and not the upstream packages the manifest points at, so a kind: uv, package: helpful-tool entry is checked for proportionality to the stated purpose rather than for what helpful-tool does on the next user’s machine."
+          },
+          {
+            "type": "p",
+            "text": "The install fan-out also exposes an LLM-induced variant of dependency confusion. A skill script written by a model that hallucinated a package name resolves at install time to whoever registered that name on the public registry. Attackers monitor model output for plausible misses and pre-register them, a pattern called slopsquatting."
+          },
+          {
+            "type": "h3",
+            "text": "Namespace allocation"
+          },
+          {
+            "type": "p",
+            "text": "Most skills registries don’t own a namespace; they inherit GitHub’s, along with the rules for name transfer and re-registration. A skill’s name is the repo path, and the security of that name is whatever the GitHub account that owns the repo happens to have configured. Patterns like revival-hijack (re-registering a freed package name and shipping a new release to everyone who still had it pinned) and dependency confusion apply, just at a different layer."
+          },
+          {
+            "type": "p",
+            "text": "The registries that do own a namespace are mostly first-come, first-served on a flat name, with no reserved prefixes and no near-name collision check at publish. Typosquatting against a registry’s own brand has been an opening move in every documented campaign so far, and the design question is whether publish-time checks do anything at all: similarity scoring against existing names, reserved prefixes for first-party content, blocking confusable unicode, or nothing."
+          },
+          {
+            "type": "p",
+            "text": "A registry that holds a deleted name for a fixed window and then releases it gives an attacker a deterministic schedule against any lockfile that pins by name and version. The package manager world arrived at “tombstone the name forever” by way of incidents that already have names attached; the question for skills is whether the lesson got copied along with the shape."
+          },
+          {
+            "type": "h3",
+            "text": "Maintainer lifecycle"
+          },
+          {
+            "type": "p",
+            "text": "For most skill registries, the maintainer lifecycle is whatever the source repo provides: adding a maintainer happens on GitHub, account recovery is GitHub’s password reset, and the registry isn’t involved in either. Notifying downstream users when a skill’s maintainer set changes, when a skill is forked to a new owner, or when a long-dormant account ships a release is mostly not done. Role separation is rare: a maintainer can publish, change settings, and add other maintainers as one capability."
+          },
+          {
+            "type": "h3",
+            "text": "Immutability of published versions"
+          },
+          {
+            "type": "p",
+            "text": "The default is tracking a git branch, which means a version is whatever the branch resolves to at fetch time. A skill author can change what skill@v1 means to every future installer at any moment with a single push, and tag-based pinning where it exists is advisory unless the loader also records the commit. The append-only log model that Go’s checksum database implements for modules, where neither origin nor proxy can rewrite a version’s contents after publish without the client detecting it, exists for skills somewhere between rarely and not at all."
+          },
+          {
+            "type": "p",
+            "text": "Publish-over-existing-version is usually rejected, but the check is keyed on the internal identifier rather than the slug, so the protection lapses once a slug expires and gets re-registered by someone else. The publish-over check happens on the registry while resolution happens on the client, and a client that doesn’t record per-file hashes can’t distinguish the original bytes from a new publisher’s bytes anyway."
+          },
+          {
+            "type": "h3",
+            "text": "Provenance from source to artifact"
+          },
+          {
+            "type": "p",
+            "text": "In a traditional package registry, provenance is the gap between the registry’s tarball and the upstream repo it claims to come from. Skills usually collapse that gap because the artifact and the upstream git ref are the same thing, leaving only the question of whether anyone signed it."
+          },
+          {
+            "type": "p",
+            "text": "Trusted-publishing and provenance attestations are the answers package registries arrived at; the equivalents for skills are mostly absent, or exist only for the registry’s plugin family and not for the skill family alongside it. The asymmetry is worth noting where it shows up, because it means the registry implemented the recent defence for the artifact type that obviously executes code and skipped it for the one that contributes to a system prompt."
+          },
+          {
+            "type": "h3",
+            "text": "Publish credential"
+          },
+          {
+            "type": "p",
+            "text": "For hosted registries the dimensions are familiar from any package registry: scope (one skill or everything the owner can publish), capability (publish-only or also add maintainers), expiry (mandatory, optional, none), and whether the token has a recognisable prefix that secret-scanners can auto-revoke when it leaks into a public commit."
+          },
+          {
+            "type": "p",
+            "text": "The common shape worth checking against is a single long-lived bearer token, scoped to the whole user account rather than per-skill, stored in plaintext under the user’s home directory, with no expiry and no 2FA prompt at publish time. Where the only credential is a session-equivalent API key, any other process running as the same user can publish on the user’s behalf, and the social-engineering attack reduces to “get one of this user’s other tools to read one file.”"
+          },
+          {
+            "type": "p",
+            "text": "For the more common case where the registry is a list of repos, the publish credential is whatever logs into the GitHub account that owns the repo, which means the user’s 2FA setup, the lifespan of their personal access token, and the number of CI variables it’s been copied into all become part of the registry’s threat model."
+          },
+          {
+            "type": "h3",
+            "text": "Review and curation"
+          },
+          {
+            "type": "p",
+            "text": "“Curated marketplace” often means a JSON file in a repo listing other repos. The curator inspects names, descriptions, and maybe READMEs, never bytes, and certainly not the bytes of dependencies a skill pulls in transitively."
+          },
+          {
+            "type": "p",
+            "text": "Where a registry does run an automated scanner at publish, the same scanner-blindness questions come back: does the scanner check more than one mode, does it actually fetch the upstream packages the manifest points at, does the verdict still apply twenty-four hours later. A scanner that checks a manifest on text without resolving its install fan-out misses everything the install does."
+          },
+          {
+            "type": "p",
+            "text": "A new version is resolvable to agents the moment it’s published in most skills registries, so the first installer of a malicious version is the canary. The cooldown window that package managers have started adopting (twenty-four to seventy-two hours during which a new version exists but isn’t picked up by clients) isn’t yet common for skills."
+          },
+          {
+            "type": "h3",
+            "text": "Blast radius and detection"
+          },
+          {
+            "type": "p",
+            "text": "Once a malicious skill is identified, several questions determine whether the response amounts to anything: can the registry mark a version as bad and have loaders refuse it, can it tell affected users that they have it installed, is there an audit log of who pulled what. For registries that are lists of git URLs, “yank” usually means removing the entry from the list, which doesn’t help anyone who already cloned."
+          },
+          {
+            "type": "p",
+            "text": "The skills-specific shape worth pointing out is the lack of separation between yank-version, remove-package, and ban-account. Several registries treat all three as one operation: ban a maintainer (manually, or automatically on a malicious publish or comment-scam verdict) and the registry batch-hides every skill they own. A scanner false positive or a stolen-token publish that gets caught therefore takes legitimate work down with it. The package manager world separated these three actions a decade ago for exactly this reason."
+          },
+          {
+            "type": "p",
+            "text": "Community moderation by user report has its own failure mode when the per-user report cap counts only active reports. If hidden skills stop counting, a small number of accounts can hide an unbounded number of skills by recycling the cap as each hide lands. The same trust-graph DoS has shown up in moderated systems for as long as moderated systems have existed; the fix is a one-line answer in code with a much longer answer in incident response."
+          },
+          {
+            "type": "h2",
+            "text": "The any-repo-is-a-registry pattern"
+          },
+          {
+            "type": "p",
+            "text": "Most loaders accept an arbitrary git URL as a skill source, advertised as the happy path. This collapses every registry-side question above to whatever GitHub gives you, plus the loader’s own trust dialog."
+          },
+          {
+            "type": "p",
+            "text": "The loader isn’t claiming to be a registry here; it’s refusing to be one while still acting as one. The trust posture for install https://github.com/user/skill is the trust posture for curl | bash, except the bash also gets to edit the agent’s instructions for the rest of the session."
+          },
+          {
+            "type": "h2",
+            "text": "The agent runtime as a registry client"
+          },
+          {
+            "type": "p",
+            "text": "A second set of classes exists because the consumer searching the registry, picking from candidates, and reading the manifest is the agent runtime, not a person. Under the Hood of SKILL.md divides this surface into three stages and supplies most of the empirical figures used in the sub-sections that follow: discovery (the registry ranks a skill into the candidate set), selection (the runtime chooses one from the candidates), and governance (the registry’s scanner accepts the artifact in the first place). None apply to a package registry whose only client is a human."
+          },
+          {
+            "type": "h3",
+            "text": "Discovery"
+          },
+          {
+            "type": "p",
+            "text": "Several skills registries rank by an embedding index that mixes the manifest, the markdown body, and the contents of every file in the skill directory. The agent runtime is one of the consumers of that index: it can call search and install as ordinary tools without going through the user."
+          },
+          {
+            "type": "p",
+            "text": "A skill author who fills helper files with on-topic prose ranks for queries the manifest never describes, which is the GASLITE corpus-insertion attack against dense retrievers playing out as a registry-search ranking attack. Short adversarial triggers appended to the manifest are enough to move an unrelated skill into the top-ten for a target query in the majority of cases studied. Ranking by raw install count, where install counts are inflated by anonymous downloads keyed on a header the publisher controls, has the same shape. Document which fields contribute to the search vector, whether auxiliary file contents are folded in, and what (if anything) the deduplication and popularity signals do."
+          },
+          {
+            "type": "h3",
+            "text": "Selection"
+          },
+          {
+            "type": "p",
+            "text": "Once the candidate list is in front of the runtime, the model selects from it based on the description field, and the rate at which it selects an adversarial variant of an existing skill is well above the random-choice baseline. A description with directive language, a recency signal, exaggerated capability framing, or a trustworthiness phrase like “officially verified” is selected more often than a functionally-equivalent skill with a plainer one. The same paper reports an average rate of 77.6% for adversarial variants over equivalent originals across four models, with the largest model in the test above 80%."
+          },
+          {
+            "type": "p",
+            "text": "Establish what the loader does with the description before it joins the prompt: whether the user sees it, whether obvious framing tells like “verified” or “official” have any meaning beyond being words a publisher chose to type, and whether ranking ties are broken in a way the publisher can influence."
+          },
+          {
+            "type": "h3",
+            "text": "Governance"
+          },
+          {
+            "type": "p",
+            "text": "Skill manifests are partly natural-language instructions, and any scanner that processes them has to operate over what those instructions mean. Several patterns reliably defeat the LLM-based reviewer:"
+          },
+          {
+            "type": "li",
+            "text": "Truncation past the input limit. A reviewer that processes the first ten thousand characters of the manifest is one where the malicious instruction goes at character ten thousand and one. One published study reports this as the strongest single evasion, with the majority of malicious variants returning a clean verdict when the payload sits past the truncation window."
+          },
+          {
+            "type": "li",
+            "text": "Paraphrase. Substitute the words the regex layer keys on with benign synonyms that the LLM reviewer no longer treats as instructions, while the runtime that loads the skill later still acts on them."
+          },
+          {
+            "type": "li",
+            "text": "Decomposition. Reframe the malicious action as a multi-step completion checklist (a “definition of done”). Each step on its own is routine; the combined effect is the original payload."
+          },
+          {
+            "type": "li",
+            "text": "Jailbreak the reviewer. Append a prompt directed at the reviewer asking for a clean verdict, in the same shape as the older DAN-style attacks on safety classifiers."
+          },
+          {
+            "type": "p",
+            "text": "All four share the same scanner-blindness shape: a check that runs on text alone, on code alone, or on the first N characters of either can be defeated by moving the load-bearing content across whichever boundary the check is keyed on. The adjacent question is what the registry does with a “suspicious” verdict that isn’t quite “malicious”: block the publish, surface a warning, or ship the skill with a flag set in a field nothing user-facing reads."
+          },
+          {
+            "type": "h2",
+            "text": "The loader’s own supply chain"
+          },
+          {
+            "type": "p",
+            "text": "The agent harness loading the skills is itself a package with dependencies, usually from one of the package managers whose install it later runs on behalf of a skill: npm CLIs that are themselves npm packages, Python tools that vendor their own pip dependencies. A compromised dependency in the harness is code execution inside the thing that mediates every skill load and holds every approved tool grant. The questions in this section apply to the harness’s own manifest, on top of every package-manager design question that applies to the harness’s own dependency tree."
+          },
+          {
+            "type": "h2",
+            "text": "The markdown CVE"
+          },
+          {
+            "type": "p",
+            "text": "A CVE against a specific skill will be filed at some point soon, the way one was filed against the malicious [email protected] release in 2018. The existing vulnerability-management stack is not set up for it. None of the skills registries have a PURL type registered, so there’s no canonical identifier the SBOMs, OSV feeds, and Dependabot-style scanners use to match against installed skills. The artifact itself is prose, not code, so the version-and-hash tracking that anchors the rest of the stack works at the file level but not at the semantic level: a paraphrased payload produces a different sha256 but the same vulnerability."
+          },
+          {
+            "type": "p",
+            "text": "CVEs against a registry’s design properties (slug-reservation policy, lockfile format, cooldown defaults) sit even further outside the catalogue, the same way they do for npm or PyPI. Zero CVEs is what “the registry’s design is working as documented” looks like in this record."
+          },
+          {
+            "type": "p",
+            "text": "Package registries eventually produced npm’s threats and mitigations page and the OpenSSF Principles for Package Repository Security, both written by the people running the registries themselves. The skills side has plenty of related material from elsewhere, none of it from inside the loaders or registries: scanner-vendor attack catalogues like Snyk’s ToxicSkills, academic empirical and taxonomy studies like Agent Skills in the Wild and Towards Secure Agent Skills, and community control lists like the OWASP Agentic Skills Top 10."
+          }
+        ],
+        "translations": [
+          "Agent 技能将提示词、脚本、依赖项和工具权限打包在一起，供 AI agent 按需加载。技能注册中心是它们的分发渠道：可以是托管市场、索引中心，或者很多时候仅仅是一个精选的 GitHub 仓库列表。ClawHub、Tessl 和 skills.sh 都在过去一年里相继上线，它们大多以现有的包注册中心为蓝本。",
+          "由于一个技能可以声明对来自 npm、pip、cargo、brew、go、apt 或其他任何工具的包的依赖，并且通常是同时依赖多个，因此技能注册中心严格来说是包管理器客户端的超集。安装单个技能会在用户机器上跨越多个包管理器运行安装命令，代表的是一份用户从未读过的清单文件。因此，包管理器领域在过去十年里记录的所有威胁，在技能的安装路径中依然适用。",
+          "激活时，技能主体会被加入到 agent 的系统提示词中，这使得它不仅像普通包那样是代码执行媒介，还成为了提示词注入媒介。工具权限继承自运行时，因此技能会以当前会话已批准的 bash、文件编辑和网络授权来运行。此外，大多数加载器的解析路径接受任意的 git URL 作为来源，这将注册中心层面的威胁模型直接降维成了 GitHub 的身份模型。",
+          "slug 会在九十天后过期，因为代码里的常量写的就是九十。安装命令运行时没有附带 no-build 标志，因为没人加上这个字符串参数。锁文件记录的是名称而非字节，因为字节根本没写入客户端。这些全都是按预期工作的设计决策，而不是静态扫描器能够挑出的错误代码行。它们能干净地通过所有旨在寻找错误代码行的检查，并且值得我们去刻意设计，而不是放任默认。",
+          "本文涵盖了加载器、注册中心、作为注册中心客户端的 agent 运行时，以及加载器自身的依赖项，并参考了已发表的研究、扫描器报告和包管理器的先例。",
+          "加载器",
+          "加载时的代码执行",
+          "技能以几种形态之一激活，而大多数加载器同时支持多种形态：仅注入到提示词中而不运行其他内容的指令；加载器通过 agent 的 bash 工具调用的 scripts/ 目录；或者是技能文件中的 shell 代码片段，加载器会在模型介入循环之前就对其进行求值执行。",
+          "每条路径是否默认开启、是否存在将其关闭的设置，以及该设置在每条代码路径上是否保持一致——这些问题与包管理器过去十年间为 postinstall 和 setup.py 等安装脚本所解答的问题如出一辙。用户“agent 运行某个工具，我来批准”的心智模型，根本无法涵盖在 agent 抵达提示词阶段之前就已经运行的加载器命令。",
+          "一旦技能清单被允许声明自己的安装步骤，那么一份列出了 {kind: node, package: x}、{kind: uv, package: y} 和 {kind: brew, formula: z} 的清单，就相当于一个将任务委托给另外三个包管理器的单一构件，而且每个包管理器对于“安装过程是否执行代码”都有各自的回答。切断其中一方的生命周期脚本攻击媒介（例如在 node 调用时加上 --ignore-scripts）非常简单，通常也是最先被修复的。而其他包管理器上的等效设置（如 Python 的 build-isolation 标志、Homebrew 的 tap 允许列表，以及 go 和 cargo 的等效设置）往往会滞后数月之久。",
+          "调用前的代码执行",
+          "大多数加载器会在每个轮次将所有已安装技能的描述注入到系统提示词中，以便模型在进行工具选择时可以使用它们。技能的主体和脚本在激活前不会加载，但描述会在每次请求时加载，这意味着无论用户是否调用该技能，由技能作者控制的文本都会被放入代理的指令中。",
+          "用户曾经安装过但后来遗忘的技能仍然是提示词的一部分，如果描述中包含加载器未清除的对抗性标记、隐藏的 HTML 或 Unicode 控制字符，这就是一种无需提示就会触发的提示词注入攻击。需要弄清楚加载器如何处理这些描述：是否有长度限制、是否进行内容清理、它们是作为数据还是作为指令呈现给模型，以及用户是否可以列出当前对提示词有贡献的技能。",
+          "版本固定保证",
+          "大多数技能格式使用 git 作为分发渠道，而“版本”通常意味着“获取时的默认分支”。少数加载器接受 commit SHA；记录实际使用的 SHA 的加载器就更少了。锁文件的等效机制（如果存在的话）通常只记录名称和版本，而不记录具体的字节内容，因此固定版本的 `[email protected]` 会解析为当前拥有该名称的任意内容，而不是用户最初收到的文件。",
+          "每个文件的哈希值通常已经存在于服务器上，并在发布时计算得出，只是从未被写入客户端格式中。包管理器领域花了十年时间来弥补这一差距，最终在 `go.sum` 以及 `package-lock.json` 和 `Cargo.lock` 的每个条目中都引入了 content-hash（内容哈希）字段，从而确保锁文件中记录你曾经获取的字节就是你下次获取的字节。",
+          "下次启动时自动更新很常见，而且更新路径几乎总是遍历锁文件并重新安装每个条目，而不会针对版本间的任何能力变更重新提示用户。如果一个技能在补丁版本更新中添加了新的 `requires.env` 值（即声明了一个新的密钥作为依赖项），更新过程会在无需用户交互的情况下直接应用它，因为清单文件被视为数据，而之前的用户授权是与名称绑定的。",
+          "技能名称标识",
+          "名称大多继承自来源：路径、owner/repo（所有者/仓库）或 owner/repo/skill（所有者/仓库/技能）三元组。规范化规则通常是不成文的。如果两个已安装的技能解析为相同的磁盘名称并相互覆盖，或者两个技能的描述让模型无法区分，这两种方式都可以用来遮蔽（shadow）用户信任的技能。",
+          "一些注册表还支持标识转换：将重命名、合并和所有权转移的某种组合作为独立的流程，每个流程都有自己的数据模型和确认步骤。更新会遵循发布者使用的这三种方式中的任何一种，最终安装在磁盘上的技能可能会拥有与用户最初安装的技能不同的所有者、不同的源仓库以及不同的一组声明能力。",
+          "跨多源解析",
+          "用户通常配置了多个技能源：供应商策划的市场、社区市场、包含项目本地技能的个人仓库，以及刚刚打开的工作区。当一个名称可以从多个源中解析出结果时，所面临的问题就与 Alex Birsan 在 2021 年针对包管理器记录的依赖混淆（dependency-confusion）模式相同：是最高版本优先、第一来源优先、拒绝安装，还是按来源进行固定。",
+          "加载器的安装命令通常会先尝试特定于技能的索引，如果没有匹配项，就会静默回退到通用包注册表（npm、PyPI），因为安装请求的扇出（fan-out）总得有个归宿。当“找不到版本”和“找不到包”都会触发回退时，这种回退的范围就扩大了，因为此时技能注册表中已列出的名称也会被暴露，只需在下游注册表上发布更高的版本，就足以截获后续的安装请求。",
+          "工具权限继承",
+          "技能在运行时会使用代理（agent）被授予的所有工具权限。如果用户在当前会话中批准了 bash、文件编辑和网络访问权限，那么他们安装的每个技能都会继承这三种权限。某些格式允许技能声明自己的 allowed-tools（允许的工具）列表，而加载器在技能处于活动状态时会将其视为已预先批准，这样技能就可以将绕过审批的机制与使用该工具的代码一并发布。",
+          "对于签入代码仓库的技能，其唯一的关卡通常是用户在打开项目时点击确认的“工作区信任”对话框，这意味着仅仅克隆并打开仓库，就足以赋予技能广泛的工具访问权限。这个对话框也是一道薄弱的关卡，因为一旦它成为每次打开项目流程的一部分，用户就会下意识地直接点击通过。需要弄清楚技能是否被沙盒化，它们是否能够扩展白名单，以及在“信任工作区”和“运行一切”之间是否存在任何针对单个技能的审查步骤。",
+          "requires.env（或等效）字段列出了技能在运行时所需的机密信息（secrets），并且大多数加载器允许在跨版本更新时对其进行静默添加。如果一个技能的首个版本未声明任何机密，而其补丁版本声明了 AWS_SECRET_ACCESS_KEY，那么从代理内部来看，这与一开始就声明了该密钥的技能是无法区分的。",
+          "跨加载器可移植性",
+          "技能清单（manifest）格式在不同加载器间的可移植性日益提高，但与安全相关的字段在不同加载器中的解释方式并不总是一致。allowed-tools 声明在某些加载器中会在运行时强制执行，在另一些中仅被视为参考建议，而在第三类加载器中则因完全无法识别该字段而被忽略。在某个加载器上会在添加变量前提示用户确认的 requires.env 列表，在另一个加载器上可能会被静默扩展到环境中。需要确认加载器是否应用了其声称支持的格式中的每一个与安全相关的字段，以及未知字段是否会触发拒绝或警告，而不是被静默丢弃。",
+          "指令作为有效载荷",
+          "与普通软件包的结构性区别在于，技能的有效载荷不仅是代码，还包含了会加入代理系统提示词（system prompt）的指令。同一个产物可以改变代理后续的决策方式，与用户随后在对话记录中看到的内容相矛盾，干扰同一会话中稍后加载的其他技能，或者安排利用已授权的工具，读取该技能本身未被赋予的上下文信息。这种影响范围（爆炸半径）并不会在技能停止运行时结束，因为提示词内容仍会保留在上下文中。加载器是否隔离技能贡献的文本，在执行前是否将其展示给用户，还是将其视为权威指令，这是一个值得深究的问题。",
+          "在执行时获取远程 Markdown 并将其引入上下文的技能（例如文档查找、RAG 风格的检索、webhook 响应），会使得控制该远程端点的人成为代理提示词的参与者。获取的内容在发布时扫描中是不可见的，也不属于注册表所传递的清单的一部分。",
+          "将恶意行为分散在清单文件（manifest）及其附带的描述文本中，使其对大多数扫描器不可见。清单文件可以声明一个看似无害的依赖项，而描述文本则说明一旦安装该依赖项后该做什么；静态扫描器只处理清单文件，文本分类器只处理描述文本，而承载核心逻辑的指令恰好位于两者之间的边界上。",
+          "Snyk 对两个注册表中的 3,984 个技能（skills）进行了 ToxicSkills 审计，报告指出，100% 确认恶意的样本使用了恶意代码模式，其中 91% 同时使用了提示注入（prompt injection）。这两层机制结合起来，诱导 Agent 接受那些人类审查员本会拒绝的代码。注册表的扫描器是将这些模式关联起来检查，还是孤立地进行检查，决定了它是否真的起到了防护作用。",
+          "传递性的包管理器攻击面",
+          "一个在安装脚本中调用 pip install、声明了 package.json，或者通过 shell 调用 cargo 的技能，会在其自身的安装路径中引入包管理器的威胁模型：包括抢注拼写错误（typosquatting）、安装脚本执行、依赖混淆（dependency confusion）等。如果一个清单文件的安装扇出（install fan-out）列出了三个包管理器，那么这种威胁就会被引入三次。",
+          "加载器的威胁模型是有边界的；而技能的实际依赖图则没有边界，它会从加载器无法感知的包管理器中拉取内容。注册表端的扫描器通常只评估清单文件，而不评估清单文件指向的上游包。因此，对于类似 kind: uv, package: helpful-tool 这样的条目，扫描器只会检查其与所述目的的相称性，而不会检查 helpful-tool 在下一个用户的机器上会执行什么操作。",
+          "安装扇出还暴露了一种由 LLM 引发的依赖混淆变体。由模型编写并产生包名“幻觉”的技能脚本，在安装时会解析到公共注册表上抢先注册该名称的人。攻击者会监控模型的输出，寻找那些看似合理的错误包名并提前注册，这种模式被称为“垃圾抢注”（slopsquatting）。",
+          "命名空间分配",
+          "大多数技能注册表并不拥有自己的命名空间；它们继承了 GitHub 的命名空间，以及名称转让和重新注册的规则。技能的名称就是仓库路径，而该名称的安全性完全取决于拥有该仓库的 GitHub 账户恰好配置了什么安全策略。诸如复活劫持（revival-hijack，即重新注册一个被释放的包名，并向所有仍然固定引用该包的用户推送新版本）和依赖混淆等攻击模式在这里同样适用，只是发生在不同的层级。",
+          "那些确实拥有自身命名空间的注册表，大多在扁平命名上实行“先到先得”原则，发布时既没有保留前缀，也不检查近似名称冲突。在迄今为止记录的每一次攻击活动中，针对注册表自身品牌的抢注拼写（typosquatting）一直是攻击者的开场动作。而这里的设计问题在于，发布时的检查到底有没有起到任何作用：是对现有名称进行相似度评分、为第一方内容保留前缀、阻止容易混淆的 Unicode 字符，还是根本什么都不做。",
+          "如果一个注册表将已删除的名称保留一段固定的时间窗口然后将其释放，这就为攻击者提供了一个确定性的时间表，可以用来攻击任何按名称和版本进行固定（pin）的锁文件（lockfile）。包管理器领域通过一系列已经被命名的事件，得出了“永久封存名称”的教训；而技能注册表面临的问题是，在架构被照搬的同时，这个教训是否也被一并吸取了。",
+          "维护者生命周期",
+          "对于大多数 skill 注册表，维护者的生命周期完全取决于源代码仓库：添加维护者在 GitHub 上进行，账号恢复则是 GitHub 的密码重置，注册表根本不参与其中。当 skill 的维护者集合发生变更、skill 被派生（fork）给新所有者，或者长期休眠的账号发布新版本时，基本不会通知下游用户。角色分离非常罕见：维护者只需单一权限即可执行发布、更改设置以及添加其他维护者等操作。",
+          "已发布版本的不可变性",
+          "默认方式是跟踪 git 分支，这意味着版本就是在拉取（fetch）时该分支所解析到的提交。skill 作者随时可以通过一次推送（push），改变 `skill@v1` 对所有未来安装者的含义；即使存在基于标签（tag）的版本锁定，除非加载器也记录了该提交，否则这种锁定也只是建议性的。Go 的校验和数据库为模块实现了仅追加日志（append-only log）模型，使得无论是源仓库还是代理，都无法在发布后重写版本内容而不被客户端察觉，但对于 skill 而言，这种机制几乎甚至完全不存在。",
+          "覆盖已发布版本的操作通常会被拒绝，但此检查是基于内部标识符而非 slug 进行的，因此一旦 slug 过期并被他人重新注册，这种保护就会失效。覆盖检查发生在注册表端，而版本解析发生在客户端，因此不记录单文件哈希值的客户端根本无法区分原始字节与来自新发布者的字节。",
+          "从源码到产物的溯源",
+          "在传统的包注册表中，出处（provenance）是指注册表的 tarball 与其声称的上游仓库之间的差异。Skill 通常消除了这种差异，因为其产物与上游的 git ref 是同一回事，唯一的问题只剩下是否有人对其进行了签名。",
+          "可信发布（Trusted-publishing）和出处证明（provenance attestations）是包注册表给出的解决方案；但对于 skill，类似的机制大多缺失，或者仅存在于注册表自身的插件家族中，而没有涵盖与之并存的 skill 家族。这种不对称性在出现时值得注意，因为它意味着注册表为明显会执行代码的产物类型实现了最新的防御措施，却忽略了那些会注入到系统提示词（system prompt）中的产物类型。",
+          "发布凭证",
+          "对于托管型注册表，其考量维度与任何包注册表一样为人熟知：作用域（单个 skill 或所有者可发布的所有内容）、权限（仅限发布或也可添加维护者）、有效期（强制、可选、无），以及令牌（token）是否具有可识别的前缀，以便在泄露到公开提交（commit）中时能被密钥扫描器自动撤销。",
+          "值得对照检查的常见形态是：使用单一且长期有效的 bearer token，其作用域覆盖整个用户账户而非单个 skill，以明文形式存储在用户主目录下，既没有有效期，在发布时也不提示进行双重认证（2FA）。如果唯一的凭证只是一个等同于会话（session）的 API 密钥，那么以同一用户身份运行的任何其他进程都能代表该用户进行发布，而社会工程学攻击也就简化成了“让该用户的某个其他工具读取一个文件”。",
+          "对于注册表仅作为仓库列表这种更常见的情况，发布凭证就是用于登录拥有该仓库的 GitHub 账号的任何凭证。这意味着用户的 2FA 设置、其个人访问令牌的有效期，以及该令牌被复制到了多少个 CI 变量中，全都成为了注册表威胁模型的一部分。",
+          "审查与精选",
+          "“精选市场”通常只是指 repo 中的一个 JSON 文件列出了其他 repo。管理者只审查名称、描述，或许还有 READMEs，从不检查实际代码（字节），更不用说检查某个 skill 传递引入的依赖项的字节了。",
+          "即使 registry 在发布时确实运行了自动扫描器，同样的扫描盲区问题依然存在：扫描器是否检查了多种模式？它是否真正获取了 manifest 指向的上游包？判定结果在二十四小时后是否仍然有效。如果扫描器仅以文本形式检查 manifest，而不去解析其安装时的依赖展开（install fan-out），就会漏掉安装过程中的所有实际操作。",
+          "在大多数 skills registry 中，新版本一经发布 agent 便能解析，因此恶意版本的第一个安装者就成了“金丝雀”（canary）。包管理器已经开始采用的冷却窗口机制（即新版本发布后的 24 到 72 小时内，客户端不会主动拉取该版本）在 skills 领域尚未普及。",
+          "爆炸半径与检测",
+          "一旦某个恶意 skill 被识别出来，有几个问题决定了响应措施是否有效：registry 能否将特定版本标记为恶意并让加载器拒绝加载？能否通知受影响用户他们已安装了该恶意版本？是否有记录谁拉取了什么内容的审计日志？对于那些仅仅是一堆 git URL 列表的 registry 来说，“撤回”（yank）通常意味着从列表中删除该条目，这对已经克隆（cloned）过代码的用户毫无帮助。",
+          "值得指出的 skills 特有的问题是，撤回版本（yank-version）、移除软件包（remove-package）和封禁账号（ban-account）之间缺乏隔离。有几个 registry 将这三者视为同一个操作：一旦封禁了维护者（无论是手动封禁，还是因恶意发布或评论诈骗的判定结果而自动封禁），registry 就会批量隐藏该维护者名下的所有 skill。因此，一旦出现扫描器误报，或者查获了因 token 泄露而发起的发布行为，正常的合法工作也会受到连累而被下架。十年前，包管理器领域正是出于这个原因，才将这三种操作彻底分离。",
+          "当单用户举报上限仅计算进行中的有效举报时，基于用户举报的社区审核机制就会出现特有的失效模式。如果被隐藏的 skill 不再占用名额，极少数账户就可以通过在每次隐藏生效后循环释放名额，来隐藏无限数量的 skill。只要内容审核系统存在，这种相同的信任图谱 DoS 攻击就始终如影随形；在代码层面修复它只需一行代码，但在应急响应中却需要漫长的工作来善后。",
+          "“任意 repo 皆为 registry”的模式",
+          "大多数加载器接受任意的 git URL 作为 skill 来源，并将其标榜为最佳实践（happy path）。这使得上述所有关于 registry 端的疑问，都直接退化为“GitHub 给你什么就是什么”，再加上加载器自身的信任确认机制。",
+          "加载器在此并没有声称自己是 registry；它拒绝承担 registry 的职责，却依然在行使 registry 的职能。执行 `install https://github.com/user/skill` 时的信任级别，等同于执行 `curl | bash` 时的信任级别，只不过这里的 bash 还能修改 agent 在后续会话中的指令。",
+          "作为 registry 客户端的 agent 运行时",
+          "存在第二类问题，是因为在注册表中搜索、从候选中挑选并读取 manifest 的消费者是 agent runtime，而不是人类。《Under the Hood of SKILL.md》将这一攻击面划分为三个阶段，并为以下各个子部分提供了大部分实证数据：发现（discovery，注册表将技能排入候选集）、选择（selection，运行时从候选中挑选一个）以及治理（governance，注册表的扫描器在一开始就接受了该构件）。这些都不适用于唯一客户端是人类的包注册表。",
+          "发现",
+          "一些技能注册表通过 embedding index 进行排名，该索引混合了 manifest、markdown 正文以及技能目录中每个文件的内容。agent runtime 是该索引的消费者之一：它可以将搜索和安装作为普通工具来调用，无需经过用户。",
+          "技能作者如果在辅助文件中填满相关文本，就能在 manifest 从未描述过的查询中获得排名，这就是针对密集检索器的 GASLITE 语料库插入攻击，在注册表搜索中表现为排名攻击。在大多数研究案例中，只需在 manifest 末尾附加简短的对抗性触发器，就足以将不相关的技能推入目标查询的前十名。按原始安装量排名也有同样的漏洞，因为发布者可以通过控制某个 header 来刷高匿名下载量，进而伪造安装量。应当明确说明哪些字段会贡献给搜索向量，辅助文件内容是否被包含在内，以及去重和流行度信号起到了什么作用（如果有的话）。",
+          "选择",
+          "一旦候选列表提交给运行时，模型就会根据 description 字段从中进行选择，而它选择现有技能的对抗性变体的概率远高于随机选择的基线。包含指令性语言、时效信号、夸大的能力描述，或诸如“officially verified”等信任短语的描述，往往比功能相同但描述更朴素的技能更容易被选中。同一篇论文报告称，在四个模型中，对抗性变体优于同等原版的平均概率高达 77.6%，其中测试中最大的模型更是超过了 80%。",
+          "需要明确加载器在将 description 加入 prompt 之前对其做了哪些处理：用户是否能看到该描述；像“verified”或“official”这种明显的诱导性词汇除了是发布者自己敲上去的字眼外，是否还有其他实际意义；以及在排名出现并列时，打破平局的机制是否会受到发布者的影响。",
+          "治理",
+          "技能 manifest 有一部分是自然语言指令，任何处理它们的扫描器都必须理解这些指令的含义。有几种模式可以稳定地击败基于 LLM 的审查器：",
+          "超出输入限制后的截断。如果审查器只处理 manifest 的前一万个字符，那么攻击者只需将恶意指令放在第一万零一个字符处即可。一项已发表的研究指出这是最强的一种单次规避手段，当有效载荷位于截断窗口之后时，大多数恶意变体都会返回无威胁的判定结果。",
+          "改写。将 regex 层关注的关键词替换为无害的同义词，使得 LLM 审查器不再将其视为指令，但稍后加载该技能的运行时仍会照常执行它们。",
+          "分解。将恶意操作重新包装为一个多步骤的完成清单（即“完成标准”）。单独看每一步都是常规操作，但组合起来的效果就是最初的恶意载荷。",
+          "越狱审查器。附加一个针对审查器的提示词以获取一个无害的判定结果，其形式与早期针对安全分类器的 DAN 风格攻击相同。",
+          "这四种情况都存在相同的扫描器盲区模式：仅针对纯文本、纯代码或这两者前 N 个字符执行的检查，都可以通过将核心载荷内容移动到检查所依赖的边界之外来绕过。随之而来的问题是，注册表将如何处理介于“可疑”而又算不上完全“恶意”的判定结果：是阻止发布、显示警告，还是带着一个设置在用户不可见字段中的标志继续发布该技能。",
+          "加载器自身的供应链",
+          "加载技能的代理框架本身也是一个带有依赖项的包，这些依赖项通常来自某个包管理器，而该框架稍后会代表某个技能在该包管理器中执行安装操作：例如 npm CLI 其本身就是 npm 包，或者 Python 工具自带其 pip 依赖项。框架中一旦出现被攻陷的依赖项，就意味着在负责协调每次技能加载并保存所有已批准工具授权的组件内部实现了代码执行。本节提出的问题同样适用于框架自身的清单，并且是在适用于该框架自身依赖树的所有包管理器设计问题之上的。",
+          "Markdown CVE",
+          "针对特定技能的 CVE 很快就会出现并被提交，就像 2018 年针对恶意 [email protected] 版本提交的 CVE 一样。现有的漏洞管理技术栈并未为此做好准备。目前没有任何技能注册表注册了 PURL 类型，因此 SBOMs、OSV 订阅源和 Dependabot 风格的扫描器没有规范标识符可用于匹配已安装的技能。制品本身是自然语言文本而非代码，因此作为该技术栈基础的版本和哈希跟踪只能在文件级别起作用，而无法在语义级别起作用：经过改写的载荷会产生不同的 sha256 值，但带来的漏洞却是相同的。",
+          "针对注册表设计属性（slug 预留策略、lockfile 格式、冷却时间默认值）的 CVE 甚至更加不在收录目录的范围内，这和 npm 或 PyPI 的情况如出一辙。在这种记录体系下，零 CVE 漏洞就是“注册表设计正按照文档描述正常运行”的具体体现。",
+          "包注册表最终产出了 npm 的威胁与缓解措施页面以及 OpenSSF 的《包仓库安全原则》，这两份文档均由运营注册表的人员亲自编写。技能领域也有大量来自其他方面的相关资料，但没有一份是来自加载器或注册表内部的：例如 Snyk 的 ToxicSkills 等扫描器厂商的攻击目录，《Agent Skills in the Wild》和《Towards Secure Agent Skills》等学术实证与分类研究，以及 OWASP Agentic Skills Top 10 等社区管控列表。"
+        ]
+      }
+    },
+    {
+      "slug": "66c6e04716cdcadd",
+      "title": "CBS News Fires Scott Pelley of ‘60 Minutes’",
+      "titleZh": "CBS News 解雇《60分钟》主持人 Scott Pelley",
+      "link": "https://www.nytimes.com/2026/06/02/business/media/scott-pelley-cbs-bari-weiss.html",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-03T19:49:56.000Z",
+      "category": "other",
+      "keywords": [
+        "media",
+        "journalism",
+        "CBS"
+      ],
+      "score": {
+        "relevance": 1,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 13
+      },
+      "summary": "CBS 以「有正当理由立即解雇」的方式终止了《60分钟》资深记者 Scott Pelley 的职务，起因是 Pelley 在周一的内部员工会议上公开发言批评管理层。解雇信由 Nick Bilton 签发，但信中并未对 Pelley 在会议上的任何具体陈述提出事实反驳。Gruber 指出，CBS 不反驳内容却直接开除发声者，反而坐实了 Pelley 对管理层打压新闻独立性的指控。这一事件被视为企业以「因故解雇」手段噤声资深新闻人的标志性案例。",
+      "summaryEn": "CBS terminated veteran '60 Minutes' correspondent Scott Pelley 'for cause, effective immediately,' following his public remarks criticizing management at a Monday staff meeting. The termination letter, signed by Nick Bilton, notably fails to dispute any specific statements Pelley made. Gruber argues that firing Pelley without refuting his claims only proves Pelley was exactly right about management's suppression of journalistic independence. The incident stands as a landmark case of a network using 'termination for cause' to silence a senior journalist.",
+      "reason": "这不仅是媒体行业的大事件，更提供了一个教科书级的反面案例——组织在危机公关中用解雇代替回应，如何反而坐实了指控。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "1206d146f06ca4b5",
+      "title": "GE Widescreen 1000: Big time TV for big budgets",
+      "titleZh": "GE Widescreen 1000：面向大预算的大时代电视",
+      "link": "https://dfarq.homeip.net/ge-widescreen-1000/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=ge-widescreen-1000",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-06-03T11:00:54.000Z",
+      "category": "other",
+      "keywords": [
+        "TV",
+        "retro",
+        "history"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 5,
+        "timeliness": 2,
+        "total": 9
+      },
+      "summary": "1978 年 6 月推出的 GE Widescreen 1000 是那个奢华年代的标志性消费品，主打标语为「This is GE Performance Television」。这台电视的售价约为一辆家用轿车的四分之三，定位顶级消费市场。文章回顾了该产品的设计理念、技术规格以及在当时的市场定位，展现了 1970 年代末美国消费电子产业的浮夸风格。作为早期宽屏电视的代表，它折射出那个时代对「大」和「豪华」的极致追求。",
+      "summaryEn": "Introduced in June 1978, the GE Widescreen 1000 was an iconic luxury product of its era, branded with the tagline 'This is GE Performance Television.' Priced at roughly three-quarters the cost of a family sedan, it targeted the top tier of the consumer market. The article revisits the product's design philosophy, technical specifications, and market positioning, illustrating the extravagant style of late-1970s American consumer electronics. As an early widescreen television, it reflects the era's relentless pursuit of size and luxury.",
+      "reason": "一篇有趣的科技考古文章，通过一款 1978 年的天价电视，让人重新审视消费电子产品的定价逻辑与时代审美。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The GE Widescreen 1000 was a big time TV for big time budgets in an era of excess, with the tagline “This is GE Performance Television.” Introduced in June 1978, it cost about 3/4 as much as a family sedan at the time. But middle class families weren’t the target audience for this set."
+          },
+          {
+            "type": "p",
+            "text": "The General Electric Widescreen 1000 (WS1000) cost $2,800. For the money you got a 45-inch screen, hardwood veneer paneling, two speakers, and a spot to plant a matching VCR."
+          },
+          {
+            "type": "h2",
+            "text": "Key takeaways for the General Electric Widescreen 1000"
+          },
+          {
+            "type": "li",
+            "text": "The GE Widescreen 1000 retailed for $2,800 in 1978, equivalent to $13,700 in 2025 dollars"
+          },
+          {
+            "type": "li",
+            "text": "The screen size was 45 inches measured diagonally (36 inches across and 27 inches vertically), not 75 inches"
+          },
+          {
+            "type": "li",
+            "text": "The entire unit measured 50 inches high by 70 inches wide and 24 inches deep"
+          },
+          {
+            "type": "li",
+            "text": "It featured two speakers, but stereo TV was still several years away"
+          },
+          {
+            "type": "h2",
+            "text": "GE Performance Television: Wood grain included"
+          },
+          {
+            "type": "p",
+            "text": "The GE Widescreen 1000 or GE Performance Television, whatever you want to call it, had a veneered cabinet, because this was an era when a television still took up so much space it needed to look like a piece of furniture. The model number was 45YP9000W."
+          },
+          {
+            "type": "p",
+            "text": "Although a TV that large looks like it could reasonably contain vacuum tubes, it was a few years after the end of that era. The GE Widescreen 1000 was a fully solid state design using transistors and chips, rather than tubes. Of course it came with a remote control. And it had the ability to detect which stations had a signal. That’s a feature we take for granted today, but was still a novelty in 1978."
+          },
+          {
+            "type": "p",
+            "text": "The widescreen name is a bit of a misnomer, as it was a 4:3 set like everything else of its day. Widescreen content as we know it today didn’t start until 1998, 20 years later. The screen was wide AND tall."
+          },
+          {
+            "type": "h2",
+            "text": "GE Widescreen 1000 size and weight"
+          },
+          {
+            "type": "p",
+            "text": "The ad has become something of a popular meme in modern times because it pictures the television with a man in a suit standing behind it and leaning on it, illustrating just how oversized this set was. The average adult male was about 6 ft tall in 1978, and the set is clearly about 2/3 as tall as he is. The entire unit measured 50 inches high by 70 inches wide and 24 inches deep. It consumed 185 watts of power."
+          },
+          {
+            "type": "h3",
+            "text": "What about weight, though?"
+          },
+          {
+            "type": "p",
+            "text": "The GE Widescreen 1000 looks like it should have weighed half a ton, but the looks are deceptive. It was largely empty space inside, so the cabinet contributed more to the weight than the CRT or the electronics. According to the Winter 1979 issue of Video magazine, it weighed 359 pounds. So it was considerably heavier than a modern 45-inch screen, and moving it would give two people a good workout."
+          },
+          {
+            "type": "h3",
+            "text": "General Electric Widescreen 1000 options and popularity"
+          },
+          {
+            "type": "p",
+            "text": "Most photos show the General Electric Widescreen 1000 with the optional GE Command Performance VCR occupying the pedestal above the right hand speaker. The VCR, manufactured by Hitachi for GE, cost around $1,000 and it weighed 38 pounds. The TV had dual speakers, but stereo TV broadcasts were still 6 years away, not gaining a FCC approval until 1984. The two speakers were most likely wired to emit identical audio. This was commonly called high fidelity sound at the time, and it gave a different effect than stereo sound does."
+          },
+          {
+            "type": "p",
+            "text": "GE advertised it heavily, especially in publications like Popular Mechanics. But they didn’t mention the $2,800 list price. If you had to ask, you couldn’t afford it. And that’s a bit of a shame. It sure would have looked great in your wood paneled living room with the avocado green accent wall and orange shag carpet. That’s assuming your living room could spare 12 square feet of floor space."
+          },
+          {
+            "type": "p",
+            "text": "General Electric didn’t announce sales figures but did say all of their dealers in their network of 1,000 ordered at least one unit. Realistically, more of these sets probably ended up in bars and hotel lobbies than in private homes."
+          },
+          {
+            "type": "h2",
+            "text": "GE Widescreen 1000 screen size"
+          },
+          {
+            "type": "p",
+            "text": "By some accounts, the screen size was 75 inches. That’s a miscalculation based on the claim that it had three times the viewable area of a more conventional 25 inch set. That’s why manufacturers measure screen size diagonally. The screen actually measured 36 inches across and 27 inches vertically, giving a viewing area of 972 square inches. A 25 inch set measures 20 inches across and 15 inches vertically, for a viewing area of 300 square inches. That is indeed a bit less than 1/3 the viewing area of a GE Widescreen 1000. A 75 inch screen would be 60 inches across and 45 inches vertically, and that wouldn’t fit in the WS1000’s design."
+          },
+          {
+            "type": "p",
+            "text": "Everything about the WS1000’s marketing was designed to make it seem enormous. And it was a big set for its day. It had three times the screen real estate of the set in the average living room in 1978."
+          },
+          {
+            "type": "p",
+            "text": "But it was marketed to seem even bigger than it really was. The tagline GE Performance Television encouraged it."
+          },
+          {
+            "type": "h2",
+            "text": "Was the WS1000 a CRT TV?"
+          },
+          {
+            "type": "p",
+            "text": "The TV had a CRT inside, but that wasn’t a 45-inch CRT in it like the Sony PVM-4300 had. Inside, the GE Performance Television had a 13 inch CRT with a lens that magnified and projected the image onto the 45-inch screen. Ironically, the portable Sony Watchman TVs from a few years later used a very similar technique to let it fit in your pocket. The GE Widescreen 1000 is the ultimate over the top CRT TV today, but finding a surviving example for sale now will be a challenge."
+          },
+          {
+            "type": "p",
+            "text": "It’s easy to imagine the ultra wealthy planting one of these in a living room with an Atari heavy sixer attached for an epic game of Space Invaders before or after a movie or sporting event. And the VCR would have made for some good family movie nights. Never mind the VCR’s legal implications at the time."
+          },
+          {
+            "type": "p",
+            "text": "But more units seemed to sell to restaurants and hotels than to individual consumers. The WS1000 received more editorial coverage in the trade publications for the hospitality industry than anywhere else. That makes sense. A hotel bar or lobby was better able to accommodate the space, not to mention the $2,800 price tag."
+          },
+          {
+            "type": "p",
+            "text": "That makes finding a surviving example of a General Electric Widescreen 1000 for sale today tough. The audience best able to afford them was also best able to discard them as soon as they were obsolete."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "在那个奢靡的年代，GE Widescreen 1000 是一款面向巨额预算的顶级电视，广告语是“This is GE Performance Television.”。它于 1978 年 6 月推出，价格约为当时一辆家用轿车的四分之三。但中产阶级家庭并不是这款电视的目标受众。",
+          "通用电气的 Widescreen 1000 (WS1000) 售价为 2800 美元。花这笔钱，你可以得到一块 45 英寸的屏幕、硬木贴面外壳、两个扬声器，以及一个专门用来安放配套 VCR 的预留位置。",
+          "关于 General Electric Widescreen 1000 的核心看点",
+          "GE Widescreen 1000 在 1978 年的零售价为 2800 美元，相当于 2025 年的 13700 美元",
+          "屏幕尺寸按对角线测量为 45 英寸（宽 36 英寸，高 27 英寸），而不是 75 英寸",
+          "整机尺寸为高 50 英寸、宽 70 英寸、深 24 英寸",
+          "它配备两个扬声器，但距离立体声电视的普及还有几年时间",
+          "GE Performance Television：自带木纹外观",
+          "GE Widescreen 1000 或者叫 GE Performance Television，无论你怎么称呼它，都带有一个木质贴面机箱。因为在那个年代，电视依然非常占地方，所以它的外观必须设计得像一件家具。它的型号为 45YP9000W。",
+          "尽管一台那么大的电视很容易让人觉得里面装满了真空管，但此时距离真空管时代结束已经过去几年了。GE Widescreen 1000 采用了全固态设计，使用的是晶体管和芯片，而不是电子管。当然，它配有遥控器。它还能够检测哪些频道有信号。这在今天是我们习以为常的功能，但在 1978 年却是个新鲜事物。",
+          "“宽屏”（Widescreen）这个名字其实有点名不副实，因为和当时所有的电视一样，它也是一台 4:3 比例的设备。我们今天所熟知的宽屏内容直到 20 年后的 1998 年才出现。这台电视的屏幕不仅宽，而且很高。",
+          "GE Widescreen 1000 的尺寸与重量",
+          "这则广告在现代成了一个相当流行的网络梗，因为画面中一名西装革履的男士站在电视后方并倚靠着它，直观地展示了这台电视有多么庞大。1978 年成年男性的平均身高约为 6 英尺，而这台电视显然达到了他身高的三分之二。整机尺寸为高 50 英寸、宽 70 英寸、深 24 英寸，功耗为 185 瓦。",
+          "那么，重量如何呢？",
+          "GE Widescreen 1000 看起来似乎重达半吨，但外表具有欺骗性。它的内部大部分是空心的，因此机箱的重量甚至比 CRT 显像管或电子元件还要大。根据 1979 年冬季刊的《Video》杂志显示，它的重量为 359 磅（约 163 公斤）。所以它还是比现代的 45 英寸屏幕重得多，想要搬动它，绝对够两个人好好锻炼一番的。",
+          "General Electric Widescreen 1000 的选配与流行度",
+          "大多数照片显示的 General Electric Widescreen 1000，都在右侧扬声器上方的底座上配备了选配件 GE Command Performance VCR。这款 VCR 由日立为 GE 代工制造，售价约为 1000 美元，重 38 磅。这台电视配有双扬声器，但距离立体声电视广播的开播还有 6 年时间，直到 1984 年才获得 FCC（联邦通信委员会）的批准。这两个扬声器很可能是并联的，输出相同的音频。这在当时通常被称为高保真音效，其呈现的效果与现在的立体声有所不同。",
+          "通用电气（GE）对它进行了大量宣传，尤其是在《大众机械》（Popular Mechanics）等出版物上。但他们并没有提及 2800 美元的标价。如果你还得问价钱，那你肯定买不起。这多少有些遗憾。如果把它放在你那有着木质镶板、牛油果绿背景墙和橙色长毛地毯的客厅里，看起来绝对会很棒。当然，前提是你的客厅能腾出 12 平方英尺的占地空间。",
+          "通用电气没有公布销售数据，但确实提到过在他们拥有 1000 家经销商的网络中，每家都至少订购了一台。实际上，与私人住宅相比，这种电视最终很可能更多地是被摆在了酒吧和酒店大堂里。",
+          "GE Widescreen 1000 的屏幕尺寸",
+          "根据一些说法，它的屏幕尺寸达到了 75 英寸。这一误算源于其“可视面积是传统 25 英寸电视三倍”的宣传。这也正是为什么厂商要沿对角线测量屏幕尺寸的原因。实际上，该屏幕的宽度为 36 英寸，高度为 27 英寸，可视面积为 972 平方英寸。而一台 25 英寸电视的宽度为 20 英寸，高度为 15 英寸，可视面积为 300 平方英寸。这确实不到 GE Widescreen 1000 可视面积的三分之一。如果是 75 英寸的屏幕，宽度将达到 60 英寸，高度为 45 英寸，这根本无法塞进 WS1000 的外观设计中。",
+          "WS1000 的所有营销手段都是为了让它显得极其巨大。在当时的年代，它确实算得上一台大块头电视。它的屏幕面积是 1978 年普通家庭客厅电视的三倍。",
+          "但当时的营销让它显得比实际还要大。“GE Performance Television（GE 高性能电视）”的宣传标语更是起到了推波助澜的作用。",
+          "WS1000 是一台 CRT 电视吗？",
+          "这台电视内部确实装有一个 CRT，但并不像索尼（Sony）PVM-4300 那样内置了 45 英寸的显像管。GE 高性能电视内部其实只有一个 13 英寸的 CRT，通过透镜将画面放大并投射到 45 英寸的屏幕上。讽刺的是，几年后推出的便携式索尼 Watchman 电视也采用了非常相似的技术，才得以塞进你的口袋里。如今，GE Widescreen 1000 算得上是极致夸张的 CRT 电视了，但现在想找到一台存世且在售的机器将是一个巨大的挑战。",
+          "我们很容易想象出这样的画面：超级富豪们在客厅里摆上一台这样的电视，连上 Atari heavy sixer 游戏机，在看完电影或体育比赛前后，来一场史诗般的 Space Invaders（太空侵略者）游戏。再加上一台录像机（VCR），绝对能打造美好的家庭电影之夜。至于当时使用录像机带来的法律争议，那就另当别论了。",
+          "但比起个人消费者，这些设备似乎更多地卖给了餐厅和酒店。与其它媒体相比，WS1000 在酒店餐饮行业的专业刊物上获得了更多的报道。这也是合情合理的。酒店酒吧或大堂不仅有足够的空间来容纳它，更不用说他们也更能承担得起 2800 美元的标价了。",
+          "这也导致如今想要找到一台存世且在售的通用电气 Widescreen 1000 变得异常困难。那些最有能力购买它们的客户群体，往往也是最容易在它们过时后将其无情淘汰的人。",
+          "David Farquhar 是一名计算机安全专家、企业家兼作家。自 1991 年以来，他一直从事专业的计算机写作，也就是说，在老式电脑还是新玩意儿的时候，他就开始撰写相关的文章了。他于 1994 年开始正式踏入 IT 行业，并自 2013 年起专注于漏洞管理领域。他拥有 Security+ 和 CISSP 认证。如今，他每周会发布五篇博客，主要探讨 1975 年至 2000 年间的老式电脑和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
