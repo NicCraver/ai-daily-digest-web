@@ -1,0 +1,2002 @@
+{
+  "date": "2026-06-08",
+  "generatedAt": "2026-06-07T18:31:47.892Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2433,
+    "filteredArticles": 12,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈的核心焦点无疑是人工智能的深度渗透与边界探讨。一方面，大语言模型正全面重塑软件开发流程，从自动编程的质量评估到利用智能体从零启动项目，AI已成为提升研发效率的利器；另一方面，AI生成艺术的爆发也正式引发了关于艺术风格版权保护的法律与伦理碰撞。与此同时，开发者基础设施也在持续进化，无论是更强大的专属云存储SDK还是集成AI工作流的视频处理平台，都在为现代应用赋能。此外，从启动上世纪的IBM电子计算器到探讨硬核的物理与数学公式，技术社区依然保持着对计算历史与基础科学的深厚热情。",
+  "articles": [
+    {
+      "slug": "81001b41cce4def7",
+      "title": "A new era for software testing",
+      "titleZh": "软件测试的新时代",
+      "link": "http://antirez.com/news/168",
+      "sourceName": "antirez.com",
+      "sourceUrl": "http://antirez.com",
+      "pubDate": "2026-06-07T09:46:06.000Z",
+      "category": "engineering",
+      "keywords": [
+        "AI",
+        "testing",
+        "code quality"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "自动编程在特定场景下显著提升了软件开发速度，但其产出的结构质量与复杂度控制仍不及顶尖手写代码。然而，大多数常规手写代码质量平平，合理管理的自动编程通常能超越这些代码的水平。作者认为在代码质量和开发时间之间存在明确的权衡。这种权衡表明，自动编程正在开启软件测试的新时代，改变开发者的工作模式。",
+      "summaryEn": "Automatic programming significantly accelerates software development in specific scenarios, though its output still lacks the structural quality and complexity control of top-tier hand-written code. However, since most conventional hand-written code is only mediocre, well-managed automatic programming can usually surpass it in quality. The author believes there is a clear tradeoff between code quality and development time. This tradeoff indicates that automatic programming is ushering in a new era for software testing and changing how developers work.",
+      "reason": "由 Redis 作者 antirez 撰写，客观评估了 AI 自动编程在代码质量与开发效率之间的真实权衡。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "code",
+            "text": "Automatic programming dramatically speeds up writing software in certain use cases and in the right hands. In my experience the output does not reach the structural quality and economy of complexity of the best hand-written software. However, not all the software is stellar, and my feeling is that automatic programming surpasses most of the times (and if well managed) the quality of decently developed hand-written code.\n\nYet, there is a tradeoff between quality and time, in the case of writing new software with AI. This tradeoff in certain projects I developed can be brutal, that is, completing projects that may take many months in a few weeks. However, there are domains where LLMs simply open new strictly more powerful ways to automate processes, without any compromise on quality. One of those domains is software QA and testing.\n\nTraditionally software is tested using test suites that are composed of locally-scoped tests and integration tests (think of Redis: one thing is testing if SET foo 10 will be matched by GET foo => 10, another thing is testing if replication works in this case). And then by QA passes that are usually manually executed, and that can capture holes in the runnable test suite. It is a known fact that covering all the lines of the code does not mean covering all the possible states. Moreover integration testing is structurally hard: there are a number of timing issues, setups, and certain quality outputs that can only be visually inspected and not automatically checked that leave a lot of testing opportunities not really exploited because of time or logistic constraints.\n\nLLMs offer a new way to do QA on top of the existing testing methodologies. The idea is to create a markdown file where an AI agent is asked to work as a QA engineer, performing a number of manual testings on the new release. For instance, in the case of DwarfStar (an inference engine for open weights LLMs) I use the following approach. In the markdown file, the agent is asked to check what are the new commits on top of the already released version of the software project. Then the model is told a list of things that should be performed, like:\n\n- Check that distributed inference works across MacBook A and MacBook B, making sure the output is coherent, the inference works with all the GGUF files we have in both the machines, ...\n- Make sure this release does not contain any speed regression.\n\nAnd so forth. Notably, in the speed regression part, I don't have to tell the agent what was the previous expected speed, as this is a moving target that changes with new releases and new optimizations. Similarly the integration test for distributed inference does not require many instructions, at the start of the file there are just SSH endpoints and the key to use, the paths, and so forth.\n\nThe agent is asked to check the long list of QA activities *especially* in light of the added commits, starting with an inspection of the changes and with the identification of what could be affected, so that the QA pass specializes trying to find specific regressions.\n\nIn the case of Redis Arrays, I used a similar methodology asking the agent to build a large array-based Redis application, to setup a production environment with replication and persistency, to simulate the usage of the application for days and with many users, checking if something was odd.\n\nTesting that uses these approaches may also move in the more psychological side of software quality, asking the agent to identify all the new features that may look surprising, not documented enough, or generally sloppy from the POV of the user. All things that needed to be executed manually before, and that most of the times were mostly skipped.\n\nI have the feeling that the introduction of automatic QA may raise the bar of quality for new releases of software, and maybe partially compensate for the lower quality of the code produced at high speed with the use of automatic programming."
+          },
+          {
+            "type": "p",
+            "text": "blog comments powered by Disqus"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4fd097d6f81f7b6a",
+      "title": "Copping My Style",
+      "titleZh": "剽窃我的风格：艺术风格能受法律保护吗？",
+      "link": "https://feed.tedium.co/link/15204/17355475/adobe-creator-act-style-protection-commentary",
+      "sourceName": "tedium.co",
+      "sourceUrl": "https://tedium.co",
+      "pubDate": "2026-06-07T02:54:43.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "copyright",
+        "art",
+        "law"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "艺术风格目前无法获得法律保护，但一项由 Adobe 支持的法案正试图改变这一现状。该法案是对当前 AI 生成艺术浪潮的直接回应，旨在为创作者的风格提供某种形式的法律保护。然而，艺术风格之间的界限本身就非常模糊。界定抄袭与灵感借鉴在法律和实操上都面临巨大挑战。",
+      "summaryEn": "Artistic styles currently cannot be legally protected, but an Adobe-backed bill is attempting to change that. This proposed legislation is a direct reaction to the rise of AI-generated art, aiming to provide creators with some form of legal protection for their styles. However, the boundaries between different artistic styles are inherently blurry. Distinguishing between plagiarism and inspiration poses massive legal and practical challenges.",
+      "reason": "探讨了 Adobe 推动的艺术风格保护法案，为理解 AI 时代的版权与创意边界提供了独到视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Tedium: The Dull Side of the Internet.",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Two companies that have enabled literal decades of creativity have both landed on the same question around the same time: Who owns a vibe?"
+          },
+          {
+            "type": "p",
+            "text": "One makes $5,000 guitars. The other makes software that they’d charge $5,000 a year for if they could. And creatives, as ever, are caught in the middle."
+          },
+          {
+            "type": "p",
+            "text": "First up, we have Fender, the originators of one of the most important guitar designs of the past century, the Stratocaster. It’s been around so long that it’s basically generic at this point, often the starting point of many a luthier. But Fender disagrees on this point, with a single default judgment in a German court giving them just enough cover to call out their competitors, many of whom have been making Strat-like guitars for decades."
+          },
+          {
+            "type": "p",
+            "text": "Surprisingly close to the center of this controversy, somehow, is John Mayer. See, a bit over a decade ago, Mayer wanted to make improvements to his Strat under his signature guitar deal with Fender. But Fender’s corporate culture was in the middle of a big shift, and the people in charge weren’t receptive to his ideas. So he jumped ship to PRS Guitars, whose founder, Paul Reed Smith, is still at the helm. Mayer found a close collaborator, and the two saw an opportunity to improve on a de facto industry standard, tweaking a solid guitar to make it even better for hardcore players."
+          },
+          {
+            "type": "p",
+            "text": "They were small things—wider frets, a deeper slope to make it easier to hit those high notes—but they added up to be a better guitar that superseded its signature-guitar status."
+          },
+          {
+            "type": "p",
+            "text": "John Mayer, showing off his Strat-like signature guitar, which is more popular than your average signature guitar."
+          },
+          {
+            "type": "p",
+            "text": "The PRS Silver Sky, as it came to be called, got a lot of online mockery for looking kind of like a Strat. But the guitar quickly outpaced its surface details and became more popular than the Strat among serious guitarists."
+          },
+          {
+            "type": "p",
+            "text": "Enter Fender, which recently sent PRS a legal complaint. They weren’t the only ones, but Fender was clearly looking for some way to protect its design, which has been around for about as long as Paul Reed Smith, a 71-year-old man, has been alive. Backlash has been swift—with many musicians siding with smaller manufacturers, reflecting a widespread belief that the Strat design is generic."
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, a completely different push for ownership emerged this week on Capitol Hill. The company? Adobe, a clear favorite around these parts."
+          },
+          {
+            "type": "p",
+            "text": "But this is worth paying attention to. Essentially, Adobe is attempting to put its might behind something called the CREATOR Act, which aims to give artists ownership over their distinct visual style, something at risk in the age of AI."
+          },
+          {
+            "type": "p",
+            "text": "“If passed, this common-sense, bipartisan measure would address a gap in our intellectual property laws by protecting creators against style impersonation, and Adobe is proud to support it,” wrote Louise Pentland, the company’s chief legal officer and executive vice president of legal and government relations."
+          },
+          {
+            "type": "p",
+            "text": "Broken down, Adobe is essentially pushing for something very similar to what Fender is—the right to protect a style, but in a very different medium. One is resolutely analog; the other is as digital as you can get. While the bill seems narrowly tailored based on a cursory read, the protecting-artists mess feels like it’s testing fate."
+          },
+          {
+            "type": "p",
+            "text": "What do I mean by that? Well, going back to music, modern artists have found themselves navigating complex legal battles over songs that borrow a portion of a melody or even a general vibe. The infamous “Blurred Lines” case, in which the estate of Marvin Gaye sued over Robin Thicke, T.I., and Pharrell copying the general style (rather than the specific melody) of “Got to Give it Up.” That case has created all sorts of ugly precedent in the years since, and much of it is being driven not by the artists, but their estates."
+          },
+          {
+            "type": "p",
+            "text": "This bill is literally asking to bring that mess to visual art, a situation in which interpretation is often even more abstract than with music. Admittedly, the bill has distinct limits—it has to be made clear whether, by AI or by a human creator, that the intent was to specifically rip off another person’s art. It carves out stuff that would already be protected under fair use, like using a work in a news story."
+          },
+          {
+            "type": "p",
+            "text": "And as anyone might have noticed when OpenAI kicked off a Studio Ghibli meme last year, there would be clear cases where this might happen. At least from an AI standpoint, it’s timely."
+          },
+          {
+            "type": "p",
+            "text": "But most art lives in an uncanny valley of indirect inspiration—where perhaps you saw something, and it inspired you to make something of your own. The gap between whether something is directly inspired or indirectly inspired is wide, and all matter of deeply messy legal battles could fill it."
+          },
+          {
+            "type": "p",
+            "text": "One presumes the reason Adobe is the one pushing for this is because they see a potential business in licensing specific styles to AI platforms and Creative Cloud users, though the company does not explicitly state this. (Its Firefly product does something similar with stock photos.)"
+          },
+          {
+            "type": "p",
+            "text": "If this law passes, it wouldn’t be surprising if some big company started skulking around, looking for the next target to hit. (Given that this law would apply for up to five decades after the artist’s death, it might even apply to their estate.) You think this is hyperbole, but this is already what’s happening with music, where modern musicians preemptively make other artists songwriters on the off chance it sounds too similar."
+          },
+          {
+            "type": "p",
+            "text": "Inspiration springs eternal, but one wonders if this attempt to protect creativity is just going to lead to a company resting on its laurels to try to smother the next generation of creatives."
+          },
+          {
+            "type": "p",
+            "text": "Yes, we’re in a climate of constant slop, but a climate of constant lawsuits would probably be worse."
+          },
+          {
+            "type": "h3",
+            "text": "Unstyled Links"
+          },
+          {
+            "type": "p",
+            "text": "I’ve been admittedly obsessed with the Bricks & Minifigs/Reckless Ben situation, which is endlessly complex and hard to explain. (It hits on like half a dozen areas of law.) Mike Masnick did a good job, but I want to give a shout-out to copyright attorney Leonard French, whose even-handed look at this case has been a welcome respite."
+          },
+          {
+            "type": "p",
+            "text": "The Super Mario Bros. Any% speedrun record has had a surprising amount of drama this year as a result of an accusation of sabotage by a top-tier player. That drama hasn’t gone away, but a long-term player just got the world record for the first time, which rules."
+          },
+          {
+            "type": "p",
+            "text": "If you want to give your videos or photos the feel of vintage VHS, you probably can’t do better than this tool."
+          },
+          {
+            "type": "p",
+            "text": "--"
+          },
+          {
+            "type": "p",
+            "text": "Find this one an interesting read? Share it with a pal! (Would you buy a Strat knockoff?)"
+          },
+          {
+            "type": "p",
+            "text": "Wanna support Tedium? Check out the Tedium Shopping Network. You might find something really strange and awesome there."
+          }
+        ],
+        "translations": [
+          "两家激发了整整数十年创造力的公司，在差不多同一时间面临了同一个问题：谁能拥有一种“风格”？",
+          "一家制造售价 5000 美元的吉他。另一家开发软件，如果可以的话，他们恨不得每年收 5000 美元的授权费。而创作者们，一如既往地，被夹在了中间。",
+          "首先是 Fender，它是过去一个世纪最重要的吉他设计之一 Stratocaster 的开创者。这款吉他存在的时间太长了，以至于现在基本上已经成为一种通用设计，通常是许多制琴师的起点。但 Fender 并不这么认为，德国法院的一项缺席判决刚好给了他们足够的底气来发难其竞争对手，尽管其中许多竞争对手制造类似 Strat 的吉他已经有几十年了。",
+          "令人惊讶的是，John Mayer 不知怎么地成了这场争议的核心人物。你看，十多年前，Mayer 希望在与 Fender 的签名款吉他合作中改进他的 Strat。但当时 Fender 的企业文化正处于重大转型期，管理层对他的想法并不买账。于是他跳槽到了 PRS Guitars，该公司的创始人 Paul Reed Smith 至今仍在掌舵。Mayer 找到了一位亲密的合作者，两人看到了改进这一事实上的行业标准的机会，对一把优秀的吉他进行微调，使其更适合硬核玩家。",
+          "这些都是小改动——更宽的品丝，更深的琴颈弧度以便更容易弹奏高音——但这些细节累积起来成就了一把更好的吉他，其意义超越了“签名款吉他”的定位。",
+          "John Mayer 正在展示他那把类似 Strat 的签名款吉他，这把琴比普通的签名款吉他更受欢迎。",
+          "这款后来被称为 PRS Silver Sky 的吉他，因为看起来有点像 Strat 而在网上遭到了大量嘲讽。但这把吉他很快超越了其表面的细节设计，在严肃的吉他手中变得比 Strat 还要受欢迎。",
+          "接着 Fender 登场了，他们最近向 PRS 发送了法律投诉。他们不是唯一这么做的，但 Fender 显然在寻找某种方式来保护其设计，而这个设计存在的时间大约和现年 71 岁的 Paul Reed Smith 的寿命一样长。强烈的市场反噬随之而来——许多音乐人站在了规模较小的制造商一边，反映出一种普遍的观念，即 Strat 的设计早已成为一种通用设计。",
+          "与此同时，本周在国会山出现了一场完全不同的关于所有权的推动运动。哪家公司？Adobe，这家在这些圈子里备受青睐的公司。",
+          "但这很值得关注。本质上，Adobe 正试图将其影响力投入到一项名为《CREATOR 法案》的立法中，该法案旨在赋予艺术家对其独特视觉风格的所有权，这在 AI 时代正面临着风险。",
+          "该公司首席法务官兼法律与政府关系执行副总裁 Louise Pentland 写道：“如果这项常识性的、两党联合的法案获得通过，将通过保护创作者免受风格模仿的影响，从而填补我们知识产权法中的空白，Adobe 很自豪能够支持它。”",
+          "拆解来看，Adobe 正在推动的事情本质上与 Fender 非常相似——即保护一种风格的权利，只不过是在一个完全不同的媒介上。一个是纯粹的模拟（实体）世界；另一个则是极致的数字世界。虽然粗略一看这项法案似乎适用范围很窄，但这种“保护艺术家”的混乱局面感觉像是在试探命运的底线。",
+          "我这么说是什么意思呢？嗯，回到音乐领域，现代艺术家们发现自己常常因为歌曲借用了一段旋律甚至是一种整体氛围，而陷入复杂的法律诉讼。臭名昭著的“Blurred Lines”案就是如此，Marvin Gaye的遗产管理方起诉Robin Thicke、T.I.和Pharrell抄袭了“Got to Give it Up”的整体风格（而不是具体旋律）。这个案子在随后的几年里开创了各种糟糕的先例，而且其中很大程度上推波助澜的不是艺术家本人，而是他们的遗产管理方。",
+          "这项法案简直是在把这种混乱引入视觉艺术领域，而在这种情况下，对作品的解读往往比音乐更抽象。诚然，该法案有明确的限制——必须清楚证明无论是AI还是人类创作者，其意图是否为蓄意抄袭他人的艺术作品。它也排除了那些本就受“合理使用”保护的内容，比如在新闻报道中使用某件作品。",
+          "而且，正如大家可能注意到的那样，当OpenAI去年掀起一阵Studio Ghibli风格的迷因热潮时，显然已经出现了适用该法案的情况。至少从AI的角度来看，这个法案出台得正合时宜。",
+          "但是，大多数艺术都存在于间接灵感的“诡异地带”——也许你看到了某些东西，然后受到启发创作了属于自己的作品。直接启发和间接启发之间的界限非常宽泛，其中充斥着各种极度混乱的法律纠纷。",
+          "人们猜测，Adobe之所以极力推动这项法案，是因为他们看到了向AI平台和Creative Cloud用户授权特定风格的潜在商机，尽管该公司并未明确说明这一点。（其Firefly产品在图库照片方面就做过类似的事情。）",
+          "如果这项法律获得通过，一些大公司开始四处暗中窥伺，寻找下一个打击目标，也就不足为奇了。（鉴于这项法律在艺术家去世后五十年内依然有效，它甚至可能适用于他们的遗产管理方。）你可能觉得这很夸张，但音乐界已经发生了这种情况：现代音乐人会提前将其他艺人列为联合作曲人，以防万一作品听起来过于相似而惹上官司。",
+          "灵感生生不息，但人们不禁要问，这种保护创造力的尝试是否最终只会导致某些公司躺在功劳簿上，试图扼杀下一代创作者。",
+          "是的，我们正处于一个AI垃圾内容泛滥的时代，但无休止诉讼的氛围可能会更糟。",
+          "无样式链接",
+          "不可否认，我一直对Bricks & Minifigs与Reckless Ben之间的事件非常着迷，这件事极其复杂且难以解释。（它涉及大约六个法律领域。）Mike Masnick已经解释得很到位了，但我想特别提一下版权律师Leonard French，他对这个案件客观公正的分析让人感到如释重负。",
+          "《Super Mario Bros.》的Any%速通纪录今年出人意料地充满了戏剧性，起因是一名顶级玩家被指控蓄意破坏。这场风波尚未平息，但一位长期参与该游戏的玩家刚刚首次拿下了世界纪录，这太酷了。",
+          "如果你想让你的视频或照片带有复古VHS的感觉，恐怕没有比这个工具更好的选择了。",
+          "--",
+          "觉得这篇文章读起来很有趣？把它分享给朋友吧！（你会买一把Strat仿琴吗？）",
+          "想支持Tedium？来看看Tedium购物网吧。你可能会在那里发现一些奇葩又绝妙的商品。"
+        ]
+      }
+    },
+    {
+      "slug": "febdd920ead5b371",
+      "title": "Thoughts on starting new projects with LLM agents",
+      "titleZh": "使用 LLM 智能体启动新项目的思考",
+      "link": "https://eli.thegreenplace.net/2026/thoughts-on-starting-new-projects-with-llm-agents/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-06-07T00:38:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "agents",
+        "programming"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 23
+      },
+      "summary": "作者此前利用 LLM 智能体成功重构了一个 Python 项目，且后续维护毫无问题。基于这一成功经验，文章进一步探讨了如何使用 LLM 智能体从零开始启动全新的软件项目。LLM 在生成样板代码和加速初期搭建方面表现出色，但在处理复杂的系统架构和深层逻辑时仍需开发者谨慎把控。合理利用 LLM 可以大幅提升新项目的启动效率。",
+      "summaryEn": "The author previously used LLM agents to successfully restructure a Python project, which has since been maintained without issues. Building on this success, the post explores how to use LLM agents to start entirely new software projects from scratch. While LLMs excel at generating boilerplate code and accelerating initial setup, developers must still carefully manage complex system architecture and deep logic. Properly utilizing LLMs can significantly boost the startup efficiency of new projects.",
+      "reason": "结合真实的 Python 项目重构与新建经验，分享了 LLM 智能体在软件工程中落地的实用反思。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A few months ago I wrote about using LLM agents to help restructuring one of my\nPython projects.\nIt's worth beginning by saying that the\nrewrite has been successful by all reasonable measures; I've been able to\ncontinue maintaining that project since then without an issue."
+          },
+          {
+            "type": "p",
+            "text": "In this post, I want to discuss another project I've recently completed with\nsignificant help from agents: watgo. In\nthis project many things are different; most notably, it's a from-scratch\nproject rather than a rewrite, and it uses a different programming language\n(Go). This post describes my experience working on the project, and some lessons\nlearned along the way."
+          },
+          {
+            "type": "h2",
+            "text": "The process"
+          },
+          {
+            "type": "p",
+            "text": "This is a new project, so it required extensive design. I began by iterating on\nthe design with the agent, with a sketch of the API. For this purpose, I\nrecommend using a Markdown file committed into the repository\nfor future reference."
+          },
+          {
+            "type": "p",
+            "text": "After that, I started asking the agent to write CLs [1] in a logical order that\nmade sense to me, keeping them small\nand reviewable (more on this in the next section). Sometimes it's not easy to\nhave a small CL, and multiple rounds of revision may confuse the agent;\nin this case, I commit the CL and then go back and ask the agent to modify\nor refactor the code, as much as needed, with separate CLs. In the worst case,\nthe whole sequence can be reverted if I feel we've taken the wrong direction\n(branches could also be helpful here for more complicated scenarios)."
+          },
+          {
+            "type": "p",
+            "text": "This point is worth reiterating: sometimes a single CL is a huge step forward,\nbut requires lots of review, cleanup and refactoring to be viable. I've had\nmultiple instances where an agent produced several days of work in a single\nCL, but I then spent hours instructing it to clean up and refactor. Overall,\nit's still a productivity gain, just not as much as some pundits would like us\nto believe."
+          },
+          {
+            "type": "h2",
+            "text": "Keeping the human in the loop"
+          },
+          {
+            "type": "p",
+            "text": "Given the current state of agent capabilities, I think it's worth splitting\nprojects into two categories:"
+          },
+          {
+            "type": "li",
+            "text": "Low importance / prototype / throw away projects where deep code\nunderstanding is unnecessary. These can be \"vibe-coded\" (submitting agent\ncode without even reviewing it)."
+          },
+          {
+            "type": "li",
+            "text": "High importance projects that I actually want to maintain; here, vibe-coding\nis ill advised and I insist on reviewing and guiding all code the agent\nwrites before it's submitted (or shortly after, as discussed above)."
+          },
+          {
+            "type": "p",
+            "text": "The watgo projects is a clear example of (2): I certainly intend to maintain\nthis project in the long term, so I insist on code that I understand. With very\nfew exceptions, no code gets in without full review and often multiple rounds\nof revisions."
+          },
+          {
+            "type": "p",
+            "text": "Even if the cost for writing code went down, maintaining a project is so much\nmore than that. It's triaging and fixing bugs, it's thinking through what needs\nto be done rather than how to do it, it's keeping the code healthy over time,\nand so on. As Brian Kernighan said:"
+          },
+          {
+            "type": "quote",
+            "text": "Everyone knows that debugging is twice as hard as writing a program in the\nfirst place. So if you're as clever as you can be when you write it, how will\nyou ever debug it?"
+          },
+          {
+            "type": "p",
+            "text": "Maybe at some point agents will become good enough that projects in category\n(2) can be implemented and maintained completely autonomously. Maybe. But\nwe're certainly not there yet. My hunch is that getting there will require\ncrossing the AGI line [2], after which little in our world remains certain."
+          },
+          {
+            "type": "h3",
+            "text": "Practical workflow"
+          },
+          {
+            "type": "p",
+            "text": "If you're using an agent to send an actual PR and only review that, it's\ndifficult to be disciplined enough to actually perform a thorough review. I find\nthe following method to be more reliable:"
+          },
+          {
+            "type": "p",
+            "text": "I use a CLI agent running locally in my repository, and ask it to update the\ncode there. In parallel, I have a VSCode window open in the same project, where\nI can:"
+          },
+          {
+            "type": "li",
+            "text": "Review the agent's changes using VSCode's diff view"
+          },
+          {
+            "type": "li",
+            "text": "Make my own tweaks and code changes if needed"
+          },
+          {
+            "type": "p",
+            "text": "Once I'm pleased with the change, I manually create a commit."
+          },
+          {
+            "type": "h2",
+            "text": "Keeping the CLs small"
+          },
+          {
+            "type": "p",
+            "text": "As mentioned above, it's imperative to keep making progress in small chunks,\nwith small enough CLs that a human can fully understand in a single review. It's\nvery tempting to sprint ahead submitting thousands of lines of code every day,\nbut this temptation has to be avoided. Coding with an agent is like\nspeed-reading; yes, you're making more progress, but comprehension suffers\nthe faster you go."
+          },
+          {
+            "type": "p",
+            "text": "Particularly for refactoring, agents still take the shortest route to\ndestination. It's important to guide them to think about the \"big picture\" at\nall times, find all instances where X is better done as Y, not just a single\nplace noticed during a review. This is why it's sometimes OK to have\na CL submitted before you fully agree with everything, and go back to it later\nfor several refactoring rounds. Source control works amazingly well when\npair-coding with agents."
+          },
+          {
+            "type": "h2",
+            "text": "Testing strategy"
+          },
+          {
+            "type": "p",
+            "text": "It's a key point discussed in every \"how to succeed with AI\" article, but\nstill critical enough to reiterate here: a solid testing strategy is absolutely\ncrucial for success. Agents produce - by far - the best results when they have\na solid test suite to test their code against."
+          },
+          {
+            "type": "p",
+            "text": "With the pycparser rewrite, I had\na large existing test suite. For watgo,\nthe very first thing I did was think through how to adapt the test suites of\nthe WASM spec and of the\nwabt project for my needs."
+          },
+          {
+            "type": "p",
+            "text": "If your project doesn't have such tests to rely on, this should be your first\norder of business - finding one, or building one from scratch. Beware of\nself-reinforcing loops though; it's dangerous to trust agents for both the\ntests and the implementations tested against them."
+          },
+          {
+            "type": "h2",
+            "text": "Language choice - Go for agent-written projects"
+          },
+          {
+            "type": "p",
+            "text": "Go is a fantastic language for agents to write, because it's designed to be\nvery readable by humans. The biggest strengths of Go\nare exactly what makes the experience of reviewing agent code so positive:"
+          },
+          {
+            "type": "li",
+            "text": "Go changes very infrequently, so you don't have to wonder \"are we using the\nmost modern / idiomatic approach\" or \"what the hell is this construct\"\nas often as with other languages (looking at you, Python and TypeScript)."
+          },
+          {
+            "type": "li",
+            "text": "There are relatively few ways to accomplish the same thing in Go, further\nlowering the mental burden."
+          },
+          {
+            "type": "li",
+            "text": "The standard library is rich and there's much less need to keep abreast of\nthe package-everyone-uses du jour."
+          },
+          {
+            "type": "li",
+            "text": "In general, Go is designed for readability, with a mild-but-still-strong type\nsystem, uniform formatting, explicit error propagation and opinionated choices\nalready made for you."
+          },
+          {
+            "type": "p",
+            "text": "Since most of the time spent by humans when using agents is reading rather\nthan writing code, these effects compound and produce a great experience.\nRecall the discussion of how some languages are optimized for writability (Perl)\nwhile others are optimized for readability (Go)? Well, when working on a project\nwith an agent we live in a world of 99% reading vs. 1% writing, so this really\nmatters."
+          },
+          {
+            "type": "p",
+            "text": "I find this aspect really crucial in light of the earlier points made in this\npost - namely, keeping the human in the loop by understanding and reviewing\nall of the agent's design choices and code."
+          },
+          {
+            "type": "h2",
+            "text": "Final thoughts"
+          },
+          {
+            "type": "p",
+            "text": "If you're working on a subject that's completely new to you, I would strongly\nrecommend against the approach described in this post. To really learn\nsomething, you have to work through it from scratch, yourself, reading,\ndesigning, writing the code. Agents don't change this basic fact; even before\nagents, if you wanted to learn X, copying it from Stack Overflow or some other\nproject clearly wasn't the right way to go. Similarly, while agents can be used\nas a prop for learning, they cannot learn for you."
+          },
+          {
+            "type": "p",
+            "text": "As a corollary, junior engineers should exercise extreme caution when relying\non LLMs. There's no replacement to hard-won experience and the sweat and tears\nof learning new, challenging topics. Learning is supposed to be hard; if it's\ntoo easy, you're probably not learning."
+          },
+          {
+            "type": "p",
+            "text": "For senior engineers, agents are a boon; it's a great tool to increase\nproductivity, avoid the boring stuff, and get unstuck from procrastination; but\nonly when used judiciously."
+          }
+        ],
+        "translations": [
+          "几个月前，我曾撰文介绍过如何使用 LLM 智能体来协助重构我的一个 Python 项目。首先必须承认，无论从哪个合理的标准来看，那次重写都是非常成功的；自那以后，我一直能够顺利地继续维护该项目，没有出现任何问题。",
+          "在这篇文章中，我想探讨另一个最近在智能体的大力协助下完成的项目：watgo。在这个项目中，许多情况都有所不同；最明显的是，这是一个从零开始构建的新项目，而非代码重写，并且使用了另一种编程语言（Go）。本文将分享我在开发该项目时的经验，以及在此过程中汲取的一些教训。",
+          "开发流程",
+          "作为一个全新项目，它需要进行详尽的设计。我先是拿着一份 API 草图，与智能体一起对设计进行了迭代。为此，我建议将设计过程记录在一个 Markdown 文件中，并将其提交到代码仓库里，以备日后参考。",
+          "之后，我开始让智能体按照我认为合理的逻辑顺序来编写 CL [1]，并确保这些 CL 体积小巧且易于审查（下一节会详细讨论这一点）。有时候，想要保持 CL 足够小巧并不容易，而且多轮修改可能会让智能体感到困惑；在这种情况下，我会先提交该 CL，然后回过头来让智能体根据需要，通过提交独立的 CL 来修改或重构代码。在最坏的情况下，如果我觉得我们的方向搞错了，可以把整个提交序列全部回滚（对于更复杂的场景，使用分支也能起到很好的作用）。",
+          "这一点值得反复强调：有时候，单个 CL 就能带来巨大的飞跃，但为了让它真正可用，需要经过大量的审查、清理和重构。我遇到过好几次这样的情况：智能体在单个 CL 中生成了相当于好几天工作量的代码，但随后我却要花上好几个小时来指导它进行清理和重构。总的来说，这确实提高了生产力，只是并不像某些专家试图让我们相信的那么夸张。",
+          "保持人工参与",
+          "鉴于目前智能体的能力水平，我认为有必要将项目划分为以下两类：",
+          "重要性低的项目、原型项目或一次性项目，不需要对代码有深入的理解。这些项目可以采用“氛围编程”（vibe-coded，即连看都不看直接提交智能体生成的代码）。",
+          "我确实打算长期维护的高重要性项目；对于这类项目，强烈建议不要采用“氛围编程”，我坚持在智能体生成的代码被提交前（或者像前面讨论的，在提交后不久）对其进行审查和引导。",
+          "watgo 项目就是第（2）类的典型例子：我当然打算长期维护这个项目，因此我要求代码必须是我能完全看懂的。除了极少数例外，任何代码都必须经过完整审查，并且通常要经过多轮修改才能合入。",
+          "即使编写代码的成本下降了，维护一个项目所需的工作也远不止于此。维护工作包括对 Bug 进行分类和修复，是去思考“需要做什么”而不是“怎么做”，是随着时间推移保持代码的健康状态等等。正如 Brian Kernighan 所说：",
+          "大家都知道，调试代码的难度是编写代码的两倍。因此，如果你在写代码时已经聪明到了极点，又怎么可能还有能力去调试它呢？",
+          "也许在未来的某个时刻，智能体会变得足够强大，能够完全自主地开发和维护第（2）类项目。也许吧。但我们目前显然还没达到那种水平。我的直觉是，要实现这一目标，就必须跨过 AGI 的门槛 [2]，而一旦跨过那道坎，我们这个世界上就几乎没有什么是确定无疑的了。",
+          "实际工作流",
+          "如果你让 agent 直接提交真实的 PR，而自己只负责审查 PR，这就很难保持自律去进行真正彻底的代码审查。我发现以下方法更加可靠：",
+          "我会在本地代码仓库中运行一个 CLI agent，并让它在本地直接修改代码。同时，我会在同一个项目中打开一个 VSCode 窗口，以便：",
+          "使用 VSCode 的 diff 视图审查 agent 的修改",
+          "在需要时，亲自进行微调和代码修改",
+          "一旦对修改感到满意，我就会手动创建一个 commit。",
+          "保持 CL（变更列表）精简",
+          "如前所述，我们必须不断地小步快跑，保持 CL 足够小，确保人类审查者能够单次完整理解。每天狂飙突进提交数千行代码的做法极具诱惑力，但必须克制这种冲动。使用 agent 编程就像快速阅读：没错，你的进度确实变快了，但速度越快，对代码的理解力就越容易受损。",
+          "特别是在重构时，agent 往往倾向于采取最直接的“捷径”来达成目标。因此，引导它们时刻保持“全局观”至关重要——要找出所有适合将 X 优化为 Y 的地方，而不仅仅是代码审查时偶然注意到的一处。正因如此，有时即便你还没完全认可所有细节，也可以先提交一个 CL，之后再回过头来进行多轮重构。在与 agent 结对编程时，版本控制系统的作用堪称完美。",
+          "测试策略",
+          "几乎每篇探讨“如何利用 AI 取得成功”的文章都会强调这一点，但由于它实在太过关键，有必要在此再次重申：一套坚实的测试策略对于项目的成功绝对至关重要。当拥有完善的测试套件来验证代码时，agent 毫无疑问能发挥出最佳效果。",
+          "在重写 pycparser 时，我已经有了一套庞大的现有测试套件。而在开发 watgo 时，我做的第一件事就是构思如何将 WASM 规范和 wabt 项目的测试套件改造为我所用。",
+          "如果你的项目没有现成的测试用例可供依赖，那么当务之急就是寻找或者从零开始构建一套。不过，务必当心“自我强化循环”的陷阱：将测试代码和业务实现统统交给 agent 去编写，是非常危险的。",
+          "编程语言选择——为 agent 编程项目首选 Go",
+          "Go 是一门非常适合让 agent 来编写的语言，因为它在设计之初就高度重视人类的可读性。Go 语言最大的优势，恰恰也是让审查 agent 生成的代码成为一种愉悦体验的原因：",
+          "Go 语言的规范非常稳定，因此你不需要像在使用其他语言时那样，经常自我怀疑“我们采用的是不是最新、最地道的写法？”或者“这种语法结构到底是个啥？”（说的就是你们，Python 和 TypeScript）。",
+          "在 Go 语言中，实现同一种功能的方式相对较少，这进一步降低了认知负担。",
+          "它拥有丰富的标准库，从而大大减少了紧跟“当下最火第三方包”的必要性。",
+          "总而言之，Go 是一门为可读性而生的语言，它具备适度但强大的类型系统、统一的代码格式化标准、显式的错误传递机制，并且已经为你做好了诸多“强约定”的设计决策。",
+          "既然人类在使用 agent 时，绝大部分时间都花在阅读而非编写代码上，上述这些优势叠加在一起，便带来了极其出色的开发体验。还记得关于编程语言设计初衷的讨论吗？有些语言针对“易写性”进行了优化（如 Perl），而另一些则针对“易读性”进行了优化（如 Go）。在借助 agent 进行开发时，我们的工作模式变成了 99% 的时间在读代码，只有 1% 的时间在写代码，因此语言的可读性就显得尤为关键。",
+          "鉴于本文早先提出的观点，我认为这一点至关重要——即通过理解和审查智能体所有的设计选择与代码，保持人类的监督与介入。",
+          "结语",
+          "如果你正在研究一个对你来说完全陌生的领域，我强烈建议不要采用本文介绍的方法。要想真正学到东西，你必须自己从零开始，亲自去阅读、设计和编写代码。智能体并没有改变这一基本事实；甚至在智能体出现之前，如果你想学习某项技术，直接从 Stack Overflow 或其他项目里复制代码显然也不是正道。同理，虽然智能体可以作为学习的辅助工具，但它们无法代替你学习。",
+          "由此推论，初级工程师在依赖大语言模型（LLM）时应格外谨慎。任何东西都无法替代来之不易的经验，也无法替代在学习充满挑战的新知识时付出的汗水与心血。学习本来就是一件辛苦的事；如果觉得太轻松，那你大概率并没有真正学到什么。",
+          "对于高级工程师而言，智能体是一大福音。它是一个极佳的工具，能够提高生产力、免除枯燥的工作，并帮你摆脱拖延状态；但前提是必须审慎地加以使用。"
+        ]
+      }
+    },
+    {
+      "slug": "d14f0f2edd7ac7ae",
+      "title": "Giving your Go apps Tigris superpowers",
+      "titleZh": "赋予你的 Go 应用 Tigris 超能力",
+      "link": "https://www.tigrisdata.com/blog/storage-sdk-go/",
+      "sourceName": "xeiaso.net",
+      "sourceUrl": "https://xeiaso.net",
+      "pubDate": "2026-06-09T00:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "Go",
+        "S3",
+        "Tigris",
+        "SDK"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 20
+      },
+      "summary": "Tigris 是一个兼容 S3 的存储服务，直接使用 AWS SDK 无法调用其特有的高级功能。为了解决这个问题，官方专门开发了一个全新的 Go SDK。该 SDK 提供了两个版本的包：一个是可直接替代标准 S3 客户端的 storage 包，另一个是提供更高级抽象的 simplestorage 包。开发者可以借此无缝支持存储桶分叉、快照和对象重命名等独家操作。",
+      "summaryEn": "Tigris is an S3-compatible storage service, but using the standard AWS SDK prevents access to its exclusive advanced features. To solve this, the team developed a dedicated Go SDK. It offers two packages: a drop-in replacement for the standard S3 client called 'storage', and a higher-level abstraction package named 'simplestorage'. Developers can use this SDK to seamlessly support exclusive operations like bucket forking, snapshots, and object renaming.",
+      "reason": "介绍了针对 Tigris 存储服务定制的新版 Go SDK，为需要高级 S3 兼容存储的开发者提供了高效的集成方案。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Xe Iaso",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you use Go for your web services and want to take advantage of Tigris'\nadvanced features like bucket forking,\nsnapshots, and\nobject renaming,\nnormally your code has to look like this:"
+          },
+          {
+            "type": "code",
+            "text": "func WithRename() func(*s3.Options) {\treturn func(options *s3.Options) {\t\toptions.APIOptions = append(options.APIOptions, http.AddHeaderValue(\"X-Tigris-Rename\", \"true\"))\t}}// rename the object in the bucket_, err = client.CopyObject(ctx, &s3.CopyObjectInput{  Bucket:     aws.String(bucketName),  CopySource: aws.String(bucketName + \"/\" + keyName),  Key:        aws.String(targetName),}, WithRename())if err != nil {  log.Fatalf(\"Unable to rename object. Here's why: %v\", err)}"
+          },
+          {
+            "type": "p",
+            "text": "With the new SDK, it looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "_, err := client.RenameObject(ctx, &s3.CopyObjectInput{\tBucket:     aws.String(bucketName),\tCopySource: aws.String(bucketName + \"/\" + keyName),\tKey:        aws.String(targetName),})if err != nil {\tlog.Fatalf(\"Unable to rename object. Here's why: %v\", err)}"
+          },
+          {
+            "type": "p",
+            "text": "The Go Storage SDK\nfixes this. It gives you dedicated methods for Tigris features, in two modes:"
+          },
+          {
+            "type": "li",
+            "text": "package storage:\nHelper methods wrapping the AWS S3 client you already use."
+          },
+          {
+            "type": "li",
+            "text": "package simplestorage:\nA reimagined high-level object storage client for Go applications."
+          },
+          {
+            "type": "p",
+            "text": "If you want to get started with it today, go get it:"
+          },
+          {
+            "type": "code",
+            "text": "go get github.com/tigrisdata/storage-go@latest"
+          },
+          {
+            "type": "h2",
+            "text": "An SDK so nice we did it twice​"
+          },
+          {
+            "type": "p",
+            "text": "One of the best ways to think about Tigris is that it's like S3, but more.\nTigris handles global replication for you. Tigris handles\nmigrating your data for you.\nTigris also lets you snapshot, fork, and\ndownload bundles of objects all at once.\nThese operations extend S3, so the SDK extends the S3 client. Here's what you\nget:"
+          },
+          {
+            "type": "li",
+            "text": "BundleObjects:\nfetch a bundle of objects\nall at once."
+          },
+          {
+            "type": "li",
+            "text": "CreateBucketFork:\nfork a bucket into a new bucket so\nyour agents have their own sandboxes."
+          },
+          {
+            "type": "li",
+            "text": "CreateBucketSnapshot:\ncreate a new\npoint-in-time snapshot for your\nbuckets so you can save your data from digital destruction."
+          },
+          {
+            "type": "li",
+            "text": "CreateSnapshotEnabledBucket:\ncreate a new bucket with forking and\nsnapshots enabled."
+          },
+          {
+            "type": "li",
+            "text": "HeadBucketForkOrSnapshot:\nfetches the fork/snapshot metadata for a bucket."
+          },
+          {
+            "type": "li",
+            "text": "ListBucketSnapshots:\nlist all the snapshots for a bucket so you can create forks from those\nsnapshots."
+          },
+          {
+            "type": "li",
+            "text": "RenameObject:\nrename (move) an\nobject from one place in your bucket to another."
+          },
+          {
+            "type": "p",
+            "text": "As Tigris gets more features, we plan to just add more methods."
+          },
+          {
+            "type": "p",
+            "text": "This mode is designed to be a drop-in replacement for your existing S3 client\nto make migration trivial. When I moved some of my own projects over from the\nAWS S3 library to package storage, it took about 30 seconds at most. Everything\ncompiled normally, everything worked as expected, and I got access to the extra\nfeatures I needed. Win/win/win!"
+          },
+          {
+            "type": "h3",
+            "text": "But wait, there's more​"
+          },
+          {
+            "type": "p",
+            "text": "Honestly, we could have stopped there, but we didn't. Alongside this I also\nadded\npackage simplestorage:\na brand new interface to object storage. Most of the time your apps end up using\na single bucket. Why should you have to pass the bucket name every time you do\nanything? Take a gander at how easy it is to copy a file from Tigris to your\nlocal filesystem:"
+          },
+          {
+            "type": "code",
+            "text": "client, err := simplestorage.New(ctx)if err != nil { panic(err) }obj, err := client.Get(ctx, \"my/key\")if err != nil { panic(err) }defer obj.Body.Close()slog.Info(  \"object metadata\",  \"key\", \"my/key\",  \"size\", obj.Size,  \"content-type\", obj.ContentType,)fout, err := os.Create(\"./var/object-data\")if err != nil { panic(err) }defer fout.Close()io.Copy(fout, obj.Body)"
+          },
+          {
+            "type": "p",
+            "text": "The bucket name and credentials were inferred from environment variables:"
+          },
+          {
+            "type": "li",
+            "text": "TIGRIS_STORAGE_BUCKET: The default bucket to operate on."
+          },
+          {
+            "type": "li",
+            "text": "TIGRIS_STORAGE_ACCESS_KEY_ID: The access key ID for your app's\nkeypair."
+          },
+          {
+            "type": "li",
+            "text": "TIGRIS_STORAGE_SECRET_ACCESS_KEY: The secret access key for your app's\nkeypair."
+          },
+          {
+            "type": "p",
+            "text": "If you don't want to change the environment variable names, simplestorage will\nuse the standard\nAWS configuration resolution flow\nyou're already used to."
+          },
+          {
+            "type": "p",
+            "text": "Forked buckets work with the\nFor\nmethod:"
+          },
+          {
+            "type": "code",
+            "text": "newBucket, err := client.ForkBucket(\"my-bucket\", \"my-agents-bucket\")if err != nil { panic(err) }newBucketClient := client.For(newBucket.Name)// do whatever you want here"
+          },
+          {
+            "type": "p",
+            "text": "The main innovation here is reducing cognitive load so that you can focus on\nwhat you're doing with your buckets instead of plumbing the minutiae of your\nobject storage API being automatically generated from Java classes. There's also\nnothing stopping you from using this with AWS S3 or another object storage\nprovider like\nHetzner object storage:"
+          },
+          {
+            "type": "code",
+            "text": "s3Client, err := simplestorage.New(ctx,  simplestorage.WithRegion(\"fsn1\"),  simplestorage.WithEndpoint(\"https://fsn1.your-objectstorage.com\"),  simplestorage.WithAccessKeypair(accessKeyID, secretAccessKey),)if err != nil { panic(err) }"
+          },
+          {
+            "type": "p",
+            "text": "Advanced Tigris features like bucket forking will not work (Hetzner doesn't\nimplement our extensions to the S3 API), but basic object manipulation will work\njust fine."
+          },
+          {
+            "type": "p",
+            "text": "Note that any object manipulation functions will use the client's default\nbucket, but any bucket manipulation functions require you to spell out the\nbucket's name just to be sure you're operating on the right bucket."
+          },
+          {
+            "type": "h2",
+            "text": "Get go-ing today​"
+          },
+          {
+            "type": "p",
+            "text": "If you want to try this out, install it in your Go project with go get:"
+          },
+          {
+            "type": "code",
+            "text": "go get github.com/tigrisdata/storage-go@latest"
+          },
+          {
+            "type": "p",
+            "text": "Please give us feedback\nin the storage-go repo. We want to\nmake this the best way to use Tigris for Go developers and your feedback can\nonly make it better."
+          },
+          {
+            "type": "p",
+            "text": "Ready to supercharge your Go apps?"
+          },
+          {
+            "type": "p",
+            "text": "The Go Storage SDK gives you first-class access to bucket forking, snapshots, and more — with less boilerplate than raw S3 calls."
+          }
+        ],
+        "translations": [
+          "如果你使用 Go 开发 Web 服务，并希望利用 Tigris 的高级功能（如存储桶分叉、快照和对象重命名），通常你的代码必须像这样：",
+          "func WithRename() func(*s3.Options) {\treturn func(options *s3.Options) {\t\toptions.APIOptions = append(options.APIOptions, http.AddHeaderValue(\"X-Tigris-Rename\", \"true\"))\t}}// rename the object in the bucket_, err = client.CopyObject(ctx, &s3.CopyObjectInput{  Bucket:     aws.String(bucketName),  CopySource: aws.String(bucketName + \"/\" + keyName),  Key:        aws.String(targetName),}, WithRename())if err != nil {  log.Fatalf(\"Unable to rename object. Here's why: %v\", err)}",
+          "使用新的 SDK，它看起来像这样：",
+          "_, err := client.RenameObject(ctx, &s3.CopyObjectInput{\tBucket:     aws.String(bucketName),\tCopySource: aws.String(bucketName + \"/\" + keyName),\tKey:        aws.String(targetName),})if err != nil {\tlog.Fatalf(\"Unable to rename object. Here's why: %v\", err)}",
+          "Go Storage SDK 解决了这个问题。它通过两种模式为你提供了用于 Tigris 功能的专用方法：",
+          "storage 包：封装了你现有 AWS S3 客户端的辅助方法。",
+          "simplestorage 包：专为 Go 应用程序重新设计的高级对象存储客户端。",
+          "如果你想今天就上手，请运行以下命令获取：",
+          "go get github.com/tigrisdata/storage-go@latest",
+          "一款好用到让我们做了两次的 SDK",
+          "理解 Tigris 最好的方式之一就是把它看作是功能更丰富的 S3。Tigris 会为你处理全局复制，为你处理数据迁移。Tigris 还允许你创建快照、进行分叉以及一次性下载对象包。这些操作扩展了 S3，因此该 SDK 也对 S3 客户端进行了扩展。以下是你将获得的功能：",
+          "BundleObjects：一次性获取一组对象。",
+          "CreateBucketFork：将存储桶分叉为新存储桶，以便你的代理拥有各自的沙箱环境。",
+          "CreateBucketSnapshot：为你的存储桶创建新的时间点快照，从而保护你的数据免遭破坏。",
+          "CreateSnapshotEnabledBucket：创建一个启用了分叉和快照功能的新存储桶。",
+          "HeadBucketForkOrSnapshot：获取存储桶的分叉或快照元数据。",
+          "ListBucketSnapshots：列出存储桶的所有快照，以便你可以从这些快照创建分叉。",
+          "RenameObject：将对象在存储桶中从一个位置重命名（移动）到另一个位置。",
+          "随着 Tigris 获得更多功能，我们计划直接添加更多方法。",
+          "这种模式旨在成为你现有 S3 客户端的直接替代品，让迁移变得轻而易举。当我将自己的一些项目从 AWS S3 库迁移到 storage 包时，最多只花了大约 30 秒。一切编译正常，所有功能都按预期工作，而且我还获得了所需的额外功能。绝对的共赢！",
+          "但是等等，还有更多内容",
+          "坦白说，我们本可以到此为止，但我们并没有。与此同时，我还添加了 simplestorage 包：一个全新的对象存储接口。大多数时候，你的应用程序最终只会使用一个存储桶。为什么你每次执行操作时都必须传递存储桶名称呢？来看看从 Tigris 复制文件到本地文件系统有多么简单：",
+          "client, err := simplestorage.New(ctx)if err != nil { panic(err) }obj, err := client.Get(ctx, \"my/key\")if err != nil { panic(err) }defer obj.Body.Close()slog.Info(  \"object metadata\",  \"key\", \"my/key\",  \"size\", obj.Size,  \"content-type\", obj.ContentType,)fout, err := os.Create(\"./var/object-data\")if err != nil { panic(err) }defer fout.Close()io.Copy(fout, obj.Body)",
+          "存储桶名称和凭证是从环境变量中读取的：",
+          "TIGRIS_STORAGE_BUCKET：要操作的默认存储桶。",
+          "TIGRIS_STORAGE_ACCESS_KEY_ID：你的应用程序密钥对的访问密钥 ID。",
+          "TIGRIS_STORAGE_SECRET_ACCESS_KEY：你的应用程序密钥对的秘密访问密钥。",
+          "如果你不想更改环境变量名称，simplestorage 将使用你已经习惯的标准 AWS 配置解析流程。",
+          "分叉存储桶可以通过 For 方法来操作：",
+          "newBucket, err := client.ForkBucket(\"my-bucket\", \"my-agents-bucket\")if err != nil { panic(err) }newBucketClient := client.For(newBucket.Name)// do whatever you want here",
+          "这里的主要创新在于降低了认知负担，这样你就可以专注于对存储桶的操作，而不是去处理那些由 Java 类自动生成的对象存储 API 的繁琐细节。此外，你也完全可以将其与 AWS S3 或其他对象存储提供商（如 Hetzner 对象存储）一起使用：",
+          "s3Client, err := simplestorage.New(ctx,  simplestorage.WithRegion(\"fsn1\"),  simplestorage.WithEndpoint(\"https://fsn1.your-objectstorage.com\"),  simplestorage.WithAccessKeypair(accessKeyID, secretAccessKey),)if err != nil { panic(err) }",
+          "Tigris 的高级功能（如存储桶分叉）将无法使用（因为 Hetzner 没有实现我们对 S3 API 的扩展），但基本的对象操作完全可以正常运行。",
+          "请注意，任何对象操作函数都将使用客户端的默认存储桶，但任何存储桶操作函数都需要你明确指定存储桶的名称，以确保你操作的是正确的存储桶。",
+          "今天就开始你的 Go 之旅",
+          "如果你想亲自体验，可以通过 go get 将其安装到你的 Go 项目中：",
+          "go get github.com/tigrisdata/storage-go@latest",
+          "请在 storage-go 仓库向我们提供反馈。我们希望将其打造成 Go 开发者使用 Tigris 的最佳方式，而您的反馈将使其更加完善。",
+          "准备好让你的 Go 应用如虎添翼了吗？",
+          "Go Storage SDK 为你提供对存储桶分叉、快照等功能的一流支持——相比直接进行原生 S3 调用，大幅减少了样板代码。"
+        ]
+      }
+    },
+    {
+      "slug": "f0b48e2d279a4603",
+      "title": "Powering up a module from the IBM 604: an electronic calculator from 1948",
+      "titleZh": "启动 1948 年的 IBM 604 电子计算器模块",
+      "link": "http://www.righto.com/feeds/3379514160039863191/comments/default",
+      "sourceName": "righto.com",
+      "sourceUrl": "https://righto.com",
+      "pubDate": "2026-06-07T16:57:09.956Z",
+      "category": "engineering",
+      "keywords": [
+        "hardware",
+        "retro-computing",
+        "IBM"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 9,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "1948 年是计算技术从机电式向电子管转变的关键时期，当时的企业仍在广泛使用打孔卡片设备。IBM 604 便是这一过渡期的产物，它结合了传统的打孔卡片机械结构与创新的电子管计算电路。文章详细记录了启动和测试这款具有历史意义的计算器内部模块的过程。这揭示了早期计算机硬件在面对高电压和复杂电路设计时的精妙与局限。",
+      "summaryEn": "The year 1948 marked a pivotal transition in computing from electromechanical relays to vacuum tubes, though businesses still heavily relied on punch card equipment. The IBM 604 is a product of this transitional era, combining traditional punch card mechanics with innovative vacuum tube computing circuits. The article details the hands-on process of powering up and testing an internal module from this historically significant calculator. This reveals the ingenuity and limitations of early computer hardware when dealing with high voltages and complex circuit designs.",
+      "reason": "深度硬核的计算机考古文章，带你亲身体验上世纪电子管计算器模块的启动与运作原理。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "a7481d9276fbbf99",
+      "title": "Mux — Video for Developers",
+      "titleZh": "Mux：面向开发者的视频基础设施",
+      "link": "https://www.mux.com/?utm_campaign=fireball&amp;utm_source=DF",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-07T17:36:38.000Z",
+      "category": "tools",
+      "keywords": [
+        "video",
+        "AI",
+        "Mux"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "Mux 是一款专为开发者设计的视频基础设施，旨在帮助用户解锁视频文件中隐藏的数据和上下文。其核心功能 Mux Robots 是一套 AI 工作流，能够自动处理新上传的视频。开发者只需配置一次，工作流即可自动执行摘要生成、字幕翻译和内容审核等任务。该服务已被 Patreon、Substack 和 Synthesia 等知名企业采用。",
+      "summaryEn": "Mux is a video infrastructure designed specifically for developers to unlock hidden data and context within video files. Its core feature, Mux Robots, consists of AI workflows that automatically process newly uploaded videos. Developers only need to configure the workflows once to automate tasks like summarization, caption translation, and moderation. The service is currently trusted by major companies such as Patreon, Substack, and Synthesia.",
+      "reason": "介绍了如何利用 Mux 的 AI 工作流自动处理视频内容，为音视频开发者提供了现代化的基础设施选择。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Technical preview"
+          },
+          {
+            "type": "p",
+            "text": "Arrow Right"
+          },
+          {
+            "type": "p",
+            "text": "Mux helps teams do more with video. Stream it, moderate it, search it, analyze it, transform it. Build cost-effectively in minutes, not months."
+          },
+          {
+            "type": "h2",
+            "text": "Features"
+          },
+          {
+            "type": "h3",
+            "text": "Unlock the data in your video"
+          },
+          {
+            "type": "p",
+            "text": "More than just content, video contains a boatload of data for you to build with. Select a video to see Mux in action."
+          },
+          {
+            "type": "h3",
+            "text": "Turn video files into video features"
+          },
+          {
+            "type": "p",
+            "text": "We give you the building blocks to create live and on-demand video exactly how you want."
+          },
+          {
+            "type": "p",
+            "text": "See all Mux Video features"
+          },
+          {
+            "type": "h3",
+            "text": "Understand video analytics at a glance"
+          },
+          {
+            "type": "p",
+            "text": "Track key engagement and quality of experience metrics: views, playing time, viewer retention, startup time, rebuffering, and more."
+          },
+          {
+            "type": "p",
+            "text": "Video views and unique viewers are up, average completion is slightly up, and playing time is down.KViews22%Unique Viewers2.9kk1.317% 3PM 6PMPlaying Timeh1.736%Last 6hOne week ago"
+          },
+          {
+            "type": "p",
+            "text": "Looking for standalone media-grade stream analytics?"
+          },
+          {
+            "type": "p",
+            "text": "Get Mux Data"
+          },
+          {
+            "type": "h3",
+            "text": "Mux Robots"
+          },
+          {
+            "type": "p",
+            "text": "Integrate Mux's pre-built AI workflows or build your own. Our platform is built for humans and robots, from streaming to analysis and everything in between."
+          },
+          {
+            "type": "h3",
+            "text": "Ask questions"
+          },
+          {
+            "type": "p",
+            "text": "Is this video a cartoon?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Does this video feature cats?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Was this video mostly shot outdoors?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "h3",
+            "text": "Summarization"
+          },
+          {
+            "type": "p",
+            "text": "|"
+          },
+          {
+            "type": "p",
+            "text": "AI"
+          },
+          {
+            "type": "p",
+            "text": "Tone:"
+          },
+          {
+            "type": "h3",
+            "text": "Content moderation"
+          },
+          {
+            "type": "p",
+            "text": "NSFW: Violent:"
+          },
+          {
+            "type": "h3",
+            "text": "Chaptering"
+          },
+          {
+            "type": "p",
+            "text": "Analyze your video to identify natural breakpoints, create descriptive chapter titles, and add timestamps"
+          },
+          {
+            "type": "h2",
+            "text": "The video infrastructure for your website"
+          },
+          {
+            "type": "p",
+            "text": "From background videos to simple player embeds, we’ve got you covered."
+          },
+          {
+            "type": "p",
+            "text": "While you perfect your AI models, we take care of encoding, delivery, and scaling your video output reliably and cost-effectively."
+          },
+          {
+            "type": "p",
+            "text": "With videos ready for playback in an average of under 2 seconds you can build what you need for your community."
+          },
+          {
+            "type": "p",
+            "text": "Whether it’s on-demand or live, build video that scales to support your users."
+          },
+          {
+            "type": "p",
+            "text": "Patreon built native video for a more consistent creator and fan experience, going from limited control with third-party solutions to a fully customized, seamless platform.."
+          },
+          {
+            "type": "p",
+            "text": "Go from MVP to launch in no time with API and docs that are designed for developers to build video quickly."
+          },
+          {
+            "type": "p",
+            "text": "With latency as low as 4 seconds and support for SRT (with HEVC) and RTMP, you can stream live, at scale, and without worry."
+          },
+          {
+            "type": "h2",
+            "text": "We speak your language"
+          },
+          {
+            "type": "p",
+            "text": "You don’t have to reinvent your stack to get great video. We’re compatible with your favorite languages and frameworks."
+          },
+          {
+            "type": "h2",
+            "text": "Mux love from around the world"
+          },
+          {
+            "type": "p",
+            "text": "No credit card required to start using Mux."
+          }
+        ],
+        "translations": [
+          "技术预览",
+          "右箭头",
+          "Mux 帮助团队用视频做更多事。对其进行流媒体传输、内容审核、搜索、分析和转换。只需几分钟而非几个月，即可实现高性价比的开发。",
+          "功能特性",
+          "释放视频中的数据价值",
+          "视频不仅是内容，更包含海量可供您用来构建应用的数据。选择一个视频，看看 Mux 的实际运作吧。",
+          "将视频文件转化为视频功能",
+          "我们为您提供基础构建模块，助您按照自己的意愿打造完美的直播和点播视频。",
+          "查看所有 Mux Video 功能",
+          "一目了然，轻松掌握视频分析数据",
+          "跟踪关键的参与度和体验质量指标：播放量、播放时长、观众留存率、启动时间、卡顿率等。",
+          "视频播放量和独立观众数上升，平均完播率略有上升，播放时长下降。KViews22%独立观众2.9kk1.317% 下午3点 下午6点播放时长h1.736%过去6小时一周前",
+          "在寻找独立的媒体级流媒体分析服务吗？",
+          "获取 Mux Data",
+          "Mux Robots",
+          "集成 Mux 预构建的 AI 工作流，或构建您自己的工作流。我们的平台专为人类和机器人设计，涵盖从流媒体传输到数据分析及中间的各个环节。",
+          "提问",
+          "这个视频是动画片吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频里有猫吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频主要是在户外拍摄的吗？",
+          "是/否",
+          "100% 确定性",
+          "内容摘要",
+          "|",
+          "AI",
+          "基调：",
+          "内容审核",
+          "NSFW（工作场所不宜）： 暴力：",
+          "章节划分",
+          "分析您的视频以识别自然断点，生成描述性章节标题，并添加时间戳",
+          "专为您的网站打造的视频基础设施",
+          "从背景视频到简单的播放器嵌入，我们都能为您提供全方位支持。",
+          "当您在完善 AI 模型时，我们将负责可靠且经济高效地处理视频的编码、分发和扩展。",
+          "视频平均仅需不到 2 秒即可准备就绪进行播放，让您能够为社区构建所需的一切。",
+          "无论是点播还是直播，都能构建可扩展的视频服务以支撑您的用户。",
+          "Patreon 打造了原生视频功能，为创作者和粉丝提供更一致的体验，从第三方解决方案的有限控制，转变为完全定制化的无缝平台。",
+          "借助专为开发者快速构建视频应用而设计的 API 和文档，瞬间完成从 MVP 到上线的全过程。",
+          "延迟低至 4 秒，并支持 SRT（包含 HEVC）和 RTMP 协议，让您可以大规模、无顾虑地进行直播。",
+          "我们支持您的开发语言",
+          "您无需为了获得出色的视频体验而重构现有的技术栈。我们与您最喜欢的语言和框架完全兼容。",
+          "来自世界各地的 Mux 好评",
+          "无需信用卡即可开始使用 Mux。"
+        ]
+      }
+    },
+    {
+      "slug": "e7881b0864c7c476",
+      "title": "Halide Mark III",
+      "titleZh": "Halide Mark III：从胶片摄影中汲取灵感",
+      "link": "https://www.lux.camera/halide-mark-iii/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-07T00:49:15.000Z",
+      "category": "other",
+      "keywords": [
+        "photography",
+        "app",
+        "analog"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 15
+      },
+      "summary": "著名 iOS 相机应用 Halide 的开发者分享了从数字摄影回归胶片摄影的体验，并从中获得了新版本设计的灵感。相比于数字时代成千上万的繁杂预设，胶片时代工程师花费数年打造的少数几种通用胶卷反而让人感到更加自由。这种“少即是多”的理念深刻影响了 Halide Mark III 的开发方向。团队致力于通过减少不必要的选项来提升用户的拍摄体验。",
+      "summaryEn": "The developer of the popular iOS camera app Halide shares their experience of returning to analog photography and how it inspired the new version's design. Compared to thousands of overwhelming digital presets, having a handful of versatile film stocks developed over years provides a much more freeing experience. This \"Less is More\" philosophy has deeply influenced the development direction of Halide Mark III. The team is dedicated to enhancing the user's shooting experience by reducing unnecessary options.",
+      "reason": "深入剖析了顶级摄影应用 Halide 的设计哲学，展示了传统胶片理念如何反载数字产品体验。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ben Sandofsky",
+        "siteName": "Lux — iPhone camera apps, camera reviews and more",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "We are excited to launch Halide Mark III a massive upgrade to our groundbreaking camera app. We developed Mark III with three goals."
+          },
+          {
+            "type": "li",
+            "text": "The most beautiful photos that can come from an iPhone."
+          },
+          {
+            "type": "li",
+            "text": "\"Batteries Included.\" You don't need to download any other app."
+          },
+          {
+            "type": "li",
+            "text": "A streamlined user experience that's a joy for both beginners and pro's."
+          },
+          {
+            "type": "p",
+            "text": "Mark III is now available in the App Store. This post highlights the major new features, starting with Looks, which produce gorgeous photos straight-out-of-camera."
+          },
+          {
+            "type": "h2",
+            "text": "The Looks"
+          },
+          {
+            "type": "p",
+            "text": "After decades of shooting digital, I returned to analog photography in 2023. I thought it would be challenging, given the limited selection of film stocks, only to be surprised by how freeing it felt. It felt so much better to have a handful of amazing choices rather than photo-editor with thousands of presets. We owe that to film engineers who spent years developing versatile film stocks that work in a variety of situations."
+          },
+          {
+            "type": "p",
+            "text": "Inspired by \"Less, but better,\" we partnered with the renowned Hollywood colorist Cullen Kelly to develop a succinct set of gorgeous, physically accurate processes exclusive to Halide. Each look was engineered with a specific intent.  We verified every look thousands of times on real-world reference photos."
+          },
+          {
+            "type": "p",
+            "text": "Put another way: every look is a banger."
+          },
+          {
+            "type": "p",
+            "text": "Looks go hand-in-hand with Halide's new film simulation engine. Of course that's an aesthetic choice, so if you don't like specific elements of film, such as grain or halation, they can be disabled."
+          },
+          {
+            "type": "p",
+            "text": "Finally, unless otherwise noted, all of these photos in this post were shot on iPhones in the real world, and processed in Halide. Now let's take a quick tour."
+          },
+          {
+            "type": "h3",
+            "text": "Valencia"
+          },
+          {
+            "type": "p",
+            "text": "We developed Valencia for landscapes and cityscapes, but it also has interesting effects on portraiture and skin tones. It features thick contrast, deep saturation, and solid color separation."
+          },
+          {
+            "type": "h3",
+            "text": "Rembrandt"
+          },
+          {
+            "type": "p",
+            "text": "For portraits, we have Rembrandt, where thick contrast in the mid-tones emphasizes bone structure and lighting. Abundant color in the low end converges to white as exposure increases, for perfect uniformity in skin-tones to emphasize contours of the face."
+          },
+          {
+            "type": "p",
+            "text": "Because Rembrandt is built on top of Process Zero, it allows for the most natural lighting for portraits."
+          },
+          {
+            "type": "p",
+            "text": "Apple Camera vs Halide with Rembrandt"
+          },
+          {
+            "type": "h3",
+            "text": "Nova"
+          },
+          {
+            "type": "p",
+            "text": "Our next look is exceptionally colorful, with tight contrast and smooth peachy highlights. Nova best suits landscapes and cityscapes rather than portraiture."
+          },
+          {
+            "type": "h2",
+            "text": "Zephyr"
+          },
+          {
+            "type": "p",
+            "text": "On the other end of the spectrum, we have our most subtle and restrained look. Zephyr features subtle filmic contrast, paired with rich skin tones and foliage. It has the character of a traditional print, but its neutral tone scale and tuned contrast make it a great choice for a wide variety of scenes and visual intents."
+          },
+          {
+            "type": "h3",
+            "text": "Chroma Noir"
+          },
+          {
+            "type": "p",
+            "text": "Finally, we have our medium contrast, black and white Chroma Noir. We developed this Look in-house to flex our film simulation engine, and it features a touch of extra grain."
+          },
+          {
+            "type": "h3",
+            "text": "100% HDR Support"
+          },
+          {
+            "type": "p",
+            "text": "In this post, we're only displaying the SDR versions of photos, due to browser limitations. However, all of our looks include HDR support, allowing for greater detail in highlights and shadows. This was no small feat, as we had to effectively develop two different versions of each look. However, once you see them in HDR, you'll understand why it's was worth it."
+          },
+          {
+            "type": "p",
+            "text": "0:00"
+          },
+          {
+            "type": "p",
+            "text": "/0:10"
+          },
+          {
+            "type": "p",
+            "text": "If this doesn't render in HDR, it's probably your browser or display."
+          },
+          {
+            "type": "h3",
+            "text": "All Looks Included"
+          },
+          {
+            "type": "p",
+            "text": "It's tempting to follow a \"razor blade\" business model: give you the camera for free and then upsell you on photo presets. However, we believe in simple, honest pricing. When you buy or subscribe to Halide, all looks are included. That includes all future looks we are develop for Mark III."
+          },
+          {
+            "type": "h2",
+            "text": "The Photo Lab"
+          },
+          {
+            "type": "p",
+            "text": "We built Mark III to deliver awesome results straight out of camera, but we know development is as important of a creative choice as the capture. This is why analog photographers keep their film negatives."
+          },
+          {
+            "type": "p",
+            "text": "Halide has always worked with DNG files, which stand for \"Digital Negatives.\" (You might know them as \"RAWs.\") Like analog film, digital negatives give you incredible control over exposure, contrast, color, and more. When you capture with RAW enabled, you can access development tools right inside Halide."
+          },
+          {
+            "type": "p",
+            "text": "That said, we didn't build a full fledged editor. We wanted something better. Have you ever opened an editor and felt like you're staring at an airplane cockpit? We wanted a tool that brings us joy."
+          },
+          {
+            "type": "p",
+            "text": "We built the Photo Lab to be streamlined and approachable. You can tell this from the first moment you open the photo lab, as we present you with the \"Quick Edit\" pane."
+          },
+          {
+            "type": "p",
+            "text": "From here you can quickly audition different looks, toggle HDR and film simulations, and fiddle with exposure to find that sweet spot."
+          },
+          {
+            "type": "p",
+            "text": "If you want more control, you can flip to detailed section from the tab-dial above.  Scroll or tap to \"Frame\" for control over crop, level, and output resolution."
+          },
+          {
+            "type": "p",
+            "text": "In addition to picking different aspect ratios, you can also pick your output resolution. The Photo Lab defaults to 4k, even if the original photo is 48 megapixels. This was born out of user requests: people shoot 48mp for latitude in cropping, but prefer 4k (about 12MP) to save storage and make it easier to share photo.  That said, if you have a beefy phone, you can fiddle with the resolution in the Frame panel."
+          },
+          {
+            "type": "p",
+            "text": "To right of Quick Edit we have the Exposure panel. In addition to the exposure dial from earlier, you can toggle our histogram and tone fusion tool."
+          },
+          {
+            "type": "p",
+            "text": "In the \"Film\" tab you can toggle individual components that make up the simulation, and adjust the strength of grain, halation, MTF (Modulation Transfer Function or \"Micro contrast\"), and vignetting."
+          },
+          {
+            "type": "p",
+            "text": "This panel features a lot of controls, which can feel intimidating. However, we designed the photo lab so you shouldn't need to fiddle with this stuff if you don't want to."
+          },
+          {
+            "type": "p",
+            "text": "Whenever you toggle them on and off using the bottom toolbar, we show a brief reminder of what that dial does."
+          },
+          {
+            "type": "p",
+            "text": "Finally, we have the \"Balance\" tab, which gives you control over custom white balance, and a menu for picking from presets."
+          },
+          {
+            "type": "p",
+            "text": "While we've focused on the iPhone, of course the Photo Lab runs great on iPad, where the abundance of space allows us to cut down on navigation."
+          },
+          {
+            "type": "p",
+            "text": "Speaking of space, you might notice quite a bit of breathing room around some control panes. Well, we have more features in mind, but this feels like enough for a great 1.0."
+          },
+          {
+            "type": "h2",
+            "text": "The New Design"
+          },
+          {
+            "type": "p",
+            "text": "The design goal of Mark III is to streamline the experience and focus on the most important tools of photography."
+          },
+          {
+            "type": "p",
+            "text": "It's hard to balance usability with aesthetics. While it's temping to put every control on screen at once, but when tool has equal visual importance, nothing has importance. Instead, Mark III exposes the most important tools by default."
+          },
+          {
+            "type": "p",
+            "text": "In the lower right of the camera you'll see your currently selected look. This is inspired by how some analog cameras feature a window which reminds you of the film you loaded. If you want to toggle your look, just tap that artwork in the lower right to expand the look picker. We show a short description when you select a Look, to remind you of its strengths."
+          },
+          {
+            "type": "p",
+            "text": "Most people download Halide to avoid the look of the iPhone camera, but you can still toggle that Look by picking \"Apple.\" When enabled on an iPhone Pro, it captures ProRAWs instead of Bayer RAWs, which allows you to toggle between Apple's camera look at Halide's unique looks in the photo lab."
+          },
+          {
+            "type": "p",
+            "text": "Let's direct our attention to the center of the screen: the toolbar."
+          },
+          {
+            "type": "p",
+            "text": "One of the most important choices you can make when taking a photo is around composition, so we put those tools front and center."
+          },
+          {
+            "type": "p",
+            "text": "The aspect ratio button lets you choose from the most popular film aspect ratios: 35mm (3×2), medium format (1×1), and pano (65×24). We even have a dynamic aspect ratio for Instagram, which changes dimensions depending on landscape or portrait."
+          },
+          {
+            "type": "p",
+            "text": "To the right of the Aspect Ratio button, we have the button to overlay composition guides. Of course we've always offered the rule of thirds, and now Mark III includes a uniform grid, the golden ratio, and rabatment of the rectangle."
+          },
+          {
+            "type": "p",
+            "text": "On the left of the toolbar we have the RAW toggle. If you love the straight-out-of-camera looks and don't think you'll visit the Photo Lab, you can turn off RAW to throw away the negative and save a little storage space."
+          },
+          {
+            "type": "p",
+            "text": "In the middle of the control area we have the new lens picker. In the past, we only let you pick from discreet lenses, but many users asked us for cropped views, so we've gone ahead and added those. Cropped views have special iconography to remind you that you're getting a crop."
+          },
+          {
+            "type": "p",
+            "text": "What about the rest of the stuff, like Flash and White balance?"
+          },
+          {
+            "type": "p",
+            "text": "Halide's design refresh went hand-in-hand with Apple's release of their Liquid Glass design system. Aesthetics aside, Liquid Glass is about developing dynamic and organic interfaces, and leans into paradigms like \"…\" menus to help declutter things."
+          },
+          {
+            "type": "p",
+            "text": "Most of the time, you don't need manual white balance control. But that one time every few years when a California wildfire turns the sky orange, you can access White Balance in the \"…\" menu. When enabled, the white balance icon sticks around in the toolbar, to make it easier to experiment with different settings."
+          },
+          {
+            "type": "p",
+            "text": "These dynamic toolbar items remind you that you have a manual setting enabled. As anyone with a traditional digital camera will tell you, it can be a bit frustrating to find you ruined a bunch of photos because you forgot you left a manual setting enabled."
+          },
+          {
+            "type": "h3",
+            "text": "Manual Exposure Controls"
+          },
+          {
+            "type": "p",
+            "text": "As we move up the UI, we have the familiar exposure control in the upper right that lets you pick toggle auto and manual exposure. With Mark III now supports Shutter Priority and ISO priority."
+          },
+          {
+            "type": "p",
+            "text": "When in manual exposure, the upper left displays an exposure meter, similar to a classic analog camera. Believe it or not, this is not a silly gimmick."
+          },
+          {
+            "type": "p",
+            "text": "We've found the iOS live video feed does not accurately reflect the final photo. It seems some computational photography is baked into the video feed. Instead, we use a separate API to monitor the metered exposure level, similar to an exposure meter on a classic film camera."
+          },
+          {
+            "type": "h3",
+            "text": "What about Mark II?"
+          },
+          {
+            "type": "p",
+            "text": "We built Mark III through exhaustive communication with our customers on Discord. We tried a lots of different ideas, some good and some not. Over 18 months, we landed on a design that is more powerful, more streamlined, and in the words of one customer, \"felt like Halide.\""
+          },
+          {
+            "type": "p",
+            "text": "That said, if there's one thing I've learned from shipping software over two decades, it's that people don't like their habits disrupted. Even if you know that a new design is way better, expect some people to resistance change. I get it— often I'm one of those people!"
+          },
+          {
+            "type": "p",
+            "text": "So if you want to stick with Mark II, you can switch back and forth via the \"…\" menu. Mark II won't get any new features, but we do our best to keep it from breaking. If you do find yourself hopping back to Mark II, we kindly ask that to drop a line to support@lux.camera let us know what we could do better."
+          },
+          {
+            "type": "h2",
+            "text": "One More Thing…"
+          },
+          {
+            "type": "p",
+            "text": "As Mark III became better and better, I actually missed its results when I reached for a standalone camera. I figured a lot of people might feel the same. So we're excited to announce that Halide now lets you import RAW files from standalone cameras to apply the same magic that defines Halide."
+          },
+          {
+            "type": "p",
+            "text": "Disclaimer: Support for external RAWs is a beta feature. Don't be surprised by crashes and weird behavior."
+          },
+          {
+            "type": "h2",
+            "text": "Pricing and Availability"
+          },
+          {
+            "type": "p",
+            "text": "Mark III is available today. It's a FREE upgrade to everyone who bought Mark II, and existing Halide subscribers. If you are neither, you can subscribe for $19.99 per year, or make a one-time purchase of $59.99 for Mark III. Download Mark III."
+          },
+          {
+            "type": "h2",
+            "text": "Special Thanks"
+          },
+          {
+            "type": "p",
+            "text": "Mark III took over 18 months of development, but it was far from a solo effort. We owe special thanks to Doug Broussard to helped QA the product through the long process, and Katie Rose Summerfield who manages our support channels."
+          },
+          {
+            "type": "p",
+            "text": "We'd like to thank The Iconfactory for their amazing work on our all of our Look icons, along with the new titanium Halide icon! We'd also like to thank Lickability for their input on our new onboarding experience."
+          },
+          {
+            "type": "p",
+            "text": "I also have to thank the thousands of users who beta tested Mark III over the last year, many of whom participate in the awesome community of our Discord. Beyond your bug reports, the photos you share from around the world make us proud to work on tools for creatives."
+          },
+          {
+            "type": "p",
+            "text": "Thank you all for your support over the last nine years. We still have many things planned for Halide, and we've never been more excited for its future."
+          }
+        ],
+        "translations": [
+          "我们非常激动地推出 Halide Mark III，这是对我们具有开创性的相机应用的一次重大升级。我们开发 Mark III 有三个目标。",
+          "呈现能从 iPhone 中拍出的最美照片。",
+          "“开箱即用。”你不需要下载任何其他应用。",
+          "简化的用户体验，让初学者和专业人士都能乐在其中。",
+          "Mark III 现已在 App Store 上架。这篇文章重点介绍了主要的新功能，首先是 Looks，它能让你直出令人惊艳的精美照片。",
+          "Looks",
+          "在拍摄了数十年的数码照片后，我于 2023 年回归了胶片摄影。考虑到胶片的选择有限，我以为这会充满挑战，结果却惊讶于它所带来的自由感。拥有少数几个惊艳的选择，远比使用带有数千个预设的照片编辑器感觉好得多。这要归功于胶片工程师们，他们花费数年时间开发出能在各种场景下通用的胶片。",
+          "受“少即是多”理念的启发，我们与著名的好莱坞调色师 Cullen Kelly 合作，为 Halide 独家开发了一套简练、华丽且符合物理准确性的处理流程。每种 Look 都是为特定意图精心设计的。我们在真实世界的参考照片上对每种 Look 进行了数千次的验证。",
+          "换句话说：每一种 Look 都令人惊艳。",
+          "Looks 与 Halide 全新的胶片模拟引擎相辅相成。当然，这是一种美学选择，所以如果你不喜欢胶片的特定元素，例如颗粒感或光晕，你可以将它们关闭。",
+          "最后，除非另有说明，本文中的所有照片都是在真实世界中使用 iPhone 拍摄，并在 Halide 中处理的。现在让我们快速浏览一下。",
+          "Valencia",
+          "我们为风景和城市风光开发了 Valencia，但它对肖像和肤色也能产生有趣的效果。它的特点是高对比度、深饱和度以及扎实的色彩分离。",
+          "Rembrandt",
+          "对于人像，我们有 Rembrandt，其中间调的厚重对比度突出了骨骼结构和光影。暗部丰富的色彩随着曝光的增加会逐渐过渡到白色，从而实现肤色的完美均匀，以突显面部轮廓。",
+          "由于 Rembrandt 是基于 Process Zero 构建的，因此它能为肖像提供最自然的光照。",
+          "Apple 原生相机对比搭载 Rembrandt 的 Halide",
+          "Nova",
+          "我们的下一个 Look 色彩异常丰富，具有紧凑的对比度和柔和的桃色高光。Nova 最适合风景和城市风光，而不是人像。",
+          "Zephyr",
+          "在另一个极端，我们拥有最微妙、最克制的 Look。Zephyr 具有微妙的胶片感对比度，搭配丰富的肤色和植物色彩。它具有传统冲印照片的质感，但其中性色调范围和精心调校的对比度使其成为各种场景和视觉意图的绝佳选择。",
+          "Chroma Noir",
+          "最后，是我们的中等对比度黑白 Look：Chroma Noir。我们在内部开发了这款 Look，以展示我们的胶片模拟引擎的强大功能，它带有一点额外的颗粒感。",
+          "100% HDR 支持",
+          "由于浏览器的限制，在这篇文章中我们只展示照片的 SDR 版本。然而，我们所有的 Looks 都包含 HDR 支持，能够在高光和阴影中展现更多细节。这绝非易事，因为我们必须为每种 Look 有效地开发两个不同的版本。不过，一旦你在 HDR 模式下看到它们，你就会明白这一切都是值得的。",
+          "0:00",
+          "/0:10",
+          "如果此画面未能以 HDR 效果渲染，可能是你的浏览器或显示器不支持。",
+          "包含所有 Looks",
+          "采用“剃须刀与刀片”的商业模式确实很诱人：免费送您相机，然后靠推销照片预设来赚钱。然而，我们更倾向于简单、诚实的定价。当您购买或订阅 Halide 时，所有的外观风格都已包含在内。这也包括我们未来为 Mark III 开发的所有新风格。",
+          "照片实验室",
+          "我们打造 Mark III 的初衷是让您获得出色的相机直出效果，但我们深知，后期显影与前期拍摄一样，都是至关重要的创作选择。这也正是胶片摄影师会保留底片的原因。",
+          "Halide 一直支持处理 DNG 格式文件，即“数字底片”（您可能更熟悉它的另一个名字：“RAW”）。与胶片类似，数字底片能让您对曝光、对比度、色彩等进行极其精细的控制。当您开启 RAW 格式进行拍摄时，可以直接在 Halide 内部使用这些显影工具。",
+          "话虽如此，我们并没有打算打造一个大而全的编辑器。我们想要的是更好的体验。您是否有过这样的经历：打开一款编辑软件，却感觉自己正盯着复杂的飞机驾驶舱？我们希望这款工具能为您带来愉悦感。",
+          "我们将照片实验室（Photo Lab）设计得简洁且易用。当您首次打开照片实验室时就能深刻体会到这一点，首先映入眼帘的便是“快速编辑”（Quick Edit）面板。",
+          "在这里，您可以快速预览不同的外观风格，切换 HDR 和胶片模拟效果，还可以微调曝光以寻找最佳的视觉效果。",
+          "如果您需要更精细的控制，可以通过上方的标签拨盘切换到详细设置区。滚动或点击进入“画幅”（Frame）选项，即可控制裁剪、水平校正和输出分辨率。",
+          "除了选择不同的宽高比，您还可以选择输出分辨率。照片实验室默认输出分辨率为 4K，即使原片高达 4800 万像素也是如此。这源于用户的诉求：大家使用 4800 万像素拍摄是为了保留充足的裁剪空间，但更倾向于输出 4K（约 1200 万像素）以节省存储空间并方便分享。话虽如此，如果您的手机配置够高，完全可以在画幅（Frame）面板中自由调整分辨率。",
+          "在“快速编辑”的右侧是曝光面板。除了前面提到的曝光拨盘外，您还可以开启直方图和色调融合（Tone Fusion）工具。",
+          "在“胶片”（Film）标签页中，您可以开关组成模拟效果的单个组件，并调整颗粒、光晕、MTF（调制传递函数，即“微对比度”）以及暗角的强度。",
+          "这个面板包含了大量控制选项，可能会让人感到有些眼花缭乱。但请放心，我们对照片实验室的设计初衷是：如果您不想折腾这些细节，完全可以不去理会它们。",
+          "每当您使用底部工具栏开启或关闭这些功能时，我们都会显示一条简短提示，说明该拨盘的具体作用。",
+          "最后是“平衡”（Balance）标签页，您可以在此控制自定义白平衡，并从菜单中选择预设。",
+          "虽然我们主要针对 iPhone 进行了介绍，但照片实验室在 iPad 上同样运行出色。iPad 充裕的屏幕空间让我们得以大幅减少页面导航的繁琐操作。",
+          "说到空间，您可能会注意到某些控制面板周围留有相当多的空白。实际上，我们脑海中还有更多功能创意，但对于一个出色的 1.0 版本来说，目前这些功能已经足够了。",
+          "全新设计",
+          "Mark III 的设计目标是精简操作体验，并将焦点集中在最重要的摄影工具上。",
+          "在可用性与美学之间取得平衡并非易事。虽然把所有控制选项一次性全塞进屏幕里很诱人，但当所有工具的视觉权重相同时，也就意味着没有重点。因此，Mark III 会在默认状态下直接呈现最重要的核心工具。",
+          "在相机的右下角，你会看到当前选择的风格。这灵感来自于一些胶片相机上的小窗口，用于提醒你装入的是什么胶卷。如果你想切换风格，只需点击右下角的缩略图即可展开风格选择器。当你选择一种风格时，我们会显示一段简短的描述，以提醒你该风格的特点。",
+          "大多数人下载 Halide 是为了避开 iPhone 原生相机的成像风格，但你依然可以通过选择“Apple”来切换回那种风格。在 iPhone Pro 上启用该选项时，相机会拍摄 ProRAW 而不是 Bayer RAW，这让你可以在照片实验室（Photo Lab）中，在 Apple 的相机风格和 Halide 的独特风格之间自由切换。",
+          "让我们把目光转向屏幕中央：工具栏。",
+          "拍照时你要做的最重要的决定之一就是构图，因此我们将这些工具放在了最显眼的核心位置。",
+          "长宽比按钮可让你从最受欢迎的胶片长宽比中进行选择：35mm（3×2）、中画幅（1×1）和全景（65×24）。我们甚至为 Instagram 提供了动态长宽比，它会根据横屏或竖屏方向自动改变尺寸。",
+          "在长宽比按钮的右侧，是叠加构图辅助线的按钮。当然，我们一直提供三分法构图，现在 Mark III 还加入了均匀网格、黄金比例以及矩形回折（rabatment of the rectangle）。",
+          "在工具栏的左侧是 RAW 开关。如果你喜欢相机直出的效果，并且不打算使用照片实验室，可以关闭 RAW 以丢弃数字底片，从而节省一些存储空间。",
+          "在控制区域的中央是全新的镜头选择器。过去，我们只允许你选择独立的物理镜头，但许多用户要求提供裁切视角，因此我们添加了这些功能。裁切视角带有特殊的图标样式，以提醒你当前使用的是裁切画面。",
+          "那么其他功能，比如闪光灯和白平衡呢？",
+          "Halide 的设计焕新与 Apple 发布其 Liquid Glass 设计系统同步进行。撇开美学不谈，Liquid Glass 旨在开发动态且自然有机的界面，并引入了诸如“…”菜单之类的范式来帮助精简界面。",
+          "大多数时候，你不需要手动控制白平衡。但每隔几年，当加州的山火将天空染成橙色时，你可以在“…”菜单中找到白平衡功能。启用后，白平衡图标会保留在工具栏中，方便你尝试不同的设置。",
+          "这些动态工具栏项会提醒你当前启用了某项手动设置。任何使用过传统数码相机的人都会告诉你，因为忘记关闭手动设置而毁掉一堆照片，这种感觉实在让人抓狂。",
+          "手动曝光控制",
+          "继续往上查看界面，右上角是我们熟悉的曝光控制，可让你在自动和手动曝光之间切换。现在，Mark III 还支持快门优先和 ISO 优先。",
+          "在手动曝光模式下，左上角会显示一个类似于经典胶片相机的测光表。信不信由你，这可不是个无聊的噱头。",
+          "我们发现 iOS 的实时取景画面并不能准确反映最终照片的效果。似乎有些计算摄影技术已被融入到了实时画面中。因此，我们使用了一个独立的 API 来监测测光曝光水平，这与经典胶片相机上的测光表类似。",
+          "那么 Mark II 呢？",
+          "我们通过与 Discord 上的用户进行深入交流，打造了 Mark III。我们尝试了许多不同的想法，有些可行，有些则不然。历经 18 个月的时间，我们最终敲定了一个更强大、更精简的设计方案，用一位用户的话来说，它“感觉就是 Halide”。",
+          "话虽如此，如果说我在过去二十年的软件发布经历中学到了什么，那就是人们不喜欢自己的使用习惯被打乱。即使你心里清楚新设计要好得多，也要做好准备，总有些人会抗拒改变。我完全理解——因为我往往也是其中一员！",
+          "因此，如果您想继续使用 Mark II，可以通过“…”菜单随时切换回去。Mark II 不会再增加任何新功能，但我们会尽力确保它正常运行。如果您确实想切回 Mark II，恳请您发邮件到 support@lux.camera，告诉我们哪里还有待改进。",
+          "还有一件事……",
+          "随着 Mark III 越来越完善，当我使用独立相机拍照时，我竟然会怀念 Halide 的处理效果。我想很多人可能也有同感。因此，我们非常高兴地宣布，Halide 现在支持导入独立相机的 RAW 文件，让您可以应用 Halide 独有的那种神奇处理效果。",
+          "免责声明：外部 RAW 文件导入支持目前仍处于 Beta 测试阶段。如果遇到崩溃或异常表现，请不要感到惊讶。",
+          "价格与获取方式",
+          "Mark III 于今日正式发布。对于所有购买过 Mark II 的用户以及现有的 Halide 订阅用户，这是一次免费升级。如果您两者都不是，可以选择每年 19.99 美元的订阅服务，或者以 59.99 美元一次性买断 Mark III。点击下载 Mark III。",
+          "特别感谢",
+          "Mark III 的开发历时超过 18 个月，但这绝非一人之功。我们要特别感谢 Doug Broussard 在这漫长的过程中协助进行产品质量把关，以及负责管理我们客服渠道的 Katie Rose Summerfield。",
+          "我们还要感谢 The Iconfactory，他们为我们所有的 Look 图标以及全新钛金属质感的 Halide 图标做出了卓越的贡献！同时，我们也要感谢 Lickability 为我们全新的新手引导体验提供的建议。",
+          "我还必须感谢过去一年中数千名参与 Mark III Beta 测试的用户，他们中的许多人都是我们 Discord 活跃社区的一员。除了提交 Bug 报告之外，你们分享的来自世界各地的摄影作品，也让我们为能够开发这款创作者工具而感到自豪。",
+          "感谢大家在过去九年里的支持。我们为 Halide 规划了许多新内容，也从未像现在这样对其未来充满期待。"
+        ]
+      }
+    },
+    {
+      "slug": "caeff5d237c79af2",
+      "title": "Trump Lawyer Argues Trump Can Tear Down Statue of Liberty",
+      "titleZh": "特朗普律师声称特朗普有权拆除自由女神像",
+      "link": "https://talkingpointsmemo.com/edblog/trump-can-tear-down-statue-of-liberty-says-trump-lawyer",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-06T19:56:01.000Z",
+      "category": "other",
+      "keywords": [
+        "politics",
+        "law"
+      ],
+      "score": {
+        "relevance": 1,
+        "quality": 4,
+        "timeliness": 8,
+        "total": 13
+      },
+      "summary": "在一场关于白宫东翼拆除和扩建计划的法庭听证会上，法官提出了一个极端假设：总统是否可以合法拆除自由女神像。代表司法部的律师明确表示，总统确实有权做出这样的决定，且不受任何法律挑战的约束。这一言论揭示了当前行政权力扩张所带来的严峻法律与宪政争议。上诉法院法官的质询成功将政府律师的论点推向了荒谬的极端。",
+      "summaryEn": "During a court hearing concerning the demolition and expansion plans for the White House East Wing, a judge posed an extreme hypothetical: whether the President could legally tear down the Statue of Liberty. The DOJ lawyer explicitly stated that the President does have the authority to make such a decision without being subject to any legal challenges. This argument highlights the severe legal and constitutional controversies surrounding the expansion of executive power. The Appeals Court judge's questioning successfully pushed the government's argument to an absurd extreme.",
+      "reason": "通过极具冲击力的法庭辩论案例，直观展示了当前美国行政权力边界所面临的严峻法律挑战。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Josh Marshall",
+        "siteName": "TPM – Talking Points Memo",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In a hearing today about the president’s bulldozing of the East Wing of the White House and plans to build a vast ballroom, a judge asked if the president could also bulldoze the Statue of Liberty and be subject to no legal challenge. The DOJ lawyer, Yaakov Roth, said that yes, President Trump could decide tomorrow to bulldoze the Statue of Liberty and no one could stop him."
+          },
+          {
+            "type": "p",
+            "text": "It was a good question from DC Court of Appeals Judge Patricia Millett since it brings the arguments and their implications clearly into the open. Reframe the question and the absurdity of this proposition becomes even more clear. If you hire someone to administer your estate, can they burn down the buildings on your estate or chop it up into parcels and sell it off? Presumably not. You hired them to run it, not to destroy it or sell it. It’s not theirs. They were hired for a specific task. That person is your employee. The president is hired to administer the country and enforce it’s laws for four years. He doesn’t own the country or its properties."
+          },
+          {
+            "type": "p",
+            "text": "These absurdities are just the degenerate spawn of the corrupt and ahistorical “unitary executive” theory of presidential power, a whole concept totally alien to the people who created the presidency and one whose main intellectual roots go back to a Nazi ideologue. It’s the guiding theory of the Roberts Court, except of course when the president is a Democrat. Corrupt theory in, degenerate spawn outcomes out. That’s just how it works."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1ca65f90456a15dd",
+      "title": "A crank formula for π",
+      "titleZh": "一个关于 π 的怪异公式",
+      "link": "https://www.johndcook.com/blog/2026/06/07/a-crank-formula-for-%cf%80/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-07T16:34:26.000Z",
+      "category": "other",
+      "keywords": [
+        "math",
+        "physics"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 13
+      },
+      "summary": "作者发现了一个基于物理常数来计算圆周率 π 的怪异公式，并对其进行了深入分析。该公式涉及到一个在微波区域选择的波长 λ，作者最初以为可以通过调整这个波长值来使方程成立。但正如评论所指出的那样，方括号内的部分在数学推导上存在缺陷。最终证明，这个公式仅仅是一种牵强的数字巧合，缺乏真正的物理和数学意义。",
+      "summaryEn": "The author discovered a bizarre formula for calculating Pi based on physical constants and conducted an in-depth analysis. The formula involves a wavelength chosen in the microwave region, leading the author to initially believe that adjusting this value could make the equation work. However, as pointed out in the comments, the bracketed part of the equation is flawed in its mathematical derivation. Ultimately, the formula is proven to be a forced numerical coincidence lacking real physical or mathematical significance.",
+      "reason": "以轻松有趣的方式拆解了一个伪科学公式，展示了严谨的数学与物理分析思维。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I ran across a cranky formula for π based on physical constants here"
+          },
+          {
+            "type": "p",
+            "text": "and decided to play around with it."
+          },
+          {
+            "type": "p",
+            "text": "The source describes λ as “wavelength (chosen in the microwave region)” and I thought perhaps you could chose a value of λ to make the equation work. But as a comment pointed out, the bracketed expression is simply 2hc², independent of λ, due to Planck’s blackbody law. That means we can simplify the expression above to"
+          },
+          {
+            "type": "p",
+            "text": "Now the values of h and c are known. In fact, they’re now exactly known by definition: other SI units are defined in terms of h and c. The mass of an electron is known to 11 significant figures."
+          },
+          {
+            "type": "p",
+            "text": "But E in the equation above is “Total energy of the universe.” I don’t even know what that means. Does it refer to the observable universe? Does it include dark energy? Does it include the energy equivalent of mass?"
+          },
+          {
+            "type": "p",
+            "text": "I asked a couple LLMs that the total energy of the universe might mean and what its value might be, and they said something like “Depends. It might be zero. It might be infinite. But if I had to say, I’d say around 1070 Joules.”"
+          },
+          {
+            "type": "p",
+            "text": "If we solve the equation above for E we get 2.8480347886530404 × 1019 Joules. I have no idea how to justify that."
+          },
+          {
+            "type": "p",
+            "text": "The expression for π is not dimensionless. I suppose you could choose some nonstandard units that would make the equation work."
+          },
+          {
+            "type": "p",
+            "text": "The source I linked to above cites Mathematical Cranks by Underwood Dudley, but I couldn’t find it in the book."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Koide’s coincidence"
+          },
+          {
+            "type": "li",
+            "text": "Coulomb’s constant"
+          },
+          {
+            "type": "li",
+            "text": "Dungeons, Dragons, and Numbers"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d53d5645729fd46e",
+      "title": "From Kepler to Bessel",
+      "titleZh": "从开普勒到贝塞尔",
+      "link": "https://www.johndcook.com/blog/2026/06/06/from-kepler-to-bessel/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-06T18:46:02.000Z",
+      "category": "other",
+      "keywords": [
+        "math",
+        "astronomy"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 13
+      },
+      "summary": "贝塞尔函数的积分表示法最初是由求解开普勒方程的需求所激发的，这篇文章详细阐述了两者之间的数学联系。开普勒方程用于描述行星在椭圆轨道上围绕恒星运行的位置，其求解过程涉及多种具有历史渊源的复杂描述方法。文章通过详细的数学推导，揭示了天体力学如何推动了经典数学理论的发展。这种从实际物理问题中孕育出纯粹数学工具的过程，展示了科学发展的独特魅力。",
+      "summaryEn": "The integral representation of Bessel functions was originally motivated by the need to solve Kepler's equation, and this article details the mathematical connection between the two. Kepler's equation describes a planet's position in an elliptical orbit, and its solution process involves complex descriptive methods with deep historical roots. Through detailed mathematical derivations, the post reveals how celestial mechanics drove the development of classical mathematical theories. The process of birthing pure mathematical tools from practical physical problems demonstrates the unique charm of scientific progress.",
+      "reason": "深入浅出地梳理了天体力学与经典数学理论之间的历史渊源，适合对数学史和物理感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The previous post very briefly said that the integral representation for Bessel functions was motived by solving Kepler’s equation. This post will go into more detail."
+          },
+          {
+            "type": "p",
+            "text": "There are multiple ways to describe the position of a planet in an elliptical orbit around a star. For historical reasons, these descriptions have arcane names such as mean anomaly, true anomaly, and eccentric anomaly. This post explains how these three are related."
+          },
+          {
+            "type": "p",
+            "text": "For this post, it is enough to say that often you know mean anomaly M and want to know eccentric anomaly E. These are related via Kepler’s equation"
+          },
+          {
+            "type": "p",
+            "text": "where e is the eccentricity of the orbit. You’d like to solve for E as a function of M and e, but there’s no elementary way to do that."
+          },
+          {
+            "type": "p",
+            "text": "One way to solve Kepler’s equation is to take a guess at E and plug it into the right hand side of"
+          },
+          {
+            "type": "p",
+            "text": "to get a new E, and keep iterating until the two sides are closer together. I write more about this here."
+          },
+          {
+            "type": "p",
+            "text": "Another approach to solving Kepler’s equation is to use Newton’s method. I write more about that here."
+          },
+          {
+            "type": "p",
+            "text": "Still another approach is to expand E in a sine series and find the series coefficients. An advantage to this approach is that once you have the coefficients, you have an expression for E as a function of M, and you can plug in more values of M without having to solve Kepler’s equation for each value of M separately."
+          },
+          {
+            "type": "h2",
+            "text": "Sine series coefficients"
+          },
+          {
+            "type": "p",
+            "text": "Kepler’s equation is easy to solve at E = 0 and at E = π. In both cases, E = M. So the function E − M is zero at both ends of [0, π], which suggests we try to expand E − M in a sine series"
+          },
+          {
+            "type": "p",
+            "text": "We then calculate the Fourier coefficients an as usual."
+          },
+          {
+            "type": "p",
+            "text": "The second line uses integration by parts. The third line uses Kepler’s equation. The last line uses the definition of the Bessel functions Jn given in the previous post."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d8369b13fed6e23f",
+      "title": "60 Minutes Correspondents Lesley Stahl, Bill Whitaker, and the Other Guy Will Stay at Show",
+      "titleZh": "《60分钟》记者 Lesley Stahl、Bill Whitaker 和另一位同事将留在节目",
+      "link": "https://www.nytimes.com/2026/06/05/business/media/60-minutes-cbs-stahl-whitaker-wertheim.html?unlocked_article_code=1.oFA.xooG.Pz8cQv8odz7Z",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-06T20:04:06.000Z",
+      "category": "other",
+      "keywords": [
+        "media",
+        "journalism"
+      ],
+      "score": {
+        "relevance": 1,
+        "quality": 4,
+        "timeliness": 7,
+        "total": 12
+      },
+      "summary": "CBS《60分钟》节目的三位记者 Lesley Stahl、Bill Whitaker 和 Jon Wertheim 在致员工的内部备忘录中确认将继续留任。三人公开表示对同事 Tanya 和 Draggan 被解雇深感不安，认为这两人是因为捍卫节目的独立性、正直品格和核心价值而遭到驱逐。备忘录指出，管理层从未对解雇决定给出任何解释，这引发了对新闻编辑室独立性的严重担忧。尽管内部矛盾尖锐，三位记者最终选择留下继续工作。",
+      "summaryEn": "Three 60 Minutes correspondents — Lesley Stahl, Bill Whitaker, and Jon Wertheim — confirmed they will stay with the program in a staff memo obtained by The New York Times. They expressed deep upset over the firings of colleagues Tanya and Draggan, calling them respected leaders who were expelled for defending the show's values, independence, and integrity. The memo noted that no explanation was ever given for the dismissals, raising serious concerns about newsroom independence. Despite the internal conflict, all three decided to remain at 60 Minutes.",
+      "reason": "这篇报道揭示了美国老牌新闻节目《60分钟》内部围绕编辑独立性与管理层之间的激烈冲突，是理解当前媒体行业新闻自由困境的重要案例。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "52c1e7d61675d89e",
+      "title": "KPN Interactieve TV zonder Experia Box",
+      "titleZh": "不使用 Experia Box 实现 KPN 交互电视",
+      "link": "https://berthub.eu/articles/posts/kpn-interactieve-tv-zelf-doen/",
+      "sourceName": "berthub.eu",
+      "sourceUrl": "https://berthub.eu",
+      "pubDate": "2026-06-07T10:36:42.000Z",
+      "category": "other",
+      "keywords": [
+        "IPTV",
+        "networking",
+        "router"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 4,
+        "timeliness": 4,
+        "total": 10
+      },
+      "summary": "荷兰运营商 KPN 的用户可以在不使用官方 Experia Box 路由器的情况下，通过自行配置网络来使用 KPN 交互电视机顶盒（型号 5202）。核心方案涉及对 igmpproxy.conf 配置文件进行修改，以正确转发 IGMP 组播流量，使电视信号能够通过第三方路由器正常传输。作者在 2026 年 6 月更新了教程，确认时隔 5 年后这些配置方法依然有效，并补充了将机顶盒恢复出厂设置的技巧。该方案适合希望摆脱运营商锁定设备、使用自有网络设备的高级用户。",
+      "summaryEn": "KPN customers in the Netherlands can use the KPN Interactive TV set-top box (model 5202) without the official Experia Box router by performing custom network configuration. The core solution involves modifying the igmpproxy.conf configuration file to properly forward IGMP multicast traffic through a third-party router. The author updated the guide in June 2026, confirming the instructions still work after five years, and added a tip for factory-resetting the set-top box. This approach is ideal for advanced users who prefer to use their own networking equipment instead of the ISP-locked device.",
+      "reason": "这篇教程为希望绕过运营商锁定设备的 KPN 用户提供了经过 5 年验证的可行方案，技术细节具体且持续维护更新，对欧洲宽带用户极具参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bert Hubert's writings",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Ik ben een heel tevreden klant van KPN Internet. Om diverse redenen gebruik\nik de Experia Box niet, maar ik wil wel graag TV kunnen kijken met de KPN\nInteractieve TV Set Top Box (“5202”). Vroeger ging dat “vanzelf goed”, tegenwoordig\nis daar wat werk voor nodig."
+          },
+          {
+            "type": "quote",
+            "text": "UPDATE Juni 2026 (na 5 jaar!): de instructies werken weer, er is een update geweest in het igmpproxy.conf bestand. Ook heb ik een tip toegevoegd hoe de ontvanger terug te brengen naar fabrieksinstellingen, wat bij mij recent nodig was."
+          },
+          {
+            "type": "p",
+            "text": "Je hebt het verhaal op deze pagina alleen nodig als je de Experia Box niet\nwil gebruiken. In vrijwel alle gevallen is het makkelijker om de KPN\napparatuur te gebruiken en hun handleidingen op te volgen."
+          },
+          {
+            "type": "p",
+            "text": "De onderstaande uitleg is alleen nodig als je hebt besloten het zonder de\nExperia Box te gaan doen, en daar moet je echt wel een reden voor hebben. Om\nhet onderstaande te laten werken heb je ook een managed switch met VLANs\nnodig. Maar als je het zonder Experia Box wil doen, dan zal je die wel hebben."
+          },
+          {
+            "type": "quote",
+            "text": "Let op! Sommige pagina’s online praten nog over\n“bridged”, dat werkt niet meer.  Verder zijn er diverse pagina’s die het wat\nte ingewikkeld maken, of alleen een oplossing beschrijven voor specifieke\nrouters."
+          },
+          {
+            "type": "p",
+            "text": "Op deze pagina probeer ik uit te leggen wat er moet gebeuren, en documenteer\nik een script waarmee je iedere Linux computer, zelfs de kleinste Pi Zero,\ndit kan laten doen."
+          },
+          {
+            "type": "p",
+            "text": "Voor je iets hebt aan dit verhaal moet je eerst normaal internet werkend\nhebben. KPN legt dit hier goed\nuit.\nOok deze pagina kan nuttig zijn."
+          },
+          {
+            "type": "h2",
+            "text": "De KPN Interactieve TV Set Top Box"
+          },
+          {
+            "type": "p",
+            "text": "Het zwarte doosje, de STB. Dit doosje heeft drie dingen nodig:"
+          },
+          {
+            "type": "li",
+            "text": "De multicast KPN TV service (KPN VLAN 4)"
+          },
+          {
+            "type": "li",
+            "text": "Normaal internet (zoals over PPPoE binnenkomt op KPN VLAN 6)"
+          },
+          {
+            "type": "li",
+            "text": "Een IGMP proxy voor de multicast."
+          },
+          {
+            "type": "p",
+            "text": "Om dit te bereiken moet je het doosje toegang geven tot het normale\ninternet. Specifieke subnetten moet je echter naar VLAN 4 sturen. Daarnaast\nwil de STB lid worden van multicast groepen, waarbij wat hulp nodig is.\nHieronder stap voor stap uitleg."
+          },
+          {
+            "type": "p",
+            "text": "Als de set top box ondanks het volgen van deze pagina met error DBL-307 komt, probeer hem te resetten naar fabrieksinstellingen (helemaal onderop de pagina, waar ze het hebben over “Haal de stekker uit de tv-ontvanger). Dit hielp bij mij."
+          },
+          {
+            "type": "h2",
+            "text": "KPN VLAN 4"
+          },
+          {
+            "type": "p",
+            "text": "Dit is een beetje een magisch VLAN. Je kunt er DHCP requests naar sturen,\nmaar zonder speciaal trucje komt er dan niets terug. Stuur je een DHCP\nrequest met option60 (Vendor Class Identifier) met waarde: IPTV_RG, dan\nkrijg je wel antwoord. En als je dan ook nog vraagt om: subnet-mask, broadcast-address, routers, rfc3442-classless-static-routes, dan stuurt die server je ook nog op de\nspeciale KPN TV subnetten op."
+          },
+          {
+            "type": "p",
+            "text": "Op VLAN4 krijg je van KPN zelf een private space adres toegewezen. Je moet\nNAT doen voor de STB, anders gaat het niet goed."
+          },
+          {
+            "type": "h2",
+            "text": "Normaal internet"
+          },
+          {
+            "type": "p",
+            "text": "In tegenstelling tot wat her en der staat heeft de STB geen bijzondere\nDHCP behandeling nodig. Je kan hem aan iedere DHCP server hangen, als hij\nmaar DNS en default route krijgt."
+          },
+          {
+            "type": "h2",
+            "text": "IGMP Proxy / Multicast"
+          },
+          {
+            "type": "p",
+            "text": "De KPN STB ontvangt z’n normale TV via multicast. Dit is een ingewikkeld\nsysteem waarbij je packets naar meerdere bestemmingen tegelijk kan sturen.\nEn het werkt ook echt - als je twee KPN STBs hebt en ze staan beide op\nhetzelfde kanaal, dan komt er ook echt maar 1 exemplaar van de stream\nbinnen. Machtig mooi spul."
+          },
+          {
+            "type": "p",
+            "text": "Om een kanaal te ontvangen “subscribed” de STB via het Internet Group Management Protocol\n(IGMP) op de juiste stream. Dit verzoek moet van het lokale LAN doorgegeven\nworden, en daarom moet er een IGMP Proxy draaien om dat te doen."
+          },
+          {
+            "type": "h2",
+            "text": "Multicast op een apart netwerk?"
+          },
+          {
+            "type": "p",
+            "text": "Multicast is wel breekbare technologie. Als een switch bijvoorbeeld niet\nsnapt wat er gaande is dan stuurt hij het multicastverkeer naar alle\npoorten. Mogelijk inclusief je wifi, die dan ineens vol zit met 8Mbit/s aan\ntelevisie (per STB!)."
+          },
+          {
+            "type": "p",
+            "text": "Als je toch al met VLANs bezig bent is het een prima idee om de KPN set top\nboxen in hun eigen VLAN te zetten, eentje die nooit bij je WiFi komt."
+          },
+          {
+            "type": "p",
+            "text": "In het script beneden heb ik gekozen voor die oplossing. Als je alles op 1\nnetwerk wil doen dan moet je het onderstaande laten gebeuren op je internet\nrouter, wat misschien nog niet meevalt."
+          },
+          {
+            "type": "h2",
+            "text": "Het TV routertje"
+          },
+          {
+            "type": "p",
+            "text": "In mijn situatie is er al een goed functionerende router voor internet,\neentje die meer dingen doet dan KPN alleen. Televisie is belangrijk, maar ik\nheb geen zin om de al complexe router nog ingewikkelder te maken."
+          },
+          {
+            "type": "p",
+            "text": "Gelukkig hoeft dat ook niet, en kan je VLAN 4 geheel los laten lopen."
+          },
+          {
+            "type": "quote",
+            "text": "Let op, de KPN set top box gaat geen VLANs voor je begrijpen, die wil dit\nallemaal untagged zien."
+          },
+          {
+            "type": "p",
+            "text": "Het doosje wat we gaan bouwen heet hier ‘Linux’."
+          },
+          {
+            "type": "p",
+            "text": "In de twee onderstaande scripts neem ik de volgende dingen aan:"
+          },
+          {
+            "type": "li",
+            "text": "Het Linux doosje ziet untagged op eth0 “normaal internet” (dus zonder\nPPPoE, dat moet je internet router al geregeld hebben)"
+          },
+          {
+            "type": "li",
+            "text": "VLAN 4 van KPN komt tagged binnen op eth0"
+          },
+          {
+            "type": "li",
+            "text": "VLAN 44 in je huis, waar de set top boxen op zitten, zit tagged op eth0"
+          },
+          {
+            "type": "p",
+            "text": "Installeer een recente Debian/Raspberry Pi OS, verbonden met je normale KPN\ninternet."
+          },
+          {
+            "type": "p",
+            "text": "Je kunt dan of de onderstaande beschrijving met de hand uitvoeren, of als\nje op Debian Buster of Raspberry Pi OS Buster zit (nieuwer werkt mogelijk ook), deze tar file\nuitpakken, als volgt:"
+          },
+          {
+            "type": "code",
+            "text": "cd\nwget https://berthub.eu/articles/kpn-tv-config.tar\ncd /\nsudo apt-get install udhcpd igmpproxy\nsudo tar xf ~/kpn-tv-config.tar\nsudo systemctl enable kpn-tv.service\nsudo systemctl daemon-reload \nsudo reboot\n# en na een minuutje of wat, zet de settop boxen aan"
+          },
+          {
+            "type": "p",
+            "text": "Dit doet hetzelfde als de handmatige beschrijving hieronder, die ik\ndesondanks aanraad, omdat je dan weet wat er eigenlijk gebeurt."
+          },
+          {
+            "type": "h2",
+            "text": "Handmatig"
+          },
+          {
+            "type": "quote",
+            "text": "Deze beschrijving zal waarschijnlijk ook werken met nieuwere Debians. De\nbovenstaande tarfile vervangt diverse files in plaats van ze aan te\npassen."
+          },
+          {
+            "type": "p",
+            "text": "Voeg toe aan /etc/dhcpcd.conf:"
+          },
+          {
+            "type": "code",
+            "text": "denyinterfaces eth0.4,eth0.44"
+          },
+          {
+            "type": "p",
+            "text": "Dit voorkomt dat de normale DHCP client zich gaat bemoeien met het KPN TV\nVLAN en je STB VLAN."
+          },
+          {
+            "type": "p",
+            "text": "Voeg het volgende blokje toe aan /etc/dhcp/dhclient.conf:"
+          },
+          {
+            "type": "code",
+            "text": "interface \"eth0.4\" {\n  request subnet-mask, broadcast-address, routers, rfc3442-classless-static-routes;\n  send vendor-class-identifier \"IPTV_RG\";\n}"
+          },
+          {
+            "type": "p",
+            "text": "Dit regelt dat de juiste vraag gesteld wordt aan het KPN TV VLAN."
+          },
+          {
+            "type": "p",
+            "text": "Vervolgens moeten we een DHCP server installeren voor eth0.44, waar de KPN\nset top boxen leven:"
+          },
+          {
+            "type": "code",
+            "text": "apt-get install udhcpd"
+          },
+          {
+            "type": "p",
+            "text": "Vervang de inhoud van /etc/udhcpd.conf door het volgende:"
+          },
+          {
+            "type": "code",
+            "text": "start           192.168.2.21    \nend             192.168.2.254   \ninterface       eth0.44\nmax_leases      234             \nopt     dns     195.121.1.66 195.121.1.34\noption  subnet  255.255.255.0\nopt     router  192.168.2.1\noption  lease   864000          "
+          },
+          {
+            "type": "p",
+            "text": "Let goed op de DNS servers, die moeten kloppen. Ik heb hier nu twee KPN\nnameserver IP adressen ingevoerd, maar die zouden ooit kunnen wijzigen. Het\nis mogelijk handiger hier de DNS server in te vullen die ook werkt op je\nnormale internet lan (eth0)."
+          },
+          {
+            "type": "p",
+            "text": "Vervolgens (we zijn er bijna):"
+          },
+          {
+            "type": "code",
+            "text": "apt-get install igmpproxy"
+          },
+          {
+            "type": "p",
+            "text": "En vervang de inhoud van  /etc/igmpproxy.conf door:"
+          },
+          {
+            "type": "code",
+            "text": "quickleave\n\nphyint eth0.4 upstream  ratelimit 0  threshold 1\n        altnet 0.0.0.0/1\n        altnet 128.0.0.0/1\n \nphyint eth0.44 downstream  ratelimit 0  threshold 1\n        altnet 192.168.2.0/24"
+          },
+          {
+            "type": "quote",
+            "text": "Mochten KPN-ers dit lezen, deze ‘altnet’ informatie ontbreekt op jullie “eigen\nmodem\npagina”.\nTevens staat daar “Vencor Class Identifier” ipv “Vendor Class Identifier”."
+          },
+          {
+            "type": "p",
+            "text": "Alle software is nu juist geïnstalleerd. Nu nog regelen dat bij het\nopstarten de juiste dingen gebeuren."
+          },
+          {
+            "type": "p",
+            "text": "Zet het volgende in /home/pi/kpn-tv.sh (of ergens anders als je niet op\neen Raspberry zit):"
+          },
+          {
+            "type": "code",
+            "text": "#!/bin/sh\n# for every boot\nsysctl net.ipv4.ip_forward=1\nsysctl kernel.panic=10\nsleep 5\nip link add link eth0 name eth0.44 type vlan id 44\nip link add link eth0 name eth0.4 type vlan id 4\nip link set up dev eth0.44\nip link set up dev eth0.4\nip addr add 192.168.2.1 dev eth0.44\nip ro add 192.168.2.0/24 dev eth0.44\niptables -A POSTROUTING -t nat  -s 192.168.2.0/24 -o eth0 -j MASQUERADE\niptables -A POSTROUTING -t nat  -s 192.168.2.0/24 -o eth0.4 -j MASQUERADE\niptables -A INPUT -i eth0.4 -p tcp -j DROP\ndhclient\n\nigmpproxy /etc/igmpproxy.conf\nudhcpd -S"
+          },
+          {
+            "type": "p",
+            "text": "Nu de systemd file. Maak /etc/systemd/system/kpn-tv.service met de\nvolgende inhoud:"
+          },
+          {
+            "type": "code",
+            "text": "[Unit]\nDescription=KPN TV\n\n[Service]\nType=oneshot\nExecStart=/home/pi/kpn-tv.sh\nRemainAfterExit=true\nStandardOutput=journal\n\n[Install]\nWantedBy=multi-user.target"
+          },
+          {
+            "type": "p",
+            "text": "En om er voor te zorgen dat dit alles automatisch start:"
+          },
+          {
+            "type": "code",
+            "text": "chmod 644 /etc/systemd/system/kpn-tv.service\nchmod a+x /home/pi/kpn-tv.sh\nsudo systemctl enable kpn-tv.service\nsudo systemctl daemon-reload "
+          },
+          {
+            "type": "p",
+            "text": "Als je nu reboot zou alles moeten werken!"
+          },
+          {
+            "type": "h2",
+            "text": "Addendum"
+          },
+          {
+            "type": "p",
+            "text": "Waarom zo’n lelijk startup script? Waarom niet alles in\n/etc/network/interfaces? Een eerdere versie van deze pagina probeerde\nalles op de nette manier te doen. En dit was een wereld van pijn. De VLANs\nverschenen te laat, of een DHCP client startte te vroeg etc. Uiteindelijk bleek\ndit een heel stuk simpeler."
+          },
+          {
+            "type": "p",
+            "text": "Afsluitende tip, ervaring leert dat een micro-SD kaart in een Raspberry Pi\nna verloop van tijd weleens corrupt raakt.  Aangezien je mogelijke familie\neen ijzeren SLA heeft op TV kijken, maak gelijk twee kaartjes. Of doe gek,\ntwee Raspberry Pi Zero’s."
+          }
+        ],
+        "translations": [
+          "我是 KPN Internet 的非常满意的客户。由于各种原因，我不使用 Experia Box，但我仍然希望能使用 KPN 交互式电视机顶盒（“5202”）看电视。以前这“自然而然就能搞定”，但现在需要费点功夫了。",
+          "2026 年 6 月更新（5 年后！）：指南再次生效，`igmpproxy.conf` 文件进行了更新。我还添加了一个关于如何将接收器恢复出厂设置的提示，这是我最近刚用到的。",
+          "只有在你不想使用 Experia Box 的情况下，才需要阅读本页的内容。在几乎所有情况下，直接使用 KPN 的设备并遵循它们的说明书会更容易。",
+          "只有当你决定不使用 Experia Box 时，才需要看下面的说明，而且你确实得有理由这么做。要让下面的方法生效，你还需要一台支持 VLAN 的网管型交换机（managed switch）。不过，既然你想抛开 Experia Box，你应该已经有这设备了。",
+          "注意！网上有些页面还在讨论“桥接模式（bridged）”，但这已经行不通了。此外，还有许多页面把事情搞得太复杂，或者只提供针对特定路由器的解决方案。",
+          "在本页中，我将尝试解释具体的操作原理，并提供一个脚本，让你可以在任何 Linux 电脑（甚至是体积最小的 Pi Zero）上实现这一功能。",
+          "在阅读本教程之前，你必须确保常规的网络连接已经正常工作。KPN 在这里对此进行了详细的说明。这个页面可能也会有所帮助。",
+          "KPN 交互式电视机顶盒",
+          "这个黑盒子，即 STB（机顶盒）。它需要满足以下三个条件：",
+          "KPN TV 的组播服务（multicast，KPN VLAN 4）",
+          "常规互联网连接（例如通过 PPPoE 拨号接入的 KPN VLAN 6）",
+          "用于组播的 IGMP 代理。",
+          "要实现这一点，你必须让机顶盒能够访问常规网络。然而，特定的子网流量需要路由到 VLAN 4。此外，STB 还需要加入组播组（multicast groups），这需要一些额外的配置辅助。下面是分步说明。",
+          "如果在按照本页说明操作后，机顶盒仍然出现 DBL-307 错误，请尝试将其恢复出厂设置（在页面最底部，提到“拔掉电视接收器电源插头”的地方）。这个方法解决了我的问题。",
+          "KPN VLAN 4",
+          "这是一个有点神奇的 VLAN。你可以向它发送 DHCP 请求，但如果不使用特殊技巧，是得不到任何响应的。如果你在发送 DHCP 请求时附带 option60（Vendor Class Identifier），并将其值设为 `IPTV_RG`，就能收到响应。如果你同时还请求了 `subnet-mask`、`broadcast-address`、`routers` 和 `rfc3442-classless-static-routes`，该服务器还会向你推送特定的 KPN TV 子网路由。",
+          "在 VLAN 4 上，KPN 会为你分配一个私有网段（private space）的 IP 地址。你必须对 STB 进行 NAT（网络地址转换），否则无法正常工作。",
+          "常规互联网连接",
+          "与网上其他地方的说法相反，STB 并不需要特殊的 DHCP 配置。你可以将它连接到任何 DHCP 服务器上，只要它能获取到 DNS 和默认路由即可。",
+          "IGMP 代理 / 组播（Multicast）",
+          "KPN STB 通过组播接收常规电视信号。这是一个复杂的系统，允许你将数据包同时发送到多个目的地。而且它确实有效——如果你有两台 KPN STB 并且都调到同一个频道，实际上只会传入一份视频流。非常棒的机制。",
+          "为了接收频道，STB（机顶盒）会通过 Internet Group Management Protocol (IGMP) 在正确的流上进行“订阅”。此请求必须从本地局域网（LAN）转发出去，因此需要运行一个 IGMP 代理来执行此操作。",
+          "在独立网络上进行组播？",
+          "组播是一项比较脆弱的技术。例如，如果交换机不能正确识别当前状况，它就会将组播流量泛洪到所有端口。这可能包括你的 Wi-Fi，导致其瞬间被每个 STB 高达 8Mbit/s 的电视流量塞满。",
+          "如果你已经在使用 VLAN，那么将 KPN 的机顶盒划分到独立的 VLAN 中是个绝佳的主意，这样组播流量就永远不会到达你的 Wi-Fi 网络。",
+          "在下面的脚本中，我选择了这种解决方案。如果你想把所有设备都放在同一个网络中，那么你必须在你的互联网路由器上执行以下操作，这可能并不容易。",
+          "专用的电视路由器",
+          "在我的网络环境中，已经有一台运行良好的互联网路由器，它承担的功能远不止处理 KPN 的网络。电视固然重要，但我不想让原本就复杂的路由器变得更加繁琐。",
+          "幸运的是，这并不是必须的，你可以让 VLAN 4 完全独立运行。",
+          "请注意，KPN 的机顶盒无法识别 VLAN 标签，它要求接收到的数据全部是 untagged（未打标签）的。",
+          "我们将要组装的这个设备（小盒子）在下文统称为“Linux”。",
+          "在以下两个脚本中，我基于以下假设：",
+          "Linux 盒子在 eth0 接口上接收到 untagged 的“常规互联网”流量（即不包含 PPPoE，这应该已经由你的互联网路由器处理好了）。",
+          "KPN 的 VLAN 4 流量以 tagged（带标签）的形式进入 eth0 接口。",
+          "家里的 VLAN 44（连接机顶盒的 VLAN）同样以 tagged 形式存在于 eth0 接口。",
+          "安装最新版的 Debian 或 Raspberry Pi OS，并将其连接到你常规的 KPN 互联网网络。",
+          "你可以选择手动执行下述配置，或者，如果你使用的是 Debian Buster 或 Raspberry Pi OS Buster（更新的版本可能也兼容），可以直接按以下方式解压这个 tar 文件：",
+          "cd\nwget https://berthub.eu/articles/kpn-tv-config.tar\ncd /\nsudo apt-get install udhcpd igmpproxy\nsudo tar xf ~/kpn-tv-config.tar\nsudo systemctl enable kpn-tv.service\nsudo systemctl daemon-reload \nsudo reboot\n# en na een minuutje of wat, zet de settop boxen aan",
+          "该文件的作用与下文的手动配置完全相同。尽管如此，我仍然推荐手动配置，因为这样你能清楚了解底层实际发生的操作。",
+          "手动配置",
+          "本指南大概率也适用于较新的 Debian 版本。上面提供的 tar 文件会直接覆盖替换多个系统文件，而不是对它们进行修改。",
+          "在 /etc/dhcpcd.conf 文件中添加以下内容：",
+          "denyinterfaces eth0.4,eth0.44",
+          "这可以防止默认的 DHCP 客户端干扰 KPN 的电视 VLAN 以及你的 STB 所在的 VLAN。",
+          "将以下配置块添加到 /etc/dhcp/dhclient.conf 文件中：",
+          "interface \"eth0.4\" {\n  request subnet-mask, broadcast-address, routers, rfc3442-classless-static-routes;\n  send vendor-class-identifier \"IPTV_RG\";\n}",
+          "这确保了向 KPN 电视 VLAN 发送正确的 DHCP 请求。",
+          "接下来，我们需要为 eth0.44 接口安装一个 DHCP 服务器，KPN 的机顶盒将在此接口所在的网络中运行：",
+          "apt-get install udhcpd",
+          "将 /etc/udhcpd.conf 的内容替换为以下配置：",
+          "start           192.168.2.21    \nend             192.168.2.254   \ninterface       eth0.44\nmax_leases      234             \nopt     dns     195.121.1.66 195.121.1.34\noption  subnet  255.255.255.0\nopt     router  192.168.2.1\noption  lease   864000",
+          "请务必注意 DNS 服务器地址，必须确保其准确无误。我目前在此处填入了两个 KPN 的域名服务器 IP 地址，但这些地址未来可能会发生变动。建议在此处直接填入你常规局域网（eth0）中使用的 DNS 服务器，可能会更加方便。",
+          "接下来（马上就完成了）：",
+          "apt-get install igmpproxy",
+          "将 /etc/igmpproxy.conf 的内容替换为以下配置：",
+          "quickleave\n\nphyint eth0.4 upstream  ratelimit 0  threshold 1\n        altnet 0.0.0.0/1\n        altnet 128.0.0.0/1\n \nphyint eth0.44 downstream  ratelimit 0  threshold 1\n        altnet 192.168.2.0/24",
+          "如果有 KPN 的员工看到这篇文章：你们自家的“调制解调器管理页面”上遗漏了这个“altnet”信息。而且页面上把“Vendor Class Identifier”错拼成了“Vencor Class Identifier”。",
+          "所有必要的软件现已安装完毕。接下来要确保系统启动时能自动执行正确的操作。",
+          "将以下内容写入 /home/pi/kpn-tv.sh 文件中（如果你使用的不是 Raspberry Pi，可以保存在其他路径）：",
+          "#!/bin/sh\n# for every boot\nsysctl net.ipv4.ip_forward=1\nsysctl kernel.panic=10\nsleep 5\nip link add link eth0 name eth0.44 type vlan id 44\nip link add link eth0 name eth0.4 type vlan id 4\nip link set up dev eth0.44\nip link set up dev eth0.4\nip addr add 192.168.2.1 dev eth0.44\nip ro add 192.168.2.0/24 dev eth0.44\niptables -A POSTROUTING -t nat  -s 192.168.2.0/24 -o eth0 -j MASQUERADE\niptables -A POSTROUTING -t nat  -s 192.168.2.0/24 -o eth0.4 -j MASQUERADE\niptables -A INPUT -i eth0.4 -p tcp -j DROP\ndhclient\n\nigmpproxy /etc/igmpproxy.conf\nudhcpd -S",
+          "接着配置 systemd 服务文件。创建 /etc/systemd/system/kpn-tv.service，并填入以下内容：",
+          "[Unit]\nDescription=KPN TV\n\n[Service]\nType=oneshot\nExecStart=/home/pi/kpn-tv.sh\nRemainAfterExit=true\nStandardOutput=journal\n\n[Install]\nWantedBy=multi-user.target",
+          "执行以下命令以确保该服务能够开机自启：",
+          "chmod 644 /etc/systemd/system/kpn-tv.service\nchmod a+x /home/pi/kpn-tv.sh\nsudo systemctl enable kpn-tv.service\nsudo systemctl daemon-reload",
+          "现在只要重启系统，一切就应该能正常运作了！",
+          "附录",
+          "为什么要用这么难看的启动脚本？为什么不把所有配置都写进 /etc/network/interfaces？本页面的早期版本曾尝试用标准方式来处理所有配置，结果简直是一场噩梦。VLAN 总是加载得太晚，或者 DHCP 客户端又启动得太早等等。最终发现用这种方式要简单得多。",
+          "最后提示一点：经验表明，Raspberry Pi 中的 micro-SD 卡用久了可能会发生数据损坏。既然你的家人对看电视可能有着严格的 SLA（服务级别协议）要求，最好一次准备两张 SD 卡。或者干脆疯狂一点，直接准备两台 Raspberry Pi Zero。"
+        ]
+      }
+    }
+  ]
+}
