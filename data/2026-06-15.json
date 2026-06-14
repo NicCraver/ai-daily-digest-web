@@ -1,0 +1,1083 @@
+{
+  "date": "2026-06-15",
+  "generatedAt": "2026-06-14T18:50:48.394Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2473,
+    "filteredArticles": 7,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈的核心焦点是 WebAssembly 与 Python 生态的深度融合，随着 PyPI 官方支持发布 WASM wheels，开发者得以更便捷地将各类语言编译并在浏览器端运行。在系统架构与底层优化方面，从复杂插件生态的钩子机制设计到 SQLite 查询结果的精准溯源，体现了软件工程对应用扩展性与数据上下文的深度探索。同时，硬核极客精神与安全历史依然引人瞩目，既有开发者动手打造集成串口与 VGA 的便携式控制台，也有文章重温了早期以极简代码抗议加密技术出口禁令的密码学抗争史。",
+  "articles": [
+    {
+      "slug": "5c61c28c3e4812e3",
+      "title": "Publishing WASM wheels to PyPI for use with Pyodide",
+      "titleZh": "将 WASM wheels 发布到 PyPI 以供 Pyodide 使用",
+      "link": "https://simonwillison.net/2026/Jun/13/publishing-wasm-wheels/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-13T23:55:18.000Z",
+      "category": "tools",
+      "keywords": [
+        "WASM",
+        "PyPI",
+        "Pyodide",
+        "Python"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "Pyodide 314.0 版本宣布支持将针对 Pyodide（或兼容 PEP 783 中定义的 PyEmscripten 平台的 Python 运行时）构建的包直接发布到 PyPI。开发者现在可以直接从 PyPI 安装这些 WebAssembly (WASM) wheels，大幅简化了在浏览器环境中分发和部署 Python WASM 模块的过程。这一更新标志着 Python 生态在 WebAssembly 集成方面迈出了关键一步。",
+      "summaryEn": "The Pyodide 314.0 release introduces a highly anticipated feature: developers can now publish packages built for Pyodide directly to PyPI. These packages are compatible with any Python runtime supporting the PyEmscripten platform defined in PEP 783. Users can now easily install these WebAssembly (WASM) wheels, significantly simplifying the distribution process for Python modules in browser environments. This update marks a crucial step forward in integrating the Python ecosystem with WebAssembly.",
+      "reason": "想要了解如何利用 PyPI 轻松分发和安装 Python WebAssembly 包的开发者必读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "13th June 2026"
+          },
+          {
+            "type": "p",
+            "text": "The Pyodide 314.0 release announcement (via Hacker News) includes news I’ve been looking forward to for a long time:"
+          },
+          {
+            "type": "quote",
+            "text": "You can now publish Python packages built for Pyodide (or any Python runtime compatible with the PyEmscripten platform defined in PEP 783) directly to PyPI and install them at runtime.\nPreviously, the Pyodide maintainers had to maintain, build, and host over 300 packages ourselves. This created a significant burden on our maintainers and became a major bottleneck for the community, as every new package required manual review.\nMoving forward, package maintainers can simply build and publish Pyodide wheels to PyPI, just as they do for native wheels on Linux, macOS, or Windows."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the PR to PyPI itself supporting this, which landed on April 21st."
+          },
+          {
+            "type": "p",
+            "text": "I adore Pyodide, and have been frustrated in the past by this limitation. It’s possible to compile C or Rust extensions to WASM in a wheel file, but before now there was no easy way to distribute them."
+          },
+          {
+            "type": "p",
+            "text": "Thanks to the efforts of a whole lot of people, that’s now been fixed!"
+          },
+          {
+            "type": "h3",
+            "text": "Trying it out with luau-wasm"
+          },
+          {
+            "type": "p",
+            "text": "I decided to celebrate by finding something I could package. I have quite a few experimental Pyodide projects lying around, but the best fit for this looked to be my Luau WebAssembly research spike from 9th March."
+          },
+          {
+            "type": "p",
+            "text": "Luau is a “small, fast, and embeddable programming language based on Lua with a gradual type system”, developed by Roblox and released under an MIT license."
+          },
+          {
+            "type": "p",
+            "text": "It’s written in C++. I already knew it was possible to compile it to WebAssembly and get it running inside of Pyodide, so I set Codex + GPT-5.5 xhigh the task of packaging my experiment up and publishing it to PyPI using GitHub Actions."
+          },
+          {
+            "type": "p",
+            "text": "It took some iteration, but here’s the result: luau-wasm is a brand new PyPI package which publishes a 276KB luau_wasm-0.1a0-cp314-cp314-pyemscripten_2026_0_wasm32.whl file which can be used in Pyodide like this:"
+          },
+          {
+            "type": "code",
+            "text": "import micropip\nawait micropip.install(\"luau-wasm\")\nimport luau_wasm\nprint(luau_wasm.execute(r'''\nlocal animals = {\"fox\", \"owl\", \"frog\", \"rabbit\"}\ntable.sort(animals, function(a, b) return #a < #b end)\nfor i, name in animals do print(i .. \". \" .. name .. \" (\" .. #name .. \")\") end\n'''))"
+          },
+          {
+            "type": "p",
+            "text": "You can run that code in the Pyodide REPL demo to see it in action."
+          },
+          {
+            "type": "p",
+            "text": "The GitHub repo for luau-wasm includes all of the build and deploy scripts (using the latest cibuildwheel) and also deploys an HTML demo page which loads Pyodide, installs luau-wasm and provides an interface for trying it out: https://simonw.github.io/luau-wasm/"
+          },
+          {
+            "type": "h3",
+            "text": "How many packages are using this so far?"
+          },
+          {
+            "type": "p",
+            "text": "I was curious to see how many packages are currently publishing wheels for this platform."
+          },
+          {
+            "type": "p",
+            "text": "After some tinkering with ChatGPT I got to this BigQuery SQL which I ran against PyPI’s public dataset on BigQuery. Here’s the raw JSON of query results and here’s a SQLite SQL query in Datasette Lite which dedupes packages by most recent upload date."
+          },
+          {
+            "type": "p",
+            "text": "If the query is right, there are currently 28 PyPI packages publishing with the new pyemscripten_202*_wasm32 tags:"
+          },
+          {
+            "type": "p",
+            "text": "luau-wasm, uuid7-rs, cmm-16bit, pyOpenTTDAdmin, imgui-bundle, numbertoolkit, bashkit, geoarrow-rust-core, arro3-io, arro3-core, arro3-compute, onnx, powerfit-em, tcod, chonkie-core, tokie, robotraconteur, pydantic_core, yaml-rs, cadquery-ocp-novtk-OCP.wasm, uuid_utils, base64_utils, pycdfpp, lib3mf-OCP.wasm, typst, toml-rs, onnx-weekly, dummy-pyodide-ext-test"
+          },
+          {
+            "type": "p",
+            "text": "Here’s hoping we see a whole lot more of those showing up over the coming months and years."
+          }
+        ],
+        "translations": [
+          "2026年6月13日",
+          "Pyodide 314.0 的发布公告（来自 Hacker News）包含了我期待已久的消息：",
+          "你现在可以将为 Pyodide（或任何兼容 PEP 783 中定义的 PyEmscripten 平台的 Python 运行时）构建的 Python 包直接发布到 PyPI，并在运行时安装它们。\n以前，Pyodide 维护者必须亲自维护、构建和托管 300 多个包。这给我们的维护者带来了沉重的负担，并成为了社区的一个主要瓶颈，因为每个新包都需要人工审查。\n今后，包维护者只需构建 Pyodide wheels 并将其发布到 PyPI 即可，就像他们在 Linux、macOS 或 Windows 上发布原生 wheels 一样。",
+          "这是支持此功能的 PyPI 官方 PR，已于 4 月 21 日合并。",
+          "我非常喜欢 Pyodide，但过去一直对这个限制感到沮丧。我们可以将 C 或 Rust 扩展编译到 wheel 文件中的 WASM，但在此之前，没有简单的方法来分发它们。",
+          "多亏了许多人的努力，这个问题现在已经解决了！",
+          "使用 luau-wasm 进行尝试",
+          "我决定找点东西打包来庆祝一下。我手头有不少实验性的 Pyodide 项目，但最合适的似乎是我 3 月 9 日做的 Luau WebAssembly 探索性研究。",
+          "Luau 是一种“小巧、快速且可嵌入的编程语言，基于 Lua 并带有渐进式类型系统”，由 Roblox 开发，并在 MIT 许可证下发布。",
+          "它是用 C++ 编写的。我已经知道可以将其编译为 WebAssembly 并在 Pyodide 内部运行，因此我给 Codex + GPT-5.5 xhigh 下达了任务，让它打包我的实验，并使用 GitHub Actions 将其发布到 PyPI。",
+          "经过几次迭代，结果如下：luau-wasm 是一个全新的 PyPI 包，它发布了一个 276KB 的 luau_wasm-0.1a0-cp314-cp314-pyemscripten_2026_0_wasm32.whl 文件，你可以像这样在 Pyodide 中使用它：",
+          "import micropip\nawait micropip.install(\"luau-wasm\")\nimport luau_wasm\nprint(luau_wasm.execute(r'''\nlocal animals = {\"fox\", \"owl\", \"frog\", \"rabbit\"}\ntable.sort(animals, function(a, b) return #a < #b end)\nfor i, name in animals do print(i .. \". \" .. name .. \" (\" .. #name .. \")\") end\n'''))",
+          "你可以在 Pyodide REPL 演示中运行该代码以查看其实际效果。",
+          "luau-wasm 的 GitHub 仓库包含所有的构建和部署脚本（使用最新的 cibuildwheel），并部署了一个 HTML 演示页面，该页面会加载 Pyodide，安装 luau-wasm 并提供了一个用于尝试的界面：https://simonw.github.io/luau-wasm/",
+          "目前有多少个包在使用这个功能？",
+          "我很好奇目前有多少包在为这个平台发布 wheels。",
+          "在用 ChatGPT 调整了一番之后，我得到了这段 BigQuery SQL，并在 BigQuery 上针对 PyPI 的公共数据集运行了它。这是查询结果的原始 JSON 文件，这是在 Datasette Lite 中的 SQLite SQL 查询，它通过最新上传日期对包进行了去重。",
+          "如果查询无误的话，目前有 28 个 PyPI 包正在使用新的 pyemscripten_202*_wasm32 标签发布：",
+          "luau-wasm, uuid7-rs, cmm-16bit, pyOpenTTDAdmin, imgui-bundle, numbertoolkit, bashkit, geoarrow-rust-core, arro3-io, arro3-core, arro3-compute, onnx, powerfit-em, tcod, chonkie-core, tokie, robotraconteur, pydantic_core, yaml-rs, cadquery-ocp-novtk-OCP.wasm, uuid_utils, base64_utils, pycdfpp, lib3mf-OCP.wasm, typst, toml-rs, onnx-weekly, dummy-pyodide-ext-test",
+          "希望在未来的几个月和几年里，我们能看到更多这样的包出现。"
+        ]
+      }
+    },
+    {
+      "slug": "01b0b57424359ec0",
+      "title": "Plugins case study: Pluggy",
+      "titleZh": "插件案例研究：Pluggy",
+      "link": "https://eli.thegreenplace.net/2026/plugins-case-study-pluggy/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-06-14T03:21:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Python",
+        "Plugins",
+        "Architecture",
+        "Pluggy"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 21
+      },
+      "summary": "Pluggy 是一个专为开发插件系统设计的 Python 库，最初作为 pytest 项目的一部分诞生，后被提取为独立的通用库。它为希望在应用中引入复杂插件生态的开发者提供了一套成熟的钩子机制设计方案。通过分析其架构与实际应用场景，可以深入了解如何在大型项目中实现高扩展性和松耦合的模块化结构。",
+      "summaryEn": "Pluggy is a Python library designed specifically for developing plugin systems, originally created as part of the pytest project before being extracted into a standalone general-purpose library. It provides a mature hook mechanism design for developers looking to introduce complex plugin ecosystems into their applications. By analyzing its architecture and real-world use cases, developers can learn how to achieve high extensibility and loosely coupled modular structures in large projects.",
+      "reason": "适合需要在 Python 项目中构建强大且可扩展的插件生态系统的架构师和开发者阅读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Recently I came upon Pluggy,\na Python library for developing plugin systems. It was originally developed\nas part of the pytest project - known for its rich plugin ecosystem - and\nlater extracted into a standalone library. You're supposed to reach out for\nPluggy if you want to add a plugin system to your tool or library and want\nto use something proven rather than rolling your own."
+          },
+          {
+            "type": "p",
+            "text": "In this post I will share some notes on how Pluggy works, and will\nthen review how it aligns with the\nfundamental concepts of plugin infrastructures."
+          },
+          {
+            "type": "h2",
+            "text": "Using Pluggy"
+          },
+          {
+            "type": "p",
+            "text": "Pluggy is built around the concept of hooks: functions that host\napplications or tools (from here on, just \"hosts\") expose and plugins implement.\nA host exposes hooks by using\na decorator returned from pluggy.HookspecMarker and a plugin implements this\nhook using a decorator returned from pluggy.HookimplMarker."
+          },
+          {
+            "type": "p",
+            "text": "Pluggy's documentation explains\nthis fairly well; in this post, I'll show how to implement the htmlize tool\nwith some plugins, introduced in the original article in my plugin series."
+          },
+          {
+            "type": "p",
+            "text": "As a reminder, htmlize is a toy tool that takes markup notation similar to\nreStructuredText, and converts it to to HTML. It supports plugins to handle\ncustom \"roles\" like:"
+          },
+          {
+            "type": "code",
+            "text": "some text :role:`customized text` and more text"
+          },
+          {
+            "type": "p",
+            "text": "As well as plugins that do arbitrary processing on the entire text."
+          },
+          {
+            "type": "h3",
+            "text": "Defining hooks"
+          },
+          {
+            "type": "p",
+            "text": "Out host defines two hooks:"
+          },
+          {
+            "type": "code",
+            "text": "import pluggy\n\nhookspec = pluggy.HookspecMarker(\"htmlize\")\n\n@hookspec(firstresult=True)\ndef htmlize_role_handler(role_name):\n    \"\"\"Return a function accepting role contents.\n\n    The function will be called with a single argument - the role contents, and\n    should return what the role gets replaced with.\n    \"\"\"\n    pass\n\n@hookspec\ndef htmlize_contents(post, db):\n    \"\"\"Return a function accepting full document contents.\n\n    The function will be called with a single argument - the document contents\n    (after paragraph splitting and role processing), and should return the\n    transformed contents.\n    \"\"\"\n    pass"
+          },
+          {
+            "type": "p",
+            "text": "A hook is created by calling HookspecMarker with the project's name. This\nproject name has to match between the host and its plugins. Pluggy is permissive\nabout what hooks accept as parameters and what they return; for maximal\nflexibility and to stay true to the original htmlize example, our hooks\nreturn functions."
+          },
+          {
+            "type": "p",
+            "text": "To accompany this HookspecMarker, the host also defines a HookimplMarker with\nthe same name:"
+          },
+          {
+            "type": "code",
+            "text": "hookimpl = pluggy.HookimplMarker(\"htmlize\")"
+          },
+          {
+            "type": "p",
+            "text": "This is used by plugins to attach to hooks when they're loaded."
+          },
+          {
+            "type": "h3",
+            "text": "Loading plugins in the host"
+          },
+          {
+            "type": "p",
+            "text": "The host's main function loads plugins at startup as follows:"
+          },
+          {
+            "type": "code",
+            "text": "pm = pluggy.PluginManager(\"htmlize\")\npm.add_hookspecs(hookspecs)\npm.load_setuptools_entrypoints(\"htmlize\")"
+          },
+          {
+            "type": "p",
+            "text": "hookspecs is our Python module containing the hooks shown above.\nload_setuptools_entrypoints is Pluggy's helper for loading plugins that\nwere pip-installed into the same environment and registered as\nsetuptools entry points.\nIt's a way to signal - in one's setup.py or pyproject.toml file - some\nmetadata that projects can review at runtime. In our project, the plugins\nregister themselves with this section in the pyproject.toml file:"
+          },
+          {
+            "type": "code",
+            "text": "[project.entry-points.htmlize]\ntt = \"tt\""
+          },
+          {
+            "type": "p",
+            "text": "This says \"for entry point htmlize, define a new entry named tt\".\nPluggy's load_setuptools_entrypoints then uses importlib.metadata\nto access this information."
+          },
+          {
+            "type": "p",
+            "text": "Note that Pluggy doesn't require using this mechanism. Hosts can implement any\nplugin discovery method they want, and add plugins directly to their\nPluginManager with the register method. But this is the mechanism used\nfor pytest and many other projects; it makes it very easy to\nautomatically discover and register plugins that are installed with pip and\nequivalent tools."
+          },
+          {
+            "type": "h3",
+            "text": "Invoking plugins"
+          },
+          {
+            "type": "p",
+            "text": "Once PluginManager loads the plugins, invoking them is straightforward;\nhere's how htmlize invokes the contents hooks [1]:"
+          },
+          {
+            "type": "code",
+            "text": "# Build full contents back again, and ask plugins to act on\n# contents.\ncontents = ''.join(parts)\nfor handler in plugin_manager.hook.htmlize_contents(post=post, db=db):\n    contents = handler(contents)\nreturn contents"
+          },
+          {
+            "type": "p",
+            "text": "Generally, hook invocations return a list of all the hooks attached to by\ndifferent plugins (a single host application can have multiple plugins installed\nand attaching to the same hook). When the host invokes the hook as shown above,\nthe default order is LIFO, but plugins can affect this with\nhook options\nlike tryfirst and trylast."
+          },
+          {
+            "type": "h3",
+            "text": "Implementing hooks in plugins"
+          },
+          {
+            "type": "p",
+            "text": "Here's our entire narcissist plugin that's attaching to the contents hook:"
+          },
+          {
+            "type": "code",
+            "text": "import htmlize\n\n@htmlize.hookimpl\ndef htmlize_contents(post, db):\n    repl = f'<b>I ({post.author})</b>'\n\n    def hook(contents):\n        return re.sub(r'\\bI\\b', repl, contents)\n\n    return hook"
+          },
+          {
+            "type": "p",
+            "text": "Some notes:"
+          },
+          {
+            "type": "li",
+            "text": "It expects htmlize to be installed; as discussed previously, we rely on\nPluggy's default install-based approach where both the host and plugins are\ninstalled into the same Python environment and can thus find each other.\nHowever, Pluggy supports any custom discovery method."
+          },
+          {
+            "type": "li",
+            "text": "It uses the hookimpl exported value shown earlier."
+          },
+          {
+            "type": "li",
+            "text": "It returns a function that acts on contents; this is the htmlize-specific\ncontract (ABI, if you will) we've discussed before."
+          },
+          {
+            "type": "h2",
+            "text": "Fundamental plugin concepts in this case study"
+          },
+          {
+            "type": "p",
+            "text": "Let's see how this case study of Pluggy measures against the\nFundamental plugin concepts\nthat were covered several times on this blog."
+          },
+          {
+            "type": "p",
+            "text": "It's important to remember that Pluggy is not a specific host application with\na bespoke plugin system; rather, it's a reusable library for creating such\nplugin systems. Therefore, this is more of a meta case study."
+          },
+          {
+            "type": "h3",
+            "text": "Discovery"
+          },
+          {
+            "type": "p",
+            "text": "Generally, Pluggy leaves discovery logic to the user's discretion. Its\nPluginManager has a register method for adding plugins, and these can\nbe discovered in any way the application chooses."
+          },
+          {
+            "type": "p",
+            "text": "That said, Pluggy comes with one discovery mechanism built in - through the\nentry points process of Python packaging, as shown above. This is hugely\nconvenient for a large number of applications, as long as both the application\nand its plugins are installed via standard Python packaging tools (which is\na very reasonable assumption in the Python ecosystem)."
+          },
+          {
+            "type": "h3",
+            "text": "Registration"
+          },
+          {
+            "type": "p",
+            "text": "In the entry point process, plugins register themselves by adding a\n[project.entry-points.<HOST-ID>] section in their pyproject.toml\nfile."
+          },
+          {
+            "type": "p",
+            "text": "Otherwise - as in the previous section - users are free to devise their own\nregistration schemes."
+          },
+          {
+            "type": "h3",
+            "text": "Hooks"
+          },
+          {
+            "type": "p",
+            "text": "This one is easy, since it's called hooks in Pluggy parlance as well!\nPluggy's implementation of hooks is rather elegant, with function decorators\navailable for plugins to set. We've seen an example of this above with\n@htmlize.hookimpl decorating htmlize_contents."
+          },
+          {
+            "type": "h3",
+            "text": "Exposing an application API to plugins"
+          },
+          {
+            "type": "p",
+            "text": "Since Pluggy is designed for Python hosts and Python plugins, this one is\nfairly straightforward. The plugins typically assume the host project is\nalready installed in the Python environment and its modules can be imported."
+          },
+          {
+            "type": "p",
+            "text": "In our example, hookimpl is imported from htmlize by the plugin to\naccomplish this. It also shows how host data is passed to the plugin - the\npost and db parameters. These are APIs exposed by the host for the\nplugins' use."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion - is Pluggy worth it?"
+          },
+          {
+            "type": "p",
+            "text": "In footnote 2 of my original fundamental concepts of plugin infrastructures\npost, I wrote [2]:"
+          },
+          {
+            "type": "quote",
+            "text": "This is probably why there are very few well-established plugin frameworks\nin existence (even in low-level languages like C or C++). It's too easy (and\ntempting) to roll your own."
+          },
+          {
+            "type": "p",
+            "text": "I still believe my statement is true - plugin frameworks are very easy\nto create, and the functionality they provide is relatively small compared to\ntheir large surface area. In other words, this is a shallow API."
+          },
+          {
+            "type": "p",
+            "text": "That said, Pluggy does provide some nice functionality for the more advanced\nuses of plugins:"
+          },
+          {
+            "type": "li",
+            "text": "Automatic entry point registration mechanism - if you need it"
+          },
+          {
+            "type": "li",
+            "text": "Signature validation"
+          },
+          {
+            "type": "li",
+            "text": "Consistent plugin result collection across multiple hook attachments in a\nsingle plugin and across many plugins"
+          },
+          {
+            "type": "li",
+            "text": "Plugin ordering with firstresult, tryfirst, trylast, etc."
+          },
+          {
+            "type": "li",
+            "text": "Hook \"wrappers\" for some special use cases"
+          },
+          {
+            "type": "p",
+            "text": "Are these worthwhile for your project? It really depends on the project,\nand it's always worth keeping the tradeoff between dependencies and project\neffort\nin mind."
+          },
+          {
+            "type": "h2",
+            "text": "Code"
+          },
+          {
+            "type": "p",
+            "text": "The full code repository for this post is available here."
+          },
+          {
+            "type": "p",
+            "text": "For comments, please send me\n an email."
+          }
+        ],
+        "translations": [
+          "最近我偶然发现了 Pluggy，这是一个用于开发插件系统的 Python 库。它最初是作为 pytest 项目的一部分开发的——pytest 以其丰富的插件生态系统而闻名——后来被提取为一个独立的库。如果你想为自己的工具或库添加插件系统，并且希望使用经过验证的方案而不是自己从头编写，那么你应该选择 Pluggy。",
+          "在这篇文章中，我将分享一些关于 Pluggy 工作原理的笔记，然后将回顾它是如何与插件基础设施的基本概念相契合的。",
+          "使用 Pluggy",
+          "Pluggy 是围绕钩子（hooks）的概念构建的：宿主应用程序或工具（以下简称“宿主”）暴露这些函数，而插件负责实现它们。宿主通过使用 pluggy.HookspecMarker 返回的装饰器来暴露钩子，而插件则使用 pluggy.HookimplMarker 返回的装饰器来实现该钩子。",
+          "Pluggy 的文档对此解释得相当清楚；在这篇文章中，我将展示如何使用一些插件来实现 htmlize 工具，这些插件是在我插件系列的原文章中介绍过的。",
+          "提醒一下，htmlize 是一个玩具工具，它接受类似于 reStructuredText 的标记符号，并将其转换为 HTML。它支持插件来处理自定义的“角色（roles）”，例如：",
+          "some text :role:`customized text` and more text",
+          "以及对整个文本执行任意处理的插件。",
+          "定义钩子",
+          "我们的宿主定义了两个钩子：",
+          "import pluggy\n\nhookspec = pluggy.HookspecMarker(\"htmlize\")\n\n@hookspec(firstresult=True)\ndef htmlize_role_handler(role_name):\n    \"\"\"Return a function accepting role contents.\n\n    The function will be called with a single argument - the role contents, and\n    should return what the role gets replaced with.\n    \"\"\"\n    pass\n\n@hookspec\ndef htmlize_contents(post, db):\n    \"\"\"Return a function accepting full document contents.\n\n    The function will be called with a single argument - the document contents\n    (after paragraph splitting and role processing), and should return the\n    transformed contents.\n    \"\"\"\n    pass",
+          "通过使用项目名称调用 HookspecMarker 来创建钩子。这个项目名称在宿主及其插件之间必须保持一致。Pluggy 对于钩子接受什么参数和返回什么内容是很宽容的；为了获得最大的灵活性并忠实于最初的 htmlize 示例，我们的钩子返回函数。",
+          "为了配合这个 HookspecMarker，宿主还定义了一个同名的 HookimplMarker：",
+          "hookimpl = pluggy.HookimplMarker(\"htmlize\")",
+          "插件在被加载时使用它来附加到相应的钩子上。",
+          "在宿主中加载插件",
+          "宿主的主函数在启动时按如下方式加载插件：",
+          "pm = pluggy.PluginManager(\"htmlize\")\npm.add_hookspecs(hookspecs)\npm.load_setuptools_entrypoints(\"htmlize\")",
+          "hookspecs 是我们包含上述钩子的 Python 模块。load_setuptools_entrypoints 是 Pluggy 的辅助函数，用于加载通过 pip 安装到同一环境中并注册为 setuptools 入口点（entry points）的插件。这是一种在 setup.py 或 pyproject.toml 文件中声明一些元数据的方法，项目可以在运行时查看这些元数据。在我们的项目中，插件通过 pyproject.toml 文件中的这部分内容进行注册：",
+          "[project.entry-points.htmlize]\ntt = \"tt\"",
+          "这表示“为入口点 htmlize 定义一个名为 tt 的新条目”。然后 Pluggy 的 load_setuptools_entrypoints 会使用 importlib.metadata 来访问此信息。",
+          "请注意，Pluggy 并不强制要求使用这种机制。宿主可以实现它们想要的任何插件发现方法，并使用 register 方法直接将插件添加到其 PluginManager 中。但这是 pytest 和许多其他项目所使用的机制；它使得自动发现和注册通过 pip 及等效工具安装的插件变得非常容易。",
+          "调用插件",
+          "一旦 PluginManager 加载了插件，调用它们就非常简单了；以下是 htmlize 调用 contents 钩子 [1] 的方式：",
+          "# Build full contents back again, and ask plugins to act on\n# contents.\ncontents = ''.join(parts)\nfor handler in plugin_manager.hook.htmlize_contents(post=post, db=db):\n    contents = handler(contents)\nreturn contents",
+          "通常，钩子调用会返回一个列表，包含不同插件所附加的所有钩子的执行结果（单个宿主应用程序可以安装多个插件并附加到同一个钩子上）。当宿主如上所示调用钩子时，默认顺序是 LIFO（后进先出），但插件可以通过诸如 tryfirst 和 trylast 之类的钩子选项来影响这一顺序。",
+          "在插件中实现钩子",
+          "这是我们附加到 contents 钩子上的整个 narcissist 插件：",
+          "import htmlize\n\n@htmlize.hookimpl\ndef htmlize_contents(post, db):\n    repl = f'<b>I ({post.author})</b>'\n\n    def hook(contents):\n        return re.sub(r'\\bI\\b', repl, contents)\n\n    return hook",
+          "一些注意事项：",
+          "它期望 htmlize 已被安装；如前所述，我们依赖 Pluggy 默认的基于安装的方法，即宿主和插件都安装到同一个 Python 环境中，从而能够互相发现。不过，Pluggy 也支持任何自定义的发现方法。",
+          "它使用了前面展示的 hookimpl 导出值。",
+          "它返回一个作用于内容的函数；这就是我们之前讨论过的 htmlize 特定的契约（或者可以说是 ABI）。",
+          "本案例研究中的基本插件概念",
+          "让我们来看看 Pluggy 的这个案例研究与本博客多次探讨的“基本插件概念”相比表现如何。",
+          "重要的是要记住，Pluggy 并不是一个带有定制插件系统的特定宿主应用程序；相反，它是一个用于创建此类插件系统的可复用库。因此，这更像是一个元案例研究。",
+          "发现",
+          "通常，Pluggy 将发现逻辑交由用户自行决定。它的 PluginManager 提供了一个 register 方法用于添加插件，而应用程序可以通过任何其选择的方式来发现这些插件。",
+          "话虽如此，Pluggy 内置了一种发现机制——即通过 Python 打包的入口点（entry points）过程，如上所示。这对于大量应用程序来说非常方便，只要应用程序及其插件都是通过标准的 Python 打包工具安装的（这在 Python 生态系统中是一个非常合理的假设）。",
+          "注册",
+          "在入口点过程中，插件通过在其 pyproject.toml 文件中添加一个 [project.entry-points.<HOST-ID>] 部分来进行注册。",
+          "否则——就像在上一节中那样——用户可以自由设计自己的注册方案。",
+          "钩子",
+          "这一点很简单，因为在 Pluggy 的术语中它也叫钩子（hooks）！Pluggy 的钩子实现非常优雅，插件可以使用可用的函数装饰器来进行设置。我们在上面的示例中已经看到了这一点，即使用 @htmlize.hookimpl 装饰 htmlize_contents。",
+          "向插件暴露应用程序 API",
+          "由于 Pluggy 是为 Python 宿主和 Python 插件设计的，因此这一点相当直接。插件通常假定宿主项目已经安装在 Python 环境中，并且可以导入其模块。",
+          "在我们的示例中，插件从 htmlize 导入 hookimpl 来实现这一点。它还展示了如何将宿主数据传递给插件——即 post 和 db 参数。这些是宿主暴露给插件使用的 API。",
+          "结论 —— Pluggy 值得吗？",
+          "在我最初的那篇关于插件基础设施基本概念的博文的脚注 2 中，我写道 [2]：",
+          "这可能就是为什么现有的成熟插件框架寥寥无几（即使在 C 或 C++ 这样的低级语言中也是如此）。因为自己动手写一个实在太容易（也太诱人）了。",
+          "我仍然相信我的说法是正确的——插件框架非常容易创建，而且与它们庞大的 API 表面积相比，所提供的功能相对较少。换句话说，这是一个浅层 API。",
+          "话虽如此，对于更高级的插件用途，Pluggy 确实提供了一些不错的功能：",
+          "自动入口点注册机制——如果你需要的话",
+          "签名验证",
+          "在单个插件内的多个钩子绑定以及跨多个插件之间，保持一致的插件结果收集机制",
+          "通过 firstresult、tryfirst、trylast 等实现插件排序",
+          "针对某些特殊用例的钩子“包装器”（wrappers）",
+          "这些对你的项目来说值得吗？这实际上取决于具体项目，并且始终需要将依赖关系与项目工作量之间的权衡铭记在心。",
+          "代码",
+          "本文的完整代码仓库可在此处获取。",
+          "如有任何意见，请给我发邮件。"
+        ]
+      }
+    },
+    {
+      "slug": "7489ae039c8fde64",
+      "title": "luau-wasm 0.1a0",
+      "titleZh": "luau-wasm 0.1a0",
+      "link": "https://simonwillison.net/2026/Jun/13/luau-wasm/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-13T23:14:30.000Z",
+      "category": "tools",
+      "keywords": [
+        "Luau",
+        "WASM",
+        "Python",
+        "Release"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 19
+      },
+      "summary": "作者发布了 luau-wasm 0.1a0 版本，将 Luau（Lua 的一种衍生语言）编译为 WebAssembly。该项目直接利用了 PyPI 现在支持发布 WASM wheels 的新特性，使其能够顺畅地在 Pyodide 环境中运行。这为在浏览器端或其他 WASM 沙箱中嵌入和执行 Lua 脚本提供了极大的便利。",
+      "summaryEn": "The author has released luau-wasm 0.1a0, which compiles Luau (a derivative of Lua) to WebAssembly. This project directly leverages the new feature allowing WASM wheels to be published to PyPI, enabling it to run smoothly in Pyodide environments. It provides a convenient way to embed and execute Lua scripts within the browser or other WASM sandboxes.",
+      "reason": "提供了一个绝佳的实战案例，展示如何利用最新的 PyPI WASM 支持将其他语言生态引入 Pyodide。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 13th June 2026."
+          },
+          {
+            "type": "p",
+            "text": "lua\n            14\n        \n    \n        \n            webassembly\n            126\n        \n    \n        \n            pyodide\n            29"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "71b032661311b667",
+      "title": "Mapping SQLite result columns back to their source `table.column`",
+      "titleZh": "将 SQLite 结果列映射回其源 `table.column`",
+      "link": "https://simonwillison.net/2026/Jun/13/sqlite-column-provenance/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-13T23:05:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "SQLite",
+        "SQL",
+        "Database",
+        "Datasette"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 19
+      },
+      "summary": "作者探索如何在 Datasette 中，将任意 SQL 查询返回的结果列准确映射回其原始的 `table.column` 来源。实现这一功能可以让查询结果展示更多基于源表的附加上下文信息，从而提升数据呈现的可读性。这需要深入解析复杂的 SQL 语句（如多表连接和别名），以提取每个返回列在数据库结构中的真实出处。",
+      "summaryEn": "The author explores how to accurately map arbitrary SQL query result columns back to their original `table.column` sources in Datasette. Implementing this feature would allow query results to display richer contextual information based on the source tables, thereby improving data readability. This requires deep parsing of complex SQL statements (like multi-table joins and aliases) to extract the true origin of each returned column in the database schema.",
+      "reason": "对于从事数据库工具开发或需要解析复杂 SQL 语句以提取元数据的底层开发者具有很高的参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Research\n    \n    Mapping SQLite result columns back to their source `table.column`\n    — Determining the source `table.column` for each result column in arbitrary SQLite queries is feasible because SQLite computes this internally and exposes it via its column-metadata API when compiled with `SQLITE_ENABLE_COLUMN_METADATA`. While Python’s standard `sqlite3` module doesn’t surface this information, robust methods exist: using the third-party `apsw` library provides direct access with `cursor.description_full`, or a pure-stdlib ctypes bridge (`column_provenance.py`) can retrieve the…"
+          },
+          {
+            "type": "p",
+            "text": "It would be neat if arbitrary SQL queries in Datasette could be rendered with additional information based on which columns from which tables were included in the results."
+          },
+          {
+            "type": "p",
+            "text": "To build that, we would need to be able to look at a SQL query like select users.name, orders.total from users join orders on orders.user_id = users.id and programmatically identify the table.column for each result - navigating not just joins but also more complex syntax like CTEs."
+          },
+          {
+            "type": "p",
+            "text": "I decided to set Claude Code (Opus 4.8, since Fable is currently banned by the US government) on the problem. It found several promising solutions - one using apsw, another that uses ctypes to access the SQLite sqlite3_column_table_name() C function (which is not otherwise exposed to Python), and one using clever interrogation of the output of EXPLAIN."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "bbcc21c1443ac180",
+      "title": "RSA munitions T-shirt",
+      "titleZh": "RSA 军火 T 恤",
+      "link": "https://www.johndcook.com/blog/2026/06/13/rsa-munitions-t-shirt/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-13T20:10:20.000Z",
+      "category": "security",
+      "keywords": [
+        "RSA",
+        "Cryptography",
+        "History",
+        "Perl"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 16
+      },
+      "summary": "1995 年期间，美国政府将强加密技术归类为“军火”并严禁出口。为了抗议这一规定，Adam Back 编写了一段极其简短且混淆的 Perl 代码来实现 RSA 公钥加密算法，并将其作为电子邮件签名广泛传播。这段代码甚至被印在了 T 恤上，导致该 T 恤在法律意义上也被界定为“受限军火”。这一历史事件生动展现了早期极客对数字权利和密码自由的不屈抗争。",
+      "summaryEn": "In 1995, the US government classified strong encryption as \"munitions\" and strictly banned its export. To protest this, Adam Back wrote a terse, obfuscated Perl script implementing RSA public-key cryptography and distributed it as an email signature. The code was even printed on T-shirts, legally classifying the shirts as restricted munitions. This historical anecdote vividly illustrates the early geeks' defiance in fighting for digital rights and cryptographic freedom.",
+      "reason": "一则极其有趣的科技历史轶事，讲述了极客如何利用代码和 T 恤巧妙挑战不合理的密码出口管制法律。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Back when the US government classified strong encryption as “munitions,” RSA public key cryptography was illegal to export. In 1995, Adam Back protested this by creating a terse, obfuscated implementation of RSA in Perl code and used it as an email signature."
+          },
+          {
+            "type": "p",
+            "text": "The code was also printed on T-shirts. The shirt was classified as munitions because it contained source code for strong encryption. More on the shirt here."
+          },
+          {
+            "type": "p",
+            "text": "This was the code:"
+          },
+          {
+            "type": "code",
+            "text": "#!/bin/perl -s-- -export-a-crypto-system-sig -RSA-3-lines-PERL\n$m=unpack(H.$w,$m.\"\\0\"x$w),$_=`echo \"16do$w 2+4Oi0$d*-^1[d2%Sa\n2/d0<X+d*La1=z\\U$n%0]SX$k\"[$m*]\\EszlXx++p|dc`,s/^.|\\W//g,print\npack('H*',$_)while read(STDIN,$m,($w=2*$d-1+length$n&~1)/2)"
+          },
+          {
+            "type": "p",
+            "text": "My initial intention was to unpack the code, explaining each piece in detail. I don’t have the time or patience for that, and I imagine many readers don’t either. For more of a blow-by-blow explanation, see this commentary from 1995."
+          },
+          {
+            "type": "h2",
+            "text": "dc"
+          },
+          {
+            "type": "p",
+            "text": "In the middle of the code is"
+          },
+          {
+            "type": "code",
+            "text": "    echo ... | dc"
+          },
+          {
+            "type": "p",
+            "text": "This is the most dense and most important part of the code. Perl calls the dc calculator to do the arbitrary precision arithmetic that RSA encryption requires."
+          },
+          {
+            "type": "p",
+            "text": "I’ve written about bc several times. bc (“basic calculator”) was a originally a more user-friendly wrapper around the reverse-Polish dc (“desktop calculator”). dc is still part of every Unix and Unix-like system, but I imagine bc is far more popular."
+          },
+          {
+            "type": "p",
+            "text": "The important feature of dc for this post is that it is stack-based, meaning that users would push data and commands on to the stack and pop results off the stack. A sequence of commands that might be understandable when interactively using dc would look cryptic in a transcript. This is part of what makes the code so cryptic."
+          },
+          {
+            "type": "p",
+            "text": "I’ll parse just a tiny bit of the dc code to give a flavor of what it does. The first four characters 16do instructs dc to push 16 on to the stack, duplicate it, and set the output radix to 16, i.e. these four characters tell dc to work in hexadecimal."
+          },
+          {
+            "type": "p",
+            "text": "Believe it or not, the dc code is computing"
+          },
+          {
+            "type": "p",
+            "text": "mk mod n"
+          },
+          {
+            "type": "p",
+            "text": "using fast exponentiation, which is the key step in the RSA algorithm."
+          },
+          {
+            "type": "h2",
+            "text": "Textbook RSA"
+          },
+          {
+            "type": "p",
+            "text": "Note that Adam Back’s code is computing what we would now call textbook RSA, not RSA as it has been refined over the years and is currently implemented."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Martin Gardner’s RSA article"
+          },
+          {
+            "type": "li",
+            "text": "RSA encryption flaws"
+          },
+          {
+            "type": "li",
+            "text": "Three applications of Euler’s theorem"
+          }
+        ],
+        "translations": [
+          "当年美国政府将强加密技术归类为“军需品”时，RSA公钥密码学是禁止出口的。1995年，Adam Back为了抗议这一点，用Perl代码编写了一个简短且混淆的RSA实现，并将其用作电子邮件签名。",
+          "这段代码还被印在了T恤上。因为这件T恤包含了强加密的源代码，它也被归类为军需品。关于这件T恤的更多信息请看这里。",
+          "这就是那段代码：",
+          "#!/bin/perl -s-- -export-a-crypto-system-sig -RSA-3-lines-PERL\n$m=unpack(H.$w,$m.\"\\0\"x$w),$_=`echo \"16do$w 2+4Oi0$d*-^1[d2%Sa\n2/d0<X+d*La1=z\\U$n%0]SX$k\"[$m*]\\EszlXx++p|dc`,s/^.|\\W//g,print\npack('H*',$_)while read(STDIN,$m,($w=2*$d-1+length$n&~1)/2)",
+          "我最初的打算是拆解这段代码，详细解释每一个部分。但我没有那个时间或耐心，而且我想许多读者也没有。想要看更详细的逐步解析，请参阅这篇1995年的评论文章。",
+          "dc",
+          "代码中间是",
+          "echo ... | dc",
+          "这是代码中最密集、最重要的部分。Perl调用dc计算器来执行RSA加密所需的高精度算术运算。",
+          "我曾多次写过关于bc的文章。bc（“basic calculator”，基础计算器）最初是一个更友好的包装器，封装了基于逆波兰表示法的dc（“desktop calculator”，桌面计算器）。dc至今仍是每个Unix和类Unix系统的一部分，但我认为bc要受欢迎得多。",
+          "就本文而言，dc的一个重要特性是它是基于栈的，这意味着用户会将数据和命令压入栈中，并从栈中弹出结果。在交互式使用dc时可能容易理解的一系列命令，在文本记录中看起来却像天书一样。这也是这段代码如此晦涩难懂的部分原因。",
+          "我将只解析一小段dc代码，让大家感受一下它的作用。前四个字符16do指示dc将16压入栈中，复制它，并将输出基数设置为16，也就是说，这四个字符让dc以十六进制进行工作。",
+          "信不信由你，这段dc代码正在计算",
+          "mk mod n",
+          "它使用了快速幂运算，这是RSA算法中的关键步骤。",
+          "教科书式的RSA",
+          "需要注意的是，Adam Back的代码计算的是我们现在所说的“教科书式RSA”，而不是多年来经过不断完善且目前实际实施的RSA。",
+          "相关文章",
+          "Martin Gardner的RSA文章",
+          "RSA加密的缺陷",
+          "欧拉定理的三个应用"
+        ]
+      }
+    },
+    {
+      "slug": "b009544e9932fd31",
+      "title": "Building a serial and VGA \"everything console\"",
+      "titleZh": "构建串口和 VGA 的“全能控制台”",
+      "link": "https://oldvcr.blogspot.com/feeds/7900423283602789203/comments/default",
+      "sourceName": "oldvcr.blogspot.com",
+      "sourceUrl": "https://oldvcr.blogspot.com",
+      "pubDate": "2026-06-14T01:26:37.897Z",
+      "category": "engineering",
+      "keywords": [
+        "Hardware",
+        "Serial",
+        "VGA",
+        "Console"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "为了摆脱维护老式系统时必须搬运笨重 CRT 终端或占用笔记本的困扰，作者决定自己动手打造一个便携的“全能控制台”。这个 DIY 设备旨在成为一个独立、轻量且低成本的解决方案，集成串口和 VGA 接口功能，以替代昂贵且笨重的商用多合一设备。该项目为复古计算机爱好者和硬件极客提供了一个高性价比的硬件调试终端思路。",
+      "summaryEn": "To avoid the hassle of lugging around heavy CRT terminals or tying up laptops when maintaining legacy systems, the author decided to build a portable \"everything console.\" This DIY device aims to be a self-contained, lightweight, and low-cost solution integrating serial and VGA interface functionality, replacing expensive and bulky commercial all-in-one setups. The project provides a highly cost-effective hardware debugging terminal idea for retro-computing enthusiasts and hardware hackers.",
+      "reason": "为复古计算机玩家和硬件极客提供了一个低成本、便携式串口/VGA 调试终端的 DIY 实践参考。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "710fc5080eb56193",
+      "title": "Did Frank Sinatra really think \"Something\" was a Lennon/McCartney song?",
+      "titleZh": "弗兰克·辛纳屈真的认为《Something》是列侬/麦卡特尼的歌吗？",
+      "link": "https://shkspr.mobi/blog/2026/06/did-frank-sinatra-really-think-something-was-a-lennon-mccartney-song/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-06-14T11:34:16.000Z",
+      "category": "other",
+      "keywords": [
+        "Music",
+        "History",
+        "The Beatles"
+      ],
+      "score": {
+        "relevance": 1,
+        "quality": 5,
+        "timeliness": 3,
+        "total": 9
+      },
+      "summary": "关于披头士乐队有一个流传甚广的轶事：弗兰克·辛纳屈曾多次在演唱时将他翻唱的乔治·哈里森名曲《Something》介绍为“最喜欢的列侬与麦卡特尼作品”。作者通过调查指出，这很可能与“林戈不是披头士最好的鼓手”一样，是一句半杜撰、被过度传播的假名言。文章深入挖掘了这句话的真实出处和背景，试图还原流行音乐史的真实面貌。",
+      "summaryEn": "A widespread anecdote about The Beatles claims that Frank Sinatra often introduced his cover of George Harrison's masterpiece \"Something\" as his \"favorite Lennon & McCartney song.\" The author investigates and suggests that, much like the misquote about Ringo not being the best drummer, this is likely a semi-apocryphal line that took on a life of its own. The article digs into the true origins and context of the quote, attempting to restore the truth in pop music history.",
+      "reason": "适合流行文化爱好者和考据党，文章用详实的证据打破了流传甚广的音乐史谣言。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Read enough articles about The Beatles and you'll repeatedly hit the claim that Frank Sinatra frequently introduced his cover of George Harrison's \"Something\" as his \"favourite Lennon & McCartney number.\""
+          },
+          {
+            "type": "p",
+            "text": "Much like the misquote about Ringo not being the best drummer in The Beatles, I think this might be one of those semi-apocryphal lines which has taken on a life of its own."
+          },
+          {
+            "type": "p",
+            "text": "Here's what Paul McCartney has to say in The Beatles Anthology, Episode 4."
+          },
+          {
+            "type": "p",
+            "text": "https://shkspr.mobi/blog/wp-content/uploads/2026/05/Sinatra.webm"
+          },
+          {
+            "type": "p",
+            "text": "That was broadcast in 1995 - so we need to look for sources from before that."
+          },
+          {
+            "type": "p",
+            "text": "There's not much Internet before the mid-1990s. Google's mismanagement of the USENET archives is a cultural obscenity. Nevertheless, we can find a few references which predate McCartney's broadcast."
+          },
+          {
+            "type": "p",
+            "text": "1994-12-26"
+          },
+          {
+            "type": "quote",
+            "text": "Frankie used to introduce \"Something\" as his \"tribute to Mr. Lennon and Mr. McCartney\" ;^)"
+          },
+          {
+            "type": "p",
+            "text": "1990-03-05"
+          },
+          {
+            "type": "quote",
+            "text": "In fact, a friend of mine (a supposed Beatle fan; turns out she's really just a L/M fan), were having a discussion about this very subject, she, just like Frank Sinatra, didn't know that George wrote \"Something.\" Duh."
+          },
+          {
+            "type": "p",
+            "text": "So it was certainly a proto-meme back then."
+          },
+          {
+            "type": "p",
+            "text": "Of the thousands of Beatles books, I can't find any from before the mid-1990s which mention Sinatra's misattribution."
+          },
+          {
+            "type": "p",
+            "text": "For example, 1994's The Complete Guide to the Music of the Beatles simply says:"
+          },
+          {
+            "type": "p",
+            "text": "Similarly, there are plenty of books and articles about Sinatra - lots of them talk about Something, but never this supposed misrepresentation. In 1980's New York Magazine, Sinatra is interviewed and says:"
+          },
+          {
+            "type": "p",
+            "text": "There are many videos of Sinatra singing Something on YouTube - none of them have him introducing the song as a Lennon/McCartney number."
+          },
+          {
+            "type": "p",
+            "text": "Indeed, here's one where he introduces it as being by George Harrison."
+          },
+          {
+            "type": "p",
+            "text": "I think that's 1982's The Concert for the Americas - in the Dominican Republic."
+          },
+          {
+            "type": "p",
+            "text": "Here's a 1985 concert where he introduces it as being by George Harrison of The Beatles."
+          },
+          {
+            "type": "p",
+            "text": "Way back in 1978 at Sinatra's Caesar’s Palace Concert, he introduces it with \"George Harrison wrote it\" and finishes with \"by George Harrison\"."
+          },
+          {
+            "type": "p",
+            "text": "Even back in 1975, during a concert in Jerusalem he was crediting Harrison, saying:"
+          },
+          {
+            "type": "quote",
+            "text": "Every one of The Beatles was a very talented young man individually. And here's an example of George Harrison with a great love song.\""
+          },
+          {
+            "type": "p",
+            "text": "I've now listened to dozens of recordings of Sinatra singing Something live and in none of them does he so much as mention John Lennon or Paul McCartney."
+          },
+          {
+            "type": "p",
+            "text": "So is the quote apocryphal? Possibly not!"
+          },
+          {
+            "type": "p",
+            "text": "Less than a year after John Lennon was murdered, Sinatra treated Carnegie Hall0 to a series of 11 concerts."
+          },
+          {
+            "type": "p",
+            "text": "On 10th September 1981, John Rockwell published Pop: Sinatra at Carnegie - a review of the opening night of Sinatra's concert series at New York City's Carnegie Hall:"
+          },
+          {
+            "type": "p",
+            "text": "Also on the 10th, a clutch of US papers reproduced a story by the inimitable Mary Campbell of the Associated Press."
+          },
+          {
+            "type": "p",
+            "text": "Most of the syndicated versions leave out the parenthetical remarks."
+          },
+          {
+            "type": "p",
+            "text": "On the 11th, Patricia O'Haire published a somewhat snide review of the September 9th concert in The New York Daily News"
+          },
+          {
+            "type": "p",
+            "text": "On 14th September 1981, a British newspaper re-reported the comment:"
+          },
+          {
+            "type": "p",
+            "text": "That's the Daily Express by Rob Benson, their Los Angeles correspondent1."
+          },
+          {
+            "type": "p",
+            "text": "By the 29th of September 1981, the story had made it to Australian Financial Times' The Bulletin."
+          },
+          {
+            "type": "p",
+            "text": "It's unclear how many of those journalists were actually at the concert. I assume John Rockwell, Mary Campbell, and Patricia O'Haire were as they published fairly detailed reviews."
+          },
+          {
+            "type": "p",
+            "text": "Tracking down a set-list for that long-gone concert is tricky. Carnegie Hall themselves get the dates wrong in their archive and say the first performance was on the 8th, and their set-list is sourced from Setlist.fm rather than their own records.  The Sinatraphiles mailing list has a set-list for the 9th which does include \"Something\"."
+          },
+          {
+            "type": "p",
+            "text": "There's a purported recording of the September 10th concert with a set-list on the reverse:"
+          },
+          {
+            "type": "p",
+            "text": "There's no \"Lennon\" song - the only Beatles number is \"Something\". Let's take a listen to the introduction from that bootleg recording."
+          },
+          {
+            "type": "p",
+            "text": "💾 Download this audio file."
+          },
+          {
+            "type": "p",
+            "text": "\"A beautiful song by George Harrison. Maybe one of the best love songs ever written.\"2"
+          },
+          {
+            "type": "p",
+            "text": "So, that's a handful of contemporary sources who mention that Frank Sinatra once introduced \"Something\" as being composed by someone other than Harrison."
+          },
+          {
+            "type": "p",
+            "text": "The only recording is of the concert the next day - and it doesn't includes that \"blooper\"."
+          },
+          {
+            "type": "p",
+            "text": "There's no other mentions I can find which directly cite a specific concert or performance."
+          },
+          {
+            "type": "p",
+            "text": "Did Sinatra ever say it was his \"favourite Lennon and McCartney song\"? He sang in thousands of shows3, not all of which were recorded4, so it is entirely possible he mentioned it. But you'd expect more than a few reporters would write about it, wouldn't you?"
+          },
+          {
+            "type": "p",
+            "text": "The origin of the \"quote\", as far as I can tell, is from an interview Paul McCartney gave to David Hinckley in the New York Daily News on 21st October 1984."
+          },
+          {
+            "type": "p",
+            "text": "That's the first time that I can see \"Something\" mentioned as Sinatra's \"favorite Lennon-McCartney song\"."
+          },
+          {
+            "type": "p",
+            "text": "I went rummaging through some reviews of Frank's concert performance which included \"Something\" in the set list."
+          },
+          {
+            "type": "p",
+            "text": "His concert at the Palladium:"
+          },
+          {
+            "type": "quote",
+            "text": "And Frank sings 'Something'. It's OK. The Vanilla Fudge were more adept at Beatle rewrites however.\n\t\t\t\t\t\tChris Salewicz. \"Frank Sinatra: Palladium, London\". New Musical Express (1975)."
+          },
+          {
+            "type": "p",
+            "text": "His concert at the Royal Albert Hall:"
+          },
+          {
+            "type": "quote",
+            "text": "Superb renditions of Jim Webb's 'Didn't We?' and Harrison's 'Something' were recreated with a totally unique empathy. \"Real Songs, beautiful songs\", he said fervently, no trace of show-biz cant.\n\t\t\t\t\t\tMax Bell. \"Frank Sinatra: Royal Albert Hall, London\". New Musical Express (1975)."
+          },
+          {
+            "type": "p",
+            "text": "And another report of the same gig:"
+          },
+          {
+            "type": "quote",
+            "text": "Jimmy Webb's 'Didn't We' and the classic 'Nice And Easy', were exceptionally good, standing out easily among lacklustre renditions of 'Something', 'Strangers In The Night' and a David Gates song. In between, Sinatra delivered various controversial raps designed to instigate audience loyalties but proved that Sinatra should open his mouth only when singing.\n\t\t\t\t\t\tBarbara Charone. \"Frank Sinatra: Royal Albert Hall, London\". Sounds (1975)."
+          },
+          {
+            "type": "p",
+            "text": "I've read dozens of gig reviews of old Sinatra concerts and they all contain various levels of snark about his performance, song choice, and politics - so you'd expect British reporters would have picked up on the misattribution, wouldn't you?"
+          },
+          {
+            "type": "p",
+            "text": "Instead, there's two slightly contradictory reports of one single concert and no suggestion that Sinatra himself said it was his \"favorite Lennon-McCartney song\".  Given that he repeatedly credited George Harrison in the decade leading up to that concert, I think it is fair to say the \"quote\" has taken on a significance far beyond its actual importance."
+          },
+          {
+            "type": "p",
+            "text": "If you have a recording of Sinatra introducing \"Something\" as a Lennon/McCartney number - or any other contemporary reports of that - please drop a comment in the box."
+          },
+          {
+            "type": "li",
+            "text": "After all, Sinatra had a lot of practice! ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "It is odd that the reporter describes Sinatra as \"now\" singing Something when it had been in his repertoire for over a decade. About the right level of journalistic rigour expected of the Express. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "Later on, in the introduction to \"Luck Be A Lady Tonight\", he sarcastically describes Marlon Brando as \"America's great baritone!\". There are quite a few jokey moments in the performance - so it is entirely possible his Lennon & McCartney remark was a quip. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "Incidentally, as far as I can tell, Sinatra first sang \"Something\" in December 1970 on The Dean Martin Show - about a year after its release on Abbey Road. Sinatra's performance doesn't contain him saying anything about the song. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "I spoke to one collector who said:\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tI also checked all of the other collectors lists I have, and they do not have it either, I do however have reference to its existence via a notecard that represents a massive collection. What this means is that the concert could exist, but more than likely has never been digitized. Many Sinatra concerts are still stuck on reel to reels from the 70s and 80s and have never been transferred to the digital realm and shared on the internet.\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t↩︎"
+          }
+        ],
+        "translations": [
+          "读足够多关于 The Beatles 的文章，你就会反复看到这样一种说法：Frank Sinatra 经常将他翻唱的 George Harrison 的《Something》介绍为自己“最爱的 Lennon & McCartney 作品”。",
+          "就像那句关于 Ringo 不是 The Beatles 最佳鼓手的错误引语一样，我认为这可能也是那些已经传得神乎其神的半杜撰之词。",
+          "以下是 Paul McCartney 在《The Beatles Anthology》第四集中的原话。",
+          "https://shkspr.mobi/blog/wp-content/uploads/2026/05/Sinatra.webm",
+          "那是 1995 年播出的——所以我们需要寻找那之前的来源。",
+          "在 1990 年代中期之前，互联网上的内容并不多。Google 对 USENET 档案的糟糕管理简直是一种文化暴行。尽管如此，我们还是能找到一些早于 McCartney 这次播出的参考资料。",
+          "1994-12-26",
+          "Frankie 过去常把《Something》介绍为他“向 Lennon 先生和 McCartney 先生的致敬” ;^)",
+          "1990-03-05",
+          "事实上，我的一位朋友（自称是 The Beatles 的粉丝；结果发现她其实只是 L/M 的粉丝），我们在讨论这个话题时，她和 Frank Sinatra 一样，不知道是 George 写了《Something》。呃。",
+          "所以在当时，这绝对算得上是一个早期的梗。",
+          "在成千上万本关于 The Beatles 的书中，我找不到任何一本 1990 年代中期以前的书提到过 Sinatra 的这种错误归属。",
+          "例如，1994 年出版的《The Complete Guide to the Music of the Beatles》只是简单写道：",
+          "同样地，关于 Sinatra 的书籍和文章也有很多——其中很多都谈到了《Something》，但从未提及这种所谓的错误表述。在 1980 年的《New York Magazine》中，Sinatra 接受采访时说道：",
+          "YouTube 上有很多 Sinatra 演唱《Something》的视频——没有一段视频显示他将这首歌介绍为 Lennon/McCartney 的作品。",
+          "事实上，这里就有一段视频，他将其介绍为 George Harrison 的作品。",
+          "我想那是 1982 年在多米尼加共和国举行的 The Concert for the Americas 演唱会。",
+          "这是一场 1985 年的演唱会，他在其中将其介绍为 The Beatles 乐队 George Harrison 的作品。",
+          "早在 1978 年 Sinatra 的 Caesar’s Palace 演唱会上，他就用“George Harrison 写的”作为开场介绍，并以“作者 George Harrison”结束。",
+          "甚至在更早的 1975 年，在耶路撒冷的一场音乐会上，他也把功劳归于 Harrison，说道：",
+          "The Beatles 的每一个成员都是极具天赋的年轻人。接下来就是 George Harrison 带来的一首伟大情歌。”",
+          "我现在已经听了十几段 Sinatra 现场演唱《Something》的录音，没有一段录音里他哪怕只是提及过 John Lennon 或 Paul McCartney。",
+          "那么这句话是杜撰的吗？也许不是！",
+          "在 John Lennon 遇害不到一年的时间里，Sinatra 在 Carnegie Hall0 举办了一系列共 11 场演出。",
+          "1981 年 9 月 10 日，John Rockwell 发表了《Pop: Sinatra at Carnegie》——这是一篇关于 Sinatra 在纽约 Carnegie Hall 系列演唱会首演的评论：",
+          "同样在 10 日，一批美国报纸转载了美联社无与伦比的 Mary Campbell 撰写的一篇报道。",
+          "大多数通讯社的转载版本都省略了括号里的评论。",
+          "11 日，Patricia O'Haire 在《The New York Daily News》上发表了一篇对 9 月 9 日音乐会的评论，语气略带嘲讽：",
+          "1981 年 9 月 14 日，一家英国报纸对此评论进行了转载报道：",
+          "那是《Daily Express》驻洛杉矶记者 Rob Benson 报道的1。",
+          "到了 1981 年 9 月 29 日，这则报道已经登上了《Australian Financial Times》旗下的《The Bulletin》杂志。",
+          "目前尚不清楚这些记者中有多少人真正到了音乐会现场。我猜 John Rockwell、Mary Campbell 和 Patricia O'Haire 是在现场的，因为他们发表了相当详细的评论。",
+          "寻找那场早已远去的音乐会的曲目单相当困难。卡内基音乐厅自己的档案库就把日期弄错了，他们声称首场演出是在8号，而且他们的曲目单来源于 Setlist.fm，而不是他们自己的记录。Sinatraphiles 邮件列表中有一份9号演唱会的曲目单，里面确实包含了《Something》。",
+          "据说有一份9月10日音乐会的录音，背面还附有曲目单：",
+          "里面没有“Lennon”的歌——唯一的 Beatles 曲目是《Something》。让我们来听听那段盗版录音中的开场白。",
+          "💾 下载此音频文件。",
+          "“一首 George Harrison 的美妙歌曲。也许是有史以来最棒的几首情歌之一。”2",
+          "所以，这就是几位同时代的消息来源，他们提到 Frank Sinatra 曾在介绍《Something》时，说它是 Harrison 以外的人创作的。",
+          "唯一的录音是第二天演唱会的——而且里面并没有包含那个“口误”。",
+          "除了这些，我找不到其他直接提及具体某场演唱会或演出的记录了。",
+          "Sinatra 说过这是他“最喜欢的 Lennon 和 McCartney 的歌”吗？他唱过几千场演出3，并非所有演出都有录音4，所以他完全有可能提到过。但你肯定觉得会有不止一两个记者报道这件事吧？",
+          "据我所知，这句“引言”最早出自 Paul McCartney 于1984年10月21日接受《New York Daily News》David Hinckley 采访时的内容。",
+          "这是我所能看到《Something》第一次被称为 Sinatra “最喜欢的 Lennon-McCartney 的歌”。",
+          "我翻阅了一些关于 Frank 演唱会曲目单中包含《Something》的演出评论。",
+          "他在 Palladium 的演唱会：",
+          "接着 Frank 唱了《Something》。唱得还行。不过，Vanilla Fudge 在改编 Beatles 歌曲上显得更得心应手。 Chris Salewicz. \"Frank Sinatra: Palladium, London\". New Musical Express (1975).",
+          "他在 Royal Albert Hall 的演唱会：",
+          "对 Jim Webb 的《Didn't We?》和 Harrison 的《Something》的精彩演绎，以一种完全独特的共情力被重新呈现。“真正的歌曲，美丽的歌曲”，他充满热情地说道，没有一丝演艺圈的虚情假意。 Max Bell. \"Frank Sinatra: Royal Albert Hall, London\". New Musical Express (1975).",
+          "还有一篇关于同一场演出的报道：",
+          "Jimmy Webb 的《Didn't We》和经典曲目《Nice And Easy》异常出色，在平淡无奇的《Something》、《Strangers In The Night》以及一首 David Gates 歌曲的演绎中脱颖而出。在此期间，Sinatra 发表了各种旨在引发观众站队的争议言论，但这恰恰证明了 Sinatra 也许只有在唱歌时才该张嘴。 Barbara Charone. \"Frank Sinatra: Royal Albert Hall, London\". Sounds (1975).",
+          "我读过几十篇关于 Sinatra 过去演唱会的演出评论，里面都包含对他的表演、选曲和政治立场的各种程度的冷嘲热讽——所以你本来会指望英国记者能留意到这个张冠李戴的错误，不是吗？",
+          "相反，对于同一场演唱会只有两篇略显矛盾的报道，而且没有任何迹象表明 Sinatra 自己说过这是他“最喜欢的 Lennon-McCartney 的歌”。考虑到在那场演唱会之前的十年里，他反复将功劳归于 George Harrison，我认为可以说，这句“引言”被赋予的意义已经远远超出了它实际的重要性。",
+          "如果你有 Sinatra 介绍《Something》是 Lennon/McCartney 曲目的录音——或者任何其他关于这一点的同期报道——请在评论区留言。",
+          "毕竟，Sinatra 有过很多次练习！ ↩︎",
+          "记者称 Sinatra “现在”正在演唱《Something》，而这首歌其实在他的保留曲目中已经超过十年了，这实在有些奇怪。不过这也挺符合《Express》一贯的新闻严谨度水平。",
+          "后来，在介绍《Luck Be A Lady Tonight》时，他戏谑地将 Marlon Brando 称为“美国伟大的男中音！”。整场演出中有不少打趣的环节——所以，他关于 Lennon & McCartney 的言论完全有可能只是一句玩笑。",
+          "顺便提一句，据我所知，Sinatra 首次演唱《Something》是在 1970 年 12 月的《The Dean Martin Show》上——距离该曲在《Abbey Road》专辑中发行大约过了一年。Sinatra 在那次表演中并没有对这首歌发表任何评论。",
+          "我与一位收藏家交谈过，他说：“我也检查了我手上所有其他收藏家的清单，他们也没有这件藏品。不过，我通过一张代表庞大收藏集的索引卡，找到了它存在的线索。这意味着这场演唱会可能确实存在，但极有可能从未被数字化。许多 Sinatra 在 70 年代和 80 年代的演唱会仍然留在开盘式录音带上，从未被转换成数字格式并在互联网上分享。”"
+        ]
+      }
+    }
+  ]
+}
