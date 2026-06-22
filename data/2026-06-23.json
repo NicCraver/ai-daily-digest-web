@@ -1,0 +1,2533 @@
+{
+  "date": "2026-06-23",
+  "generatedAt": "2026-06-22T20:27:38.121Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2455,
+    "filteredArticles": 19,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦于人工智能的深度优化与日益严峻的安全隐私挑战。在AI领域，混合专家模型的极致量化策略与专为AI代理设计的无门槛云部署方案，标志着AI基础设施正快速向高效能与智能化演进。与此同时，网络安全话题引发热议，无论是针对商务旅客的实战防护指南，还是对知名网站数据共享行为的严厉曝光，都凸显了当前数字世界暗藏的隐私危机。此外，经典开发者工具sqlite-utils迎来包含嵌套事务在内的重磅更新，苹果新系统的UI变革与受供应链影响的潜在涨价同样备受业界瞩目。",
+  "articles": [
+    {
+      "slug": "a7c5720c37afb9af",
+      "title": "Expert-aware quantisation: near-Q4 quality at near-Q2 size?",
+      "titleZh": "专家感知量化：以接近 Q2 的大小实现接近 Q4 的质量？",
+      "link": "https://martinalderson.com/posts/expert-aware-quantisation/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=feed",
+      "sourceName": "martinalderson.com",
+      "sourceUrl": "https://martinalderson.com",
+      "pubDate": "2026-06-22T00:00:00.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "quantization",
+        "LLM",
+        "mixture-of-experts",
+        "optimization"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 25
+      },
+      "summary": "针对混合专家模型在特定任务下不同专家重要性不同的问题，提出了一种基于性能分析的量化策略。该方法通过分析找出对特定任务至关重要的“热”专家，并对不活跃的“冷”专家进行极度激进的量化压缩。实验结果表明，这种策略能够在保持接近 Q4 量化精度的同时，实现接近 Q2 量化的体积缩减。这为在本地环境高效运行大型 MoE 模型提供了极具潜力的解决方案。",
+      "summaryEn": "Addressing the issue of varying expert importance in Mixture of Experts (MoE) models during specific tasks, this article introduces a profiling-based quantization strategy. The method identifies the \"hot\" experts crucial for a task and aggressively quantizes the inactive \"cold\" ones. Results show that this approach achieves near-Q4 quality at a size comparable to Q2 quantization. This provides a highly promising solution for efficiently running large MoE models in local environments.",
+      "reason": "如果你需要在本地资源受限的设备上运行庞大的 MoE 模型，这种非对称量化思路能帮你找到性能与体积的最佳平衡点。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Martin Alderson",
+        "siteName": "Martin Alderson",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "While researching and writing my last article on the history of KV cache compression, it occurred to me while there has been so much implemented research on KV cache efficiency, actual model weights quantisation is still pretty blunt."
+          },
+          {
+            "type": "p",
+            "text": "This makes sense - at large scale with many tens of thousands of GPUs the weights themselves aren't a huge efficiency bottleneck for the most part, and KV cache starts dominating memory usage."
+          },
+          {
+            "type": "p",
+            "text": "But, for us lowly serfs who don't have access to a warehouse full of HBM memory, it is a problem. The key constraint for local models is (mostly) just loading the weights into something fast enough."
+          },
+          {
+            "type": "h2",
+            "text": "Profiling"
+          },
+          {
+            "type": "p",
+            "text": "I spend a lot of time profiling applications to improve their performance, and a couple of months ago I built a tool to do the same for MoE models."
+          },
+          {
+            "type": "p",
+            "text": "This got me thinking. What if instead of just quantising the entire model to a certain level - the blunt hammer I mentioned - we instead profile the model first and then quantise the \"cold\" experts selectively, for that specific set of tasks?"
+          },
+          {
+            "type": "p",
+            "text": "For this research I profiled Qwen3.6 35B-A3B on C++ programming tasks. There's an important nuance worth flagging up front: this particular model is very well load-balanced, so when it's reading code it spreads the work across its experts almost evenly (a per-layer Gini coefficient near 0 - basically uniform). The selectivity only shows up when it's generating code."
+          },
+          {
+            "type": "p",
+            "text": "And there it concentrates hard. Running a handful of C++ generation prompts through, the per-layer Gini coefficient jumps to 0.61 - meaning the top 32 of the 256 experts handle ~50% of the routing during code generation, versus the 12.5% you'd expect at random. That concentration is exactly what we can exploit: if only a subset of experts really matter for the task, we can keep those at high precision and crush the rest."
+          },
+          {
+            "type": "p",
+            "text": "Once we've got these traces showing which experts are hot (used a lot for the specific domain) vs cold (not used), we can then move on to the next step."
+          },
+          {
+            "type": "h2",
+            "text": "Model neurosurgery"
+          },
+          {
+            "type": "p",
+            "text": "This took (Claude Code) a fair while - ironically I suspect Fable would have been perfect for this kind of task."
+          },
+          {
+            "type": "p",
+            "text": "The core idea was to allow llama.cpp to read different levels of quantisation per expert, which had a fair few issues. Eventually though, it figured it out (running autonomously for a good 90 minutes!)."
+          },
+          {
+            "type": "p",
+            "text": "It also wrote a script to take the profiling data and do quantisation per expert."
+          },
+          {
+            "type": "h2",
+            "text": "Results"
+          },
+          {
+            "type": "p",
+            "text": "All numbers below are perplexity (lower is better) measured on CPU. \"Reading code\" is a held-out chunk of real C++ source; \"writing code\" is a set of the model's own C++ generations. The tiered models keep a \"hot\" set of 64 experts (out of 256) at high precision and drop the other 192 \"cold\" experts to 2-bit."
+          },
+          {
+            "type": "p",
+            "text": "* The \"writing code\" eval was generated by the Q8 model, so scoring Q8 against it would be circular - it's left out."
+          },
+          {
+            "type": "p",
+            "text": "A few things jump out."
+          },
+          {
+            "type": "p",
+            "text": "First, the baseline. Full-fat Q8 (35 GB) scores 1.568 reading C++, and a \"blunt\" Q2 quantisation of everything (13 GB) jumps to 2.103 - a big drop in quality for less than half the size. (Perplexity is roughly \"how surprised the model is at each token\" - so going from 1.57 to 2.10 is the model getting noticeably dumber, not lobotomised, but clearly worse.)"
+          },
+          {
+            "type": "p",
+            "text": "Now the actual experiment. I A/B tested the tiered approach two ways: random - pick the hot experts arbitrarily, as a control - versus profiled - keep the experts our profiling flagged as hot for C++ and crush the cold ones. The profiled version wins every single time: across two precision tiers and both eval sets, that's four out of four. With Q8 hot / Q2 cold (18 GB), random tiering scores 1.667 while the profiled version recovers nearly half of that gap back towards Q8, landing at 1.620. So the core idea works - which experts you protect matters, and the profile tells you which ones."
+          },
+          {
+            "type": "p",
+            "text": "But here's the catch I have to be honest about: uniform Q4 is really good. On code, 4-bit is almost lossless - Q4 (20 GB) scores 1.582, basically tying Q8. So the fancy Q8-hot/Q2-cold model, despite all the cleverness, doesn't actually beat just using Q4 everywhere at a similar size."
+          },
+          {
+            "type": "p",
+            "text": "The win shows up when you go smaller than Q4. I built a Q4-hot / Q2-cold version - 4-bit for the hot experts, 2-bit for the cold ones - which comes in at 14 GB, just 1 GB more than the blunt Q2 model. And it scores 1.635 reading and 1.477 writing - recovering ~90% of the quality gap between Q2 and Q4 for that single extra gigabyte. That's the real result: near-Q4 quality at near-Q2 size, by spending your bits on the experts that actually matter for the task."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "This is absolutely nowhere near production ready and needs a lot of work from someone that knows the llama.cpp codebase far better than me. I only ran this on CPU which is (very) slow, my eval sets are small, and there's no doubt the vibe coded implementation Claude came up with could be improved further."
+          },
+          {
+            "type": "p",
+            "text": "There's loads of interesting angles to continue researching on this. I tried a couple of tiers here (Q8/Q2 and Q4/Q2), but there's no reason you couldn't go further - pushing the cold experts down to sub-2-bit (IQ1/IQ2) would drop the model below the uniform-Q2 size while keeping the hot experts sharp. You could imagine a whole gradient: hottest experts at high precision, then incrementally more aggressive quantisation as experts get colder."
+          },
+          {
+            "type": "p",
+            "text": "There's also the question of how many experts you keep sharp. I protected 64 of the 256 here, which turns out to be pretty generous - generous enough that even picking those 64 at random recovers around 80% of the Q2-to-Q4 gap by itself. That's less surprising than it first looks: an MoE layer's output is a weighted sum of its active experts, so keeping any quarter of them accurate anchors the result no matter which quarter you pick. Profiling buys the last ~10% by making sure the experts that actually fire are the protected ones. Where I'd expect it to really pull away is at small hot sets - keep only 16 experts sharp and random selection would mostly be protecting cold experts and fall apart, while the profile tells you exactly which handful matter. That's the experiment I'd run next: it should shrink the model and widen the profiled-vs-random gap, which is where this whole approach earns its keep."
+          },
+          {
+            "type": "p",
+            "text": "But in the end I think this is a really interesting approach. If we could get mass-scale profiling data from real world llama.cpp executions, it may allow a really big jump in quality. I can see a world where the harness detects what domain the task is in, downloads a quantised model for that specific domain and then runs prompts through it. This really takes advantage that storage is cheap (relatively speaking) and RAM is expensive. So having a bunch of different quantisation variants - of the same model - on disk is pretty doable."
+          },
+          {
+            "type": "h2",
+            "text": "Prior art"
+          },
+          {
+            "type": "p",
+            "text": "I should add that there is a fair bit of prior art in this space. The closest I found, DynaExq, does something very similar dynamically at serving time from router traces - but I couldn't find anyone doing it as a static, domain-profiled quantisation you ship as a single GGUF. Here are some links that I read up on while doing this:"
+          },
+          {
+            "type": "p",
+            "text": "Closest prior art (variable precision per expert):"
+          },
+          {
+            "type": "li",
+            "text": "DynaExq - a serving system with a \"hotness-aware precision controller\" that reads router traces to keep hot experts at higher precision and crush the cold ones, done dynamically at runtime."
+          },
+          {
+            "type": "li",
+            "text": "Mixture-Compressor - folds expert activation frequency directly into a per-expert bit-width allocation."
+          },
+          {
+            "type": "li",
+            "text": "MoPEQ - assigns per-expert bits by sensitivity and explicitly avoids using activation frequency to do it - a nice counterpoint to the approach here."
+          },
+          {
+            "type": "p",
+            "text": "Foundational quantisation:"
+          },
+          {
+            "type": "li",
+            "text": "AWQ, GPTQ, SmoothQuant and SpQR - the lineage of protecting the salient weights and crushing the rest. SpQR in particular is basically the within-tensor version of what I'm doing across experts."
+          },
+          {
+            "type": "li",
+            "text": "llama.cpp's importance matrix (imatrix) and k-quants - already uses calibration-data importance to steer per-weight quantisation. This is really just pushing that same idea up to per-expert granularity."
+          },
+          {
+            "type": "p",
+            "text": "On-device routing in the wild:"
+          },
+          {
+            "type": "li",
+            "text": "Apple's on-device and server foundation models - their ~3B on-device model uses a mixed 2-bit/4-bit scheme (~3.7 bits per weight) with LoRA adapters to claw back quality, then routes harder requests to the cloud. Not far off the \"small quantised model for the task at hand\" idea."
+          },
+          {
+            "type": "p",
+            "text": "If you're working on these kind of optimisations I'd love to hear from you - please feel free to reach out on my contact page."
+          }
+        ],
+        "translations": [
+          "在研究和撰写上一篇关于 KV cache 压缩历史的文章时，我突然想到，尽管在 KV cache 效率方面已经有了大量的实践研究，但实际的模型权重量化仍然相当生硬。",
+          "这是合理的——在拥有数以万计 GPU 的大规模场景下，权重本身在很大程度上并不是巨大的效率瓶颈，而且 KV cache 开始占据内存使用的主导地位。",
+          "但是，对于我们这些无法拥有装满 HBM 内存仓库的底层平民来说，这是一个问题。本地模型的关键限制（主要）仅仅是如何将权重加载到足够快的设备中。",
+          "性能分析",
+          "我花了很多时间对应用程序进行性能分析以提升其性能，几个月前，我还构建了一个专门针对 MoE 模型进行同样分析的工具。",
+          "这让我陷入了思考。如果我们不是简单地将整个模型量化到某个级别——也就是我刚才提到的生硬做法——而是先对模型进行性能分析，然后针对那组特定任务选择性地量化“冷”专家，结果会怎样？",
+          "在这项研究中，我针对 C++ 编程任务对 Qwen3.6 35B-A3B 进行了性能分析。有一个重要的细节值得在一开始就指出：这个特定模型的负载非常均衡，因此在读取代码时，它几乎将工作均匀地分布在各个专家之间（每层的基尼系数接近 0——基本上是均匀的）。这种选择性只有在它生成代码时才会显现出来。",
+          "而在生成代码时，它高度集中。在运行少量 C++ 生成提示词后，每层的基尼系数跃升至 0.61——这意味着在代码生成期间，256 个专家中排名前 32 的专家处理了约 50% 的路由，而随机情况下的预期值仅为 12.5%。这种集中性正是我们可以利用的：如果只有一部分专家对该任务真正重要，我们可以将这些专家保持在高精度，并大幅压缩其余部分。",
+          "一旦我们获得了这些显示哪些专家是热门（在特定领域大量使用）而哪些是冷门（未使用）的追踪数据，我们就可以进入下一步了。",
+          "模型神经外科手术",
+          "这花了（Claude Code）相当长的时间——讽刺的是，我怀疑 Fable 可能非常适合执行这类任务。",
+          "核心思想是允许 llama.cpp 读取每个专家不同级别的量化，这遇到了不少问题。不过最终，它还是解决了（自主运行了足足 90 分钟！）。",
+          "它还编写了一个脚本来获取性能分析数据，并对每个专家进行量化。",
+          "结果",
+          "以下所有数字均是在 CPU 上测得的困惑度（越低越好）。“读取代码”是一批预留的真实 C++ 源代码；“编写代码”是一组模型自己生成的 C++ 代码。分层模型将 64 个（总共 256 个中的）“热门”专家集保持在高精度，并将其余 192 个“冷门”专家降至 2-bit。",
+          "* “编写代码”的评估是由 Q8 模型生成的，因此针对它对 Q8 进行评分会是循环论证——故将其省略。",
+          "有几个情况非常显眼。",
+          "首先是基准。全尺寸的 Q8（35 GB）在读取 C++ 时的得分为 1.568，而对所有内容进行“生硬的” Q2 量化（13 GB）后，得分跃升至 2.103——体积缩减到不到一半，但质量却大幅下降。（困惑度大致上是“模型对每个 token 的惊讶程度”——因此从 1.57 变成 2.10 意味着模型明显变笨了，虽然没到被脑白质切除的地步，但显然更差了。）",
+          "现在来看看实际的实验。我对分层方法进行了两种方式的 A/B 测试：随机选择（作为对照组，随意挑选热点专家）与性能分析选择（保留我们通过性能分析标记为 C++ 热点专家的部分，并大幅压缩冷门专家）。性能分析版本每次都获胜：在两个精度层级和两个评估集上，它取得了四战四捷的成绩。在 Q8 热门 / Q2 冷门（18 GB）的配置下，随机分层得分 1.667，而性能分析版本将向 Q8 靠拢的差距挽回了近一半，达到了 1.620。因此，核心思想是有效的——保护哪些专家很重要，而性能分析能告诉你该保护哪些。",
+          "但我必须坦诚地指出一个现实问题：统一的 Q4 表现非常出色。在代码方面，4-bit 几乎是无损的——Q4（20 GB）得分为 1.582，基本上与 Q8 持平。因此，尽管设计得很巧妙，但花哨的 Q8 热门/Q2 冷门模型，实际上并没有击败在相似大小下统一使用 Q4 的做法。",
+          "这种方法的优势体现在当你尝试比 Q4 更小的体积时。我构建了一个 Q4 热门 / Q2 冷门的版本——热门专家使用 4-bit，冷门专家使用 2-bit——其大小仅为 14 GB，比直接的 Q2 模型只多出 1 GB。它的阅读得分为 1.635，写作为 1.477——仅凭这额外增加的 1 GB，就挽回了 Q2 和 Q4 之间约 90% 的质量差距。这才是真正的成果：通过将比特数分配给对任务真正重要的专家，从而在接近 Q2 的体积下实现了接近 Q4 的质量。",
+          "结论",
+          "这绝对还远未达到生产可用的标准，需要由对 llama.cpp 代码库比我精通得多的人来进行大量工作。我仅在 CPU 上进行了运行，速度（非常）缓慢，我的评估集很小，而且毫无疑问，由 Claude 随性生成的实现还可以进一步完善。",
+          "关于这一点，还有很多有趣的角度值得继续研究。我在这里尝试了几个分层组合（Q8/Q2 和 Q4/Q2），但完全可以进一步推进——将冷门专家的精度降至 2-bit 以下（IQ1/IQ2），会使模型的体积小于统一 Q2 的大小，同时保持热门专家的精度。你可以想象出一个完整的梯度：最热门的专家保持高精度，然后随着专家热度的降低，逐步采用更激进的量化策略。",
+          "还有一个问题是该保留多少个专家的精度。我在这里保护了 256 个专家中的 64 个，事实证明这相当慷慨——慷慨到即使随机挑选这 64 个专家，本身也能挽回 Q2 到 Q4 之间约 80% 的质量差距。这不像乍看之下那么令人惊讶：MoE 层的输出是其激活专家的加权和，因此无论你选择保留哪四分之一的专家，只要保持它们的准确就能稳固结果。性能分析则通过确保实际被激活的专家正是受保护的专家，从而赢得了最后约 10% 的提升。我预期它真正能拉开差距的地方在于小规模的热点集合——如果只保持 16 个专家的精度，随机选择多半会保护到冷门专家并导致崩溃，而性能分析能准确告诉你哪几个才是关键。这就是我接下来要做的实验：它应该能进一步缩小模型体积，并拉大性能分析与随机选择之间的差距，这也正是整套方法体现出其价值的地方。",
+          "但最后我认为这是一个非常有趣的方法。如果我们能从真实世界的 llama.cpp 执行中获取大规模的性能分析数据，它可能会带来质量上的巨大飞跃。我可以想象这样一种场景：执行框架检测任务所属的领域，下载针对该特定领域的量化模型，然后通过它运行提示词。这真正利用了存储便宜（相对而言）而 RAM 昂贵这一事实。因此，在磁盘上保存同一模型的一堆不同量化变体是相当可行的。",
+          "现有技术",
+          "我应该补充一点，在这个领域已经有相当多的现有技术了。我发现的与其最接近的是 DynaExq，它在服务提供期间根据路由追踪记录动态地做非常相似的事情——但我找不到任何人将其作为静态的、基于领域性能分析的量化打包成单个 GGUF 文件来发布。以下是我在做这项工作时阅读的一些链接：",
+          "最接近的现有技术（每个专家的精度可变）：",
+          "DynaExq —— 一个带有“热度感知精度控制器”的服务系统，它通过读取路由追踪记录来保持热门专家的高精度，并压缩冷门专家的精度，这一切都在运行时动态完成。",
+          "Mixture-Compressor —— 将专家激活频率直接融入到每个专家的位宽分配中。",
+          "MoPEQ —— 根据敏感度分配每个专家的位数，并明确避免使用激活频率来实现——这是对本文方法的一个很好的对比。",
+          "基础量化：",
+          "AWQ、GPTQ、SmoothQuant 和 SpQR —— 保护显著权重并压缩其余权重的技术脉络。特别是 SpQR，它基本上就是我在跨专家层面上所做事情的张量内版本。",
+          "llama.cpp 的重要性矩阵（imatrix）和 k-quants —— 已经在使用校准数据的重要性来指导逐权重量化。这实际上只是将同样的理念提升到了每个专家的粒度。",
+          "现实中的端侧路由：",
+          "Apple 的端侧和服务器基础模型 —— 他们约 3B 参数的端侧模型采用了混合 2-bit/4-bit 方案（每个权重约 3.7 比特），并使用 LoRA 适配器来挽回质量，然后将较难的请求路由到云端。这与“针对手头任务使用小型量化模型”的想法相去不远。",
+          "如果你正在做这类优化，我很乐意听取你的意见——请随时通过我的联系页面与我取得联系。"
+        ]
+      }
+    },
+    {
+      "slug": "5199a1444ff61df2",
+      "title": "sqlite-utils 4.0rc1 adds migrations and nested transactions",
+      "titleZh": "sqlite-utils 4.0rc1 新增迁移和嵌套事务功能",
+      "link": "https://simonwillison.net/2026/Jun/21/sqlite-utils-40rc1/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-21T23:35:47.000Z",
+      "category": "tools",
+      "keywords": [
+        "sqlite",
+        "python",
+        "database",
+        "release"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "sqlite-utils 作为一个结合了 Python 库和 CLI 工具的 SQLite 数据库管理工具，发布了 4.0rc1 版本。新版本在 Python 默认的 sqlite3 包之上，引入了对复杂数据表转换、自动建表等高级操作的支持。此次更新的核心亮点是增加了数据库迁移和嵌套事务处理能力，大幅提升了开发者的数据库管理效率。",
+      "summaryEn": "sqlite-utils, a combined Python library and CLI tool for managing SQLite databases, has released version 4.0rc1. Building upon Python's default sqlite3 package, the new version offers extensive higher-level operations such as complex table transformations and automatic table creation. The core highlights of this update are the newly added database migrations and nested transaction capabilities. These features significantly enhance database management efficiency for developers.",
+      "reason": "SQLite 开发者必看，了解 sqlite-utils 最新版本如何通过原生迁移和嵌套事务功能简化数据库管理流程。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st June 2026"
+          },
+          {
+            "type": "p",
+            "text": "sqlite-utils is my combined Python library and CLI tool for working with SQLite databases. It provides an extensive set of higher-level operations on top of Python’s default sqlite3 package, including support for complex table transformations, automatic table creation from JSON data and a whole lot more."
+          },
+          {
+            "type": "p",
+            "text": "I released sqlite-utils 4.0rc1, the first release candidate for sqlite-utils v4. The major version bump indicates some (minor) backwards incompatible changes, so I’m interested in having people try this out before I commit to a stable release."
+          },
+          {
+            "type": "h3",
+            "text": "New feature: migrations"
+          },
+          {
+            "type": "p",
+            "text": "There are two significant new features in this RC compared to the previous 4.0 alphas."
+          },
+          {
+            "type": "p",
+            "text": "The first is support for database migrations. This isn’t a completely new implementation—it’s a slightly modified port of the sqlite-migrate package I released a few years ago. I think that package has proved itself over time, so I’m now ready to bundle it with sqlite-utils directly."
+          },
+          {
+            "type": "p",
+            "text": "Here’s what a set of migrations in a migrations.py file looks like:"
+          },
+          {
+            "type": "code",
+            "text": "from sqlite_utils import Database, Migrations\n\nmigrations = Migrations(\"creatures\")\n\n@migrations()\ndef create_table(db):\n    db[\"creatures\"].create(\n        {\"id\": int, \"name\": str, \"species\": str},\n        pk=\"id\",\n    )\n\n@migrations()\ndef add_weight(db):\n    db[\"creatures\"].add_column(\"weight\", float)"
+          },
+          {
+            "type": "p",
+            "text": "This defines a set of two migrations, one creating the creatures table and another adding a column to it."
+          },
+          {
+            "type": "p",
+            "text": "You can then run those migrations either using Python:"
+          },
+          {
+            "type": "code",
+            "text": "db = Database(\"creatures.db\")\nmigrations.apply(db)"
+          },
+          {
+            "type": "p",
+            "text": "Or with the command-line migrate command:"
+          },
+          {
+            "type": "code",
+            "text": "sqlite-utils migrate creatures.db migrations.py"
+          },
+          {
+            "type": "p",
+            "text": "The system is deliberately small: it doesn’t provide reverse migrations, so any mistakes you make should be fixed by deploying a fresh migration to undo them."
+          },
+          {
+            "type": "p",
+            "text": "Its predecessor has been used by LLM and various other projects for several years, so I’m confident that the design is stable and works well."
+          },
+          {
+            "type": "p",
+            "text": "The new migrations feature is documented here."
+          },
+          {
+            "type": "h3",
+            "text": "New feature: db.atomic() transactions"
+          },
+          {
+            "type": "p",
+            "text": "This feature is a lot less exercised than migrations, so it deserves more attention from testers."
+          },
+          {
+            "type": "p",
+            "text": "Previously, sqlite-utils mostly left transaction management up to its users, via a with db.conn: construct that reused the sqlite3 mechanism directly."
+          },
+          {
+            "type": "p",
+            "text": "SQLite supports nested transactions in the form of savepoints, so I wanted an abstraction that could make those as easy to use as possible."
+          },
+          {
+            "type": "p",
+            "text": "I borrowed the terminology “atomic” from Django and Peewee. Here’s what the new API looks like:"
+          },
+          {
+            "type": "code",
+            "text": "with db.atomic():\n    db.table(\"dogs\").insert({\"id\": 1, \"name\": \"Cleo\"}, pk=\"id\")\n    try:\n        with db.atomic():\n            db.table(\"dogs\").insert({\"id\": 2, \"name\": \"Pancakes\"})\n            raise ValueError(\"skip this one\")\n    except ValueError:\n        pass\n    db.table(\"dogs\").insert({\"id\": 3, \"name\": \"Marnie\"})"
+          },
+          {
+            "type": "p",
+            "text": "More details in the documentation."
+          },
+          {
+            "type": "h3",
+            "text": "Backwards incompatible changes"
+          },
+          {
+            "type": "p",
+            "text": "The backwards incompatible changes in v4 were described in the alpha release notes. For 4.0a0:"
+          },
+          {
+            "type": "quote",
+            "text": "Upsert operations now use SQLite’s INSERT ... ON CONFLICT SET syntax on all SQLite versions later than 3.23.1. This is a very slight breaking change for apps that depend on the previous INSERT OR IGNORE followed by UPDATE behavior. (#652)\nPython library users can opt-in to the previous implementation by passing use_old_upsert=True to the Database() constructor, see Alternative upserts using INSERT OR IGNORE.\nDropped support for Python 3.8, added support for Python 3.13. (#646)\n\nsqlite-utils tui is now provided by the sqlite-utils-tui plugin. (#648)\nTest suite now also runs against SQLite 3.23.1, the last version (from 2018-04-10) before the new INSERT ... ON CONFLICT SET syntax was added. (#654)"
+          },
+          {
+            "type": "p",
+            "text": "And for 4.0a1:"
+          },
+          {
+            "type": "quote",
+            "text": "Breaking change: The db.table(table_name) method now only works with tables. To access a SQL view use db.view(view_name) instead. (#657)\nThe table.insert_all() and table.upsert_all() methods can now accept an iterator of lists or tuples as an alternative to dictionaries. The first item should be a list/tuple of column names. See Inserting data from a list or tuple iterator for details. (#672)\n\nBreaking change: The default floating point column type has been changed from FLOAT to REAL, which is the correct SQLite type for floating point values. This affects auto-detected columns when inserting data. (#645)\nNow uses pyproject.toml in place of setup.py for packaging. (#675)\nTables in the Python API now do a much better job of remembering the primary key and other schema details from when they were first created. (#655)\n\nBreaking change: The table.convert() and sqlite-utils convert mechanisms no longer skip values that evaluate to False. Previously the --skip-false option was needed, this has been removed. (#542)\n\nBreaking change: Tables created by this library now wrap table and column names in \"double-quotes\" in the schema. Previously they would use [square-braces]. (#677)\nThe --functions CLI argument now accepts a path to a Python file in addition to accepting a string full of Python code. It can also now be specified multiple times. (#659)\n\nBreaking change: Type detection is now the default behavior for the insert and upsert CLI commands when importing CSV or TSV data. Previously all columns were treated as TEXT unless the --detect-types flag was passed. Use the new --no-detect-types flag to restore the old behavior. The SQLITE_UTILS_DETECT_TYPES environment variable has been removed. (#679)"
+          },
+          {
+            "type": "h3",
+            "text": "Try it out"
+          },
+          {
+            "type": "p",
+            "text": "You can install the new RC like this:"
+          },
+          {
+            "type": "code",
+            "text": "pip install sqlite-utils==4.0rc1"
+          },
+          {
+            "type": "p",
+            "text": "Or try the CLI version directly with uvx like this:"
+          },
+          {
+            "type": "code",
+            "text": "uvx --with sqlite-utils==4.0rc1 sqlite-utils --help"
+          },
+          {
+            "type": "p",
+            "text": "Come chat with us about it in the sqlite-utils Discord channel, or file any bugs in GitHub Issues."
+          }
+        ],
+        "translations": [
+          "2026年6月21日",
+          "sqlite-utils 是我开发的一个用于操作 SQLite 数据库的 Python 库和命令行工具组合。它在 Python 默认的 sqlite3 包之上提供了一系列广泛的高级操作，包括支持复杂的表结构转换、从 JSON 数据自动创建表等等。",
+          "我发布了 sqlite-utils 4.0rc1，这是 sqlite-utils v4 的首个候选发布版本（RC）。主版本号的提升意味着存在一些（微小的）向后不兼容的更改，因此我希望在正式发布稳定版之前，能让大家先试用一下。",
+          "新特性：数据库迁移（migrations）",
+          "与之前的 4.0 alpha 版本相比，此候选版本包含两项重要的新特性。",
+          "第一项是对数据库迁移的支持。这并非一个全新的实现——它是我几年前发布的 sqlite-migrate 包经过稍微修改的移植版本。我认为那个包已经经受住了时间的考验，所以我现在准备好将它直接内置到 sqlite-utils 中。",
+          "以下是在 migrations.py 文件中定义一组迁移操作的样子：",
+          "from sqlite_utils import Database, Migrations\n\nmigrations = Migrations(\"creatures\")\n\n@migrations()\ndef create_table(db):\n    db[\"creatures\"].create(\n        {\"id\": int, \"name\": str, \"species\": str},\n        pk=\"id\",\n    )\n\n@migrations()\ndef add_weight(db):\n    db[\"creatures\"].add_column(\"weight\", float)",
+          "这里定义了两个迁移操作，一个用于创建 creatures 表，另一个用于向该表添加列。",
+          "随后，你可以使用 Python 来运行这些迁移：",
+          "db = Database(\"creatures.db\")\nmigrations.apply(db)",
+          "或者通过命令行的 migrate 命令来运行：",
+          "sqlite-utils migrate creatures.db migrations.py",
+          "该系统特意设计得很轻量：它不提供反向迁移，因此你所犯的任何错误都应该通过部署一个新的迁移来撤销它们以进行修复。",
+          "它的前身已经被 LLM 和其他各种项目使用了几年，因此我相信其设计是稳定且运行良好的。",
+          "新的迁移特性文档请见此处。",
+          "新特性：db.atomic() 事务",
+          "这个特性比迁移特性的使用频率要少得多，因此它值得测试人员投入更多关注。",
+          "以前，sqlite-utils 主要通过直接复用 sqlite3 机制的 `with db.conn:` 结构，将事务管理留给用户自己处理。",
+          "SQLite 以保存点（savepoints）的形式支持嵌套事务，因此我希望有一种抽象能让它们的使用变得尽可能简单。",
+          "我借鉴了 Django 和 Peewee 中的“atomic”术语。以下是新 API 的样子：",
+          "with db.atomic():\n    db.table(\"dogs\").insert({\"id\": 1, \"name\": \"Cleo\"}, pk=\"id\")\n    try:\n        with db.atomic():\n            db.table(\"dogs\").insert({\"id\": 2, \"name\": \"Pancakes\"})\n            raise ValueError(\"skip this one\")\n    except ValueError:\n        pass\n    db.table(\"dogs\").insert({\"id\": 3, \"name\": \"Marnie\"})",
+          "更多细节请参阅文档。",
+          "向后不兼容的更改",
+          "v4 中向后不兼容的更改已在 alpha 版本的发行说明中描述。对于 4.0a0：",
+          "Upsert 操作现在在所有高于 3.23.1 的 SQLite 版本上使用 SQLite 的 INSERT ... ON CONFLICT SET 语法。对于依赖于之前 INSERT OR IGNORE 后跟 UPDATE 行为的应用程序来说，这是一个非常微小的破坏性更改。(#652)\nPython 库用户可以通过向 Database() 构造函数传递 use_old_upsert=True 来选择使用之前的实现，请参阅使用 INSERT OR IGNORE 的替代 upsert。\n放弃了对 Python 3.8 的支持，增加了对 Python 3.13 的支持。(#646)\n\nsqlite-utils tui 现在由 sqlite-utils-tui 插件提供。(#648)\n测试套件现在也会针对 SQLite 3.23.1（即添加新 INSERT ... ON CONFLICT SET 语法之前的最后一个版本，发布于 2018-04-10）运行。(#654)",
+          "而对于 4.0a1：",
+          "破坏性变更：db.table(table_name) 方法现在仅适用于表。要访问 SQL 视图，请改用 db.view(view_name)。(#657) table.insert_all() 和 table.upsert_all() 方法现在可以接受列表或元组的迭代器，作为字典的替代方案。第一项应为列名的列表/元组。详情请参阅“从列表或元组迭代器插入数据”。(#672) 破坏性变更：默认浮点列类型已从 FLOAT 更改为 REAL，这是浮点值的正确 SQLite 类型。这会影响插入数据时自动检测的列。(#645) 现在使用 pyproject.toml 代替 setup.py 进行打包。(#675) Python API 中的表现在能更好地记住首次创建时的主键和其他模式详细信息。(#655) 破坏性变更：table.convert() 和 sqlite-utils convert 机制不再跳过求值为 False 的值。以前需要 --skip-false 选项，现已移除。(#542) 破坏性变更：此库创建的表现在在模式中用“双引号”包裹表名和列名。以前它们使用[方括号]。(#677) --functions CLI 参数除了接受包含 Python 代码的字符串外，现在还可以接受 Python 文件的路径。此外，现在还可以多次指定该参数。(#659) 破坏性变更：导入 CSV 或 TSV 数据时，类型检测现在是 insert 和 upsert CLI 命令的默认行为。以前，除非传递 --detect-types 标志，否则所有列均被视为 TEXT。使用新的 --no-detect-types 标志可恢复旧行为。SQLITE_UTILS_DETECT_TYPES 环境变量已被移除。(#679)",
+          "试用一下",
+          "你可以像这样安装新的 RC 版本：",
+          "pip install sqlite-utils==4.0rc1",
+          "或者像这样使用 uvx 直接尝试 CLI 版本：",
+          "uvx --with sqlite-utils==4.0rc1 sqlite-utils --help",
+          "欢迎在 sqlite-utils Discord 频道与我们交流，或者在 GitHub Issues 中提交任何 bug。"
+        ]
+      }
+    },
+    {
+      "slug": "9feea510147ecdac",
+      "title": "Temporary Cloudflare Accounts for AI agents",
+      "titleZh": "面向 AI 代理的临时 Cloudflare 账户",
+      "link": "https://simonwillison.net/2026/Jun/21/temporary-cloudflare-accounts/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-21T22:01:04.000Z",
+      "category": "tools",
+      "keywords": [
+        "cloudflare",
+        "ai-agents",
+        "accounts"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Cloudflare 推出了一项名为“临时账户”的新功能，允许用户在不注册账户的情况下直接部署 Cloudflare Workers 项目。官方宣称该功能专为 AI 代理设计，但其免注册即可通过 `npx wrangler deploy --temporary` 部署的特性，实际上对所有开发者都具有极高的实用价值。这大幅降低了 Serverless 应用部署的门槛，实现了真正的即开即用。",
+      "summaryEn": "Cloudflare has introduced a new \"Temporary Accounts\" feature, allowing users to deploy Cloudflare Workers projects without even registering for an account. While officially marketed \"for AI agents,\" this capability—enabled simply by running `npx wrangler deploy --temporary`—is highly practical for all developers. It significantly lowers the barrier to entry for deploying serverless applications, offering a true plug-and-play experience.",
+      "reason": "了解 Cloudflare 如何通过零门槛的免注册部署体验，彻底改变 Serverless 应用的启动和测试方式。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st June 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Temporary Cloudflare Accounts for AI agents (via) The announcement says this is \"for AI agents\" but (as is pretty common these days) the AI hook isn't really necessary, this is an interesting feature for everyone else as well."
+          },
+          {
+            "type": "p",
+            "text": "Short version: you can now create a Cloudflare Workers project and run this, without even creating a Cloudflare account:"
+          },
+          {
+            "type": "code",
+            "text": "npx wrangler deploy --temporary"
+          },
+          {
+            "type": "p",
+            "text": "Cloudflare will deploy the application to a new, ephemeral project which will stay live for 60 minutes."
+          },
+          {
+            "type": "p",
+            "text": "I had GPT-5.5 xhigh in Codex Desktop build this test application providing a tool for following HTTP redirects and returning the final destination. The temporary deployment worked as advertised."
+          },
+          {
+            "type": "p",
+            "text": "Running the deployment spits out the URL to a page for claiming the new project, for if you want it to last for more than 60 minutes. Here's what that claim screen looks like:"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4e10b2897da41cd4",
+      "title": "sqlite-utils 4.0rc1",
+      "titleZh": "sqlite-utils 4.0rc1",
+      "link": "https://simonwillison.net/2026/Jun/21/sqlite-utils/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-21T23:30:04.000Z",
+      "category": "tools",
+      "keywords": [
+        "sqlite-utils",
+        "python",
+        "release"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 4,
+        "timeliness": 9,
+        "total": 20
+      },
+      "summary": "Simon Willison 宣布发布 sqlite-utils 4.0rc1 版本。这是一个简单的版本发布公告，指向了关于新功能的详细介绍页面。此次更新的核心内容包括数据库迁移和嵌套事务支持等高级特性。",
+      "summaryEn": "Simon Willison has announced the release of sqlite-utils 4.0rc1. This is a brief release announcement that directs readers to a detailed post about the new features. The core updates of this version include advanced features such as database migrations and nested transaction support.",
+      "reason": "快速跟进 sqlite-utils 最新版本动态，获取官方发布链接及核心特性概览。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 21st June 2026."
+          },
+          {
+            "type": "p",
+            "text": "sqlite-utils\n            225"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7807b68bddf13ed6",
+      "title": "Cybersecurity for the paranoid business traveller",
+      "titleZh": "偏执型商务旅客的网络安全指南",
+      "link": "https://shkspr.mobi/blog/2026/06/cybersecurity-for-the-paranoid-business-traveller/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-06-22T11:34:18.000Z",
+      "category": "security",
+      "keywords": [
+        "cybersecurity",
+        "travel",
+        "privacy",
+        "espionage"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 20
+      },
+      "summary": "针对商务旅行者面临的日益严重的网络间谍、勒索及国家级黑客攻击威胁，文章汇总了一系列实用的安全建议。作者基于多年协助不同风险容忍度组织的经验，指出了许多企业对员工出行安全威胁存在轻视的问题。这份指南为那些需要高度保护商业机密和个人隐私的“偏执型”旅客提供了一套操作性强的高级别防御策略。",
+      "summaryEn": "Addressing the growing threats of cyber espionage, blackmail, and state-sponsored attacks faced by business travelers, this article compiles a list of practical security advice. Drawing from years of experience with organizations of varying risk tolerances, the author points out that many companies underestimate the dangers their employees face abroad. The guide provides a set of actionable, high-level defense strategies for \"paranoid\" travelers needing to protect sensitive commercial secrets and personal privacy.",
+      "reason": "商务出差人士必读的硬核安全指南，提供了从设备隔离到防范国家级网络攻击的实用策略。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Over the years, I've worked for organisations with various levels of risk tolerance for business travellers. Some have been (rightly) paranoid and others have been (wrongly) placid about the threats their employees face."
+          },
+          {
+            "type": "p",
+            "text": "The fact is, individuals are often targeted for espionage, blackmail, or other state-sponsored attacks."
+          },
+          {
+            "type": "p",
+            "text": "Here's a list of some of the different advice I've received, roughly sorted into levels of suitability. Start at the top and work your way down until you reach a suitable level."
+          },
+          {
+            "type": "h2",
+            "text": "USB sticks? No thanks!"
+          },
+          {
+            "type": "p",
+            "text": "At some point, you'll be given a gift of a decorative USB pen drive. It'll either be part of a goodie-bag or you'll be told it has all of this quarter's TPS reports on it."
+          },
+          {
+            "type": "p",
+            "text": "You should thank them for their kind gift. On your way back to the hotel, drop the stick in a bin."
+          },
+          {
+            "type": "p",
+            "text": "There's just too much which can go wrong with a USB stick. Maybe it has a virus. Maybe it is an exfiltration device. Maybe it has extreme pornography and the police will catch you with it. Just chuck it. If anyone asks, say you couldn't get it to work and can they please email you the information."
+          },
+          {
+            "type": "h2",
+            "text": "USB Power? Play it safe!"
+          },
+          {
+            "type": "p",
+            "text": "USB powers everything from your phone and laptop, to your headphone and eReader. But USB cables also carry data. Some devices can be silently hacked by plugging them in to a dodgy power port."
+          },
+          {
+            "type": "p",
+            "text": "Is it likely that the USB socket on the airport bus has been set up to exfiltrate travellers' data? Probably not - but why take the risk?"
+          },
+          {
+            "type": "p",
+            "text": "The best thing you can do is to always charge from your own device. Get a travel charger or, ideally, a portable battery and only use that for charging."
+          },
+          {
+            "type": "p",
+            "text": "For extra paranoia, you can buy USB condoms and charging-only cables - but they tend to be slower at charging."
+          },
+          {
+            "type": "h2",
+            "text": "Reduce Your App Attack Surface"
+          },
+          {
+            "type": "p",
+            "text": "Do you need all those apps on your phone? Will you cope without your banking apps, dating apps, streaming apps? Each one is a potential vector for abuse."
+          },
+          {
+            "type": "p",
+            "text": "Is it legal for you to date your preferred romantic partner in your intended destination? You shouldn't have to hide yourself, but having an illegal app on your phone is a great way to get picked up by the police."
+          },
+          {
+            "type": "p",
+            "text": "Go through your phone and uninstall anything which isn't important to the trip."
+          },
+          {
+            "type": "h2",
+            "text": "A VPN probably draws more attention than it is worth, but browse cautiously"
+          },
+          {
+            "type": "p",
+            "text": "This is slightly counter-intuitive. Every important site on the web uses HTTPS. The really important ones are on a special list which means your browser will only use a secure connection. The chances of your data being intercepted is minimal."
+          },
+          {
+            "type": "p",
+            "text": "But using a VPN immediately makes your traffic look suspicious and, in some countries, may be illegal."
+          },
+          {
+            "type": "p",
+            "text": "That said, while the contents of your communications will be private, their destination is easy to figure out. Don't browse pornography or any other site which is liable to get you in trouble. This may include news sites from outside the country."
+          },
+          {
+            "type": "h2",
+            "text": "What passwords do you need?"
+          },
+          {
+            "type": "p",
+            "text": "Hopefully you use a password manager - and hopefully all your passwords are unique. But do you really need to carry around all of them? You password manager almost certainly allows you to create a sub-account into which you can deposit anything you need for your trip."
+          },
+          {
+            "type": "p",
+            "text": "Similarly, you don't need all your MFA codes with you. If you do need MFA please make sure it isn't coming through SMS."
+          },
+          {
+            "type": "h2",
+            "text": "They're not flirting with you."
+          },
+          {
+            "type": "p",
+            "text": "Mate, you're a middle-aged sales rep who scored a trip to a conference in an exotic country. Do you really think that pretty young thing is enthralled by your tales of middle-management?"
+          },
+          {
+            "type": "p",
+            "text": "No."
+          },
+          {
+            "type": "p",
+            "text": "At best, the photos will be used to blackmail you. At worst the police will claim that they're under the age of consent and that will be used to blackmail you."
+          },
+          {
+            "type": "h2",
+            "text": "Laptops and Liability"
+          },
+          {
+            "type": "p",
+            "text": "Your IT team has provided you with a laptop which is encrypted and biometrically secured, right?  But do you need that specific laptop?"
+          },
+          {
+            "type": "p",
+            "text": "They should grab a cheap laptop. Fill it with only the documents you need. When you get back home, toss it."
+          },
+          {
+            "type": "p",
+            "text": "I'm quite serious, a £200 Chromebook is a cheap price to pay to prevent your secrets getting stolen or your network being infiltrated."
+          },
+          {
+            "type": "h2",
+            "text": "What Else?"
+          },
+          {
+            "type": "p",
+            "text": "Possibly you think some of these are overkill. Perhaps you think I'm not being paranoid enough. What would you add to the list?"
+          }
+        ],
+        "translations": [
+          "多年来，我曾为对商务旅行者有着不同风险承受能力的组织工作过。有些组织（理所当然地）极其谨慎，而另一些则（错误地）对员工面临的威胁无动于衷。",
+          "事实是，个人经常成为间谍活动、勒索或其他国家支持的攻击目标。",
+          "这是我收到的一些不同建议的列表，大致按适用程度进行了排序。从最顶部开始看，一直往下，直到找到适合你的级别。",
+          "U盘？还是算了吧！",
+          "在某个时刻，你会收到一个装饰性的U盘作为礼物。它要么是礼品袋的一部分，要么别人会告诉你里面装了本季度所有的TPS报告。",
+          "你应该对他们的好心礼物表示感谢。然后在回酒店的路上，把U盘扔进垃圾桶。",
+          "U盘可能出问题的地方实在太多了。也许它带有病毒，也许它是一个数据窃取设备，也许它里面存有极端色情内容而让你被警察抓住把柄。直接扔掉吧。如果有人问起，就说你用不了，并请他们把信息通过电子邮件发给你。",
+          "USB充电？安全第一！",
+          "USB可以为从手机、笔记本电脑到耳机和电子书阅读器等各种设备供电。但USB线缆也可以传输数据。有些设备在插入可疑的电源接口时，可能会被悄无声息地黑客入侵。",
+          "机场大巴上的USB接口有可能被用来窃取旅客数据吗？也许不会——但为什么要冒这个险呢？",
+          "最好的做法是始终使用你自己的设备充电。准备一个旅行充电器，或者更理想的是，准备一个移动电源，并且只用它来充电。",
+          "为了更加稳妥，你可以购买USB安全套（数据阻断器）和仅充电线缆——但它们的充电速度往往较慢。",
+          "减少你的App攻击面",
+          "你手机上真的需要所有那些App吗？如果没有银行App、约会App、流媒体App，你能应付吗？每一个App都是潜在的攻击向量。",
+          "在你计划前往的目的地，与你心仪的浪漫伴侣约会合法吗？你本不该隐瞒自己，但在手机上安装非法App绝对是被警察盯上的好方法。",
+          "检查你的手机，卸载任何对这次旅行不重要的东西。",
+          "使用VPN可能会引来不必要的关注，因此请谨慎浏览",
+          "这有点反直觉。网络上所有重要的网站都使用HTTPS。真正重要的网站都在一个特殊的列表中，这意味着你的浏览器只会使用安全连接。你的数据被拦截的可能性微乎其微。",
+          "但是，使用VPN会立刻让你的网络流量显得可疑，而且在某些国家，这可能是违法的。",
+          "也就是说，虽然你通信的内容是保密的，但通信目标却很容易被查明。不要浏览色情网站或任何其他可能让你惹上麻烦的网站。这可能包括该国家/地区之外的新闻网站。",
+          "你需要哪些密码？",
+          "希望你使用了密码管理器——并且希望你所有的密码都是唯一的。但你真的需要随身携带所有密码吗？你的密码管理器几乎肯定允许你创建一个子账户，你可以将旅行所需的任何内容存入其中。",
+          "同样，你也不需要随身携带所有的MFA验证码。如果你确实需要MFA，请确保它不是通过短信（SMS）接收的。",
+          "他们不是在跟你调情。",
+          "老兄，你只是一个成功获得去异国他乡参加会议机会的中年销售代表。你真的认为那个年轻漂亮的人会被你中层管理的那些故事所迷倒吗？",
+          "不。",
+          "最好的情况是，这些照片会被用来敲诈你。最坏的情况是，警方会声称照片中的人未达到法定同意年龄，并以此要挟你。",
+          "笔记本电脑与责任",
+          "你的 IT 团队为你配备了一台经过加密和生物识别技术保护的笔记本电脑，对吧？但你真的非得带那台特定的电脑不可吗？",
+          "他们应该准备一台便宜的笔记本电脑。里面只存放你需要的文档。等你回到家，直接把它扔掉。",
+          "我是认真的，花 200 英镑买一台 Chromebook，就能防止机密被盗或网络被渗透，这点代价微不足道。",
+          "还有什么？",
+          "也许你觉得其中一些做法有些小题大做。又或者你觉得我防备得还不够。你会在这个清单里补充些什么呢？"
+        ]
+      }
+    },
+    {
+      "slug": "9c8803b29dc96a33",
+      "title": "Before and After: MacOS 27 Golden Gate Beta 1’s App Icons",
+      "titleZh": "MacOS 27 Golden Gate Beta 1 图标更新前后对比",
+      "link": "https://basicappleguy.com/basicappleblog/macos-golden-gate-icon-comparison",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-21T22:39:19.000Z",
+      "category": "other",
+      "keywords": [
+        "macos",
+        "ui",
+        "design"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 17
+      },
+      "summary": "针对 macOS Golden Gate 第一个测试版中应用图标的视觉变化，文章进行了详细的前后对比分析。新系统采用了色彩更加大胆的设计，调整了部分图标，并显著改变了 Liquid Glass 效果的折射表现（如 Journal 图标）。整体而言，新图标呈现出更高的锐度以及液态玻璃效果的扁平化趋势。",
+      "summaryEn": "Providing a detailed before-and-after comparison, this article analyzes the visual changes to app icons in the first beta of macOS Golden Gate. The new system features bolder colors, adjustments to several icons, and significantly altered refraction in the Liquid Glass effect, notably in the Journal app. Overall, the new icons exhibit a noticeable sharpness and a flattening of the Liquid Glass aesthetic.",
+      "reason": "苹果设计美学关注者必看，直观了解 macOS 27 新系统中 Liquid Glass 效果对应用图标的细微视觉影响。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jun 9\n            \n            Written By BasicAppleGuy",
+        "siteName": "Basic Apple Guy",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "WWDC always brings a torrent of new content, details, and platform-wide changes. One of the first things I noticed after installing the macOS Golden Gate beta was the updated icon design. The colours are much bolder, several icons have been adjusted, and the refraction in the Liquid Glass effect has changed significantly, especially in icons like Journal."
+          },
+          {
+            "type": "p",
+            "text": "There’s also a noticeable sharpness to the icons, along with a flattening of the Liquid Glass effect. I’m not sure yet whether this is simply an early-beta artifact or the intended final look. For example, while I really like the redesigned Finder icon, the sharp black edges around the nose currently feel a little unrefined."
+          },
+          {
+            "type": "p",
+            "text": "Here are a list of many of the icons across macOS Golden Gate (beta 1) compared to their liquid glass Tahoe counterpart. Enjoy!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "36925330085fc93c",
+      "title": "Apple Is Going to Raise Device Prices — but When?",
+      "titleZh": "苹果即将提高设备价格——但会在何时？",
+      "link": "https://x.com/markgurman/status/2067741507273289766",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-22T20:06:37.000Z",
+      "category": "opinion",
+      "keywords": [
+        "apple",
+        "hardware",
+        "pricing"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 16
+      },
+      "summary": "由于近期 RAM 和 SSD 价格的大幅上涨，苹果 CEO Tim Cook 罕见地公开警告称即将上调产品售价。知名记者 Mark Gurman 推测，考虑到苹果即将开启的“返校季”促销活动，此次涨价可能会在近期迅速落地，以促销作为缓冲。文章认为苹果产品涨价已迫在眉睫，不会推迟到今年秋季。",
+      "summaryEn": "Following a rare public warning from Apple CEO Tim Cook about upcoming price increases due to steep rises in RAM and SSD costs, journalist Mark Gurman speculates on the timing. Gurman suggests the price hikes are imminent and could be tied to the upcoming back-to-school sale as a buffer. The article concludes that the Apple price increases will happen soon, rather than being delayed until the fall.",
+      "reason": "打算近期购买苹果设备的消费者必看，深入了解供应链成本上涨如何促使苹果即将做出价格调整。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Mark Gurman",
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Post"
+          },
+          {
+            "type": "p",
+            "text": "Log inSign up"
+          },
+          {
+            "type": "h2",
+            "text": "Post"
+          },
+          {
+            "type": "p",
+            "text": "Mark Gurman"
+          },
+          {
+            "type": "p",
+            "text": "@markgurman"
+          },
+          {
+            "type": "p",
+            "text": "Regarding Apple price hikes, have to imagine these are fairly imminent. No other reason to flag them now. I’d also note that Apple back to school sale is very imminent, and it could make sense to tie these together as a buffer. Either way this is happening soon. Not a fall thing."
+          },
+          {
+            "type": "p",
+            "text": "10:49 PM · Jun 18, 2026263.5KViews"
+          },
+          {
+            "type": "p",
+            "text": "Don't miss what's happening"
+          },
+          {
+            "type": "p",
+            "text": "People on X are the first to know."
+          },
+          {
+            "type": "p",
+            "text": "Log inSign up"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1fb6d611fe04596f",
+      "title": "Dickover of the Week: The Observer",
+      "titleZh": "本周恶劣行径：The Observer 的隐私侵犯",
+      "link": "https://bvsveera.net/observer-dickover/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-22T17:12:42.000Z",
+      "category": "security",
+      "keywords": [
+        "privacy",
+        "data-sharing",
+        "tracking"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 6,
+        "total": 16
+      },
+      "summary": "针对 The Observer 网站标榜保护隐私却在后台将用户数据共享给 161 个第三方合作伙伴的虚伪行为进行了严厉批评。作者指出，这种行为就像是你在 1791 年买了一份报纸，却有 161 个人全天候跟踪记录你的一切行动。文章认为，在一个网站上植入 161 个第三方追踪器不仅是糟糕的体验，更是一种反乌托邦式的数据监控。",
+      "summaryEn": "This article harshly criticizes The Observer for its hypocritical practice of claiming to protect privacy while sharing user data with 161 third-party partners. The author points out that this behavior is akin to buying a newspaper in 1791 and being followed all day by 161 men noting your every move. It argues that embedding 161 third-party trackers on a website is not only a terrible experience but downright dystopian data surveillance.",
+      "reason": "揭露主流媒体网站在隐私保护口号背后的真实数据共享黑幕，适合关注数字隐私和网络安全的人士阅读。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bharat Iyer",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Bharat Iyer"
+          },
+          {
+            "type": "p",
+            "text": "Home Blog Bytes"
+          },
+          {
+            "type": "p",
+            "text": "21 Jun, 2026"
+          },
+          {
+            "type": "p",
+            "text": "Earlier today, I opened one of the top links on r/worldnews. Something about Kier Starmer preparing to resign as Prime Minister of the United Kingdom? It’s beside the point for this post. Before I could even read the article, I was presented with this dickover:"
+          },
+          {
+            "type": "p",
+            "text": "Let’s be real … if The Observer actually cared at all about your privacy, they wouldn’t share your personal data with ONE HUNDRED AND SIXTY ONE FUCKING PARTNERS. I mean, what the actual fuck?! At that point, the page load is likely more spyware code than it is article content. How much fucking data does The Observer1 need to collect about each and every one of their readers? In what universe is it acceptable to grant permission for their 161 partners to access my precise location, identifiable device characteristics, and device storage?"
+          },
+          {
+            "type": "p",
+            "text": "Fuck it — why stop at 161? Clearly, Google Tag Manager, Facebook’s tracking pixel, and whatever the fuck else they already have on their website isn’t enough. I’m sure all 161 of those integrations are necessary to run a digital billboard news publication in 2026. I’ve said it before, and I’ll say it again: adding JavaScript to the modern web was a mistake. I do not understand how everyone is seemingly fine with the amount of surveillance we’re subjected to across the Internet on a daily basis."
+          },
+          {
+            "type": "p",
+            "text": "Imagine if, upon purchasing a copy of the Sunday newspaper in 1791, you were followed around town by 161 men, taking note of everything you do throughout the day. Makes you wonder who’s really doing the observing."
+          },
+          {
+            "type": "li",
+            "text": "Yeah, I’m gonna name and shame them. Fuck ‘em, along with anyone else that thinks this behaviour is acceptable. I’d actually have a sliver of respect for them if they were honest in their dickover copy. Something like, “We actually don’t give a fuck about your privacy, but we’re gonna pretend that you can choose to preserve it”. The cookie banner on vibe-coded.lol is more honest than this shit.↩"
+          }
+        ],
+        "translations": [
+          "Bharat Iyer",
+          "首页 博客 Bytes",
+          "2026年6月21日",
+          "今天早些时候，我打开了 r/worldnews 上的一个热门链接。好像是关于基尔·斯塔默准备辞去英国首相职务的？但这跟这篇文章的主题无关。我还没来得及看正文，就迎面弹出了这个恶心人的玩意儿：",
+          "说实话……如果《观察家报》（The Observer）真的哪怕有一丁点在乎你的隐私，他们就不会把你的个人数据分享给整整一百六十一个他妈的合作方。我的意思是，这他妈到底搞什么鬼？！在这种情况下，网页加载的代码中，间谍软件的代码恐怕比正文内容还要多。《观察家报》1 到底需要收集每一位读者的多少他妈的数据？在哪个平行宇宙里，允许他们的 161 个合作方获取我的精确位置、可识别的设备特征以及设备存储空间是可以接受的？",
+          "去他妈的——干嘛只停留在 161 个？很明显，Google Tag Manager、Facebook 的追踪像素，以及他们网站上已经存在的那些乱七八糟的玩意儿还不够。我敢肯定，要在 2026 年运营一家数字广告牌般的新闻出版物，这 161 项集成绝对都是“必不可少”的。我以前说过，现在我再说一遍：将 JavaScript 引入现代网络就是一个错误。我真不明白，为什么大家似乎对我们每天在互联网上所遭受的监视程度无动于衷。",
+          "想象一下，如果你在 1791 年买了一份星期日报纸，然后有 161 个男人在镇上跟着你，记录你一整天的所有举动。这不禁让人想知道，到底是谁在“观察”谁。",
+          "是的，我就是要点名羞辱他们。去他们的，还有那些认为这种行为可以接受的人。如果他们在这些恶心人的文案里能说实话，我反倒还会对他们有一丝尊重。比如写上：“我们其实根本不在乎你的隐私，但我们会假装你可以选择保护它”。vibe-coded.lol 上的 Cookie 提示框都比这破玩意儿诚实。↩"
+        ]
+      }
+    },
+    {
+      "slug": "0bc9cd295207352e",
+      "title": "In memory of the man who put red and green squiggles under words",
+      "titleZh": "纪念在单词下划出红色和绿色波浪线的人",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260622-00/?p=112451",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-06-22T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "history",
+        "spell-check",
+        "word-processor"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 16
+      },
+      "summary": "文章旨在纪念拼写和语法检查功能（即文字下方的红绿波浪线）的发明者。这项技术最初起源于 Microsoft Word，随后扩展到了几乎所有其他文字处理软件甚至非文字处理应用中。作者借此文回顾了这一深刻影响现代数字文本编辑体验的伟大创举。",
+      "summaryEn": "This article serves as a memorial to the inventor of the spell and grammar check feature, commonly known as the red and green squiggles under words. The technology originated in Microsoft Word and subsequently expanded to nearly every other word processor and even non-word-processing applications. The author uses this piece to look back at a great innovation that has profoundly shaped the modern digital text editing experience.",
+      "reason": "带你了解文字处理软件中最习以为常的“红绿波浪线”背后的历史故事与先驱人物。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I recently learned of the passing of someone whose work nearly everybody knows, but nobody knows his name."
+          },
+          {
+            "type": "p",
+            "text": "Tony Krueger is  remembered in Wikipedia as the person who ported the game Chip’s Challenge to Windows for the Windows Entertainment Pack.¹ But that’s probably not the code he wrote that touched the most people."
+          },
+          {
+            "type": "p",
+            "text": "Tony worked on Word 1.0, 1.1, 2.0, then on Word for OS/2 and Word for Mac, then returned to Word 6.0 and several versions beyond that. He probably holds the record for “most versions of Word shipped.”"
+          },
+          {
+            "type": "p",
+            "text": "In early versions of Word, the Spell Check feature was something that you explicitly invoked, and then you had to sit and wait while the program looked for all your potentially-misspelled words, and then showed them to you one at a time for a decision on what to do for each one. Word did introduce an Auto Spell Check feature to run spell check when the user was idle, so that when you hit the Spell Check button, the results were ready to go. However, the Auto Spell Check was still a blocking operation. As a result, a lot of users turned it off because it always seemed to decide “Now would be a good time to spell-check the document” just as you wanted to do something, forcing you to wait for the spell check pass to complete before you could, say, save and exit."
+          },
+          {
+            "type": "p",
+            "text": "Tony made the spell checker much more unobtrusive so that it didn’t interfere with your foreground work. And when it found a problem, instead of waiting for you to trigger a spell check, it immediately drew red squiggles under potentially-misspelled words (and later green squiggles under potential grammatical errors)."
+          },
+          {
+            "type": "p",
+            "text": "Tony was an early fan of the magic/comedy team Penn and Teller. A friend and colleague attended a show and hung out afterward to ask the duo to sign a photo for his friend Tony. “He was on the team that did the red and green squiggles in Word.”"
+          },
+          {
+            "type": "p",
+            "text": "Upon hearing this, Penn Jillette announced in his stentorian voice which filled the entire theater: “The red and green squiggles!? I love the red and green squiggles!” Teller silently concurred."
+          },
+          {
+            "type": "p",
+            "text": "Tony received that autographed photo for his birthday, and it wasn’t clear which he was more happy about, the autographed photo or the fact that Penn and Teller loved his feature."
+          },
+          {
+            "type": "p",
+            "text": "Many years later, “Weird Al” Yankovic recorded a parody video titled Word Crimes, in which the Word red squiggles make a brief appearance. That same friend got “Weird Al” to autograph the screen shot."
+          },
+          {
+            "type": "p",
+            "text": "Today, there are red (and even green and blue) squiggles in nearly every word processor, and often outside word processors. Tony did it first. The next time a red squiggle catches one of your mistakes, say thanks to Tony. I think he’d appreciate it."
+          },
+          {
+            "type": "p",
+            "text": "¹ Probably not as widely documented is that he accomplished this without the source code: He reverse-engineered the MS-DOS version and then reimplemented it for Windows."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "我最近得知有人离世了，几乎每个人都知道他的作品，却没人知道他的名字。",
+          "在 Wikipedia 上，Tony Krueger 被铭记为将游戏《Chip’s Challenge》移植到 Windows（收录于 Windows Entertainment Pack）的人。¹ 但那很可能并不是他写过的、触动最多人的代码。",
+          "Tony 曾参与 Word 1.0、1.1 和 2.0 的开发，之后负责 Word for OS/2 和 Word for Mac，随后又回归参与了 Word 6.0 及其后续好几个版本的开发。他可能保持着“发布 Word 版本数量最多”的纪录。",
+          "在早期版本的 Word 中，“拼写检查”（Spell Check）功能需要你手动调用，然后你必须坐等程序查找所有可能拼错的单词，接着再逐个展示出来让你决定如何处理。Word 后来确实引入了“自动拼写检查”（Auto Spell Check）功能，它会在用户空闲时运行拼写检查，这样当你点击“拼写检查”按钮时，结果就已经准备好了。然而，自动拼写检查仍然是一个阻塞式操作。结果就是，很多用户把它关掉了，因为它似乎总爱在你正想做什么操作的时候，决定“现在是拼写检查文档的好时机”，从而迫使你等待拼写检查跑完一遍，然后你才能进行比如保存并退出的操作。",
+          "Tony 让拼写检查器变得更加无干扰，从而不会打断你的前台工作。而且当它发现问题时，不再等你触发拼写检查，而是会立即在可能拼错的单词下方画上红色波浪线（后来又在潜在的语法错误下画上绿色波浪线）。",
+          "Tony 是魔术/喜剧组合 Penn and Teller 的早期粉丝。他的一位朋友兼同事去看了他们的演出，并在结束后逗留了一会，请求这两位演员为他的朋友 Tony 签名一张照片。这位同事说：“他就是 Word 里红绿波浪线开发团队的成员。”",
+          "听到这话，Penn Jillette 用他响彻整个剧院的洪亮嗓音宣布：“红绿波浪线！？我太爱红绿波浪线了！”Teller 也默默地表示赞同。",
+          "Tony 在生日那天收到了这张签名照，而他究竟是对这张签名照更开心，还是对 Penn 和 Teller 喜欢他开发的这项功能更开心，这可说不准。",
+          "许多年后，“Weird Al” Yankovic 录制了一支名为《Word Crimes》的恶搞视频，其中短暂出现了 Word 的红色波浪线。还是那位朋友，让“Weird Al”在那张视频截图上签了名。",
+          "如今，几乎在所有的文字处理软件中，甚至在这些软件之外，都能看到红色（甚至绿色和蓝色）的波浪线。Tony 是实现这一功能的第一人。下次当红色波浪线抓出你的一个错误时，请向 Tony 说声谢谢。我想他会很欣慰的。",
+          "¹ 可能并未被广泛记录的是，他在没有源代码的情况下完成了这一壮举：他对 MS-DOS 版本进行了逆向工程，然后将其重新在 Windows 上实现。",
+          "作者",
+          "Raymond 参与 Windows 的演进已超过 30 年。2003 年，他创建了一个名为 The Old New Thing 的网站，其受欢迎程度远远超出了他最狂野的想象，这一发展至今仍让他感到有些神经紧张。这个网站衍生出了一本书，巧合的是书名也叫《The Old New Thing》（Addison Wesley 2007 年出版）。他偶尔会出现在 Windows Dev Docs 的 Twitter 账号上，讲些毫无实用信息的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "e7ee1ea020f95f21",
+      "title": "What Was Matt Thinking?",
+      "titleZh": "Matt 当时在想什么？",
+      "link": "https://feed.tedium.co/link/15204/17365463/matts-script-archive-retrospective",
+      "sourceName": "tedium.co",
+      "sourceUrl": "https://tedium.co",
+      "pubDate": "2026-06-22T18:41:28.000Z",
+      "category": "security",
+      "keywords": [
+        "history",
+        "perl",
+        "vulnerabilities",
+        "cgi"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 16
+      },
+      "summary": "文章回顾了 1996 年由一名高中生开发的经典早期网络程序库 Matt's Script Archive。虽然作者指出该程序库在构建时完全没有考虑安全性并导致了大量漏洞，但它并非只有负面历史。文章探讨了这套曾经风靡全球论坛和留言板的代码库在互联网早期的历史意义和深远影响。",
+      "summaryEn": "The article looks back at Matt's Script Archive, a classic early web script library developed by a high school student in 1996. While the author notes that the software was built without any consideration for security, leading to numerous exploits, its legacy is more than just vulnerabilities. The piece explores the historical significance and profound impact this codebase had on early internet forums and guestbooks globally.",
+      "reason": "一场关于早期互联网代码库的怀旧之旅，客观评价了 Matt's Script Archive 在安全漏洞之外的历史贡献。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Tedium: The Dull Side of the Internet.",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Currently, I’m in the midst of writing a big post about the roots of web forums, but I hit on an aside weird enough that I decided to stop writing that and work on a separate post. Because I think it actually explains a lot about the way people use the internet."
+          },
+          {
+            "type": "p",
+            "text": "Essentially, here’s the deal. Around 1995 or so, a high schooler named Matt Wright decided to launch a website that shared some basic website tools that he programmed. Many of these were dead-simple, things like contact forms, guestbooks, and web counters. One in particular, WWWboard, became a massive hit, becoming one of the first widely used web forum apps on the internet."
+          },
+          {
+            "type": "p",
+            "text": "The site Wright built, Matt’s Script Archive, unwittingly helped to highlight the divergence between how normal people think about software, and the developer’s perspective."
+          },
+          {
+            "type": "p",
+            "text": "Wright, and others like him, hit upon an obvious need. Regular people found these scripts, ran them, and suddenly had forums, counters, and contact forms. They got the job done. But programmers who weren’t in high school and weren’t so wet behind the ears looked aghast at what Wright had done: He had spread poorly designed, but widely used software across the internet. This software was packed with security issues, but worst of all, it wasn’t really getting updated all that much."
+          },
+          {
+            "type": "p",
+            "text": "How serious are the security issues? Well, a look at OpenCVE points out some very serious problems that range from bugs that emerged from massive exposure to some questionable design decisions. (Keeping an encrypted password file in the root? Making it possible to grab env variables via a URL? Not smart!)"
+          },
+          {
+            "type": "p",
+            "text": "One exploit in particular, affecting Wright’s textcounter tool, stands out among the list: CVE-1999-1479, with a score of 10.0 critical, effectively allows exploiters to execute code on the server as root."
+          },
+          {
+            "type": "p",
+            "text": "This state of affairs got serious enough that a competing website, called nms, essentially was launched to replace Matt’s buggy scripts with drop-in versions aren’t full of security exploits from bad coding. Their POV:"
+          },
+          {
+            "type": "quote",
+            "text": "The problem is that the scripts in Matt’s Script Archive aren’t very good. The scripts are well known amongst the Perl community to be badly written, buggy, and insecure. Anyone asking for support on Matt’s scripts in any forum will be told in no uncertain terms that they shouldn’t use his scripts.Unfortunately for some time there were no replacements for Matt’s scripts that you would want people to use. In 2001, the London Perl Mongers decided to address this problem and write a series of drop-in replacements for Matt’s scripts. This project is the result."
+          },
+          {
+            "type": "p",
+            "text": "(I will note that, since nms itself hasn’t been updated in like 20 years, so maybe you might also want to hold off on using that in 2026.)"
+          },
+          {
+            "type": "h3",
+            "text": "Matt’s scripts, the easy option, and the problem with overexposure"
+          },
+          {
+            "type": "p",
+            "text": "When so many people use something that it becomes part of the internet’s lingua franca, it’s inevitable exploits are going to emerge. There’s a reason WordPress and Windows each have reputations as bug-ridden, and it’s largely because of the number of eyes on the given tools."
+          },
+          {
+            "type": "p",
+            "text": "With that in mind, I don’t think it’s fair to blame Wright for having bad code—after all, it wasn’t like he knew it was going to become a huge platform. I think there is a lesson for security teams, however, who are going to be stuck trying to work around people who grab the lowest hanging fruit."
+          },
+          {
+            "type": "p",
+            "text": "The average person does not want to spend hours looking over every option under the sun to find something good. They just want it to work, and they may not necessarily think much about how to make it better."
+          },
+          {
+            "type": "p",
+            "text": "That, of course, is why vibe coding is such a big thing nowadays. It hits on the very same tension that an easy-to-access script archive did. And just as with these scripts, you can look at vibe-coded apps as insecure dreck created by someone who didn’t know better, or you can look at them as a democratizing tool."
+          },
+          {
+            "type": "p",
+            "text": "Problem is, they’re technically both. Can you appreciate one while appreciating the other? I have the answer, and it’s yes."
+          },
+          {
+            "type": "h3",
+            "text": "Matt’s scripts, remembered"
+          },
+          {
+            "type": "p",
+            "text": "Recently, I spotted an incredible project at the domain that once hosted Matt’s Script Archive. As of a year ago, worldwidemart.com was hosting spam gambling content of the kind that might give your computer a virus."
+          },
+          {
+            "type": "p",
+            "text": "But that owner let the domain expire late last year. This turned out to be the best thing. Someone who really cared about the legacy of Matt’s Script Archive decided to buy the domain, build a new site explaining the legacy of what once existed there, and why those scripts, as broken as they are, matter."
+          },
+          {
+            "type": "p",
+            "text": "The new site has the definite smell of vibe coding, but you know what? It’s also doing something incredibly important for the history of the internet. As you know, I’m the kind of guy that complains loudly when someone takes over a historically important website for less-than-stellar reasons. But I have looked through this page and I do not see any reason to complain—no under-the-radar sketchy “yeah, we did this to sell you something” drama. The page where I thought I would see that, a link located at /hosting/, is instead an explanation of how web hosting has changed in the past 30+ years."
+          },
+          {
+            "type": "p",
+            "text": "Put another way, this website rules. If we’re going to revive domains into zombie websites, I’d rather it was a vibe-coded thing that explains why this was once historically relevant than something that a spammer doesn’t even want."
+          },
+          {
+            "type": "p",
+            "text": "What was Matt thinking? He just wanted to be helpful. And that he was."
+          },
+          {
+            "type": "h3",
+            "text": "Script-Free Links"
+          },
+          {
+            "type": "p",
+            "text": "If you love old stuff like this, I recommend checking out the dead-website archive rip.so, which hits this very dopamine zone."
+          },
+          {
+            "type": "p",
+            "text": "On a related note, this Verge story about the security risks of vibe coding feels especially relevant given today’s piece."
+          },
+          {
+            "type": "p",
+            "text": "I find the fact that LinkedIn has like a dozen games that it expects you to play every day to be bizarre. We needed a name for it, and “corporate puzzleslop,” what Juniper Dev landed on, is basically perfect. (Great channel, too, she knows her stuff.)"
+          },
+          {
+            "type": "p",
+            "text": "--"
+          },
+          {
+            "type": "p",
+            "text": "Find this one an interesting read? Share it with a pal! (Did Matt run your guestbook in 1997?)"
+          },
+          {
+            "type": "p",
+            "text": "And be sure to check out the latest stuff on the Tedium Shopping Network."
+          }
+        ],
+        "translations": [
+          "目前，我正在写一篇关于网络论坛起源的长文，但我碰巧遇到了一个非常离奇的插曲，以至于我决定停笔，先写一篇单独的文章。因为我觉得它实际上能很好地解释人们使用互联网的方式。",
+          "事情大概是这样的。大约在1995年，一个名叫 Matt Wright 的高中生决定建立一个网站，分享他编写的一些基础网站工具。其中许多工具都非常简单，比如联系表单、留言板和网站计数器。其中一个名为 WWWboard 的工具更是大受欢迎，成为了互联网上最早被广泛使用的网络论坛应用之一。",
+          "Wright 建立的这个名为“Matt’s Script Archive”的网站，在无意中突显了普通人与开发者对软件看法的分歧。",
+          "Wright 和其他像他一样的人，敏锐地捕捉到了一个明显的需求。普通人找到了这些脚本并运行它们，立刻就拥有了论坛、计数器和联系表单。它们确实解决了问题。但是，那些早已不是高中生、也不再那么初出茅庐的程序员们，对 Wright 的所作所为感到不寒而栗：他将设计糟糕却被广泛使用的软件传播到了整个互联网。这些软件充满了安全漏洞，但最糟糕的是，它们几乎没有得到过什么更新。",
+          "安全问题到底有多严重？嗯，看看 OpenCVE 就会发现一些非常严重的问题，从因过度暴露而产生的漏洞，到一些值得商榷的设计决策应有尽有。（把加密的密码文件放在根目录下？通过 URL 就能获取环境变量？这可真不是明智之举！）",
+          "其中一个漏洞尤为突出，它影响了 Wright 的 textcounter 工具：CVE-1999-1479，其严重性得分高达 10.0，该漏洞实际上允许攻击者以 root 权限在服务器上执行代码。",
+          "这种情况变得如此严重，以至于出现了一个名为 nms 的竞争网站，其核心目的就是用可以直接替换的版本来取代 Matt 那些充满漏洞的脚本，这些新版本不会因为糟糕的编码而充斥着安全漏洞。他们的观点是：",
+          "问题在于 Matt’s Script Archive 中的脚本并不怎么好。在 Perl 社区中，众所周知这些脚本编写拙劣、漏洞百出且不安全。在任何论坛上寻求 Matt 脚本支持的人，都会被直截了当地告知不应该使用他的脚本。遗憾的是，在很长一段时间里，都没有什么让人称心的替代品来取代 Matt 的脚本。2001 年，London Perl Mongers 决定解决这个问题，并为 Matt 的脚本编写了一系列可以直接替换的替代品。这个项目正是其成果。",
+          "（我要指出的是，由于 nms 本身也有大约 20 年没更新过了，所以也许到了 2026 年，你也会想暂缓使用它。）",
+          "Matt 的脚本、简单的选择以及过度曝光带来的问题",
+          "当使用某个东西的人多到让它成为互联网的“通用语”时，漏洞的出现就不可避免了。WordPress 和 Windows 之所以有漏洞百出的名声是有原因的，这在很大程度上是因为有无数双眼睛盯着这些特定的工具。",
+          "考虑到这一点，我认为因为代码糟糕而责怪 Wright 是不公平的——毕竟，他当初也不知道它会成为一个巨大的平台。然而，我认为这给安全团队留下了一个教训，因为他们将不得不疲于应对那些只图省事、选择最简单方案的用户。",
+          "普通人不想花上几个小时去逐一审视天底下所有的选项，只为了找点好东西。他们只希望东西能直接用，而且未必会去多想怎么把它变得更好。",
+          "当然，这就是为什么如今 vibe coding 会如此流行。它触及了当年易于访问的脚本存档（script archive）所面临的同样矛盾。正如看待这些脚本一样，你可以把 vibe coding 生成的应用看作是不懂行的人搞出的不安全垃圾，也可以把它们看作是大众化的工具。",
+          "问题在于，严格来说它们两者兼具。你能在欣赏其中一面的同时也欣赏另一面吗？我有答案，那就是可以。",
+          "铭记 Matt 的脚本",
+          "最近，我在曾经托管过 Matt’s Script Archive 的那个域名上发现了一个令人惊叹的项目。就在一年前，worldwidemart.com 还在托管垃圾赌博内容，这类东西可能会让你的电脑感染病毒。",
+          "但那个所有者在去年年底让该域名过期了。结果证明这是件大好事。一个真正在乎 Matt’s Script Archive 历史遗产的人决定买下这个域名，建立了一个新网站，解释曾经存在于那里的历史遗产，以及为什么那些脚本尽管漏洞百出却依然意义重大。",
+          "这个新站点明显带有 vibe coding 的味道，但你知道吗？它也为互联网历史做着极其重要的事情。大家都知道，当有人出于不太光彩的原因接管一个具有历史意义的网站时，我是那种会大声抱怨的人。但我浏览了这个页面，没有发现任何值得抱怨的理由——没有任何暗地里见不得光的“没错，我们这么做就是为了向你推销东西”的戏码。我原以为会看到那种内容的页面，也就是位于 /hosting/ 的链接，反而是对过去 30 多年来 web hosting 如何演变的解释。",
+          "换句话说，这个网站太棒了。如果我们要把域名复活成僵尸网站，我宁愿它是一个解释这里为何曾具有历史意义的 vibe coding 产物，而不是连发垃圾邮件的人都不要的东西。",
+          "Matt 当初是怎么想的？他只是想帮个忙。而他也确实做到了。",
+          "无脚本链接",
+          "如果你喜欢这类老古董，我建议你去看看死亡网站存档 rip.so，它刚好能击中你的这个多巴胺开关。",
+          "顺便一提，考虑到今天这篇文章，The Verge 这篇关于 vibe coding 安全风险的文章显得尤为切题。",
+          "我发现 LinkedIn 居然有大约十来个指望你每天去玩的游戏，这太诡异了。我们需要给它起个名字，而 Juniper Dev 想出的“corporate puzzleslop”简直完美。（而且她的频道也很棒，她非常懂行。）",
+          "--",
+          "觉得这篇文章读起来很有趣吗？分享给朋友吧！（1997 年的时候，Matt 有没有帮你运行过留言本？）",
+          "另外，一定要去看看 Tedium Shopping Network 上的最新内容。"
+        ]
+      }
+    },
+    {
+      "slug": "31333b7a8b417fd3",
+      "title": "Lobachevsky’s integral formula",
+      "titleZh": "洛巴切夫斯基积分公式",
+      "link": "https://www.johndcook.com/blog/2026/06/22/lobachevskys-integral-formula/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-22T20:02:47.000Z",
+      "category": "engineering",
+      "keywords": [
+        "mathematics",
+        "signal-processing",
+        "fourier-analysis"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 15
+      },
+      "summary": "洛巴切夫斯基积分公式展示了周期为π的偶函数所具备的显著数学性质。该定理在傅里叶分析和信号处理领域具有重要且直接的应用价值。即使在 f(x) = 1 的特殊情况下，该公式依然能提供有意义的数学洞察。它是处理复杂信号周期性积分与求和问题的有力理论工具。",
+      "summaryEn": "Lobachevsky's integral formula demonstrates a remarkable mathematical property of even functions with a period of π. This theorem has significant and direct applications in Fourier analysis and signal processing. Even in the special case where f(x) = 1, the formula provides meaningful mathematical insights. It serves as a powerful theoretical tool for handling complex periodic integrals and sums in signal contexts.",
+      "reason": "数学理论爱好者与信号处理工程师可以通过该文快速了解一个优雅且具有高实用价值的周期函数定理。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Posted on 22 June 2026 by John"
+          },
+          {
+            "type": "p",
+            "text": "Let f be an even function with period π. Then the following remarkable theorem by Lobachevsky holds."
+          },
+          {
+            "type": "p",
+            "text": "This theorem is useful in Fourier analysis and signal processing. It’s useful to know even in the special case f(x) = 1."
+          },
+          {
+            "type": "p",
+            "text": "For a “jinc” analog, see this paper."
+          },
+          {
+            "type": "p",
+            "text": "***"
+          },
+          {
+            "type": "p",
+            "text": "Every time I see the name Lobachevsky I think of Tom Lehrer’s song about him. You can find the words here and the audio here."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Sinc and jinc integrals"
+          },
+          {
+            "type": "li",
+            "text": "Sinc and jinc sums"
+          },
+          {
+            "type": "h2",
+            "text": "Post navigation"
+          },
+          {
+            "type": "p",
+            "text": "Previous PostQueens on a prime order board"
+          },
+          {
+            "type": "h3",
+            "text": "Leave a Reply"
+          },
+          {
+            "type": "p",
+            "text": "Your email address will not be published. Required fields are marked *"
+          },
+          {
+            "type": "p",
+            "text": "Comment *"
+          },
+          {
+            "type": "p",
+            "text": "Name *"
+          },
+          {
+            "type": "p",
+            "text": "Email *"
+          },
+          {
+            "type": "p",
+            "text": "Website"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7e6f2eb1eb43267e",
+      "title": "Pluralistic: Good politics (22 Jun 2026)",
+      "titleZh": "Pluralistic：好的政治（2026年6月22日）",
+      "link": "https://pluralistic.net/2026/06/22/8-for-what-we-will/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-06-22T17:16:08.000Z",
+      "category": "opinion",
+      "keywords": [
+        "politics",
+        "internet-culture",
+        "linkblog"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 6,
+        "total": 14
+      },
+      "summary": "核心政治理念在于通过切实改善人民生活来体现真正的“好政治”。文章汇编了近期科技与文化领域的诸多热点事件与批判，涵盖Xbox安全失误、GPU“排放门”以及Peloton变砖跑步机等产品争议。同时也探讨了诸如为了在监狱获得医疗保健而抢银行等极端社会现象，并对Juul的伪科学和奇点怀疑论进行了尖锐点评。整体折射出对当前科技资本运作与社会福利制度的深刻反思。",
+      "summaryEn": "The core political philosophy presented is that good politics should fundamentally make people's lives better. The article compiles various recent hot topics and critiques in technology and culture, covering Xbox security blunders, the \"GPU Dieselgate,\" and controversies over bricked Peloton treadmills. It also discusses extreme social phenomena, such as robbing a bank to obtain healthcare in prison, while sharply criticizing Juul's junk science and singularity skepticism. Overall, it reflects a profound critique of current technological capitalism and social welfare systems.",
+      "reason": "能够帮助读者以批判性视角快速纵览近期科技界荒诞现象与背后的社会政治议题。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Good politics: Just make people's lives better."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: WWII online; Xbox security blunders; Homeless bloggers; Thermal printer racing game; Robbing a bank to get healthcare in jail; Crumb v Trump; \"The Blues Brothers\"; Bagelheads; Pickpocket training mannequin; Windmill joke; Singularity skepticism; GPU Dieselgate; Peleton bricks treadmills; Juul's junk science."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Toronto, NYC, Philadelphia, Chicago, London, Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Good politics (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Some people love to admire a beautiful football play; me, I can't get enough of politicians doing good politics – and like those World Cup fans, I am doubly pleased when it's my team making the play."
+          },
+          {
+            "type": "p",
+            "text": "I definitely have a team in Brazilian politics: President Luiz Inácio Lula da Silva and his Workers' Party. Lula's done so many amazing things in his career, and these often intersect with my own special interests. Like, he made Gilberto Gil his minister of culture, and his people built the telecentros, free software-based internet dojos for the poorest kids in the country, living in favelas:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.informationweek.com/software-services/brazil-turns-away-from-microsoft"
+          },
+          {
+            "type": "p",
+            "text": "Lula was royally ratfucked – framed by a corrupt justice minister who secretly conspired with the country's oligarchs – and imprisoned, and the conspirators installed Jair Bolsonaro, a fascist war criminal whose covid bungling led to mass death:"
+          },
+          {
+            "type": "p",
+            "text": "https://en.wikipedia.org/wiki/Operation_Car_Wash"
+          },
+          {
+            "type": "p",
+            "text": "When Bolsonaro lost his next election – to a triumphant Lula – he attempted a coup, for which he was arrested and handed a long prison sentence, despite Trump and Microsoft trying to intimidate the Brazilian judge into letting him walk:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.politico.com/news/2025/09/22/bolsonaro-prosecution-us-sanctions-00575122"
+          },
+          {
+            "type": "p",
+            "text": "Now, Lula is fighting to keep Bolsonaro's nepobaby failson, Senator Flávio Bolsonaro, from wrestling back control over the country for his fascist party; and that's where the good politics come in."
+          },
+          {
+            "type": "p",
+            "text": "Lula's party has just scored a massive, national political victory by tabling legislation to establish a five-day workweek. While Brazil's professional/managerial class enjoy a two-day weekend, the working poor of the nation are prisoners of the escala 6×1 system, which sees them working six days per week. It's a hangover from the era of Brazil's fascist dictatorship, which (nominally) ended in 1988, but whose legacy still haunts the Brazilian people."
+          },
+          {
+            "type": "p",
+            "text": "Lula's 40-hour workweek is incredibly popular. So popular that Bolsonaro's party whipped its members to vote for it, because they fear that to do otherwise would hand an even bigger majority to Lula, who might go on to give workers a four-day work-week:"
+          },
+          {
+            "type": "p",
+            "text": "https://prospect.org/2026/06/22/lula-sees-boosts-as-he-pushes-to-reduce-brazilian-workweek/"
+          },
+          {
+            "type": "p",
+            "text": "It turns out that weekends are popular and promising the electorate access to a weekend is good politics. What's more, denying weekends to the electorate is shitty, awful politics, which is why Bolsonaro's fascists were forced to vote in favor of a policy they hate, even though all credit for that policy will still go to Lula and the Worker' Party. The bill passed 461-19."
+          },
+          {
+            "type": "p",
+            "text": "Contrast Lula's muscular, deliverism-based politics that seeks to improve the lives of working people in tangible, immediate ways with the catastrophic series of blunders that Keir Starmer's Labour has delivered. Despite having won a majority so large it would have made Saddam Hussein blush (not because Labour was popular, but because the outgoing Conservatives were universally loathed), Starmer has refused to lift a finger to improve Britons' lives. Instead, he's abetted genocide, criminalized protest, proposed ending jury trials, imposed austerity, handed the NHS over to Palantir and all the remaining potable water and electrical capacity in the country over to American most unprofitable AI giants."
+          },
+          {
+            "type": "p",
+            "text": "Starmer's insistence that we can't have nice things is bad politics, because (and it's weird that this has to be said) a government that makes people's lives worse is less popular than a government that makes people's lives better:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.whatwelo.st/p/everyone-hates-tech-but-nobody-knows"
+          },
+          {
+            "type": "p",
+            "text": "Now, the right is incapable of making working people's lives better, because broad improvements to the vast majority necessarily come at the expense of the tiny minority of morbidly wealthy hoarders whom the right serves. In order to get millions of turkeys to vote for Christmas, the right substitutes spectacular acts of cruelty against disfavored minorities to distract their voters from the quiet acts of everyday cruelty they subject those voters to:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/12/always-great/#our-nhs"
+          },
+          {
+            "type": "p",
+            "text": "This isn't good politics. The sadistic torture of your base's enemies will never please them so well nor so durably as making immediate, significant improvements in their lives will."
+          },
+          {
+            "type": "p",
+            "text": "That's why the corporate Dems who say that the party should campaign against renewables and in favor of fossil fuel companies aren't merely climate criminals, they're also bad at politics:"
+          },
+          {
+            "type": "p",
+            "text": "https://prospect.org/2026/06/22/affordability-climate-envioronment-policy-gas-oil-prices-iran-war-trump/"
+          },
+          {
+            "type": "p",
+            "text": "Cleantech is fucking great. Since I put in solar, a heat pump and an induction top, my energy bills have fallen to less than $80 per month, even in Los Angeles, even at the height of summer. My EV – a 7-year old Kia Niro – costs pennies to run, because I charge it off my roof. Not only that, it's fast, maneuverable, silent, and incredibly reliable. It handles like that Mustang a rental agency once upgraded me to. I mean, I'd rather have a subway, but if I have to drive, this is so much better than any ICE car I've ever owned."
+          },
+          {
+            "type": "p",
+            "text": "Sure, our solar was a giant pain in the ass to get installed and working, but that's because the same corporate Dems who say climate is a political loser also said the best way to roll out solar nationwide was to set up an elaborate system of financialized tax-credits. That meant that every solar installer I talked to was more interested in swindling me by putting solar on my roof that they would own than they were in selling me a system I owned outright. Financializing America's rooftop solar conjured up a vast army of scammers and hustlers who screwed the majority of people they sold solar to, and my installers, Solaredge, were no exception:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.propublica.org/article/missouri-pace-loans"
+          },
+          {
+            "type": "p",
+            "text": "Everything about living in the cleantech future is better. I can boil a gallon of water in under a minute on my stovetop! And it's only gonna get better: not only is cleantech improving every year, but fossil fuel is getting shittier every year, thanks to Trump's lunatic war of choice in Iran, the cost of using fossil fuels will only go up from here:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/20/praxis/#acceleration"
+          },
+          {
+            "type": "p",
+            "text": "Look, as a workaholic whose unhealthy anxiety coping mechanism is to work even harder, I might not make the best use of an extra day off:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/14/compartment/#flow"
+          },
+          {
+            "type": "p",
+            "text": "But as Pete Seeger sang in 1941, your time is all you have, and every hour you give to your boss is an hour you can never get back:"
+          },
+          {
+            "type": "quote",
+            "text": "You'll get shorter hours\n  Better working conditions\n  Vacations with pay\n  Take your kids to the seashore"
+          },
+          {
+            "type": "p",
+            "text": "https://genius.com/Pete-seeger-talking-union-lyrics"
+          },
+          {
+            "type": "p",
+            "text": "It's something Lula understands, which is why he's winning. Good politics are a delight to watch, especially when it's your team doing them. But man, it can be pretty demoralizing to watch your team fumble play after play after play."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Arindrajit Dube on Wages https://paulkrugman.substack.com/p/arindrajit-dube-on-wages"
+          },
+          {
+            "type": "li",
+            "text": "WE WON OUR UNION! https://unitedfaculty-uaw.org/"
+          },
+          {
+            "type": "li",
+            "text": "Understanding the Luddites in the age of AI https://www.bloodinthemachine.com/p/understanding-the-luddites-in-the"
+          },
+          {
+            "type": "li",
+            "text": "Promises Made, Promises Kept: The Lincoln Memorial Reflecting Pool Absolutely Looks Like Shit Now https://defector.com/promises-made-promises-kept-the-lincoln-memorial-reflecting-pool-absolutely-looks-like-shit-now"
+          },
+          {
+            "type": "li",
+            "text": "Why Is It So Bad to Let A.I. Do My Thinking for Me? https://www.nytimes.com/2026/06/20/books/review/the-reverse-centaurs-guide-to-life-after-ai.html?unlocked_article_code=1.rlA.BN8p.23Ho_LuzI-Tr&amp;smid=url-share"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago WWII Online https://web.archive.org/web/20010625120559/https://www.gamespot.com/gamespot/stories/reviews/0,10867,2778704,00.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Microsoft’s myriad Xbox security mistakes https://web.archive.org/web/20060703000421/http://www.xbox-linux.org/wiki/17_Mistakes_Microsoft_Made_in_the_Xbox_Security_System"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Kentucky government censors political watchdog site https://web.archive.org/web/20060628055926/http://www.bluegrassreport.org/bluegrass_politics/2006/06/bluegrassreport.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Life among the homeless bloggers https://web.archive.org/web/20060702205047/https://www.wired.com/news/technology/1,71153-0.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Disney, 1939: No woman animators allowed https://animationguildblog.blogspot.com/2006/06/disney-1939-girls-are-not-considered.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Sick man robs bank for $1, demands jail and healthcare https://web.archive.org/web/20110628144748/https://www.gastongazette.com/news/bank-58397-richard-hailed.html/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Car-racing game on a thermal printer https://www.undef.ch/project/receipt-racer"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Toronto police swear off kettling https://web.archive.org/web/20110625131204/http://www.thestar.com/news/article/1012959–exclusive-toronto-police-swear-off-g20-kettling-tactic?bn=1"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago LEAKED: UK copyright lobby holds closed-door meetings with gov’t to discuss national Web-censorship regime https://www.openrightsgroup.org/blog/rights-holders-propose-voluntary-website-blocking-scheme/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Georgia’s anti-immigrant law leaves millions in crops rotting in the fields https://web.archive.org/web/20110620213900/https://blogs.ajc.com/jay-bookman-blog/2011/06/17/gas-farm-labor-crisis-playing-out-as-planned/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Bagelheads: toroidal saline forehead injections https://web.archive.org/web/20110619033443/https://vicestyle.com/en/news/today/post/japanese-bagelheads"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Spitalfields Nippers: East London street-urchins of 1912 https://spitalfieldslife.com/2011/04/02/spitalfields-nippers/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Danish police proposal: Ban anonymous Internet use https://www-computerworld-dk.translate.goog/art/117279/forslag-du-maa-ikke-laengere-gaa-anonymt-paa-nettet?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl=en-US"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Bell-mannequin for training pickpockets https://web.archive.org/web/20110626045035/http://blog.modernmechanix.com/2011/06/23/amateur-pick-pockets-study-in-crime-college/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Skeptical take on Singularity http://www.antipope.org/charlie/blog-static/2011/06/reality-check-1.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Windmill joke https://www.reddit.com/r/Jokes/comments/4p8qkb/two_windmills_are_standing_in_a_field_and_one/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Electronics repair shops overbill for labor when the customer has insurance https://arstechnica.com/science/2016/06/computer-repair-shops-screw-over-customers-if-theyve-got-insurance/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Being a Craigslist scammer is hard work https://web.archive.org/web/20160622140008/https://www.infoworld.com/article/3086304/cyber-crime/interview-with-a-craigslist-scammer.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Dieselgate for GPUs: review-units ship at higher clockspeeds than retail ones https://www.theverge.com/circuitbreaker/2016/6/21/11986836/msi-asus-overclocked-graphics-cards-review"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Phones without headphone jacks are phones with DRM for audio https://www.theverge.com/circuitbreaker/2016/6/21/11991302/iphone-no-headphone-jack-user-hostile-stupid"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Donald Trump sources $6M worth of campaign expenditures from companies he and his family own https://web.archive.org/web/20160621142100/https://bigstory.ap.org/article/9f7412236962464f9f2c0a8d2696ba25/trumps-campaign-cycles-6-million-trump-companies"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Samantha Bee puts the NRA before a firing squad https://www.youtube.com/watch?v=-M4qHzd3xfM"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Improv Everywhere: asking random New Yorkers to give a commencement speech https://www.youtube.com/watch?v=drvcLC3DuHo"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago R. Crumb v. D. Trump, 1989 https://dangerousminds.net/comments/robert_crumb_and_friends_flush_donald_trump_down_the_toilet_1989/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Cleveland: “First Amendment zones” will fence protesters far away from RNC https://www.wired.com/2016/06/cleveland-will-create-city-within-city-keep-rnc-civil/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Space botanists are beneficiaries of Canada’s legal weed boom https://web.archive.org/web/20160624043929/https://motherboard.vice.com/read/how-space-technology-will-produce-the-best-weed-marijuana-cannabis-pot"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Debullshitifying the EU referendum (radio comedy edition) https://www.bbc.co.uk/programmes/p03yylpn"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Judenstaat: an alternate history in which a Jewish state is created in east Germany in 1948 https://memex.craphound.com/2016/06/21/judenstaat-an-alternate-history-in-which-a-jewish-state-is-created-in-east-germany-in-1948/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Gun control is a great idea, terrorist watchlists are bullshit https://www.aclu.org/sites/default/files/field_document/2016_06_20_aclu_vote_recommendation_on_feinstein_and_cornyn_amendments_to_h.r._2578.pdf"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago New Yorkers just missing the subway https://www.youtube.com/watch?v=iWh385F5lms#5yrsago\n#5yrsago Peloton bricks its treadmills https://pluralistic.net/2021/06/22/vapescreen/#jane-get-me-off-this-crazy-thing"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Juul's junk science https://pluralistic.net/2021/06/22/vapescreen/#smokescreen"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Improving the ACCESS Act https://pluralistic.net/2021/06/22/vapescreen/#improve-access"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Daniel de Visé's 'The Blues Brothers' https://pluralistic.net/2025/06/21/1060-west-addison/#the-new-oldsmobiles-are-in-early-this-year"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Toronto: The Sovereignty Debate (IAB Canada's State of the Nation), Jun 23\nhttps://iabcanada.com/state-of-the-nation-2026"
+          },
+          {
+            "type": "li",
+            "text": "Toronto: The Reverse Centaur's Guide to Life After AI (Osler Records/Type Books), Jun 23\nhttps://www.eventbrite.com/e/cory-doctorow-book-launch-and-talk-tickets-1991501299998"
+          },
+          {
+            "type": "li",
+            "text": "NYC: The Reverse Centaur's Guide to Life After AI with Jonathan Coulton (The Strand), Jun 24\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html"
+          },
+          {
+            "type": "li",
+            "text": "Philadelphia: The Reverse Centaur's Guide to Life After AI with David Williams (Fitler Club/Philadelphia Citizen), Jun 25\nhttps://www.eventbrite.com/e/cory-doctorow-book-event-tickets-1990110326559"
+          },
+          {
+            "type": "li",
+            "text": "Chicago: The Reverse Centaur's Guide to Life After AI with Rick Perlstein (Exile in Bookville), Jun 26\nhttps://exileinbookville.com/events/50628"
+          },
+          {
+            "type": "li",
+            "text": "London: Idler Festival, Jul 11\nhttps://www.idler.co.uk/festival/"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "How to Think About AI Before It’s Too Late (Galaxy Brain)\nhttps://www.youtube.com/watch?v=SPQNPJ0CEPo"
+          },
+          {
+            "type": "li",
+            "text": "The future of world governance, with Kim Stanley Robinson (UN Independent Expert on International Order)\nhttps://www.youtube.com/live/wJvBvYdaAMY"
+          },
+          {
+            "type": "li",
+            "text": "How to Think About Artificial Intelligence (KUER)\nhttps://radiowest.kuer.org/show/radiowest/2026-06-16/cory-doctorow-on-how-to-think-about-artificial-intelligence"
+          },
+          {
+            "type": "li",
+            "text": "The Enshittification of Life, the Universe, & Everything (Luke Savage)\nhttps://www.lukewsavage.com/p/the-enshittification-of-life-the"
+          },
+          {
+            "type": "li",
+            "text": "Cory Doctorow's digital jail-break (DW In Focus)\nhttps://www.dw.com/en/cory-doctorows-digital-jail-break/audio-77414035"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2026"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse Centaur's Guide to AI,\" a short book for Farrar, Straus and Giroux about being an effective AI critic. LEGAL REVIEW AND COPYEDIT COMPLETE."
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a short book about internet policy in the age of Trumpism. PLANNING."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "良好的政治：就是让人民的生活变得更好。",
+          "嘿，看看这个：赏心悦目的趣闻。",
+          "客体永久性：二战网游；Xbox 安全失误；无家可归的博主；热敏打印机赛车游戏；为获得监狱医疗保健而抢劫银行；Crumb 诉特朗普；《福禄双霸天》；百吉饼头（额头注射生理盐水隆起）；扒手训练假人；风车笑话；对技术奇点的怀疑态度；GPU 排放门；Peleton 让跑步机变砖；Juul 的伪科学。",
+          "即将出席的活动：多伦多、纽约市、费城、芝加哥、伦敦、爱丁堡、悉尼、墨尔本、布莱顿、伦敦、南本德。",
+          "近期出席的活动：我最近去过的地方。",
+          "最新书籍：只要你们继续读，我就继续写。",
+          "即将出版的书籍：正如我所说，我会继续写下去。",
+          "版权页：其他所有内容。",
+          "良好的政治（永久链接）",
+          "有些人喜欢欣赏精彩的足球比赛；而我嘛，对政客们施行良好的政治永远百看不厌——就像那些世界杯球迷一样，如果是我的主队打出了好球，我会感到双倍的高兴。",
+          "在巴西政坛，我绝对有支持的一方：路易士·伊纳西奥·卢拉·达席尔瓦（Luiz Inácio Lula da Silva）总统及其领导的劳工党。卢拉在他的职业生涯中做了许多了不起的事情，而这些往往与我的特殊兴趣不谋而合。比如，他任命吉尔伯托·吉尔（Gilberto Gil）为文化部长，他的团队还建立了“telecentros”（远程信息中心），这是基于自由软件的互联网活动场所，专门为居住在贫民窟的该国最贫困的孩子们服务：",
+          "https://www.informationweek.com/software-services/brazil-turns-away-from-microsoft",
+          "卢拉遭到了极其卑劣的暗算——被一名与该国寡头秘密勾结的腐败司法部长诬陷——并被监禁，随后密谋者们扶植了雅伊尔·博索纳罗（Jair Bolsonaro），他是一名法西斯战犯，其在新冠疫情期间的拙劣应对导致了大规模死亡：",
+          "https://en.wikipedia.org/wiki/Operation_Car_Wash",
+          "当博索纳罗在下一届选举中输给凯旋的卢拉时，他企图发动政变，为此他被捕并被判处长期监禁，尽管特朗普和微软曾试图恐吓巴西法官让他逍遥法外：",
+          "https://www.politico.com/news/2025/09/22/bolsonaro-prosecution-us-sanctions-00575122",
+          "现在，卢拉正在努力阻止博索纳罗那个靠裙带关系上位的纨绔子弟——参议员弗拉维奥·博索纳罗（Flávio Bolsonaro）——为其法西斯政党夺回国家的控制权；这就是良好政治发挥作用的地方。",
+          "卢拉的政党刚刚取得了一项巨大的全国性政治胜利，他们提出立法确立五天工作制。虽然巴西的专业/管理阶层能享受双休，但该国的底层工薪阶层却是“escala 6×1”（6×1 排班）制度的囚徒，该制度要求他们每周工作六天。这是巴西法西斯独裁时期的遗留物，该独裁统治（名义上）于 1988 年结束，但其遗毒至今仍困扰着巴西人民。",
+          "卢拉推行的 40 小时工作周极其受欢迎。如此受欢迎，以至于博索纳罗的政党强行要求其成员投赞成票，因为他们害怕如果不这样做，就会让卢拉获得更大的多数优势，进而可能导致他给工人实行四天工作制：",
+          "https://prospect.org/2026/06/22/lula-sees-boosts-as-he-pushes-to-reduce-brazilian-workweek/",
+          "事实证明，周末很受欢迎，向选民承诺给他们周末是良好的政治。更重要的是，剥夺选民的周末是极其糟糕、恶劣的政治，这就是为什么博索纳罗的法西斯分子被迫投票支持他们所讨厌的政策，哪怕该政策的所有功劳最终仍将归于卢拉和劳工党。该法案以 461 票对 19 票获得通过。",
+          "将卢拉那种强硬的、基于“务实交付”的政治路线——这种路线旨在以切实、直接的方式改善劳动人民的生活——与基尔·斯塔默领导的工党所带来的一连串灾难性失误进行对比。尽管斯塔默赢得了让萨达姆·侯赛因都会脸红的绝对多数席位（这并不是因为工党有多受欢迎，而是因为即将离任的保守党遭到了普遍痛恨），但他却拒绝做哪怕一点实事来改善英国人的生活。相反，他纵容种族灭绝，将抗议活动定为犯罪，提议废除陪审团审判，实施财政紧缩，将 NHS 交给了 Palantir，并将该国所有剩余的可饮用水资源和电力供应能力交给了美国最不盈利的 AI 巨头。",
+          "斯塔默坚称我们无法拥有美好的事物，这是一种糟糕的政治策略，因为（说来奇怪，这居然还需要专门指出）一个让人民生活变得更糟的政府，其支持率自然比不上一个让人民生活变得更好的政府：",
+          "https://www.whatwelo.st/p/everyone-hates-tech-but-nobody-knows",
+          "如今，右翼根本没有能力改善劳动人民的生活，因为要让绝大多数人的生活得到广泛改善，必然会损害右翼所服务的那一小撮病态囤积财富的巨富阶层的利益。为了诱使数百万受害者投票支持损害自身利益的政策（犹如让火鸡投票过圣诞节），右翼用针对不受欢迎的少数群体的耸人听闻的残忍行径作为替代品，以此来转移选民的注意力，掩盖他们对这些选民施加的无声的日常残酷剥削：",
+          "https://pluralistic.net/2026/04/12/always-great/#our-nhs",
+          "这不是好的政治策略。对你选民基础的敌人施加施虐般的折磨，永远无法像直接、显著地改善选民的生活那样，让他们感到如此满意和持久。",
+          "这就是为什么那些声称民主党应该反对可再生能源、支持化石燃料公司的企业派民主党人不仅是气候罪犯，而且也不懂政治：",
+          "https://prospect.org/2026/06/22/affordability-climate-envioronment-policy-gas-oil-prices-iran-war-trump/",
+          "清洁技术简直太棒了。自从我安装了太阳能板、热泵和电磁炉后，我的能源账单已经降到了每月不到 80 美元，这还是在洛杉矶，还是在盛夏时节。我的电动车——一辆有 7 年车龄的起亚 Niro——运行成本只需几分钱，因为我用屋顶的太阳能板给它充电。不仅如此，它速度快、操控性好、安静且极其可靠。它的驾驶感受就像当初租车公司给我免费升级的那辆野马（Mustang）一样。我的意思是，我宁愿有地铁可坐，但如果非开车不可，这比我拥有过的任何燃油车（ICE car）都要好得多。",
+          "当然，让我们的太阳能系统安装并正常运行是一件极其麻烦的事，但这是因为那些声称气候议题在政治上注定失败的 企业派民主党人，同样认为在全国推广太阳能的最佳方式是建立一套复杂的金融化税收抵免制度。这意味着我接触的每一个太阳能安装商，比起直接卖给我一套我完全拥有的系统，都更热衷于通过在我屋顶上安装他们保留所有权的太阳能板来坑骗我。将美国的屋顶太阳能金融化，催生了一大批骗子和投机者，他们坑骗了绝大多数购买太阳能的客户，而我的安装商 Solaredge 也不例外：",
+          "https://www.propublica.org/article/missouri-pace-loans",
+          "生活在清洁技术的未来，一切都在变好。我可以在不到一分钟的时间里在炉子上烧开一加仑的水！而且情况只会越来越好：不仅清洁技术在逐年进步，化石燃料也在逐年变得越来越糟糕，多亏了特朗普在伊朗主动发起的疯狂战争，使用化石燃料的成本从这里开始只会不断上升：",
+          "https://pluralistic.net/2026/04/20/praxis/#acceleration",
+          "听着，作为一个工作狂，我不健康的焦虑应对机制就是更加拼命地工作，我可能无法最好地利用额外的一天休息时间：",
+          "https://pluralistic.net/2026/04/14/compartment/#flow",
+          "但正如皮特·西格在1941年所唱的那样，你的时间就是你的全部，你交给老板的每一小时都是永远无法挽回的：",
+          "你会获得更短的工作时间，更好的工作条件，带薪休假，带孩子去海滩玩",
+          "https://genius.com/Pete-seeger-talking-union-lyrics",
+          "卢拉懂这一点，这就是他获胜的原因。好的政治令人赏心悦目，尤其是当你的团队在做这些事的时候。但是天哪，看着你的团队一次又一次地失误，真的会让人相当泄气。",
+          "嘿，看看这个（永久链接）",
+          "阿林德拉吉特·杜贝谈工资 https://paulkrugman.substack.com/p/arindrajit-dube-on-wages",
+          "我们赢得了工会！ https://unitedfaculty-uaw.org/",
+          "在 AI 时代理解卢德分子 https://www.bloodinthemachine.com/p/understanding-the-luddites-in-the",
+          "承诺已许，承诺已兑：林肯纪念堂倒影池现在看起来绝对像坨屎 https://defector.com/promises-made-promises-kept-the-lincoln-memorial-reflecting-pool-absolutely-looks-like-shit-now",
+          "为什么让 AI 替我思考这么糟糕？ https://www.nytimes.com/2026/06/20/books/review/the-reverse-centaurs-guide-to-life-after-ai.html?unlocked_article_code=1.rlA.BN8p.23Ho_LuzI-Tr&amp;smid=url-share",
+          "客体永久性（永久链接）",
+          "#25年前 二战Online https://web.archive.org/web/20010625120559/https://www.gamespot.com/gamespot/stories/reviews/0,10867,2778704,00.html",
+          "#20年前 微软在 Xbox 安全系统上犯下的无数错误 https://web.archive.org/web/20060703000421/http://www.xbox-linux.org/wiki/17_Mistakes_Microsoft_Made_in_the_Xbox_Security_System",
+          "#20年前 肯塔基州政府审查政治监督网站 https://web.archive.org/web/20060628055926/http://www.bluegrassreport.org/bluegrass_politics/2006/06/bluegrassreport.html",
+          "#20年前 无家可归的博主们的生活 https://web.archive.org/web/20060702205047/https://www.wired.com/news/technology/1,71153-0.html",
+          "#20年前 迪士尼，1939年：禁止女性动画师 https://animationguildblog.blogspot.com/2006/06/disney-1939-girls-are-not-considered.html",
+          "#15年前 生病的男子为1美元抢劫银行，要求入狱并获得医疗服务 https://web.archive.org/web/20110628144748/https://www.gastongazette.com/news/bank-58397-richard-hailed.html/",
+          "#15年前 热敏打印机上的赛车游戏 https://www.undef.ch/project/receipt-racer",
+          "#15年前 多伦多警方承诺放弃包围战术 https://web.archive.org/web/20110625131204/http://www.thestar.com/news/article/1012959–exclusive-toronto-police-swear-off-g20-kettling-tactic?bn=1",
+          "#15年前 泄露：英国版权游说团体与政府举行闭门会议，讨论全国性 Web 审查制度 https://www.openrightsgroup.org/blog/rights-holders-propose-voluntary-website-blocking-scheme/",
+          "#15年前 佐治亚州的反移民法导致价值数百万美元的农作物烂在地里 https://web.archive.org/web/20110620213900/https://blogs.ajc.com/jay-bookman-blog/2011/06/17/gas-farm-labor-crisis-playing-out-as-planned/",
+          "#15年前 贝果头：环形生理盐水额头注射 https://web.archive.org/web/20110619033443/https://vicestyle.com/en/news/today/post/japanese-bagelheads",
+          "#15年前 斯皮塔佛德的小屁孩：1912年东伦敦的街头流浪儿 https://spitalfieldslife.com/2011/04/02/spitalfields-nippers/",
+          "#15年前 丹麦警方提议：禁止匿名使用 Internet https://www-computerworld-dk.translate.goog/art/117279/forslag-du-maa-ikke-laengere-gaa-anonymt-paa-nettet?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl=en-US",
+          "#15年前 用于训练扒手的带铃铛人体模型 https://web.archive.org/web/20110626045035/http://blog.modernmechanix.com/2011/06/23/amateur-pick-pockets-study-in-crime-college/",
+          "#15年前 对技术奇点的怀疑论调 http://www.antipope.org/charlie/blog-static/2011/06/reality-check-1.html",
+          "#15年前 风车笑话 https://www.reddit.com/r/Jokes/comments/4p8qkb/two_windmills_are_standing_in_a_field_and_one/",
+          "#10年前 当客户有保险时，电子产品维修店会在人工费上多收费 https://arstechnica.com/science/2016/06/computer-repair-shops-screw-over-customers-if-theyve-got-insurance/",
+          "#10年前 做 Craigslist 骗子是一项辛苦的工作 https://web.archive.org/web/20160622140008/https://www.infoworld.com/article/3086304/cyber-crime/interview-with-a-craigslist-scammer.html",
+          "#10年前 GPU 版排放门：送测的评测样机出厂主频高于零售版 https://www.theverge.com/circuitbreaker/2016/6/21/11986836/msi-asus-overclocked-graphics-cards-review",
+          "#10年前 没有耳机孔的手机就是带有音频 DRM 的手机 https://www.theverge.com/circuitbreaker/2016/6/21/11991302/iphone-no-headphone-jack-user-hostile-stupid",
+          "#10年前 唐纳德·特朗普从他及其家族拥有的公司获取了价值 600 万美元的竞选支出 https://web.archive.org/web/20160621142100/https://bigstory.ap.org/article/9f7412236962464f9f2c0a8d2696ba25/trumps-campaign-cycles-6-million-trump-companies",
+          "#10年前 萨曼莎·比将 NRA 送上行刑队 https://www.youtube.com/watch?v=-M4qHzd3xfM",
+          "#10年前 Improv Everywhere：邀请随机的纽约人发表毕业演讲 https://www.youtube.com/watch?v=drvcLC3DuHo",
+          "#10年前 R·克拉姆 对阵 D·特朗普，1989年 https://dangerousminds.net/comments/robert_crumb_and_friends_flush_donald_trump_down_the_toilet_1989/",
+          "#10年前 克利夫兰：“第一修正案区”将把抗议者隔离在远离 RNC 的地方 https://www.wired.com/2016/06/cleveland-will-create-city-within-city-keep-rnc-civil/",
+          "#10年前 太空植物学家成为加拿大合法大麻热潮的受益者 https://web.archive.org/web/20160624043929/https://motherboard.vice.com/read/how-space-technology-will-produce-the-best-weed-marijuana-cannabis-pot",
+          "#10年前 戳破欧盟公投的胡扯（广播喜剧版） https://www.bbc.co.uk/programmes/p03yylpn",
+          "#10年前 《犹太国》：一部讲述1948年在东德建立犹太国家的架空历史小说 https://memex.craphound.com/2016/06/21/judenstaat-an-alternate-history-in-which-a-jewish-state-is-created-in-east-germany-in-1948/",
+          "#10年前 枪支管制是个好主意，恐怖分子观察名单纯属扯淡 https://www.aclu.org/sites/default/files/field_document/2016_06_20_aclu_vote_recommendation_on_feinstein_and_cornyn_amendments_to_h.r._2578.pdf",
+          "#5年前 纽约人想念地铁 https://www.youtube.com/watch?v=iWh385F5lms#5yrsago #5年前 Peloton 让其跑步机变砖 https://pluralistic.net/2021/06/22/vapescreen/#jane-get-me-off-this-crazy-thing",
+          "#5年前 Juul 的伪科学 https://pluralistic.net/2021/06/22/vapescreen/#smokescreen",
+          "#5年前 改进 ACCESS 法案 https://pluralistic.net/2021/06/22/vapescreen/#improve-access",
+          "#1年前 Daniel de Visé 的《The Blues Brothers》 https://pluralistic.net/2025/06/21/1060-west-addison/#the-new-oldsmobiles-are-in-early-this-year",
+          "即将出席的活动（固定链接）",
+          "多伦多：主权辩论（IAB Canada 的 State of the Nation），6月23日\nhttps://iabcanada.com/state-of-the-nation-2026",
+          "多伦多：《The Reverse Centaur's Guide to Life After AI》（Osler Records/Type Books），6月23日\nhttps://www.eventbrite.com/e/cory-doctorow-book-launch-and-talk-tickets-1991501299998",
+          "纽约市：与 Jonathan Coulton 共同探讨《The Reverse Centaur's Guide to Life After AI》（The Strand），6月24日\nhttps://www.strandbooks.com/cory-doctorow-the-reverse-centaur-s-guide-to-life-after-ai.html",
+          "费城：与 David Williams 共同探讨《The Reverse Centaur's Guide to Life After AI》（Fitler Club/Philadelphia Citizen），6月25日\nhttps://www.eventbrite.com/e/cory-doctorow-book-event-tickets-1990110326559",
+          "芝加哥：与 Rick Perlstein 共同探讨《The Reverse Centaur's Guide to Life After AI》（Exile in Bookville），6月26日\nhttps://exileinbookville.com/events/50628",
+          "伦敦：Idler Festival，7月11日\nhttps://www.idler.co.uk/festival/",
+          "与 Jimmy Wales 共同出席爱丁堡国际图书节，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：Festival of Dangerous Ideas，8月23-24日\nhttps://festivalofdangerousideas.com/cory-doctorow/",
+          "墨尔本：在 Wheeler Centre 谈论 Enshittification，8月25日\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 共同探讨《The Reverse Centaur's Guide to Life After AI》（Brighton Dome），9月8日\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 共同探讨《The Reverse Centaur's Guide to Life After AI》（Foyle's Picadilly），9月9日\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度夜晚（Notre Dame），10月6日\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "近期出席的活动（固定链接）",
+          "如何在为时已晚前思考 AI（Galaxy Brain）\nhttps://www.youtube.com/watch?v=SPQNPJ0CEPo",
+          "与 Kim Stanley Robinson 探讨世界治理的未来（联合国国际秩序独立专家）\nhttps://www.youtube.com/live/wJvBvYdaAMY",
+          "如何思考人工智能（KUER）\nhttps://radiowest.kuer.org/show/radiowest/2026-06-16/cory-doctorow-on-how-to-think-about-artificial-intelligence",
+          "生命、宇宙及万物的 Enshittification（Luke Savage）\nhttps://www.lukewsavage.com/p/the-enshittification-of-life-the",
+          "Cory Doctorow 的数字越狱（DW In Focus）\nhttps://www.dw.com/en/cory-doctorows-digital-jail-break/audio-77414035",
+          "最新书籍（固定链接）",
+          "《Canny Valley》：我为 Pluralistic 创作的拼贴画限量版合集，自行出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为什么一切突然变糟以及该如何应对》，Farrar, Straus, Giroux 出版，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "“Picks and Shovels”：《Red Team Blues》的续作，关于个人电脑的英雄时代，Tor Books（美国），Head of Zeus（英国），2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "“The Bezzle”：《Red Team Blues》的续作，关于监狱科技和其他诈骗行径，Tor Books（美国），Head of Zeus（英国），2024年2月 (thebezzle.org)。",
+          "“The Lost Cause”：一部讲述气候危机中充满希望的太阳朋克小说，Tor Books（美国），Head of Zeus（英国），2023年11月 (http://lost-cause.org)。",
+          "“The Internet Con”：一本关于互操作性和大型科技公司的非虚构类书籍（Verso）2023年9月 (http://seizethemeansofcomputation.org)。Book Soup 提供签名版 (https://www.booksoup.com/book/9781804291245)。",
+          "“Red Team Blues”：“一部引人入胜、令人欲罢不能的惊悚小说，读完它会让你对这个世界的运行方式有更深的了解。” Tor Books http://redteamblues.com。",
+          "“Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid”（与 Rebecca Giblin 合著）：讲述如何打破创意劳动力市场的不公规则，Beacon Press/Scribe 2022 https://chokepointcapitalism.com",
+          "即将出版的书籍（永久链接）",
+          "“The Reverse-Centaur's Guide to AI”：一本关于如何成为更优秀的 AI 评论家的短篇书籍，Farrar, Straus and Giroux，2026年6月 (https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/)",
+          "“Enshittification, Why Everything Suddenly Got Worse and What to Do About It”（图像小说版），Firstsecond，2026年",
+          "“The Post-American Internet”：一部在某种程度上算是《Enshittification》地缘政治续作的作品，Farrar, Straus and Giroux，2027年",
+          "“Unauthorized Bread”：一部改编自本人关于难民、烤面包机和 DRM 的中篇小说的青少年图像小说，FirstSecond，2027年4月20日",
+          "“The Memex Method”，Farrar, Straus, Giroux，2027年",
+          "版权页（永久链接）",
+          "今日主要来源：",
+          "目前正在撰写：“The Post-American Internet”，《Enshittification》的续作，讲述既然特朗普已将美国付之一炬，我们其他人将迎来怎样一个更美好的世界。已完成第四稿。已提交给编辑。",
+          "“The Reverse Centaur's Guide to AI”：一本为 Farrar, Straus and Giroux 撰写的关于如何成为高效 AI 评论家的短篇书籍。法律审查和文字编辑已完成。",
+          "“The Post-American Internet”：一本关于特朗普时代互联网政策的短篇书籍。筹划中。",
+          "一篇关于自制胰岛素的《Little Brother》短篇小说 筹划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 (Creative Commons Attribution 4.0) 许可协议。这意味着你可以以任何方式使用它，包括商业用途，前提是你必须注明出处为我（Cory Doctorow），并包含指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图片均不包含在此许可范围内；它们的引入基于版权的限制或例外规定，或基于单独的许可。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "时事通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就把它做成撒尔沙（sarsaparilla）饮料”——乔伊·“手风琴男”·德维拉 (Joey \"Accordion Guy\" DeVilla)",
+          "请仔细阅读：阅读本声明即表示您代表您的雇主同意，永久免除我因曾与您的雇主、其合作伙伴、许可方、代理人和受让人签订的任何及所有未经协商的协议、许可、服务条款、拆封协议、点击协议、浏览协议、保密协议、不披露协议、竞业禁止协议及可接受使用政策（统称“虚假协议”）而产生的所有义务与弃权约束，且此项免除不损害我既有的权利与特权。您进一步声明，您已获得授权，能够代表您的雇主免除我受任何“虚假协议”的约束。",
+          "ISSN：3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "afebf9843382780f",
+      "title": "Queens on a prime order board",
+      "titleZh": "素数阶棋盘上的皇后问题",
+      "link": "https://www.johndcook.com/blog/2026/06/21/queens-prime/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-22T00:21:44.000Z",
+      "category": "engineering",
+      "keywords": [
+        "algorithms",
+        "mathematics",
+        "n-queens"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "N皇后问题要求在n×n的棋盘上放置n个皇后且使其互不攻击。当棋盘阶数n为大于等于5的素数时，存在一种极其优雅的几何求解策略。只需将皇后放置在斜率为2、3、4等特定数值的直线上，即可满足无任何水平、垂直或对角线攻击的条件。这为数论与经典组合谜题的结合提供了一个巧妙的数学证明。",
+      "summaryEn": "The n queens problem requires placing n queens on an n × n chessboard so that none attack each other. When the board order n is a prime number greater than or equal to 5, an elegant geometric solving strategy exists. It is sufficient to place the queens on a line with a specific slope, such as 2, 3, or 4, to satisfy the condition of no horizontal, vertical, or diagonal attacks. This provides a clever mathematical proof combining number theory with a classic combinatorial puzzle.",
+      "reason": "为算法爱好者和程序员提供了一个利用素数特性优雅解决复杂组合数学问题的全新思路。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The n queens problem is to place on an n × n chessboard n queens so that none attacks any other. This means there is only one queen on every horizontal, vertical, and diagonal line."
+          },
+          {
+            "type": "p",
+            "text": "When n is a prime number ≥ 5, it is sufficient to place the queens on a line that has slope 2, 3, 4, …, n − 2. (The slope cannot be 1 because that’s a diagonal. And it cannot be n − 1 because n − 1 = −1 mod n is also a diagonal.) [1]"
+          },
+          {
+            "type": "p",
+            "text": "Here we imagine opposite edges of the board being joined together. Geometrically, this makes the chessboard a torus (donut). Algebraically, the points on a line of slope s have the coordinates"
+          },
+          {
+            "type": "p",
+            "text": "(a + k, b + ks)"
+          },
+          {
+            "type": "p",
+            "text": "where addition is carried out mod n."
+          },
+          {
+            "type": "p",
+            "text": "All solutions to the n queens problem have this form when n = 5. Some solutions will have this form for larger prime values of n but not all."
+          },
+          {
+            "type": "p",
+            "text": "For example, when n = 7, here is a solution where all the queens are on a line of slope 2."
+          },
+          {
+            "type": "p",
+            "text": "But here is another solution where the queens do not all lie on a line of constant slope."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Formulating eight queens as a SAT problem"
+          },
+          {
+            "type": "li",
+            "text": "Queens on a donut"
+          },
+          {
+            "type": "li",
+            "text": "Solving a chess puzzle with Claude and Prolog"
+          },
+          {
+            "type": "p",
+            "text": "[1] W. H. Bussey. A Note on the Problem of the Eight Queens. The American Mathematical Monthly, Vol. 29, No. 7 (August 1922), pp. 252–253"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a7481d9276fbbf99",
+      "title": "Mux — Video for Developers",
+      "titleZh": "Mux：面向开发者的视频智能基础设施",
+      "link": "https://www.mux.com/?utm_campaign=fireball&amp;utm_source=DF",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-21T21:35:48.000Z",
+      "category": "tools",
+      "keywords": [
+        "video",
+        "api",
+        "mux"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 3,
+        "timeliness": 5,
+        "total": 13
+      },
+      "summary": "视频文件中包含海量的音频、对象和场景数据，传统技术栈通常难以直接读取这些深层信息。Mux Robots 能够将底层的视频数据转化为可操作的视频智能。开发者只需配置一次视频工作流，系统即可对所有新上传的内容自动执行提问、生成摘要或提取关键时刻等操作。该方案完全无需依赖资产 Webhooks 或自建中间件代码，极大降低了视频处理的后端开发门槛。",
+      "summaryEn": "Video files contain massive amounts of audio, object, and scene data that traditional tech stacks usually cannot directly read or access. Mux Robots transforms this underlying video data into actionable video intelligence. Developers only need to configure video workflows once, and the system automatically executes tasks like answering questions, generating summaries, or finding key moments on all newly uploaded content. This solution completely eliminates the need for asset webhooks or self-hosted glue code, significantly lowering the backend development barrier for video processing.",
+      "reason": "介绍了当前自动化视频内容解析领域的前沿工程化方案，是处理海量视频数据开发者的绝佳提效工具。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Technical preview"
+          },
+          {
+            "type": "p",
+            "text": "Arrow Right"
+          },
+          {
+            "type": "p",
+            "text": "Mux helps teams do more with video. Stream it, moderate it, search it, analyze it, transform it. Build cost-effectively in minutes, not months."
+          },
+          {
+            "type": "h2",
+            "text": "Features"
+          },
+          {
+            "type": "h3",
+            "text": "Unlock the data in your video"
+          },
+          {
+            "type": "p",
+            "text": "More than just content, video contains a boatload of data for you to build with. Select a video to see Mux in action."
+          },
+          {
+            "type": "h3",
+            "text": "Turn video files into video features"
+          },
+          {
+            "type": "p",
+            "text": "We give you the building blocks to create live and on-demand video exactly how you want."
+          },
+          {
+            "type": "p",
+            "text": "See all Mux Video features"
+          },
+          {
+            "type": "h3",
+            "text": "Understand video analytics at a glance"
+          },
+          {
+            "type": "p",
+            "text": "Track key engagement and quality of experience metrics: views, playing time, viewer retention, startup time, rebuffering, and more."
+          },
+          {
+            "type": "p",
+            "text": "Video views and unique viewers are up, average completion is slightly up, and playing time is down.KViews22%Unique Viewers2.9kk1.317% 3PM 6PMPlaying Timeh1.736%Last 6hOne week ago"
+          },
+          {
+            "type": "p",
+            "text": "Looking for standalone media-grade stream analytics?"
+          },
+          {
+            "type": "p",
+            "text": "Get Mux Data"
+          },
+          {
+            "type": "h3",
+            "text": "Mux Robots"
+          },
+          {
+            "type": "p",
+            "text": "Integrate Mux's pre-built AI workflows or build your own. Our platform is built for humans and robots, from streaming to analysis and everything in between."
+          },
+          {
+            "type": "h3",
+            "text": "Ask questions"
+          },
+          {
+            "type": "p",
+            "text": "Is this video a cartoon?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Does this video feature cats?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Was this video mostly shot outdoors?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "h3",
+            "text": "Summarization"
+          },
+          {
+            "type": "p",
+            "text": "|"
+          },
+          {
+            "type": "p",
+            "text": "AI"
+          },
+          {
+            "type": "p",
+            "text": "Tone:"
+          },
+          {
+            "type": "h3",
+            "text": "Content moderation"
+          },
+          {
+            "type": "p",
+            "text": "NSFW: Violent:"
+          },
+          {
+            "type": "h3",
+            "text": "Chaptering"
+          },
+          {
+            "type": "p",
+            "text": "Analyze your video to identify natural breakpoints, create descriptive chapter titles, and add timestamps"
+          },
+          {
+            "type": "h2",
+            "text": "The video infrastructure for your website"
+          },
+          {
+            "type": "p",
+            "text": "From background videos to simple player embeds, we’ve got you covered."
+          },
+          {
+            "type": "p",
+            "text": "While you perfect your AI models, we take care of encoding, delivery, and scaling your video output reliably and cost-effectively."
+          },
+          {
+            "type": "p",
+            "text": "With videos ready for playback in an average of under 2 seconds you can build what you need for your community."
+          },
+          {
+            "type": "p",
+            "text": "Whether it’s on-demand or live, build video that scales to support your users."
+          },
+          {
+            "type": "p",
+            "text": "Patreon built native video for a more consistent creator and fan experience, going from limited control with third-party solutions to a fully customized, seamless platform.."
+          },
+          {
+            "type": "p",
+            "text": "Go from MVP to launch in no time with API and docs that are designed for developers to build video quickly."
+          },
+          {
+            "type": "p",
+            "text": "With latency as low as 4 seconds and support for SRT (with HEVC) and RTMP, you can stream live, at scale, and without worry."
+          },
+          {
+            "type": "h2",
+            "text": "We speak your language"
+          },
+          {
+            "type": "p",
+            "text": "You don’t have to reinvent your stack to get great video. We’re compatible with your favorite languages and frameworks."
+          },
+          {
+            "type": "h2",
+            "text": "Mux love from around the world"
+          },
+          {
+            "type": "p",
+            "text": "No credit card required to start using Mux."
+          }
+        ],
+        "translations": [
+          "技术预览",
+          "右箭头",
+          "Mux 帮助团队用视频做更多事。对其进行流媒体传输、内容审核、搜索、分析和转换。只需几分钟而非几个月，即可实现高性价比的开发。",
+          "功能特性",
+          "释放视频中的数据价值",
+          "视频不仅是内容，更包含海量可供您用来构建应用的数据。选择一个视频，看看 Mux 的实际运作吧。",
+          "将视频文件转化为视频功能",
+          "我们为您提供基础构建模块，助您按照自己的意愿打造完美的直播和点播视频。",
+          "查看所有 Mux Video 功能",
+          "一目了然，轻松掌握视频分析数据",
+          "跟踪关键的参与度和体验质量指标：播放量、播放时长、观众留存率、启动时间、卡顿率等。",
+          "视频播放量和独立观众数上升，平均完播率略有上升，播放时长下降。KViews22%独立观众2.9kk1.317% 下午3点 下午6点播放时长h1.736%过去6小时一周前",
+          "在寻找独立的媒体级流媒体分析服务吗？",
+          "获取 Mux Data",
+          "Mux Robots",
+          "集成 Mux 预构建的 AI 工作流，或构建您自己的工作流。我们的平台专为人类和机器人设计，涵盖从流媒体传输到数据分析及中间的各个环节。",
+          "提问",
+          "这个视频是动画片吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频里有猫吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频主要是在户外拍摄的吗？",
+          "是/否",
+          "100% 确定性",
+          "内容摘要",
+          "|",
+          "AI",
+          "基调：",
+          "内容审核",
+          "NSFW（工作场所不宜）： 暴力：",
+          "章节划分",
+          "分析您的视频以识别自然断点，生成描述性章节标题，并添加时间戳",
+          "专为您的网站打造的视频基础设施",
+          "从背景视频到简单的播放器嵌入，我们都能为您提供全方位支持。",
+          "当您在完善 AI 模型时，我们将负责可靠且经济高效地处理视频的编码、分发和扩展。",
+          "视频平均仅需不到 2 秒即可准备就绪进行播放，让您能够为社区构建所需的一切。",
+          "无论是点播还是直播，都能构建可扩展的视频服务以支撑您的用户。",
+          "Patreon 打造了原生视频功能，为创作者和粉丝提供更一致的体验，从第三方解决方案的有限控制，转变为完全定制化的无缝平台。",
+          "借助专为开发者快速构建视频应用而设计的 API 和文档，瞬间完成从 MVP 到上线的全过程。",
+          "延迟低至 4 秒，并支持 SRT（包含 HEVC）和 RTMP 协议，让您可以大规模、无顾虑地进行直播。",
+          "我们支持您的开发语言",
+          "您无需为了获得出色的视频体验而重构现有的技术栈。我们与您最喜欢的语言和框架完全兼容。",
+          "来自世界各地的 Mux 好评",
+          "无需信用卡即可开始使用 Mux。"
+        ]
+      }
+    },
+    {
+      "slug": "198443b1c82b906f",
+      "title": "AMD Athlon: AMD’s game changing CPU from 1999",
+      "titleZh": "AMD Athlon：1999年改变游戏规则的AMD处理器",
+      "link": "https://dfarq.homeip.net/amd-athlon-amds-game-changing-cpu-from-1999/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=amd-athlon-amds-game-changing-cpu-from-1999",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-06-22T11:00:54.000Z",
+      "category": "other",
+      "keywords": [
+        "hardware",
+        "history",
+        "cpu",
+        "amd"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 3,
+        "total": 12
+      },
+      "summary": "AMD于1999年6月23日发布了备受瞩目的Athlon（速龙）CPU，作为其大获成功的K6处理器的继任者。该处理器在不到两个月后的8月9日正式推向市场。Athlon凭借其出色的架构设计，成功打破了当时的市场格局。它不仅是AMD发展史上的关键转折点，更是真正奠定AMD与Intel在高端CPU市场分庭抗礼地位的核心产品。",
+      "summaryEn": "AMD announced its highly anticipated Athlon CPU on June 23, 1999, as the successor to its highly successful K6 processor. The CPU officially hit the market less than two months later on August 9. With its outstanding architectural design, Athlon successfully disrupted the market landscape at the time. It was not only a critical turning point in AMD's history but also the core product that truly established AMD's ability to compete directly against Intel in the high-end CPU market.",
+      "reason": "带领硬件爱好者重温PC发展史上的黄金时代，深入了解AMD是如何凭借一款跨时代产品实现市场逆袭的。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On June 23, 1999, AMD announced its much anticipated Athlon CPU, the successor to its very successful K6. It launched less than two months later, on August 9, 1999. The Athlon proved to be the CPU that separated AMD from all of the other x86 CPU manufacturers who fell by the wayside. It was the first non-Intel x86 CPU that outperformed Intel’s fastest CPU at the time, a big change from years of playing catch-up to Intel."
+          },
+          {
+            "type": "h2",
+            "text": "Cyrix, IDT, and Rise, oh my!"
+          },
+          {
+            "type": "p",
+            "text": "During the Pentium generation, an unprecedented number of x86 compatible CPU makers entered the market. Besides AMD and Cyrix, this generation also featured the IDT Winchip and the Rise MP6, which you may know as the core in the Vortex86 SoC. None of the competitors were as good all around as an Intel Pentium CPU, but they were all considerably less expensive, and most of them could do one or two things better than Intel did."
+          },
+          {
+            "type": "p",
+            "text": "With the P6 generation, the Pentium Pro, Pentium II, and Pentium 3, Intel cut most of them off. They made enough changes to the processor bus and covered the new bus with enough patents that no third party could make a pin-compatible x86 CPU anymore. Anyone who dared to try to use Intel’s Socket 8, Slot 1, or Socket 370 was destined to repeat the history of the Chips & Technologies Super 386 or the UMC Green 486."
+          },
+          {
+            "type": "p",
+            "text": "The lone exception was chipset maker VIA. VIA did it anyway, then sued Intel for violating one of its patents, forcing Intel into a patent-sharing agreement in order to gain rights to the P6 bus. VIA had acquired Cyrix and Centaur, the technology behind IDT’s Winchip CPU, and used Centaur’s technology to make a Socket 370 CPU in the 2000-2001 timeframe, but it was a budget chip. It was a Celeron competitor, not a Pentium III competitor."
+          },
+          {
+            "type": "h2",
+            "text": "AMD’s solution for carrying on with Athlon"
+          },
+          {
+            "type": "p",
+            "text": "AMD took a completely different route to compete with Intel. It got creative and licensed the EV6 Alpha processor bus from Digital Equipment Corporation. The Alpha was a high performance 64-bit RISC CPU architecture whose window of opportunity was rapidly closing in 1999, but it had a sophisticated, high speed bus that could reach the same types of speeds Intel was reaching with the P6. AMD was also able to hire displaced members of the DEC Alpha design team to supplement the design team they got from Nexgen."
+          },
+          {
+            "type": "p",
+            "text": "But AMD found additional help from another unlikely source: Motorola. The two companies jointly developed a new manufacturing process that allowed both companies to reach higher clock speeds than they had before. The combination of these two things let AMD compete toe-to-toe with Intel. AMD had come a long way from the 5×86, a fifth-generation chip in name only that could only keep pace with Intel’s least expensive Pentiums, and the disappointing K5, which was efficient but couldn’t scale to high enough clock rates to compete."
+          },
+          {
+            "type": "p",
+            "text": "The first Athlon CPUs did appropriate the Slot 1 connector that Intel used, and AMD simply flipped it around to keep end users from interchanging the two CPUs and damaging them in the process. Reusing a component that was already on the market allowed motherboard makers to save money by only having to keep a single part in stock and order in larger quantities."
+          },
+          {
+            "type": "p",
+            "text": "And AMD released a chipset to give the Athlon multiprocessing capability too, helping cement it as a high-end contender."
+          },
+          {
+            "type": "h2",
+            "text": "AMD’s gamble"
+          },
+          {
+            "type": "p",
+            "text": "AMD’s theory was that hardware compatibility was less important than software compatibility. As long as they could convince motherboard manufacturers and chipset makers to produce quality motherboards and chipsets with comparable performance at a comparable price, they theorized they had a chance."
+          },
+          {
+            "type": "p",
+            "text": "They were correct. AMD put together a winning combination that put them in an unfamiliar place: outperforming Intel at the high end of the market. While Intel had to recall its 1.13 GHz parts in January 2001 due to reliability issues, AMD had no problems scaling past 1 GHz."
+          },
+          {
+            "type": "p",
+            "text": "In this generation, AMD managed to keep pace with or ahead of Intel in terms of clock speed from August 1999 into January 2002. This was a shift for AMD, who was used to starting out in the mid-range but quickly getting forced into the low end of the market. Intel didn’t take the performance crown away from AMD again until the Pentium 4."
+          },
+          {
+            "type": "p",
+            "text": "Soon after Intel abandoned its Slot 1 connector in favor of a more traditional socket, AMD did the same thing, causing a divergence between AMD and Intel CPU sockets that persists to this day."
+          },
+          {
+            "type": "p",
+            "text": "During this generation, AMD returned to profitability."
+          },
+          {
+            "type": "h2",
+            "text": "Going beyond the Athlon"
+          },
+          {
+            "type": "p",
+            "text": "The Athlon set the stage for AMD to turn the tables on Intel in the subsequent generation. The Athlon 64 extended the x86 architecture from 32 bits to 64 bits, and it outperformed the Pentium 4 generation. It was also more power efficient, so the Athlon 64 ended up seeing significant use in the business market, including the server market. Intel had to take the unprecedented step of cloning the AMD chip. But that’s a story for another time."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "1999年6月23日，AMD发布了备受瞩目的 Athlon CPU，这是其大获成功的 K6 的继任者。不到两个月后的1999年8月9日，它便正式上市。事实证明，Athlon CPU 让 AMD 与其他所有被淘汰的 x86 CPU 制造商拉开了差距。它是第一款在性能上超越当时 Intel 最快 CPU 的非 Intel x86 CPU，彻底改变了多年来跟在 Intel 身后追赶的局面。",
+          "Cyrix、IDT 和 Rise，天哪！",
+          "在 Pentium 时代，进入市场的 x86 兼容 CPU 制造商数量史无前例。除了 AMD 和 Cyrix，这一代还包括 IDT Winchip 和 Rise MP6，后者可能作为 Vortex86 SoC 的核心而为人所知。虽然这些竞争者在综合表现上都不如 Intel Pentium CPU，但它们的价格都要便宜得多，而且大多数都在一两个方面比 Intel 做得更好。",
+          "到了 P6 时代，也就是 Pentium Pro、Pentium II 和 Pentium 3，Intel 将他们中的大多数挡在了门外。Intel 对处理器总线进行了足够的修改，并用大量的专利保护了新总线，使得第三方再也无法制造引脚兼容的 x86 CPU。任何敢于尝试使用 Intel 的 Socket 8、Slot 1 或 Socket 370 的人，注定要重蹈 Chips & Technologies Super 386 或 UMC Green 486 的覆辙。",
+          "唯一的例外是芯片组制造商 VIA。VIA 无论如何还是这样做了，随后起诉 Intel 侵犯了其一项专利，从而迫使 Intel 达成专利共享协议，以获得 P6 总线的使用权。VIA 收购了 Cyrix 和 Centaur（即 IDT 的 Winchip CPU 背后的技术），并在 2000 年至 2001 年间利用 Centaur 的技术制造了 Socket 370 CPU，但这只是一款廉价芯片。它是 Celeron 的竞争者，而不是 Pentium III 的竞争者。",
+          "AMD 延续 Athlon 的解决方案",
+          "AMD 采取了完全不同的路线来与 Intel 竞争。它另辟蹊径，从 Digital Equipment Corporation 获得了 EV6 Alpha 处理器总线的授权。Alpha 是一种高性能的 64 位 RISC CPU 架构，虽然在 1999 年其发展机遇的窗口正在迅速关闭，但它拥有复杂的高速总线，能够达到与 Intel P6 相当的速度。AMD 还设法聘请了 DEC Alpha 设计团队中离职的成员，以扩充他们从 Nexgen 获得的设计团队。",
+          "但 AMD 还从另一个出人意料的来源找到了额外帮助：Motorola。两家公司共同开发了一种新的制造工艺，使双方都能达到比以前更高的时钟频率。这两件事的结合让 AMD 得以与 Intel 正面交锋。AMD 取得了长足的进步，要知道之前的 5×86 仅仅是名义上的第五代芯片，只能勉强跟上 Intel 最便宜的 Pentium；而令人失望的 K5 虽然效率不错，但频率无法提升到足以参与竞争的水平。",
+          "第一代 Athlon CPU 确实借用了 Intel 使用的 Slot 1 连接器，AMD 只是将其翻转了一下，以防止最终用户互换这两种 CPU 从而导致损坏。重新使用市场上已有的组件，使得主板制造商只需储备单一零件并进行大批量订购，从而节省了成本。",
+          "AMD 还发布了一款芯片组，赋予 Athlon 多处理能力，帮助巩固了其作为高端竞争者的地位。",
+          "AMD 的豪赌",
+          "AMD 的理念是，硬件兼容性不如软件兼容性重要。他们认为，只要能说服主板制造商和芯片组厂商生产出价格相近、性能相当的高质量主板和芯片组，他们就有胜出的机会。",
+          "他们是对的。AMD 打造了一套致胜组合，使其进入了一个陌生的境地：在高端市场上超越了 Intel。当 Intel 在 2001 年 1 月因可靠性问题被迫召回其 1.13 GHz 处理器时，AMD 却毫无压力地突破了 1 GHz 的主频大关。",
+          "在这一代产品中，从 1999 年 8 月到 2002 年 1 月，AMD 成功在主频方面保持与 Intel 同步甚至实现超越。这对 AMD 来说是一个转变，他们过去总是从中端市场起步，但很快就会被迫退守低端市场。直到 Pentium 4 的出现，Intel 才重新从 AMD 手中夺回了性能王座。",
+          "在 Intel 放弃 Slot 1 接口转而采用更传统的插座后不久，AMD 也紧随其后，这导致 AMD 和 Intel 的 CPU 插座走向了分化，且这种分歧一直延续至今。",
+          "在这一代产品期间，AMD 重新实现了盈利。",
+          "超越 Athlon",
+          "Athlon 为 AMD 在下一代产品中扭转对 Intel 的局势奠定了基础。Athlon 64 将 x86 架构从 32 位扩展到了 64 位，并且其性能超越了 Pentium 4 代。它的能效也更高，因此 Athlon 64 最终在包括服务器市场在内的企业级市场中获得了广泛应用。Intel 不得不采取史无前例的举措去克隆 AMD 的芯片。但那就是后话了。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。自 1991 年起，他便从事专业的计算机写作，因此当那些老式计算机还是新事物时，他就在撰写关于它们的文章。他自 1994 年起正式从事 IT 行业，并于 2013 年起专注于漏洞管理领域。他拥有 Security+ 和 CISSP 认证。如今，他每周更新五篇博客，主要撰写关于 1975 年至 2000 年间的复古计算机和复古游戏的内容。"
+        ]
+      }
+    }
+  ]
+}
