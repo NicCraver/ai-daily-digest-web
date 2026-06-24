@@ -1,0 +1,1726 @@
+{
+  "date": "2026-06-25",
+  "generatedAt": "2026-06-24T19:09:16.360Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2421,
+    "filteredArticles": 11,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈的焦点高度集中于人工智能的深度渗透及其引发的基础设施与生态变革。一方面，AI代理正在催生全新的身份验证规范，而AI生成内容的泛滥也已实质性地冲击了传统的招聘与人才评估体系，迫使行业寻找新的应对机制。另一方面，底层系统安全与经典工程实践依然是不可忽视的基石，一场由libssh2漏洞引发的抢修潮，与对软件设计文档和跨环境正则表达式的深度探讨交相呼应。同时，从USB-C接口背后的隐藏复杂性到对无弹窗纯净博客的呼吁，也折射出技术圈在硬核探索之外对回归用户体验本质的持续思考。",
+  "articles": [
+    {
+      "slug": "6fc9293f19058680",
+      "title": "[Sponsor] WorkOS: Agents Need Auth. There’s Now a Spec for It.",
+      "titleZh": "WorkOS：AI 代理需要身份验证，现在有了相关规范",
+      "link": "http://workos.com/auth-md?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q32026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-24T18:46:46.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "AI-agents",
+        "authentication",
+        "spec"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "AI 代理在执行需要新账户的任务时，常常卡在传统的注册表单上，目前缺乏代理代用户进行注册的统一标准。WorkOS 提出了 `auth.md` 规范，类似于 `robots.txt`，用于向代理声明应用支持的注册流程、权限作用域和凭据颁发方式。该规范基于现有的 OAuth 标准构建，已被 Cloudflare、Firecrawl 和 Resend 等公司采用。这为 AI 代理无缝接入各类应用提供了标准化的身份验证解决方案。",
+      "summaryEn": "AI agents often hit a wall at traditional sign-up forms when trying to create new accounts on behalf of users, lacking a standard protocol for agent registration. WorkOS has introduced `auth.md`, a specification similar to `robots.txt`, which tells agents how to register users, supported flows, exposed scopes, and credential issuance methods. Built on existing OAuth standards, this spec has already been adopted by companies like Cloudflare, Firecrawl, and Resend. It provides a unified authentication solution enabling AI agents to seamlessly integrate with various applications.",
+      "reason": "了解 `auth.md` 规范如何解决 AI 代理与各类应用之间的身份验证鸿沟。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "auth.md",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Enable agents to register users without the sign-up form. Auth.md provides secure agent registration that any app can implement."
+          },
+          {
+            "type": "p",
+            "text": "Looks like your app is almost finished. What would you like to do today?"
+          },
+          {
+            "type": "p",
+            "text": "Tap an option↑↓ to navigate · ↵ to select"
+          },
+          {
+            "type": "h2",
+            "text": "Get started"
+          },
+          {
+            "type": "p",
+            "text": "Make your app agent-ready"
+          },
+          {
+            "type": "p",
+            "text": "For services that want agents to register users on behalf of their customers."
+          },
+          {
+            "type": "p",
+            "text": "Become an identity provider"
+          },
+          {
+            "type": "p",
+            "text": "For platforms whose agents act on behalf of users."
+          },
+          {
+            "type": "p",
+            "text": "One-click enable with AuthKit"
+          },
+          {
+            "type": "p",
+            "text": "Get in touch to enable auth.md on your account."
+          },
+          {
+            "type": "p",
+            "text": "Get early access"
+          },
+          {
+            "type": "h2",
+            "text": "FAQs"
+          },
+          {
+            "type": "li",
+            "text": "A Markdown file an application hosts at its domain — typically https://yourapp.com/auth.md— that tells agents how to register on behalf of a user. It includes which flows are supported, which scopes exist, and how to register for the service. See the file format."
+          },
+          {
+            "type": "li",
+            "text": "The agent fetches your auth.md, picks a supported flow, and either presents a verified identity assertion (agent verified flow) or walks the user through a code-confirmation claim (user claimed flow). You stay in control of which flows you accept and what credentials get issued. Read the apps guide."
+          },
+          {
+            "type": "li",
+            "text": "Agent verified is agent-attested — the agent's identity provider vouches for the user, no human in the loop. User claimed needs no provider — the agent shows the user a code, they sign in and confirm it. Most apps support both and let the agent pick the right one. Agent verified· User claimed."
+          },
+          {
+            "type": "li",
+            "text": "A scoped access token tied to the user — short-lived and revocable. It's issued over standard OAuth, so you reuse the API auth you already have."
+          },
+          {
+            "type": "li",
+            "text": "It's open. WorkOS authors the protocol, but auth.mdisn't tied to WorkOS infrastructure — it composes existing OAuth standards (Protected Resource Metadata, ID-JAG identity assertions) and any app can publish or any agent can read one with no WorkOS account required. See the protocol on GitHub."
+          }
+        ],
+        "translations": [
+          "使代理能够无需注册表单即可注册用户。Auth.md 提供了安全的代理注册功能，任何应用都可以实现。",
+          "看来您的应用快完成了。您今天想做些什么？",
+          "点击选项↑↓ 进行导航 · ↵ 进行选择",
+          "开始使用",
+          "让您的应用准备好支持代理",
+          "适用于希望由代理代表其客户注册用户的服务。",
+          "成为身份提供商",
+          "适用于其代理代表用户执行操作的平台。",
+          "使用 AuthKit 一键启用",
+          "联系我们以在您的账户中启用 auth.md。",
+          "获取抢先体验",
+          "常见问题解答",
+          "应用程序托管在其域上的 Markdown 文件（通常为 https://yourapp.com/auth.md），用于告诉代理如何代表用户进行注册。它包含支持哪些流程、存在哪些作用域（scopes），以及如何注册该服务。请参阅文件格式。",
+          "代理会获取您的 auth.md，选择一种支持的流程，然后要么提供经过验证的身份断言（代理验证流程），要么引导用户完成代码确认声明（用户声明流程）。您可以完全控制接受哪些流程以及颁发哪些凭据。请阅读应用指南。",
+          "代理验证（Agent verified）是由代理背书的——代理的身份提供商为用户担保，无需人工干预。用户声明（User claimed）不需要提供商——代理向用户显示一个代码，用户登录并确认即可。大多数应用两者都支持，并让代理选择合适的方式。代理验证 · 用户声明。",
+          "与用户绑定的限定作用域访问令牌——生命周期短且可撤销。它通过标准 OAuth 颁发，因此您可以复用现有的 API 身份验证机制。",
+          "它是开放式的。该协议由 WorkOS 编写，但 auth.md 并不与 WorkOS 基础设施绑定——它组合了现有的 OAuth 标准（Protected Resource Metadata、ID-JAG 身份断言），任何应用都可以发布或任何代理都可以读取它，而无需 WorkOS 账户。请在 GitHub 上查看该协议。"
+        ]
+      }
+    },
+    {
+      "slug": "dd7501994ef9e0f2",
+      "title": "\"No way to prevent this\" say users of only language where this regularly happens",
+      "titleZh": "“无法预防此类问题”，唯一经常发生此问题的语言用户如是说",
+      "link": "https://xeiaso.net/shitposts/no-way-to-prevent-this/memory-safety/CVE-2026-55200/",
+      "sourceName": "xeiaso.net",
+      "sourceUrl": "https://xeiaso.net",
+      "pubDate": "2026-06-24T00:00:00.000Z",
+      "category": "security",
+      "keywords": [
+        "CVE",
+        "libssh2",
+        "vulnerability",
+        "C"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "libssh2 项目最新披露的 CVE-2026-55200 漏洞引发了运维人员的疯狂抢修，该漏洞源于 `ssh2_transport_read()` 中对 `packet_length` 字段缺少上限检查，从而导致越界写入、堆损坏和潜在的远程代码执行（RCE）。作者以讽刺的口吻指出，这类致命的内存安全漏洞几乎专属存在于 C 语言编写的组件中。尽管业界频繁因此类漏洞陷入混乱，但 C 语言用户似乎总是无奈地表示“无法预防”。这再次凸显了非内存安全语言在现代基础设施中带来的巨大风险。",
+      "summaryEn": "The recent disclosure of CVE-2026-55200 in the libssh2 project sent site reliability workers scrambling to patch systems, addressing an out-of-bounds write in `ssh2_transport_read()` caused by a missing upper bound check on the `packet_length` field. This flaw leads to heap corruption and potential remote code execution (RCE). The author sarcastically points out that such catastrophic memory safety vulnerabilities are almost exclusively a hallmark of components written in C. Despite the recurring chaos, users of the language famously claim there is \"no way to prevent this,\" highlighting the ongoing risks of non-memory-safe languages.",
+      "reason": "以黑色幽默的视角审视 C 语言内存安全漏洞对整个软件供应链的破坏力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Protected by Anubis From Techaro. Made with ❤️ in 🇨🇦."
+          },
+          {
+            "type": "p",
+            "text": "Mascot design by CELPHASE."
+          },
+          {
+            "type": "p",
+            "text": "This website is running Anubis version v1.25.1-0.20260619024344-d19b86c6e139."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "634faec035b348d4",
+      "title": "Quoting Tom MacWright",
+      "titleZh": "引用 Tom MacWright：当一切都由 AI 生成",
+      "link": "https://simonwillison.net/2026/Jun/24/tom-macwright/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-24T18:13:51.000Z",
+      "category": "opinion",
+      "keywords": [
+        "LLM",
+        "job-applications",
+        "AI-generated"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "Tom MacWright 观察到，近期收到的求职申请越来越明显地由大语言模型（LLM）参与编写，甚至关联的作品集网站、GitHub 项目和代码提交记录也全是由 AI 生成的。这种现象导致招聘者完全无法了解这些候选人的真实能力和个人特质，因为申请者没有展示任何真实的输出或自我表达。这反映了生成式 AI 的泛滥正在深刻破坏现有的技术人才评估和招聘体系。",
+      "summaryEn": "Tom MacWright observes that recent job applications are increasingly co-written by LLMs, linking to AI-generated portfolio sites and GitHub projects with purely LLM-generated commit messages. This trend leaves recruiters with no real understanding of the candidates' actual skills or personal traits, as the applicants fail to present any authentic output or genuine self-expression. It reflects how the proliferation of generative AI is deeply disrupting the current technical talent evaluation and hiring landscape.",
+      "reason": "揭示了过度依赖 LLM 生成的求职材料正在让技术招聘失去有效的评估抓手。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "24th June 2026"
+          },
+          {
+            "type": "quote",
+            "text": "In the last few months, I've started to see [job applications] that were clearly cowritten by an LLM, link to an LLM-generated portfolio site, which then links to LLM-generated GitHub projects, with purely LLM-generated commit messages. [...]\nMy other reaction is that I don't know anything about these people.\nThey haven't put themselves out there. They haven't said anything true. [...]\nThe perfected, generated, prompted resume is generic and impersonal. It tells me nothing about this person, other than that they use particular tools."
+          },
+          {
+            "type": "p",
+            "text": "— Tom MacWright, Accidental anonymity"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "29b0393a92222beb",
+      "title": "datasette 1.0a35",
+      "titleZh": "Datasette 1.0a35 版本发布",
+      "link": "https://simonwillison.net/2026/Jun/23/datasette/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-06-23T21:34:37.000Z",
+      "category": "tools",
+      "keywords": [
+        "datasette",
+        "release",
+        "database"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 20
+      },
+      "summary": "Simon Willison 发布了 Datasette 1.0a35，这是一个包含多项重要更新的 alpha 版本。此次更新的核心亮点是在数据库操作菜单中引入了全新的“创建表”界面，该功能由底层的 `/<database>/-/create` JSON API 提供支持。新界面允许用户直接定义列、主键等表结构属性。这大大增强了通过 Datasette 进行数据管理和结构操作的能力。",
+      "summaryEn": "Simon Willison has released Datasette 1.0a35, marking a significant alpha update with multiple major improvements. The core highlight of this release is the introduction of a new \"Create table\" interface in the database actions menu. This feature is backed by the underlying `/<database>/-/create` JSON API, allowing users to define columns, primary keys, and custom attributes directly. This update significantly enhances the capability to manage and manipulate data structures directly within Datasette.",
+      "reason": "了解开源数据工具 Datasette 最新版本中引入的基于 JSON API 的可视化建表功能。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I'll write more about this one tomorrow, but it's a big release. Three highlights from the release notes:"
+          },
+          {
+            "type": "quote",
+            "text": "New \"Create table\" interface in the database actions menu, backed by the /<database>/-/create JSON API. It can define columns, primary keys, custom column types, NOT NULL constraints, literal defaults, expression defaults and single-column foreign keys. (#2787)\nNew \"Alter table\" table action and /<database>/<table>/-/alter JSON API for changing existing tables: add, rename, reorder and drop columns; change column types, defaults, NOT NULLconstraints, primary keys and foreign keys; and rename the table. The alter table dialog also includes a \"Drop table\" button. (#2788)\nNew Template context documentation listing the variables available to custom templates for Datasette's core pages. Variables documented there are treated as a stable API for custom templates until Datasette 2.0. The documentation is generated from dataclass definitions next to the view code, with tests that compare the documented fields against the actual contexts rendered by the database, table, query and row pages. (#1510, #2127, #1477, #2803)"
+          },
+          {
+            "type": "p",
+            "text": "Here's a rough video demo I made of the new create/alter table feature as part of reviewing the PR:"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e38016ded19657d3",
+      "title": "How to Write an Effective Software Design Document",
+      "titleZh": "如何编写高效的软件设计文档",
+      "link": "https://refactoringenglish.com/excerpts/write-an-effective-design-doc/",
+      "sourceName": "refactoringenglish.com",
+      "sourceUrl": "https://refactoringenglish.com",
+      "pubDate": "2026-06-24T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "design-doc",
+        "software-engineering",
+        "documentation"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 5,
+        "total": 20
+      },
+      "summary": "一份优秀的软件设计文档能够为团队节省数年的开发时间，并迫使开发者在陷入错误的实现之前深入思考关键决策。它也是协调团队成员和合作伙伴之间设计决策的最佳工具。作者结合自己在 Google、Microsoft 以及自己创业过程中的实践经验，分享了设计文档的编写方法论。掌握这一技能对于提高软件项目成功率和团队协作效率至关重要。",
+      "summaryEn": "An effective software design document can save teams years of development time by forcing developers to think through critical decisions before committing to the wrong implementation. It also serves as the best tool for coordinating design choices among teammates and partner teams. Drawing from practical experience at Google, Microsoft, and his own companies, the author shares methodologies for writing design docs. Mastering this skill is crucial for improving project success rates and team collaboration efficiency.",
+      "reason": "借鉴大厂资深工程师的实战经验，学习如何用设计文档规避开发陷阱并提升团队协作。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "by Michael Lynch, published\nJune 24, 2026",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A good design doc can save you years of development time. Writing a design doc forces you to think through important decisions before you waste time on the wrong implementation or paint yourself into a corner. It’s also the best way to coordinate design decisions among teammates and partner teams."
+          },
+          {
+            "type": "p",
+            "text": "I’ve written design docs as a developer at Google, Microsoft, and within my own companies. The specifics vary, but the underlying principles remain the same. A design doc should articulate the hard problems you’re solving and help your teammates give you feedback."
+          },
+          {
+            "type": "p",
+            "text": "Below, I share my approach to creating effective design docs and explain what belongs in a design doc and what does not."
+          },
+          {
+            "type": "li",
+            "text": "An example design doc"
+          },
+          {
+            "type": "li",
+            "text": "When should you write a design doc?"
+          },
+          {
+            "type": "li",
+            "text": "How much should you invest into your design doc?"
+          },
+          {
+            "type": "li",
+            "text": "What belongs in a design doc?What’s the cost of getting it wrong?"
+          },
+          {
+            "type": "li",
+            "text": "Components of a design docTitleMetadataObjectiveBackgroundRelated documentsGoalsNon-goalsScenariosDiagramsGlossaryConstraintsService level objectives (SLOs)Monitoring / alertingTimelineInterfacesDependencies / infrastructureSecurityPrivacyLegal considerationsLoggingOpen issuesResolved issuesAlternatives considered"
+          },
+          {
+            "type": "li",
+            "text": "Driving Your Design Doc through Review"
+          },
+          {
+            "type": "h2",
+            "text": "An example design doc🔗"
+          },
+          {
+            "type": "p",
+            "text": "The most common question I get about design docs is where to find a good one. I’ve never seen a public design doc that I consider high-quality. All of mine are hidden away at the companies that paid me to write them."
+          },
+          {
+            "type": "p",
+            "text": "So, I wrote a design doc from scratch based on the principles I’m sharing here. It lays out the design for a real web app I’m building."
+          },
+          {
+            "type": "p",
+            "text": "I created the design doc before writing any code, and I’m adhering to the design as I implement the app."
+          },
+          {
+            "type": "li",
+            "text": "Little Moments Design Doc"
+          },
+          {
+            "type": "p",
+            "text": "The design is more exhaustive than what I’d normally write for a solo hobby project, but this is roughly the length and depth of a design doc I’d create if I were coordinating work with other people on a professional project."
+          },
+          {
+            "type": "h2",
+            "text": "When should you write a design doc?🔗"
+          },
+          {
+            "type": "p",
+            "text": "The more complex or risky the project, the more valuable it is to write a design doc."
+          },
+          {
+            "type": "p",
+            "text": "Consider these questions:"
+          },
+          {
+            "type": "li",
+            "text": "Will multiple people coordinate work to implement the design?"
+          },
+          {
+            "type": "li",
+            "text": "Will the project take more than three months of full-time dev work?"
+          },
+          {
+            "type": "li",
+            "text": "Will the implementation run in production for several years?"
+          },
+          {
+            "type": "li",
+            "text": "Does the project involve cross-team collaboration?"
+          },
+          {
+            "type": "li",
+            "text": "Are the goals and requirements of the project ambiguous?"
+          },
+          {
+            "type": "li",
+            "text": "Are there catastrophic risks you could prevent at design time (e.g., security flaws, legal risks)?"
+          },
+          {
+            "type": "p",
+            "text": "If you answered “yes” to any of these questions, then it’s likely worth the effort to write a design doc. If you answered “yes” to two or more, a design doc will almost certainly be worth the effort."
+          },
+          {
+            "type": "h2",
+            "text": "How much should you invest into your design doc?🔗"
+          },
+          {
+            "type": "p",
+            "text": "A design doc can be a simple one-pager or a 50-page document that requires signoff from five different teams. You need to decide how much detail makes sense."
+          },
+          {
+            "type": "p",
+            "text": "There’s no universal rule that says how long you should spend on a design doc just like there’s no rule that says how much to test your code. The right investment depends on your team’s goals, risks, deadlines, and culture. Sometimes, the right amount to invest in a design doc is zero."
+          },
+          {
+            "type": "h2",
+            "text": "What belongs in a design doc?🔗"
+          },
+          {
+            "type": "p",
+            "text": "If you specify every possible detail in a design doc, you’ve essentially written the implementation during the design phase. That would defeat the whole purpose of a design doc."
+          },
+          {
+            "type": "p",
+            "text": "As a rule of thumb, you can ask a simple question to decide whether a decision belongs in your design doc: what’s the penalty for being wrong?"
+          },
+          {
+            "type": "h3",
+            "text": "What’s the cost of getting it wrong?🔗"
+          },
+          {
+            "type": "p",
+            "text": "Not all design decisions are equally important. Some choices are radically more flexible than others."
+          },
+          {
+            "type": "p",
+            "text": "For example, if you build a web application in C++ and realize 200k lines later that Ruby on Rails was the better choice, you’re stuck. A from-scratch rewrite would never work, and even if you manage to write new code in Rails, you still suffer the burden of maintaining code in two wildly different languages."
+          },
+          {
+            "type": "p",
+            "text": "Other design decisions are trivial. For example, if your app displays a list of 1,000 articles, should they all appear at once? Or should the user see 20 at a time and click “Load more” to see the next 20?"
+          },
+          {
+            "type": "p",
+            "text": "It doesn’t matter."
+          },
+          {
+            "type": "p",
+            "text": "A “load more” button is not a design-level concern. If you pick one solution, and user feedback tells you you’re wrong, you can fix it in a few hours. You don’t need to detail your entire thought process in your design doc, and you definitely shouldn’t waste review cycles arguing about it."
+          },
+          {
+            "type": "h2",
+            "text": "Components of a design doc🔗"
+          },
+          {
+            "type": "p",
+            "text": "Below, I’ve included common sections to include in your design docs. You generally don’t need every single section for every doc. Choose the subset that make sense for you."
+          },
+          {
+            "type": "h3",
+            "text": "Title🔗"
+          },
+          {
+            "type": "p",
+            "text": "The first thing your project needs is a title. It’s the way people will refer to your project in conversation, so aim for something with these qualities:"
+          },
+          {
+            "type": "li",
+            "text": "Short: Easy to say aloud."
+          },
+          {
+            "type": "li",
+            "text": "Distinctive: Makes it clear which project it refers to."
+          },
+          {
+            "type": "li",
+            "text": "Evocative: Conceptually represents your project."
+          },
+          {
+            "type": "p",
+            "text": "For example, if you were adding a caching layer between your application server and your database server, RecencyBank would be a good name. It’s easy to say and describes your project’s purpose. A bad name would be “Project Flying Silver Horse” because it’s verbose and nonsensical."
+          },
+          {
+            "type": "h3",
+            "text": "Metadata🔗"
+          },
+          {
+            "type": "p",
+            "text": "Boring but useful, metadata helps your reader understand the basic context of your doc:"
+          },
+          {
+            "type": "li",
+            "text": "Who is the author? (name + email address)"
+          },
+          {
+            "type": "li",
+            "text": "When did you create the doc?"
+          },
+          {
+            "type": "li",
+            "text": "What’s the authoritative URL?Especially if your organization uses shortlink redirects like http://go/recency-bank"
+          },
+          {
+            "type": "quote",
+            "text": "MetadataAuthor: Michael Lynch (michael@refactoringenglish.com)Status: Ready for reviewCreated: 2026-06-22URL: http://go/recency-bank-design"
+          },
+          {
+            "type": "h3",
+            "text": "Objective🔗"
+          },
+          {
+            "type": "p",
+            "text": "The objective is a one-sentence explanation of your project’s purpose. It should appear on the first page of your doc in plain language that any stakeholder understands."
+          },
+          {
+            "type": "quote",
+            "text": "ObjectiveImprove application performance by adding a caching layer between the Trogdor web server and the Postgres database."
+          },
+          {
+            "type": "h3",
+            "text": "Background🔗"
+          },
+          {
+            "type": "p",
+            "text": "The background section explains the context and motivation for the project. It should answer these questions:"
+          },
+          {
+            "type": "li",
+            "text": "Why is the team taking on this project?"
+          },
+          {
+            "type": "li",
+            "text": "What problem does this project solve?"
+          },
+          {
+            "type": "li",
+            "text": "Were there previous attempts to solve this problem?"
+          },
+          {
+            "type": "quote",
+            "text": "BackgroundWhen we launched the Trogdor web app in 2023, pages typically loaded in 100ms or less. After three years, median page loads have ballooned to 600ms, which causes users to perceive our app as sluggish.We investigated the slowdown and discovered that database lookups make up 80% of page load times. As our data store has grown larger, database lookups have gotten slower.We also discovered that 95% of database lookups are for the same 3% of database rows. This pattern of usage benefits greatly from memory-backed caching. The cache would serve frequently-accessed data faster and reduce database load for all other queries."
+          },
+          {
+            "type": "p",
+            "text": "Does your design doc make sense without outside context?"
+          },
+          {
+            "type": "p",
+            "text": "Imagine what you’d say to a teammate or partner team before they read your design doc."
+          },
+          {
+            "type": "p",
+            "text": "Now, realize that some readers will see the doc before hearing any explanation from you, so whatever they need to understand should be on the first page of your doc."
+          },
+          {
+            "type": "p",
+            "text": "If this project connects to other documents, link to them so it’s easy for the reader to find them. This includes:"
+          },
+          {
+            "type": "li",
+            "text": "Documents from your program manager or testing counterparts on this project (e.g., test plans, functional specs)"
+          },
+          {
+            "type": "li",
+            "text": "Design docs for related systems"
+          },
+          {
+            "type": "li",
+            "text": "Design docs for previous iterations of this project"
+          },
+          {
+            "type": "quote",
+            "text": "Related documentsTesting plan: http://go/recency-bank-test-planTrogdor performance report: http://go/trogdor-perf-2026"
+          },
+          {
+            "type": "h3",
+            "text": "Goals🔗"
+          },
+          {
+            "type": "p",
+            "text": "The goals section describes your high-level goals for this project. It should connect logically to the background section and explain what the world looks like after you’ve completed implementation."
+          },
+          {
+            "type": "p",
+            "text": "Avoid setting goals in terms of implementation details. Your goals should communicate how the project benefits your users, your team, or your company."
+          },
+          {
+            "type": "li",
+            "text": "Add Kubernetes to our infrastructure."
+          },
+          {
+            "type": "li",
+            "text": "Minimize outages related to deploying new app versions."
+          },
+          {
+            "type": "quote",
+            "text": "GoalsIncrease user-perceied responsiveness for Trogdor web app.Reduce database server load."
+          },
+          {
+            "type": "h3",
+            "text": "Non-goals🔗"
+          },
+          {
+            "type": "p",
+            "text": "While the goals define what’s within your project’s scope, the non-goals section delineates what’s out of scope."
+          },
+          {
+            "type": "p",
+            "text": "Are there goals that readers might mistakenly assume are within scope for your project? If so, add them as explicit non-goals."
+          },
+          {
+            "type": "quote",
+            "text": "Non-goalsCreate a general-purpose, reusable caching systemThe caching layer we add to the Trogdor web app will make application-specific optimizations. Re-using this cache on other systems is out of scope.Location-aware cachingIt may be useful in the future to support caches that sit geographically close to the end user to reduce latency, but that is out of scope of v1."
+          },
+          {
+            "type": "h3",
+            "text": "Scenarios🔗"
+          },
+          {
+            "type": "p",
+            "text": "If your goal is something like “Add a ‘Share as URL’ button to charts,” the reader might not understand what that looks like in practice."
+          },
+          {
+            "type": "p",
+            "text": "The scenarios section allows you to paint a picture for your reader of how your completed system works in the real world."
+          },
+          {
+            "type": "quote",
+            "text": "Scenario: Share a report via URLBob creates a custom report in his KeyMetrics dashboard.Bob navigates to the menu bar and clicks “Share > as URL.”Bob emails the URL to his teammate, Charlie.Charlie clicks the link and sees an exact copy of Bob’s report in read-only mode."
+          },
+          {
+            "type": "h3",
+            "text": "Diagrams🔗"
+          },
+          {
+            "type": "p",
+            "text": "Diagrams are tremendously valuable, though they might not seem that way."
+          },
+          {
+            "type": "p",
+            "text": "As the design author, you intuitively understand how the pieces of your plan fit together. You can see the architecture in your head. Your reviewers do not have this mental picture, so the fastest way for them to see it is to draw them a picture."
+          },
+          {
+            "type": "p",
+            "text": "Example diagram showing the architecture of a simple web application."
+          },
+          {
+            "type": "p",
+            "text": "If you’re not sure what belongs in a diagram, think about these questions:"
+          },
+          {
+            "type": "li",
+            "text": "How does data flow through your system?"
+          },
+          {
+            "type": "li",
+            "text": "How do the different components of your system fit together?"
+          },
+          {
+            "type": "li",
+            "text": "How does your system interact with its dependencies and downstream clients?"
+          },
+          {
+            "type": "li",
+            "text": "What communication protocols does your system define?"
+          },
+          {
+            "type": "p",
+            "text": "Choose a diagramming tool that’s flexible to editing. I’ve seen developers create a beautiful diagram on a whiteboard and photograph it for their design doc. The first draft looks amazing, but then they’re stuck with that diagram forever because they can’t edit the photo without recreating the whole thing from scratch."
+          },
+          {
+            "type": "p",
+            "text": "Excalidraw, draw.io, and Google Drawings are popular diagramming tools that facilitate revisions. There are also languages like Mermaid, D2, and Graphviz that allow you to generate diagrams programmatically. I’ve had good experience using an LLM to create diagramming code for me. Remember to link to the source drawing or code so that your teammates have a way to reproduce the diagram as well."
+          },
+          {
+            "type": "h3",
+            "text": "Glossary🔗"
+          },
+          {
+            "type": "p",
+            "text": "The glossary defines terms that your readers might not recognize."
+          },
+          {
+            "type": "p",
+            "text": "Think hard about the potential readers of your doc, especially newer team members and people outside of your immediate team. Will those readers understand the names of internal tools or systems your doc references?"
+          },
+          {
+            "type": "p",
+            "text": "When possible, use terms that your audience recognizes without having to refer to a glossary. Defining a term in a glossary is better than not defining it at all, but the best solution is to use recognizable terms or define them inline so that the reader doesn’t have to jump around your document."
+          },
+          {
+            "type": "quote",
+            "text": "GlossaryApposaurus: the team’s internal load testing tool. We use Apposaurus to simulate a surge of visitors to the Trogdor web app so we can verify the app continues functioning under expected workloads.Baba-o-styley: an internal code linter that enforces the company’s code style conventions."
+          },
+          {
+            "type": "h3",
+            "text": "Constraints🔗"
+          },
+          {
+            "type": "p",
+            "text": "If there are major constraints imposed on your design by your budget, clients, infrastructure, or dependencies, explain the constraints so the reader understands the context of your design choices."
+          },
+          {
+            "type": "quote",
+            "text": "ConstraintsOur servers are all RISC-V, so all code and dependencies must run on RISC-V architecture."
+          },
+          {
+            "type": "h3",
+            "text": "Service level objectives (SLOs)🔗"
+          },
+          {
+            "type": "p",
+            "text": "SLOs are the measurable goals that a service offers to its clients or users. You’ve probably heard of service level agreements (SLAs). SLAs are just SLOs plus financial penalties for falling short."
+          },
+          {
+            "type": "p",
+            "text": "Within a company, you typically don’t financially penalize your co-workers for mistakes (although, wouldn’t that be kind of fun?). So, design docs define SLOs rather than SLAs."
+          },
+          {
+            "type": "p",
+            "text": "An SLO creates a measurable, objective metric for your system’s performance. Your manager might tell you that your app must be “performant on mobile,” but that’s vague. You don’t want to wait until code complete to discover that your manager’s definition of “performant” is <2ms of latency. A well-defined SLO prevents ambiguity by expressing goals in concrete, objective terms."
+          },
+          {
+            "type": "p",
+            "text": "The typical considerations for your SLO are:"
+          },
+          {
+            "type": "li",
+            "text": "Uptime / availability: What percentage of time will your system be available?"
+          },
+          {
+            "type": "li",
+            "text": "Latency: How quickly will your service complete requests?"
+          },
+          {
+            "type": "li",
+            "text": "Scale: What volume of work can your system handle?"
+          },
+          {
+            "type": "quote",
+            "text": "Service level objectivesTrogdor’s 50th percentile latency for user-facing HTTP requests: <=200msPostgres 50th percentile query latency: <= 80ms"
+          },
+          {
+            "type": "h3",
+            "text": "Monitoring / alerting🔗"
+          },
+          {
+            "type": "p",
+            "text": "Once you nail down your SLOs (above), it’s time to think about how you’ll measure them in production."
+          },
+          {
+            "type": "p",
+            "text": "The simplest way to verify that you’ve achieved your SLOs is to test manually. As your organization matures, you should automate monitoring to discover SLO failures immediately."
+          },
+          {
+            "type": "p",
+            "text": "When defining your monitoring strategy, ask yourself these questions:"
+          },
+          {
+            "type": "li",
+            "text": "If your service goes down, how will you find out?"
+          },
+          {
+            "type": "li",
+            "text": "If your service’s performance slows by 100x, how will you know?"
+          },
+          {
+            "type": "li",
+            "text": "What other events should trigger an alert?e.g., spikes in CPU usage, authentication failures, system errors"
+          },
+          {
+            "type": "quote",
+            "text": "MonitoringThe following events will trigger a page to the on-call engineer:Trogdor’s 95th percentile latency for user-facing HTTP requests: >= 3sAverage CPU usage for Postgres servers during trailing 2m window: >= 90%"
+          },
+          {
+            "type": "h3",
+            "text": "Timeline🔗"
+          },
+          {
+            "type": "p",
+            "text": "The timeline section breaks your project into milestones and specifies when project stakeholders will receive their deliverables."
+          },
+          {
+            "type": "p",
+            "text": "Choose milestones that create useful artifacts for stakeholders. For example, start with a UI that shows dummy data, and show that to clients first. If it turns out you misunderstood the client’s requirements, fake data lets you find out early rather than after you’ve already implemented all the plumbing to populate the UI with production data."
+          },
+          {
+            "type": "p",
+            "text": "If you don’t know how to estimate project timelines, I highly recommend Joel Spolsky’s, “Painless Software Schedules.” The article is 25 years old, but it remains my favorite software estimation strategy."
+          },
+          {
+            "type": "quote",
+            "text": "TimelineMilestone 1 (2026-07-01): RecencyBank is live in the test environment with a hardcoded subset of cached data (doesn’t read from Postgres).Milestone 2 (2026-07-17): RecencyBank is live in the test environment and caches real data from Postgres.Milestone 3 (2026-08-03): RecencyBank is live in the test environment and enforces cache eviction and lifecycle rules.Milestone 4 (2026-08-22): RecencyBank is fully implemented and deployed to production."
+          },
+          {
+            "type": "h3",
+            "text": "Interfaces🔗"
+          },
+          {
+            "type": "p",
+            "text": "Your project exists to serve people or other software systems, so what do those interactions look like?"
+          },
+          {
+            "type": "li",
+            "text": "For graphical systems, what is the user interface?Just simple sketches; don’t get bogged down in precise UI choices."
+          },
+          {
+            "type": "li",
+            "text": "For software interfaces, what are the API or CLI semantics?"
+          },
+          {
+            "type": "li",
+            "text": "For file-based interfaces, what is the file format?"
+          },
+          {
+            "type": "quote",
+            "text": "InterfacesThe Trogdor Server struct currently depends directly on a PostgresDB Go struct like this:type Server struct { db PostgresDB }\nPostgresDB has the following exported methods:GetUser(id UserID) (User, error)\nListUsers() ([]User, error)\n...\nWe will create a Go interface type with the same API surface as PostgresDB:type Store interface {\n  GetUser(id UserID) (User, error)\n  ListUsers() ([]User, error)\n}\nWe will implement a RecencyBank caching type that implements the same interface and wraps the backend PostgresDB struct. The RecencyBank implementation will cache reads from Postgres and forward requests to Postgres when they mutate state or depend on data not in the cache.The only change to the Server implementation will be replacing the type of one member with the new interface:type Server struct { db store.Store }"
+          },
+          {
+            "type": "h3",
+            "text": "Dependencies / infrastructure🔗"
+          },
+          {
+            "type": "p",
+            "text": "The dependencies section should answer questions like:"
+          },
+          {
+            "type": "li",
+            "text": "What programming language(s) will you use?"
+          },
+          {
+            "type": "li",
+            "text": "On what hardware or service does the code run?"
+          },
+          {
+            "type": "li",
+            "text": "Where will persistent data live?"
+          },
+          {
+            "type": "p",
+            "text": "It’s easy to overlook this section, but decisions about language, libraries, and infrastructure have a major impact on the complexity and long-term maintenance costs of your system."
+          },
+          {
+            "type": "p",
+            "text": "Think deeply about which dependencies will be difficult to change after implementation, and don’t worry so much about the ones that swap out easily. It’s difficult to change languages or storage backends, but if you’re dissatisfied with the third-party service you use to send emails, you can replace it in an afternoon."
+          },
+          {
+            "type": "quote",
+            "text": "DependenciesLanguage: GoWe widely use Go already, and it’s a suitable language for serving highly parallel workflows.Third-party packagesbbolt: This is a widely used key-value store implementation that implements many of the features we need for RecencyBank."
+          },
+          {
+            "type": "h3",
+            "text": "Security🔗"
+          },
+          {
+            "type": "p",
+            "text": "To build secure software, developers must integrate security into the full software lifecycle, starting at the design stage."
+          },
+          {
+            "type": "p",
+            "text": "The security section should answer questions like:"
+          },
+          {
+            "type": "li",
+            "text": "What threats did you consider?e.g., what happens if an attacker tries every possible password? What if a user uploads a PDF infected with malware?"
+          },
+          {
+            "type": "li",
+            "text": "What is the attack surface of this system?i.e., where does it process potentially malicious data?"
+          },
+          {
+            "type": "li",
+            "text": "What are the trust boundaries?At what point does data flow from a less privileged system to a more privileged system?e.g., in a web app, requests from the user’s browser cross a trust boundary, as the web server shouldn’t assume input from the browser is safe."
+          },
+          {
+            "type": "p",
+            "text": "Even if you think security threats are unlikely or irrelevant in your system, it’s still helpful to document your rationale. Your explanation might prompt reviewers to identify threats you overlooked."
+          },
+          {
+            "type": "quote",
+            "text": "SecurityRecencyBank must not accept direct requests from the public Internet, as it does not enforce any access control.RecencyBank will run on a segregated network where it only accepts inbound requests from the Trogdor web server and can only make outbound requests to the Postgres server pool."
+          },
+          {
+            "type": "h3",
+            "text": "Privacy🔗"
+          },
+          {
+            "type": "p",
+            "text": "The privacy section is an opportunity to think through the sensitive data your system handles and what safeguards you’ll put in place to keep it secure. It should answer these questions:"
+          },
+          {
+            "type": "li",
+            "text": "What sensitive data does your system handle?"
+          },
+          {
+            "type": "li",
+            "text": "How long will you retain it?"
+          },
+          {
+            "type": "li",
+            "text": "Who will have access to it?"
+          },
+          {
+            "type": "li",
+            "text": "How will you protect it?e.g., will the data be encrypted at rest and in transit?"
+          },
+          {
+            "type": "quote",
+            "text": "PrivacyRecencyBank contains the same sensitive user data as the Postgres database, so it inherits the privacy policy of our Postgres systems. In particular, engineers may only access RecencyBank systems in production with an associated bug number. Engineers must miimize the user data they access to only what is strictly required to investigate a bug."
+          },
+          {
+            "type": "h3",
+            "text": "Legal considerations🔗"
+          },
+          {
+            "type": "p",
+            "text": "If your system operates in a highly-regulated domain like finance or healthcare, the legal section helps you comply with relevant laws."
+          },
+          {
+            "type": "p",
+            "text": "Even outside of regulated domains, think about whether your system could break the law if things go awry. Explain how you’ll steer clear of legal violations that could put your company or clients at risk."
+          },
+          {
+            "type": "p",
+            "text": "If you’re publishing your code under an open-source license, define which license you’ve chosen and why."
+          },
+          {
+            "type": "quote",
+            "text": "FizzleCorp contractual complianceOur contract with FizzleCorp strictly limits our ability to create new copies of their proprietary FizzlePerfect™ user biometrics.Fortunately, our legal team reviewed the wording of the contract and confirmed that a caching layer fits within the existing definition of “storage layer,” so we may cache FizzlePefect™ data within RecencyBank without contract renegotiation."
+          },
+          {
+            "type": "h3",
+            "text": "Logging🔗"
+          },
+          {
+            "type": "p",
+            "text": "Logs can be tremendously valuable when you’re investigating a bug, performance issue, or security incident. If you design for effective logging, you’ll make it easier to maintain your system long-term."
+          },
+          {
+            "type": "p",
+            "text": "As you think about logging, consider these questions:"
+          },
+          {
+            "type": "li",
+            "text": "What critical events does the service log?"
+          },
+          {
+            "type": "li",
+            "text": "Are there different log levels?e.g., informational, warning, error, critical"
+          },
+          {
+            "type": "li",
+            "text": "Where does the system store its logs?"
+          },
+          {
+            "type": "li",
+            "text": "How long do you retain your logs?"
+          },
+          {
+            "type": "li",
+            "text": "Who has access to the logs?"
+          },
+          {
+            "type": "li",
+            "text": "Is there any sensitive data you must keep out of the logs?"
+          },
+          {
+            "type": "quote",
+            "text": "LoggingRecencyBank logs the following events:At initialization, logs the parameters used to initialize RecencyBank as well as RAM capacity and usage on the host.Failures to persist a value in memory.Failures to invalidate the cache after mutating an item in Postgres."
+          },
+          {
+            "type": "h3",
+            "text": "Open issues🔗"
+          },
+          {
+            "type": "p",
+            "text": "As you write your design doc, you’ll likely encounter at least one of the following situations:"
+          },
+          {
+            "type": "li",
+            "text": "There’s a flaw in your design, but you’re not sure how to solve it."
+          },
+          {
+            "type": "li",
+            "text": "You’re torn between multiple solutions."
+          },
+          {
+            "type": "li",
+            "text": "There’s a gap in your design because you need to gather more information."
+          },
+          {
+            "type": "p",
+            "text": "Create an appendix in your design doc called “Open Issues” that documents your outstanding issues."
+          },
+          {
+            "type": "p",
+            "text": "Each entry in the open issues section should explain:"
+          },
+          {
+            "type": "li",
+            "text": "What’s the problem that requires more work?"
+          },
+          {
+            "type": "li",
+            "text": "What options do you see for resolving the issue?"
+          },
+          {
+            "type": "li",
+            "text": "What is the immediate next step for resolving the issue?"
+          },
+          {
+            "type": "quote",
+            "text": "Open Issue: Choosing RAM size for cacheWe need to decide how much RAM to assign to our caching layer. Adding RAM increases performance, but RAM is expensive, and there are diminishing returns to extra RAM.There is some optimal amount of RAM that minimizes our infrastructure costs between the caching system and our database. We could theoretically discover that optimal value by setting up a test environment and running several simulations, but running those simulations costs us dev time.I estimate the cost of creating a test environment and running a single simulation to be 3.0 dev days. Once the infrastructure is in place, additional simulations will take about 0.75 dev days each.Proposed solution: Choose 128 GB of RAM without testing. It’s probably close to optimal, and dev time is significantly more expensive than RAM.Next step: Ask our tech lead to weigh in."
+          },
+          {
+            "type": "h3",
+            "text": "Resolved issues🔗"
+          },
+          {
+            "type": "p",
+            "text": "When you resolve an open issue, summarize the decision, and move it from “Open issues” to a “Resolved issues” section in your design doc. Retain the full discussion for posterity."
+          },
+          {
+            "type": "quote",
+            "text": "Resolved Issue: Choosing RAM size for cacheDecision: Provision 128 GB of RAM to the caching layer. If we’re failing to meet our performance goals and we’re RAM-constrained, we can add more RAM at that point. The dev cost of running tests to discover the perfect RAM size far outweighs the cost of additional RAM.We need to decide… [rest of original open issue goes here]"
+          },
+          {
+            "type": "h3",
+            "text": "Alternatives considered🔗"
+          },
+          {
+            "type": "p",
+            "text": "If you anticipate readers asking, “Why didn’t you do X?” it’s helpful to answer that proactively in an “alternatives considered” section. This section is also where you can explain options you rejected, especially if they initially seemed appealing or you researched them extensively."
+          },
+          {
+            "type": "p",
+            "text": "I know some developers who spend hours meticulously documenting their every rejected design idea, but I think that’s overkill. As both a reader and author, all I need in the alternatives section is a few brief lines describing strong alternatives and why they didn’t work."
+          },
+          {
+            "type": "quote",
+            "text": "Alternatives ConsideredGoogle Cloud Firestore (persistent storage)The durability and reliability was appealing, but I disliked the platform lock-in and the difficulty of testing locally."
+          },
+          {
+            "type": "h2",
+            "text": "Driving Your Design Doc through Review🔗"
+          },
+          {
+            "type": "p",
+            "text": "Once you’ve completed your design doc, the next step is to share it with your team and gather feedback."
+          },
+          {
+            "type": "p",
+            "text": "The following section covers techniques for eliciting useful design feedback that moves your project forward rather than stalling it with bickering and confusion:"
+          },
+          {
+            "type": "li",
+            "text": "How to Get Meaningful Feedback on Your Design Document"
+          }
+        ],
+        "translations": [
+          "一份优秀的设计文档可以为你节省数年的开发时间。编写设计文档能迫使你在浪费时间去进行错误的实现或陷入死胡同之前，深思熟虑各项重要决策。这也是在团队成员和合作团队之间协调设计决策的最佳方式。",
+          "作为曾在 Google、Microsoft 以及我自家公司任职的开发者，我写过不少设计文档。虽然具体细节各有不同，但核心原则始终如一。一份设计文档应该清晰阐述你要解决的难题，并帮助团队成员为你提供反馈。",
+          "下面，我将分享自己创建高效设计文档的方法，并说明设计文档中应该包含哪些内容，以及不该包含哪些内容。",
+          "设计文档示例",
+          "什么时候应该编写设计文档？",
+          "你应该在设计文档上投入多少精力？",
+          "设计文档应该包含哪些内容？如果弄错了会有什么代价？",
+          "设计文档的组成部分 标题 元数据 目标 背景 相关文档 目标 非目标 场景 图表 术语表 约束条件 服务级别目标 (SLOs) 监控/警报 时间线 接口 依赖项/基础设施 安全 隐私 法律考量 日志记录 未解决问题 已解决问题 考虑过的备选方案",
+          "推动你的设计文档通过评审",
+          "设计文档示例🔗",
+          "关于设计文档，我最常被问到的问题就是去哪里能找到一份好的设计文档。我从未见过公开的高质量设计文档。我自己写的那些文档都被藏在雇我写它们的公司内部了。",
+          "因此，我根据在这里分享的原则，从头开始写了一份设计文档。它详细规划了我正在开发的一款真实 Web 应用程序的设计。",
+          "我在编写任何代码之前就创建了这份设计文档，并且在实现该应用程序时一直严格遵循该设计。",
+          "Little Moments 设计文档",
+          "这份设计比我平时为个人业余项目写的要详尽得多，但如果我是在专业项目中与其他人协同工作，我创建的设计文档大概也就是这个篇幅和深度。",
+          "什么时候应该编写设计文档？🔗",
+          "项目越复杂或风险越高，编写设计文档就越有价值。",
+          "请考虑以下问题：",
+          "是否需要多人协调工作来实现该设计？",
+          "该项目是否需要超过三个月的全职开发工作量？",
+          "该实现是否会在生产环境中运行数年？",
+          "该项目是否涉及跨团队协作？",
+          "项目的目标和需求是否不明确？",
+          "是否存在可以在设计阶段预防的灾难性风险（例如，安全漏洞、法律风险）？",
+          "如果你对其中任何一个问题的回答为“是”，那么编写设计文档很可能是值得的。如果你对两个或更多问题的回答为“是”，那么这份努力几乎绝对是值得的。",
+          "你应该在设计文档上投入多少精力？🔗",
+          "设计文档可以是一页简单的摘要，也可以是一份长达 50 页、需要五个不同团队签字批准的文档。你需要自行决定多少细节才是合理的。",
+          "关于在设计文档上应该花费多少时间，并没有通用法则，就像没有法则规定你应该对代码进行多少测试一样。正确的投入程度取决于你团队的目标、风险、截止日期和文化。有时，在设计文档上的合理投入甚至可以是零。",
+          "设计文档应该包含哪些内容？🔗",
+          "如果你在设计文档中详细说明了每一个可能的细节，那么你实际上已经在设计阶段完成了实现工作。这就完全违背了设计文档的初衷。",
+          "作为一个经验法则，你可以问一个简单的问题来决定某个决策是否属于设计文档的范畴：如果选错了，代价是什么？",
+          "选错的成本是什么？🔗",
+          "并非所有的设计决策都同等重要。有些选择的灵活性远超其他选择。",
+          "例如，如果你用 C++ 构建了一个 Web 应用程序，而在写了 20 万行代码后发现 Ruby on Rails 是更好的选择，那你就陷入僵局了。从头重写是不可能的，即使你设法在 Rails 中编写新代码，你依然要承受维护两种截然不同的语言代码的负担。",
+          "其他一些设计决策则微不足道。例如，如果你的应用要显示 1,000 篇文章的列表，应该一次性全部显示吗？还是应该让用户一次看 20 篇，然后点击“加载更多”来查看接下来的 20 篇？",
+          "这无关紧要。",
+          "“加载更多”按钮不是设计层面的问题。如果你选择了一种方案，而用户反馈告诉你选错了，你可以在几个小时内修复它。你不需要在设计文档中详述整个思考过程，而且你绝对不应该浪费评审周期去争论这个问题。",
+          "设计文档的组成部分🔗",
+          "下面，我列出了设计文档中应包含的常见章节。通常你不需要在每份文档中都包含每一个章节。请选择适合你的子集。",
+          "标题🔗",
+          "你的项目首先需要的是一个标题。这是人们在交谈中提及你的项目的方式，因此请力求具备以下特质：",
+          "简短：易于大声读出。",
+          "独特：能明确指出它指的是哪个项目。",
+          "形象：在概念上代表你的项目。",
+          "例如，如果你要在应用服务器和数据库服务器之间添加一个缓存层，RecencyBank 会是一个好名字。它很容易说出口，并且描述了项目的目的。一个糟糕的名字会是“飞行的银马项目”（Project Flying Silver Horse），因为它冗长且毫无意义。",
+          "元数据🔗",
+          "虽然枯燥但很有用，元数据可以帮助读者了解文档的基本背景：",
+          "作者是谁？（姓名 + 电子邮件地址）",
+          "文档是何时创建的？",
+          "权威 URL 是什么？特别是当你的组织使用像 http://go/recency-bank 这样的短链接重定向时",
+          "元数据作者：Michael Lynch (michael@refactoringenglish.com)状态：准备评审创建时间：2026-06-22URL：http://go/recency-bank-design",
+          "目标🔗",
+          "目标是对项目目的的一句话解释。它应该以任何利益相关者都能理解的通俗语言出现在文档的第一页。",
+          "目标通过在 Trogdor Web 服务器和 Postgres 数据库之间添加缓存层来提高应用程序性能。",
+          "背景🔗",
+          "背景部分解释了项目的背景和动机。它应该回答以下问题：",
+          "团队为什么要承担这个项目？",
+          "这个项目解决什么问题？",
+          "以前是否尝试过解决这个问题？",
+          "背景当我们在 2023 年推出 Trogdor Web 应用时，页面通常在 100 毫秒或更短时间内加载完毕。三年后，页面加载中位数时间已激增至 600 毫秒，这使得用户认为我们的应用很迟缓。我们调查了变慢的原因，发现数据库查找占了页面加载时间的 80%。随着我们的数据存储规模越来越大，数据库查找变得越来越慢。我们还发现，95% 的数据库查找都是针对相同的 3% 的数据库行。这种使用模式非常受益于基于内存的缓存。缓存能更快地提供频繁访问的数据，并减少所有其他查询的数据库负载。",
+          "你的设计文档在没有外部背景说明的情况下，读起来是否清晰易懂？",
+          "想象一下，在队友或合作团队阅读你的设计文档之前，你会对他们说些什么。",
+          "现在请意识到，有些读者会在听到你的任何解释之前就看到这份文档，因此他们需要了解的所有内容都应该放在文档的第一页。",
+          "如果本项目与其他文档有关联，请附上链接，方便读者查阅。这些文档包括：",
+          "来自项目经理或测试对接人的项目文档（例如：测试计划、功能规格说明）",
+          "相关系统的设计文档",
+          "本项目此前迭代的设计文档",
+          "相关文档测试计划：http://go/recency-bank-test-planTrogdor 性能报告：http://go/trogdor-perf-2026",
+          "目标🔗",
+          "目标部分描述的是本项目的高层目标。它应该与背景部分逻辑连贯，并说明在完成实现之后，整体面貌会是怎样的。",
+          "避免用实现细节来定义目标。你的目标应该阐明项目如何为用户、团队或公司带来价值。",
+          "在我们的基础设施中引入 Kubernetes。",
+          "尽量减少因部署新应用版本而导致的宕机。",
+          "目标提升 Trogdor Web 应用的用户感知响应速度。降低数据库服务器负载。",
+          "非目标🔗",
+          "目标定义了项目的范围内内容，而非目标部分则界定了范围外的内容。",
+          "有没有哪些目标，读者可能会误以为属于本项目的范围？如果有，请将它们明确列为非目标。",
+          "非目标构建通用的、可复用的缓存系统我们为 Trogdor Web 应用添加的缓存层将进行针对应用的优化。在其他系统上复用此缓存不在范围内。基于地理位置感知的缓存未来若能支持部署在地理位置上靠近终端用户的缓存以降低延迟，可能会很有价值，但这不在 v1 的范围内。",
+          "场景🔗",
+          "如果你的目标类似于\"在图表上添加一个'分享为 URL'按钮\"，读者可能无法理解这在实际中是什么样子。",
+          "场景部分可以让你为读者描绘一幅画面，展示完成后的系统在真实世界中是如何运作的。",
+          "场景：通过 URL 分享报告Bob 在他的 KeyMetrics 仪表板中创建了一份自定义报告。Bob 导航到菜单栏，点击\"分享 > 作为 URL\"。Bob 将该 URL 通过邮件发送给队友 Charlie。Charlie 点击链接，以只读模式看到了与 Bob 的报告完全相同的内容。",
+          "图表🔗",
+          "图表非常有价值，尽管它们看起来可能并非如此。",
+          "作为设计作者，你直觉性地理解方案中各个部分如何组合在一起。你脑海中已有架构全貌。而你的评审者并没有这个心理图像，因此让他们最快理解的方式就是画一张图。",
+          "展示简单 Web 应用架构的示例图表。",
+          "如果你不确定图表中应该包含什么，可以思考以下问题：",
+          "数据如何在你的系统中流转？",
+          "系统的不同组件之间如何配合工作？",
+          "你的系统如何与其依赖项和下游客户端交互？",
+          "你的系统定义了哪些通信协议？",
+          "选择一个易于编辑的绘图工具。我见过开发者在白板上画了一张精美的图表，然后拍照放到设计文档中。初稿看起来很棒，但之后他们就被这张图永远困住了，因为要修改照片，只能从头重新画起。",
+          "Excalidraw、draw.io 和 Google Drawings 都是流行的绘图工具，便于修改。此外，还有 Mermaid、D2 和 Graphviz 等语言，允许你通过编写代码来生成图表。我在使用大语言模型（LLM）为我生成图表代码方面有着很好的体验。请记得附上源图或代码的链接，以便你的团队成员也能复现该图表。",
+          "术语表🔗",
+          "术语表用于定义读者可能不熟悉的术语。",
+          "仔细考虑文档的潜在读者，尤其是新团队成员和直属团队之外的人员。这些读者能看懂文档中提到的内部工具或系统的名称吗？",
+          "尽可能使用受众无需查阅术语表就能看懂的术语。在术语表中定义一个词总比不定义好，但最佳的解决方案是使用通俗易懂的术语，或者直接在文中内联解释，这样读者就不必在文档中来回跳转了。",
+          "术语表 Apposaurus：团队的内部负载测试工具。我们使用 Apposaurus 来模拟 Trogdor Web 应用的访问量激增，以便验证应用在预期工作负载下能否继续正常运行。Baba-o-styley：执行公司代码风格规范的内部代码检查工具。",
+          "约束条件🔗",
+          "如果预算、客户、基础设施或依赖项对您的设计施加了重大约束，请解释这些约束，以便读者理解您设计选择的背景。",
+          "约束条件 我们的服务器全都是 RISC-V 架构的，因此所有代码和依赖项都必须在 RISC-V 架构上运行。",
+          "服务级别目标（SLOs）🔗",
+          "SLOs 是服务向其客户或用户提供的可衡量目标。你可能听说过服务级别协议。SLAs 只是 SLOs 加上未达标时的财务罚款。",
+          "在公司内部，你通常不会因为同事犯错就对他们进行经济处罚（虽然这听起来可能有点意思？）。因此，设计文档中定义的是 SLOs 而非 SLAs。",
+          "SLO 为系统的性能创建了一个可衡量、客观的指标。你的主管可能会告诉你，你的应用必须“在移动端表现出色”，但这太模糊了。你肯定不想等到代码编写完成时才发现，主管对“表现出色”的定义是延迟 <2ms。定义明确的 SLO 能够通过具体、客观的术语来表达目标，从而避免歧义。",
+          "关于 SLO，通常需要考虑以下几点：",
+          "正常运行时间 / 可用性：系统在多少比例的时间内是可用的？",
+          "延迟：你的服务完成请求的速度有多快？",
+          "规模：你的系统能处理多大的工作量？",
+          "服务级别目标 Trogdor 面向用户的 HTTP 请求的第 50 百分位延迟：<=200ms Postgres 第 50 百分位查询延迟：<= 80ms",
+          "监控 / 告警🔗",
+          "一旦确定了（上述）SLO，接下来就该考虑如何在生产环境中对其进行测量了。",
+          "验证是否达成 SLO 最简单的方法是手动测试。随着组织的不断成熟，你应该实现监控自动化，以便在 SLO 未达标时立即发现。",
+          "在制定监控策略时，请问自己以下几个问题：",
+          "如果你的服务宕机了，你将如何知晓？",
+          "如果你的服务性能下降到了原来的 1/100，你将如何察觉？",
+          "还有哪些其他事件应该触发告警？例如：CPU 使用率激增、身份验证失败、系统错误",
+          "监控：以下事件将触发向值班工程师发送寻呼：Trogdor 面向用户的 HTTP 请求的第 95 百分位延迟：>= 3秒；Postgres 服务器在滚动 2 分钟窗口内的平均 CPU 使用率：>= 90%。",
+          "时间表🔗",
+          "时间表部分将你的项目划分为若干里程碑，并明确了项目利益相关者将在何时收到他们的交付物。",
+          "选择能够为利益相关者产生有价值产出物的里程碑。例如，可以从展示模拟数据的 UI 开始，并先将其展示给客户。如果事实证明你误解了客户的需求，假数据能让你及早发现问题，而不是在你已经实现了所有底层管道逻辑以利用生产数据填充 UI 之后才发现。",
+          "如果你不知道如何估算项目时间表，我强烈推荐 Joel Spolsky 的《Painless Software Schedules》。这篇文章已有 25 年历史，但它依然是我最喜欢的软件估算策略。",
+          "时间表：里程碑 1 (2026-07-01)：RecencyBank 在测试环境中上线，包含硬编码的缓存数据子集（不从 Postgres 读取数据）。里程碑 2 (2026-07-17)：RecencyBank 在测试环境中上线，并从 Postgres 缓存真实数据。里程碑 3 (2026-08-03)：RecencyBank 在测试环境中上线，并执行缓存驱逐和生命周期规则。里程碑 4 (2026-08-22)：RecencyBank 完全实现并部署到生产环境。",
+          "接口🔗",
+          "你的项目旨在为人或其他软件系统提供服务，那么这些交互是什么样的呢？",
+          "对于图形系统，用户界面是什么样的？只需简单的草图即可；不要陷入对具体 UI 选择的纠结中。",
+          "对于软件接口，API 或 CLI 的语义是什么？",
+          "对于基于文件的接口，文件格式是什么？",
+          "接口：Trogdor Server 结构体目前直接依赖于 PostgresDB Go 结构体，如下所示：type Server struct { db PostgresDB }\nPostgresDB 具有以下导出方法：GetUser(id UserID) (User, error)\nListUsers() ([]User, error)\n...\n我们将创建一个 Go 接口类型，其 API 表面与 PostgresDB 相同：type Store interface {\n  GetUser(id UserID) (User, error)\n  ListUsers() ([]User, error)\n}\n我们将实现一个 RecencyBank 缓存类型，它实现了相同的接口并包装了后端 PostgresDB 结构体。RecencyBank 实现将缓存从 Postgres 读取的数据，并在请求改变状态或依赖于不在缓存中的数据时，将请求转发给 Postgres。对 Server 实现的唯一更改是将一个成员的类型替换为新的接口：type Server struct { db store.Store }",
+          "依赖项 / 基础设施🔗",
+          "依赖项部分应该回答如下问题：",
+          "你将使用什么编程语言？",
+          "代码运行在什么硬件或服务上？",
+          "持久化数据将存放在哪里？",
+          "很容易忽视这一部分，但关于语言、库和基础设施的决策会对系统的复杂性和长期维护成本产生重大影响。",
+          "深入思考哪些依赖项在实现后难以更改，而对于那些容易替换的依赖项则不必过于担心。更改语言或存储后端很困难，但如果你对用于发送电子邮件的第三方服务不满意，你可以在一个下午就将其替换掉。",
+          "依赖项：语言：Go。我们已经广泛使用 Go，并且它是一种适合提供高度并行工作流的语言。第三方包：bbolt：这是一个广泛使用的键值存储实现，它实现了 RecencyBank 所需的许多功能。",
+          "安全性🔗",
+          "为了构建安全的软件，开发人员必须从设计阶段开始，将安全性贯穿于整个软件生命周期。",
+          "安全性部分应该回答以下问题：",
+          "你考虑了哪些威胁？例如，如果攻击者尝试穷举所有可能的密码会发生什么？如果用户上传了感染恶意软件的 PDF 会发生什么？",
+          "该系统的攻击面是什么？即，它在何处处理潜在的恶意数据？",
+          "信任边界在哪里？数据在何时从低权限系统流向高权限系统？例如，在 Web 应用中，来自用户浏览器的请求会跨越信任边界，因为 Web 服务器不应假设来自浏览器的输入是安全的。",
+          "即使你认为安全威胁在你的系统中不太可能发生或与之无关，记录你的理由仍然很有帮助。你的解释可能会促使审查者发现你忽略的威胁。",
+          "安全性：RecencyBank 不得接受来自公共 Internet 的直接请求，因为它不执行任何访问控制。RecencyBank 将运行在一个隔离的网络中，仅接受来自 Trogdor Web 服务器的入站请求，且只能向 Postgres 服务器池发出出站请求。",
+          "隐私🔗",
+          "隐私部分提供了一个机会，让你仔细思考系统处理的敏感数据以及为确保其安全将采取的保护措施。它应该回答以下问题：",
+          "你的系统处理哪些敏感数据？",
+          "你会保留这些数据多长时间？",
+          "谁有权访问这些数据？",
+          "你将如何保护这些数据？例如，数据在静态存储和传输过程中是否会被加密？",
+          "隐私性：RecencyBank 包含与 Postgres 数据库相同的敏感用户数据，因此它继承了 Postgres 系统的隐私策略。具体而言，工程师只有在关联了错误编号的情况下才能在生产环境中访问 RecencyBank 系统。工程师必须将其访问的用户数据降至调查错误所严格必需的最低限度。",
+          "法律考量🔗",
+          "如果你的系统在金融或医疗等受到严格监管的领域运行，法律部分将帮助你遵守相关法律。",
+          "即使在受监管的领域之外，也要考虑如果出现问题，你的系统是否会触犯法律。说明你将如何避免可能使你的公司或客户面临风险的法律违规行为。",
+          "如果你要在开源许可下发布代码，请说明你选择了哪种许可协议以及原因。",
+          "FizzleCorp 合同合规性：我们与 FizzleCorp 签订的合同严格限制了为其专有的 FizzlePerfect™ 用户生物特征数据创建新副本的能力。幸运的是，我们的法律团队审查了合同措辞，并确认缓存层符合现有对“存储层”的定义，因此我们可以在 RecencyBank 中缓存 FizzlePefect™ 数据，而无需重新协商合同。",
+          "日志记录🔗",
+          "在调查错误、性能问题或安全事件时，日志可能具有极大的价值。如果你能在设计时就考虑到有效的日志记录，将使系统的长期维护变得更加容易。",
+          "在思考日志记录时，请考虑以下问题：",
+          "该服务会记录哪些关键事件？",
+          "是否有不同的日志级别？例如，信息、警告、错误、严重",
+          "系统将其日志存储在哪里？",
+          "你会保留日志多长时间？",
+          "谁有权访问日志？",
+          "是否有任何必须排除在日志之外的敏感数据？",
+          "LoggingRecencyBank 会记录以下事件：在初始化时，记录用于初始化 RecencyBank 的参数，以及主机的 RAM 容量和使用情况。在内存中持久化值失败的情况。在 Postgres 中修改数据后未能使缓存失效的情况。",
+          "待解决问题🔗",
+          "在撰写设计文档时，你可能会遇到以下至少一种情况：",
+          "你的设计存在缺陷，但你不确定如何解决。",
+          "你在多个解决方案之间犹豫不决。",
+          "你的设计中存在空白，因为你需要收集更多信息。",
+          "在设计文档中创建一个名为“待解决问题”（Open Issues）的附录，用来记录你未解决的问题。",
+          "待解决问题部分中的每个条目都应说明：",
+          "需要进一步解决的问题是什么？",
+          "你认为有哪些解决该问题的方案？",
+          "解决该问题的直接下一步是什么？",
+          "待解决问题：选择缓存的 RAM 大小。我们需要决定为缓存层分配多少 RAM。增加 RAM 可以提高性能，但 RAM 成本高昂，而且额外增加 RAM 的边际效益会递减。在缓存系统和数据库之间，存在一个能使我们的基础设施成本最小化的最佳 RAM 数量。理论上，我们可以通过搭建测试环境并运行多次模拟来找出那个最佳值，但运行这些模拟会耗费我们的开发时间。我估计搭建测试环境和运行单次模拟的成本为 3.0 个开发人天。一旦基础设施搭建完成，每次额外的模拟大约需要 0.75 个开发人天。建议的解决方案：不进行测试，直接选择 128 GB 的 RAM。这应该接近最佳值，而且开发时间的成本远高于 RAM。下一步：征求技术负责人的意见。",
+          "已解决问题🔗",
+          "当你解决了一个待解决问题时，请总结决策，并将其从“待解决问题”移至设计文档中的“已解决问题”部分。保留完整的讨论记录以备将来参考。",
+          "已解决问题：选择缓存的 RAM 大小。决策：为缓存层分配 128 GB 的 RAM。如果我们未能达到性能目标且受限于 RAM，届时我们可以再增加 RAM。运行测试以寻找完美 RAM 大小的开发成本远远超过额外 RAM 的成本。我们需要决定……[此处为原待解决问题的其余部分]",
+          "考虑过的替代方案🔗",
+          "如果你预料到读者会问“你为什么没有采用 X 方案？”，那么在“考虑过的替代方案”部分主动回答这个问题会很有帮助。在这个部分，你还可以解释你拒绝了哪些方案，特别是那些最初看起来很有吸引力或你进行过深入研究的方案。",
+          "我认识一些开发者，他们会花几个小时仔细记录下每一个被否决的设计想法，但我认为这有些小题大做。作为读者和作者，我在替代方案部分所需要的，只是简短的几句话，描述强有力的替代方案以及它们不可行的原因。",
+          "考虑过的替代方案：Google Cloud Firestore（持久化存储）其耐用性和可靠性很吸引人，但我不喜欢它的平台锁定以及在本地测试的困难。",
+          "推动你的设计文档通过评审🔗",
+          "完成设计文档后，下一步就是与你的团队分享并收集反馈。",
+          "以下部分涵盖了一些技巧，用于获取有价值的设计反馈，从而推动项目向前发展，而不是让项目在争吵和混乱中停滞不前：",
+          "如何获取关于设计文档的有意义的反馈"
+        ]
+      }
+    },
+    {
+      "slug": "2717a3f957e183bc",
+      "title": "Regular expressions that work “everywhere”",
+      "titleZh": "在“任何地方”都能正常工作的正则表达式",
+      "link": "https://www.johndcook.com/blog/2026/06/23/regex-everywhere/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-06-24T00:26:11.000Z",
+      "category": "engineering",
+      "keywords": [
+        "regex",
+        "compatibility",
+        "Perl"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "正则表达式最令人沮丧的问题在于不同工具和语言之间的实现差异，特定功能可能完全缺失或语法略有不同。作者指出，在像 Perl 这样的最大化正则环境中学习的人，往往会在迁移到其他受限环境时感到受挫。为了解决这一痛点，文章探讨了如何编写具有广泛兼容性的正则表达式。这为需要在不同系统或工具间复用正则的开发者提供了实用的参考方案。",
+      "summaryEn": "The most frustrating aspect of regular expressions is the variance in implementations across different tools and languages, where supported features or syntaxes might differ slightly or be entirely missing. The author notes that those who learned regex in a maximalist environment like Perl often face frustration when migrating to more restricted contexts. To address this pain point, the article explores how to write regular expressions that offer broad compatibility. It provides a practical reference for developers needing to reuse regex across various systems or tools.",
+      "reason": "帮助开发者解决正则表达式在不同编程语言和工具间不兼容的长期痛点。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The most frustrating aspect of regular expressions is that implementations vary. Features supported in one tool may not be supported at all in another tool, or they may be supported with slightly different syntax."
+          },
+          {
+            "type": "p",
+            "text": "I learned regular expressions in the context Perl, a maximalist regex environment. This led to frustration when features I expect to work are missing [1]. One way around this is to use Perl analogs of other tools, but this is very non-standard. I want to be able to send colleagues and clients code that works out of the box."
+          },
+          {
+            "type": "p",
+            "text": "As I mentioned in my post on computational survivalism, I occasionally need to work on computers that I cannot install software on. So a better approach is to identify a subset of regex features that work everywhere. The stricter your definition of “everywhere” the less this includes. The strictest subset would be"
+          },
+          {
+            "type": "li",
+            "text": "literals"
+          },
+          {
+            "type": "li",
+            "text": "character classes […]"
+          },
+          {
+            "type": "li",
+            "text": "the special characters . * ^ $"
+          },
+          {
+            "type": "p",
+            "text": "A more relaxed definition of “everywhere” would be the tools you most care about. Currently the tools I most want to use with regular expressions are sed, awk, grep, and Emacs."
+          },
+          {
+            "type": "h2",
+            "text": "Awk as lowest common denominator"
+          },
+          {
+            "type": "p",
+            "text": "If you use the Gnu versions of sed, awk, and grep, and use the -E option with sed and grep, then the list of common features is bigger. The regular expression features of of the three tools are similar, and awk’s features are supported in the other tools, with one exception: word boundaries in awk are \\< and \\> rather than \\b and \\B."
+          },
+          {
+            "type": "p",
+            "text": "I wrote about Awk’s regex features here."
+          },
+          {
+            "type": "h2",
+            "text": "Emacs as the oddball"
+          },
+          {
+            "type": "p",
+            "text": "Emacs supports analogs of most of awk’s regex features. However, the characters"
+          },
+          {
+            "type": "code",
+            "text": "    + ? ( ) { } |"
+          },
+          {
+            "type": "p",
+            "text": "all require a backslash in front in order to act like the awk counterparts. Also, the analog of \\s and \\S in awk is \\s- and \\S- in Emacs."
+          },
+          {
+            "type": "p",
+            "text": "Instead of meaning space or nonspace, \\s and \\S in Emacs begin a (negated) character class, and one of those classes is - for space. But there are many others. For example, \\s. stands for a punctuation character and \\S. stands for a non-punctuation character."
+          },
+          {
+            "type": "h2",
+            "text": "What works everywhere"
+          },
+          {
+            "type": "p",
+            "text": "So for my definition of “everywhere,” with the caveats mentioned above, the following features work everywhere. YMMV."
+          },
+          {
+            "type": "code",
+            "text": "    .\n    ^, $\n    […], [^…]\n    *\n    \\w, \\W, \\s, \\S\n    \\1 - \\9 backreferences\n    \\b \\B\n    ? + \n    | alternation\n    {n,m} for counting matches\n    (...) capturing"
+          },
+          {
+            "type": "p",
+            "text": "One footnote is that gawk supports backreferences in replacement strings but not in regular expressions per se."
+          },
+          {
+            "type": "p",
+            "text": "[1] To some extent, basic Perl features work elsewhere and advanced features do not, depending on your idea of what is basic or advanced. I think of look-around features as advanced, and that tracks. But I think of \\d for digits as basic, but that’s not supported in many regex flavors."
+          }
+        ],
+        "translations": [
+          "正则表达式最令人沮丧的一点在于其实现方式各不相同。在某个工具中受支持的功能，在另一个工具中可能完全不被支持，或者虽然支持，但语法上存在细微差异。",
+          "我是在 Perl 环境下学习正则表达式的，这是一个大而全的正则环境。这导致当我发现原本期望能用的功能缺失时，会感到十分沮丧 [1]。解决这个问题的方法之一是使用其他工具中类似 Perl 的等价功能，但这非常不标准。我希望能发给同事和客户可以直接开箱即用的代码。",
+          "正如我在关于“计算生存主义”的文章中所提到的，我偶尔需要在无法安装软件的电脑上工作。因此，更好的方法是找出一个能在任何地方通用的正则表达式功能子集。你对“任何地方”的定义越严格，这个子集包含的内容就越少。最严格的子集将是：",
+          "字面量",
+          "字符类 […]",
+          "特殊字符 . * ^ $",
+          "对“任何地方”更宽松一点的定义，就是你最关心的那些工具。目前，我最希望能配合正则表达式使用的工具是 sed、awk、grep 和 Emacs。",
+          "以 Awk 作为最小公分母",
+          "如果你使用 GNU 版本的 sed、awk 和 grep，并在 sed 和 grep 中使用 -E 选项，那么通用功能的列表会更长。这三个工具的正则表达式功能十分相似，并且 awk 的功能在其他工具中也受支持，但有一个例外：awk 中的单词边界是 \\< 和 \\>，而不是 \\b 和 \\B。",
+          "我曾在这里写过关于 Awk 正则表达式特性的文章。",
+          "特立独行的 Emacs",
+          "Emacs 支持大多数 awk 正则表达式功能的等价形式。然而，这些字符",
+          "+ ? ( ) { } |",
+          "都需要在前面加上反斜杠，才能实现与 awk 中对应功能相同的效果。此外，awk 中 \\s 和 \\S 的等价形式在 Emacs 中是 \\s- 和 \\S-。",
+          "在 Emacs 中，\\s 和 \\S 并不表示空格或非空格，而是开启一个（反向）字符类，其中表示空格的类是 -。但还有很多其他的类。例如，\\s. 代表标点字符，而 \\S. 代表非标点字符。",
+          "处处通用的功能",
+          "因此，按照我对“任何地方”的定义，加上前面提到的注意事项，以下功能可以在任何地方通用。具体情况可能因人而异（YMMV）。",
+          ".\n    ^, $\n    […], [^…]\n    *\n    \\w, \\W, \\s, \\S\n    \\1 - \\9 backreferences\n    \\b \\B\n    ? + \n    | alternation\n    {n,m} for counting matches\n    (...) capturing",
+          "需要补充说明的是，gawk 支持在替换字符串中使用反向引用，但在正则表达式本身中并不支持。",
+          "[1] 在某种程度上，Perl 的基础功能可以在其他地方使用，而高级功能则不能，这取决于你对基础或高级的定义。我认为环视（look-around）功能是高级功能，事实也确实如此。但我认为代表数字的 \\d 属于基础功能，然而许多正则表达式流派并不支持它。"
+        ]
+      }
+    },
+    {
+      "slug": "b74b46f27e6d7dc2",
+      "title": "Framework's 10G Ethernet module exposes USB-C's complexity",
+      "titleZh": "Framework 的 10G 以太网模块揭示了 USB-C 的复杂性",
+      "link": "https://www.jeffgeerling.com/blog/2026/framework-10g-ethernet-module-usb-c-complexity/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-06-24T14:00:00.000Z",
+      "category": "other",
+      "keywords": [
+        "Framework",
+        "Ethernet",
+        "USB-C",
+        "hardware"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "Jeff Geerling 评测了 WisdPi 为 Framework 笔记本开发的 10G 以太网模块，该模块意外揭示了 USB-C 接口背后隐藏的复杂机制。在探索 5Gbps 和 10Gbps 以太网适配器的工作原理时，USB-C 的交替模式、引脚定义和供电管理等技术细节成为了焦点。这表明即使对于经验丰富的硬件开发者，USB-C 的底层实现依然充满挑战与坑点。",
+      "summaryEn": "Jeff Geerling reviews WisdPi's 10G Ethernet module for Framework laptops, which unexpectedly exposes the hidden complexities of the USB-C interface. While exploring how these 5Gbps and 10Gbps Ethernet adapters work, technical details such as USB-C Alternate Modes, pin assignments, and power management become the focal points. It demonstrates that even for experienced hardware developers, the underlying implementation of USB-C remains full of challenges and pitfalls.",
+      "reason": "通过硬核硬件评测，深入解析了 USB-C 接口在实现高速网络连接时鲜为人知的技术门槛。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I've been following WisdPi's development of various 5 Gbps and 10 Gbps Ethernet adapters for the past couple years."
+          },
+          {
+            "type": "p",
+            "text": "They use newer Realtek Ethernet chips, which sometimes have performance quirks—most frequently encountered under Linux."
+          },
+          {
+            "type": "p",
+            "text": "In today's video, I tested the new WisdPi 10G Ethernet Expansion Card for Framework computers. It fits in any available Framework Expansion slot—even on the Framework Desktop."
+          },
+          {
+            "type": "p",
+            "text": "But Expansion Cards use USB-C for their connection to the mainboard—and therein lies the rub..."
+          },
+          {
+            "type": "p",
+            "text": "The main problem is USB-C's bandwidth complexity—especially when paired with the Realtek RTL8159 Ethernet controller, which requires USB 3.2 Gen 2x2 (20 Gbps) to get the full rated 10 Gbps speeds."
+          },
+          {
+            "type": "p",
+            "text": "On many Framework laptops, you'll wind up getting considerably less than 10 Gbps (9.4 Gbps real-world max):"
+          },
+          {
+            "type": "p",
+            "text": "The above image shows the average bandwidth I get on Windows 11 on a Framework 13 with AMD's Ryzen AI 5 340. Linux fares slightly worse on that laptop, but it surprised me because Framework's own port documentation for my laptop says it should support USB 3.2 Gen 2x2—at least on ports 1 and 3!"
+          },
+          {
+            "type": "p",
+            "text": "The RTL8159 is bottlenecked on a many USB4 and all USB 3.2 Gen 2x1 connections. Unfortunately, that caps the bandwidth well under 8 Gbps."
+          },
+          {
+            "type": "p",
+            "text": "I tested on my Framework 12—with a slower Intel 13th Gen mobile CPU—and I found it does support USB 3.2 Gen 2x2 speeds as documented, and I should get closer to 10 Gbps."
+          },
+          {
+            "type": "p",
+            "text": "Except—at least in Linux—it didn't. The port showed up as 20000 Mbps (20 Gbps) via lsusb, but iperf3 only got me 7 Gbps. I tried to download and compile the Realtek driver, but it errored out on Ubuntu 26.04, presumably because the Linux kernel in that distro (7.x) is too new."
+          },
+          {
+            "type": "p",
+            "text": "So I switched to Windows 11, and after confirming the port showed up as Gen 2x2 with USB Tree Viewer, I got the same iperf3 performance as in Linux—at least with the built-in driver."
+          },
+          {
+            "type": "p",
+            "text": "On Windows, though, the Realtek driver installed without a problem, and I finally got the 9.4+ Gbps I was looking for:"
+          },
+          {
+            "type": "p",
+            "text": "Doing a bidirectional test, I could get around 9 Gbps up, and 4-5 Gbps down, but after running these tests for a while, I ran into a new issue. The module was getting very hot. Enough that I pulled out my thermal camera to check on it:"
+          },
+          {
+            "type": "p",
+            "text": "That's getting close to 70°C on the bottom plastic surface, and while it won't give you an immediate contact burn, it would certainly give you Toasted Skin Syndrome—something I remember hearing about back when MacBook Pros would leave marks on users' legs!"
+          },
+          {
+            "type": "p",
+            "text": "I asked WisdPi about this, and they said the plastic surface temperatures is in compliance with IEC 62368-1 temperature safety limits. As long as you don't keep skin in contact with the surface for more than 10 seconds, you're good to go."
+          },
+          {
+            "type": "p",
+            "text": "But this is a laptop. And I use it on my lap frequently! In fact, I'm writing this blog post on it from my couch..."
+          },
+          {
+            "type": "p",
+            "text": "Of course, 99% of the time I have it in my lap, I'm on WiFi. Also, the module itself extends a couple cm out from the laptop, so you have to remove it if you're using a laptop sleeve or have a snug-fitting bag."
+          },
+          {
+            "type": "p",
+            "text": "So in terms of heat, my recommendation is to only use this module in scenarios where you won't be using it on your lap."
+          },
+          {
+            "type": "p",
+            "text": "And in terms of getting the best performance, I've compiled the following chart, with bandwidth results from WisdPi's and my own tests, showing the best case scenario for different Framework computers:"
+          },
+          {
+            "type": "p",
+            "text": "My recommendation for most people, then, is to consider the regular ol' Ethernet Expansion Card, which is good for 2.5 Gbps and costs about $40."
+          },
+          {
+            "type": "p",
+            "text": "If you need something faster, and don't want an external USB-C dongle, then and only then should you consider the $99 WisdPi 10G Card. As of this writing, the card was out of stock."
+          },
+          {
+            "type": "p",
+            "text": "The unit I tested was sent to me by WisdPi for testing and review."
+          }
+        ],
+        "translations": [
+          "过去几年里，我一直在关注 WisdPi 开发的各种 5 Gbps 和 10 Gbps 以太网适配器。",
+          "它们使用了较新的 Realtek 以太网芯片，有时会出现一些性能问题——这在 Linux 下最为常见。",
+          "在今天的视频中，我测试了专为 Framework 电脑设计的全新 WisdPi 10G 以太网扩展卡。它可以插入任何可用的 Framework 扩展槽——甚至在 Framework Desktop 上也能用。",
+          "但扩展卡是通过 USB-C 连接到主板的——问题也就出在这里……",
+          "主要问题在于 USB-C 带宽的复杂性——尤其是搭配 Realtek RTL8159 以太网控制器时，它需要 USB 3.2 Gen 2x2 (20 Gbps) 才能达到 10 Gbps 的满速。",
+          "在许多 Framework 笔记本电脑上，你最终得到的速度会远低于 10 Gbps（实际最高约为 9.4 Gbps）：",
+          "上图显示了我在搭载 AMD Ryzen AI 5 340 的 Framework 13 上，使用 Windows 11 获得的平均带宽。Linux 在这台笔记本上的表现稍差一些，但这让我感到惊讶，因为 Framework 官方关于我这台笔记本电脑的接口文档显示它应该支持 USB 3.2 Gen 2x2——至少在接口 1 和 3 上是支持的！",
+          "RTL8159 在许多 USB4 和所有 USB 3.2 Gen 2x1 连接上都会遇到瓶颈。不幸的是，这将其带宽死死限制在 8 Gbps 以下。",
+          "我在我的 Framework 12 上进行了测试——它搭载了一颗速度较慢的 Intel 13th Gen 移动端 CPU——我发现它确实如文档所述支持 USB 3.2 Gen 2x2 的速度，而且我应该能获得接近 10 Gbps 的速率。",
+          "但是——至少在 Linux 下——并没有。通过 lsusb 查看，该接口显示为 20000 Mbps (20 Gbps)，但 iperf3 测出的速度只有 7 Gbps。我尝试下载并编译 Realtek 驱动程序，但在 Ubuntu 26.04 上报错了，大概是因为该发行版中的 Linux 内核 (7.x) 太新了。",
+          "于是我切换到 Windows 11，在使用 USB Tree Viewer 确认接口显示为 Gen 2x2 之后，我得到了与 Linux 中相同的 iperf3 测试结果——至少在使用内置驱动程序时是这样的。",
+          "不过在 Windows 上，Realtek 驱动程序的安装非常顺利，我也终于获得了期望中的 9.4+ Gbps 速度：",
+          "在进行双向测试时，我可以获得大约 9 Gbps 的上行速度和 4-5 Gbps 的下行速度，但在运行这些测试一段时间后，我遇到了一个新问题。这个模块变得非常烫。烫到我不得不拿出热成像仪来检查一下：",
+          "底部塑料表面的温度接近 70°C，虽然不至于立刻造成接触烫伤，但肯定会导致“烤皮综合征”（Toasted Skin Syndrome）——我还记得早在 MacBook Pro 在用户腿上留下印记的时期，我就听说过这事！",
+          "我就此事询问了 WisdPi，他们表示塑料表面的温度符合 IEC 62368-1 的温度安全限制。只要皮肤接触表面的时间不超过 10 秒，就没有问题。",
+          "但这是一台笔记本电脑。而且我经常把它放在腿上使用！事实上，我现在正坐在沙发上，用它写这篇博文……",
+          "当然，我在 99% 把它放在腿上使用的时间里，连的都是 WiFi。此外，该模块本身会凸出笔记本电脑几厘米，所以如果你要使用内胆包或者比较紧的电脑包，就必须把它拔下来。",
+          "因此，从发热的角度来看，我的建议是，只有在不会把电脑放在腿上使用的场景下，才使用这个模块。",
+          "而在追求最佳性能方面，我整理了下面的图表，其中包含了 WisdPi 和我自己的测试带宽结果，展示了不同 Framework 电脑的最佳情况：",
+          "因此，对于大多数人，我推荐考虑那款常规的 Ethernet Expansion Card，它支持 2.5 Gbps，售价约 40 美元。",
+          "如果你需要速度更快的设备，并且不想使用外置 USB-C 转接器，那么只有在这种情况下，你才应该考虑售价 99 美元的 WisdPi 10G Card。截至本文撰写时，该卡已经缺货。",
+          "我测试的这台设备是由 WisdPi 提供用于测试和评测的。"
+        ]
+      }
+    },
+    {
+      "slug": "46f312dcbbb454aa",
+      "title": "Weekly Update 509",
+      "titleZh": "每周更新 509：家庭影院与认知偏差",
+      "link": "https://www.troyhunt.com/weekly-update-509/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-06-24T05:17:32.000Z",
+      "category": "security",
+      "keywords": [
+        "weekly update",
+        "security",
+        "home cinema"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 4,
+        "timeliness": 7,
+        "total": 15
+      },
+      "summary": "Troy Hunt 在本周更新中分享了他对家庭影院音视频（AV）系统的探索与思考。他坦言自己在这个领域达到了“有意识的无能”状态，即清楚地知道自己有哪些知识盲区。这种认知状态与大多数普通消费者所处于的“无意识的无能”截然不同。文章借此探讨了技术专家在面对陌生领域时的学习心态和认知差异。",
+      "summaryEn": "In his weekly update, Troy Hunt shares his thoughts on exploring home cinema audiovisual (AV) systems. He admits to reaching a state of \"conscious incompetence\" in this field, meaning he is acutely aware of his own knowledge gaps. This cognitive state contrasts sharply with the \"unconscious incompetence\" of most general consumers. The discussion explores the learning mindset and cognitive differences tech experts face when dealing with unfamiliar domains.",
+      "reason": "技术专家分享跨界学习家庭影院时对“达克效应”的真实感悟，视角新颖。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I know enough about home cinema audiovisual to know there's a lot I don't know. It's conscious incompetence, if you like, which is different to the unconscious incompetence most people have on the topic. That's not to sound derogatory (it's spelled out that way in the competence model), rather it recognises that this is a super specialised area and as soon as you start scratching the surface, things get very complex and very expensive really fast. But it's also exciting, and what we've got in the pipeline for our house expansion will blow you away. More to come soon 😎"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f2001f0e55345cb1",
+      "title": "Blogging Can Just Be Stating The Obvious",
+      "titleZh": "写博客可以只是陈述显而易见的事实",
+      "link": "https://blog.jim-nielsen.com/2026/blogging-stating-the-obvious/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-06-24T19:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "blogging",
+        "UX",
+        "web-design"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 14
+      },
+      "summary": "Jim Nielsen 引用了 John Gruber 对网站泛滥弹窗的批评，引发了对博客写作本质的思考。Gruber 强调，用户访问网站是为了直接阅读内容，而不是被各种对用户不友好的弹窗拦截。Nielsen 指出，写博客有时候仅仅是把这种“显而易见”的道理陈述出来就具有巨大的价值。这提醒内容创作者和网站开发者，保持网页体验的纯粹和直白依然是最核心的原则。",
+      "summaryEn": "Jim Nielsen references John Gruber's critique of ubiquitous website pop-ups, sparking a reflection on the essence of blogging. Gruber emphasizes that users visit websites to directly read content, not to be intercepted by annoying, user-hostile pop-ups. Nielsen points out that blogging can sometimes simply be about stating these \"obvious\" truths, which holds immense value. It serves as a reminder to content creators and web developers that maintaining a pure and straightforward web experience remains the most core principle.",
+      "reason": "重新审视网页体验的纯粹性，提醒开发者不要为了营销套路牺牲用户的阅读体验。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "d26d7657e51ed49a",
+      "title": "Designed in California: An Apple History Podcast",
+      "titleZh": "Designed in California：一部苹果历史播客",
+      "link": "https://designed.fm/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-06-24T15:17:18.000Z",
+      "category": "other",
+      "keywords": [
+        "Apple",
+        "podcast",
+        "history"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 4,
+        "timeliness": 4,
+        "total": 11
+      },
+      "summary": "Jason Snell 和 Myke Hurley 在 Kickstarter 上发起了一项众筹，旨在制作一部长达 50 集的苹果 50 年历史叙事播客。该众筹项目已成功达成主要筹资目标，目前距离结束还有一周时间，正向更多的扩展目标推进。这档名为《Designed in California》的播客将为科技爱好者提供深度的苹果公司发展史回顾。对于喜欢《The Talk Show》等节目的听众来说，这是一个不容错过的支持机会。",
+      "summaryEn": "Jason Snell and Myke Hurley have launched a Kickstarter campaign to fund a 50-episode narrative podcast covering Apple's 50-year history. The campaign has already successfully hit its primary funding goal, with one week left to push towards further stretch goals. Titled \"Designed in California,\" this podcast will provide tech enthusiasts with an in-depth retrospective on Apple's evolution. It presents a must-back opportunity for fans of shows like \"The Talk Show\" and \"Upgrade.\"",
+      "reason": "资深科技媒体人打造的大体量苹果历史播客项目，值得果粉和科技史爱好者关注。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "6ea7b3680bc0853b",
+      "title": "Windows 98 shipped June 25, 1998",
+      "titleZh": "Windows 98于1998年6月25日发布",
+      "link": "https://dfarq.homeip.net/windows-98-shipped-june-25-1998/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=windows-98-shipped-june-25-1998",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-06-24T11:00:44.000Z",
+      "category": "other",
+      "keywords": [
+        "Windows-98",
+        "Microsoft",
+        "retrospective"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 2,
+        "total": 7
+      },
+      "summary": "1998年6月25日，微软正式发布了Windows 98操作系统。尽管该系统的研发过程经历了延期与过度炒作，但其整体性能和稳定性实质上超越了前代产品 Windows 95。与 Win95 发布时引发的全社会狂热不同，Win98 虽然没有获得同等规模的轰动效应，却为用户提供了更优秀的日常使用体验。作为一款承前启后的系统，Windows 98 凭借更扎实的技术改进，在微软操作系统的发展史中占据了不可忽视的重要地位。",
+      "summaryEn": "On June 25, 1998, Microsoft officially released the Windows 98 operating system. Despite experiencing development delays and excessive hype, its overall performance and stability were a substantial improvement over its predecessor, Windows 95. Although it did not generate the same massive cultural frenzy as the Windows 95 launch, Windows 98 delivered a much better daily user experience. Ultimately, it remains a significant and underrated milestone in Microsoft's operating system history due to its solid technical improvements.",
+      "reason": "带你回顾Windows 98如何在缺乏前代夸张光环的情况下，凭借更扎实的技术改进成为一款被低估的经典系统。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It was late and it was overhyped. But it was better than Windows 95. On June 25, 1998, Microsoft shipped Windows 98, and while it didn’t get the fanfare Windows 95 did, it was better than Windows 95. And if you want a retro PC box today, you’re usually better off running Windows 98 or, better yet, 98SE on it than Windows 95."
+          },
+          {
+            "type": "h2",
+            "text": "Windows 98 was late"
+          },
+          {
+            "type": "p",
+            "text": "It’s easy to forget now, but Windows 98 was late. Windows 95 was late too, and the Win95 betas had elements that were more 98-like than 95-like, which strongly suggests Windows 98 was closer to what Microsoft wanted to ship all along, but they had to make concessions to get Win95 out the door in August 1995."
+          },
+          {
+            "type": "p",
+            "text": "But Windows 98 was supposed to ship in 1997, and I have the magazine cover that proves it. The November 1996 issue of PC/Computing gushed about Office 97 and something called Windows 97, calling them the two most significant advancements since the invention of the PC. You can’t buy that kind of hype. I don’t think of Clippy and forcing Internet Explorer 4.0 down our throats as the two most significant advancements since the invention of the PC, but I’m just some rando on the Internet looking back on it nearly three decades later. But if it matters, I thought it was overblown in 1997 too."
+          },
+          {
+            "type": "p",
+            "text": "18 months after that magazine hit newsstands, Windows 98 still wasn’t ready. Hilariously, on April 20, 1998, Windows 98 bluescreened during a demo at COMDEX. Bill Gates and Chris Capossela were attempting to show off the new system when Capossela plugged in a USB scanner. The PC immediately gave the notorious blue screen of death. Gates, who could be a hothead sometimes, maintained his cool and made a joke. “That must be why we’re not shipping Windows 98 yet,” he said."
+          },
+          {
+            "type": "p",
+            "text": "But it did ship two months and five days later."
+          },
+          {
+            "type": "h2",
+            "text": "Improvements over Win95"
+          },
+          {
+            "type": "p",
+            "text": "Windows 98 did have numerous improvements over Windows 95. It shipped with the FAT32 filesystem, introduced in Windows 95OSR2, but you couldn’t get that version of Windows 95 at retail. You had to either buy a new computer to get it, or copy it from someone who did. Not that anyone resorted to that, right? FAT32 allowed the use of much bigger hard drives and smaller allocation units. Although there was a speed penalty involved, in most cases it was worth it."
+          },
+          {
+            "type": "p",
+            "text": "Although the USB support was never as good in Windows 98 as it is on a modern PC, it worked better than it ever did in any version of Windows 95. The versions of Windows 95 with USB support never bluescreened on me when I plugged in a USB device, as far as I recall. Cynically, I think that’s because usually when I plugged USB stuff into those Windows 95 versions, nothing happened at all. That’s why we used to joke that USB stood for “useless serial bus.”"
+          },
+          {
+            "type": "p",
+            "text": "And overall, Windows 98 was more stable than Windows 95 was. If I spent all day Saturday writing in Word 97 on my Windows 98 PC, I expected it to crash occasionally. But Win95 under the same circumstances would crash once a day. Sometimes it was Word that crashed, and sometimes it was the whole system."
+          },
+          {
+            "type": "p",
+            "text": "Windows 98SE was better overall than its successor, Windows Me, as well. While I found a few things right away that Windows Me did better, in daily general use, 98SE gave fewer problems."
+          },
+          {
+            "type": "h2",
+            "text": "When Windows 98 was a step backward"
+          },
+          {
+            "type": "p",
+            "text": "My biggest complaint about Windows 98 was Active Desktop and making Explorer windows look like Internet Explorer. It slowed the system down and it forced Internet Explorer to be in memory all the time whether you were using the web or not. Today that might not be as big of a deal, because so much of what we use a computer for in modern times is based on one web app or another. It’s rare that I don’t have a browser open anymore. But in 1998, I certainly did shut my browser down and go offline for long periods of time because these were still the waning days of dialup. Always-on Internet was coming but wasn’t available in all parts of the country yet."
+          },
+          {
+            "type": "p",
+            "text": "I used a shareware program called 98lite that removed Internet Explorer and replaced a few components with their Windows 95 equivalents. It allowed me to run Windows 98 without Internet Explorer, which made it noticeably faster, but admittedly I was probably trading one instability inducing feature for another by doing that."
+          },
+          {
+            "type": "p",
+            "text": "So while I do think Windows 98 was overblown, it does give a better retro computing experience than Win95 does, especially on a system with at least a 200 MHz processor and at least 64 megs of RAM. On something less than that, I’ll still run my hacked Win95 that omits MSN and some of the other bloatware that Microsoft cut out of the floppy-based version of Win95 anyway. But I won’t argue with someone who says Windows 98, or better yet, Windows 98SE, which followed on May 5, 1999, is a better experience overall."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "它姗姗来迟，并且被过度炒作。但它比 Windows 95 更好。1998年6月25日，微软发布了 Windows 98，虽然它没有像 Windows 95 那样引起轰动，但它确实比 Windows 95 更出色。而且如果你今天想要一台复古电脑主机，通常在上面运行 Windows 98，或者更好的是运行 98SE，会比运行 Windows 95 效果更好。",
+          "Windows 98 姗姗来迟",
+          "现在人们很容易忘记，但 Windows 98 确实迟到了。Windows 95 也延期了，而且 Win95 的测试版中包含了一些更像 98 而不是 95 的元素，这强烈表明 Windows 98 才更接近微软一直想要发布的系统，但他们不得不做出妥协，以便让 Win95 能在1995年8月顺利推出。",
+          "但 Windows 98 原定于1997年发布，我手里的一本杂志封面就能证明这一点。1996年11月那期的《PC/Computing》对 Office 97 和一个叫做 Windows 97 的东西大肆吹捧，称它们是自个人电脑发明以来最重要的两项进步。这种炒作是花钱也买不来的。我并不认为 Clippy 和强塞给我们的 Internet Explorer 4.0 是自个人电脑发明以来最重要的两项进步，但我只是个在近三十年后回顾这段历史的无名网友罢了。不过值得一提的是，我在1997年也觉得这有些言过其实了。",
+          "在那本杂志上架18个月后，Windows 98 仍未准备就绪。有趣的是，在1998年4月20日的 COMDEX 展会上，Windows 98 在演示过程中出现了蓝屏。比尔·盖茨和克里斯·卡波塞拉正试图展示这个新系统，结果卡波塞拉插上一个 USB 扫描仪时，这台电脑立刻出现了臭名昭著的蓝屏死机。有时脾气暴躁的盖茨保持了冷静，并开了个玩笑。“这肯定就是为什么我们还没有发布 Windows 98，”他说。",
+          "但在两个月零五天之后，它确实正式发布了。",
+          "相对于 Win95 的改进",
+          "Windows 98 相比 Windows 95 确实进行了大量改进。它自带了在 Windows 95 OSR2 中引入的 FAT32 文件系统，但你在零售版中是无法获得那个版本的 Windows 95 的。你必须买一台新电脑才能得到它，或者从有这个版本的人那里复制。当然没人会去这么干，对吧？FAT32 允许使用更大的硬盘和更小的分配单元。虽然这会带来一定的速度损耗，但在大多数情况下都是值得的。",
+          "尽管 Windows 98 对 USB 的支持永远无法与现代 PC 相提并论，但它比以往任何版本的 Windows 95 都要好用。据我回忆，在我插入 USB 设备时，支持 USB 的 Windows 95 版本从来没有让我遇到过蓝屏。挖苦地说，我认为那是因为通常当把 USB 设备插入那些 Windows 95 版本时，根本什么反应都没有。这就是为什么我们过去常开玩笑说 USB 代表“无用串行总线（useless serial bus）”。",
+          "总的来说，Windows 98 比 Windows 95 更稳定。如果我周六一整天都在我的 Windows 98 电脑上用 Word 97 写作，我会预计它偶尔崩溃一次。但在相同情况下，Win95 每天都会崩溃一次。有时崩溃的只是 Word，有时则是整个系统。",
+          "总体而言，Windows 98SE 也比它的继任者 Windows Me 更好。虽然我立刻发现了 Windows Me 做得更好的几个地方，但在日常通用使用中，98SE 带来的问题更少。",
+          "当 Windows 98 成为一种倒退时",
+          "我对 Windows 98 最大的不满是 Active Desktop 以及把资源管理器窗口做得像 Internet Explorer。这拖慢了系统速度，还迫使 Internet Explorer 一直驻留在内存中，不管你是否在上网。放到今天这或许不算什么大问题，因为我们现在用电脑做的很多事情都依赖于某个 Web 应用。我现在几乎不会关掉浏览器。但在 1998 年，我确实会关闭浏览器并长时间离线，因为那时拨号上网仍在走向衰落。永远在线的互联网时代正在到来，但当时还没覆盖全国所有地区。",
+          "我用过一个叫 98lite 的共享软件，它移除了 Internet Explorer，并用 Windows 95 中对应的组件替换了一些模块。这让我可以在没有 Internet Explorer 的情况下运行 Windows 98，速度明显快了不少，不过说实话，我这样做可能只是把一种引发不稳定的功能换成了另一种。",
+          "所以，虽然我确实认为 Windows 98 被过誉了，但它确实比 Win95 提供了更好的复古计算体验，尤其是在至少配备 200 MHz 处理器和 64 MB 内存的系统上。如果配置更低，我仍然会运行我精简过的 Win95，去掉了 MSN 和一些其他臃肿软件——反正微软在软盘版 Win95 中本来也砍掉了这些东西。但如果有人说 Windows 98，或者更好的是 1999 年 5 月 5 日发布的 Windows 98SE，整体体验更好，我也不会反驳。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。他从 1991 年起便从事专业的计算机写作，也就是说，当那些复古电脑还是新事物时，他就在写关于它们的内容了。他从 1994 年开始从事 IT 行业工作，2013 年起专注于漏洞管理领域。他拥有 Security+ 和 CISSP 认证。如今他每周撰写五篇博客，主要围绕 1975 年至 2000 年间的复古电脑和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
