@@ -1,0 +1,699 @@
+{
+  "date": "2026-07-06",
+  "generatedAt": "2026-07-05T18:23:36.026Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2496,
+    "filteredArticles": 6,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈的焦点集中在人工智能重塑软件工程的双刃剑效应上。一方面，AI 正在深度接管实际的代码编写工作，不仅以极低的成本生成了完整的开源项目，还辅助开发者实现了极具挑战性的极限代码压缩。另一方面，高级大语言模型在调用外部工具时暴露出的幻觉与能力退化现象也敲响了警钟，提醒业界仍需警惕其底层的不稳定性。此外，关于应用底层架构的探讨再次升温，跨平台框架对原生应用的持续冲击及其生存空间，引发了开发者对平台体验与生态的重新审视。",
+  "articles": [
+    {
+      "slug": "63516e892da9cb43",
+      "title": "Better Models: Worse Tools",
+      "titleZh": "更好的模型，更差的工具",
+      "link": "https://simonwillison.net/2026/Jul/4/better-models-worse-tools/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-04T22:53:52.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "Claude",
+        "tool-use",
+        "API"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "高级大语言模型在调用外部工具时出现了奇怪的回归现象。开发者发现新版 Claude Opus 4.8 在调用编辑工具时，会凭空捏造嵌套数组中的额外字段。尽管模型执行的编辑操作本身通常正确，但这些参数不再匹配预定义的 Schema。这种现象表明，随着模型能力的提升，其在遵循严格结构化输出约束方面可能反而出现退化。",
+      "summaryEn": "Advanced large language models are exhibiting a strange regression when invoking external tools. Developers found that the new Claude Opus 4.8 sometimes hallucinates extra, invented fields in nested arrays when calling an edit tool. Although the edits themselves are usually correct, the arguments no longer match the predefined schema. This indicates that as models become more capable, their ability to adhere strictly to structured output constraints may actually degrade.",
+      "reason": "揭示了顶尖大模型在 API 工具调用和结构化输出方面的一个反直觉缺陷，对 AI Agent 开发者具有极高的参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "4th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Better Models: Worse Tools. Armin reports on a weird problem he ran into while hacking on Pi:"
+          },
+          {
+            "type": "quote",
+            "text": "The short version is that newer Claude models sometimes call Pi’s edit tool with extra, invented fields in the nested edits[] array. And not Haiku or some small model: Opus 4.8. The edit itself is usually correct but the arguments do not match the schema as the model invents made-up keys and Pi thus rejects the tool call and asks to try again.\nThat alone is not too surprising as models emit malformed tool calls sometimes. Particularly small ones. What surprised me is that this is getting worse with newer Anthropic models as both Opus 4.8 and Sonnet 5 show it but none of the older models. In other words, the SOTA models of the family are worse at this specific tool schema than their older siblings."
+          },
+          {
+            "type": "p",
+            "text": "Armin theorizes that this is because more recent Anthropic models have been specifically trained (presumably via Reinforcement Learning) to better use the edit tools that are baked into Claude Code. This has the unfortunate effect that other coding harnesses, such as Pi, may find that their own custom edit tools are more likely to be used incorrectly."
+          },
+          {
+            "type": "p",
+            "text": "Claude's edit tool uses search and replace. OpenAI's Codex uses an apply_patch mechanism instead, and OpenAI have talked in the past about how their models are trained to use that tool effectively."
+          },
+          {
+            "type": "p",
+            "text": "Does this mean third-party coding harnesses like Pi should implement multiple edit tools just so they can use the one with the best performance for the underlying model the user has selected?"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "3a3f83543daaa610",
+      "title": "sqlite-utils 4.0rc2, mostly written by Claude Fable (for about $149.25)",
+      "titleZh": "sqlite-utils 4.0rc2 发布：主要由 Claude Fable 编写（花费约 149.25 美元）",
+      "link": "https://simonwillison.net/2026/Jul/5/sqlite-utils-fable/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-05T01:00:48.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "sqlite-utils",
+        "Claude",
+        "LLM",
+        "AI-assisted-coding"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "开发者分享了利用 AI 模型 Claude Fable 辅助完成 sqlite-utils 4.0rc2 版本开发的实践经验。为了在订阅到期前充分利用该模型，作者测试了其能否帮助平稳推进 4.0 稳定版的发布。整个过程中严格遵循语义化版本控制原则，以最大程度减少不兼容的主版本更新。这展示了大语言模型在实际开源项目工程化迭代与版本管理中的具体应用。",
+      "summaryEn": "A developer shares practical experience using the AI model Claude Fable to assist in developing the sqlite-utils 4.0rc2 release. With the model's subscription expiring soon, the author tested its ability to help push a stable 4.0 release. The process strictly adhered to Semantic Versioning (SemVer) principles to minimize incompatible major version updates. This demonstrates the concrete application of LLMs in engineering iterations and version management for open-source projects.",
+      "reason": "展示了如何利用昂贵的 AI 订阅模型来完成开源项目的版本迭代和代码重构，为 AI 辅助开发提供了真实的成本与效果参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "5th July 2026"
+          },
+          {
+            "type": "p",
+            "text": "I wrote about the sqlite-utils 4.0rc1 release a couple of weeks ago. Since we only have Claude Fable on our Max subscriptions for a few more days, I decided to see if it could help me get to a 4.0 stable release that I felt truly comfortable about, since I try to keep to SemVer and like my incompatible major versions to be as rare as possible."
+          },
+          {
+            "type": "p",
+            "text": "I started with this prompt, in Claude Code for web on my iPhone:"
+          },
+          {
+            "type": "quote",
+            "text": "Final review before shipping a stable 4.0 release - very important to spot any last minute things that would be a breaking change if we fix them later"
+          },
+          {
+            "type": "p",
+            "text": "Here’s that initial report it created for me. There were some significant problems that I hadn’t myself encountered yet—5 that Fable categorized as “release blockers”. Here’s the worst of the bunch:"
+          },
+          {
+            "type": "quote",
+            "text": "1. delete_where() never commits and poisons the connection (data loss)\nTable.delete_where() (sqlite_utils/db.py:2948) runs its DELETE via a bare self.db.execute() with no atomic() wrapper — compare Table.delete() at db.py:2944, which wraps correctly. The connection is left in_transaction=True, so every subsequent atomic() call takes the savepoint branch (db.py:430-440) and never commits either.\nReproduced end-to-end:\ndb = sqlite_utils.Database(\"dw.db\")\ndb[\"t\"].insert_all([{\"id\": i} for i in range(3)], pk=\"id\")\ndb[\"t\"].delete_where(\"id = ?\", [0])   # conn.in_transaction is now True\ndb[\"t\"].insert({\"id\": 50})\ndb[\"u\"].insert({\"a\": 1})\ndb.close()\n# Reopen: rows are [0, 1, 2] — the delete, row 50, AND table u are all gone."
+          },
+          {
+            "type": "p",
+            "text": "That’s a really bad bug! Very glad I didn’t ship that, although at least it would have been a bug I could fix in a 4.0.1 point release, not a design flaw that would force a 5.0."
+          },
+          {
+            "type": "p",
+            "text": "Over the course of 37 prompts, 34 commits and +1,321 -190 code changes over 30 separate files, we worked through the entire set of feedback in turn, making several other design improvements along the way."
+          },
+          {
+            "type": "p",
+            "text": "A weird thing about coding agents is that harder tasks like this one actually provide more opportunity to do other things at the same time, since the agent sometimes needs 10-15 minutes to churn away on a new task. I went out to enjoy the Half Moon Bay 4th of July parade, occasionally checking in and prompting the next step for Fable from my phone."
+          },
+          {
+            "type": "p",
+            "text": "Full details in the PR and this shared transcript. I switched to my laptop for the final review, which I conducted through GitHub’s PR interface."
+          },
+          {
+            "type": "p",
+            "text": "The most significant changes relate to transaction handling, which was the signature new feature in the earlier RC. The new RC now includes comprehensive documentation on the new transaction model, the intro to which I’ll quote here in full:"
+          },
+          {
+            "type": "quote",
+            "text": "Every method in this library that writes to the database—insert(), upsert(), update(), delete(), delete_where(), transform(), create_table(), create_index(), enable_fts() and the rest—runs inside its own transaction and commits it before returning. Your changes are saved to disk as soon as the method call finishes:\ndb = Database(\"data.db\")\ndb.table(\"news\").insert({\"headline\": \"Dog wins award\"})\n# The new row is already saved - no commit() required\nThe same applies to raw SQL executed with db.execute()—a write statement is committed as soon as it has run.\nYou never need to call commit(), and you do not need to close the database to persist your changes. There are exactly two situations where you need to think about transactions:\n\n\nYou want to group several write operations together, so they either all succeed or all fail—use db.atomic().\n\n\nYou are managing a transaction yourself with db.begin(), in which case nothing is committed until you commit—the library will never commit a transaction you opened."
+          },
+          {
+            "type": "p",
+            "text": "In reviewing Fable’s documentation—I find that reviewing the documentation edits first is an excellent way to build an initial understanding of what has changed—I spotted this detail:"
+          },
+          {
+            "type": "quote",
+            "text": "db.atomic() and the automatic per-method transactions are designed for connections in Python’s default transaction handling mode. Connections created with the Python 3.12+ sqlite3.connect(..., autocommit=True) or autocommit=False options are not supported, because commit() and rollback() behave differently on those connections."
+          },
+          {
+            "type": "p",
+            "text": "I admit I hadn’t thought about how sqlite-utils would react to the more recent autocommit setting, added in Python 3.12. It turns out “behave differently on those connections” equated to almost the entire test suite failing, so I worked with the model to ensure that this difference would not break how the library works."
+          },
+          {
+            "type": "h3",
+            "text": "And a final review by GPT-5.5"
+          },
+          {
+            "type": "p",
+            "text": "I used to think that the idea of having one model review the work of another was somewhat absurd—it felt weirdly superstitious. The problem is it really does work—I’ve started habitually having Anthropic’s best model review OpenAI’s work and vice versa, because I’ve had that turn up interesting results often enough to be valuable."
+          },
+          {
+            "type": "p",
+            "text": "I prompted Codex Desktop and GPT-5.5 xhigh with the following:"
+          },
+          {
+            "type": "quote",
+            "text": "Review changes since the last RC. Also confirm that the changelog is up-to-date."
+          },
+          {
+            "type": "p",
+            "text": "Which was enough to turn up two issues worth investigating:"
+          },
+          {
+            "type": "quote",
+            "text": "Findings\n\n[P1] sqlite_utils/db.py:663 db.query() now rejects non-row statements only after calling db.execute(), and sqlite_utils/db.py:705 auto-commits those writes first. So db.query(\"update ...\") raises ValueError but the update is already committed. That is a surprising side effect for a method documented as “can only be used with SQL that returns rows.”\n[P1] sqlite_utils/db.py:672 INSERT ... RETURNING through db.query() only commits after the returned generator is fully exhausted. db.query(\"insert ... returning ...\") without iteration, or common next(db.query(...)) usage, leaves the transaction open and the write can be rolled back on close. This contradicts docs/changelog.rst:15 and docs/python-api.rst:232, which say it takes effect without iteration."
+          },
+          {
+            "type": "p",
+            "text": "I pasted that into a fresh Fable session, which ran some experiments to confirm the problem:"
+          },
+          {
+            "type": "quote",
+            "text": "Both findings were confirmed. db.query() called self.execute() first, which auto-commits writes, and only then checked cursor.description — so db.query(\"update ...\") committed the update before raising ValueError. And the INSERT ... RETURNING commit lived at the end of the returned generator, so it never fired unless you exhausted the iterator — next(db.query(...)) or an un-iterated call left the transaction open, contradicting what the changelog and docs promise."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the PR with the fix, and the full Claude Code transcript. Reviewing this code helped me build a better mental model of the edge cases of SQLite transaction semantics!"
+          },
+          {
+            "type": "h3",
+            "text": "For an estimated (unsubsidized) cost of $149.25"
+          },
+          {
+            "type": "p",
+            "text": "I upgraded to the Claude Max $200/month plan (I was previously on $100/month) to increase my Fable allowance for the remaining time until the July 7th Fablepocalypse, when even Claude Max subscribers will have to pay full API cost for the model."
+          },
+          {
+            "type": "p",
+            "text": "I was curious as to how much this would have cost me if I had been paying those costs directly. At first I thought those numbers weren’t available to me since I had run the work remotely using Claude Code for web, and then I realized I could run AgentsView inside that existing session to get that cost estimate!"
+          },
+          {
+            "type": "quote",
+            "text": "Run \"uvx agentsview --help\"​ and then use that tool to calculate the cost of this session"
+          },
+          {
+            "type": "p",
+            "text": "Claude figured out how to use the session list --include-children command and came out with the following:"
+          },
+          {
+            "type": "p",
+            "text": "I’m very glad I’m on that subscription! I really should have followed my own advice and leaned more heavily into subagents with cheaper models."
+          },
+          {
+            "type": "p",
+            "text": "Here’s what claude.ai/settings/usage is showing me right now:"
+          },
+          {
+            "type": "p",
+            "text": "I have several other major Fable-driven projects on the go right now as well, with the goal of hitting 100% on that Fable bar just in time for the price increase."
+          },
+          {
+            "type": "h3",
+            "text": "The full release notes for sqlite-utils 4.0rc2"
+          },
+          {
+            "type": "p",
+            "text": "Here are the full release notes for the RC. I had Fable add these to an “Unreleased” section of the changelog as each change landed, reviewing them as it went. This has the neat side effect that the commit history of the changelog acts as a concise summary of each of the changes that went into the release."
+          },
+          {
+            "type": "p",
+            "text": "In the past I’ve had a policy of writing release notes by hand, but honestly these are better than I would have created myself. Release notes are a great example of writing that I’m OK to outsource to agents because they need to be boring, predictable and accurate."
+          },
+          {
+            "type": "quote",
+            "text": "Breaking changes:\n\nWrite statements executed with db.execute() are now committed automatically, unless a transaction is already open in which case they join it. Previously they opened an implicit transaction that stayed open until something committed it—writes appeared to work when read on the same connection but were silently rolled back when the connection closed. Code that relied on rolling back uncommitted db.execute() writes should use the new db.begin() method to open an explicit transaction first. The transaction model is documented in full at Transactions and saving your changes.\n\ndb.query() now executes its SQL as soon as it is called, rather than waiting until the returned generator is first iterated. Rows are still fetched lazily during iteration. SQL errors are now raised at the call site, statements such as INSERT ... RETURNING are executed and committed immediately without needing to iterate over their results, and passing a statement that returns no rows—previously a silent no-op—now raises a ValueError recommending db.execute() instead. A statement rejected this way is rolled back before the error is raised, so it has no effect on the database.\nPython API validation errors now raise ValueError instead of AssertionError. Previously invalid arguments—such as create_table() with no columns, transform() on a table that does not exist, or passing both ignore=True and replace=True—were rejected using bare assert statements, which are silently skipped when Python runs with the -O flag. Code that caught AssertionError for these cases should catch ValueError instead.\n\ntable.upsert() and table.upsert_all() now raise PrimaryKeyRequired if a record is missing a value for any primary key column, or has a value of None for one. Previously such records—which can never match an existing row—were quietly inserted as brand new rows, or triggered a confusing KeyError after the insert had already taken place.\n\ndb.enable_wal() and db.disable_wal() now raise a sqlite_utils.db.TransactionError if called while a transaction is open. Previously they would silently commit the open transaction as a side effect of changing the journal mode, breaking the rollback guarantee of db.atomic() and of user-managed transactions.\nThe View class no longer has an enable_fts() method. It existed only to raise NotImplementedError, since full-text search is not supported for views—calling it now raises AttributeError instead, and the method no longer appears in the API reference. The sqlite-utils enable-fts command shows a clean error when pointed at a view.\nThe no-op -d/--detect-types flag has been removed from the insert and upsert commands. Type detection has been the default for CSV/TSV data since 4.0a1, so the flag did nothing—invocations using it should simply drop it. --no-detect-types remains available to disable detection.\n\nDatabase() now raises a sqlite_utils.db.TransactionError if passed a connection created with the Python 3.12+ sqlite3.connect(..., autocommit=True) or autocommit=False options. commit() and rollback() behave differently on those connections, which previously caused every write made by the library to be silently discarded when the connection closed.\n\nEverything else:\n\nFixed a bug where table.delete_where(), table.optimize() and table.rebuild_fts() did not commit their changes, leaving the connection inside an open transaction. Their work—and any subsequent writes—could then be silently rolled back when the connection was closed. All three now use db.atomic(), consistent with the other write methods.\nThe sqlite-utils drop-table command now refuses to drop a view, and drop-view refuses to drop a table. Previously each would silently drop the wrong type of object if the name matched. Both now exit with an error suggesting the correct command to use.\nMigrations applied by the new migrations system now run inside a transaction, together with the record of the migration having been applied. If a migration raises an exception its changes are rolled back and it stays pending, so it can be safely re-applied after the error is fixed. Migrations that cannot run inside a transaction, such as those executing VACUUM, can opt out using @migrations(transactional=False)—see Migrations and transactions.\n\ntable.upsert() and table.upsert_all() now detect the primary key or compound primary key of an existing table, so the pk= argument is no longer required when upserting into a table that already has a primary key.\n\ndb.table(table_name).insert({}) can now be used to insert a row consisting entirely of default values into an existing table, using INSERT INTO ... DEFAULT VALUES. (#759)\nImprovements to the sqlite-utils migrate command: --stop-before values that do not match any known migration are now an error instead of being silently ignored, --stop-before now works correctly with migration files that still use the older sqlite_migrate.Migrations class, and --list is now a read-only operation that no longer creates the database file or the migrations tracking table. migrations.applied() now returns migrations in the order they were applied.\nNew db.begin(), db.commit() and db.rollback() methods for taking manual control of transactions, as an alternative to the db.atomic() context manager.\nNew documentation: Transactions and saving your changes describes how transactions work and when changes are committed, and a new Upgrading page details the changes needed to move between major versions."
+          }
+        ],
+        "translations": [
+          "2026年7月5日",
+          "几周前我写过关于 sqlite-utils 4.0rc1 发布的文章。由于我们的 Max 订阅只能再用几天 Claude Fable 了，我决定看看它能否帮我推出一个让我真正放心的 4.0 稳定版，因为我尽量遵循语义化版本（SemVer），并且希望尽可能减少不兼容的主版本发布。",
+          "我在 iPhone 上的网页版 Claude Code 中用了这个提示词作为开始：",
+          "发布稳定的 4.0 版本前的最终审查——非常重要的是，要发现任何如果以后修复就会造成破坏性变更的遗留问题",
+          "这是它为我生成的初始报告。其中有一些我自己还未遇到过的重要问题——Fable 将其中 5 个归类为“发布阻塞”（release blockers）。这是其中最严重的一个：",
+          "1. delete_where() 从不提交并污染连接（数据丢失）\nTable.delete_where() (sqlite_utils/db.py:2948) 通过纯粹的 self.db.execute() 执行 DELETE 操作，没有 atomic() 包装器——相比之下，位于 db.py:2944 的 Table.delete() 则进行了正确的包装。连接状态保持为 in_transaction=True，因此随后的每次 atomic() 调用都会进入保存点（savepoint）分支（db.py:430-440）并且同样不会提交。\n端到端复现：\ndb = sqlite_utils.Database(\"dw.db\")\ndb[\"t\"].insert_all([{\"id\": i} for i in range(3)], pk=\"id\")\ndb[\"t\"].delete_where(\"id = ?\", [0])   # conn.in_transaction 现在为 True\ndb[\"t\"].insert({\"id\": 50})\ndb[\"u\"].insert({\"a\": 1})\ndb.close()\n# 重新打开：行变回 [0, 1, 2] —— 删除操作、行 50 以及表 u 全都丢失了。",
+          "这确实是个极其糟糕的 Bug！很高兴我还没把它发布出去，不过至少这只是个我能在 4.0.1 小版本中修复的 Bug，而不是那种会迫使我发布 5.0 版本的设计缺陷。",
+          "经过 37 次提示、34 次提交，以及对 30 个独立文件进行了 +1,321 行新增和 -190 行删除的代码更改，我们依次处理了所有的反馈，并在此过程中进行了几项其他的设计改进。",
+          "关于编程智能体（coding agents）的一件奇妙的事情是，像这样更难的任务实际上提供了更多同时去做其他事情的机会，因为智能体有时需要 10 到 15 分钟来处理新任务。我出门去观看了半月湾（Half Moon Bay）的 7 月 4 日独立日游行，期间偶尔查看一下，并在手机上为 Fable 提示下一步操作。",
+          "完整详情请见 PR 和这份共享的记录。我在最终审查时切换到了笔记本电脑，并通过 GitHub 的 PR 界面进行了审查。",
+          "最重大的更改与事务处理有关，这是早期 RC 版本中的标志性新功能。新的 RC 版本现在包含了关于新事务模型的详尽文档，我将在这里完整引用其介绍部分：",
+          "本库中每个写入数据库的方法——insert()、upsert()、update()、delete()、delete_where()、transform()、create_table()、create_index()、enable_fts() 等——都在各自的事务中运行，并在返回前提交。方法调用一旦完成，您的更改就会保存到磁盘：db = Database(\"data.db\") db.table(\"news\").insert({\"headline\": \"Dog wins award\"}) # 新行已经保存 - 不需要 commit()。使用 db.execute() 执行原始 SQL 也是如此——写入语句一旦执行完毕就会立即提交。您永远不需要调用 commit()，也不需要为了持久化更改而关闭数据库。只有以下两种情况需要考虑事务：您希望将多个写入操作组合在一起，使它们要么全部成功要么全部失败——请使用 db.atomic()。您正在使用 db.begin() 自行管理事务，在这种情况下，在您提交之前什么都不会提交——该库永远不会提交由您打开的事务。",
+          "在审查 Fable 的文档时——我发现先审查文档的编辑记录是初步了解已发生更改的极佳方式——我注意到了这个细节：",
+          "db.atomic() 和每方法自动事务是为 Python 默认事务处理模式下的连接而设计的。不支持使用 Python 3.12+ 的 sqlite3.connect(..., autocommit=True) 或 autocommit=False 选项创建的连接，因为 commit() 和 rollback() 在这些连接上的行为有所不同。",
+          "我承认，我之前没有想过 sqlite-utils 会对 Python 3.12 中新增的较新的 autocommit 设置作何反应。事实证明，“在这些连接上的行为有所不同”相当于几乎整个测试套件都失败了，因此我与模型进行了合作，以确保这种差异不会破坏该库的运行方式。",
+          "最后由 GPT-5.5 进行了审查",
+          "我过去常认为，让一个模型审查另一个模型工作的想法有些荒谬——感觉有一种奇怪的迷信。但问题在于它确实有效——我已经开始习惯性地让 Anthropic 的最佳模型审查 OpenAI 的工作，反之亦然，因为这种情况已经足够频繁地产生出有趣的结果，非常有价值。",
+          "我用以下内容提示了 Codex Desktop 和 GPT-5.5 xhigh：",
+          "审查自上一个 RC 以来的更改。同时确认更新日志是最新的。",
+          "这就足以发现两个值得调查的问题：",
+          "发现结果 [P1] sqlite_utils/db.py:663：db.query() 现在仅在调用 db.execute() 之后才会拒绝非行返回语句，而 sqlite_utils/db.py:705 会首先自动提交这些写入操作。因此，db.query(\"update ...\") 会引发 ValueError，但更新已经被提交了。对于一个被文档描述为“只能用于返回行的 SQL”的方法来说，这是一个令人惊讶的副作用。 [P1] sqlite_utils/db.py:672：通过 db.query() 执行的 INSERT ... RETURNING 仅在返回的生成器被完全耗尽后才会提交。如果不进行迭代，或者在常见的 next(db.query(...)) 用法中，db.query(\"insert ... returning ...\") 会保持事务打开状态，并且在关闭时写入操作可能会被回滚。这与 docs/changelog.rst:15 和 docs/python-api.rst:232 中的说明相矛盾，文档称其无需迭代即可生效。",
+          "我将这些内容粘贴到了一个新的 Fable 会话中，该会话运行了一些实验来确认这个问题：",
+          "这两个发现都得到了证实。db.query() 会先调用 self.execute()（这会自动提交写操作），然后才检查 cursor.description —— 因此 db.query(\"update ...\") 会在抛出 ValueError 之前提交更新。而且 INSERT ... RETURNING 的提交动作位于返回的生成器的末尾，所以除非你耗尽迭代器，否则它永远不会触发 —— 执行 next(db.query(...)) 或者未进行迭代的调用会使事务保持打开状态，这与 changelog 和文档的承诺相矛盾。",
+          "这是包含修复程序的 PR，以及完整的 Claude Code 记录。审查这段代码帮助我更好地建立起了关于 SQLite 事务语义边界情况的心智模型！",
+          "预计（无补贴）成本为 149.25 美元",
+          "我升级到了每月 200 美元的 Claude Max 计划（之前是每月 100 美元），以便在 7 月 7 日“Fablepocalypse”到来之前的剩余时间里增加我的 Fable 额度，届时即使是 Claude Max 订阅者也必须为该模型支付全额 API 费用。",
+          "我很好奇如果我直接支付这些费用，到底会花多少钱。起初我以为自己看不到这些数据，因为我是使用 Claude Code for web 远程运行这些工作的，后来我意识到，我可以在那个现有会话中运行 AgentsView 来获取成本估算！",
+          "运行 \"uvx agentsview --help\" 然后使用该工具计算本次会话的成本",
+          "Claude 弄清楚了如何使用 session list --include-children 命令，并得出了以下结果：",
+          "我非常庆幸自己订阅了这个套餐！我真该听从自己的建议，更多地依赖使用更便宜模型的子智能体。",
+          "以下是 claude.ai/settings/usage 目前向我显示的内容：",
+          "我目前还在推进其他几个由 Fable 驱动的主要项目，目标是在涨价之前刚好把那个 Fable 进度条刷到 100%。",
+          "sqlite-utils 4.0rc2 的完整发行说明",
+          "这是该 RC 版本的完整发行说明。在每次提交变更时，我都让 Fable 将它们添加到 changelog 的“Unreleased”部分，并随之进行审查。这带来了一个极好的副作用，即 changelog 的提交历史可以作为该版本中每项变更的简明摘要。",
+          "过去我习惯于手动编写发行说明，但老实说，这些说明比我自己写的还要好。发行说明是一个我很乐意外包给智能体的绝佳写作案例，因为它们需要的是平铺直叙、可预测且准确无误。",
+          "破坏性更新："
+        ]
+      }
+    },
+    {
+      "slug": "40a1286db30eafe4",
+      "title": "From the DF Archive: ‘Electron and the Decline of Native Apps’",
+      "titleZh": "来自 DF 档案：“Electron 与原生应用的衰落”",
+      "link": "https://daringfireball.net/2018/12/electron_and_the_decline_of_native_apps",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-04T19:28:45.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Electron",
+        "native-apps",
+        "macOS"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "原生应用正面临来自跨平台框架 Electron 的严重冲击，作者将其称为一场灾难。尽管 Mac 平台凭借其吸引“真正在乎平台”的用户群体，可能会比 Windows 表现出更强的韧性。然而，Mac 在过去十年中用户激增导致开发者注意力分散，使得这种原生体验的维护面临挑战。这反映了平台普及度与原生应用生态质量之间存在的潜在矛盾。",
+      "summaryEn": "Native applications are facing a severe impact from the cross-platform framework Electron, which the author describes as a scourge. The Mac platform might prove more resilient than Windows because it attracts users who genuinely care about the platform. However, the explosion in Mac's popularity over the past decade has shifted developer attention, challenging the maintenance of native experiences. This reflects the underlying conflict between platform popularity and the quality of the native app ecosystem.",
+      "reason": "提供了一个跨越时间的视角，深刻剖析了跨平台框架（如 Electron）对原生应用生态的长期破坏力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Friday, 7 December 2018",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "SwiftOnSecurity, regarding Microsoft’s switch to Chromium as Windows’s built-in rendering engine:"
+          },
+          {
+            "type": "quote",
+            "text": "This isn’t about Chrome. This is about ElectronJS. Microsoft\nthinks EdgeHTML cannot get to drop-in feature-parity with Chromium\nto replace it in Electron apps, whose duplication is becoming a\nsignificant performance drain. They want to single-instance\nElectron with their own fork.\n\nElectron is a cancer murdering both macOS and Windows as it\nproliferates. Microsoft must offer a drop-in version with native\noptimizations to improve performance and resource utilization.\n\nThis is the end of desktop applications. There’s nowhere but\nJavaScript."
+          },
+          {
+            "type": "p",
+            "text": "I don’t share the depth of their pessimism regarding native apps, but Electron is without question a scourge. I think the Mac will prove more resilient than Windows, because the Mac is the platform that attracts people who care. But I worry."
+          },
+          {
+            "type": "p",
+            "text": "In some ways, the worst thing that ever happened to the Mac is that it got so much more popular a decade ago. In theory, that should have been nothing but good news for the platform — more users means more attention from developers. The more Mac users there are, the more Mac apps we should see. The problem is, the users who really care about good native apps — users who know HIG violations when they see them, who care about performance, who care about Mac apps being right — were mostly already on the Mac. A lot of newer Mac users either don’t know or don’t care about what makes for a good Mac app."
+          },
+          {
+            "type": "p",
+            "text": "There have always been bad Mac apps. But they seldom achieved any level of popularity because Mac users, collectively, rejected them. Microsoft Word 6.0 is the canonical example. Word 5 for Mac was a beloved app and solid Mac citizen. Word 6 was a cross-platform monstrosity. Mac users rejected it, and its rejection prompted Microsoft — at the height of its mid-’90s power and arrogance — to completely re-think its Mac strategy and create a new business unit devoted to the Mac. Microsoft’s Rick Schaut wrote a terrific piece on the whole saga back in 2004:"
+          },
+          {
+            "type": "quote",
+            "text": "OK, so Mac Word 6.0 was big and slow relative to the memory that\nmost computers had available at the time we shipped it, but that’s\nnot the reason why Mac Word 6.0 was such a crappy product, or at\nleast not directly. [...]\n\nMoreover, while people complained about the performance, the\nbiggest complaint we kept hearing about Mac Word 6.0 was that it\nwasn’t “Mac-like.” So, we spent a lot of time drilling down into\nwhat people meant when they said it wasn’t “Mac-like.” We did\nfocus groups. Some of us hung out in various Usenet newsgroups. We\ntalked to product reviewers. We talked to friends who used the\nproduct. It turns out that “Mac-like” meant Mac Word 5.0.\n\nWe spent so much time, and put so much effort into, solving all\nthe technical problems of Mac Word 6.0 that we failed to make the\nUI of Mac Word 6.0 behave like Mac Word 5.0. [...]\n\nThe other thing we figured out as a result of coming to understand\nwhat “Mac-like” meant was that we weren’t going to be able to\ndeliver “Mac-like” products if Office remained a singular product\nfrom which both the Win and Mac versions were built. The mere fact\nthat “Mac-like” was an issue at all meant that there were some\nfundamental differences between the Win Word market and the Mac\nWord market. If we were to understand both those markets, then our\nMac products and Win products needed separate marketing and PGM\norganizations. The lessons we learned from Mac Word 6.0 are some\nof the reasons that Mac BU exists today."
+          },
+          {
+            "type": "p",
+            "text": "I disagree, strongly, with one aspect of this: what Mac Word users saw as Mac-like wasn’t whatever Word 5 was — it was that Word 5 really was Mac-like in design. Word 6 wasn’t objected to for being different, it was objected to for being literally un-Mac-like. It looked and worked like Word for Windows."
+          },
+          {
+            "type": "p",
+            "text": "As un-Mac-like as Word 6 was, it was far more Mac-like then than Google Docs running inside a Chrome tab is today. Google Docs on Chrome is an un-Mac-like word processor running inside an ever-more-un-Mac-like web browser. What the Mac market flatly rejected as un-Mac-like in 1996 was better than what the Mac market tolerates, seemingly happily, today. Software no longer needs to be Mac-like to succeed on the Mac today. That’s a tragedy."
+          },
+          {
+            "type": "p",
+            "text": "Even Apple, of all companies, is shipping Mac apps with glaring un-Mac-like problems. The “Marzipan” apps on MacOS 10.14 Mojave — News, Home, Stocks, Voice Memos — are dreadfully bad apps. They’re functionally poor, and design-wise foreign-feeling. I honestly don’t understand how Apple decided it was OK to ship these apps."
+          },
+          {
+            "type": "p",
+            "text": "Another one I just ran into on Mojave is the new Mac App Store app. It certainly looks nice, but I noticed a few days ago that it doesn’t support the Page Down and Page Up keys for scrolling (nor the Home and End keys for jumping to the top and bottom) in any of its views.1 Open an article and hit Page Down, and instead of scrolling down, it just beeps. Beeps, I say. The only way to scroll is with a mouse or trackpad. In an app from Apple, used by nearly everyone. Even the Marzipan apps support these keys for scrolling, which shouldn’t be surprising, because support for these keys and other standard behavior comes for free with the underlying developer frameworks. The Mojave App Store app must be doing something very strange for these keys not to work.2"
+          },
+          {
+            "type": "p",
+            "text": "The Mojave App Store app certainly isn’t written using Electron. But the problem with Electron apps isn’t really Electron — it’s the decline in demand for well-made native Mac apps. And that is ominous. The biggest threat to the Mac isn’t iPads, Chromebooks, or Windows 2-in-1’s — it’s apathy towards what makes great Mac apps great. As I tweeted regarding this Page Down/Up thing:"
+          },
+          {
+            "type": "quote",
+            "text": "Things like this are canaries in the coal mine regarding the state\nof the Mac. If even Apple doesn’t get basic fundamentals — like\nsupporting Page Up/Down, things which should work in a scrolling\nview out of the box — how are we to expect any developer to?"
+          },
+          {
+            "type": "p",
+            "text": "The new App Store app on Mojave certainly looks better. But developers at Apple, of all companies, should know that design is how it works."
+          },
+          {
+            "type": "li",
+            "text": "After posting about this to Twitter, a couple of people argued that it should be no surprise that these keys don’t work because modern Apple keyboards don’t have these keys. First, that’s wrong — the large Magic Keyboard has these keys. But even if you’re using a MacBook or a smaller keyboard you can use them using the Fn key. Fn↓ = Page Down; Fn↑ = Page Up; Fn← = Home; Fn→ = End. Enjoy. ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "While I’m in full-on you-kids-get-the-hell-off-my-lawn mode here, let me mention another Mojave gripe that is clearly the work of young developers at Apple. The Finder’s File → Show Original command has had the shortcut ⌘R since, I think, System 6. (Select an alias or symlink and this command will reveal the original file.) File → Make Alias was ⌘L. In Mojave, ⌘R has inexplicably been remapped to Rotate Right and ⌘L to Rotate Left. (These seem to be invisible menu items in the Edit menu? They’re not menu items, but the Edit menu highlights when you invoke them.) The shortcut for Make Alias is now ⌃⌘A and Show Original is now ⌃⌥⌘A. In and of themselves these new shortcuts aren’t bad, I suppose, but these are awfully longstanding shortcuts to change. And, I’ll add, the new shortcuts don’t even match the ones in Photos, where they’re named Rotate Counterclockwise (⌘R) and Rotate Clockwise (⌥⌘R). Photos’s shortcuts, where rotating in the other direction is an Option-key variant rather using an entirely different letter, seem more Mac-like to me. Preview, on the other hand, uses the commands names Rotate Left and Rotate Right, and the same ⌘L and ⌘R as the Mojave Finder. I give up. ↩︎︎"
+          }
+        ],
+        "translations": [
+          "SwiftOnSecurity 关于微软将 Chromium 作为 Windows 内置渲染引擎的评论：",
+          "这与 Chrome 无关，而是与 ElectronJS 有关。微软认为 EdgeHTML 无法在功能上达到与 Chromium 直接替换的程度，从而在 Electron 应用中取代它，而这种重复的底层引擎正成为严重的性能消耗。他们希望用自己的分支来实现 Electron 的单实例运行。随着 Electron 的泛滥，它已成为扼杀 macOS 和 Windows 的毒瘤。微软必须提供一个经过原生优化的直接替换版本，以提升性能和资源利用率。这是桌面应用程序的末日。除了 JavaScript，已无路可走。",
+          "我对原生应用的悲观程度没有他们那么深，但 Electron 毫无疑问是个祸害。我认为 Mac 会比 Windows 表现出更强的韧性，因为 Mac 是一个吸引注重细节的人群的平台。但我依然感到担忧。",
+          "在某些方面，Mac 遭遇过最糟糕的事情，就是它在十年前变得太受欢迎了。理论上，这对该平台来说应该绝对是个好消息——更多的用户意味着开发者会投入更多关注。Mac 用户越多，我们应该能看到的 Mac 应用也就越多。问题在于，那些真正在乎优秀原生应用的用户——那些一眼就能看出违反 HIG（人机交互指南）规范、在乎性能、在乎 Mac 应用是否做得正确的用户——大多早就在使用 Mac 了。而许多较新的 Mac 用户既不知道也不在乎究竟什么才是优秀的 Mac 应用。",
+          "糟糕的 Mac 应用一直存在。但它们很少能流行起来，因为 Mac 用户作为一个整体抵制了它们。Microsoft Word 6.0 就是典型的例子。Mac 版的 Word 5 是一款备受喜爱且极其符合 Mac 规范的应用程序。而 Word 6 则是一个跨平台的怪物。Mac 用户抵制了它，而这种抵制促使微软——在 90 年代中期权势与傲慢的顶峰时期——彻底重新思考其 Mac 策略，并成立了一个专注于 Mac 的新业务部门。微软的 Rick Schaut 在 2004 年写了一篇很棒的文章，讲述了整个事件的始末：",
+          "好吧，相对于我们发布 Mac Word 6.0 时大多数计算机所配备的内存而言，它确实体积庞大且运行缓慢，但这并不是 Mac Word 6.0 如此糟糕的原因，或者至少不是直接原因。[...] 此外，尽管人们抱怨其性能，但关于 Mac Word 6.0 我们听到最多的抱怨是它不够“Mac-like”。因此，我们花了很多时间深入了解人们说它不够“Mac-like”到底是什么意思。我们进行了焦点小组访谈。我们中的一些人泡在各种 Usenet 新闻组里。我们与产品评论员交流。我们与使用该产品的朋友交谈。结果发现，“Mac-like”指的就是 Mac Word 5.0。我们花了那么多时间和精力去解决 Mac Word 6.0 的所有技术问题，却没能让 Mac Word 6.0 的 UI 表现得像 Mac Word 5.0。[...] 在理解了“Mac-like”的含义后，我们意识到的另一件事是：如果 Office 依然作为一个单一产品来同时构建 Win 和 Mac 版本，我们就无法交付“Mac-like”的产品。“Mac-like”竟然成了一个议题，这件事本身就意味着 Win Word 市场和 Mac Word 市场之间存在一些根本差异。如果我们想要同时了解这两个市场，那么我们的 Mac 产品和 Win 产品就需要独立的市场营销和 PGM 团队。我们从 Mac Word 6.0 中吸取的教训，正是如今 Mac BU 得以存在的部分原因。",
+          "我对其中一点强烈反对：Mac Word 用户眼中的 Mac-like 并不是单纯因为它是 Word 5，而是因为 Word 5 的设计本身就是真正的 Mac-like。人们反对 Word 6 并不是因为它与以往不同，而是因为它完全背离了 Mac-like。它的外观和操作方式完全就是 Word for Windows 的样子。",
+          "尽管 Word 6 缺乏 Mac-like，但相比起如今运行在 Chrome 标签页中的 Google Docs，它当时的 Mac-like 程度要高得多。Chrome 上的 Google Docs 是一款毫无 Mac-like 的文字处理器，而且它还运行在一个愈发毫无 Mac-like 的网页浏览器中。1996 年 Mac 市场坚决抵制的不符合 Mac-like 的产品，反而比如今 Mac 市场似乎正欣然忍受的产品还要好。如今的软件要想在 Mac 上取得成功，再也不需要具备 Mac-like 了。这是一场悲剧。",
+          "即使在所有公司中，连 Apple 自己发布的 Mac 应用也存在极其明显的非 Mac-like 问题。MacOS 10.14 Mojave 上的“Marzipan”应用——News、Home、Stocks 和 Voice Memos——简直糟糕透顶。它们不仅功能薄弱，设计上也让人感觉格格不入。我实在不明白 Apple 怎么会觉得将这样的应用发布出去是可以接受的。",
+          "我刚在 Mojave 上遇到的另一个例子是全新的 Mac App Store 应用。它看起来确实漂亮，但几天前我注意到，在它的任何视图中，都不支持使用 Page Down 和 Page Up 键进行滚动（也不支持使用 Home 和 End 键跳转至顶部和底部）。1 打开一篇文章并按下 Page Down 键，它不仅不会向下滚动，还会发出提示音。我说真的，它居然会发出提示音。滚动的唯一方式就是使用鼠标或触控板。这可是 Apple 出品、且几乎所有人都在使用的应用。即便是 Marzipan 应用也支持这些滚动快捷键，这其实不足为奇，因为底层开发者框架本身就自带了对这些按键及其他标准行为的支持。Mojave 的 App Store 应用一定是做了什么非常奇怪的操作，才会导致这些按键失效。2",
+          "Mojave 的 App Store 应用显然不是用 Electron 编写的。但 Electron 应用的问题其实并不在于 Electron 本身——而在于对制作精良的 Mac 原生应用的需求正在下降。这可不是个好兆头。Mac 面临的最大威胁不是 iPad、Chromebook 或 Windows 二合一电脑——而是人们对成就优秀 Mac 应用的特质表现出的漠不关心。正如我就这个 Page Down/Up 问题在 Twitter 上发推文所说的：",
+          "这类事情犹如煤矿里的金丝雀，预示着 Mac 平台的现状。如果连 Apple 都搞砸了像支持 Page Up/Down 这种基本功能——这些在滚动视图中本应开箱即用的操作——我们又怎能指望其他开发者去做好呢？",
+          "Mojave 上全新的 App Store 应用看起来确实更好看了。但在所有公司中，Apple 的开发者尤其应该懂得，设计关乎的是运作方式。",
+          "我把这件事发到 Twitter 上之后，有几个人争辩说，这些按键不起作用并不奇怪，因为现代 Apple 键盘已经没有这些键了。首先，这种说法是错的——大号的 Magic Keyboard 就有这些键。而且，即使你使用的是 MacBook 或较小的键盘，你也可以通过 Fn 键来使用它们。Fn↓ = Page Down；Fn↑ = Page Up；Fn← = Home；Fn→ = End。祝用得开心。 ↩︎",
+          "既然我现在完全进入了“你们这些小屁孩快滚出我的草坪”的暴躁模式，那就让我提另一个 Mojave 让人吐槽的地方，这显然是 Apple 年轻开发者的杰作。Finder 的“文件 → 显示原身”（File → Show Original）命令，我记得从 System 6 开始快捷键就是 ⌘R。（选择一个别名或符号链接，此命令就会显示原文件。）“文件 → 制作别名”（File → Make Alias）的快捷键则是 ⌘L。在 Mojave 中，⌘R 莫名其妙地被重新映射为向右旋转，而 ⌘L 被映射为向左旋转。（这些似乎是“编辑”菜单里的隐藏菜单项？其实它们连菜单项都不是，但当你触发它们时，“编辑”菜单会高亮。）现在，制作别名的快捷键变成了 ⌃⌘A，而显示原身变成了 ⌃⌥⌘A。我想，就这些新快捷键本身而言并不算坏，但改变如此历史悠久的快捷键实在太糟糕了。而且我还要补充一点，这些新快捷键甚至跟 Photos 里的都不一致，在 Photos 里它们叫作逆时针旋转和顺时针旋转，快捷键分别是 ⌘R 和 ⌥⌘R。在 Photos 的快捷键中，反方向旋转是 Option 键的变体，而不是使用完全不同的字母，这在我看来更符合 Mac 的风格。另一方面，Preview 使用的命令名称是向左旋转和向右旋转，快捷键跟 Mojave 的 Finder 一样是 ⌘L 和 ⌘R。我彻底无语了。 ↩︎︎"
+        ]
+      }
+    },
+    {
+      "slug": "ad1d53808b5cb564",
+      "title": "Building a World Map with only 500 bytes",
+      "titleZh": "仅用 500 字节构建世界地图",
+      "link": "https://simonwillison.net/2026/Jul/4/building-a-world-map-with-only-500-bytes/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-04T23:09:02.000Z",
+      "category": "engineering",
+      "keywords": [
+        "ASCII",
+        "world-map",
+        "optimization"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "开发者 Iwo Kadziela 在 AI 辅助工具 Codex 的帮助下，成功仅用 445 字节的数据生成了一张逼真的 ASCII 字符世界地图。实现这一极限压缩的核心技巧在于巧妙运用 deflate 压缩算法处理底层数据。该方案打破了常规的地图渲染思路，展示了极致的代码与数据体积优化能力。这种极简主义编程实践为在资源极度受限的环境下呈现复杂视觉信息提供了全新思路。",
+      "summaryEn": "Assisted by the AI tool Codex, developer Iwo Kadziela successfully generated a credible ASCII world map using only 445 bytes of data. The key trick to achieving this extreme compression is the clever application of the deflate compression algorithm on the underlying data. This approach breaks conventional map rendering mindsets and demonstrates extreme optimization capabilities for code and data size. Such minimalist programming practices offer a new perspective on presenting complex visual information in highly resource-constrained environments.",
+      "reason": "展示了极限字节压缩与 AI 辅助编程结合的奇妙化学反应，对追求代码高尔夫和极致性能的开发者极具吸引力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "4th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Building a World Map with only 500 bytes (via) Iwo Kadziela (assisted by Codex) figured out a way to generate a credible ASCII world map using 445 bytes of data:"
+          },
+          {
+            "type": "p",
+            "text": "The key trick is to use deflate compression, which is then wired together using this neat snippet of JavaScript. I didn't know you could use fetch() with data: URIs like this:"
+          },
+          {
+            "type": "code",
+            "text": "fetch('data:;base64,1ZpLsgIxCEXnrM...==').then(\n  r => r.body.pipeThrough(new DecompressionStream('deflate-raw'))\n).then(\n  s => new Response(s).text()\n).then(\n  t => b.innerHTML = '<pre style=font-size:.65vw>' + t\n)"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e842d380740173d3",
+      "title": "sqlite-utils 4.0rc2",
+      "titleZh": "sqlite-utils 4.0rc2",
+      "link": "https://simonwillison.net/2026/Jul/5/sqlite-utils/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-05T00:47:38.000Z",
+      "category": "tools",
+      "keywords": [
+        "sqlite-utils",
+        "release",
+        "CLI"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 3,
+        "timeliness": 7,
+        "total": 14
+      },
+      "summary": "命令行工具 sqlite-utils 正式发布 4.0rc2 版本。该版本的代码主要由 AI 模型 Claude Fable 编写，开发成本约为 149.25 美元。此次更新旨在为后续的 4.0 稳定版奠定基础，并严格遵循了语义化版本控制规范。作者通过这次实践验证了 AI 在处理复杂开源项目工程化迭代时的可靠性。",
+      "summaryEn": "The command-line tool sqlite-utils has officially released version 4.0rc2. The code for this version was predominantly written by the AI model Claude Fable, with a development cost of about $149.25. This update aims to lay the groundwork for the subsequent 4.0 stable release and strictly adheres to Semantic Versioning specifications. Through this practice, the author verified the reliability of AI in handling complex engineering iterations for open-source projects.",
+      "reason": "作为 sqlite-utils 的最新候选发布版，适合关注该 CLI 工具或 AI 辅助开源开发流程的开发者跟进了解。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 5th July 2026."
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "b569d47024a8ac5c",
+      "title": "Day One Journal",
+      "titleZh": "Day One Journal",
+      "link": "https://dayoneapp.com/blog/introducing-daily-chat/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-04T21:02:43.000Z",
+      "category": "other",
+      "keywords": [
+        "journaling",
+        "app",
+        "sponsorship"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 2,
+        "timeliness": 2,
+        "total": 6
+      },
+      "summary": "日记应用 Day One 自 2011 年首次发布以来，一直是 Mac 和 iOS 平台上的行业标杆。该应用不仅在技术和设计上追求卓越，更深刻理解并融入了记日记这一行为的私人化属性。其 Mac 版本提供了纯正的原生体验，同时支持创建多个独立日记本。Day One 凭借其对平台特性的尊重和用户体验的深度打磨，展现了顶级应用应有的品质。",
+      "summaryEn": "Since its initial launch in 2011, the journaling app Day One has been an industry benchmark on Mac and iOS platforms. The app not only exhibits a commitment to technical and design excellence but also deeply integrates the intensely personal nature of journaling. Its Mac version provides a genuine native experience while supporting the creation of multiple separate journals. Through its respect for platform characteristics and deep refinement of user experience, Day One demonstrates the quality expected of a top-tier application.",
+      "reason": "作为一个长盛不衰的优秀应用案例，展示了如何在个人记录类软件中完美平衡技术、原生设计与隐私情感需求。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "The Day One Team, Paul Mayne",
+        "siteName": "Day One | Your Journal for Life",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today, Day One introduces Daily Chat, a conversational journaling experience that helps you capture and reflect on your day through a simple back-and-forth chat. Your conversation becomes a journal entry that preserves your words, your mood, and the moments that matter most."
+          },
+          {
+            "type": "p",
+            "text": "It’s available now on iPhone, iPad, Android, Windows, and the web, found on the new Today Tab with Day One Gold."
+          },
+          {
+            "type": "p",
+            "text": "Video Demo:"
+          },
+          {
+            "type": "h2",
+            "text": "Why Daily Chat Exists"
+          },
+          {
+            "type": "p",
+            "text": "Some days are full of moments worth remembering, but sitting down to write about them can feel like the hardest part. Not because the moments weren’t meaningful, but because translating a lived experience into words on a blank page takes a kind of energy that isn’t always there."
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat was designed for those moments. Rather than starting with a blank entry, you start with a conversation. Think of it as a quiet back-and-forth that helps you slow down, recall what happened, and notice what it meant. Let a thoughtful follow-up question draw out something you might not have written on your own."
+          },
+          {
+            "type": "p",
+            "text": "The result is a journal entry that reflects what you actually experienced, captured in your own words and shaped by reflection."
+          },
+          {
+            "type": "h2",
+            "text": "How Daily Chat Supports Deeper Journaling"
+          },
+          {
+            "type": "p",
+            "text": "Journals hold their deepest value when they capture more than just what happened. The best entries hold context, emotion, and meaning — not only the events of a day, but how those events felt and why they mattered."
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat supports this kind of memory preservation by guiding you through your day with care:"
+          },
+          {
+            "type": "p",
+            "text": "Follow-up questions surface what you might otherwise forget. A prompt like “How did that make you feel?” or “What stood out about that moment?” can help you move from a surface-level recap to a richer, more personal reflection."
+          },
+          {
+            "type": "p",
+            "text": "Your words stay your words. The journal entry generated from your conversation reflects the language, tone, and mood of what you shared. Your voice remains at the center."
+          },
+          {
+            "type": "p",
+            "text": "Small moments get captured, too. Conversations have a way of uncovering the quieter details of a day — the ones that rarely make it into a traditional journal entry but often carry the most meaning over time."
+          },
+          {
+            "type": "h2",
+            "text": "How Daily Chat Works"
+          },
+          {
+            "type": "li",
+            "text": "Open Daily Chat. Open the new “Today” tab to find the Daily Chat section and start a new conversation."
+          },
+          {
+            "type": "li",
+            "text": "Talk through your day. Share what happened, what you noticed, or what’s on your mind. Daily Chat will respond with thoughtful follow-up questions to help you reflect more deeply."
+          },
+          {
+            "type": "li",
+            "text": "Generate a journal entry. When you’re ready, turn your conversation into a journal entry. The entry reflects your words, your tone, and your mood. Review and edit, or save and return to refine later."
+          },
+          {
+            "type": "li",
+            "text": "Resume and update anytime. Come back to a previous conversation to add new details or continue reflecting. Updated conversations can update the daily entry to merge any edits to the entry or updates from chat."
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat also includes “Voice Mode” for a hands-free voice chat experience. Tap on the button to the right side of the text input to begin Voice chat."
+          },
+          {
+            "type": "h2",
+            "text": "It Remembers What Matters to You"
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat includes a Memory system that learns from your conversations over time. As you chat, it extracts key details — people, places, interests, things you care about — and uses them as context in future conversations. The more you use Daily Chat, the more personal and relevant it becomes."
+          },
+          {
+            "type": "p",
+            "text": "Memories are synced to your account using the same end-to-end encryption as your journal entries, so they’re as private as everything else in Day One. A full Memory manager is coming in a future update, giving you visibility into what’s been remembered and control over every detail."
+          },
+          {
+            "type": "h2",
+            "text": "Daily Chat is Part of Day One Gold"
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat is available with Day One Gold, a new tier designed for deeper reflection and memory preservation. The value grows over time — as you build a habit of reflective conversation, the entries become richer, and the practice becomes more personal."
+          },
+          {
+            "type": "h2",
+            "text": "Privacy and Trust"
+          },
+          {
+            "type": "p",
+            "text": "Journaling is one of the most personal things a person can do. Adding AI to that experience requires care, transparency, and respect for boundaries. Daily Chat was built with those principles in mind."
+          },
+          {
+            "type": "li",
+            "text": "Fully opt-in. Daily Chat is completely optional. AI features are only active if enabled from the opt-in prompt or in Settings > AI Features."
+          },
+          {
+            "type": "li",
+            "text": "Nothing is stored or used for training. When you chat with AI, only the messages you choose to send are temporarily processed to generate responses or journal entries. Conversations are securely transmitted using encrypted protocols (HTTPS) and are never stored or used for AI training by Day One or our AI partners. Once processing is complete, the content is deleted and only stored encrypted."
+          },
+          {
+            "type": "li",
+            "text": "End-to-end encryption is respected. If your journals are end-to-end encrypted, content is temporarily decrypted on your device only while AI generates a response, then re-encrypted immediately afterward."
+          },
+          {
+            "type": "li",
+            "text": "You remain in full control. You decide when to use Daily Chat, what to share, and whether to save the generated entry. Nothing happens without your intent."
+          },
+          {
+            "type": "p",
+            "text": "Day One is continuously exploring on-device AI models to make these experiences even more private in the future. Until then, the same commitment to privacy that has defined Day One from the beginning applies to every AI feature."
+          },
+          {
+            "type": "h2",
+            "text": "Getting Started"
+          },
+          {
+            "type": "p",
+            "text": "Daily Chat is available with Day One Gold on iPhone, iPad, Android, Windows, and the web. Open the new Today tab to find Daily Chat to begin your first conversation."
+          },
+          {
+            "type": "p",
+            "text": "The moments of your day are worth preserving. Daily Chat helps you capture them with the context, emotion, and meaning they deserve."
+          }
+        ],
+        "translations": [
+          "今天，Day One 推出了 Daily Chat，这是一种对话式的日记体验，通过简单的来回交谈，帮助你记录和回顾每一天。你的对话将转化为一篇日记，保留你的文字、你的心情以及最重要的时刻。",
+          "目前该功能已在 iPhone、iPad、Android、Windows 和网页端上线，Day One Gold 用户可以在全新的 Today Tab 中体验。",
+          "视频演示：",
+          "Daily Chat 为何而生",
+          "有些日子充满了值得铭记的瞬间，但坐下来把它们写下来往往是最困难的部分。这并不是因为这些瞬间没有意义，而是因为将亲身经历转化为空白页面上的文字，需要消耗一种并不总是存在的精力。",
+          "Daily Chat 正是为这些时刻而设计的。你不再面对空白的日记条目，而是从一场对话开始。把它看作一场安静的交流，它可以帮助你慢下来，回忆发生的事情，并体会其中的意义。让那些体贴的追问，引导出你可能不会主动写下的内容。",
+          "最终生成的日记将真实反映你的经历，用你自己的语言记录，并在反思中成型。",
+          "Daily Chat 如何助力深度日记",
+          "当日记记录的不仅仅是发生过的事情时，它们才具有最深刻的价值。最好的日记条目包含了背景、情感和意义——不仅是一天中发生的事件，还有对这些事件的感受以及它们为何重要。",
+          "Daily Chat 通过贴心地引导你回顾这一天，来支持这种记忆的保存：",
+          "追问能挖掘出你可能遗忘的细节。像“那让你感觉如何？”或“那个瞬间最让你印象深刻的是什么？”这样的提示，可以帮助你从表面的复述转向更丰富、更具个人色彩的反思。",
+          "你的文字依然属于你。基于对话生成的日记条目反映了你分享内容的语言、语调和心情。你的声音始终处于核心地位。",
+          "微小的瞬间也会被记录下来。对话能够揭示一天中更微妙的细节——这些细节很少会出现在传统的日记中，但随着时间的推移，往往承载着最重要的意义。",
+          "Daily Chat 工作原理",
+          "打开 Daily Chat。打开新的“Today”标签页，找到 Daily Chat 版块并开始新的对话。",
+          "聊聊你的一天。分享发生的事情、你的观察或你的想法。Daily Chat 会以体贴的追问作为回应，帮助你更深入地反思。",
+          "生成日记条目。准备好后，即可将对话转化为日记条目。该条目将反映你的文字、语调和心情。你可以检查并编辑，或者保存下来稍后再回来润色。",
+          "随时继续和更新。回到之前的对话中，添加新细节或继续反思。更新后的对话可以更新每日日记条目，从而合并对该条目的任何编辑或来自聊天的更新。",
+          "Daily Chat 还包含“Voice Mode”（语音模式），提供免提的语音聊天体验。点击文本输入框右侧的按钮即可开始语音聊天。",
+          "它会记住对你重要的事情",
+          "Daily Chat 包含一个 Memory 系统，它会随着时间的推移从你的对话中学习。在聊天时，它会提取关键细节——人物、地点、兴趣以及你关心的事物——并将它们用作未来对话的上下文。你使用 Daily Chat 的次数越多，它就会变得越个性化且越懂你。",
+          "记忆功能会使用与你的日记条目相同的端到端加密技术同步到你的账户中，因此它们与 Day One 中的其他所有内容一样私密。完整的记忆管理器将在未来的更新中推出，让你能够查看已记住的内容，并控制每一个细节。",
+          "Daily Chat 是 Day One Gold 的一部分",
+          "Daily Chat 随 Day One Gold 提供，这是一个为深度反思和记忆保存而设计的新订阅级别。其价值会随着时间的推移而增长——当你养成反思性对话的习惯后，日记内容会变得更加丰富，这项练习也会变得更加个性化。",
+          "隐私与信任",
+          "写日记是一个人能做的最私人的事情之一。将 AI 引入这种体验需要谨慎、透明和对边界的尊重。Daily Chat 正是基于这些原则构建的。",
+          "完全自愿选择。Daily Chat 是完全可选的。只有在通过选择加入提示或在“设置 > AI 功能”（Settings > AI Features）中启用时，AI 功能才会被激活。",
+          "不存储任何内容，也不用于训练。当你与 AI 聊天时，只有你选择发送的消息才会被临时处理，以生成回复或日记条目。对话通过加密协议（HTTPS）安全传输，Day One 或我们的 AI 合作伙伴绝不会将其存储或用于 AI 训练。处理完成后，相关内容即被删除，仅以加密形式进行存储。",
+          "尊重端到端加密。如果你的日记是端到端加密的，内容只会在 AI 生成回复期间在你的设备上临时解密，随后立即重新加密。",
+          "你始终保持完全控制。你可以决定何时使用 Daily Chat、分享什么内容以及是否保存生成的条目。未经你的许可，不会执行任何操作。",
+          "Day One 正在不断探索设备端 AI 模型，以便在未来让这些体验变得更加私密。在此之前，自 Day One 创立之初就坚守的隐私承诺，将适用于每一项 AI 功能。",
+          "开始使用",
+          "Daily Chat 随 Day One Gold 在 iPhone、iPad、Android、Windows 和网页端提供。打开全新的“今天”（Today）标签页即可找到 Daily Chat，开始你的第一次对话。",
+          "你日常生活中的点滴瞬间值得被保存。Daily Chat 能够帮助你捕捉这些瞬间，并赋予它们应有的背景、情感和意义。"
+        ]
+      }
+    }
+  ]
+}
