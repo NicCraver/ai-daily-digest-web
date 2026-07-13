@@ -1,0 +1,1820 @@
+{
+  "date": "2026-07-14",
+  "generatedAt": "2026-07-13T18:08:06.786Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2501,
+    "filteredArticles": 19,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈焦点集中在AI技术的深度渗透与商业模式反思上，业界不仅关注操作系统级AI集成与模型迭代，更开始深入探讨AI时代的编程哲学及科技巨头的竞争逻辑。同时，从CISA凭证泄露事件到系统堆栈保护页的探讨，凸显了安全团队在底层架构中平衡安全与性能的持续挑战。此外，苹果生态的开发演进与UI设计哲学引发热议，开发者对SwiftUI更新及“每一帧完美”的界面呈现提出了更高要求。",
+  "articles": [
+    {
+      "slug": "7fc7252b143c942e",
+      "title": "Lessons Learned from CISA’s Recent GitHub Leak",
+      "titleZh": "从CISA最近的GitHub泄露事件中汲取的教训",
+      "link": "https://krebsonsecurity.com/2026/07/lessons-learned-from-cisas-recent-github-leak/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-07-13T15:03:28.000Z",
+      "category": "security",
+      "keywords": [
+        "CISA",
+        "GitHub",
+        "credentials",
+        "leak"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "CISA针对承包商在公共GitHub仓库中泄露数十个内部凭证（包括AWS Govcloud密钥）长达六个月的事件发布了事后分析报告。专家指出，该机构在初步响应中暴露出的漏洞为所有安全团队提供了重要教训。该事件凸显了第三方承包商管理和凭证监控的薄弱环节。",
+      "summaryEn": "CISA has issued a postmortem on an incident where a contractor leaked dozens of internal credentials, including AWS Govcloud keys, in a public GitHub repository for six months. Experts point out that the gaps identified in the agency's initial response provide important lessons for all security teams. The incident highlights weaknesses in third-party contractor management and credential monitoring.",
+      "reason": "通过真实的政府机构安全事件复盘，为安全团队提供了关于第三方风险和凭证管理的实战教训。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The Cybersecurity and Infrastructure Security Agency (CISA) has issued a postmortem on a recent data leak in which a contractor published dozens of internal CISA credentials — including AWS Govcloud keys — in a public GitHub repository for almost six months before being notified by KrebsOnSecurity. Experts say the gaps identified in the agency’s initial response provide important lessons that all security teams should absorb."
+          },
+          {
+            "type": "p",
+            "text": "On May 15, 2026, the security firm GitGuardian asked for help in notifying CISA about the existence of a public GitHub repository called “Private CISA” that included 844 MB of sensitive CISA-related data. One of the exposed files, titled “importantAWStokens,” included the administrative credentials to three Amazon AWS GovCloud servers. Another file — “AWS-Workspace-Firefox-Passwords.csv” — listed plaintext usernames and passwords for dozens of internal CISA systems."
+          },
+          {
+            "type": "p",
+            "text": "CISA quickly acknowledged our initial alert, but took more than 48 hours to invalidate the AWS keys and many other important secrets leaked in the GitHub repo. In its report on the data leak, CISA said the complexities of the agency’s systems and interconnections with federal and industry partners caused its key rotation to take longer than anticipated."
+          },
+          {
+            "type": "p",
+            "text": "“Drawing on this experience, CISA encourages others to maintain mature and well-tested key management capabilities,” the report notes."
+          },
+          {
+            "type": "p",
+            "text": "CISA also admitted it can do better when it comes to responding to security incident notifications from external parties. The postmortem stresses that clear and distinct reporting channels are essential to ensure that incidents affecting the organization itself are handled differently from those involving its products or customers."
+          },
+          {
+            "type": "p",
+            "text": "“In CISA’s case, these channels were not well defined, leading the security researcher to try multiple avenues – including emailing the contractor, submitting through CISA’s vulnerability disclosure platform (which is intended for vulnerabilities impacting the broader cybersecurity community), and ultimately involving a reporter,” reads the analysis written by Preston Werntz and Brad Libbey, the acting chief information officer and acting chief information security officer at CISA, respectively."
+          },
+          {
+            "type": "p",
+            "text": "CISA said it is refining its reporting channels to make them easier and faster for researchers. “Additionally, while many researchers rely on the security.txt file, organizations can ensure clarity by publishing reporting instructions in multiple prominent locations,” the CISA authors wrote."
+          },
+          {
+            "type": "p",
+            "text": "Guillaume Valadon, the GitGuardian researcher who first contacted KrebsOnSecurity about the exposed CISA credentials, said CISA ignored nine automated alerts about the exposed credentials prior to our notification on May 15. Valadon’s company constantly scans public code repositories at GitHub and elsewhere for exposed secrets, automatically alerting the offending accounts of any apparent sensitive data exposures."
+          },
+          {
+            "type": "p",
+            "text": "“Letting nine notification emails go unanswered is how a one-day incident becomes a six-month exposure,” Valadon wrote in an analysis of CISA’s report. “Make it trivial to report a leak about you, not just about your products. The person reporting a leak to you is not the threat. Publish a security.txt, but do not stop there. Put reporting instructions in several prominent places, and make sure a report about your own infrastructure does not land in a product-bug queue.”"
+          },
+          {
+            "type": "p",
+            "text": "The report’s authors also emphasized the importance of continuously scanning public code repositories like GitHub for exposed secrets, and said CISA has since rotated all secrets and created an action plan to improve management of developer secrets and to better monitor for them going forward."
+          },
+          {
+            "type": "p",
+            "text": "The report notes that while CISA had developed a playbook for responding to cybersecurity incidents, that playbook somehow didn’t include what to do in situations involving GitHub or other cloud services. Valadon said the report validates the need to scan continuously — not just quarterly — for exposed secrets."
+          },
+          {
+            "type": "p",
+            "text": "“The Private-CISA repository sat public for six months,” Valadon wrote. “Continuous monitoring of public GitHub surfaced it. Comprehensive internal scanning could have caught the plaintext passwords and committed backups long before they left the building.”"
+          },
+          {
+            "type": "p",
+            "text": "CISA gave itself passing grades on several areas of security preparedness that it said helped the agency gauge the scope and impact of the exposed secrets, including enhanced logging capabilities, and the adoption of zero-trust principles in both its production and development systems. CISA said those detailed logs allowed it to show that no customer or mission data was exposed, and that the leaked credentials were not used outside of CISA’s environments. The agency said the contractor who exposed the secrets had their system access revoked."
+          },
+          {
+            "type": "p",
+            "text": "Valadon reckons the biggest takeaway is the CISA postmortem itself, and praised the agency for being transparent about what worked and what didn’t."
+          },
+          {
+            "type": "p",
+            "text": "“To my knowledge, it is also the first time a national cybersecurity agency has publicly advocated for secrets scanning and for simplifying relations with security researchers,” Valadon wrote. “That is exactly the incident communication we should expect from every organization.”"
+          }
+        ],
+        "translations": [
+          "网络安全和基础设施安全局（CISA）针对最近的一起数据泄露事件发布了事后分析报告。在该事件中，一名承包商在一个公开的 GitHub 代码库中发布了数十个 CISA 内部凭证——包括 AWS Govcloud 密钥，且在 KrebsOnSecurity 通知他们之前，这些凭证已公开了近六个月。专家表示，该机构在初步响应中暴露出的漏洞为所有安全团队提供了应吸取的重要教训。",
+          "2026年5月15日，安全公司 GitGuardian 寻求帮助以通知 CISA，指出存在一个名为“Private CISA”的公开 GitHub 代码库，其中包含 844 MB 与 CISA 相关的敏感数据。其中一个名为“importantAWStokens”的暴露文件包含了三台 Amazon AWS GovCloud 服务器的管理凭证。另一个文件“AWS-Workspace-Firefox-Passwords.csv”则列出了数十个 CISA 内部系统的明文用户名和密码。",
+          "CISA 迅速确认了我们的初步警报，但花了超过 48 小时才使泄露在 GitHub 代码库中的 AWS 密钥及许多其他重要机密失效。CISA 在其关于此次数据泄露的报告中表示，该机构系统的复杂性以及与联邦和行业合作伙伴的互联导致其密钥轮换耗时比预期更长。",
+          "报告指出：“基于此次经验，CISA 鼓励其他机构维持成熟且经过充分测试的密钥管理能力。”",
+          "CISA 还承认，在响应来自外部各方的安全事件通知方面，他们可以做得更好。事后分析报告强调，清晰且明确的报告渠道至关重要，以确保影响组织自身的事件与涉及其产品或客户的事件得到区别处理。",
+          "CISA 代理首席信息官 Preston Werntz 和代理首席信息安全官 Brad Libbey 在撰写的分析中写道：“在 CISA 的案例中，这些渠道并未明确定义，导致安全研究人员尝试了多种途径——包括给承包商发电子邮件、通过 CISA 的漏洞披露平台提交（该平台旨在处理影响更广泛网络安全社区的漏洞），并最终联系了一名记者。”",
+          "CISA 表示正在完善其报告渠道，使其对研究人员来说更简便快捷。“此外，虽然许多研究人员依赖 security.txt 文件，但组织可以通过在多个显眼位置发布报告指南来确保清晰度，”CISA 的作者们写道。",
+          "GitGuardian 研究员 Guillaume Valadon 最先就暴露的 CISA 凭证联系了 KrebsOnSecurity，他表示，在我们 5 月 15 日发出通知之前，CISA 忽略了关于这些暴露凭证的九次自动警报。Valadon 所在的公司会不断扫描 GitHub 及其他地方的公开代码库以寻找暴露的机密，并在发现任何明显的敏感数据暴露时自动向违规账户发出警报。",
+          "“让九封通知邮件石沉大海，这就是为什么一个一天就能解决的事件演变成了长达六个月的暴露，”Valadon 在对 CISA 报告的分析中写道。“要让报告关于你自身的泄露变得轻而易举，而不仅仅是关于你的产品。向你报告泄露的人并不是威胁。发布一个 security.txt，但不要止步于此。在几个显眼的位置放置报告指南，并确保关于你自身基础设施的报告不会落入产品漏洞队列中。”",
+          "报告作者还强调了持续扫描 GitHub 等公共代码库以发现暴露机密的重要性，并表示 CISA 此后已轮换了所有机密，并制定了行动计划以改善开发者机密的管理，以及在未来更好地对其进行监控。",
+          "报告指出，尽管 CISA 已制定了应对网络安全事件的预案，但该预案却未涵盖涉及 GitHub 或其他云服务的情况应如何处理。Valadon 表示，该报告证实了持续（而非仅按季度）扫描暴露机密的必要性。",
+          "“Private-CISA 仓库处于公开状态长达六个月，”Valadon 写道，“对公共 GitHub 的持续监控使其浮出水面。如果在数据外泄之前进行全面的内部扫描，本可以及早发现明文密码和提交的备份。”",
+          "CISA 在安全准备的几个领域给自己打了及格分，称这些准备帮助该机构评估了暴露机密的范围和影响，包括增强的日志记录能力，以及在其生产系统和开发系统中采用零信任原则。CISA 表示，这些详细的日志使其能够证明没有客户或任务数据遭到暴露，且泄露的凭据未在 CISA 环境之外被使用。该机构还表示，泄露机密的承包商已被撤销系统访问权限。",
+          "Valadon 认为最大的收获在于 CISA 的复盘本身，并赞扬该机构对哪些措施有效、哪些无效保持了透明。",
+          "“据我所知，这也是国家网络安全机构首次公开倡导进行机密扫描，并呼吁简化与安全研究人员的沟通关系，”Valadon 写道，“这正是我们期望从每个组织那里看到的事件沟通方式。”"
+        ]
+      }
+    },
+    {
+      "slug": "dd7125754933a0b9",
+      "title": "TwoMillionKit: Use Private Cloud Compute in MacOS 27 Foundation Models Without an Entitlement",
+      "titleZh": "TwoMillionKit：在MacOS 27基础模型中无需授权即可使用私有云计算",
+      "link": "https://github.com/insidegui/TwoMillionKit",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-12T18:04:05.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Apple",
+        "Foundation Models",
+        "Private Cloud Compute"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "macOS 27 附带了 `fm` 命令行工具，允许在终端或脚本中运行本地系统模型或私有云计算推理。作者利用 GPT 5.6 Sol 创建了一个 Swift 包，它提供了一个基于 `fm` 命令行工具的 LanguageModel 实现。这使得任何 Mac 应用都能在无需授权的情况下调用私有云计算。",
+      "summaryEn": "macOS 27 ships with the `fm` command-line tool, allowing inference with local system models or Private Cloud Compute from Terminal or scripts. The author used GPT 5.6 Sol to create a Swift package that provides a LanguageModel implementation based on the `fm` tool. This enables any Mac app to utilize Private Cloud Compute without requiring an entitlement.",
+      "reason": "提供了一种巧妙绕过授权限制的方法，让开发者能在Mac应用中直接调用苹果的私有云计算能力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "GitHub",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple added the ability for third-party apps to use Private Cloud Compute language models in macOS 27 and aligned releases, but with a significant caveat: only developers who are a part of the Small Business Program can participate, and only those who haven’t had any of their apps surpass 2 million downloads."
+          },
+          {
+            "type": "p",
+            "text": "According to Apple, one of my apps has surpassed 2 million downloads. That’s an iOS app that’s been in the App Store for nearly 10 years, and has had most of its 2 million downloads within the first few years of existence. Because of that, none of my apps can use Private Cloud Compute, putting me in a significant disadvantage because I can’t ship cool AI features like many other small developers will be doing this Fall."
+          },
+          {
+            "type": "p",
+            "text": "It’s worth noting that even though Apple claims that my app has had more than 2 million downloads, none of their reports in App Store connect come close to that number. I asked them to provide me the report that says that my app has had more than 2 million downloads, but my email must have ended up in /dev/null because I never got any response."
+          },
+          {
+            "type": "h2",
+            "text": "The “Solution”"
+          },
+          {
+            "type": "p",
+            "text": "Apple ships the fm command-line tool in macOS 27, which can be used to run inference with the local system model or Private Cloud Compute from Terminal or scripts. You know what else can run command-line tools? Mac apps! 😃"
+          },
+          {
+            "type": "p",
+            "text": "I decided to spend some of my Codex tokens and take GPT 5.6 Sol for a spin. I asked it to create this Swift package. All it does is provide a LanguageModel implementation that uses the fm command-line tool under the hood, meaning that any Mac app can use the Private Cloud Compute model without requiring a special entitlement from Apple."
+          },
+          {
+            "type": "p",
+            "text": "The main limitation is that this will not work for sandboxed Mac apps, so any Mac app distributed via the Mac App Store won’t be able to use it."
+          },
+          {
+            "type": "p",
+            "text": "But for developers of Mac apps distributed outside the Mac App Store, this provides a simple and entitlement-free way to use Private Cloud Compute in their apps."
+          },
+          {
+            "type": "p",
+            "text": "Use sparingly and at your own risk."
+          },
+          {
+            "type": "p",
+            "text": "Enjoy!"
+          }
+        ],
+        "translations": [
+          "Apple 在 macOS 27 及其同步发布的版本中，为第三方应用增加了使用 Private Cloud Compute 语言模型的能力，但有一个重要限制：只有加入 Small Business Program 的开发者才能参与，且其任何应用的下载量都不得超过 200 万次。",
+          "根据 Apple 的说法，我的其中一个应用下载量已超过 200 万次。那是一款在 App Store 上架近 10 年的 iOS 应用，其 200 万次下载量大部分发生在上线后的头几年。正因如此，我的所有应用都无法使用 Private Cloud Compute，这让我处于极大的劣势，因为我无法像许多其他小型开发者将在今年秋季做的那样，推出酷炫的 AI 功能。",
+          "值得注意的是，尽管 Apple 声称我的应用下载量已超过 200 万次，但他们在 App Store Connect 中的报告数据都远未达到这个数字。我要求他们提供显示我的应用下载量超过 200 万次的报告，但我的邮件估计进了 /dev/null，因为我从未收到任何回复。",
+          "“解决方案”",
+          "Apple 在 macOS 27 中内置了 fm 命令行工具，可用于在终端或脚本中调用本地系统模型或 Private Cloud Compute 进行推理。你知道还有什么能运行命令行工具吗？Mac 应用！😃",
+          "我决定消耗一些 Codex token，试一下 GPT 5.6 Sol。我让它创建了这个 Swift package。它所做的只是提供一个在底层调用 fm 命令行工具的 LanguageModel 实现，这意味着任何 Mac 应用都可以使用 Private Cloud Compute 模型，而无需向 Apple 申请特殊的 entitlement。",
+          "主要限制在于它不适用于沙盒化的 Mac 应用，因此任何通过 Mac App Store 分发的 Mac 应用都无法使用此方法。",
+          "但对于在 Mac App Store 之外分发 Mac 应用的开发者来说，这提供了一种简单且无需 entitlement 的方式，可以在其应用中使用 Private Cloud Compute。",
+          "请谨慎使用，风险自负。",
+          "尽情享受吧！"
+        ]
+      }
+    },
+    {
+      "slug": "b872d6d4793909e5",
+      "title": "Control the ideas, not the code",
+      "titleZh": "控制思想，而不是代码",
+      "link": "http://antirez.com/news/169",
+      "sourceName": "antirez.com",
+      "sourceUrl": "http://antirez.com",
+      "pubDate": "2026-07-13T11:39:52.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "programming",
+        "automation"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 7,
+        "total": 23
+      },
+      "summary": "作者回顾了自己关于AI编程的博客历史，提到自己重新加入了Redis，并正在开发一款受欢迎的本地LLM推理开源软件。他探讨了为何在AI时代依然坚持编程，强调在编程过程中控制核心思想和逻辑比单纯编写代码更为重要。",
+      "summaryEn": "The author reviews his history of blogging about AI programming, mentioning his return to Redis and the development of a well-received open-source software for local LLM inference. He explores why he continues to program in the AI era, emphasizing that controlling core ideas and logic is more important than merely writing code.",
+      "reason": "资深程序员对AI时代编程本质的深刻反思，探讨了人类开发者在AI辅助下的核心价值所在。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "code",
+            "text": "Look at the past history of this blog. There are many blog posts about programming with AI, a few of them date back to January 2024 (like this: https://antirez.com/news/140). I’m a relatively well regarded programmer, after all. I don’t have the need to still be in the “loop” as a old man that seeks for relevance, I recently rejoined Redis, and now I also am developing a new open source software for local LLM inference that received a good welcome in the community. Why I keep doing this, of saying what people don’t want to hear? Why I keep announcing how future programming will be by default? Because I feel the urge of lowering the impact for people less prepared to the change than me, often younger than me, and that, unlikely me, didn’t see many of those things coming (In 2022 I published, before ChatGPT existed, a book preannouncing many things that now happened and other things that I believe *will* happen, so I feel like I can say this without sounding egocentric).\n\nSo mine is a trick. People feel more and more programming is completely modified by AI and don’t know what they should do, if they can really start coding in a completely different way, without looking much at the code as their main output. They feel like they are betraying their own field. So my intention is to arrive and say “look at me, In can write code, you know, I’m not hiding behind AI: yet, things changed, it’s not your weakness, it’s not that you are AI-pilled. It is just that our field is evolving in an incredible *and* painful (but also joyful) direction”.\n\nThis is why yesterday, on X, I said that I believe many programmers at this point have less impact they could have because they look at the code. I truly believe into that. And note that this does not mean to vibe code something just asking for the final product. The point is: if you control the ideas of your software, looking at the code itself is suboptimal and often pointless. For the following reasons:\n\n1. You can now generate a lot of code, even *not* accounting for the LLM code verbosity (that is also effect of not being able to instruct them well, for most of the part). How are you supposed to review 5k lines of code every day?\n\n2. LLMs are very good at writing locally optimal code, and are worse (but improving) with big ideas. What’s the point of scanning function by function, line by line? Instead you should prompt the design you have in mind, sometimes ask “how is exactly the design of that part? How does it work?”, and evaluate if it is the right model. It is much faster.\n\n3. The working day is 8 hours. If you read the code, it is a tradeoff. You are doing less of what today is the most important part of your job, that is, asking yourself: what I’m doing with this software? What are the new directions I want to take? And also, think at new ideas, features, optimizations tricks. And doing a lot of QA.\n\nControlling the ideas. Do you remember this phrasing from the Mythical Man Month? Well, a book from the 70s tells us more things about the current software era than many of the things that were said from 2000 to 2020. Why people that now protest against AI were not horrified by the state of software in the last decade? The level of slop we touched during recent years, before AI, is unbelievable. I’ll say you another thing. What is slop? With DwarfStar I implemented an inference for two LLMs (DeepSeek v4 and GLM 5.2) in a completely automated way, but: try it yourself, you will discover you can’t just say “implement XYZ” and see it working. You have to understand how things work, what is the best design, how to reach a certain level of performance. Then I compared the implementation, for correctness, to other systems, finding that other implementations sometimes contained more errors. I researched more, and found that the local inference world is full of subtle errors that accumulate and damage the model output, issues in the attention implementation causing performance slopes after the context is over a certain limit because indexed attention implementations are broken (do more work than they should, for instance), and so forth. This is the result of a domain that is very complicated to handle, fast changing, with models that are slightly different one from the other in the inference graph being released every day. It’s an unfair game for developers. Well: AI helps a lot with that. There are many domains where rigorous engineering (in the design side) and testing is *far* better than writing a GPU kernel by hand (or reading it). So are we sure most of that resistance it is not ideological?\n\nMatteo Collina yesterday asked me, in reply to my tweet: but didn’t you say that you check all the AI generated code for Redis? And this is a good question indeed. Yes, I do, but this is, at this point, something I *need* to do but that I believe to be mostly pointless, partially once GPT 5.5 was released, but now with Fable and GPT 5.6 Sol even more. Yes: I identify things that I don’t like how they are coded, but if I open other Redis files written by other Redis contributors there is *far worse*, and not since they are not good coders, but because it is a matter of taste. I write very clean code since I want it to be readable, so during the implementation of Redis Arrays I operated changes. I’m doing it again for the 50% memory saving optimization of Redis sorted sets, a PR that I’ll submit soon. But I do not feel this is useful anymore. Nobody should anymore look at this code, but only at the ideas the code contains. I continued to do it out of respect for users. Redis is at this point a commonly useful thing, and many programmers will open files and modify stuff by hand. But if I had my hands free, you know what I would do, instead? Use all the time that the review is taking me to do more QA, to think at the next optimization idea and apply it, and to use LLMs to write a DESIGN.md file where each data structure is described in human language, with the ideas it contains, the implementation tricks, the design. That, in the future, is going to be much more useful. Do you want to modify sorted sets? You open the file, read the design, then you own the ideas. You can open your agent and ask it what to do with the right mental model. This is a lot more useful than reviewing the code.\n\nFable and GPT 5.6 reviews to the sorted sets memory saving are going to spot ways more errors and subtle race conditions that my review is going to uncover. Yet I’ll do it. But for the majority of software projects, all this does not make sense anymore. Focus on controlling the ideas, instead. Focus on quality, testing, and having an idea of the software you want to ship. The world changed and it is painful, but also full of opportunities to improve a software world that was already completely rotten.\n\nI have a doubt only regarding young programmers that don't have enough experience, and can't build a mental model. We don't know, yet, if they will require or not to understand very well how a given piece of code works, but I believe they should learn how to write programs. Yet, I'm not sure checking the LLM output is the right thing they should do. It may be a lot more useful if they learn some programming language and implement a small interpreter, a small database, an hash table and so forth. Reviewing some Javascript stuff of some web site for a customer? Hell, no, don't lose time with that shit."
+          },
+          {
+            "type": "p",
+            "text": "blog comments powered by Disqus"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a21b7e6ce90712d3",
+      "title": "Pluralistic: Why aren't AI companies competing directly with their customers? (13 Jul 2026)",
+      "titleZh": "Pluralistic：为什么AI公司不直接与他们的客户竞争？",
+      "link": "https://pluralistic.net/2026/07/13/go-meta-meta/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-07-13T08:15:24.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "business",
+        "competition"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "文章探讨了为什么AI公司选择出售“镐和铲子”而不是直接与客户竞争去“挖金子”。作者质疑了AI公司的商业模式，提出如果AI技术真的具有颠覆性，为什么这些公司不直接利用它来取代下游客户的市场份额。",
+      "summaryEn": "The article explores why AI companies choose to sell \"picks and shovels\" instead of competing directly with their customers to \"mine gold.\" The author questions the business models of AI companies, asking why they don't directly use their disruptive technology to capture the market share of their downstream customers.",
+      "reason": "以独特的视角质疑了当前AI公司的商业模式，引发对AI技术实际价值和市场定位的深度思考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Why aren't AI companies competing directly with their customers? Why sell picks and shovels if you've already struck gold?"
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Pro-logging Lorax; Anti-DRM picture book; Whose cops did America train? Day on a Device; Theresa May x Fresh Prince; Ratfucking Corbyn supporters; Infosec v W3C DRM; Remix Public Enemy; Hungary's Cold War cartoons; America is unpaving its roads; Olympic overruns are world champions; Vivendi lobbyist is now UN copyright boss; Boris's racism; Facebook's insider stalkers; Semantic drift, ethical drift."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Why aren't AI companies competing directly with their customers? (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "\"I often wonder what the Vintners buy/One half so precious as the Goods they sell\" -The Rubáiyát of Omar Khayyám"
+          },
+          {
+            "type": "p",
+            "text": "I first encountered that quote from someone extolling the virtues of bookstores, and it stuck with me, because for most of my childhood, every bookstore visit ended with me broke and wishing I'd had three times as much to spend."
+          },
+          {
+            "type": "p",
+            "text": "As a larval hyperlexic, I just didn't understand what a bookseller could possibly buy with my money that was better than the books they already had? Of course, then I became a bookseller and discovered that Sturgeon's Law (\"90% of everything is shit\") applies to a bookstore's wares as much as it does to anything else. I also acquired a monthly rent obligation and discovered just how important money could be."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, Omar Khayyám's question stuck with me, especially when I fell down a years-long rabbit-hole of learning about scams and the finance sector (but I repeat myself). Every get-rich-quick schemer will tell you that they've found the infinite money hack, which they will sell to you for a remarkably reasonable sum. Likewise, every stock picker claims they can outperform a simple low-load index fund, and all they ask of you is a few hundred basis points in exchange for multiplying your wealth beyond the dreams of Creosote. Neither one has a good answer to Khayyám's question: if you can make all the money with your amazing system, why do you need my money?"
+          },
+          {
+            "type": "p",
+            "text": "This is a question that needs to be forcefully put to AI hucksters. In their more expansive moments, the Altmans and Amodeis of the world will tell you that they're planning to teach the word-guessing program so many words that it will wake up and become god. DOGE's broccoli-haired brownshirts laughed in the faces of the NIH lifers who begged them not to vaporize their long-running cancer research projects: \"General AI is around the corner and it's going to cure cancer. Cancer research is a waste of money!\""
+          },
+          {
+            "type": "p",
+            "text": "Which all raises the question: if you've truly incubated a foetal demiurge in your \"AI lab,\" why are you offering to sell it to me? What do the AI hucksters buy/One half so precious as the Gods they sell?\""
+          },
+          {
+            "type": "p",
+            "text": "Of course, they might answer, \"We need your money now so we can make god later.\" That's why they want your boss to fire you and replace you with their chatbots and split your wages with your former employer. But this just raises the same question: if you have a chatbot that can do a doctor's job, why sell it to a hospital? Why not just open your own hospital? If you've got a chatbot that can do a tax accountant's job, why sell it to a tax-prep service? Why not just open a tax-prep service? If you've got a chatbot that can teach my kids, why sell it to my local school district? Why not just open a school?"
+          },
+          {
+            "type": "p",
+            "text": "If the chatbot can do the job, and if the chatbot costs less than the worker who does the job today, then the chatbot company can profitably sell services more cheaply than anyone who presently employs that worker, because the chatbot company already owns the chatbot. If you were really on a glide path to creating an all-powerful deity and just needed cash to keep the venture going until the cancer-curing word-guesser awoke from its long slumber, then wouldn't you want as much cash as possible? Why would you voluntarily split the take with some sucky, washed, non-god-generating business from before 2022?"
+          },
+          {
+            "type": "p",
+            "text": "I think the only reason this question doesn't come up more frequently is that we're stewing in what Douglas Rushkoff calls the \"go meta\" economy, in which the most respectable and smartest business to operate must be as many abstraction layers away from real work as possible. Don't drive a taxi, own a medallion that you rent to the cab driver. Don't own a medallion, start a \"rideshare\" company. Don't start a rideshare company, invest in a rideshare company. Don't invest in a rideshare company, buy options to invest in a rideshare company:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2022/09/13/collapse-porn/#collapse-porn"
+          },
+          {
+            "type": "p",
+            "text": "The inverse relationship between doing something useful and making money is deeply ingrained in our economic wisdom. Take the world of online grifters, who don't just peddle get-rich-quick PDFs, they also peddle tools to generate get-rich-quick PDFs, as well as tools to steal other \"wealth influencers'\" insta videos and deepfake yourself into their pretend private jets:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.404media.co/how-i-bought-a-private-jet-by-selling-10-subscriptions-to-404-media/"
+          },
+          {
+            "type": "p",
+            "text": "The scam economy boasts a bewildering array of ancillary services, like a $150/month service that lets you produce fake screenshots showing vast monthly income on other scam services (November Kelly calls this \"The world's most expensive 'inspect element'\"):"
+          },
+          {
+            "type": "p",
+            "text": "https://www.patreon.com/trashfuture/posts/faux-high-level-163443872"
+          },
+          {
+            "type": "p",
+            "text": "It's an old truism that in a gold rush, the only people who come out ahead are the people selling the picks and shovels. But that's not true – there's even more money to be made wholesaling picks and shovels to the retailers who operate the frontier mercantiles. Go meta!"
+          },
+          {
+            "type": "p",
+            "text": "https://commons.wikimedia.org/wiki/File:Alaskan_Gold_Mining_Supplies_(1897)_(ADVERT_277).jpeg"
+          },
+          {
+            "type": "p",
+            "text": "Today's economy is dominated by pick-and-shovel wholesalers. America is a gerontocracy drowning in MBAs, while there's no one to do eldercare:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.msn.com/en-us/news/us/why-recruiters-can-t-find-workers-and-new-grads-can-t-find-jobs-it-s-not-ai/ar-AA27K57y"
+          },
+          {
+            "type": "p",
+            "text": "So it's not surprising that we don't ask why these AI god-botherers need our stupid money while they're immanentizing the eschaton. Why would they operate a hospital if they could go meta and sell the doctorbots to the MBAs running the hospital?"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Mark Zuckerberg and Meta Deride “Headline-Seeking” Damages Sought By State AGs In Social Media Safety Suit: “Untethered From Reality” https://deadline.com/2026/07/social-media-lawsuit-damages-zuckerberg-1236977447/"
+          },
+          {
+            "type": "li",
+            "text": "Zohran Mamdani's retro wristwatch is a Casio classic https://boingboing.net/2026/07/08/zohran-mamdanis-retro-wristwatch-is-a-casio-classic.html"
+          },
+          {
+            "type": "li",
+            "text": "B.O.B. (Birds Over Big Bird) https://www.youtube.com/watch?v=fAXO7SXK0Pc"
+          },
+          {
+            "type": "li",
+            "text": "A referendum for another development model https://thomaspiketty.wordpress.com/2026/06/23/a-referendum-for-social-justice/"
+          },
+          {
+            "type": "li",
+            "text": "Introducing the Gap Map v0.1 https://www.currentai.org/blogs/introducing-the-gap-map-v0-1"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Pro-lumber industry spoof of The Lorax https://web.archive.org/web/20010721042828/http://www.forestcouncil.org/news/articles/truax1.htm"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Remixable vocal tracks from the next Public Enemy release https://web.archive.org/web/20010813195140/http://www.slamjamz.com/slamnews.php?article=7"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Wikipedia creates RSS for its posts https://web.archive.org/web/20060718103013/http://www.micropersuasion.com/2006/07/wikipedia_entir.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Anti-DRM picture-book https://web.archive.org/web/20060721095740/https://dustrunners.blogspot.com/2006/07/pig-and-box.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The US has spent $122B training foreign cops and soldiers in 150+ countries, but isn’t sure who https://web.archive.org/web/20160713145824/https://theintercept.com/2016/07/13/training/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago German free school teaches without grades, timetables or lesson plans https://www.theguardian.com/world/2016/jul/01/no-grades-no-timetable-berlin-school-turns-teaching-upside-down"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago For the first time, a federal judge has thrown out police surveillance evidence from a “Stingray” device https://www.rawstory.com/2016/07/federal-judge-throws-out-evidence-gathered-with-stingray-cell-phone-tracker/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Day on a Device: art made by screenshotting a multitasker’s screen with each context-switch https://www.theverge.com/2016/7/13/12170526/multitasking-phone-laptop-pierre-buttin-art"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Remarkably Normal: the true stories of abortion in America https://web.archive.org/web/20160810092901/http://jezebel.com/the-vagina-monologues-but-for-abortion-1783289270/amp"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Theresa May performs the Fresh Prince of Bel-Air theme https://www.youtube.com/watch?v=xv7Jd94bnOI"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago UK Labour’s dirty trick excludes 130,000 members from leadership vote https://web.archive.org/web/20160712225142/http://www.itv.com/news/2016-07-12/corbyn-opponents-try-to-fix-vote/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Security researchers: the W3C’s DRM needs to be thoroughly audited https://www.eff.org/deeplinks/2016/06/call-security-community-w3cs-drm-must-be-investigated"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Help Doctors Without Borders fill in the geodata blanks for vulnerable communities https://missingmaps.org/blog/2016/07/14/mapswipe/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Sign a book of congratulations for America’s new Librarian of Congress https://web.archive.org/web/20160718023555/https://action.everylibrary.org/congratulate_carla_hayden_today"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Hungary’s Cold War cartoons were weird and awesome https://globalvoices.org/2016/07/14/the-fascinating-world-of-cold-war-era-hungarian-cartoons/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The ACLU has a roadmap for defeating President Donald Trump’s signature initiatives https://web.archive.org/web/20160715131734/https://action.aclu.org/sites/default/files/pages/trumpmemos.pdf"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago America’s infrastructure debt is so bad that towns are unpaving roads they can’t afford to fix https://web.archive.org/web/20160713170836/https://www.wired.com/2016/07/cash-strapped-towns-un-paving-roads-cant-afford-fix/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago It’s official: the Olympics result in the worst budget overruns of any megaproject https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2804554"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Vivendi lobbyist appointed to run copyright for UN agency https://web.archive.org/web/20160717052135/http://keionline.org/node/2614"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The long, racist history of Brexiteer Boris Johnson, the new UK Foreign Secretary https://www.bbc.co.uk/news/world-36792746"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Facebook employees stalk users https://pluralistic.net/2021/07/14/who-watches-the-zuckmen/#pecksniffs"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Semantic drift versus ethical drift https://pluralistic.net/2025/07/14/pole-star/#gnus-not-utilitarian"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Who Owns Your Tractor? (Growing the Future)\nhttps://www.youtube.com/watch?v=IU9eBPUZBI4"
+          },
+          {
+            "type": "li",
+            "text": "You Bought it, They Break It (What Now? with Trevor Noah)\nhttps://www.podbean.com/media/share/dir-ir36t-2f4a1ac6"
+          },
+          {
+            "type": "li",
+            "text": "Can AI be Saved From Capitalism? (Everyday Anarchism)\nhttps://www.everydayanarchism.com/192-can-ai-be-saved-from-capitalism-cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Lawfare Daily\nhttps://www.youtube.com/watch?v=T1KIwaYRs1g"
+          },
+          {
+            "type": "li",
+            "text": "How to Think About AI (Organized Money)\nhttps://www.organizedmoney.fm/p/how-to-think-about-ai-with-cory-doctorow"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "为什么 AI 公司不直接与他们的客户竞争？既然已经挖到了金矿，为什么还要卖镐和铲？",
+          "嘿，看看这个：令人愉悦的趣闻。",
+          "客体永久性：支持伐木的 Lorax；反 DRM 绘本；美国训练了谁的警察？设备上的一天；特蕾莎·梅 x Fresh Prince；暗算 Corbyn 的支持者；信息安全对抗 W3C DRM；混音 Public Enemy；匈牙利的冷战卡通；美国正在拆除其道路的铺装；奥运超支是世界冠军；威望迪说客现已成为联合国版权负责人；鲍里斯的种族主义；Facebook 的内部跟踪狂；语义漂移，道德漂移。",
+          "即将出席的活动：爱丁堡、悉尼、墨尔本、布莱顿、伦敦、南本德。",
+          "近期出席的活动：我去过的地方。",
+          "最新书籍：你们继续读，我继续写。",
+          "即将出版的书籍：正如我所说，我会继续写。",
+          "版权页：其余所有信息。",
+          "为什么 AI 公司不直接与他们的客户竞争？（永久链接）",
+          "“我常想酒商们买的东西/是否有他们所售货物一半珍贵”——《鲁拜集》（欧玛尔·海亚姆）",
+          "我最初是在有人赞扬书店的优点时听到这句话的，它让我印象深刻，因为在我童年的大部分时间里，每次去书店的结局都是我花光了钱，并希望自己能有三倍的钱可以花。",
+          "作为一个处于萌芽期的阅读狂，我实在不明白书商能用我的钱买到什么比他们已有的书更好的东西？当然，后来我成了一名书商，发现斯特金定律（“90% 的东西都是垃圾”）同样适用于书店的商品，就像它适用于其他任何事物一样。我也背上了每月交房租的义务，从而发现了金钱究竟有多重要。",
+          "尽管如此，欧玛尔·海亚姆的问题依然萦绕在我心头，尤其是当我陷入长达数年对骗局和金融业的深入了解时（这两者其实是一回事）。每个想快速致富的骗子都会告诉你，他们找到了无限印钞的秘籍，并且会以极其合理的价格卖给你。同样，每个选股者都声称他们能跑赢简单的低费率指数基金，而他们向你要的只是几百个基点，以此换取让你的财富增长到超越 Creosote 梦想的程度。这两者都无法很好地回答海亚姆的问题：如果你能用你那神奇的系统赚到所有的钱，为什么还需要我的钱？",
+          "这个问题需要严厉地抛给那些 AI 骗子。在他们更夸夸其谈的时刻，像 Altman 和 Amodei 这样的人会告诉你，他们计划教那个猜词程序足够多的词汇，让它觉醒并成为神。DOGE 那些留着西兰花发型的褐衫军在那些恳求他们不要抹杀长期癌症研究项目的 NIH 终身雇员面前嘲笑道：“通用 AI 就在眼前，它会治愈癌症。癌症研究就是浪费钱！”",
+          "这一切都引出了一个问题：如果你真的在你的“AI 实验室”里孵化了一个胎儿般的造物主，为什么你要把它卖给我？AI 骗子们买的东西/是否有他们所售的神明一半珍贵？”",
+          "当然，他们可能会回答：“我们现在需要你的钱，这样以后我们就能造出神来。”这就是为什么他们想让你的老板解雇你，用他们的聊天机器人取代你，并与你的前雇主瓜分你的工资。但这恰恰引出了同样的问题：如果你有一个能做医生工作的聊天机器人，为什么要把它卖给医院？为什么不自己开一家医院？如果你有一个能做税务会计工作的聊天机器人，为什么要把它卖给报税服务机构？为什么不自己开一家报税服务机构？如果你有一个能教我孩子的聊天机器人，为什么要把它卖给我所在的学区？为什么不自己开一所学校？",
+          "如果聊天机器人能胜任这份工作，而且它的成本低于目前从事该工作的工人，那么聊天机器人公司就能以比任何目前雇佣该工人的公司更低的价格出售服务并获利，因为聊天机器人公司已经拥有了这个聊天机器人。如果你真的在稳步迈向创造一个全能的神，只需要现金来维持这项事业，直到那个能治愈癌症的猜词程序从漫长的沉睡中醒来，那你难道不想尽可能多地获取现金吗？为什么你要自愿与2022年之前那些糟糕的、过时的、无法造神的企业瓜分收益呢？",
+          "我认为这个问题没有被更频繁提及的唯一原因是，我们正深陷于 Douglas Rushkoff 所说的“走向元层面”经济中，在这种经济模式下，最体面、最聪明的生意必须尽可能远离实际工作，隔着尽可能多的抽象层。不要开出租车，去买个出租车牌照租给出租车司机。不要买牌照，去开一家“网约车”公司。不要开网约车公司，去投资一家网约车公司。不要投资网约车公司，去买投资网约车公司的期权：",
+          "https://pluralistic.net/2022/09/13/collapse-porn/#collapse-porn",
+          "做有用的事和赚钱之间的反比关系已经深深根植于我们的经济智慧中。看看网络骗子的世界吧，他们不仅兜售暴富指南 PDF，还兜售生成这些 PDF 的工具，以及窃取其他“财富大V”的 Instagram 视频并利用深度伪造技术把你 P 进他们假装拥有的私人飞机里的工具：",
+          "https://www.404media.co/how-i-bought-a-private-jet-by-selling-10-subscriptions-to-404-media/",
+          "骗局经济拥有令人眼花缭乱的辅助服务，比如每月 150 美元的服务，可以让你生成假截图，显示在其他骗局服务上有巨额月收入（November Kelly 称之为“世界上最昂贵的‘检查元素’功能”）：",
+          "https://www.patreon.com/trashfuture/posts/faux-high-level-163443872",
+          "有句老话说得很对，在淘金热中，唯一能赚到钱的人是卖镐和铲子的人。但这并不完全正确——把镐和铲子批发给经营边区商店的零售商能赚更多的钱。走向元层面吧！",
+          "https://commons.wikimedia.org/wiki/File:Alaskan_Gold_Mining_Supplies_(1897)_(ADVERT_277).jpeg",
+          "当今的经济由镐和铲子的批发商主导。美国是一个深陷 MBA 泥潭的老人政治国家，却没有人来做养老护理：",
+          "https://www.msn.com/en-us/news/us/why-recruiters-can-t-find-workers-and-new-grads-can-t-find-jobs-it-s-not-ai/ar-AA27K57y",
+          "因此，我们不去问为什么这些 AI 造神者在他们试图将末世降临人间时还需要我们这点愚蠢的钱，也就不足为奇了。如果他们可以走向元层面，把医生机器人卖给管理医院的 MBA，他们为什么要自己去经营一家医院呢？",
+          "嘿，看这个（永久链接）",
+          "马克·扎克伯格和 Meta 嘲讽各州总检察长在社交媒体安全诉讼中寻求的“博眼球”赔偿金：“脱离现实” https://deadline.com/2026/07/social-media-lawsuit-damages-zuckerberg-1236977447/",
+          "Zohran Mamdani 的复古腕表是卡西欧经典款 https://boingboing.net/2026/07/08/zohran-mamdanis-retro-wristwatch-is-a-casio-classic.html",
+          "B.O.B.（大鸟之上的鸟） https://www.youtube.com/watch?v=fAXO7SXK0Pc",
+          "为另一种发展模式举行的公投 https://thomaspiketty.wordpress.com/2026/06/23/a-referendum-for-social-justice/",
+          "介绍 Gap Map v0.1 https://www.currentai.org/blogs/introducing-the-gap-map-v0-1",
+          "客体永久性（永久链接）",
+          "#25年前 亲伐木业对《老雷斯的故事》的恶搞 https://web.archive.org/web/20010721042828/http://www.forestcouncil.org/news/articles/truax1.htm",
+          "#25年前 Public Enemy 下一张专辑中可混音的人声音轨 https://web.archive.org/web/20010813195140/http://www.slamjamz.com/slamnews.php?article=7",
+          "#20年前 维基百科为其文章创建了 RSS 订阅 https://web.archive.org/web/20060718103013/http://www.micropersuasion.com/2006/07/wikipedia_entir.html",
+          "#20年前 反 DRM 绘本 https://web.archive.org/web/20060721095740/https://dustrunners.blogspot.com/2006/07/pig-and-box.html",
+          "#10年前 美国花费了 1220 亿美元在 150 多个国家培训外国警察和士兵，但不确定培训了谁 https://web.archive.org/web/20160713145824/https://theintercept.com/2016/07/13/training/",
+          "#10年前 德国免费学校在没有成绩、时间表或教案的情况下进行教学 https://www.theguardian.com/world/2016/jul/01/no-grades-no-timetable-berlin-school-turns-teaching-upside-down",
+          "#10年前 首次有联邦法官驳回了来自“Stingray”设备的警察监控证据 https://www.rawstory.com/2016/07/federal-judge-throws-out-evidence-gathered-with-stingray-cell-phone-tracker/",
+          "#10年前 设备上的一天：通过在每次上下文切换时对多任务处理者的屏幕进行截图而创作的艺术 https://www.theverge.com/2016/7/13/12170526/multitasking-phone-laptop-pierre-buttin-art",
+          "#10年前 非常正常：美国堕胎的真实故事 https://web.archive.org/web/20160810092901/http://jezebel.com/the-vagina-monologues-but-for-abortion-1783289270/amp",
+          "#10年前 特蕾莎·梅表演《新鲜王子妙事多》主题曲 https://www.youtube.com/watch?v=xv7Jd94bnOI",
+          "#10年前 英国工党的肮脏伎俩将 13 万名成员排除在领导层投票之外 https://web.archive.org/web/20160712225142/http://www.itv.com/news/2016-07-12/corbyn-opponents-try-to-fix-vote/",
+          "#10年前 安全研究人员：W3C 的 DRM 需要彻底审计 https://www.eff.org/deeplinks/2016/06/call-security-community-w3cs-drm-must-be-investigated",
+          "#10年前 帮助无国界医生填补弱势社区的地理数据空白 https://missingmaps.org/blog/2016/07/14/mapswipe/",
+          "#10年前 为美国新任国会图书馆馆长签署祝贺簿 https://web.archive.org/web/20160718023555/https://action.everylibrary.org/congratulate_carla_hayden_today",
+          "#10年前 匈牙利的冷战时期动画片既怪异又棒极了 https://globalvoices.org/2016/07/14/the-fascinating-world-of-cold-war-era-hungarian-cartoons/",
+          "#10年前 ACLU 制定了一份击败唐纳德·特朗普总统标志性举措的路线图 https://web.archive.org/web/20160715131734/https://action.aclu.org/sites/default/files/pages/trumpmemos.pdf",
+          "#10年前 美国的基础设施债务严重到城镇不得不将无力修缮的道路重新改回土路 https://web.archive.org/web/20160713170836/https://www.wired.com/2016/07/cash-strapped-towns-un-paving-roads-cant-afford-fix/",
+          "#10年前 官方证实：奥运会在所有超大型项目中预算超支最为严重 https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2804554",
+          "#10年前 威望迪（Vivendi）说客被任命负责联合国机构的版权事务 https://web.archive.org/web/20160717052135/http://keionline.org/node/2614",
+          "#10年前 英国脱欧派鲍里斯·约翰逊（Boris Johnson）漫长的种族主义历史，他已成为新任英国外交大臣 https://www.bbc.co.uk/news/world-36792746",
+          "#5年前 Facebook 员工跟踪用户 https://pluralistic.net/2021/07/14/who-watches-the-zuckmen/#pecksniffs",
+          "#5年前 语义漂移与伦理漂移 https://pluralistic.net/2025/07/14/pole-star/#gnus-not-utilitarian",
+          "即将出席的活动（永久链接）",
+          "爱丁堡国际图书节，与 Jimmy Wales 同台，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：危险思想节（The Festival of Dangerous Ideas），8月23-24日\nhttps://festivalofdangerousideas.com/cory-doctorow/",
+          "墨尔本：Wheeler 中心的“屎化”（Enshittification）主题演讲，8月25日\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 共话《反向半人马的后 AI 时代生活指南》（The Reverse Centaur's Guide to Life After AI）（布莱顿穹顶馆），9月8日\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 共话《反向半人马的后 AI 时代生活指南》（The Reverse Centaur's Guide to Life After AI）（福伊尔皮卡迪利书店），9月9日\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度夜晚（圣母大学），10月6日\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "近期出席的活动（永久链接）",
+          "谁拥有你的拖拉机？（Growing the Future）\nhttps://www.youtube.com/watch?v=IU9eBPUZBI4",
+          "你买下了它，他们却把它弄坏（What Now? with Trevor Noah）\nhttps://www.podbean.com/media/share/dir-ir36t-2f4a1ac6",
+          "AI 能从资本主义手中获救吗？（Everyday Anarchism）\nhttps://www.everydayanarchism.com/192-can-ai-be-saved-from-capitalism-cory-doctorow/",
+          "Lawfare Daily\nhttps://www.youtube.com/watch?v=T1KIwaYRs1g",
+          "如何思考 AI（Organized Money）\nhttps://www.organizedmoney.fm/p/how-to-think-about-ai-with-cory-doctorow",
+          "最新书籍（永久链接）",
+          "《反向半人马的 AI 指南》（The Reverse-Centaur's Guide to AI），一本关于如何成为更好的 AI 批评家的短篇书籍，Farrar, Straus and Giroux 出版，2026年6月\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《Canny Valley》：我为 Pluralistic 创作的拼贴画限量版合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《屎化：为什么一切突然变糟以及如何应对》（Enshittification: Why Everything Suddenly Got Worse and What to Do About It），Farrar, Straus, Giroux 出版，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：《Red Team Blues》的续作，关于 PC 的英雄时代，Tor Books（美国）、Head of Zeus（英国）出版，2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "《The Bezzle》：《Red Team Blues》的续作，关于监狱科技和其他骗局，Tor Books（美国）、Head of Zeus（英国）出版，2024年2月 (thebezzle.org)。",
+          "《The Lost Cause》：一部在气候紧急状态下充满希望的太阳朋克小说，Tor Books（美国）、Head of Zeus（英国）出版，2023年11月 (http://lost-cause.org)。",
+          "《The Internet Con》：一本关于互操作性与大型科技公司的非虚构著作（Verso 出版），2023 年 9 月（http://seizethemeansofcomputation.org）。签名版可在 Book Soup 购买（https://www.booksoup.com/book/9781804291245）。",
+          "《Red Team Blues》：“一部引人入胜、让人欲罢不能的惊悚小说，读完之后你会比以前更了解这个世界的运作方式。”Tor Books 出版，http://redteamblues.com。",
+          "《Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid》，与 Rebecca Giblin 合著，探讨如何打破创意劳动市场的垄断，Beacon Press/Scribe 出版，2022 年，https://chokepointcapitalism.com",
+          "即将出版的书籍（永久链接）",
+          "《The Post-American Internet》，某种意义上是 Enshittification 的地缘政治续作，Farrar, Straus and Giroux 出版，2027 年",
+          "《Unauthorized Bread》：一部改编自本人关于难民、烤面包机和 DRM 的中篇小说的中学阶段图像小说，FirstSecond 出版，2027 年 4 月 20 日",
+          "《Enshittification, Why Everything Suddenly Got Worse and What to Do About It》（图像小说版），Firstsecond 出版，2027 年",
+          "《The Memex Method》，Farrar, Straus, Giroux 出版，2027 年",
+          "版权页（永久链接）",
+          "今日主要来源：",
+          "目前正在撰写：《The Post-American Internet》，是《Enshittification》的续作，讲述在 Trump 烧毁了美国之后，我们其他人可以拥有的更美好的世界。已完成第四稿，已提交给编辑。",
+          "一篇关于自制胰岛素的 Little Brother 短篇小说，规划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，前提是注明作者为我（Cory Doctorow），并附上指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图片不包含在本许可范围内；它们要么依据版权的限制或例外使用，要么基于单独的许可。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、无追踪、无数据收集）：",
+          "Pluralistic.net",
+          "邮件通讯（无广告、无追踪、无数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、无追踪、无数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控与广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就做菝葜汽水”——Joey \"Accordion Guy\" DeVilla",
+          "请仔细阅读：阅读本内容即表示你代表你的雇主同意，永久免除我因与你的雇主及其合作伙伴、许可方、代理人和受让人签订的任何及所有未经协商的协议、许可、服务条款、拆封协议、点击协议、浏览协议、保密协议、不披露协议、竞业禁止协议和可接受使用政策（统称“虚假协议”）而产生的所有义务和弃权，且不影响我持续享有的权利和特权。你进一步声明你有权代表你的雇主免除我受任何虚假协议约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "2bd97dd7e923b74e",
+      "title": "Fable gets another bump",
+      "titleZh": "Fable 再次获得延期",
+      "link": "https://simonwillison.net/2026/Jul/12/bump/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-12T21:20:07.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Anthropic",
+        "Claude",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 5,
+        "timeliness": 9,
+        "total": 22
+      },
+      "summary": "由于 GPT-5.6 Sol 显然属于 Fable/Mythos 类模型，Anthropic 再次延长了 Fable 在 Claude Max 计划中的可用日期。所有付费计划的用户可以继续访问 Claude Fable 5，同时 Claude Code 的每周速率限制提高了 50%，该政策持续到 7 月 19 日。",
+      "summaryEn": "Since GPT-5.6 Sol is clearly a Fable/Mythos class model, Anthropic has once again extended the availability of Fable in their Claude Max plans. Users on all paid plans can continue to access Claude Fable 5, and Claude Code's weekly rate limits have been increased by 50%, with the policy running through July 19.",
+      "reason": "揭示了顶级AI模型竞争对产品可用性和速率限制的直接影响，对关注Claude生态的用户具有实用价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "12th July 2026"
+          },
+          {
+            "type": "p",
+            "text": "One of the consequences of GPT-5.6 Sol being clearly a Fable/Mythos class model is that Anthropic have, once again, bumped the date that Fable stops being available in their Claude Max plans:"
+          },
+          {
+            "type": "quote",
+            "text": "We're extending Claude Fable 5 access on all paid plans, as well as keeping Claude Code’s weekly rate limits 50% higher, through July 19.\nAs before, you can use up to half of your weekly usage limit on Fable 5. After that, you can continue using Fable 5 with usage credits, or switch to another model to keep working within your remaining limits."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic's original rationale for this was compute constraints - they wanted a better idea of both demand and compute availability before committing to keeping the new model cheap for subscribers."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI appear confident that they won't need to restrict access to GPT-5.6 in the same way. Here's Thibault Sottiaux this morning:"
+          },
+          {
+            "type": "quote",
+            "text": "The last 48 hours of Codex and ChatGPT Work have been intense! Three important updates:\n\nTemporarily removing the 5 hour usage limit restriction for all Plus, Business and Pro plans\nRolling out changes that will make GPT 5.6 Sol more efficient across the board and that will be reflected in less usage being used so that it can take you further. Exact impact to be quantified and shared\nWe hit 6M active users, and are landing a usage reset in the next hour"
+          },
+          {
+            "type": "p",
+            "text": "At this point I think Anthropic should change track and keep Fable permanently available on those plans. OpenAI are winning users simply due to the uncertainty that surrounds Fable access."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "364115f184c7df9d",
+      "title": "Remember Musk’s Suit Alleging a Conspiracy Between Apple and OpenAI?",
+      "titleZh": "还记得马斯克指控苹果与OpenAI共谋的诉讼吗？",
+      "link": "https://arstechnica.com/tech-policy/2025/08/elon-musk-sues-apple-openai-to-block-exclusive-iphone-chatgpt-integration/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-13T15:24:53.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Musk",
+        "Apple",
+        "OpenAI",
+        "lawsuit"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "回顾了马斯克在2025年8月起诉苹果和OpenAI以阻止iPhone独家集成ChatGPT的事件。马斯克声称苹果偏袒合作伙伴OpenAI，因为ChatGPT一直位居苹果“必备”应用榜首，而Grok从未上榜。诉讼表明马斯克不仅是为了推广Grok，更是试图打破这种独家合作。",
+      "summaryEn": "Reviews Elon Musk's lawsuit against Apple and OpenAI in August 2025 to block the exclusive integration of ChatGPT on the iPhone. Musk claimed Apple favored its partner OpenAI, as ChatGPT consistently topped Apple's \"Must Have\" app list while Grok never made it. The lawsuit shows Musk was not just promoting Grok but attempting to break up the exclusive partnership.",
+      "reason": "梳理了科技巨头之间围绕AI集成引发的法律冲突，展示了平台、应用商店与AI模型之间的复杂博弈。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ashley Belanger",
+        "siteName": "Ars Technica",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Panic at the App Store"
+          },
+          {
+            "type": "p",
+            "text": "OpenAI slams Musk’s lawsuit as part of his “ongoing pattern of harassment.”"
+          },
+          {
+            "type": "p",
+            "text": "After a public outburst over Grok’s App Store rankings, on Monday, Elon Musk followed through on his threat to sue Apple and OpenAI."
+          },
+          {
+            "type": "p",
+            "text": "At first, Musk appeared fixated on ChatGPT consistently topping Apple’s “Must Have” app list—which Grok has never made—claiming Apple seemed to preference OpenAI, an Apple partner, over all chatbot rivals. But Musk’s filing shows that the X and xAI owner isn’t just trying to push for more Grok downloads on iPhones—he’s concerned that Apple and OpenAI have teamed up to completely dash his “everything app” dreams, which was the reason he bought Twitter."
+          },
+          {
+            "type": "p",
+            "text": "At this point appearing to be genuinely panicked about OpenAI’s insurmountable lead in the chatbot market, Musk has specifically alleged that an agreement integrating ChatGPT into the iOS violated antitrust and unfair competition laws. Allegedly, the conspiracy is designed to protect Apple’s smartphone monopoly and block out AI rivals to lock in OpenAI’s dominance in the chatbot market."
+          },
+          {
+            "type": "p",
+            "text": "As Musk sees it, Apple is supposedly so worried that X will use Grok to create a “super app” that replaces the need for a sophisticated smartphone that the iPhone maker decided to partner with OpenAI to limit X and xAI innovation. The complaint quotes Apple executive Eddy Cue as expressing “worries that AI might destroy Apple’s smartphone business,” due to patterns observed in foreign markets where super apps exist, like WeChat in China."
+          },
+          {
+            "type": "p",
+            "text": "“In a desperate bid to protect its smartphone monopoly, Apple has joined forces with the company that most benefits from inhibiting competition and innovation in AI: OpenAI, a monopolist in the market for generative AI chatbots,” Musk’s lawsuit alleged."
+          },
+          {
+            "type": "p",
+            "text": "The problematic deal doesn’t just set ChatGPT as the only chatbot linked to Siri and other naive iPhone features, the lawsuit alleged. It also gives OpenAI—which X noted already controls at least 80 percent of the chatbot market—exclusive access to billions of prompts that OpenAI can use as valuable training data to cement its lead."
+          },
+          {
+            "type": "p",
+            "text": "Without similar access, even rivals from Big Tech companies like Musk’s can’t scale, the lawsuit said. That supposedly limits their ability to innovate both in terms of advancing their models generally and developing competing chatbots for Apple devices in bids to entice iPhone users to stop relying on native ChatGPT features."
+          },
+          {
+            "type": "p",
+            "text": "If the exclusive deal is maintained, X alleged that Apple’s customers will have “less choice and receive generative AI chatbots with fewer features and capabilities,” while Apple will allegedly continue to sell iPhones at monopoly prices, and OpenAI plans to “double the price of its ‘plus’ subscription over the next four years.” That plan would be “unfeasible unless OpenAI has power over marketwide prices,” X alleged."
+          },
+          {
+            "type": "p",
+            "text": "“In a competitive market for generative AI chatbots, usage of chatbots would be determined by customer choice,” X’s complaint said. “Generative AI chatbots would vigorously compete with one another to get customers to use their generative AI chatbot over rival ones. Defendants’ anticompetitive conduct has prevented this competition by handing a substantial portion of the market to ChatGPT. This conduct prevents ChatGPT’s rivals, such as Grok, from fairly competing with ChatGPT.”"
+          },
+          {
+            "type": "p",
+            "text": "But likely more concerning for Musk, if Apple has its “thumb pressed firmly on the scale for ChatGPT in its App Store,” it could mean that “investors face significant risk in backing anyone but the dominant market leader.” That means less money will likely flow to X as long as the deal integrating ChatGPT into iPhones remains in place. And according to X, starving resources to OpenAI’s rivals poses a further risk of making it easier for Big Tech companies to poach talent."
+          },
+          {
+            "type": "p",
+            "text": "“Apple’s conduct inhibits the growth of AI and super apps by allowing OpenAI to maintain its monopoly and curtail innovation and investment in generative AI chatbots that would develop into super apps that replace iPhone functionality,” X’s lawsuit alleged."
+          },
+          {
+            "type": "p",
+            "text": "X is hoping a jury will agree that—like Apple’s search default deal that helped entrench Google’s monopoly—the exclusive OpenAI deal violates antitrust law by entrenching monopolies. Expecting to recover billions in damages due to alleged harms like lost sales and threats to the X enterprise, X has asked for a permanent injunction blocking the deal."
+          },
+          {
+            "type": "p",
+            "text": "X and Apple did not respond to Ars’ request for comment. In a statement to Ars, an OpenAI spokesperson noted, “This latest filing is consistent with Mr. Musk’s ongoing pattern of harassment,” possibly referencing OpenAI’s allegations in litigation that Musk has perpetrated a “years-long harassment campaign” to take down OpenAI."
+          },
+          {
+            "type": "p",
+            "text": "Musk’s lawsuits are motivated to clear the field for xAI to dominate the AI industry instead, OpenAI has alleged."
+          },
+          {
+            "type": "h2",
+            "text": "Apple allegedly fears iPhones will become obsolete"
+          },
+          {
+            "type": "p",
+            "text": "The lawsuit makes it clear that Musk’s companies are struggling to figure out how Grok will ever get ahead of ChatGPT. Appearing to marvel at ChatGPT, the lawsuit noted that OpenAI’s chatbot has experienced “exponential growth” ever since it became the fastest-growing app in history to attract a million users, the lawsuit noted."
+          },
+          {
+            "type": "p",
+            "text": "Now, with the iOS integration, only OpenAI will receive information when iPhone users prompt Siri or use Apple’s Writing Tools or camera application. Its rivals “also miss out on prompts by users who never download a generative AI chatbot through the App Store because the integration makes it unnecessary for them to do so,” X complained."
+          },
+          {
+            "type": "p",
+            "text": "“There is no telling how long this exclusive arrangement will last,” X said, warning the court that OpenAI’s rivals “suffer harm every moment they are illegally denied access to these prompts.”"
+          },
+          {
+            "type": "p",
+            "text": "X suggests that Apple has no valid pro-competitive reason to give ChatGPT such exclusivity and seemed stung that Apple allegedly rejected xAI’s request to integrate Grok with iOS."
+          },
+          {
+            "type": "p",
+            "text": "Supposedly, Apple has also rejected “numerous requests by xAI for the Grok app to be featured in the App Store,” including when the app launched and more recently when X debuted Grok’s new “Imagine” feature."
+          },
+          {
+            "type": "p",
+            "text": "In addition to “manipulating App Store rankings,” Musk’s lawsuit accused Apple of “delaying approval for updates to xAI’s Grok app” as another way to reduce competition."
+          },
+          {
+            "type": "p",
+            "text": "If not for all of this anticompetitive behavior, Grok and other rival chatbots would be “more widely used,” X alleged, and that would generate more revenue and accelerate chatbot innovation across the board. But Apple likely doesn’t want that to happen, because it fears that a superior Grok will fuel X super apps that will make it easier to switch to a cheaper smartphone—and perhaps one day make iPhones obsolete."
+          },
+          {
+            "type": "h2",
+            "text": "Musk fears deal could doom X “everything app”"
+          },
+          {
+            "type": "p",
+            "text": "X’s lawsuit alleges that shady finances of the OpenAI/Apple deal suggest it was designed to block AI innovation."
+          },
+          {
+            "type": "p",
+            "text": "“OpenAI has provided ChatGPT to Apple for free and is functionally paying for the arrangement itself,” X’s complaint said, while noting that Apple allegedly doesn’t expect to receive a profit from the deal any time soon."
+          },
+          {
+            "type": "p",
+            "text": "X noted a report indicating that Apple “pushing OpenAI’s brand and technology to hundreds of millions of its devices is of equal or greater value than monetary payments.” In short, X claimed that “OpenAI is willing to sacrifice short-term profits in exchange for such access” as a means of maintaining dominance. And Apple similarly has no expectations for short-term gains, only planning to take an “eventual cut” of “OpenAI’s monetization of ChatGPT prompts through its iPhones and other devices,” X alleged."
+          },
+          {
+            "type": "p",
+            "text": "To X, it seems curious that Apple would exclusively partner with OpenAI despite there being no immediate profits and seemingly no technical reasons why it couldn’t offer the same deal to other chatbot makers. “By making the deal exclusive, Apple sacrificed the profits it would have earned had it integrated with multiple generative AI chatbots,” X’s lawsuit noted, alleging that the true motive was Apple and OpenAI’s shared goal of broadly blocking competition to entrench their monopolies."
+          },
+          {
+            "type": "p",
+            "text": "X can’t possibly compete against the duo, the lawsuit insisted. Breaking down the numbers, X pointed out that “Siri represented 1.5 billion user requests per day globally” in 2024, which is “more than the total prompts for generative AI chatbots in 2024.” Supposedly this means that the deal with Apple gives OpenAI “exclusive access to up to 55 percent of all potential generative AI chatbot prompts.”"
+          },
+          {
+            "type": "p",
+            "text": "According to X, “the network effects are so strong that despite billions in investments by established tech companies, no competitor has been able to challenge ChatGPT’s stranglehold on the market.”"
+          },
+          {
+            "type": "p",
+            "text": "“ChatGPT was already the largest AI chatbot before the arrangement with Apple,” X’s lawsuit said. “Since Apple and OpenAI entered into the arrangement, rivals have had little hope to catch up on the scale needed to fairly compete with ChatGPT.”"
+          },
+          {
+            "type": "p",
+            "text": "For X, losing the lawsuit may even mean its doom, the complaint suggested. “Because Grok’s functionality is a key feature of the X app, the X app is more attractive the better Grok performs. And because Defendants’ conduct makes Grok less able to fairly compete with ChatGPT, X’s app (and thus X) suffers in the process. This results in fewer X app customers and subscriptions, and less revenue and profits, ultimately creating a depressed enterprise value for X.”"
+          },
+          {
+            "type": "p",
+            "text": "Ashley is a senior policy reporter for Ars Technica, dedicated to tracking social impacts of emerging policies and new technologies. She is a Chicago-based journalist with 20 years of experience."
+          },
+          {
+            "type": "p",
+            "text": "189 Comments"
+          }
+        ],
+        "translations": [
+          "App Store 的恐慌",
+          "OpenAI 猛烈抨击马斯克的诉讼，称其是“持续骚扰模式”的一部分。",
+          "在公开抱怨 Grok 在 App Store 的排名后，埃隆·马斯克于周一兑现了起诉 Apple 和 OpenAI 的威胁。",
+          "起初，马斯克似乎执着于 ChatGPT 一直高居 Apple “必备”应用榜首——而 Grok 从未上榜——声称 Apple 似乎偏袒其合作伙伴 OpenAI，而忽视所有其他聊天机器人竞争对手。但马斯克的诉状显示，这位 X 和 xAI 的所有者不仅仅是想推动 Grok 在 iPhone 上的下载量——他更担心的是 Apple 和 OpenAI 已经联手彻底粉碎了他的“全能应用”梦想，而这正是他收购 Twitter 的原因。",
+          "此时，马斯克似乎对 OpenAI 在聊天机器人市场上不可逾越的领先地位感到真正的恐慌，他特别指控将 ChatGPT 整合到 iOS 中的协议违反了反垄断和不正当竞争法。据称，这一合谋旨在保护 Apple 的智能手机垄断地位，并排挤 AI 竞争对手，从而锁定 OpenAI 在聊天机器人市场的主导权。",
+          "在马斯克看来，Apple 据说非常担心 X 会利用 Grok 创建一个“超级应用”，从而取代对高端智能手机的需求，因此这家 iPhone 制造商决定与 OpenAI 合作，以限制 X 和 xAI 的创新。诉状引用了 Apple 高管 Eddy Cue 的话，称其“担心 AI 可能会摧毁 Apple 的智能手机业务”，这是基于在存在超级应用的外国市场（如中国的微信）中观察到的模式。",
+          "马斯克的诉讼指控称：“为了拼命保护其智能手机垄断地位，Apple 与在抑制 AI 竞争和创新中获益最多的公司——生成式 AI 聊天机器人市场的垄断者 OpenAI——联手。”",
+          "诉状指控称，这项有问题的协议不仅将 ChatGPT 设定为连接 Siri 和其他原生 iPhone 功能的唯一聊天机器人，还赋予了 OpenAI——X 指出其已控制至少 80% 的聊天机器人市场——对数十亿提示词的独家访问权，OpenAI 可以将这些提示词作为宝贵的训练数据来巩固其领先地位。",
+          "诉讼称，如果没有类似的访问权限，即使是像马斯克这样的大型科技公司的竞争对手也无法扩大规模。这据称限制了他们的创新能力，无论是在整体上推进其模型，还是在为 Apple 设备开发竞争性聊天机器人以吸引 iPhone 用户停止依赖原生 ChatGPT 功能方面。",
+          "X 指控称，如果维持这项独家协议，Apple 的客户将“选择更少，并收到功能和能力更少的生成式 AI 聊天机器人”，而 Apple 据称将继续以垄断价格销售 iPhone，OpenAI 则计划“在未来四年内将其‘plus’订阅的价格翻倍”。X 指出，该计划“除非 OpenAI 对全市场价格拥有控制权，否则是不可行的”。",
+          "X 的诉状称：“在生成式 AI 聊天机器人的竞争市场中，聊天机器人的使用应由客户的选择来决定。生成式 AI 聊天机器人将相互激烈竞争，以吸引客户使用他们的生成式 AI 聊天机器人而不是竞争对手的。被告的反竞争行为通过将很大一部分市场份额交给 ChatGPT，阻止了这种竞争。这种行为阻止了 ChatGPT 的竞争对手（如 Grok）与 ChatGPT 进行公平竞争。”",
+          "但对马斯克来说可能更令人担忧的是，如果 Apple 在其 App Store 中“明显偏袒 ChatGPT”，这可能意味着“投资者在支持除市场主导者以外的任何公司时都面临巨大风险”。这意味着只要将 ChatGPT 整合到 iPhone 中的协议继续存在，流向 X 的资金可能就会减少。据 X 称，切断 OpenAI 竞争对手的资源还会带来进一步的风险，即让大型科技公司更容易挖走人才。",
+          "X 的诉讼指控称：“Apple 的行为抑制了 AI 和超级应用的增长，因为它允许 OpenAI 维持其垄断地位，并削减了在生成式 AI 聊天机器人方面的创新和投资，而这些机器人本可以发展成为取代 iPhone 功能的超级应用。”",
+          "X 希望陪审团能够认同，就像 Apple 帮助巩固 Google 垄断地位的搜索默认协议一样，这项 OpenAI 独家协议也因巩固垄断而违反了反垄断法。由于声称遭受了销售损失和对 X 企业的威胁等损害，X 期望能追回数十亿美元的赔偿金，并已要求发布永久禁令阻止该协议。",
+          "X 和 Apple 未回应 Ars 的置评请求。OpenAI 发言人在给 Ars 的一份声明中指出：“这份最新的文件与马斯克先生持续进行的骚扰模式相符”，这可能是指 OpenAI 在诉讼中指控马斯克发起了一场“长达数年的骚扰运动”以搞垮 OpenAI。",
+          "OpenAI 指控称，马斯克提起诉讼的动机是为 xAI 扫清障碍，以便其主导 AI 行业。",
+          "据称 Apple 担心 iPhone 会变得过时",
+          "诉讼明确指出，马斯克的公司正苦于寻找如何让 Grok 超越 ChatGPT 的方法。诉讼似乎对 ChatGPT 感到惊叹，指出自从 OpenAI 的聊天机器人成为历史上吸引百万用户增长最快的应用以来，它经历了“指数级增长”。",
+          "X 抱怨道，现在有了 iOS 的整合，当 iPhone 用户向 Siri 发出指令或使用 Apple 的 Writing Tools 或相机应用时，只有 OpenAI 会收到信息。其竞争对手“也错失了那些从不通过 App Store 下载生成式 AI 聊天机器人的用户所发出的指令，因为这种整合使得他们没有必要这么做”。",
+          "X 表示：“无法确定这种独家安排会持续多久”，并警告法庭称，OpenAI 的竞争对手“在被非法拒绝获取这些指令的每一刻都在遭受损害”。",
+          "X 认为，Apple 没有任何有效的促进竞争的理由来给予 ChatGPT 这种独家地位，并且似乎对据称 Apple 拒绝了 xAI 将 Grok 与 iOS 整合的请求感到不满。",
+          "据称，Apple 还拒绝了“xAI 提出的让 Grok 应用在 App Store 中获得推荐的众多请求”，包括该应用发布时以及最近 X 推出 Grok 新的“Imagine”功能时。",
+          "除了“操纵 App Store 排名”之外，马斯克的诉讼还指控 Apple “拖延批准 xAI 的 Grok 应用更新”，以此作为减少竞争的另一种手段。",
+          "X 声称，如果不是因为所有这些反竞争行为，Grok 和其他竞争对手的聊天机器人将被“更广泛地使用”，这将产生更多收入并全面加速聊天机器人的创新。但 Apple 可能不希望发生这种情况，因为它担心更出色的 Grok 会推动 X 超级应用的发展，从而让人们更容易转向更便宜的智能手机——也许有一天会让 iPhone 变得过时。",
+          "马斯克担心该协议可能毁掉 X 的“全能应用”",
+          "X 的诉讼指控称，OpenAI/Apple 交易中不透明的财务安排表明，其目的在于阻碍 AI 创新。",
+          "X 的诉状称：“OpenAI 免费向 Apple 提供 ChatGPT，实际上是在为这项合作买单”，同时指出据称 Apple 并不指望短期内能从这笔交易中获利。",
+          "X 提到一份报告指出，Apple“将 OpenAI 的品牌和技术推向数亿台设备，其价值等同于甚至大于金钱支付。”简而言之，X 声称“OpenAI 愿意牺牲短期利润以换取这种触达渠道”，作为维持其主导地位的手段。X 还指控称，Apple 同样不期望获得短期收益，只计划从“OpenAI 通过其 iPhone 和其他设备对 ChatGPT 提示词的变现”中获取“最终分成”。",
+          "对 X 而言，Apple 在没有即时利润，且似乎不存在技术障碍无法向其他聊天机器人制造商提供同等合作的情况下，却选择与 OpenAI 独家合作，这显得十分蹊跷。X 的诉讼指出：“通过达成独家交易，Apple 牺牲了本可通过整合多个生成式 AI 聊天机器人而获得的利润”，并指控其真正动机是 Apple 和 OpenAI 有着共同的目标，即广泛阻碍竞争以巩固其垄断地位。",
+          "诉讼坚称，X 根本无法与这两家公司的组合相抗衡。通过分析数据，X 指出 2024 年“Siri 在全球每天处理 15 亿次用户请求”，这“超过了 2024 年所有生成式 AI 聊天机器人的提示词总和。”据称，这意味着与 Apple 的交易让 OpenAI“独家获取了高达 55% 的所有潜在生成式 AI 聊天机器人提示词。”",
+          "X 表示：“网络效应如此强大，以至于尽管老牌科技公司投入了数十亿美元，依然没有竞争对手能够挑战 ChatGPT 对市场的绝对控制。”",
+          "X 的诉讼称：“在与 Apple 达成合作之前，ChatGPT 已经是最大的 AI 聊天机器人。自从 Apple 和 OpenAI 达成合作以来，竞争对手几乎已无望达到能与 ChatGPT 公平竞争所需的规模。”",
+          "诉状暗示，对 X 而言，输掉这场诉讼甚至可能意味着灭顶之灾。“由于 Grok 的功能是 X 应用的关键特性，Grok 表现得越好，X 应用就越具吸引力。而由于被告的行为导致 Grok 无法与 ChatGPT 公平竞争，X 的应用（进而波及 X 本身）在此过程中受损。这会导致 X 应用的客户和订阅量减少，收入和利润降低，最终造成 X 的企业价值受挫。”",
+          "Ashley 是 Ars Technica 的高级政策记者，致力于追踪新兴政策和新技术的社会影响。她是一名驻芝加哥的记者，拥有 20 年从业经验。",
+          "189 条评论"
+        ]
+      }
+    },
+    {
+      "slug": "aff3cd546bd62c7c",
+      "title": "Paulo Andrade: ‘A WWDC 27 Update on Building a Mac-Assed App With SwiftUI’",
+      "titleZh": "Paulo Andrade：“关于使用SwiftUI构建Mac-Assed应用的WWDC 27更新”",
+      "link": "https://pfandrade.me/blog/swiftui-mac-assed-wwdc27-update/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-12T21:18:24.000Z",
+      "category": "engineering",
+      "keywords": [
+        "SwiftUI",
+        "macOS",
+        "WWDC"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "作者更新了关于使用 SwiftUI 构建 Mac-assed 应用的文章。由于该文章在Mastodon和Daring Fireball等平台上受到广泛关注，苹果工程师主动联系了作者并提供了一些反馈。作者随后提交了相关反馈并进行了更新。",
+      "summaryEn": "The author provides an update on building Mac-assed apps with SwiftUI. After the post gained significant traction on platforms like Mastodon and Daring Fireball, an Apple engineer reached out with feedback. The author subsequently filed the feedback and provided updates.",
+      "reason": "展示了开发者社区与苹果官方之间的直接互动，为SwiftUI开发者提供了来自官方的真实反馈和指导。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "My last post on using SwiftUI to build a Mac-assed app got a bit more traction than I expected. It was mentioned on Mastodon several times, included in iOS Dev Weekly, inspired May's edition of the Swift Blog Carnival, and was eventually mentioned by John Gruber, arguably the person most to blame for popularizing the term \"Mac-assed\", on Daring Fireball."
+          },
+          {
+            "type": "p",
+            "text": "All this attention also resulted in an engineer from Apple reaching out with some notes. We exchanged a few emails, I filed a few radars, and now that WWDC 26 is behind us, this post serves as a small update to the issues I wrote about before."
+          },
+          {
+            "type": "h2",
+            "text": "Selected States"
+          },
+          {
+            "type": "p",
+            "text": "Regarding selected states, there is a \\.backgroundProminence environment value I was not aware of when I wrote the previous post."
+          },
+          {
+            "type": "p",
+            "text": "According to the documentation, \"views like List and Table as well as standard shape styles like ShapeStyle.selection will automatically update the background prominence of foreground views.\""
+          },
+          {
+            "type": "p",
+            "text": "That means SwiftUI already has a built-in concept that is pretty close to what I called \\.isEmphasized. If you are using List or Table, you can check this value as selection prominence changes."
+          },
+          {
+            "type": "p",
+            "text": "Of course, if you are not using List or Table - and you probably are not if you are trying to do any sort of serious customization - the approach I mentioned before is still the way to go. Track focus yourself and pass that state down through the environment."
+          },
+          {
+            "type": "p",
+            "text": "The difference is that you can reuse \\.backgroundProminence instead of creating your own \\.isEmphasized value. That has the nice side effect of making your custom rows a little more compatible if you ever place them inside a List or Table in the future."
+          },
+          {
+            "type": "p",
+            "text": "I also filed FB23095823 with some ideas for what List could expose to make custom rows more useful. I still think this is the right direction. When you're working with AppKit or UIKit, you have a tremendous amount of flexibility with your cells and rows, and the feedback I raised tries to bring List closer to what's possible there."
+          },
+          {
+            "type": "h2",
+            "text": "Drag & Drop"
+          },
+          {
+            "type": "p",
+            "text": "There is a new .onDragSessionUpdated API, introduced for the 27 OS releases and apparently already available on macOS 26, that solves my biggest issue with drag and drop in SwiftUI: having visibility into the drag session from the start."
+          },
+          {
+            "type": "p",
+            "text": "I have not tested this yet, but on paper it seems to be exactly the missing piece. You should finally be able to update your UI when a drag starts and clean it up reliably when the session ends, even if the drop happens outside your view."
+          },
+          {
+            "type": "p",
+            "text": "That is precisely the kind of thing AppKit has been able to do for ages, so it is good to see SwiftUI get closer here."
+          },
+          {
+            "type": "p",
+            "text": "Having said that, my apps usually support the last two major OS versions, so I'll probably only start playing with this in two years."
+          },
+          {
+            "type": "p",
+            "text": "Also worth noting is the new .reorderable modifier in the 27 releases. If you're just looking to allow reordering, this should be the way to go."
+          },
+          {
+            "type": "h2",
+            "text": "Keyboard Shortcuts"
+          },
+          {
+            "type": "p",
+            "text": "As I mentioned before, .onMoveCommand is not available on iOS. The workaround is to use a lower-level abstraction such as .onKeyPress, which also works on macOS."
+          },
+          {
+            "type": "p",
+            "text": "That works, but it is not quite the same thing. .onMoveCommand is the more appropriate API because it deals in intent. I do not really care that the user pressed the down arrow key. I care that the user wants to move down."
+          },
+          {
+            "type": "p",
+            "text": "At first I assumed .onMoveCommand was not available on iOS because UIResponder does not have matching move* selectors. Then I noticed .onMoveCommand is available on tvOS."
+          },
+          {
+            "type": "p",
+            "text": "So now I am back to thinking this is just an API availability gap. If it makes sense on tvOS, it absolutely makes sense on iPadOS, where hardware keyboards are common and arrow-key navigation is expected."
+          },
+          {
+            "type": "p",
+            "text": "I filed FB23095985 for this. These little platform differences are exactly the kind of thing that weaken the promise of a cross-platform UI framework. They are small in isolation, but they add up quickly when you are trying to share real UI code."
+          },
+          {
+            "type": "h2",
+            "text": "Other Gripes"
+          },
+          {
+            "type": "p",
+            "text": "For the other issues I mentioned, I filed FB23097100 for not being able to know whether a context menu is currently open, and FB23102836 for improving the ergonomics of the toolbar API."
+          },
+          {
+            "type": "p",
+            "text": "The context menu issue still feels especially frustrating to me. It is the kind of thing that only seems minor if you are not trying to build a proper Mac interface. On iOS, the system can visually lift the item involved in the interaction. On macOS, the app needs enough information to represent the target itself."
+          },
+          {
+            "type": "p",
+            "text": "Regarding toolbars, WWDC 26 introduced a new .visibilityPriority modifier that helps manage which items should move first to the overflow menu. This doesn't really help with my issue, but I felt I should mention it."
+          }
+        ],
+        "translations": [
+          "我上一篇关于使用 SwiftUI 构建 Mac-assed 应用的文章获得了比我预期更多的关注。它在 Mastodon 上被多次提及，被收录在 iOS Dev Weekly 中，启发了 5 月份的 Swift Blog Carnival，最终还被 John Gruber（可以说是让“Mac-assed”一词流行起来的主要推手）在 Daring Fireball 上提及。",
+          "所有这些关注也促使一位 Apple 工程师主动联系并提供了一些反馈。我们互通了几封邮件，我提交了几个 radar，既然 WWDC 26 已经落下帷幕，这篇文章就作为对我之前写过的问题的一个小更新。",
+          "选中状态",
+          "关于选中状态，有一个 \\.backgroundProminence 环境值是我在写上一篇文章时不知道的。",
+          "根据文档，“像 List 和 Table 这样的视图，以及像 ShapeStyle.selection 这样的标准形状样式，会自动更新前景视图的背景显著度（background prominence）。”",
+          "这意味着 SwiftUI 已经有了一个内置概念，与我所说的 \\.isEmphasized 非常接近。如果你正在使用 List 或 Table，你可以在选中显著度发生变化时检查这个值。",
+          "当然，如果你没有使用 List 或 Table——如果你试图进行任何严肃的定制，你可能确实没有使用——那么我之前提到的方法仍然是首选。你需要自己跟踪焦点，并通过环境传递该状态。",
+          "区别在于你可以重用 \\.backgroundProminence，而不是创建你自己的 \\.isEmphasized 值。这有一个很好的副作用，那就是如果你将来把它们放在 List 或 Table 中，你的自定义行会更具兼容性。",
+          "我还提交了 FB23095823，提出了一些关于 List 可以暴露哪些内容以使自定义行更有用的想法。我仍然认为这是正确的方向。当你使用 AppKit 或 UIKit 时，你的单元格和行具有极大的灵活性，而我提出的反馈试图让 List 更接近那里的可能性。",
+          "拖放",
+          "有一个新的 .onDragSessionUpdated API，它是为 27 OS 版本引入的，并且显然已经在 macOS 26 上可用，它解决了我对 SwiftUI 中拖放最大的问题：从一开始就能了解拖放会话的状态。",
+          "我还没有测试过这个，但从理论上讲，它似乎正是缺失的那一块。你终于应该能够在拖动开始时更新你的 UI，并在会话结束时可靠地清理它，即使放置操作发生在你的视图之外。",
+          "这正是 AppKit 多年来一直能够做到的事情，所以很高兴看到 SwiftUI 在这方面迎头赶上。",
+          "话虽如此，我的应用通常支持最近的两个主要 OS 版本，所以我可能要在两年后才会开始尝试这个。",
+          "另外值得一提的是 27 版本中新的 .reorderable 修饰符。如果你只是想允许重新排序，这应该是首选方法。",
+          "键盘快捷键",
+          "正如我之前提到的，.onMoveCommand 在 iOS 上不可用。解决方法是使用像 .onKeyPress 这样的较低级别抽象，它在 macOS 上也能工作。",
+          "这行得通，但并不完全是一回事。.onMoveCommand 是更合适的 API，因为它处理的是意图。我并不真正关心用户是否按下了向下箭头键。我关心的是用户想要向下移动。",
+          "起初我假设 .onMoveCommand 在 iOS 上不可用是因为 UIResponder 没有匹配的 move* 选择器。后来我注意到 .onMoveCommand 在 tvOS 上是可用的。",
+          "所以我现在又觉得这只是一个 API 可用性上的缺失。如果它在 tvOS 上行得通，那在 iPadOS 上绝对也行得通，毕竟在 iPadOS 上硬件键盘很常见，而且用户也期望能通过方向键进行导航。",
+          "我为此提交了 FB23095985。这些微小的平台差异正是削弱跨平台 UI 框架承诺的罪魁祸首。孤立来看它们似乎微不足道，但当你试图共享真正的 UI 代码时，它们很快就会积少成多。",
+          "其他槽点",
+          "对于我提到的其他问题，我提交了 FB23097100，反映无法得知上下文菜单当前是否处于打开状态；还提交了 FB23102836，建议改进工具栏 API 的易用性。",
+          "上下文菜单的问题仍然让我感到特别沮丧。只有当你不打算构建一个标准的 Mac 界面时，这类问题才会显得无关紧要。在 iOS 上，系统可以在视觉上提升参与交互的元素。而在 macOS 上，应用程序需要足够的信息来呈现目标本身。",
+          "关于工具栏，WWDC 26 引入了一个新的 .visibilityPriority 修饰符，帮助管理哪些项目应该优先移至溢出菜单。这对我遇到的问题并没有实质帮助，但我觉得还是应该提一下。"
+        ]
+      }
+    },
+    {
+      "slug": "7b56c5bce18c50dd",
+      "title": "‘Every Frame Perfect’",
+      "titleZh": "“每一帧都完美”",
+      "link": "https://tonsky.me/blog/every-frame-perfect/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-12T19:48:09.000Z",
+      "category": "opinion",
+      "keywords": [
+        "UI",
+        "quality",
+        "design"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "文章提出了一个经验法则：如果在任何时刻截取应用的屏幕截图，开发者都应该能够解释屏幕上显示的内容。关注每一帧的完美可以建立用户信任，因为用户无法看到代码，UI是他们判断应用质量的唯一标准。如果UI看起来精致，说明开发者有足够的时间打磨代码。",
+      "summaryEn": "The article proposes a rule of thumb: if you take a screenshot of an app at any moment, the developer should be able to explain what is on the screen. Caring about every frame builds trust, as users cannot see the code and UI is their only way to judge app quality. A polished UI indicates developers had time to refine the code.",
+      "reason": "从UI细节的角度阐述了软件质量与用户信任的关系，为前端和客户端开发者提供了实用的设计哲学。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Nikita Prokopov",
+        "siteName": "tonsky.me",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Translations: Russian"
+          },
+          {
+            "type": "p",
+            "text": "A while ago I was reading about Wayland and this quote stuck with me:"
+          },
+          {
+            "type": "quote",
+            "text": "A stated goal of Wayland is “every frame is perfect”."
+          },
+          {
+            "type": "p",
+            "text": "And I think this is a goal we should all aspire to. Wayland is talking about the technical side of things (modern GPU stacks are very complex and Wayland is trying to take control back) but it could be applied to UI too."
+          },
+          {
+            "type": "p",
+            "text": "The rule of thumb is:"
+          },
+          {
+            "type": "p",
+            "text": "If I take a screenshot of your app at any moment, you should be able to explain what I see"
+          },
+          {
+            "type": "p",
+            "text": "EDIT: This used to say “..., it must make sense” but that doesn’t account for advanced animation techniques such as smear frames etc."
+          },
+          {
+            "type": "p",
+            "text": "Why care about every frame? It builds trust. Users can’t see the code, so UI is the only way for them to judge the quality of the app. If UI looks good, that means developers had time to polish it, which means that they probably spent a comparable amount of time to iron out the code. It’s a heuristic, but a reasonable one."
+          },
+          {
+            "type": "p",
+            "text": "Now, what does it mean in practice? I can think of a few things:"
+          },
+          {
+            "type": "li",
+            "text": "No white flashes between screens."
+          },
+          {
+            "type": "li",
+            "text": "No partially loaded content."
+          },
+          {
+            "type": "li",
+            "text": "No relayout while content loads."
+          },
+          {
+            "type": "li",
+            "text": "Internally consistent. If one part of the UI says “1 update available”, another part should not say “Checking for updates...”"
+          },
+          {
+            "type": "li",
+            "text": "Precise animations."
+          },
+          {
+            "type": "p",
+            "text": "Animations often end up being forgotten. A UI might look great in both start and end states but very janky in between. Like this:"
+          },
+          {
+            "type": "p",
+            "text": "If you feel like there are weird things going on there, there are! Look at slowed down version:"
+          },
+          {
+            "type": "p",
+            "text": "Now let’s apply our rule and take screenshots in the middle of the animation. This doesn’t look right:"
+          },
+          {
+            "type": "p",
+            "text": "Neither does this:"
+          },
+          {
+            "type": "p",
+            "text": "Both of these frames are not perfect."
+          },
+          {
+            "type": "p",
+            "text": "Let’s look at another example. Safari:"
+          },
+          {
+            "type": "p",
+            "text": "Placeholder text here moves from the center but cursor animates from the left position:"
+          },
+          {
+            "type": "p",
+            "text": "Not the end of the world by any means, but it does create a feeling that these two components are not in sync with each other. Next thought: maybe they weren’t designed together? If so, then they might not work well together. That’s how trust is lost."
+          },
+          {
+            "type": "p",
+            "text": "This desynchronization can lead to a lot of confusion. For example, in Photos, when switching between Crop and Adjust mode, picture snaps into place immediately but the crop border is animated:"
+          },
+          {
+            "type": "p",
+            "text": "This creates a false feeling that something subtly changes when you switch between modes. And you know what? I don’t want my UI to give me false feelings. I want it to be a precise instrument, not an animated toy."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes animations are supposed to help you understand a transition, so it’s doubly sad when they make it harder. Follow the magnifying glass:"
+          },
+          {
+            "type": "p",
+            "text": "Same with Youtube. They had the simplest task in the world: move a rectangle from one position to another! Yet they decided to do something very strange:"
+          },
+          {
+            "type": "p",
+            "text": "Can you explain this? Does it make sense?"
+          },
+          {
+            "type": "p",
+            "text": "Probably a technical limitation of the DOM architecture they decided earlier on. I call these situations “The technology has outsmarted the programmer”. But no matter the reason, the result is an imperfect frame."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes animations are left out as an afterthought. Whatever happens, happens. Then we get this:"
+          },
+          {
+            "type": "p",
+            "text": "The details are fascinating to watch:"
+          },
+          {
+            "type": "p",
+            "text": "So yeah. Please pay attention not only to the start and end states, but also to everything in between. Every frame matters."
+          },
+          {
+            "type": "p",
+            "text": "I’ll leave you with this unprovoked zoom animation from Preview app. Take care!"
+          }
+        ],
+        "translations": [
+          "翻译：俄语",
+          "前段时间我在阅读关于 Wayland 的资料，这句话让我印象深刻：",
+          "Wayland 的一个既定目标是“每一帧都完美”。",
+          "我认为这也是我们都应该追求的目标。Wayland 谈论的是技术层面的事情（现代 GPU 技术栈非常复杂，Wayland 正试图夺回控制权），但这同样适用于 UI。",
+          "经验法则是：",
+          "如果我在任意时刻对你的应用截图，你应该能解释我所看到的内容",
+          "编辑：这里原本写的是“……，它必须有意义”，但这没有考虑到诸如拖影帧等高级动画技术。",
+          "为什么要关注每一帧？因为这能建立信任。用户看不到代码，所以 UI 是他们判断应用质量的唯一途径。如果 UI 看起来很好，说明开发者有时间去打磨它，这也意味着他们可能花了同样多的时间去完善代码。这是一种启发式方法，但很合理。",
+          "那么，这在实践中意味着什么呢？我能想到以下几点：",
+          "屏幕之间没有白屏闪烁。",
+          "没有部分加载的内容。",
+          "内容加载时没有重新布局。",
+          "内部一致。如果 UI 的一部分显示“有 1 个可用更新”，另一部分就不应该显示“正在检查更新……”",
+          "精确的动画。",
+          "动画往往最终被遗忘。一个 UI 可能在开始和结束状态都看起来很棒，但中间过程却非常卡顿。就像这样：",
+          "如果你觉得那里有些奇怪的地方，确实如此！看看放慢的版本：",
+          "现在让我们应用我们的规则，在动画中间截个图。这看起来不对劲：",
+          "这个也不对：",
+          "这两帧都不完美。",
+          "让我们看另一个例子。Safari：",
+          "这里的占位符文本从中心移动，但光标却从左侧位置开始动画：",
+          "这绝不是什么大不了的事，但它确实给人一种这两个组件彼此不同步的感觉。接下来的想法是：也许它们不是一起设计的？如果是这样，那它们可能无法很好地协同工作。信任就是这样流失的。",
+          "这种不同步会导致很多困惑。例如，在“照片”中，在“裁剪”和“调整”模式之间切换时，图片会立即就位，但裁剪边框却有动画效果：",
+          "这会造成一种错觉，让你觉得在模式之间切换时有什么微妙的东西发生了变化。你知道吗？我不希望我的 UI 给我带来错觉。我希望它是一个精确的工具，而不是一个动画玩具。",
+          "有时候动画本应帮助你理解过渡过程，所以当它们反而让理解变得更困难时，就更加令人遗憾了。看看这个放大镜：",
+          "Youtube 也是如此。他们有着世界上最简单的任务：把一个矩形从一个位置移动到另一个位置！然而他们却决定做一些非常奇怪的事情：",
+          "你能解释一下这个吗？这合理吗？",
+          "这可能是他们早期决定的 DOM 架构的技术限制。我把这些情况称为“技术反噬了程序员”。但无论原因是什么，结果都是一帧不完美的画面。",
+          "有时候动画被当作事后补充而被忽略了。发生什么就是什么。然后我们得到了这个：",
+          "这些细节看起来很耐人寻味：",
+          "所以就是这样。请注意不仅关注开始和结束状态，还要关注中间的所有过程。每一帧都很重要。",
+          "最后，我留给你这个来自 Preview 应用的无端缩放动画。保重！"
+        ]
+      }
+    },
+    {
+      "slug": "7baa6bfd876e21ba",
+      "title": "Why don’t we just make the entire stack out of guard pages?",
+      "titleZh": "为什么我们不把整个堆栈都做成保护页？",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260713-00/?p=112528",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-07-13T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "guard pages",
+        "stack",
+        "memory management"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 8,
+        "timeliness": 5,
+        "total": 18
+      },
+      "summary": "文章探讨了为什么在系统设计中不将整个堆栈都设置为保护页。通过分析保护页的作用和限制，解释了全面使用保护页可能带来的性能问题和系统开销，从而说明了在堆栈管理中需要平衡安全与效率。",
+      "summaryEn": "The article explores why the entire stack is not made out of guard pages in system design. By analyzing the role and limitations of guard pages, it explains the potential performance issues and system overhead of using them comprehensively, illustrating the need to balance security and efficiency in stack management.",
+      "reason": "深入底层系统设计细节，解答了一个看似简单实则涉及性能权衡的经典技术问题。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In my earlier overview of  how compilers on different architectures perform stack probes,  Cole Tobin asked, “Why not have a page fault handler that detects the faulting address being the stack and page in the other pages?”"
+          },
+          {
+            "type": "p",
+            "text": "Csaba Varga replied, “My guess: you don’t want an invalid pointer dereference to allocate a huge chunk of stack, just because the pointer happens to be pointing where the stack might grow, eventually. You want an invalid pointer dereference to segfault most of the time.”"
+          },
+          {
+            "type": "p",
+            "text": "I agree with Csaba on this."
+          },
+          {
+            "type": "p",
+            "text": "If the entire stack were made of guard pages, then it means that a single page fault far below the stack limit could take arbitrary long and allocate arbitrarily large quantities of memory. The program might have said that it wants stacks to default to 1GB, and now a single page fault on the stack could result in a long pause as the system allocates 1GB of memory. If you study the problem in the debugger, what you see is that a single memory read takes several minutes."
+          },
+          {
+            "type": "p",
+            "text": "And even worse is that there’s no way to stop it, since it’s happening in kernel mode. You see a program starting to balloon and consume all the memory in the system, so you go to Task Manager and terminate it, but the process doesn’t die. It just keeps on growing!"
+          },
+          {
+            "type": "p",
+            "text": "Even if the guard page is more than one page, it’s still a small fixed number of pages, the system can satisfy a guard page fault in a short amount of time. And more importantly, the amount of work is bounded."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "在我之前关于不同架构的编译器如何执行栈探测的概述中，Cole Tobin 问道：“为什么不设置一个页面错误处理程序，检测发生错误的地址是否在栈上，并调入其他页面呢？”",
+          "Csaba Varga 回复道：“我猜：你不会希望一个无效的指针解引用仅仅因为碰巧指向了栈最终可能增长到的位置，就分配一大块栈空间。大多数情况下，你希望无效的指针解引用会引发段错误。”",
+          "在这一点上我同意 Csaba 的看法。",
+          "如果整个栈都由保护页组成，那就意味着在栈边界下方很远的地方发生的一个页面错误，可能会耗费任意长的时间并分配任意大的内存。程序可能设定了默认 1GB 的栈空间，而现在栈上的一个页面错误就可能导致系统在分配 1GB 内存时出现长时间的暂停。如果你在调试器中研究这个问题，你会看到一次内存读取竟然需要好几分钟。",
+          "更糟糕的是，由于这发生在内核模式下，你根本无法阻止它。你看到某个程序开始膨胀并消耗系统的所有内存，于是你打开任务管理器去终止它，但这个进程却死不掉。它只会继续膨胀！",
+          "即使保护页不止一页，它也仍然是一个较小的固定页数，系统可以在短时间内处理完保护页错误。更重要的是，其工作量是有界的。",
+          "作者",
+          "Raymond 参与 Windows 的演进已有 30 多年。2003 年，他创办了一个名为 The Old New Thing 的网站，其受欢迎程度远远超出了他最疯狂的想象，这一发展至今仍让他感到有些心惊肉跳。这个网站后来衍生出了一本书，巧合的是书名也叫《The Old New Thing》（Addison Wesley 2007 年出版）。他偶尔会出现在 Windows Dev Docs 的 Twitter 账号上讲些故事，不过这些故事并没有传达任何有用的信息。"
+        ]
+      }
+    },
+    {
+      "slug": "bb50eec600f6db48",
+      "title": "What’s an Icon in 2026?",
+      "titleZh": "2026年的图标是什么？",
+      "link": "https://blog.jim-nielsen.com/2026/icons-as-software/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-07-12T19:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "icons",
+        "Apple",
+        "design"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "随着苹果平台上的图标不断变化，作者从长期用户和数字/物理图标收藏家的双重角度分享了自己的看法。文章试图阐述对苹果推荐图标设计的思考，探讨了图标在软件生态中不断演变的定义和意义。",
+      "summaryEn": "As icons continue to change across Apple's platforms, the author shares thoughts from the dual perspectives of a long-time user and a digital/physical icon collector. The article attempts to articulate thoughts on Apple's recommended icon design, exploring the evolving definition and significance of icons in the software ecosystem.",
+      "reason": "结合用户与收藏家的独特视角，深入探讨了苹果平台图标设计的演变趋势及其在软件中的文化意义。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "06045cdb41d127f7",
+      "title": "Directly Responsible Individuals (DRI)",
+      "titleZh": "直接负责人 (DRI)",
+      "link": "https://simonwillison.net/2026/Jul/12/directly-responsible-individuals/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-12T23:57:14.000Z",
+      "category": "opinion",
+      "keywords": [
+        "DRI",
+        "management",
+        "GitLab"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "“直接负责人”（DRI）一词起源于苹果公司，用于描述对特定项目或活动的成败负有最终责任的人。GitLab手册中提供了该术语的最佳定义。作者正在思考这一概念在项目管理中的应用。",
+      "summaryEn": "The term \"Directly Responsible Individuals\" (DRI) originated at Apple to describe the person ultimately accountable for a project's success or failure. The best definition found is in the GitLab handbook. The author is exploring how this concept applies to project management.",
+      "reason": "了解苹果和GitLab等大厂如何通过DRI机制明确项目责任归属，提升团队执行力。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "12th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Directly Responsible Individuals (DRI). I went looking for a definition of \"Directly Responsible Individuals\" and the best I found was in the GitLab handbook. Apparently the term originated at Apple, where it's used to describe the person who is \"ultimately accountable for the success or failure of a specific project, initiative, or activity\"."
+          },
+          {
+            "type": "p",
+            "text": "I've been thinking about this term recently in the context of LLM-powered agents and how they fit into human organizations. I don't think an agent should ever be considered the DRI for a project - that's something that feels uniquely human to me, because humans can take accountability for their actions where machines cannot."
+          },
+          {
+            "type": "p",
+            "text": "(See also IBM's legendary 1979 training slide that states \"A computer can never be held accountable, therefore a computer must never make a management decision.\")"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4efac0ca1a0909d2",
+      "title": "shot-scraper 1.11",
+      "titleZh": "shot-scraper 1.11 发布",
+      "link": "https://simonwillison.net/2026/Jul/12/shot-scraper/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-12T23:46:52.000Z",
+      "category": "tools",
+      "keywords": [
+        "shot-scraper",
+        "release",
+        "automation"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 4,
+        "timeliness": 8,
+        "total": 17
+      },
+      "summary": "shot-scraper 1.11 版本发布，主要包含一些细微改进。更新重点在于命令选项的一致性，并修复了 `shot-scraper video` 和 `shot-scraper multi` 使用的 `server:` 机制在服务器启动时间超过一秒时无法工作的问题。",
+      "summaryEn": "shot-scraper 1.11 has been released with minor improvements. The update focuses on command option consistency and fixes the `server:` mechanism used by `shot-scraper video` and `shot-scraper multi` to work when the server takes longer than a second to start.",
+      "reason": "了解截图工具 shot-scraper 的最新更新细节，特别是服务器启动超时问题的修复。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Release\n    \n    shot-scraper 1.11\n    — A CLI utility for taking screenshots of websites, recording video demos and scraping sites using JavaScript"
+          },
+          {
+            "type": "p",
+            "text": "Some minor improvements, mainly around command option consistency and making the server: mechanism used by both shot-scraper video and shot-scraper multi work if the server takes longer than a second to start serving traffic."
+          },
+          {
+            "type": "quote",
+            "text": "server: processes used by shot-scraper multi and shot-scraper video now wait up to 30 seconds for the target URL to accept connections, polling for port availability and replacing the previous fixed one-second delay. #197\nThe shot-scraper, pdf, html, accessibility and har commands now have a --js-file option for loading JavaScript from a local file, standard input or gh:username/script, as an alternative to --javascriptwhich accepts the string of JavaScript directly as an argument. #192\nshot-scraper multi supports the equivalent js_file: YAML key. \nThe shot-scraper javascript and shot-scraper html commands now have a --timeout option for consistency with other commands. #118"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a88663736fbe0de1",
+      "title": "sqlite-utils 4.1.1",
+      "titleZh": "sqlite-utils 4.1.1 发布",
+      "link": "https://simonwillison.net/2026/Jul/12/sqlite-utils/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-12T20:55:30.000Z",
+      "category": "tools",
+      "keywords": [
+        "sqlite-utils",
+        "release",
+        "database"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 4,
+        "timeliness": 8,
+        "total": 17
+      },
+      "summary": "sqlite-utils 4.1.1 版本发布，主要修复了在测试 4.1 版本时发现的边缘情况。具体而言，如果在打开事务时调用 `table.transform()`，现在会引发 `TransactionError`，从而避免了潜在的数据库操作冲突。",
+      "summaryEn": "sqlite-utils 4.1.1 has been released, mainly fixing an edge case found while testing the 4.1 release. Specifically, calling `table.transform()` while a transaction is open will now raise a `TransactionError`, preventing potential database operation conflicts.",
+      "reason": "关注 sqlite-utils 的版本迭代，了解事务处理中的边界情况修复细节。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Mainly a fix for an edge case that regular Claude chat spotted while experimenting with the 4.1 release to answer a question about ON DELETE."
+          },
+          {
+            "type": "quote",
+            "text": "table.transform() now raises a TransactionError if called while a transaction is open with PRAGMA foreign_keys enabled and the table is referenced by foreign keys with destructive ON DELETE actions - CASCADE, SET NULL or SET DEFAULT. The pragma cannot be changed inside a transaction, so previously dropping the old table as part of the transform could fire those actions and silently delete or modify referencing rows. See Foreign keys and transactions for details and workarounds. (#794)\nThe CLI and Python API documentation now cross-reference each other: CLI sections link to the equivalent Python API functionality and Python API sections link back to the corresponding CLI command. (#791)"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "951cc225bc24d8c6",
+      "title": "How UIs Degrade Over Time",
+      "titleZh": "UI 如何随时间退化",
+      "link": "https://grumpy.website/1723",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-12T19:51:16.000Z",
+      "category": "opinion",
+      "keywords": [
+        "UI",
+        "design",
+        "degradation"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "现代操作系统（如 Windows 和 macOS）的系统 UI 正在经历清晰度的退化。过去系统 UI 在清晰度上不断进步，但如今却普遍出现退步现象，这种趋势令人费解。",
+      "summaryEn": "System UIs in modern operating systems like Windows and macOS are experiencing a degradation in clarity. While system UI chrome once improved in clarity everywhere, it is now degrading everywhere, a trend that is rather inexplicable.",
+      "reason": "从批判性视角审视现代操作系统 UI 设计的退步现象，引发对界面设计趋势的反思。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "nikitonsky:",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "How UI degrades over time."
+          },
+          {
+            "type": "p",
+            "text": "Top (Windows 95): great contrast, obvious shapes. Instantly readable."
+          },
+          {
+            "type": "p",
+            "text": "Middle (Windows 11): shapes are still self-explanatory, but contrast is gone."
+          },
+          {
+            "type": "p",
+            "text": "Bottom (Windows 11 Insiders): what am I even looking at? The only shape I can understand here is the Run button. Barely visible, though."
+          },
+          {
+            "type": "p",
+            "text": "Then, on the left, there’s another something that says Run and has an icon. What is it? A window title? Another button? Why does it have to say Run twice?"
+          },
+          {
+            "type": "p",
+            "text": "Shell:startup looks like a header but from what I understand is actually your previous command. Also, why is it aligned so poorly? Text to icon, bottom padding?"
+          },
+          {
+            "type": "p",
+            "text": "Finally, the text input. Do you see it? I don’t. But it’s there. The only hint is a barely visible white (???) cursor before the placeholder. How do we know it’s a placeholder? We don’t."
+          },
+          {
+            "type": "p",
+            "text": "The original Windows 95 interface is _functional_. It has a function and it executes it very well. It works for you, without trying to be clever or sophisticated. Also, it follows system conventions, which also helps you, the user."
+          },
+          {
+            "type": "p",
+            "text": "I’m not sure whom the bottom interface helps. It’s a puzzle, an art object, but it doesn’t work for you. It’s not here to make your life easier."
+          },
+          {
+            "type": "p",
+            "text": "Bottom image source: x.com/phantomofearth/status/1996660509027062148"
+          },
+          {
+            "type": "p",
+            "text": "#Windows #Affordance #Contrast #Run #Dialog #Microsoft"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "6896b94f06aaf182",
+      "title": "Posterior variance",
+      "titleZh": "后验方差",
+      "link": "https://www.johndcook.com/blog/2026/07/12/posterior-variance/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-12T19:26:29.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Bayesian",
+        "posterior variance",
+        "statistics"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "额外数据并不总是能减少后验方差。通过对三个贝叶斯模型的后验均值和方差进行分析，揭示了后验均值是先验均值和数据均值的加权平均，但后验方差的减少并非绝对，取决于具体模型和数据情况。",
+      "summaryEn": "Additional data does not always reduce posterior variance. By analyzing the posterior means and variances of three Bayesian models, it is revealed that while the posterior mean is a weighted average of the prior mean and the data mean, the reduction in posterior variance is not absolute and depends on the specific model and data.",
+      "reason": "深入理解贝叶斯统计中后验方差的变化规律，打破“数据越多方差越小”的直觉误区。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A few days ago I wrote a post entitled Does additional data always reduce posterior variance?. In a nutshell, the answer is no, not always."
+          },
+          {
+            "type": "p",
+            "text": "That led the previous post which looked at posterior means for three Bayesian models, showing how the posterior mean is a weighted average of the prior mean and the mean of the new data. The weights are precisions, which means something different for each model."
+          },
+          {
+            "type": "p",
+            "text": "For the beta-binomial model, variance may increase when seeing unexpected data (details here), but precision always increases."
+          },
+          {
+            "type": "p",
+            "text": "For the normal-normal model precision is the reciprocal of variance. Every new data point makes precision go up and posterior variance go down."
+          },
+          {
+            "type": "p",
+            "text": "The Poisson-gamma model may be the most interesting. As stated in the previous post, if data has a Poisson distribution with parameter λ, and λ has a gamma(α0, β0) prior distribution, then the posterior distribution on λ after observing k events over time t has a gamma(α0 + k, β0 + t) posterior distribution. Therefore the posterior variance is"
+          },
+          {
+            "type": "p",
+            "text": "(α0 + k) / (β0 + t)²."
+          },
+          {
+            "type": "p",
+            "text": "Note the posterior variance is an increasing function of k and a decreasing function of t. This means that the posterior variance increases every time an event is observed, and it decreases quadratically between observations."
+          },
+          {
+            "type": "p",
+            "text": "Here’s an illustration. I simulated data from a Poisson process with λ and used a gamma(1, 1) prior on λ. Here’s a plot of the posterior variance."
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
