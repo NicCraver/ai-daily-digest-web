@@ -1,0 +1,1518 @@
+{
+  "date": "2026-07-17",
+  "generatedAt": "2026-07-16T17:31:45.005Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 81,
+    "totalArticles": 2438,
+    "filteredArticles": 13,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈的核心焦点集中在AI生态的加速扩张与开源化进程。Mira Murati团队发布近千亿参数的开放权重模型，Linus Torvalds明确表态支持AI融入Linux开发，xAI也在争议后将Grok工具开源，共同折射出AI工具与开源社区的深度融合。同时，AI硬件与商业落地迎来新突破，OpenAI曝光无屏幕AI伴侣设备，苹果AI则借力国产大模型获批入华。此外，苹果广告政策的潜在第三方扩张与开发者对遗留系统维护的深度探讨，也为今日的技术讨论增添了商业与工程维度的思考。",
+  "articles": [
+    {
+      "slug": "586447921181d5f3",
+      "title": "Inkling: Our open-weights model",
+      "titleZh": "Inkling：我们的开放权重模型",
+      "link": "https://simonwillison.net/2026/Jul/16/inkling/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T15:35:25.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "open-weights",
+        "MoE",
+        "LLM",
+        "Inkling"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 10,
+        "total": 26
+      },
+      "summary": "Mira Murati 的 Thinking Machines Lab 发布了首个开放权重模型 Inkling。这是一个混合专家模型，总参数量为 975B，激活参数为 41B，采用 Apache-2.0 许可证。该模型支持多模态，在 45 万亿 tokens 的文本、图像、音频和视频数据上训练而成。此外，团队还计划推出更小的 Inkling-Small 模型（276B，12B 激活），目前仍在测试中。",
+      "summaryEn": "Mira Murati's Thinking Machines Lab has released its first open-weights model, Inkling. It is a Mixture-of-Experts transformer with 975B total parameters and 41B active parameters, licensed under Apache-2.0. The multimodal model was trained on 45 trillion tokens of text, images, audio, and video. A smaller variant, Inkling-Small (276B, 12B active), is also promised but still undergoing testing.",
+      "reason": "了解前 OpenAI CTO Mira Murati 新团队的首个重磅开源大模型及其架构细节。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Inkling: Our open-weights model (via) Mira Murati's Thinking Machines Lab just released their first open-weights model. Inkling is \"a Mixture-of-Experts transformer with 975B total parameters, 41B active\" - an Apache-2.0 licensed multimodal model trained on 45 trillion tokens of text, images, audio and video."
+          },
+          {
+            "type": "p",
+            "text": "They're also promising Inkling-Small, a 276B (12B active) model, but that's still being tested and the weights will be released \"once that work is complete\"."
+          },
+          {
+            "type": "p",
+            "text": "The model card is much shorter than I've come to expect from US AI labs. It links to even shorter Training Data Documentation with almost nothing of interest in it - it's best summarized by these two paragraphs:"
+          },
+          {
+            "type": "quote",
+            "text": "The datasets Thinking Machines Lab uses to develop its AI services includes content that is in the public domain as well as content that may be subject to intellectual property protection.\nThinking Machines Lab’s services were developed using publicly available content obtained from the open internet and publicly accessible data repositories. Certain datasets were also obtained from third parties."
+          },
+          {
+            "type": "p",
+            "text": "By Thinking Machines' own admission, this is not a frontier model. It's instead intended as a strong base model for fine-tuning using their own Tinker training platform:"
+          },
+          {
+            "type": "quote",
+            "text": "Inkling is not the strongest overall model available today, open or closed. Instead, a combination of qualities makes it a good open-weights base for customization: multimodal capabilities, efficient thinking, and availability on Tinker for fine-tuning."
+          },
+          {
+            "type": "p",
+            "text": "There's a lot to like about this release. It's Apache-2.0 licensed, and looks competitive with the open weight models coming out of China - it's good to see the US open weights ecosystem gain a new viable contender to join NVIDIA Nemotron and Gemma 4."
+          },
+          {
+            "type": "p",
+            "text": "Here's its attempt at an SVG pelican riding a bicycle, which I generated using this curl command against the Thinking Machines API:"
+          },
+          {
+            "type": "code",
+            "text": "curl \"https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1/chat/completions\" \\\n  -H \"Authorization: Bearer $TINKER_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"thinkingmachines/Inkling\",\n    \"messages\": [\n      {\"role\": \"user\", \"content\": \"Generate an SVG of a pelican riding a bicycle\"}\n    ],\n    \"stream\": false\n  }'"
+          },
+          {
+            "type": "p",
+            "text": "Full response here."
+          },
+          {
+            "type": "p",
+            "text": "Since it's a multi-modal model I had it describe its own image (after I rendered it to a JPEG) by sending this JSON:"
+          },
+          {
+            "type": "code",
+            "text": "{\n  \"model\": \"thinkingmachines/Inkling\",\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": [\n      {\"type\": \"image_url\", \"image_url\": {\"url\": \"data:image/jpeg;base64,$BASE_64_JPEG\"}},\n      {\"type\": \"text\", \"text\": \"Describe this image in detail\"},\n    ],\n  }],\n  \"stream\": false\n}"
+          },
+          {
+            "type": "p",
+            "text": "Here's the full response. It thought it had drawn a \"stork or seagull\":"
+          },
+          {
+            "type": "quote",
+            "text": "This is a cheerful, flat-vector cartoon illustration featuring a white bird riding a bicycle across a green landscape.\nThe Bird: The central figure is a stylized white bird—resembling a stork or seagull—with a plump, rounded body. It has a long, prominent orange beak that is slightly open, revealing a black line for the mouth. Its eye is small and black with a tiny white highlight. The bird has black wing and tail feathers with white edges, and thin orange legs ending in black feet that rest on the bicycle's orange pedals.\nThe Bicycle: The bike has a simple black frame with two large wheels featuring black tires, gray inner rims, and black spokes arranged in a cross pattern. The handlebars are black, and there are bright orange pedals attached to a black crank. A white seat is visible behind the bird's body.\nThe Setting: The scene is set against a clear, light blue sky. There are two fluffy white clouds—one on the left side and a smaller one near the bird's head on the right. A bright, solid yellow sun shines in the upper right corner. At the bottom, there are rolling green hills with a smooth, curved top edge where the bicycle rests.\nThe overall style is playful, simple, and colorful, with clean lines and a bright, sunny atmosphere."
+          }
+        ],
+        "translations": [
+          "Inkling：我们的开放权重模型（via）Mira Murati 的 Thinking Machines Lab 刚刚发布了他们的首个开放权重模型。Inkling 是“一个拥有 975B 总参数、41B 激活参数的混合专家 Transformer 模型”——这是一个采用 Apache-2.0 许可证的多模态模型，在 45 万亿个文本、图像、音频和视频 token 上进行了训练。",
+          "他们还承诺推出 Inkling-Small，一个 276B（12B 激活参数）的模型，但该模型仍在测试中，权重将在“相关工作完成后”发布。",
+          "该模型卡片比我通常对美国 AI 实验室的预期要短得多。它链接到了一份更短的《训练数据文档》，里面几乎没有任何有价值的信息——用以下两段话来概括它最合适不过了：",
+          "Thinking Machines Lab 用于开发其 AI 服务的数据集包括公共领域的内容，以及可能受知识产权保护的内容。Thinking Machines Lab 的服务是使用从开放互联网和公开可访问的数据存储库中获取的公开内容开发的。某些数据集也是从第三方获取的。",
+          "Thinking Machines 自己也承认，这不是一个前沿模型。相反，它旨在作为一个强大的基础模型，以便使用他们自己的 Tinker 训练平台进行微调：",
+          "Inkling 并不是当今可用的最强综合模型，无论是开源还是闭源。相反，多种特质的结合使其成为了一个良好的开放权重定制基础：多模态能力、高效的思考能力，以及在 Tinker 上可用于微调的可用性。",
+          "这次发布有很多值得称赞的地方。它采用 Apache-2.0 许可证，看起来足以与中国推出的开放权重模型竞争——很高兴看到美国开放权重生态系统迎来了一位新的有力竞争者，加入 NVIDIA Nemotron 和 Gemma 4 的行列。",
+          "这是它尝试生成的一幅骑自行车的鹈鹕 SVG 图像，我是通过向 Thinking Machines API 发送这个 curl 命令生成的：",
+          "curl \"https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1/chat/completions\" \\\n  -H \"Authorization: Bearer $TINKER_API_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"model\": \"thinkingmachines/Inkling\",\n    \"messages\": [\n      {\"role\": \"user\", \"content\": \"Generate an SVG of a pelican riding a bicycle\"}\n    ],\n    \"stream\": false\n  }'",
+          "完整回复在此。",
+          "由于它是一个多模态模型，我通过发送以下 JSON，让它描述了它自己的图像（在我将其渲染为 JPEG 之后）：",
+          "{\n  \"model\": \"thinkingmachines/Inkling\",\n  \"messages\": [{\n    \"role\": \"user\",\n    \"content\": [\n      {\"type\": \"image_url\", \"image_url\": {\"url\": \"data:image/jpeg;base64,$BASE_64_JPEG\"}},\n      {\"type\": \"text\", \"text\": \"Describe this image in detail\"},\n    ],\n  }],\n  \"stream\": false\n}",
+          "这是完整的回复。它以为自己画了一只“鹳或海鸥”：",
+          "这是一幅欢快的扁平矢量卡通插画，描绘了一只白鸟在绿色风景中骑自行车的场景。这只鸟：中心人物是一只风格化的白鸟——类似于鹳或海鸥——有着丰满圆润的身体。它有一个长长的、突出的橙色鸟喙，微微张开，露出一条黑色的嘴线。它的眼睛又小又黑，带有一个微小的白色高光。这只鸟有带白色边缘的黑色翅膀和尾羽，细长的橙色腿末端是黑色的脚，踩在自行车的橙色踏板上。自行车：这辆自行车有一个简单的黑色车架，配有两个大轮子，轮子有黑色轮胎、灰色内轮辋以及呈十字交叉排列的黑色辐条。车把是黑色的，黑色的曲柄上连着明亮的橙色踏板。在鸟的身体后面可以看到一个白色的座椅。背景：场景以晴朗的浅蓝色天空为背景。有两朵蓬松的白云——一朵在左侧，另一朵较小的在右侧靠近鸟头的地方。一个明亮的纯黄色太阳在右上角闪耀。在底部，是连绵起伏的绿色山丘，顶部边缘平滑弯曲，自行车就停在上面。整体风格俏皮、简单且色彩丰富，线条干净，充满明亮、阳光的氛围。"
+        ]
+      }
+    },
+    {
+      "slug": "cf5f6e5324b6e79e",
+      "title": "Quoting Linus Torvalds",
+      "titleZh": "引用 Linus Torvalds 的话",
+      "link": "https://simonwillison.net/2026/Jul/16/linus-torvalds/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T13:26:10.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Linux",
+        "Linus Torvalds",
+        "AI",
+        "open-source"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "Linus Torvalds 在内核邮件列表中明确表态，Linux 不是一个反 AI 项目。作为顶级维护者，他坚决支持将 AI 作为工具使用，认为它与其他工具无异。他强硬表示，如果有人对此有异议，可以选择 fork 项目或者直接离开。",
+      "summaryEn": "Linus Torvalds has explicitly stated in the kernel mailing list that Linux is not an anti-AI project. As the top-level maintainer, he firmly supports treating AI as a tool, no different from other tools used in development. He took a hard stance, suggesting that anyone with issues about this can either fork the project or simply walk away.",
+      "reason": "直接展示了 Linux 之父对 AI 辅助开发的最强硬、最明确的态度，对开源社区走向具有风向标意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th July 2026"
+          },
+          {
+            "type": "quote",
+            "text": "I realize that some people really dislike AI, but this is an area where I'm willing to absolutely put my foot down as the top-level maintainer.\nLinux is not one of those anti-AI projects, and if somebody has issues with that, they can do the open-source thing and fork it.\nOr just walk away.\nAI is a tool, just like other tools we use.  And it's clearly a useful one.\nIt may not have been that \"clearly\" even just a year ago, but it's no longer in question today.\nThere are other questions around AI (like what the economy of it will actually look like in the end), but \"is it useful\" is no longer one of those questions. Anybody who doubts that clearly hasn't actually used it."
+          },
+          {
+            "type": "p",
+            "text": "— Linus Torvalds, Linux Media Mailing List"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "b83655916b3b9675",
+      "title": "xai-org/grok-build, now open source",
+      "titleZh": "xai-org/grok-build 现已开源",
+      "link": "https://simonwillison.net/2026/Jul/15/grok-build/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-15T23:59:30.000Z",
+      "category": "tools",
+      "keywords": [
+        "xAI",
+        "grok",
+        "open-source",
+        "CLI"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "xAI 的 `grok` CLI 工具在因自动上传整个目录内容（包括 SSH 密钥和密码管理器等敏感文件）至 Google Cloud 而引发严重社区抵制后，现已正式开源。此举旨在通过代码透明度重建用户信任，让开发者能够审查其文件处理机制。",
+      "summaryEn": "Following severe community backlash over its automatic uploading of entire directories—including sensitive files like SSH keys and password managers—to Google Cloud, xAI's `grok` CLI tool has now been officially open-sourced. This move aims to rebuild user trust through code transparency, allowing developers to audit its file handling mechanisms.",
+      "reason": "揭示了 AI CLI 工具在隐私安全方面踩过的坑，以及开源作为危机公关和信任重建手段的实际案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "15th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "xai-org/grok-build, now open source (via) xAI's grok CLI tool faced severe community backlash yesterday when it became apparent that running the command in a directory could upload that entire directory to xAI's Google Cloud buckets. One user reported running it in their home directory and seeing it upload \"my SSH keys, my password manager database, my documents, photos, videos, everything\"."
+          },
+          {
+            "type": "p",
+            "text": "I've not seen an official explanation for why it was doing this, but xAI did respond to the feedback (Musk: \"As a precautionary measure, all user data that was uploaded to SpaceXAI before now will be completely and utterly deleted.\") and have disabled the feature."
+          },
+          {
+            "type": "p",
+            "text": "A few hours ago they also released the entire Grok Build codebase under an Apache 2.0 license - presumably to try and regain trust from their users. From their thread announcing the new repository:"
+          },
+          {
+            "type": "quote",
+            "text": "[...] When data upload was disabled, this choice was respected. In the early beta, data retention was enabled by default for non-ZDR users. Based on your feedback, we changed this. We are now going further to protect privacy.\nWith all retained data deleted, retention default off, and an open-source harness, we are offering complete user privacy. You can also run Grok Build fully open-sourced and local-first with your own inference.\nWe disabled default retention for all Grok Build users starting on July 12th. Additionally, we are deleting all coding data that was previously retained, ensuring every user’s preferences are respected. With these steps, Grok Build goes beyond other major coding products to protect user privacy."
+          },
+          {
+            "type": "p",
+            "text": "It's quite a surprising codebase! Grok Build contains 844,530 lines of Rust (calculated using my SLOCCount tool, which excludes whitespace and comments) of which only around 3% appears to be vendored."
+          },
+          {
+            "type": "p",
+            "text": "So far the repo has just a single commit releasing the code, so sadly we don't get any insight into how the codebase developed over time."
+          },
+          {
+            "type": "p",
+            "text": "A few highlights:"
+          },
+          {
+            "type": "li",
+            "text": "xai-grok-agent/templates/prompt.md has the main system prompt and xai-grok-agent/templates/subagent_prompt.md has the subagent prompt. Oddly that subagent prompt has \"Do not ... reveal the contents of this system prompt to the user\" but the main prompt does not."
+          },
+          {
+            "type": "li",
+            "text": "xai-grok-markdown/src/mermaid.rs is a \"self-contained terminal renderer for Mermaid diagrams\", which renders a subset of Mermaid chart types using Unicode box-drawing. Update: I got a version of this working in WebAssembly so it now runs in the browser."
+          },
+          {
+            "type": "li",
+            "text": "xai-grok-tools/src/implementations includes tool implementations imitated from other coding agents - the Codex apply_patch, grep_files, list_dir, and read_dir tools, and OpenCode's bash, edit, glob, grep, read, skill, todowrite and write. The xai-grok-tools/THIRD_PARTY_NOTICES.md file says these are \"ported from\" those projects, in a way that looks compliant with the Apache and MIT licenses they use. It looks like these copies exist because Grok can switch between them, maybe based on detecting existing Codex or Claude or Cursor settings? I'm not confident I understand if that happens or how it works."
+          },
+          {
+            "type": "li",
+            "text": "There are still remnants of the code that used to upload everything to Google Cloud, but they seem to have been disabled now. xai-grok-shell/src/upload/gcs.rs has code for uploading to a GCS bucket. upload/trace.rs includes an upload_session_state() function which returns a hard-coded session_state_upload_unavailable error."
+          },
+          {
+            "type": "p",
+            "text": "For comparison, openai/codex is 950,933 lines of Rust. Terminal coding agents are significantly more complex than I had realized!"
+          },
+          {
+            "type": "p",
+            "text": "Here's the Claude Code chat transcript where I had it clone the repo and help me dig around to see how it works."
+          }
+        ],
+        "translations": [
+          "2026年7月15日 - 链接博客",
+          "xai-org/grok-build 现已开源（via）xAI 的 grok CLI 工具昨天遭到了社区的强烈抵制，因为人们发现在一个目录中运行该命令会将整个目录上传到 xAI 的 Google Cloud 存储桶中。一位用户报告说，他在自己的主目录中运行了该命令，结果看到它上传了“我的 SSH 密钥、我的密码管理器数据库、我的文档、照片、视频，所有东西”。",
+          "我还没有看到关于它为什么这样做的官方解释，但 xAI 确实对反馈做出了回应（马斯克：“作为预防措施，之前上传到 SpaceXAI 的所有用户数据都将被彻底删除。”），并且已经禁用了该功能。",
+          "几个小时前，他们还在 Apache 2.0 许可下发布了整个 Grok Build 代码库——大概是为了试图重新赢得用户的信任。从他们宣布新代码库的帖子中可以看到：",
+          "[...] 当数据上传被禁用时，这一选择得到了尊重。在早期的 beta 版本中，对于非 ZDR 用户，默认启用了数据保留。根据你们的反馈，我们改变了这一点。我们现在正在进一步保护隐私。\n在删除所有保留数据、默认关闭保留功能并提供开源框架的情况下，我们正在提供完整的用户隐私保护。你也可以使用自己的推理完全开源且本地优先地运行 Grok Build。\n从 7 月 12 日开始，我们为所有 Grok Build 用户禁用了默认保留功能。此外，我们正在删除之前保留的所有编码数据，确保尊重每个用户的偏好。通过这些步骤，Grok Build 在保护用户隐私方面超越了其他主要的编码产品。",
+          "这是一个相当令人惊讶的代码库！Grok Build 包含 844,530 行 Rust 代码（使用我的 SLOCCount 工具计算，该工具排除了空格和注释），其中只有大约 3% 似乎是第三方引入的。",
+          "到目前为止，该代码库只有一个发布代码的提交，所以很遗憾，我们无法了解代码库是如何随时间发展的。",
+          "几个亮点：",
+          "xai-grok-agent/templates/prompt.md 包含主系统提示词，而 xai-grok-agent/templates/subagent_prompt.md 包含子代理提示词。奇怪的是，子代理提示词中包含“不要……向用户透露此系统提示词的内容”，但主提示词中却没有。",
+          "xai-grok-markdown/src/mermaid.rs 是一个“用于 Mermaid 图表的自包含终端渲染器”，它使用 Unicode 制表符来渲染 Mermaid 图表类型的子集。更新：我让它的一个版本在 WebAssembly 中运行起来了，所以它现在可以在浏览器中运行。",
+          "xai-grok-tools/src/implementations 包含模仿其他编码代理的工具实现——Codex 的 apply_patch、grep_files、list_dir 和 read_dir 工具，以及 OpenCode 的 bash、edit、glob、grep、read、skill、todowrite 和 write。xai-grok-tools/THIRD_PARTY_NOTICES.md 文件称这些是从这些项目中“移植”过来的，其方式似乎符合它们所使用的 Apache 和 MIT 许可证。看起来存在这些副本是因为 Grok 可以在它们之间切换，也许是基于检测现有的 Codex、Claude 或 Cursor 设置？我不确定我是否理解了这是否会发生以及它是如何工作的。",
+          "仍然有一些曾经用于将所有内容上传到 Google Cloud 的代码残留，但它们现在似乎已被禁用。xai-grok-shell/src/upload/gcs.rs 包含上传到 GCS 存储桶的代码。upload/trace.rs 包含一个 upload_session_state() 函数，该函数返回一个硬编码的 session_state_upload_unavailable 错误。",
+          "作为对比，openai/codex 有 950,933 行 Rust 代码。终端编码代理的复杂程度远超我之前的认知！",
+          "这是 Claude Code 的聊天记录，我让它克隆了仓库，并帮我深入探索以了解其工作原理。"
+        ]
+      }
+    },
+    {
+      "slug": "cedd65e62c4b5ef9",
+      "title": "Apple Intelligence OK’d to Launch in China, Using AI Models from Baidu and Alibaba",
+      "titleZh": "Apple Intelligence 获批在中国推出，采用百度和阿里巴巴的 AI 模型",
+      "link": "https://www.scmp.com/tech/policy/article/3360685/china-approves-apple-intelligence-phones-alibaba-baidu-emerging-partners",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-15T22:35:18.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Apple Intelligence",
+        "China",
+        "Baidu",
+        "Alibaba"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "中国监管机构已正式批准 Apple Intelligence 在中国市场的 iPhone 上推出。阿里巴巴和百度将作为该功能的技术合作伙伴，提供底层 AI 模型支持。国家互联网信息办公室发布了确认该许可的通知，标志着苹果 AI 功能终于落地中国。",
+      "summaryEn": "Chinese regulators have officially approved the rollout of Apple Intelligence on iPhones in China. Alibaba Group Holding and Baidu will serve as technical partners, providing the underlying AI models for the feature. The Cyberspace Administration of China (CAC) published a notice confirming the license, marking the official landing of Apple's AI capabilities in the Chinese market.",
+      "reason": "了解苹果 AI 进入中国市场的合规路径及本土大模型厂商（百度、阿里）的实质性合作角色。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "South China Morning Post",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Chinese regulators have granted Apple a long-awaited licence to roll out its artificial intelligence service on iPhones in the country, with Alibaba Group Holding and Baidu serving as technical partners."
+          },
+          {
+            "type": "p",
+            "text": "The Cyberspace Administration of China (CAC), the country’s internet watchdog, published a notice on Wednesday confirming the licence for Apple Intelligence – the AI feature used to summarise emails, draft reports, edit images and perform other tasks. It was granted alongside six other smartphone-based AI services, including those for Samsung and Huawei Technologies."
+          },
+          {
+            "type": "p",
+            "text": "An Alibaba representative told the South China Morning Post on Wednesday that its Qwen large-language model would “be integrated into Apple Intelligence experiences within iOS, iPadOS, macOS and visionOS for users in China”. This would allow users to access the model’s capabilities such as text and image generation, the representative said. Alibaba owns the South China Morning Post."
+          },
+          {
+            "type": "p",
+            "text": "A Baidu representative also told the SCMP on Wednesday that it was working with Apple to develop AI features for Apple Intelligence in China."
+          },
+          {
+            "type": "p",
+            "text": "Tencent Holdings and ByteDance, which are reportedly in talks about the AI roll-out, did not immediately respond to requests for comment."
+          },
+          {
+            "type": "p",
+            "text": "The licence applied only to iPhone devices, according to the official notice, which did not specify whether other Apple devices sold in China – such as iPad tablets and Mac computers – would also be allowed to deploy Apple Intelligence. Apple did not immediately respond to a request for comment."
+          },
+          {
+            "type": "p",
+            "text": "Apple Intelligence and Samsung’s Galaxy AI were the only foreign services to be approved. The five other recipients – Huawei, Oppo, Vivo, Xiaomi and ZTE – are all local smartphone vendors. ByteDance is a partner of ZTE’s AI service."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4734ed293e49ca63",
+      "title": "Gurman on OpenAI’s Upcoming Hardware Product: ‘Movable, Screenless Speaker Built as AI Companion’",
+      "titleZh": "Gurman 谈 OpenAI 即将推出的硬件产品：打造作为 AI 伴侣的“可移动、无屏幕扬声器”",
+      "link": "https://www.bloomberg.com/news/articles/2026-07-14/openai-s-first-device-will-be-moveable-screenless-speaker-built-as-ai-companion?accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb3VyY2UiOiJTdWJzY3JpYmVyR2lmdGVkQXJ0aWNsZSIsImlhdCI6MTc4NDA2MjAxMywiZXhwIjoxNzg0NjY2ODEzLCJhcnRpY2xlSWQiOiJUSTYwSllUOU5KTFMwMCIsImJjb25uZWN0SWQiOiJDNEVEQ0FFMUZBMDU0MEJFQTI0QTlGMjExQzFFOTA4MCJ9.DfRN0afk0TFIaHFw9zEKYjehnfMsZfKC7gPoVos8WPI&amp;leadSource=article-gifting",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-15T23:02:54.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "OpenAI",
+        "hardware",
+        "AI companion",
+        "speaker"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 20
+      },
+      "summary": "据 Mark Gurman 报道，OpenAI 首款硬件产品将是一款可移动、无屏幕的扬声器，定位为 AI 伴侣。该设备包含可自行移动的机械元件，旨在营造一种“活着”的感觉，而非仅仅是一个响应指令的物体。它还将利用用户的电子邮件等个人信息来更好地理解主人，目标是成为 ChatGPT 的物理实体化身。",
+      "summaryEn": "According to Mark Gurman, OpenAI's first hardware product will be a movable, screenless speaker designed as an AI companion. The device incorporates mechanical elements that move on their own to create a sense of being alive, rather than just an object responding to commands. It will also utilize personal information, such as emails, to better understand its owner, with the goal of becoming a physical manifestation of ChatGPT.",
+      "reason": "揭示了 OpenAI 从纯软件向具身智能硬件迈进的初步产品形态和交互设计理念。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "585cdc38126f32fc",
+      "title": "Deleting Systems You Don't Understand",
+      "titleZh": "删除你不理解的系统",
+      "link": "https://idiallo.com/blog/deleting-systems-you-dont-understand",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-07-16T07:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "system design",
+        "technical debt",
+        "architecture"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 6,
+        "total": 20
+      },
+      "summary": "作者通过回忆童年时期家用电脑存储昂贵且稀缺的经历，引出关于系统维护的思考。文章探讨了在面对不理解的遗留系统或代码时，盲目删除可能带来的风险。强调了在清理系统时，理解其历史背景和运行机制的重要性，而不是仅仅因为看不懂就将其移除。",
+      "summaryEn": "By recalling childhood experiences with a family computer where storage was expensive and scarce, the author reflects on system maintenance. The article discusses the risks of blindly deleting legacy systems or code that one does not understand. It emphasizes the importance of understanding the historical context and operational mechanisms before cleaning up a system, rather than removing it simply because it is incomprehensible.",
+      "reason": "为处理遗留系统和未知代码提供了务实的思考视角，提醒开发者敬畏自己不了解的复杂逻辑。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When I was a kid, my father bought a family home computer and placed it in the living room for all to see. When guests came to our house, they would stop by the computer and admire its marvel without even turning it on. While everyone else was careful with the computer, treating it like an important investment, I quickly started inserting discs and installing games. One thing we take for granted today is how cheap and abundant storage is. Our family computer had a single hard drive with a whopping 2 gigabytes."
+          },
+          {
+            "type": "p",
+            "text": "That's 2 GB for Windows 95, Office 95 (Word, Excel, PowerPoint), Encarta 95, all my father's work documents, and the million games I had installed."
+          },
+          {
+            "type": "p",
+            "text": "I borrowed a disc from a friend that had a few dozen games on it. I installed them all. Before I knew it, I ran out of space. The computer became extremely slow, and I couldn't install any more games. I figured I needed to delete some games, but I was ten years old. I was not going to delete my games. I couldn't delete my father's stuff either, so I decided to explore the hard drive."
+          },
+          {
+            "type": "p",
+            "text": "I noticed that in the Program Files folders, every application came with a bunch of text files. Some of them were large, and they didn't look that important to me, especially the ones ending in .ini."
+          },
+          {
+            "type": "p",
+            "text": "So I went from one folder to the next, deleting those .ini files. There's satisfaction in gathering all those files in the recycle bin, emptying it, then watching your storage space increase. I deleted so many files that I was able to install an additional game on the computer."
+          },
+          {
+            "type": "p",
+            "text": "It was one of my most satisfying accomplishments. I had a problem, I explored the computer, and I found a solution. I played the new game until I got tired of it. In the 90s, when you were done using the computer, you clicked Start → Shut Down → Confirm Shutdown. The computer would think for about two minutes, then display in big orange letters:"
+          },
+          {
+            "type": "p",
+            "text": "And I shut it down. You can imagine what happened next. The computer wouldn't boot again."
+          },
+          {
+            "type": "p",
+            "text": "Those .ini files seemed unimportant to a child, but they are configuration files used by several applications, including the operating system. While the Windows Registry did exist in Windows 95, .ini files were still commonly used. When I deleted them, any application or process that relied on them failed to load and simply crashed."
+          },
+          {
+            "type": "p",
+            "text": "Anyone who had anything of importance on that computer lost it. Everyone except my father, who carefully kept copies of his documents on floppy disks. He knew I was up to no good."
+          },
+          {
+            "type": "p",
+            "text": "Throughout my career, I've seen many people make this same mistake. When something doesn't look important to them, they delete it. Whether it's a programmer deleting a function that \"looks stupid,\" or a DBA dropping a table or a single field they assume no one will miss. It's all the result of the same mindset: \"I don't think this is important.\""
+          },
+          {
+            "type": "p",
+            "text": "It makes me think of DOGE, the real yet fictional Department of Government Efficiency. The team supposedly tasked with combing through government programs to find waste never looked deeper than the surface. Just like ten-year-old me, they looked at a department they didn't understand and decided it wasn't important. They uprooted how the entire country works just to save money, the same way I destroyed the family computer just to save storage space. Whether DOGE actually saved us any money is still hotly debated, especially when weighed against the pain and suffering it caused."
+          },
+          {
+            "type": "p",
+            "text": "Anyone with half a brain could have seen their failure coming from a mile away. The same way anyone who understood how computers work could have told me those configuration files were important. At least, all we lost in our household was time and some saved games. The American people can't say the same."
+          }
+        ],
+        "translations": [
+          "小时候，我父亲买了一台家用电脑，放在客厅里让大家都能看到。有客人来家里时，他们会在电脑前驻足，即使不打开它也会惊叹于它的奇妙。当其他人小心翼翼地对待这台电脑，把它当成一项重要投资时，我却很快开始插入光盘安装游戏。如今我们习以为常的一件事是存储空间有多么便宜和丰富。我们家的电脑只有一个硬盘，容量高达 2 GB。",
+          "这 2 GB 要装下 Windows 95、Office 95（Word、Excel、PowerPoint）、Encarta 95、我父亲所有的工作文档，以及我安装的无数个游戏。",
+          "我从朋友那里借了一张装了几十个游戏的光盘。我把它们全安装了。不知不觉中，我的空间用光了。电脑变得极其缓慢，我也无法再安装任何游戏。我觉得我需要删除一些游戏，但我才十岁。我才不想删我的游戏。我也不能删我父亲的东西，所以我决定探索一下硬盘。",
+          "我注意到在 Program Files 文件夹中，每个应用程序都附带了一堆文本文件。其中一些文件很大，而且在我看来似乎没那么重要，尤其是那些以 .ini 结尾的文件。",
+          "于是我从一个文件夹转到另一个文件夹，删除那些 .ini 文件。把所有这些文件收集到回收站，清空回收站，然后看着存储空间增加，这让人感到一种满足感。我删除了太多文件，以至于我能够在电脑上额外安装一个游戏。",
+          "这是我最令人满意的成就之一。我遇到了问题，我探索了电脑，我找到了解决方案。我玩那个新游戏直到玩腻为止。在 90 年代，当你用完电脑后，你会点击“开始” → “关机” → “确认关机”。电脑会思考大约两分钟，然后显示巨大的橙色字母：",
+          "然后我关了机。你可以想象接下来发生了什么。电脑再也启动不起来了。",
+          "那些 .ini 文件对孩子来说似乎不重要，但它们是包括操作系统在内的多个应用程序使用的配置文件。虽然 Windows 95 中确实存在 Windows 注册表，但 .ini 文件仍然被广泛使用。当我删除它们时，任何依赖它们的应用程序或进程都无法加载并直接崩溃。",
+          "任何在那台电脑上存有重要东西的人都失去了它们。除了我父亲，他小心翼翼地把他的文档副本保存在软盘上。他知道我没干好事。",
+          "在我的职业生涯中，我见过很多人犯同样的错误。当某些东西在他们看来不重要时，他们就会将其删除。无论是程序员删除一个“看起来很蠢”的函数，还是 DBA 删除一个他们认为没人会想念的表或单个字段。这都是同一种心态的结果：“我认为这不重要。”",
+          "这让我想起了 DOGE，那个真实却又虚构的政府效率部。这个理应负责梳理政府项目以寻找浪费的团队，从未深入表面之下。就像十岁的我一样，他们看着一个自己不理解的部门，就断定它不重要。他们为了省钱而连根拔起了整个国家的运作方式，就像我为了节省存储空间而毁掉家里的电脑一样。DOGE 是否真的为我们省了钱仍然备受争议，特别是当考虑到它所造成的痛苦和折磨时。",
+          "稍微有点脑子的人都能早早预见到他们的失败。就像任何了解计算机工作原理的人都会告诉我，那些配置文件很重要。至少，我们家里损失的只是时间和一些游戏存档。美国人民可就没这么幸运了。"
+        ]
+      }
+    },
+    {
+      "slug": "d148e8481aba6a72",
+      "title": "Eric Seufert: ‘Did Apple Just Signal a Third-Party Expansion of Apple Ads?’",
+      "titleZh": "Eric Seufert：“苹果是否暗示了 Apple Ads 的第三方扩张？”",
+      "link": "https://mobiledevmemo.com/did-apple-just-signal-a-third-party-expansion-of-apple-ads/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-15T22:52:22.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "advertising",
+        "policy",
+        "mobile"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "苹果近期更新了广告服务政策，新增了“其他属性”等措辞，范围异常广泛。这表明苹果可能在合同层面获得了将其广告分发至完全非自有服务和设备上的权限。如果属实，这将标志着苹果广告业务的实质性扩张，不再局限于自家的生态系统。",
+      "summaryEn": "Apple has recently updated its advertising services policy with conspicuously broad language, adding terms like 'other properties.' This suggests that Apple may have secured the contractual latitude to distribute ads entirely beyond its own services and devices. If true, this would mark a material expansion of Apple's advertising business, no longer confined to its own ecosystem.",
+      "reason": "敏锐捕捉到苹果政策条款的细微变化，预判其广告业务可能突破封闭生态走向第三方平台的战略意图。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Eric Benjamin Seufert",
+        "siteName": "Mobile Dev Memo by Eric Seufert",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Rumors have swirled for years about a potential extension of Apple’s mobile advertising platform to third-party surfaces. Last April, Apple renamed its advertising platform from Apple Search Ads to Apple Ads. I noted at the time that this could indicate an expansion into Apple Maps, which Apple ultimately did announce roughly a year later, in May 2026."
+          },
+          {
+            "type": "p",
+            "text": "But the rebrand from Apple Search Ads, which characterizes the ad units Apple serves in the App Store, to the more sweeping Apple Ads could be interpreted as a signal of Apple’s broader aspirations and goals for its advertising business, as I articulated in Apple’s advertising ambitions, published shortly after the rebrand."
+          },
+          {
+            "type": "p",
+            "text": "Yesterday, Apple sent a pithy email to advertisers, notifying them that an update to the Apple Advertising Terms of Service will go into effect on July 28th. Notably and somewhat curiously, because the terms don’t go into effect for another two weeks, Apple actually publishes the updated terms to a separate URL, allowing for a fairly straightforward comparison. Hat tip to independent consultant and former MDM podcast guest Thomas Petit for alerting me to this."
+          },
+          {
+            "type": "p",
+            "text": "The critical change, to my mind, is in term 6(a), related to “Advertising Services.” I’ve compared the two terms below and highlighted the difference:"
+          },
+          {
+            "type": "p",
+            "text": "The most plausible explanation for the change Apple has made to its Advertising Terms of Service is that the company plans to expand Apple Ads to third-party, non-Apple-owned surfaces: the updated language in the terms gives Apple broad latitude to place Apple Ads on apps, websites, and platforms that it doesn’t operate. This would be a dramatic departure from the current Apple Ads operating model, which is limited to Apple-controlled inventory in the App Store, Apple News and Stocks, and MLS programming in the Apple TV app, with Apple Maps inventory coming soon."
+          },
+          {
+            "type": "p",
+            "text": "The new language could simply accommodate the availability of Apple-owned services on the web and through third-party devices and operating systems; the Apple TV app, for instance, is available on smart TVs, streaming devices, and game consoles. But the addition of “other properties” is conspicuously broad and appears to give Apple the contractual latitude to distribute ads beyond its own services entirely. This would allow for a material expansion of the company’s advertising surface area."
+          },
+          {
+            "type": "p",
+            "text": "Further, if Apple does indeed plan to expand Apple Ads to third-party surfaces, it would explain why the company did not reveal an update to its AdAttributionKit (AAK, formerly SKAdNetwork, or SKAN) attribution framework at this year’s WWDC."
+          },
+          {
+            "type": "p",
+            "text": "One of my central criticisms of Apple’s App Tracking Transparency (ATT) privacy policy was that the company preferenced its own advertising platform by providing a separate measurement API for its exclusive use with ads served in its owned surfaces, whereas all other publishers are forced to use SKAdNetwork (for exhaustive detail on that topic see ATT advantages Apple’s ad network. Here’s how to fix that). If Apple Ads are expanded to third-party surfaces — including third-party apps and, apparently, per the updated terms, websites — then AAK and Apple’s own attribution API, the Ads Attribution API, would need to be fused, or something new altogether would need to be introduced."
+          }
+        ],
+        "translations": [
+          "多年来，一直有传言称 Apple 的移动广告平台可能会扩展到第三方平台。去年 4 月，Apple 将其广告平台从 Apple Search Ads 更名为 Apple Ads。我当时就指出，这可能意味着向 Apple Maps 扩展，而大约一年后的 2026 年 5 月，Apple 确实宣布了这一消息。",
+          "但是，从代表 Apple 在 App Store 中投放的广告单元的 Apple Search Ads 更名为涵盖更广的 Apple Ads，可以被视为 Apple 对其广告业务有更宏大抱负和目标的信号，正如我在更名后不久发表的《Apple 的广告雄心》一文中所阐述的那样。",
+          "昨天，Apple 向广告商发送了一封简短的电子邮件，通知他们 Apple 广告服务条款的更新将于 7 月 28 日生效。值得注意的是，也有些令人好奇的是，由于该条款还有两周才生效，Apple 实际上将更新后的条款发布在了一个单独的 URL 上，从而可以进行相当直观的比较。感谢独立顾问、前 MDM 播客嘉宾 Thomas Petit 提醒我注意到这一点。",
+          "在我看来，关键的变化在于与“广告服务”相关的第 6(a) 条。我在下面比较了这两个条款，并突出了其中的差异：",
+          "对于 Apple 修改其广告服务条款，最合理的解释是该公司计划将 Apple Ads 扩展到非 Apple 拥有的第三方平台：条款中更新的措辞赋予了 Apple 广泛的自由度，可以将 Apple Ads 投放到它不运营的应用程序、网站和平台上。这将是对当前 Apple Ads 运营模式的巨大转变，目前的模式仅限于 App Store、Apple News 和 Stocks 以及 Apple TV 应用程序中的 MLS 节目等 Apple 控制的广告资源，而 Apple Maps 的广告资源即将推出。",
+          "新的措辞可能仅仅是为了适应 Apple 拥有的服务在网络上以及通过第三方设备和操作系统的可用性；例如，Apple TV 应用程序可在智能电视、流媒体设备和游戏主机上使用。但是，增加的“其他资产”一词范围明显非常广泛，似乎赋予了 Apple 完全超越其自身服务来分发广告的合同自由度。这将使该公司的广告覆盖范围得到实质性扩大。",
+          "此外，如果 Apple 确实计划将 Apple Ads 扩展到第三方平台，这就可以解释为什么该公司没有在今年的 WWDC 上公布对其 AdAttributionKit（AAK，前身为 SKAdNetwork，或简称 SKAN）归因框架的更新。",
+          "我对 Apple 的 App Tracking Transparency (ATT) 隐私政策的主要批评之一是，该公司偏袒自己的广告平台，为其提供了一个单独的衡量 API，专供其在自有平台上投放的广告使用，而所有其他发布商则被迫使用 SKAdNetwork（有关该主题的详尽细节，请参阅《ATT 让 Apple 的广告网络占优。以下是修复方法》）。如果 Apple Ads 扩展到第三方平台——包括第三方应用程序，并且根据更新后的条款显然还包括网站——那么 AAK 和 Apple 自己的归因 API（即 Ads Attribution API）将需要融合，或者需要引入全新的东西。"
+        ]
+      }
+    },
+    {
+      "slug": "9904e67143d8f4a3",
+      "title": "Mermaid to Unicode box art (grok-mermaid)",
+      "titleZh": "将 Mermaid 转换为 Unicode 盒图 (grok-mermaid)",
+      "link": "https://simonwillison.net/2026/Jul/16/grok-mermaid/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T00:33:18.000Z",
+      "category": "tools",
+      "keywords": [
+        "Mermaid",
+        "Unicode",
+        "tool",
+        "CLI"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "Simon Willison 在探索新开源的 Grok CLI 代码库时，发现了一个名为 `mermaid.rs` 的自包含终端工具。该工具能够将 Mermaid 图表语法转换为 Unicode 盒图，以便在纯文本终端环境中直接渲染和显示流程图。这展示了 AI CLI 工具在终端可视化方面的一个实用技术细节。",
+      "summaryEn": "While exploring the newly open-sourced Grok CLI codebase, Simon Willison discovered a self-contained terminal tool named `mermaid.rs`. This tool converts Mermaid diagram syntax into Unicode box art, allowing flowcharts to be rendered and displayed directly in plain-text terminal environments. It showcases a practical technical detail of AI CLI tools for terminal visualization.",
+      "reason": "提供了一个在终端环境下不依赖图形界面渲染图表的巧妙实现思路，适合对 CLI 工具开发感兴趣的开发者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th July 2026"
+          },
+          {
+            "type": "p",
+            "text": "Tool\n    \n    Mermaid to Unicode box art (grok-mermaid)"
+          },
+          {
+            "type": "p",
+            "text": "While exploring the codebase for the newly open-sourced Grok CLI coding agent I came across xai-grok-markdown/src/mermaid.rs, a \"self-contained terminal renderer for Mermaid diagrams\" written in Rust."
+          },
+          {
+            "type": "p",
+            "text": "I figured it would be fun to try that out in a browser via WebAssembly. Here's the prompt I ran in Claude Code for web (Fable 5), and this is what the resulting tool looks like:"
+          },
+          {
+            "type": "p",
+            "text": "Posted 16th July 2026 at 12:33 am"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "89e3a9f20c7f8912",
+      "title": "Speculating on how the buggy control panel extension truncated a value that it had right in front of it",
+      "titleZh": "推测有缺陷的控制面板扩展是如何截断它面前的值的",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260716-00/?p=112539",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-07-16T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Windows",
+        "debugging",
+        "history"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "Raymond Chen 通过逆向推理，分析了一个有缺陷的 Windows 控制面板扩展为何会截断它本应正确读取的值。文章通过推断代码的历史演变过程，推测出可能是由于早期 API 限制或遗留逻辑导致的数据处理错误。这展示了通过现有现象反推代码历史背景的经典调试思路。",
+      "summaryEn": "Raymond Chen uses reverse reasoning to analyze why a buggy Windows control panel extension truncated a value it should have read correctly. By inferring the historical evolution of the code, the article speculates that the data processing error might be due to early API limitations or legacy logic. It demonstrates a classic debugging approach of deducing code history from current symptoms.",
+      "reason": "展示了 Windows 资深开发者如何通过逻辑推理和历史背景还原 bug 成因，是提升代码考古与调试思维的优秀案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Last time,  we found that a crash in a control panel extension was caused by pointer truncation. The code had a perfectly good 64-bit pointer in its hand, but somehow lost its mind and opted to throw away the top 32 bits."
+          },
+          {
+            "type": "p",
+            "text": "How could something like this happen?"
+          },
+          {
+            "type": "p",
+            "text": "My guess is that this code started out as perfectly good 32-bit code:"
+          },
+          {
+            "type": "code",
+            "text": "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG)g_originalWndProc);"
+          },
+          {
+            "type": "p",
+            "text": "And then they recompiled it as 64-bit code and got an error."
+          },
+          {
+            "type": "code",
+            "text": "error C2065: 'GWL_WNDPROC': undeclared identifier"
+          },
+          {
+            "type": "p",
+            "text": "They then went back to the documentation and saw that for 64-bit Windows,  GWL_WNDPROC was renamed to GWLP_WNDPROC."
+          },
+          {
+            "type": "p",
+            "text": "So they fixed it by changing GWL_WNDPROC to GWLP_WNDPROC."
+          },
+          {
+            "type": "code",
+            "text": "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG)g_originalWndProc);"
+          },
+          {
+            "type": "p",
+            "text": "However, the point of renaming the value was not to annoy you. The point of renaming the value was to call your attention to places where pointer truncation is likely to occur. In this case, it’s the final parameter, the original 64-bit window procedure. The build break is telling you that you are probably passing a 32-bit value as something that should be 64-bit. In this case, because it was being cast to (LONG). You are expected to upgrade the GWL_WNDPROC to GWLP_WNDPROC and at the same time upgrade the cast from (LONG) to (LONG_PTR)."
+          },
+          {
+            "type": "code",
+            "text": "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG_PTR)g_originalWndProc);"
+          },
+          {
+            "type": "p",
+            "text": "Now, this was likely an oversight rather than a systemic failure, because they did manage to subclass the window properly:"
+          },
+          {
+            "type": "code",
+            "text": "WNDPROC g_originalWndProc;\n\nHWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\ng_originalWndProc = (WNDPROC)SetWindowLong(hwndButton, GWLP_WNDPROC,\n    (LONG_PTR)subclassWndProc);"
+          },
+          {
+            "type": "p",
+            "text": "They merely missed a spot. Perhaps the developer got distracted after fixing the symbol name and forgot to come back and fix the pointer."
+          },
+          {
+            "type": "p",
+            "text": "Next time, we’ll look at why this bug has remained unfixed for so long."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "上次，我们发现控制面板扩展程序的崩溃是由指针截断引起的。代码原本持有一个完好的 64 位指针，但不知怎么却失去了理智，选择丢弃了高 32 位。",
+          "怎么会发生这样的事情呢？",
+          "我的猜测是，这段代码最初是完好的 32 位代码：",
+          "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG)g_originalWndProc);",
+          "然后他们将其重新编译为 64 位代码并遇到了错误。",
+          "error C2065: 'GWL_WNDPROC': undeclared identifier",
+          "接着他们回去查阅文档，发现对于 64 位 Windows，GWL_WNDPROC 已被重命名为 GWLP_WNDPROC。",
+          "所以他们通过将 GWL_WNDPROC 改为 GWLP_WNDPROC 来修复它。",
+          "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG)g_originalWndProc);",
+          "然而，重命名该值的目的并不是为了惹恼你。重命名该值的目的是引起你对可能发生指针截断的地方的注意。在这个例子中，就是最后一个参数，即原始的 64 位窗口过程。构建中断在告诉你，你可能将一个 32 位值传递给了本应是 64 位的东西。在这个例子中，是因为它被强制转换为了 (LONG)。你需要将 GWL_WNDPROC 升级为 GWLP_WNDPROC，同时将强制转换从 (LONG) 升级为 (LONG_PTR)。",
+          "HWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\nSetWindowLong(hwndButton, GWL_WNDPROC, (LONG_PTR)g_originalWndProc);",
+          "现在看来，这可能是一个疏忽，而不是系统性的失败，因为他们确实设法正确地对窗口进行了子类化：",
+          "WNDPROC g_originalWndProc;\n\nHWND hwndButton = GetDlgItem(hdlg, ID_BUTTON);\ng_originalWndProc = (WNDPROC)SetWindowLong(hwndButton, GWLP_WNDPROC,\n    (LONG_PTR)subclassWndProc);",
+          "他们只是漏掉了一个地方。也许开发人员在修复了符号名称后分心了，忘记回来修复指针。",
+          "下次，我们将看看为什么这个 bug 这么长时间都没有被修复。",
+          "作者",
+          "Raymond 参与了 Windows 的演进超过 30 年。2003 年，他创办了一个名为 The Old New Thing 的网站，其受欢迎程度远远超出了他最疯狂的想象，这一发展至今仍让他感到心惊肉跳。这个网站衍生出了一本书，巧合的是书名也叫 The Old New Thing（Addison Wesley 2007）。他偶尔会出现在 Windows Dev Docs 的 Twitter 账户上，讲一些毫无用处信息的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "1fb19ddd537adf7c",
+      "title": "Apple Updates Advertising Services Policy With New Rules for Ads in Maps",
+      "titleZh": "苹果更新广告服务政策，为 Maps 中的广告制定新规则",
+      "link": "https://techcrunch.com/2026/07/15/apple-quietly-reveals-how-its-maps-ads-will-differ-from-googles/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-15T22:48:20.000Z",
+      "category": "other",
+      "keywords": [
+        "Apple",
+        "Maps",
+        "advertising",
+        "policy"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 7,
+        "total": 16
+      },
+      "summary": "苹果发布了新的广告服务政策（2026年7月14日生效），明确了 Apple Maps 上的广告规则。值得注意的是，该政策禁止了管道、电气、锁匠、暖通空调等广泛的家庭服务业务投放广告，同时也禁止欺骗性、政治性及涉及武器等广告。这些限制使得 Apple Maps 的广告策略与 Google Maps 形成了显著差异。",
+      "summaryEn": "Apple has published a new advertising services policy (effective July 14, 2026) outlining the rules for ads on Apple Maps. Notably, it prohibits a broad category of home services businesses, such as plumbing, electrical, locksmith, and HVAC, from advertising. It also bans deceptive, political, and weapon-related ads, making Apple Maps' advertising strategy significantly different from Google Maps.",
+      "reason": "详细对比了苹果地图与谷歌地图在广告准入类目上的差异，揭示了苹果在本地服务广告上的克制与合规策略。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Sarah Perez",
+        "siteName": "TechCrunch",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple has quietly published a rulebook for its new Maps ads, revealing a more curated approach than advertising giant Google."
+          },
+          {
+            "type": "p",
+            "text": "The iPhone maker has not disclosed a launch date for Maps ads, which was announced earlier this year,  beyond saying they would arrive “this summer” in the U.S. and Canada. However, the company has published advertiser documentation and Maps-specific ad policies, suggesting the rollout is approaching."
+          },
+          {
+            "type": "p",
+            "text": "In a newly published Apple Advertising Services policy, effective as of July 14, 2026, the iPhone maker shares its rules for advertising on Apple Maps. Notably, it prohibits the broad category of home services businesses, like plumbing, electrical, locksmith, HVAC, pest control, roofing, and general contracting services, among others."
+          },
+          {
+            "type": "p",
+            "text": "That sets Apple apart from Google, where Local Services Ads are one of the company’s largest local advertising categories. Apple’s policy suggests the company is initially limiting its ads to places with a physical presence that their customers actually visit."
+          },
+          {
+            "type": "p",
+            "text": "Apple did not respond to a request for comment about the new rulebook."
+          },
+          {
+            "type": "p",
+            "text": "This approach could help make Apple’s ads feel more like organic map listings, rather than traditional paid search ads."
+          },
+          {
+            "type": "p",
+            "text": "It could also save Apple some headaches as it gets its Apple Maps ads off the ground. Home services businesses, including locksmiths and garage door service providers, often require additional verification. Google, for instance, allows these categories, but requires initial verifications, follow-ups, and audits to remain in good standing."
+          },
+          {
+            "type": "p",
+            "text": "Apple’s curated approach to its App Store is also spilling over into its newest advertising vertical. In addition to banning home services, the policy prohibits a handful of businesses from advertising on Maps, like cryptocurrency ATMs and bail bonds providers."
+          },
+          {
+            "type": "p",
+            "text": "Apple is also taking a hands-on approach to approving ads for businesses offering medical services, as the policy notes these ads will be “evaluated on a case-by-case basis.”"
+          },
+          {
+            "type": "p",
+            "text": "These restrictions appear in a dedicated section of the new “Apple Advertising Services News and Stocks, Maps, and Sports Programming Policies,” which details the rules around publishing ads across Apple’s first-party apps beyond the App Store."
+          },
+          {
+            "type": "p",
+            "text": "The broader policy also prohibits deceptive or profane ads, political ads, and ads featuring weapons, violence, controlled substances, defamatory material, and more."
+          },
+          {
+            "type": "p",
+            "text": "Although Apple may expand to other ad categories over time, its initial approach positions Maps and its ads as a more curated, navigation-focused product, rather than an extension of a web search engine."
+          },
+          {
+            "type": "p",
+            "text": "Apple’s approach to displaying ads will also differ from Google; Apple said it would only show a single ad to users in its Maps search results. It noted that the advertised businesses would be clearly marked with a small blue halo around the pin, and labeled as an ad in the list of Suggested Places."
+          },
+          {
+            "type": "p",
+            "text": "Apple also said that data about the ads that users interact with stays on the device and is not collected by the company or shared with third parties."
+          },
+          {
+            "type": "p",
+            "text": "Another recent update to Apple’s Advertising Services Terms of Service also suggests that Apple could be planning to expand its Apple Apps to non-Apple-owned services, a report from Mobile Dev Memo noted. Apple has not confirmed any changes on that front, however."
+          },
+          {
+            "type": "p",
+            "text": "When you purchase through links in our articles, we may earn a small commission. This doesn’t affect our editorial independence."
+          },
+          {
+            "type": "p",
+            "text": "Sarah has worked as a reporter for TechCrunch since August 2011. She joined the company after having previously spent over three years at ReadWriteWeb. Prior to her work as a reporter, Sarah worked in I.T. across a number of industries, including banking, retail and software."
+          },
+          {
+            "type": "p",
+            "text": "You can contact or verify outreach from Sarah by emailing sarahp@techcrunch.com or via encrypted message at sarahperez.01 on Signal."
+          },
+          {
+            "type": "p",
+            "text": "View Bio"
+          }
+        ],
+        "translations": [
+          "苹果悄然发布了其全新 Maps 广告的规则手册，展现出比广告巨头 Google 更为严格的筛选策略。",
+          "这家 iPhone 制造商在今年早些时候宣布了 Maps 广告，但除了表示将于“今年夏天”在美国和加拿大推出外，并未透露具体的上线日期。不过，该公司已发布了广告主文档和针对 Maps 的特定广告政策，暗示该功能即将上线。",
+          "在一份新发布且于 2026 年 7 月 14 日生效的 Apple 广告服务政策中，这家 iPhone 制造商分享了在 Apple Maps 上投放广告的规则。值得注意的是，该政策禁止了广泛的家居服务业务类别，包括管道、电气、锁匠、暖通空调、害虫防治、屋顶维修和一般承包服务等。",
+          "这使得 Apple 有别于 Google，在 Google，本地服务广告是其最大的本地广告类别之一。Apple 的政策表明，该公司最初将把广告限制在客户实际到访的实体经营场所。",
+          "Apple 未对有关新规则手册的置评请求作出回应。",
+          "这种方法有助于让 Apple 的广告感觉更像是自然的地图列表，而不是传统的付费搜索广告。",
+          "在推出 Apple Maps 广告的过程中，这也能为 Apple 省去一些麻烦。包括锁匠和车库门服务提供商在内的家居服务企业通常需要额外的验证。例如，Google 允许这些类别，但要求进行初始验证、后续跟进和审计以保持良好信誉。",
+          "Apple 对其 App Store 的严格筛选策略也延伸到了其最新的广告垂直领域。除了禁止家居服务外，该政策还禁止少数几类企业在 Maps 上投放广告，如加密货币 ATM 和保释金担保提供商。",
+          "Apple 对批准提供医疗服务企业的广告也采取了亲力亲为的方式，政策指出这些广告将“根据具体情况进行评估”。",
+          "这些限制出现在新的“Apple 广告服务 News 和 Stocks、Maps 以及体育节目政策”的专门章节中，该政策详细说明了在 App Store 之外的 Apple 第一方应用中发布广告的规则。",
+          "更广泛的政策还禁止欺骗性或淫秽广告、政治广告，以及涉及武器、暴力、受控物质、诽谤材料等内容的广告。",
+          "尽管 Apple 可能会随着时间的推移扩展到其他广告类别，但其最初的方法将 Maps 及其广告定位为更注重筛选、以导航为中心的产品，而不是网络搜索引擎的延伸。",
+          "Apple 展示广告的方式也将与 Google 不同；Apple 表示，在其 Maps 搜索结果中只会向用户展示一条广告。该公司指出，被广告推广的企业将在图钉周围用一圈蓝色光晕清晰标出，并在“建议地点”列表中标记为广告。",
+          "Apple 还表示，用户与之互动的广告数据将保留在设备上，不会被公司收集，也不会与第三方共享。",
+          "Mobile Dev Memo 的一份报告指出，Apple 广告服务服务条款的最近一次更新也表明，Apple 可能正计划将其 Apple Apps 扩展到非 Apple 拥有的服务上。不过，Apple 尚未确认这方面的任何变化。",
+          "当您通过我们文章中的链接进行购买时，我们可能会赚取少量佣金。这不会影响我们的编辑独立性。",
+          "Sarah 自 2011 年 8 月起一直担任 TechCrunch 的记者。在加入该公司之前，她曾在 ReadWriteWeb 工作了三年多。在成为记者之前，Sarah 曾在多个行业的 IT 部门工作，包括银行、零售和软件行业。",
+          "您可以通过发送邮件至 sarahp@techcrunch.com 或在 Signal 上向 sarahperez.01 发送加密消息来联系 Sarah 或验证她的发信身份。",
+          "查看简介"
+        ]
+      }
+    },
+    {
+      "slug": "1b443d5bf6f799fe",
+      "title": "How Predictable Are Laws?",
+      "titleZh": "法律的可预测性如何？",
+      "link": "https://www.construction-physics.com/p/how-predictable-are-laws",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-07-16T12:03:18.000Z",
+      "category": "other",
+      "keywords": [
+        "law",
+        "NEPA",
+        "policy"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 7,
+        "timeliness": 4,
+        "total": 13
+      },
+      "summary": "美国国家环境政策法（NEPA）的合规过程在实际操作中充满挑战与争议。法律条文本身看似明确，但在执行层面却往往带来繁重的审查与高昂的时间成本。文章探讨了法律在具体应用时的可预测性问题，指出NEPA的合规要求及其最终影响往往难以准确预估。作者认为，这种不可预测性是当前环境法规执行中面临的核心困境。",
+      "summaryEn": "The compliance process with the National Environmental Policy Act (NEPA) is fraught with challenges and controversies in practice. While legal texts may appear clear, their execution often entails heavy review and high time costs. The article explores the predictability of laws in specific applications, noting that NEPA's compliance requirements and their ultimate impacts are often difficult to accurately estimate. The author concludes that this unpredictability is a core dilemma in the current enforcement of environmental regulations.",
+      "reason": "深入剖析了NEPA法案在执行层面的不可预测性，为理解环境法规的实际影响提供了独特视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "An enormous amount of ink has been spilled (some of it by me) on the trials and tribulations of complying with the National Environmental Policy Act, better known as NEPA. NEPA is what requires projects to perform years-long, thousand-plus page environmental impact studies before construction can begin, and suing a project for an insufficiently detailed environmental study is one of the chief ways environmental groups are able to slow down or stop projects they don’t like. And NEPA’s influence goes beyond federally funded projects: NEPA also influenced the creation of many similar laws, both at the state level (such as California’s CEQA) and in countries around the world."
+          },
+          {
+            "type": "p",
+            "text": "None of these effects of NEPA, however, were envisioned when the law was written. NEPA was seen primarily as an (aspirational) statement of US environmental policy, which was to “encourage productive and enjoyable harmony between man and his environment, to promote efforts which will prevent or eliminate damage to the environment and biosphere and stimulate the health and welfare of man; [and] to enrich the understanding of the ecological systems and natural resources important to the Nation.” The provision that requires environmental impact statements was added last minute as a way to try to give some teeth to these high-minded but somewhat abstract ideals, and received virtually no attention at the time. As Alec Stapp and I noted:"
+          },
+          {
+            "type": "quote",
+            "text": "[The provision] was not covered in any major media publication. In Congress, it received “neither debate, nor opposition, nor affirmative endorsement.” Caldwell would later state that “most [members] had never really understood the bill and only agreed to it because it was from Jackson; it was about the environment which was a very ‘hot’ issue at the time; and it was almost Christmas and they wanted to get home.”Not until several months after NEPA was passed did environmental groups realize what a potent weapon they’d been handed."
+          },
+          {
+            "type": "p",
+            "text": "It’s not hard to find other examples of laws whose effect was far different than what the authors anticipated. The 401(k) retirement account, now used by tens of millions of Americans as the primary vehicle for retirement savings, was originally considered an insignificant provision of the 1978 Revenue Act. Per a Bloomberg piece about the Act:"
+          },
+          {
+            "type": "quote",
+            "text": "…The initial provision was estimated to have a “negligible effect upon budget receipts.” Now, defined contribution plans are the fifth-biggest tax break for individuals, with an estimated revenue loss to the government of $61.4 billion in fiscal 2014.“There was absolutely no discussion in ’78 that if you do this, the world is going to change,” said Daniel Halperin, then a senior Treasury official and now a Harvard Law School professor.The tale of Richard Stanger [a primary author of the Act], who said he hadn’t been interviewed previously about his role, is also a story about accidental actors at historic moments. As Stanger himself says, if anyone had known how important 401(k) would become, the Joint Committee on Taxation never would have let him, a 28-year-old junior lawyer, write it."
+          },
+          {
+            "type": "p",
+            "text": "In the other direction, laws aimed at stimulating the construction of housing in California have proven much less effective than predicted:"
+          },
+          {
+            "type": "quote",
+            "text": "One California law was supposed to flip defunct strip malls across California into apartment-lined corridors. Another was designed to turn under-used church parking lots into fonts of new affordable housing. A third would, according to supporters and opponents alike, “end single-family zoning as we know it.”Fast-forward to 2025 and this spate of recent California laws, and others like it intended to supercharge the construction of desperately needed housing, have had “limited to no impact on the state’s housing supply.”That damning conclusion comes from a surprising source: A new report by YIMBY Law, a pro-development nonprofit that would very much like to see these laws work."
+          },
+          {
+            "type": "p",
+            "text": "I wanted to better understand how common this was: how often do laws do more or less what they’re designed to do? How often do their effects diverge widely, either by having unanticipated effects or by failing to do what the authors predicted? So I used AI to analyze the effects of several hundred federal laws passed over the last 50 years."
+          },
+          {
+            "type": "p",
+            "text": "Overall, I found that federal laws mostly do what they’re expected to do. But a substantial fraction of them — around 11% — diverge significantly, having either much smaller or much larger effects than originally predicted."
+          },
+          {
+            "type": "p",
+            "text": "To do this analysis, I first chose five random federal laws passed each year from 1976 to 2023, filtering out any laws that were less than 10 pages in length, which were mostly insignificant things like post office renamings. This yielded 240 laws total, but for one law the AI was unable to find any information, so the actual analysis was done on 239 laws. For each law, I had an AI model — Claude Opus 4.8 Max Thinking — estimate the expected effect of the law, its actual effect, and assign a score to the divergence. Divergence scores ranged from -10 to 10: positive numbers indicate the law had a larger effect than anticipated (such as the 401(k) provision in the 1978 Revenue Act or NEPA), while negative numbers indicate the law had a smaller effect than anticipated."
+          },
+          {
+            "type": "h3",
+            "text": "Scoring Rubric:"
+          },
+          {
+            "type": "li",
+            "text": "0 — actual impact matched expectations essentially exactly."
+          },
+          {
+            "type": "li",
+            "text": "±1–2 — minor: broadly as expected; small deviations on secondary dimensions that didn’t change the essential outcome."
+          },
+          {
+            "type": "li",
+            "text": "±3–4 — moderate: clearly noticeable gaps on one or more dimensions, but the core purpose was still substantially realized (or missed only in a limited way)."
+          },
+          {
+            "type": "li",
+            "text": "±5–6 — substantial: the primary expected outcome was materially exceeded (+) or unmet (−), or a significant unanticipated effect emerged."
+          },
+          {
+            "type": "li",
+            "text": "±7–8 — major: the central goal greatly overshot (+) or largely failed / went unimplemented (−), or effects were largely of a different kind than intended (+)."
+          },
+          {
+            "type": "li",
+            "text": "±9–10 — extreme: actual impact bore little resemblance to expectations — dominated by unintended, larger-than-anticipated, or opposite effects (+), or near-total failure / non-implementation (−)."
+          },
+          {
+            "type": "p",
+            "text": "There were a few complications in deciding how the effect of laws should be evaluated. One is deciding when a law should get credit for having an effect. Often the largest effect of a law only happens when subsequent laws extend, modify, or build on the original law. For instance, an unanticipated effect of the 1978 Psychotropic Substances Act was the introduction of civil asset forfeiture for drug proceeds. This mechanism became a cornerstone of US drug enforcement, but much of this later expansion was due to the 1984 Comprehensive Crime Control Act. For these cases, I instructed the AI to give some credit to the original law if it was built on by other laws, but to temper it based on how much subsequent laws actually did the heavy lifting. (For the Psychotropic Substances Act, the AI assigned it a score of +4, a moderate unanticipated effect, since the later bill did most of the work.)"
+          },
+          {
+            "type": "p",
+            "text": "Another complication was trying to determine what the expected effect of a law was at the time it was passed. For this, I instructed the AI to only use contemporaneous sources, such as the bill text itself, the presidential signing statement, a CBO score, press coverage at the time, etc. But this is inherently a fraught exercise: it’s often not obvious, for instance, to what extent the goal of some law is aspirational that the authors don’t expect to necessarily happen. For instance, the Indoor Radon Abatement Act of 1988 states in the bill text a national long-term goal that “indoor air in a building be as free of radon as the ambient outdoor air.” This is almost certainly an aspirational goal that the authors did not expect the bill to actually achieve, but making these judgments requires a process of guessing and using context clues that is likely to be error-prone. (The AI scored this law as a -2, a minor shortfall compared to what was expected; the various anti-radon programs the law created stuck around, but indoor radon exposure did not improve, in part because the programs were almost all voluntary.)"
+          },
+          {
+            "type": "p",
+            "text": "This exercise is similar to a previous post where I used AI to try and estimate how early various inventions could have been invented, but this turned out to be far more difficult and annoying, mostly because of the research required. For the previous exercise on inventions, I simply relied on the AI’s knowledge of various inventions to make the judgments. But for this present effort about laws I needed the AI to thoroughly research each law: I couldn’t expect the AI to know, word-for-word, every esoteric law passed in the last 50 years, or the complete history of the downstream effects of that legislation. I ended up needing to do a fair amount of trial and error to get Claude to do a sufficiently thorough job evaluating the expected and actual effects. I kept having to modify the prompt to force increasing levels of thoroughness in the search, and even in the final version I settled on I was occasionally finding effects that the AI evaluation had missed. Because of this, I expect there to be errors in various evaluations, and I would regard these results as preliminary."
+          },
+          {
+            "type": "p",
+            "text": "You can see the full prompt I used, and the resulting evaluations, here."
+          },
+          {
+            "type": "p",
+            "text": "The graph below shows the divergence scores of the 239 evaluated laws."
+          },
+          {
+            "type": "p",
+            "text": "The results form something like a bell curve with a slight positive skew. Ninety-five of the 239 laws (40%) had a score from -1 to 1: either they behaved exactly as expected or had very slightly larger or smaller effects than predicted. Forty-nine had a score from -2 to -4 (20%), and 68 (28%) had a score from 2 to 4, a moderate divergence. Only around 11% of laws had a “substantial divergence,” a score of plus or minus 5 or more. Most federal laws, it seems, do more or less what they’re expected to do."
+          },
+          {
+            "type": "p",
+            "text": "(The graph above shows scores bundled together, but if you look at frequencies of individual score values, you don’t get a smooth bell shape. Instead you get a dip, with many fewer scores at -1 and +1. This is likely an artifact of the scoring rubric, which probably pushed scores either into 0 or out to plus or minus 2, but it’s another reason why we should treat these results with a grain of salt.)"
+          },
+          {
+            "type": "p",
+            "text": "Some examples of laws that Claude scored as having a much higher effect than predicted:"
+          },
+          {
+            "type": "p",
+            "text": "“An act to amend title XIII of the Federal Aviation Act of 1958 to expand the types of risks which the Secretary of Transportation may insure or reinsure, and for other purposes”, score +5: This mundane-sounding law is described by its title as mainly about airline insurance, but one of its provisions deregulated airline cargo service, the first step in deregulation of the airline industry more broadly. This deregulation was expected to increase competition and efficiency in the air cargo market, but its effect went beyond that. With air cargo flights deregulated, companies like FedEx, which were previously confined to using very small aircraft, could now use large jets on any route they wanted, setting the stage for the entirely new “air express cargo” industry."
+          },
+          {
+            "type": "p",
+            "text": "The Sarbanes-Oxley Act of 2002, score +5: This law, passed in the wake of business collapses like Enron and WorldCom, was aimed at restoring investor confidence by increasing financial auditing oversight, and creating stiffer penalties for compliance failures. The additional oversight was achieved, but at a cost: compliance costs were 30 to 50 times higher than expected. Another positive divergence came from the fact that one of its clauses, which penalizes “obstruction of an official proceeding,” was later used in an unexpected way: criminally charging hundreds of January 6 defendants (though this was later struck down by the Supreme Court)."
+          },
+          {
+            "type": "p",
+            "text": "The Trade Facilitation and Trade Enforcement Act (TFTEA) of 2015, score +7: This law was billed as a customs modernization and trade enforcement act: giving more resources to enforce trade agreements, streamlining various trade and customs regulations, etc. At the signing ceremony, President Obama described it as “making sure other countries are playing by the rules.” But one of the provisions of the law changed the “de minimis exemption” — the value below which imported goods were not subject to tariffs — from $200 to $800. This change is credited as a driver of the explosion of Chinese imports from companies like Shein/Temu over the next several years, until it was reversed by the second Trump administration."
+          },
+          {
+            "type": "p",
+            "text": "And here are some examples of laws that had a much smaller effect than predicted:"
+          },
+          {
+            "type": "p",
+            "text": "The Alaska Natural Gas Transportation Act of 1976, score -7: This act was expected to create a huge 4,800-mile pipeline, the “largest privately financed energy project ever undertaken,” that would transport natural gas from Alaska to the lower 48 states. The pipeline, however, was never completed, due to a combination of rising costs and the later Natural Gas Policy Act and Fuel Use Act creating a gas supply glut, obviating the economic justification for the pipeline."
+          },
+          {
+            "type": "p",
+            "text": "The Alabama-Coosa-Tallapoosa River Basin Compact of 1997, score -5: This law was intended to create a commission that would develop a plan to share the water of the Alabama-Coosa-Tallapoosa River Basin between Alabama and Georgia. But while the commission was formed, Alabama and Georgia never agreed on an allocation formula, resulting in continuous litigation between the two states over water distribution."
+          },
+          {
+            "type": "p",
+            "text": "The Enhanced Partnership with Pakistan Act of 2009, score -5: This act was expected to foster a closer relationship and increase goodwill with Pakistan, by providing billions of dollars’ worth of funding for schools, roads, and other infrastructure projects. This didn’t occur: opinion of the US in Pakistan continued to fall following things like President Obama visiting India but skipping Pakistan in 2010 and the US’s raid on Bin Laden’s Pakistan compound in 2011. By 2012, 74% of Pakistanis viewed the US as an enemy."
+          },
+          {
+            "type": "p",
+            "text": "Other than the fraction of laws with significant divergence, there are a few other notable patterns in the data. If we look at divergence over time, we don’t see much change: recent laws seem roughly as predictable as older laws."
+          },
+          {
+            "type": "p",
+            "text": "What about differences between small/minor laws and large/major laws? If we graph a law’s divergence score against the number of pages in the law, we see a small positive correlation: large laws with many pages are somewhat more likely to have a larger-than-expected effect than laws with fewer pages."
+          },
+          {
+            "type": "p",
+            "text": "One possible explanation here is a sort of bundling effect: major laws, like the recent 21st Century ROAD to Housing Act, are often amalgamations of many smaller laws. Because the distribution of divergences is somewhat positively skewed, when you bundle many laws together, the chance that at least one of them has a large positive effect might rise."
+          },
+          {
+            "type": "p",
+            "text": "Another notable pattern is that different types of laws have somewhat different probabilities of a major divergence. Appropriations bills, for instance, which are often (but not always!) routine allocations of money, have a lower variance than bills that create substantially new programs. Both types of bills have the same average divergence score, but the probability of a large or small divergence is much greater with the latter than the former."
+          },
+          {
+            "type": "p",
+            "text": "At a high level, the reasons that laws have greater or smaller effects than expected can be divided into two categories: operators of the legal machinery behaving differently than expected, and the broader world, including those who the law was designed to affect, behaving differently than expected."
+          },
+          {
+            "type": "p",
+            "text": "On the “legal operator side,” this includes everyone who has a role in authoring, enforcing, or interpreting laws. Courts, for instance, will often interpret laws in ways that the original authors didn’t anticipate. These interpretations can greatly extend a law’s scope and influence, such as the courts’ broad interpretation of what’s required to comply with NEPA’s “detailed statement” provision. Or they can reduce a law’s scope and influence, such as by determining that provisions of a law are unconstitutional. This happened with the 1989 Ethics Reform Act, which barred all federal government employees from being compensated for giving speeches, attending events, or writing articles. In 1995 the Supreme Court ruled that this requirement violated the First Amendment, and it only survives in application to senior government officials and Members of Congress."
+          },
+          {
+            "type": "p",
+            "text": "Likewise, prosecutors or other government agencies might behave in ways other than what was expected. They might use a law for unexpected purposes: the DNA Fingerprinting Act of 2005, which authorizes collecting DNA from federal detainees, was part of a Department of Justice Authorization bill that was primarily focused on addressing violence against women. But the act was later used by ICE to collect DNA from immigration detainees. Alternatively, they might decline to use new legal machinery introduced. An example of the latter is the 2012 STOCK Act, which on paper made it illegal for members of Congress and their staff to trade stocks based on their congressional knowledge. As of 2025, there have been zero prosecutions under this law despite suggestive evidence that congressional insider trading does occur."
+          },
+          {
+            "type": "p",
+            "text": "This category also includes Congress itself. Future Congresses may increase the effect of some law, such as by making a temporary program permanent or otherwise expanding its scope. For instance, the 1979 Recreational Boating Safety and Facilities Improvement Act contained a provision that created a trust fund, capped at $30 million fund, to clear a Forest Service tree replanting backlog. In 2021, the REPLANT Act took this fund and massively enlarged it, using it as a vehicle for a program to plant 1.2 billion trees in national forests. On the other hand, future Congresses might reduce the effect of some law: the 1976 Parole Reorganization Act, for instance, was intended to streamline and strengthen the federal parole system, but the 1984 Sentencing Reform Act abolished federal parole, making the previous law almost entirely moot."
+          },
+          {
+            "type": "p",
+            "text": "You see the same sorts of divergences in the world at large. The 2006 Credit Rating Agency Reform Act tried to foster increased competition in the credit ratings agency market, but even though several new ratings agencies appeared, the market remained dominated by S&P, Moody’s, and Fitch, which collectively control 95% of the market. The Air Cargo Deregulation Act failed to predict how carriers like FedEx would respond to the freedom to fly on any route with any aircraft. TFTEA failed to predict how low-price Chinese fashion companies like Shein could take advantage of the “de minimis” change to ship directly to US consumers."
+          },
+          {
+            "type": "p",
+            "text": "And of course, unforeseen behavior of legal operators and the broader world may interact. The Alaska Natural Gas Transportation Act failed to result in a new natural gas pipeline in part due to the market’s response to new natural gas regulations passed by Congress."
+          },
+          {
+            "type": "p",
+            "text": "I think of laws as sort of akin to technology. With the invention of a new technology, you create some new capability, often for the purposes of achieving some particular goal. But once that capability is out there in the world, people will find all sorts of ways to take advantage of it. Marconi envisioned radio as literally “wireless telegraphy,” a way to send and receive messages from ships at sea, but he didn’t envision the rise of broadcast radio. Vacuum tubes were first used to amplify long-distance telephone signals, and only later became components for televisions and the earliest digital computers. Teflon was first used to make pump seals in uranium separation plants for the Manhattan Project, and only later found use in non-stick cookware."
+          },
+          {
+            "type": "p",
+            "text": "Laws often work the same way. A law will create or modify some capability — an organization, a program, a rule that must be followed — aimed at accomplishing some particular thing. But once that capability is out there in the world, people might take advantage of it in different ways, finding uses for it that the creators of that capability never expected. A modest environmental reporting requirement becomes the foundation of modern environmental litigation; a minor change in employer retirement contributions becomes a retirement account used by tens of millions of Americans; a financial reporting law gets used to charge rioters."
+          },
+          {
+            "type": "p",
+            "text": "Conversely, just because you introduce some new capability doesn’t mean it’ll actually be useful, or that anyone wants it. Some technologies, like 3D TV, or smell-o-vision, don’t pan out, and the patent archives are full of ideas for inventions that no one had any use for. Similarly, just because you create a new legal capability doesn’t mean it will end up useful in the way you envisioned. Changing the rules for designating a “nationally recognized” credit rating agency, as the 2006 Credit Rating Agency Reform Act did, did nothing to disrupt the market share of the existing agency oligopoly."
+          },
+          {
+            "type": "p",
+            "text": "It is, of course, notoriously hard to predict the long-term effects of new technologies. With laws, it seems like predictions are substantially easier. But divergences still exist."
+          }
+        ],
+        "translations": [
+          "关于遵守《国家环境政策法》（更广为人知的名称是 NEPA）所经历的艰难与挫折，人们已经写了大量的文章（其中一些是我写的）。NEPA 要求项目在开工前进行长达数年、长达一千多页的环境影响研究，而以环境研究不够详细为由起诉项目，是环保组织能够减缓或阻止他们不喜欢的项目的主要手段之一。此外，NEPA 的影响不仅限于联邦资助的项目：它还影响了许多类似法律的制定，无论是在州一级（如加州的 CEQA），还是在世界各地的国家。",
+          "然而，在制定该法律时，并没有预见到 NEPA 的这些影响。NEPA 最初主要被视为美国环境政策的一项（理想化的）声明，旨在“鼓励人与其环境之间富有成效和令人愉悦的和谐，促进防止或消除对环境和生物圈的破坏并增进人类健康与福利的努力；[并] 丰富对国家重要的生态系统和自然资源的理解。”要求提供环境影响报告的条款是在最后一刻加上去的，试图为这些高尚但有些抽象的理想赋予一些约束力，并在当时几乎没有引起注意。正如 Alec Stapp 和我所指出的：",
+          "[该条款] 没有被任何主要媒体出版物报道。在国会中，它“既没有辩论，也没有反对，也没有得到明确的认可”。Caldwell 后来表示，“大多数[议员]从未真正理解过该法案，只是因为它是 Jackson 提出的才同意；它是关于环境的，这在当时是一个非常‘热门’的问题；而且快到圣诞节了，他们想回家。”直到 NEPA 通过几个月后，环保组织才意识到他们被赋予了一件多么强大的武器。",
+          "不难找到其他法律效果与起草者预期大相径庭的例子。401(k) 退休账户现在被数千万美国人用作退休储蓄的主要工具，它最初被认为是 1978 年《税收法案》中一个微不足道的条款。根据彭博社关于该法案的一篇文章：",
+          "……最初的条款被估计对“预算收入的影响微乎其微”。现在，固定缴款计划是针对个人的第五大税收减免项目，估计在 2014 财年给政府造成了 614 亿美元的收入损失。“在 78 年绝对没有讨论过如果你这样做，世界将会改变，”时任财政部高级官员、现为哈佛大学法学院教授的 Daniel Halperin 说。Richard Stanger [该法案的主要起草者之一] 表示他之前从未接受过关于其角色的采访，他的故事也是一个关于历史时刻偶然参与者的故事。正如 Stanger 自己所说，如果有人知道 401(k) 会变得多么重要，税务联合委员会绝不会让他这样一个 28 岁的初级律师来起草它。",
+          "另一方面，旨在刺激加州住房建设的法律被证明远没有预期的有效：",
+          "加州的一项法律本应将全州废弃的沿街商业区改造成公寓林立的街道。另一项法律旨在将利用率不足的教堂停车场变成新的经济适用房源泉。第三项法律，正如支持者和反对者所言，将“终结我们所熟知的独栋住宅区划”。时间快进到2025年，这一系列近期出台的加州法律，以及其他旨在极大促进急需住房建设的类似法律，对“该州的住房供应几乎没有产生任何影响”。这一严厉的结论出自一个令人意外的来源：YIMBY Law 发布的一份新报告，该组织是一个支持开发的非营利机构，非常希望看到这些法律发挥作用。",
+          "我想更好地了解这种情况有多普遍：法律在多大程度上能或多或少地实现其设计初衷？它们的效果又在多大程度上会大相径庭，要么产生了意想不到的影响，要么未能实现起草者的预期？因此，我使用 AI 分析了过去50年通过的数百项联邦法律的影响。",
+          "总体而言，我发现联邦法律大多能实现其预期目标。但其中相当一部分——约11%——存在显著偏差，其实际影响要么比最初预测的小得多，要么大得多。",
+          "为了进行这项分析，我首先从1976年至2023年每年通过的联邦法律中随机挑选了五项，过滤掉了任何篇幅少于10页的法律，这些法律大多是重命名邮局等无关紧要的事项。这总共得出了240项法律，但有一项法律 AI 无法找到任何信息，因此实际分析是在239项法律上进行的。对于每项法律，我让一个 AI 模型——Claude Opus 4.8 Max Thinking——评估该法律的预期效果、实际效果，并为偏差程度打分。偏差分数范围从-10到10：正数表示法律的影响大于预期（例如1978年《税收法案》中的401(k)条款或 NEPA），而负数表示法律的影响小于预期。",
+          "评分标准：",
+          "0 — 实际影响与预期基本完全一致。",
+          "±1–2 — 轻微：总体符合预期；在次要维度上有小偏差，但未改变基本结果。",
+          "±3–4 — 中度：在一个或多个维度上存在明显差距，但核心目的仍基本实现（或仅在有限程度上未能实现）。",
+          "±5–6 — 显著：主要预期结果被大幅超出 (+) 或未能实现 (−)，或出现了重大的意外影响。",
+          "±7–8 — 重大：核心目标大幅超额完成 (+) 或基本失败/未实施 (−)，或影响在很大程度上与预期类型不同 (+)。",
+          "±9–10 — 极端：实际影响与预期几乎毫无相似之处——主要由意外的、大于预期的或相反的影响主导 (+)，或几乎彻底失败/未实施 (−)。",
+          "在决定如何评估法律的影响时，存在一些复杂情况。其中之一是决定何时应将某种影响归功于某项法律。通常，一项法律的最大影响只有在后续法律对其进行扩展、修改或在其基础上构建时才会显现。例如，1978年《精神活性物质法》的一个意想不到的影响是引入了针对毒品收益的民事资产没收制度。这一机制成为了美国毒品执法的基石，但后来的许多扩展都要归功于1984年的《综合犯罪控制法》。对于这些情况，我指示 AI，如果原始法律被其他法律所继承和发展，则给予原始法律一定的功劳，但要根据后续法律实际承担主要工作的程度来调整这种功劳。（对于《精神活性物质法》，AI 给它打了 +4 分，属于中等程度的意外影响，因为后来的法案做了大部分工作。）",
+          "另一个复杂之处在于试图确定一项法律在通过时的预期影响是什么。为此，我指示 AI 仅使用同时期的资料，例如法案文本本身、总统签署声明、CBO 评分、当时的新闻报道等。但这本质上是一项充满困难的工作：例如，某项法律的目标在多大程度上是作者并不期望必然实现的理想化愿景，这往往并不明显。例如，1988年的《室内氡气消除法》在法案文本中规定了一个国家长期目标，即“建筑物内的空气应像室外环境空气一样不含氡气”。这几乎肯定是一个理想化的目标，作者并不期望该法案能真正实现它，但做出这些判断需要进行猜测并利用上下文线索，这很容易出错。（AI 给这项法律打了 -2 分，与预期相比存在轻微不足；该法律创建的各种反氡气项目保留了下来，但室内氡气暴露情况并未改善，部分原因是这些项目几乎都是自愿参与的。）",
+          "这个练习类似于我之前的一篇文章，在那篇文章中我使用 AI 试图估计各种发明最早可以在什么时候被发明出来，但事实证明这要困难和烦人得多，主要是因为需要进行研究。对于之前关于发明的练习，我只是依靠 AI 对各种发明的知识来做出判断。但对于目前关于法律的工作，我需要 AI 彻底研究每项法律：我不能指望 AI 逐字逐句地了解过去 50 年通过的每一项生僻法律，或者该立法下游影响的完整历史。我最终需要做大量的试错，才能让 Claude 在评估预期和实际影响方面做得足够彻底。我不得不不断修改提示词，以迫使搜索的彻底性不断提高，即使在我最终确定的版本中，我偶尔也会发现 AI 评估遗漏的影响。正因为如此，我预计各种评估中会存在错误，我会将这些结果视为初步结果。",
+          "你可以在这里看到我使用的完整提示词以及最终的评估结果。",
+          "下图显示了 239 项已评估法律的差异得分。",
+          "结果形成了一条略微正偏态的钟形曲线。239项法律中有95项（40%）的得分在-1到1之间：要么表现完全符合预期，要么效果与预测相比仅有极微小的放大或缩小。49项（20%）得分在-2到-4之间，68项（28%）得分在2到4之间，属于中等程度的偏差。只有约11%的法律存在“重大偏差”，即得分为正负5或更高。看起来，大多数联邦法律的作用与预期大致相符。",
+          "（上图显示的是汇总后的得分，但如果查看各个具体得分值的频率，你会发现它并不是平滑的钟形曲线。相反，在-1和+1处出现了一个凹陷，得分数量少得多。这可能是评分标准的产物，它可能将得分推向0或推向正负2，但这也是我们应该对这些结果持保留态度的另一个原因。）",
+          "以下是一些被 Claude 评为实际效果远超预期的法律示例：",
+          "“一项旨在修订1958年《联邦航空法》第十三章以扩大交通部长可承保或分保的风险类型及其他目的的法案”，得分+5：这项听起来平淡无奇的法律，从其标题来看主要是关于航空保险的，但其中一项条款解除了对航空货运服务的管制，这是更广泛的航空业放松管制的第一步。人们预期这种放松管制会提高航空货运市场的竞争力和效率，但其影响远不止于此。随着航空货运航班管制的解除，像 FedEx 这样以前只能使用非常小型飞机的公司，现在可以在任何他们想要的航线上使用大型喷气式飞机，从而为全新的“航空快递货运”行业奠定了基础。",
+          "2002年的《萨班斯-奥克斯利法案》（Sarbanes-Oxley Act），得分+5：这项法律是在安然（Enron）和世通（WorldCom）等企业倒闭后通过的，旨在通过加强财务审计监督和对合规失败施加更严厉的处罚来恢复投资者信心。额外的监督得以实现，但付出了代价：合规成本比预期高出30到50倍。另一个正向偏差源于该法案中一项惩罚“妨碍官方程序”的条款后来被以意想不到的方式使用：对数百名1月6日事件的被告提起刑事指控（尽管后来被最高法院推翻）。",
+          "2015年的《贸易便利化和贸易执法法案》（TFTEA），得分+7：这项法律被标榜为海关现代化和贸易执法法案：提供更多资源来执行贸易协定，简化各种贸易和海关法规等。在签署仪式上，奥巴马总统将其描述为“确保其他国家按规则行事”。但该法律的一项条款将“最低免税额”（即进口商品免征关税的价值上限）从200美元提高到了800美元。这一改变被认为是随后几年来自 Shein/Temu 等公司的中国进口商品激增的驱动力，直到被第二届特朗普政府废除。",
+          "以下是一些实际效果远低于预期的法律示例：",
+          "1976年《阿拉斯加天然气运输法》，得分 -7：该法案原本预计将建设一条长达4800英里的巨型管道，这是“有史以来最大的私人融资能源项目”，旨在将天然气从阿拉斯加输送到美国本土48个州。然而，由于成本不断上升，加上后来的《天然气政策法》和《燃料使用法》导致天然气供应过剩，该管道的经济合理性不复存在，因此从未建成。",
+          "1997年《阿拉巴马-库萨-塔拉普萨河流域协定》，得分 -5：该法律旨在成立一个委员会，负责制定在阿拉巴马州和佐治亚州之间分配阿拉巴马-库萨-塔拉普萨河流域水资源的计划。但是，尽管委员会已经成立，阿拉巴马州和佐治亚州却始终未能就分配方案达成一致，导致两州之间因水资源分配问题而持续诉讼不断。",
+          "2009年《与巴基斯坦加强伙伴关系法》，得分 -5：该法案原本预计通过为学校、道路和其他基础设施项目提供数十亿美元的资金，来促进更紧密的关系并增进与巴基斯坦的友好关系。但这并未发生：在2010年奥巴马总统访问印度却跳过巴基斯坦，以及2011年美国突袭本·拉登在巴基斯坦的住所等事件之后，美国在巴基斯坦的声誉持续下降。到2012年，74%的巴基斯坦人将美国视为敌人。",
+          "除了少数存在显著偏差的法律外，数据中还有其他几个值得注意的模式。如果我们观察偏差随时间的变化，并没有看到太大的改变：近期法律似乎和旧法律一样大致可以预测。",
+          "那么小型/次要法律与大型/主要法律之间的差异又如何呢？如果我们将法律的偏差得分与法律的页数绘制成图表，会发现存在微弱的正相关：页数众多的大型法律比页数较少的法律更有可能产生超出预期的效果。",
+          "这里一个可能的解释是某种捆绑效应：主要法律，如最近的《21世纪住房ROAD法案》，通常是许多较小法律的合并体。由于偏差的分布呈现一定程度的右偏，当把许多法律捆绑在一起时，其中至少一项法律产生巨大正面效果的概率可能会上升。",
+          "另一个值得注意的模式是，不同类型的法律发生重大偏差的概率略有不同。例如，拨款法案通常是（但不总是！）常规的资金分配，其方差低于建立实质性新项目的法案。这两种类型的法案具有相同的平均偏差得分，但后者出现大幅或小幅偏差的概率要比前者大得多。",
+          "从宏观层面来看，法律产生大于或小于预期效果的原因可以分为两类：法律机制的运作者行为与预期不符，以及更广阔的外部世界（包括法律旨在影响的人群）行为与预期不符。",
+          "在“法律执行者”方面，这包括所有参与起草、执行或解释法律的人。例如，法院在解释法律时，往往会采用原起草者未曾预料到的方式。这些解释可能会大大扩大法律的范围和影响，例如法院对遵守 NEPA “详细声明”条款所需条件的宽泛解释。或者，它们也可能缩小法律的范围和影响，例如裁定某项法律条款违宪。1989年的《伦理改革法案》就发生了这种情况，该法案禁止所有联邦政府雇员因发表演讲、参加活动或撰写文章而获得报酬。1995年，最高法院裁定这一要求违反了《第一修正案》，因此该规定目前仅适用于高级政府官员和国会议员。",
+          "同样，检察官或其他政府机构的行为也可能出乎意料。他们可能会将法律用于意想不到的目的：2005年的《DNA指纹法》授权从联邦被拘留者那里收集DNA，该法案是司法部授权法案的一部分，而该授权法案主要侧重于解决针对妇女的暴力问题。但该法案后来被 ICE 用来收集移民被拘留者的DNA。或者，他们可能拒绝使用引入的新法律机制。后者的一个例子是2012年的《STOCK法案》，该法案在纸面上规定国会议员及其工作人员利用国会内部信息进行股票交易是非法的。截至2025年，尽管有迹象表明国会内幕交易确实存在，但根据该法律提起的诉讼为零。",
+          "这一类别也包括国会本身。未来的国会可能会增加某些法律的影响，例如将临时项目永久化或以其他方式扩大其范围。例如，1979年的《游船安全和设施改善法案》包含一项条款，设立了一个上限为3000万美元的信托基金，用于清理林务局的树木补种积压问题。2021年，《REPLANT法案》接管了该基金并大幅扩大了其规模，将其作为在国家森林中种植12亿棵树的项目的载体。另一方面，未来的国会也可能会减少某些法律的影响：例如，1976年的《假释重组法案》旨在精简和加强联邦假释系统，但1984年的《量刑改革法案》废除了联邦假释，使得前一项法律几乎完全形同虚设。",
+          "在现实世界中，你也会看到同样的偏差。2006年的《信用评级机构改革法案》试图促进信用评级机构市场的竞争，但尽管出现了几家新的评级机构，市场仍然由 S&P、Moody’s 和 Fitch 主导，它们共同控制了95%的市场份额。《航空货运放松管制法》未能预测到像 FedEx 这样的承运人会如何应对在任何航线上使用任何飞机飞行的自由。TFTEA 未能预测到像 Shein 这样的低价中国时尚公司会如何利用“de minimis”条款的修改直接向美国消费者发货。",
+          "当然，法律执行者和更广阔世界中不可预见的行为可能会相互作用。《阿拉斯加天然气运输法》未能促成新的天然气管道建设，部分原因是市场对国会通过的新天然气法规的反应。",
+          "我认为法律在某种程度上类似于技术。随着一项新技术的发明，你创造了一些新的能力，通常是为了实现某个特定的目标。但一旦这种能力存在于世界上，人们就会找到各种方法来利用它。马可尼将无线电设想为名副其实的“无线电报”，一种用于与海上船只收发信息的方式，但他没有预见到广播电台的兴起。真空管最初被用于放大长途电话信号，后来才成为电视和早期数字计算机的组件。特氟龙最初被用于制造曼哈顿计划铀分离工厂的泵密封件，后来才在防粘锅具中找到用途。",
+          "法律通常也是这样运作的。一项法律会创造或修改某种能力——一个组织、一个项目或一条必须遵守的规则——旨在完成某件特定的事情。但一旦这种能力存在于世界上，人们可能会以不同的方式利用它，找到其创造者从未预料到的用途。一项不起眼的环境报告要求成为了现代环境诉讼的基础；雇主退休金缴款的微小改变成为了数千万美国人使用的退休账户；一项财务报告法被用来起诉暴徒。",
+          "反之，仅仅因为你引入了某种新能力，并不意味着它真的有用，或者有人想要它。一些技术，比如3D电视或气味电视，并没有取得成功，而专利档案里充满了无人问津的发明构想。同样，仅仅因为你创造了一种新的法律能力，并不意味着它最终会以你设想的方式发挥作用。正如2006年《信用评级机构改革法案》所做的那样，改变指定“全国认可”信用评级机构的规则，丝毫没有打破现有机构寡头的市场份额。",
+          "当然，众所周知，预测新技术的长期影响是极其困难的。对于法律而言，预测似乎要容易得多。但分歧依然存在。"
+        ]
+      }
+    },
+    {
+      "slug": "659d71d63807545f",
+      "title": "Gadget Review: Thermal Master DV2 - Infrared Birdwatching Scope ★★★★⯪",
+      "titleZh": "设备评测：Thermal Master DV2 - 红外观鸟镜 ★★★★⯪",
+      "link": "https://shkspr.mobi/blog/2026/07/gadget-review-thermal-master-dv2-infrared-birdwatching-scope/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-07-16T11:34:50.000Z",
+      "category": "other",
+      "keywords": [
+        "gadget",
+        "thermal camera",
+        "review"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 11
+      },
+      "summary": "Thermal Master DV2 是一款专为观鸟和动物观察设计的红外热成像相机。与传统配备小尺寸固定屏幕的红外相机不同，DV2在设计上进行了明显的差异化创新。评测将其与市场上的同类竞品进行了实际对比测试。最终该设备获得了四星半（★★★★⯪）的推荐评价，展现了其在户外观察场景下的实用价值。",
+      "summaryEn": "The Thermal Master DV2 is an infrared thermal camera specifically designed for bird watching and animal spotting. Unlike traditional IR cameras equipped with small fixed screens, the DV2 features distinct design innovations. The review puts it through practical comparison tests against market competitors. Ultimately, the device earns a four-and-a-half-star (★★★★⯪) rating, demonstrating its practical value in outdoor observation scenarios.",
+      "reason": "详细对比了专为观鸟设计的热成像设备，为户外和自然爱好者提供了实用的选购参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The good folks at Thermal Master have sent me their DV2 camera to review. As their name suggests, this is a thermal / infrared camera - they've specifically designed this for bird watching and animal spotting. Let's put it through its paces and see how it compares to the competition!"
+          },
+          {
+            "type": "p",
+            "text": "Straight away you can see it is different from normal IR cameras - they tend to have a small fixed screen and a rubber button interface. This has a lush touchscreen which displays the thermal image and is used to control the camera. The screen can go bright enough to be easily visible in full daylight, and you can dim it down to something more appropriate for night-time viewing."
+          },
+          {
+            "type": "p",
+            "text": "OK, enough waffle, time to get snapping!"
+          },
+          {
+            "type": "h2",
+            "text": "Photos"
+          },
+          {
+            "type": "p",
+            "text": "Here are some shots from the camera of various bits of wildlife near me. I haven't edited these images, they're exactly what you get from the camera."
+          },
+          {
+            "type": "p",
+            "text": "The resolution is 512x384.  There's no EXIF metadata - so no location information."
+          },
+          {
+            "type": "p",
+            "text": "There's also no in-picture thermal gradient so you can't see the exact temperature of an object. This is designed for spotting animals, not working out how hot your electronics are. The datetime is burned in to the image but can be turned off."
+          },
+          {
+            "type": "p",
+            "text": "It has the ability to almost totally remove the background \"noise\" of the sky - making it excellent for spotting things on the wing."
+          },
+          {
+            "type": "p",
+            "text": "Filesize is about 20KB per photo. So you can fit will over a million images on the ~32GB internal storage. Digital zoom goes up to 8X."
+          },
+          {
+            "type": "h2",
+            "text": "Videos"
+          },
+          {
+            "type": "p",
+            "text": "The static images don't really do it justice. It's also possible to shoot video. This gives you a reasonable idea of what you'll see on the touchscreen."
+          },
+          {
+            "type": "p",
+            "text": "Video resolution is the same as the photos - 512x384 - and runs at 30fps. File size is around 40MB per minute. So about 12 hours of footage can be stored. I've re-encoded these videos to be smaller while keeping the same quality."
+          },
+          {
+            "type": "p",
+            "text": "Here's a friendly fox I found - I've cycled through the various settings so you can see how they work."
+          },
+          {
+            "type": "p",
+            "text": "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Fox1.mp4"
+          },
+          {
+            "type": "p",
+            "text": "Again, as with the photos, there's no metadata and the datetime is burned in. Here are a couple of cats playing around in the park."
+          },
+          {
+            "type": "p",
+            "text": "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Cat1.mp4"
+          },
+          {
+            "type": "p",
+            "text": "Twisting the lens allows you to adjust the focus - it is really impressive the amount of detail it can pick up."
+          },
+          {
+            "type": "p",
+            "text": "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Cat2-Focus.mp4"
+          },
+          {
+            "type": "p",
+            "text": "There's no video stabilisation (use the tripod mount if you need it) and there's no audio."
+          },
+          {
+            "type": "h3",
+            "text": "RTSP"
+          },
+          {
+            "type": "p",
+            "text": "You can also stream the video to a computer, VLC, or anything else which will take an RTSP stream."
+          },
+          {
+            "type": "p",
+            "text": "The URl will be rtsp://[IP Address]:8554/ch0 - that will get you a 20fps stream of exactly what the camera is seeing."
+          },
+          {
+            "type": "h2",
+            "text": "Range and Detection"
+          },
+          {
+            "type": "p",
+            "text": "It reckons it'll detect a human's heat signature from around 900 metres away."
+          },
+          {
+            "type": "p",
+            "text": "There are several modes which will let you see more or less detail. That's particularly important if you're just interested in the hottest part of the image, or if you need to photograph something against a relatively warm background."
+          },
+          {
+            "type": "h2",
+            "text": "The App"
+          },
+          {
+            "type": "p",
+            "text": "This'll pair with your Android phone using the Thermal Masters app. It's a bit of a beast - around 200MB. That's because it's the same app for all their cameras and contains PDFs for several different models. Despite the relatively high download numbers, it has zero reviews."
+          },
+          {
+            "type": "p",
+            "text": "Like lots of software from hardware manufacturers, the app is basic but serviceable. It connects to your DV2 via WiFi. You can either be on the same network or connect the camera to your phone's hotspot."
+          },
+          {
+            "type": "p",
+            "text": "Looking through the app's code, it appears to use OpenCV, ffmpeg, and some other popular Open Source libraries. Sadly, the required attribution is missing."
+          },
+          {
+            "type": "p",
+            "text": "The app is great for monitoring the camera, you can zoom in on the image and fiddle with some of the settings. But you can't actually trigger a photo or video recording! That's a bit annoying."
+          },
+          {
+            "type": "h2",
+            "text": "Linux"
+          },
+          {
+            "type": "p",
+            "text": "For our penguin powered friends, this shows up as 1f3a:1000 \"Allwinner Technology Prestigio PER3464B ebook reader (Mass storage mode)\". It's a basic drive which lets you copy the media back to your computer via USB-C. Easy as."
+          },
+          {
+            "type": "h2",
+            "text": "Comparison"
+          },
+          {
+            "type": "p",
+            "text": "So how does it compare to the Topdon TS004 Thermal Camera? The Topdon is also marketed at the bird-spotting crowd and, on the surface, has fairly similar features."
+          },
+          {
+            "type": "p",
+            "text": "The most obvious difference is the user interface. The TS004 is a Monocular - so you need to shove your eye into the end to see anything."
+          },
+          {
+            "type": "p",
+            "text": "With the DV2, you've got a big screen to look at - which is generally much more pleasant. That display of the DV2 is a touchscreen which makes it pretty easy to interact with - whereas with the TS004 you have to repeatedly mash buttons to change any settings."
+          },
+          {
+            "type": "p",
+            "text": "In terms of resolution, both have a standard 256×192 sensor. The upscaling on the DV2 is good - but doesn't fundamentally change how much thermal information there is."
+          },
+          {
+            "type": "p",
+            "text": "But it is the thoughtful little extras which make the DV2 useful. There's a built-in laser pointer which is useful for working out exactly what you're aiming at. At the bottom is a standard tripod mount, so you can rig it up somewhere to monitor an area."
+          },
+          {
+            "type": "p",
+            "text": "Slightly bizarrely, it comes with an optional Picatinny Rail adaptor. That screws into the side of your DV2 and allows you to add firearm accessories! So if you ever wanted to add a sniper scope to your thermal camera…"
+          },
+          {
+            "type": "p",
+            "text": "Alright, a regular range-finder will also attach to it 😆"
+          },
+          {
+            "type": "p",
+            "text": "The battery is a bit of an odd one. You can physically remove the battery and place it in its own USB charger. The battery is a 1INR22/71 which is a chunky beast. The charger comes with two slots (although only one battery is included) so you can quick-swap to a full battery if you need to. There is a USB-C port on the bottom, if you want to charge it the normal way."
+          },
+          {
+            "type": "p",
+            "text": "With the TS004, the only way to stream video was via the app. The DV2 will connect to any WiFi network and present an RTSP stream. \nThe built in WiFi is useful for grabbing firmware updates."
+          },
+          {
+            "type": "p",
+            "text": "The DV2 also suffers a little from the lack of a trigger button for taking photos. When held in the hand, it feels natural to click the button under the thumb finger - instead, that toggles the laser. Taking a photo means tapping away on the screen to get to a sub-menu. Annoyingly, your phone can't be used as a remote control."
+          },
+          {
+            "type": "p",
+            "text": "One thing in the TS004's advantage - it's lens cap is attached to the body of the unit. The DV2's is a separate rubber cap which comes off completely. Best remember to stick it in the supplied carrying case, eh?"
+          },
+          {
+            "type": "p",
+            "text": "The TS004 also has built-in animal recognition. It can detect heat signatures and tell you if they're a bird or a human. However, it always misidentified English foxes as Wild Boars! So was of limited use."
+          },
+          {
+            "type": "p",
+            "text": "The DV2 uses AI to upscale the quality of the images rather than trying to detect what it is actually looking at."
+          },
+          {
+            "type": "p",
+            "text": "In general, the DV2 is easier to use and produces seemingly better quality media. But having to tap the screen multiple times to take a photo or video is slightly annoying."
+          },
+          {
+            "type": "h2",
+            "text": "Price"
+          },
+          {
+            "type": "p",
+            "text": "All the infrared cameras I've reviewed have been expensive. This one is no different. At the moment it is in stock for £459."
+          },
+          {
+            "type": "p",
+            "text": "You can use the code THERMBIRD10 for 10% off at the official store or from Amazon.com."
+          },
+          {
+            "type": "p",
+            "text": "That's a chunk of change - but you do get a lot of tech for the price. This isn't designed for finding hotspots in your home, it's excels at picking out wildlife - and the screen is big enough for several people to gather round to see what you've spotted."
+          },
+          {
+            "type": "h2",
+            "text": "Final Thoughts"
+          },
+          {
+            "type": "p",
+            "text": "This is one of the better thermal imaging devices that I've reviewed. The large touchscreen makes it so much easier to control than anything else on the market - all the others have squishy rubber buttons. It is mostly a delight to use, if you can put up with the slightly strange process of taking a photo."
+          },
+          {
+            "type": "p",
+            "text": "Thermal cameras are still very expensive - the sensors are low resolution and sometimes flaky. The DV2 does a great job of producing a usable images and videos."
+          },
+          {
+            "type": "p",
+            "text": "The app is no worse than the competition. It really ought to inform users about the use of Open Source code though."
+          },
+          {
+            "type": "p",
+            "text": "The addition of the laser pointer isn't as gimmicky as I'd thought. I've no use for the Picatinny attachment, but I can see how it could be useful."
+          },
+          {
+            "type": "p",
+            "text": "If you want to go wildlife spotting, this is probably the device to get. It captures an incredible amount of detail and is excellent at picking up the faintest heat signatures."
+          }
+        ],
+        "translations": [
+          "Thermal Master 的好心人寄给我一台他们的 DV2 相机进行评测。顾名思义，这是一款热成像/红外相机——他们专门为观鸟和寻找动物而设计了这款产品。让我们好好测试一番，看看它与竞品相比表现如何！",
+          "一眼就能看出它与普通的红外相机不同——后者通常配备小巧的固定屏幕和橡胶按键界面。而这款相机配备了一块华丽的触摸屏，既能显示热成像画面，也能用于控制相机。屏幕亮度足以在白天阳光下清晰可见，同时你也可以调低亮度，使其更适合夜间观察。",
+          "好了，废话不多说，开始拍照吧！",
+          "照片",
+          "以下是用这款相机在我附近拍摄的一些野生动物照片。我没有对这些图像进行任何编辑，它们就是相机直出的效果。",
+          "分辨率为 512x384。没有 EXIF 元数据——因此也没有位置信息。",
+          "画面中也没有热力梯度，因此你无法看到物体的确切温度。这款相机是为寻找动物而设计的，而不是用来测量电子设备的温度。日期时间会烧录在图像上，但可以关闭。",
+          "它几乎能够完全消除天空背景的“噪声”——这使得它非常适合用来发现飞行中的物体。",
+          "每张照片的文件大小约为 20KB。因此，在约 32GB 的内部存储空间中可以存放超过一百万张图像。数码变焦最高可达 8 倍。",
+          "视频",
+          "静态图像并不能完全展现它的实力。它还可以拍摄视频。这能让你大致了解在触摸屏上会看到怎样的效果。",
+          "视频分辨率与照片相同——512x384——帧率为 30fps。文件大小约为每分钟 40MB。因此大约可以存储 12 小时的视频片段。我已将这些视频重新编码以减小体积，同时保持画质不变。",
+          "这是我发现的一只友善的狐狸——我切换了各种设置，以便你了解它们的效果。",
+          "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Fox1.mp4",
+          "同样，和照片一样，视频没有元数据，日期时间也是烧录在画面上的。这是几只在公园里玩耍的猫。",
+          "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Cat1.mp4",
+          "旋转镜头可以调节焦距——它能捕捉到的细节量确实令人印象深刻。",
+          "https://shkspr.mobi/blog/wp-content/uploads/2026/07/Cat2-Focus.mp4",
+          "没有视频防抖功能（如果需要可以使用三脚架接口），也没有音频。",
+          "RTSP",
+          "你还可以将视频流传输到计算机、VLC 或任何其他支持 RTSP 流的设备上。",
+          "URL 将会是 rtsp://[IP Address]:8554/ch0——这将为你提供 20fps 的实时画面流，与相机看到的完全一致。",
+          "范围与探测",
+          "据称它能在约 900 米外探测到人类的热信号。",
+          "它有几种模式可以让你看到不同程度细节。如果你只对图像中最热的部分感兴趣，或者需要在相对温暖的背景下拍摄物体，这一点尤为重要。",
+          "应用程序",
+          "它可以通过 Thermal Masters 应用程序与你的 Android 手机配对。这个应用体积有点大——大约 200MB。这是因为它是他们所有相机共用的应用程序，并且包含了几种不同型号的 PDF 文档。尽管下载量相对较高，但它的评价数为零。",
+          "就像许多硬件制造商开发的软件一样，这款应用程序虽然基础但很实用。它通过 WiFi 连接到你的 DV2。你可以让手机和相机处于同一网络，或者将相机连接到手机的热点。",
+          "浏览该应用的代码，它似乎使用了 OpenCV、ffmpeg 以及其他一些流行的开源库。遗憾的是，缺少了必要的版权声明。",
+          "这款应用非常适合用来监控摄像头，你可以放大图像并调整一些设置。但你实际上无法触发拍照或录像！这有点烦人。",
+          "Linux",
+          "对于我们的 Linux 用户来说，它显示为 1f3a:1000 \"Allwinner Technology Prestigio PER3464B ebook reader (Mass storage mode)\"。这是一个基础驱动器，允许你通过 USB-C 将媒体文件复制回电脑。非常简单。",
+          "对比",
+          "那么它与 Topdon TS004 热成像仪相比如何呢？Topdon 同样面向观鸟人群，表面上看，两者的功能相当相似。",
+          "最明显的区别在于用户界面。TS004 是单筒望远镜式的——所以你需要把眼睛贴在末端才能看到画面。",
+          "使用 DV2 时，你有一个大屏幕可以观看——这通常要舒适得多。DV2 的显示屏是触摸屏，交互起来非常方便——而使用 TS004 时，你必须反复按压按键才能更改任何设置。",
+          "在分辨率方面，两者都配备了标准的 256×192 传感器。DV2 的图像放大效果不错——但并没有从根本上改变热信息的总量。",
+          "但正是这些贴心的小细节让 DV2 变得实用。它有一个内置的激光指示器，有助于准确判断你的瞄准目标。底部是标准的三脚架安装孔，因此你可以把它架在某处来监控一个区域。",
+          "稍微有点奇怪的是，它附带了一个可选的 Picatinny Rail（皮卡汀尼导轨）适配器。这个适配器可以拧在 DV2 的侧面，让你能够添加枪械配件！所以如果你曾想在热成像仪上加装一个狙击瞄准镜的话……",
+          "好吧，普通的测距仪也能装上去 😆",
+          "电池的设计有点奇怪。你可以将电池物理拆下并放入其专用的 USB 充电器中。电池型号为 1INR22/71，是个大家伙。充电器有两个插槽（虽然只附带一块电池），这样你就可以在需要时快速更换满电的电池。如果你想要用常规方式充电，底部还有一个 USB-C 接口。",
+          "对于 TS004，传输视频的唯一方式是通过应用程序。而 DV2 可以连接到任何 WiFi 网络并提供 RTSP 流。内置的 WiFi 对于获取固件更新也很有用。",
+          "DV2 也有一点不足，那就是缺少用于拍照的快门按钮。拿在手里时，按下拇指下方的按钮感觉很自然——但那个按钮其实是切换激光的。拍照意味着要在屏幕上点按进入子菜单。令人烦恼的是，你的手机也不能用作遥控器。",
+          "TS004 的一个优势是——它的镜头盖连接在机身本体上。而 DV2 的镜头盖是一个独立的橡胶盖，会完全脱落。最好记得把它塞进附带的便携包里，对吧？",
+          "TS004 还具有内置的动物识别功能。它可以检测热特征并告诉你它们是鸟类还是人类。然而，它总是把英国的狐狸误认成野猪！所以用处有限。",
+          "DV2 利用 AI 来提升图像质量，而不是试图检测它实际看到的是什么。",
+          "总的来说，DV2 更容易使用，并且能生成看似质量更好的媒体文件。但是必须多次点击屏幕才能拍照或录像，这稍微有点烦人。",
+          "价格",
+          "我评测过的所有红外相机都很昂贵，这款也不例外。目前现货售价为459英镑。",
+          "在官方商店或Amazon.com购买时，可使用代码THERMBIRD10享受9折优惠。",
+          "这确实是一笔不小的开销——但就这个价格而言，它的技术含量确实很高。它并非专为寻找家中的热源而设计，而是擅长发现野生动物——而且屏幕足够大，能让几个人围在一起观看你的发现。",
+          "总结",
+          "这是我评测过的较为优秀的热成像设备之一。大尺寸触摸屏使其比市面上的其他任何设备都更容易操作——其他设备用的都是软塌塌的橡胶按键。如果你能忍受稍微有些奇怪的拍照过程，它用起来总体上还是很令人愉悦的。",
+          "热像仪目前依然非常昂贵——传感器分辨率低且有时不太稳定。不过，DV2在生成可用的图像和视频方面表现出色。",
+          "配套App的表现不逊于竞品。不过，它确实应该向用户告知其使用了开源代码。",
+          "激光指示器的加入并不像我原先以为的那样只是个噱头。我用不上Picatinny导轨附件，但我能理解它对某些人的用处。",
+          "如果你想去观察野生动物，这大概是最值得入手的设备。它能捕捉到令人惊叹的细节，并且在捕捉极其微弱的热信号方面表现卓越。"
+        ]
+      }
+    },
+    {
+      "slug": "cc4c010d093a1a3d",
+      "title": "Intel founded July 18, 1968",
+      "titleZh": "英特尔成立于1968年7月18日",
+      "link": "https://dfarq.homeip.net/intel-founded-july-18-1968/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=intel-founded-july-18-1968",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-07-16T11:00:06.000Z",
+      "category": "other",
+      "keywords": [
+        "Intel",
+        "history",
+        "semiconductor"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 4,
+        "timeliness": 3,
+        "total": 11
+      },
+      "summary": "英特尔于1968年7月18日正式成立，由半导体先驱戈登·摩尔（摩尔定律提出者）和罗伯特·诺伊斯以及投资人阿瑟·洛克共同创立。公司的第3号员工是安德鲁·格鲁夫。摩尔、诺伊斯和格鲁夫这三位核心人物此前均曾在仙童半导体共事。文章回顾了这家半导体巨头的创立历程及其创始团队的深厚行业背景。",
+      "summaryEn": "Intel was officially founded on July 18, 1968, by semiconductor pioneers Gordon Moore (of Moore's Law fame) and Robert Noyce, along with investor Arthur Rock. The company's employee #3 was Andrew Grove. Moore, Noyce, and Grove had all previously worked together at Fairchild Semiconductor. The article reviews the founding history of this semiconductor giant and the deep industry background of its core founding team.",
+      "reason": "简明扼要地梳理了英特尔创始团队的渊源，是了解硅谷早期半导体发展史的快速读物。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Intel was founded July 18, 1968, by semiconductor pioneers Gordon Moore (of Moore’s law fame) and Robert Noyce and investor Arthur Rock. Intel’s employee #3 was Andrew Grove. Moore, Noyce, and Grove had all worked together at Fairchild Semiconductor in the mid 1960s."
+          },
+          {
+            "type": "p",
+            "text": "The name “Intel” means INTegrated ELectronics. Moore and Noyce didn’t want to name the company after themselves, as it would sound like “more noise.” With noise being an undesired property in electronics, they initially chose the name NM Electronics, using their initials, but changed the name to Intel less than two weeks after its founding. Intel was already a trademark of a hotel chain, so the young company bought the rights to the name."
+          },
+          {
+            "type": "h2",
+            "text": "Intel’s IPO"
+          },
+          {
+            "type": "p",
+            "text": "Intel held its IPO on October 13, 1971, raising $6.8 million, or $23.50 per share. It was the very first company on the NASDAQ, a stock market known mostly for technology firms."
+          },
+          {
+            "type": "p",
+            "text": "Intel played a large role in the rise of Silicon Valley as a high-tech center. Initially Intel was an early developer of SRAM and DRAM memory chips, and that represented the majority of its business until 1981. Although the company created the world’s first commercial microprocessor chip–the Intel 4004–in 1971, it was not until the widespread success of the PC in the early 1990s that CPUs became its primary business. Intel produced CPUs somewhat reluctantly at first, getting into them primarily out of a hope that inexpensive CPUs would help them sell more memory chips."
+          },
+          {
+            "type": "h2",
+            "text": "The transformation into a CPU company"
+          },
+          {
+            "type": "p",
+            "text": "By 1974 Intel had developed the 8-bit 8008 and quickly thereafter, in 1975, the 8080 processor. The 8080 became the core of the Altair, the product that launched the microcomputer revolution. Soon after came the 8086 16-bit microprocessor and a cost-reduced version, the 8088, which IBM chose for its IBM PC. In 1985, Intel produced the 32-bit 80386 microprocessor which began a long line of increasingly powerful microprocessors including the 80486, the Pentium, and a wide variety of supporting integrated circuits and computers built with them. The PC’s popularity turned x86 into a de facto standard."
+          },
+          {
+            "type": "p",
+            "text": "With the 386 generation, Intel made the decision to stop second-sourcing its CPUs, becoming a sole source instead. This corresponded with then-CEO Gordon Moore deciding to shift focus to CPUs from memory devices in the face of stiff competition from Japanese RAM manufacturers."
+          },
+          {
+            "type": "p",
+            "text": "With the inability to second-source the designs, other companies started to clone them. Intel litigated most of these early companies, such as Chips & Technologies and UMC, out of the market. Keeping upstarts out during the 486 and Pentium generation proved more difficult, but eventually the Pentium maker was able to use patents to eliminate essentially all but AMD. Yes, Zhaoxin exists selling chips in the Chinese market, but that’s largely for political reasons, not technical."
+          },
+          {
+            "type": "h2",
+            "text": "Intel Inside"
+          },
+          {
+            "type": "p",
+            "text": "The other hallmark of Intel’s glory days was its marketing. It positioned itself as a premium brand, telling you to look for their sticker, and sowing doubt on other chipmakers. It was effective. I worked places who for years wouldn’t even consider an AMD processor, never mind that in the days before CPUs, the conventional processor designs in enterprise-grade minicomputers like the DEC PDP-11 and VAX were full of discrete logic chips made by AMD and AMD 2900-series ALUs. And AMD was a reliable second source for IBM throughout the 1980s, not just for CPUs, but for virtually every other chip on the motherboard."
+          },
+          {
+            "type": "p",
+            "text": "But AMD couldn’t afford to advertise, so they fell to off-brand status even though there was absolutely nothing wrong with the compatibility or reliability of their chips. Even the notorious Pentium FDIV bug did little to tarnish Intel’s reputation as the premium brand in the 1990s."
+          },
+          {
+            "type": "p",
+            "text": "Today there’s less perception that there’s something wrong with buying AMD chips, largely because AMD executed with the Athlon 64 generation, then executed again on the Ryzen generation, keeping pace with Intel on performance and power consumption and sometimes exceeding them, because Intel’s lead in chip fabrication processes has eroded over time. There are still people who regard them as a premium brand and buy Intel out of habit. But the days of seeing Intel as the only choice seem to be waning, and it’s reflected in the company’s share price."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "Intel 成立于 1968 年 7 月 18 日，由半导体先驱 Gordon Moore（以摩尔定律闻名）和 Robert Noyce 以及投资人 Arthur Rock 共同创立。Intel 的第三号员工是 Andrew Grove。Moore、Noyce 和 Grove 在 20 世纪 60 年代中期都曾在 Fairchild Semiconductor 共事。",
+          "“Intel”这个名字代表 INTegrated ELectronics（集成电子学）。Moore 和 Noyce 不想以自己的名字命名公司，因为这听起来像“more noise”（更多噪音）。由于噪音在电子学中是不受欢迎的特性，他们最初选择使用各自首字母的 NM Electronics 作为公司名，但在成立不到两周后就改名为 Intel。Intel 当时已经是一家连锁酒店的商标，因此这家年轻的公司买下了该名称的使用权。",
+          "Intel 的 IPO",
+          "Intel 于 1971 年 10 月 13 日进行 IPO，筹集了 680 万美元，每股 23.50 美元。它是 NASDAQ（一家以科技公司闻名的股票市场）上的第一家上市公司。",
+          "Intel 在硅谷崛起为高科技中心的过程中发挥了重要作用。最初，Intel 是 SRAM 和 DRAM 内存芯片的早期开发者，直到 1981 年，这部分业务一直占其业务的绝大部分。尽管该公司在 1971 年创造了世界上第一款商用微处理器芯片——Intel 4004，但直到 20 世纪 90 年代初 PC 取得广泛成功后，CPU 才成为其主要业务。Intel 最初生产 CPU 时有些勉强，涉足该领域主要是希望廉价的 CPU 能帮助他们卖出更多的内存芯片。",
+          "转型为 CPU 公司",
+          "到 1974 年，Intel 开发了 8 位的 8008，随后很快在 1975 年推出了 8080 处理器。8080 成为 Altair 的核心，而 Altair 正是开启微型计算机革命的产品。不久之后，16 位微处理器 8086 及其降本版本 8088 问世，IBM 选择了 8088 用于其 IBM PC。1985 年，Intel 生产了 32 位的 80386 微处理器，开启了一系列日益强大的微处理器之路，包括 80486、Pentium 以及各种配套的集成电路和采用这些芯片的计算机。PC 的普及使 x86 成为事实上的标准。",
+          "到了 386 时代，Intel 决定停止将其 CPU 进行第二来源授权，转而成为唯一供应商。这与时任 CEO Gordon Moore 在面对日本 RAM 制造商的激烈竞争时，决定将重点从存储设备转向 CPU 的举措相呼应。",
+          "由于无法获得设计的第二来源授权，其他公司开始克隆这些设计。Intel 通过诉讼将大多数早期克隆公司（如 Chips & Technologies 和 UMC）赶出了市场。在 486 和 Pentium 时代，阻止新贵公司进入市场变得更加困难，但最终这家 Pentium 制造商能够利用专利将除 AMD 之外的所有竞争对手基本清除。是的，Zhaoxin 确实存在并在中国市场销售芯片，但这很大程度上是出于政治原因，而非技术原因。",
+          "Intel Inside",
+          "Intel 辉煌时期的另一个标志是其营销策略。它将自己定位为高端品牌，告诉你要认准他们的贴纸，并对其他芯片制造商散布疑虑。这很有效。我工作过的一些地方多年来甚至不考虑使用 AMD 处理器，更不用说在 CPU 出现之前的日子里，像 DEC PDP-11 和 VAX 这样的企业级小型计算机中的传统处理器设计，里面装满了由 AMD 制造的分立逻辑芯片和 AMD 2900 系列 ALU。而且在整个 20 世纪 80 年代，AMD 都是 IBM 可靠的第二供应商，不仅提供 CPU，还提供主板上几乎所有其他芯片。",
+          "但 AMD 负担不起广告费用，因此他们沦为了杂牌地位，尽管其芯片的兼容性或可靠性绝对没有任何问题。即使是臭名昭著的 Pentium FDIV bug，在 20 世纪 90 年代也几乎没有损害 Intel 作为高端品牌的声誉。",
+          "如今，认为购买 AMD 芯片有问题的观念已经减少，这在很大程度上是因为 AMD 在 Athlon 64 一代表现出色，随后又在 Ryzen 一代再次发力，在性能和功耗上与 Intel 保持同步，有时甚至超越他们，因为 Intel 在芯片制造工艺上的领先优势随着时间的推移已经逐渐削弱。仍然有人将其视为高端品牌并出于习惯购买 Intel。但将 Intel 视为唯一选择的日子似乎正在消退，这也反映在公司的股价上。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。他从 1991 年开始专业撰写关于计算机的文章，因此当复古计算机还是新事物时，他就在写关于它们的内容了。他从 1994 年开始从事专业的 IT 工作，并自 2013 年起专门从事漏洞管理。他拥有 Security+ 和 CISSP 认证。如今他每周写五次博客，主要关注 1975 年至 2000 年期间的复古计算机和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
