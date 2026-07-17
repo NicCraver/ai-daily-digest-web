@@ -1,0 +1,1762 @@
+{
+  "date": "2026-07-18",
+  "generatedAt": "2026-07-17T17:22:19.180Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 84,
+    "totalArticles": 2522,
+    "filteredArticles": 24,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦于科技巨头间的法律博弈与AI生态的矛盾演进。苹果与OpenAI的商业机密诉讼持续发酵，双方围绕沟通细节各执一词；同时谷歌与Epic达成和解，第三方安卓应用商店即将上线，移动生态格局迎来重塑。在AI领域，月之暗面发布开源3T级别Kimi K3模型挑战参数规模，但OpenAI的Codex工具频发Bug且推出昂贵硬件引发争议，更有浏览器开始默认禁用AI搜索概览，折射出业界对AI过度介入的反思与反制。",
+  "articles": [
+    {
+      "slug": "546beebc58383239",
+      "title": "Kimi K3, and what we can still learn from the pelican benchmark",
+      "titleZh": "Kimi K3，以及我们仍能从鹈鹕基准测试中学到什么",
+      "link": "https://simonwillison.net/2026/Jul/16/kimi-k3/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T20:19:30.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Kimi K3",
+        "Moonshot AI",
+        "LLM",
+        "benchmark"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "中国AI实验室月之暗面发布了拥有2.8万亿参数的Kimi K3模型，号称是首个“开源3T级别模型”。该模型目前可通过网站和API访问，并承诺在2026年7月27日前开放权重。文章探讨了该模型在pelican基准测试中的表现及其带来的启示。作者认为，尽管参数量惊人，但基准测试仍能揭示模型在实际应用中的真实能力。",
+      "summaryEn": "Chinese AI lab Moonshot AI announced Kimi K3, a 2.8 trillion parameter model described as the first \"open 3T-class model\". It is currently available via website and API, with an open weight release promised by July 27, 2026. The article discusses the model's performance on the pelican benchmark and the insights we can still draw from it. The author suggests that despite the massive parameter count, benchmarks still reveal the model's true capabilities in practical applications.",
+      "reason": "了解最新超大规模开源AI模型的发布动态及其在基准测试中的真实表现。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th July 2026"
+          },
+          {
+            "type": "p",
+            "text": "Chinese AI lab Moonshot AI announced Kimi K3 this morning, describing it as their “most capable model to date, with 2.8 trillion parameters”. It’s currently available via their website and API, but an open weight release is promised “by July 27, 2026”."
+          },
+          {
+            "type": "p",
+            "text": "Moonshot are calling this the first “open 3T-class model” (I guess they’re rounding 2.8 trillion up to 3 trillion), taking the crown from DeepSeek’s 1.6T v4 Pro. Their self-reported benchmarks have K3 mostly beating Claude Opus 4.8 max and GPT-5.5 high, while losing out to Claude Fable 5 and GPT-5.6 Sol."
+          },
+          {
+            "type": "p",
+            "text": "A few highlights from the Artificial Analysis report on the model:"
+          },
+          {
+            "type": "li",
+            "text": "“On our private long-horizon knowledge work evaluation, Kimi K3 reaches an overall Elo of 1547, +732 points from Kimi K2.6 and behind only Claude Fable 5.”"
+          },
+          {
+            "type": "li",
+            "text": "“Cost per task ($0.94) is similar to GPT-5.6 Sol ($1.04), ~1/2 the price of Opus 4.8 ($1.80) and higher than open weights peers”"
+          },
+          {
+            "type": "li",
+            "text": "“Kimi K3’s token usage on the Artificial Analysis Intelligence Index decreased significantly, using 21% fewer output tokens than K2.6.”"
+          },
+          {
+            "type": "p",
+            "text": "The model is also now the leading model on Arena.ai’s Frontend Code arena, surpassing even Claude Fable 5."
+          },
+          {
+            "type": "p",
+            "text": "The new model is notable for the pricing: $3/million input tokens and $15/million output tokens, putting it at the same level as Anthropic’s Claude Sonnet series and making it the most expensive model released by a Chinese AI lab to date. This is a significant increase on their earlier models such as Kimi K2.6 at $0.95/$4. 2.8 trillion parameters is also more than twice the size of that 1T model."
+          },
+          {
+            "type": "h3",
+            "text": "But how does it pelican?"
+          },
+          {
+            "type": "p",
+            "text": "I used OpenRouter (to avoid signing up for a Moonshot API key) with the llm-openrouter plugin to generate an SVG of a pelican riding a bicycle:"
+          },
+          {
+            "type": "code",
+            "text": "llm -m openrouter/moonshotai/kimi-k3 'Generate an SVG of a pelican riding a bicycle'"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the transcript. It looks like this:"
+          },
+          {
+            "type": "p",
+            "text": "That pelican took 95 input tokens and 16,658 output tokens (13,241 were reasoning tokens), for a total cost of 25 cents!"
+          },
+          {
+            "type": "p",
+            "text": "Since K3 accepts image input I ran it against that rendered SVG above (with my alt text prompt) and got back (for 0.6 cents):"
+          },
+          {
+            "type": "quote",
+            "text": "Cartoon illustration of a white pelican wearing a red scarf, riding a red bicycle along a gray road with white dashed lines; the pelican has a large orange beak and webbed orange feet pedaling, with white motion lines behind it; the background shows a light blue sky with white clouds, a yellow sun, two small black birds in flight, and green grass with tiny white flowers in the foreground"
+          },
+          {
+            "type": "h3",
+            "text": "What can we learn from the pelican?"
+          },
+          {
+            "type": "p",
+            "text": "My Generate an SVG of a pelican riding a bicycle test is 21 months old now. It was never a particularly great benchmark. It started out as a joke on how absurdly difficult it is to compare these models, but then for the first year it turned out to have a surprising correlation to how good the models actually were."
+          },
+          {
+            "type": "p",
+            "text": "That connection has been mostly severed now. The GPT-5.6 and Claude Fable 5  pelicans are outclassed by GLM-5.2, and much as I love GLM I don’t think that’s a Fable-class model."
+          },
+          {
+            "type": "p",
+            "text": "(I’m still not convinced that labs are training for the benchmark—if they were, I’d expect much better results. There’s a chance that Gemini has optimized for any combination of an animal on a vehicle though!)"
+          },
+          {
+            "type": "p",
+            "text": "The biggest limitation of the pelican is that it doesn’t touch at all on the thing that matters most for today’s model: agentic tool calling and the ability to operate tools reliably as conversations grow in length."
+          },
+          {
+            "type": "p",
+            "text": "So don’t go using pelicans to compare models!"
+          },
+          {
+            "type": "p",
+            "text": "All of that said, I still get a decent amount of value out of running the benchmark myself."
+          },
+          {
+            "type": "p",
+            "text": "Firstly, it’s a forcing function for actually trying the model. If I show you a pelican, that means I’ve managed to run a prompt through it. If the model has an official API I’ll use that, if it’s open weight (and small enough to fit a 128GB M5 MacBook Pro) I’ll try running it on my own machine, usually via llama.cpp or LM Studio or Ollama. I’ll frequently use OpenRouter since that usually provides a proxy to an official API without me needing a new API key."
+          },
+          {
+            "type": "p",
+            "text": "Most of my pelicans are generated using my LLM CLI tool, which helps encourage me to ensure the latest models are supported by that (via one of its plugins)."
+          },
+          {
+            "type": "p",
+            "text": "More importantly though, even the act of a single prompt to “Generate an SVG of a pelican riding a bicycle” can reveal interesting model characteristics."
+          },
+          {
+            "type": "p",
+            "text": "Consider the result for Kimi K3 today. Running those simple prompts helped emphasize several points about the model."
+          },
+          {
+            "type": "li",
+            "text": "It only has one reasoning effort right now, “max”—and it shows. The model consumed 13,241 reasoning tokens to output 3,417 tokens of response. This is expensive—the pelican cost 25 cents!"
+          },
+          {
+            "type": "li",
+            "text": "How does the prompt “Generate an SVG of a pelican riding a bicycle” add up to 95 input tokens?  OpenAI’s tokenizer  counts 10, Anthropic’s counts 10 for Opus 4.6, 30 for Opus 4.7 and 25 for Sonnet 5/Fable 5. Prompting “hi” to Kimi K3 counted 86 tokens, suggesting there may be an 85 token hidden system prompt. It refused to leak it though."
+          },
+          {
+            "type": "li",
+            "text": "Vision works well: the alt text it generated is very good."
+          },
+          {
+            "type": "p",
+            "text": "K3 currently only has one thinking effort level, but I’ve been deriving quite a bit of value recently from running the same pelican prompt through different effort levels to get a quick idea for what impact those have. Here’s my matrix for the GPT-5.6 model family, for example."
+          },
+          {
+            "type": "p",
+            "text": "Really though the main things I gain from the pelican test are:"
+          },
+          {
+            "type": "li",
+            "text": "It’s a “hello world” exercise for prompting a model"
+          },
+          {
+            "type": "li",
+            "text": "A rough cost and reasoning estimate for a simple task"
+          },
+          {
+            "type": "li",
+            "text": "Confirmation that the model can output valid SVG and has a basic idea of geometry and spatial awareness. This is a much bigger deal for the smaller models that run on my laptop."
+          },
+          {
+            "type": "li",
+            "text": "It’s still interesting to compare pelicans between releases in the same model family. K3’s pelican is a notable improvement from Kimi 2.5."
+          },
+          {
+            "type": "li",
+            "text": "It’s something I can share that demonstrates I’ve tried it. Plus a comment with a pelican in it is kind of a tradition on Hacker News at this point, any time I’m late I get comments asking where it is!"
+          }
+        ],
+        "translations": [
+          "2026年7月16日",
+          "中国AI实验室Moonshot AI今早发布了Kimi K3，称其为“迄今为止最强大的模型，拥有2.8万亿参数”。目前可通过其网站和API使用，但承诺“在2026年7月27日之前”发布开放权重版本。",
+          "Moonshot将其称为首个“开放3T级别模型”（我猜他们把2.8万亿四舍五入到了3万亿），从DeepSeek的1.6T v4 Pro手中夺得了桂冠。他们自测的基准测试显示，K3在多数情况下击败了Claude Opus 4.8 max和GPT-5.5 high，但输给了Claude Fable 5和GPT-5.6 Sol。",
+          "Artificial Analysis关于该模型的报告中的几个亮点：",
+          "“在我们的私有长周期知识工作评估中，Kimi K3达到了1547的总Elo分数，比Kimi K2.6高出732分，仅次于Claude Fable 5。”",
+          "“单任务成本（0.94美元）与GPT-5.6 Sol（1.04美元）相近，约为Opus 4.8（1.80美元）价格的一半，且高于其他开放权重同类模型”",
+          "“Kimi K3在Artificial Analysis Intelligence Index上的token使用量显著下降，输出token比K2.6减少了21%。”",
+          "该模型目前也是Arena.ai前端代码竞技场上的领先模型，甚至超越了Claude Fable 5。",
+          "新模型的定价引人注目：每百万输入token 3美元，每百万输出token 15美元，使其与Anthropic的Claude Sonnet系列处于同一水平，并使其成为迄今为止中国AI实验室发布的成本最高的模型。这比他们早期的模型（如Kimi K2.6的0.95美元/4美元）有显著增加。2.8万亿参数也是那个1T模型大小的两倍多。",
+          "但它的“鹈鹕”表现如何？",
+          "我使用OpenRouter（为了避免注册Moonshot API密钥）和llm-openrouter插件生成了一张鹈鹕骑自行车的SVG图像：",
+          "llm -m openrouter/moonshotai/kimi-k3 'Generate an SVG of a pelican riding a bicycle'",
+          "这是记录。它看起来像这样：",
+          "那只鹈鹕消耗了95个输入token和16,658个输出token（其中13,241个是推理token），总成本为25美分！",
+          "由于K3接受图像输入，我用上面渲染的SVG运行了它（带有我的替代文本提示），并得到了以下结果（花费0.6美分）：",
+          "卡通插图，一只戴着红围巾的白色鹈鹕，骑着红色自行车行驶在带有白色虚线的灰色道路上；鹈鹕有巨大的橙色喙和正在踩踏板的橙色蹼足，身后有白色的运动线条；背景是浅蓝色的天空和白云、一轮黄色的太阳、两只飞行中的黑色小鸟，前景是长着细小白花的绿草",
+          "我们能从这只鹈鹕身上学到什么？",
+          "我的“生成一张鹈鹕骑自行车的SVG”测试现在已经有21个月了。它从来就不是一个特别好的基准测试。它最初是个玩笑，吐槽比较这些模型有多么荒谬地困难，但在第一年里，它却出人意料地与模型实际表现的好坏有着惊人的相关性。",
+          "这种联系现在基本上已经断了。GPT-5.6和Claude Fable 5的鹈鹕被GLM-5.2超越了，尽管我很喜欢GLM，但我并不认为它是一个Fable级别的模型。",
+          "（我仍然不相信实验室在针对这个基准测试进行训练——如果是的话，我期望看到好得多的结果。不过，Gemini有可能针对任何动物在交通工具上的组合进行了优化！）",
+          "鹈鹕测试最大的局限性在于，它完全没有触及当今模型最重要的一点：智能体工具调用，以及在对话长度增加时可靠操作工具的能力。",
+          "所以不要用鹈鹕来比较模型！",
+          "尽管如此，我自己运行这个基准测试仍然获得了相当大的价值。",
+          "首先，这是一种强制自己实际试用模型的机制。如果我给你展示了一只鹈鹕，那就意味着我已经成功运行了提示词。如果模型有官方 API，我就会使用它；如果它是开放权重的（并且足够小，能在 128GB M5 MacBook Pro 上运行），我会尝试在自己的机器上运行它，通常是通过 llama.cpp、LM Studio 或 Ollama。我经常使用 OpenRouter，因为它通常能提供官方 API 的代理，而我不需要新的 API 密钥。",
+          "我的大多数鹈鹕都是使用我的 LLM CLI 工具生成的，这促使我确保该工具支持最新的模型（通过它的某个插件）。",
+          "更重要的是，即使是输入单个“生成一只骑自行车的鹈鹕的 SVG”的提示词，也能揭示出模型有趣的特征。",
+          "看看今天 Kimi K3 的结果。运行这些简单的提示词有助于强调该模型的几个特点。",
+          "它目前只有一种推理强度，即“max”——而且很明显。该模型消耗了 13,241 个推理 token 来输出 3,417 个 token 的响应。这很昂贵——生成这只鹈鹕花了 25 美分！",
+          "提示词“Generate an SVG of a pelican riding a bicycle”怎么会算作 95 个输入 token？OpenAI 的分词器计为 10，Anthropic 的分词器对 Opus 4.6 计为 10，对 Opus 4.7 计为 30，对 Sonnet 5/Fable 5 计为 25。向 Kimi K3 输入“hi”计为 86 个 token，这表明可能存在一个 85 个 token 的隐藏系统提示词。不过它拒绝泄露该提示词。",
+          "视觉能力表现良好：它生成的替代文本非常出色。",
+          "K3 目前只有一种思考强度级别，但我最近通过在不同的强度级别下运行相同的鹈鹕提示词，获得了相当大的价值，这能让我快速了解这些级别产生的影响。例如，这是我为 GPT-5.6 模型家族制作的矩阵。",
+          "不过，我从鹈鹕测试中获得的主要是以下几点：",
+          "这是提示模型的“hello world”练习",
+          "对简单任务的粗略成本和推理估算",
+          "确认模型能够输出有效的 SVG，并且对几何和空间感知有基本概念。对于在我的笔记本电脑上运行的较小模型来说，这一点更为重要。",
+          "比较同一模型家族不同版本之间的鹈鹕仍然很有趣。K3 的鹈鹕比 Kimi 2.5 有了显著改进。",
+          "这是我可以分享的东西，证明我已经试用过了。此外，在 Hacker News 上，带有鹈鹕的评论在某种程度上已经成为一种传统，只要我发晚了，就会收到评论问鹈鹕在哪！"
+        ]
+      }
+    },
+    {
+      "slug": "db49489417055526",
+      "title": "Google and Epic Give Up Fighting — Third-Party Android App Stores Are Coming Next Week",
+      "titleZh": "谷歌与Epic放弃争斗——第三方安卓应用商店下周上线",
+      "link": "https://www.theverge.com/policy/965792/google-epic-withdraw-injunction-third-party-app-stores-coming-google-play?view_token=eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IkZpdmhlVXFoV0giLCJwIjoiL3BvbGljeS85NjU3OTIvZ29vZ2xlLWVwaWMtd2l0aGRyYXctaW5qdW5jdGlvbi10aGlyZC1wYXJ0eS1hcHAtc3RvcmVzLWNvbWluZy1nb29nbGUtcGxheSIsImV4cCI6MTc4NDczNTA1NSwiaWF0IjoxNzg0MzAzMDU1fQ.zPHCDeRVkCOK73sdt6bKC2evAofTI582EsJ0N-rk79g",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-17T15:53:16.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Google",
+        "Epic",
+        "Android",
+        "app store"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "谷歌与Epic Games达成协议，撤回了对法官永久禁令的修改动议，结束了长期的诉讼战。谷歌发言人表示，此举是为了避免给生态系统带来不确定性，并专注于执行其新宣布的全球商业模式演进。这意味着第三方安卓应用商店将于下周正式上线，为用户提供更多选择。这一决定标志着安卓应用分发格局的重大转变。",
+      "summaryEn": "Google and Epic Games have agreed to withdraw Google's motion to modify Judge Donato's permanent injunction, ending their prolonged legal battle. Google stated that this move avoids creating uncertainty for the ecosystem and allows them to focus on evolving their global business model. Consequently, third-party Android app stores will be available starting next week, offering users more choices. This decision marks a significant shift in the Android app distribution landscape.",
+      "reason": "见证安卓生态应用分发规则的历史性改变及第三方应用商店的解禁。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Sean Hollister",
+        "siteName": "The Verge",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Epic Games and Google have just jointly withdrawn their attempt to retroactively settle the lawsuit that’s changing how Android app stores work in the United States — and that means Google will be forced to carry rival app stores inside of its own. In fact, Google tells the court, it’s ready to begin carrying third-party app stores on Wednesday, July 22nd. Does that mean it’s time for Microsoft to launch an Xbox game store on Android?"
+          },
+          {
+            "type": "p",
+            "text": "In October 2024, Judge James Donato originally agreed that forcing Google to carry rival Android app stores within its own Google Play store for several years, and forcing it to share its own entire catalog of apps with those stores, would be the best way of undoing the company’s illegal monopoly over Android applications. Google has been fighting that ever since, and eventually convinced Epic to join in, by settling all their legal disputes around the world and making a secret $800 million deal along the way."
+          },
+          {
+            "type": "p",
+            "text": "But Judge James Donato was skeptical he should abandon his original permanent injunction in favor of Google’s proposed “Registered App Stores” that users would have to sideload — instead of simply downloading third-party stores directly through Google Play. On Thursday, July 16th, both parties were set to appear in court to argue it again, but that may no longer be necessary."
+          },
+          {
+            "type": "p",
+            "text": "Here’s Google’s full statement on withdrawing its proposed modifications to Judge Donato’s permanent injunction, via Google spokesperson Dan Jackson:"
+          },
+          {
+            "type": "quote",
+            "text": "We’ve agreed with Epic to withdraw our motion to modify the US Court’s injunction rather than prolonging this process which creates uncertainty for the ecosystem. This allows us to focus on executing our recently announced global business model evolution to deliver greater app store choice, lower prices, and more opportunities for developers and users. We remain committed to maintaining Android’s industry-leading security and fostering a competitive ecosystem where every app store and developer has the freedom to compete. In parallel, we continue to comply with the US Court’s injunction."
+          },
+          {
+            "type": "p",
+            "text": "Google had previously announced that it would launch its sideloaded Registered App Store program in the rest of the world, beginning with the new version of Android later this year. That means there may be two different tracks for Android: stores-within-a-store in the United States and Registered App Stores everywhere else."
+          },
+          {
+            "type": "p",
+            "text": "Google is already informing US app developers that their apps and game listings will automatically be provided to third-party app stores starting July 22nd, unless they opt out, and it’s launched a specific page for its Play Catalog Access Program for third-party app stores to enroll."
+          },
+          {
+            "type": "p",
+            "text": "It’s not yet clear if there will be a parallel “program” for third-party app stores inside of the Google Play Store, or if companies will simply submit them the way they’d submit any other app. Technically, the court’s permanent injunction states that Google “may not prohibit the distribution of third-party Android app distribution platforms or stores through the Google Play Store,” not that it has to proactively invite them in."
+          },
+          {
+            "type": "p",
+            "text": "For access to the Google Play catalog of apps, Google will charge stores an annual fee of $5,000 for “security and policy reviews,” and it has many additional requirements, including: stores can’t distribute apps outside of the US, have to be open to all eligible third-party developers, have “clear, non-discriminatory” trust and safety policies, and no more than 1 percent of “install attempts” can be malware."
+          },
+          {
+            "type": "p",
+            "text": "It’s not yet clear how all the other economics around Android app distribution and billing might shake out yet — we may need to wait for more info — but Epic and Google have already set the world on a course for reduced fees and opened the Play Store to outside payments."
+          },
+          {
+            "type": "p",
+            "text": "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates."
+          },
+          {
+            "type": "li",
+            "text": "Sean Hollister"
+          }
+        ],
+        "translations": [
+          "Epic Games 和 Google 刚刚共同撤回了试图追溯和解这起改变美国 Android 应用商店运作方式的诉讼的申请——这意味着 Google 将被迫在其自家应用商店内引入竞争对手的应用商店。事实上，Google 告诉法庭，它已准备好在 7 月 22 日（周三）开始引入第三方应用商店。这是否意味着 Microsoft 是时候在 Android 上推出 Xbox 游戏商店了？",
+          "2024 年 10 月，James Donato 法官最初裁定，强制 Google 在其自家的 Google Play 商店内引入竞争对手的 Android 应用商店数年，并强制其与这些商店共享自家完整的应用目录，是消除该公司对 Android 应用非法垄断的最佳方式。Google 此后一直在为此抗争，并最终通过解决双方在全球范围内的所有法律纠纷，并在过程中达成了一项 8 亿美元的保密协议，说服了 Epic 加入其中。",
+          "但 James Donato 法官对是否应放弃其最初的永久禁令、转而采用 Google 提议的需用户侧载的“Registered App Stores”方案表示怀疑——该方案要求用户侧载，而不是直接通过 Google Play 下载第三方商店。7 月 16 日（周四），双方原定出庭再次就此进行辩论，但这可能已无必要。",
+          "以下是 Google 通过发言人 Dan Jackson 就撤回对 Donato 法官永久禁令的拟议修改所发表的完整声明：",
+          "我们已与 Epic 达成一致，撤回修改美国法院禁令的动议，而不是延长这一给生态系统带来不确定性的过程。这使我们能够专注于执行近期宣布的全球商业模式演进，为开发者和用户提供更多应用商店选择、更低的价格以及更多机会。我们仍致力于维护 Android 业界领先的安全性，并培育一个让每个应用商店和开发者都能自由竞争的生态系统。同时，我们将继续遵守美国法院的禁令。",
+          "Google 此前曾宣布，将从今年晚些时候的新版 Android 开始，在世界其他地区推出其侧载的 Registered App Store 计划。这意味着 Android 可能会有两条不同的路线：美国的“店中店”模式以及世界其他地区的 Registered App Stores 模式。",
+          "Google 已开始通知美国应用开发者，自 7 月 22 日起，除非他们选择退出，否则其应用和游戏列表将自动提供给第三方应用商店。此外，Google 还为其 Play Catalog Access Program 推出了专门页面，供第三方应用商店注册加入。",
+          "目前尚不清楚 Google Play 商店内部是否会为第三方应用商店设立平行的“计划”，或者企业是否会像提交其他普通应用一样直接提交它们。从技术上讲，法院的永久禁令规定 Google“不得禁止通过 Google Play 商店分发第三方 Android 应用分发平台或商店”，而非要求其必须主动邀请它们入驻。",
+          "为了获取 Google Play 应用目录的访问权限，Google 将向各应用商店收取每年 5000 美元的“安全与政策审查”费用，此外还有许多附加要求，包括：商店不得在美国境外分发应用、必须对所有符合条件的第三方开发者开放、制定“清晰且无歧视性”的信任与安全政策，且“安装尝试”中包含恶意软件的比例不得超过 1%。",
+          "围绕 Android 应用分发和计费的其他经济利益将如何最终落定目前尚不明朗——我们可能需要等待更多信息——但 Epic 和 Google 已经让世界朝着降低费用的方向发展，并向外部支付开放了 Play 商店。",
+          "关注本文相关的主题和作者，即可在您的个性化主页信息流中看到更多类似内容，并接收电子邮件更新。",
+          "Sean Hollister"
+        ]
+      }
+    },
+    {
+      "slug": "585f889eb3e9fabb",
+      "title": "Dithering: ‘Apple Sues OpenAI’",
+      "titleZh": "Dithering播客：‘苹果起诉OpenAI’",
+      "link": "https://dithering.passport.online/member/episode/apple-sues-open-ai",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-16T23:28:09.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "OpenAI",
+        "lawsuit",
+        "podcast"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "Dithering播客的最新一期节目讨论了苹果起诉OpenAI的事件，该期已转为免费收听。作者对这起诉讼的看法与外界普遍观点有所不同。节目每期15分钟，每周两期，主要面向DF受众。作者认为该播客值得订阅以获取独到见解。",
+      "summaryEn": "The latest episode of the Dithering podcast discusses Apple's lawsuit against OpenAI and has been made free-to-listen on the web. The author expresses a slightly different take on the lawsuit compared to what is commonly seen elsewhere. The podcast releases two 15-minute episodes per week, primarily targeting the DF audience. The author recommends subscribing to Dithering for unique insights.",
+      "reason": "听取资深科技评论员对苹果起诉OpenAI事件的非主流独到见解。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "e66153a206342af0",
+      "title": "OpenAI Takes a Second Crack at a Response to Apple’s Trade Secret Theft Lawsuit",
+      "titleZh": "OpenAI再次回应苹果商业机密窃取诉讼",
+      "link": "https://www.bloomberg.com/news/articles/2026-07-14/openai-says-it-s-not-aware-of-any-evidence-that-apple-lawsuit-has-merit",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-16T19:44:47.000Z",
+      "category": "opinion",
+      "keywords": [
+        "OpenAI",
+        "Apple",
+        "lawsuit",
+        "trade secret"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "OpenAI在向彭博社发表的声明中回应了苹果提起的商业机密窃取诉讼。OpenAI表示，虽然他们严肃对待这些指控，但并未发现任何证据表明该投诉具有合理性。他们强调相信公平竞争和允许人们自由选择工作地点，并专注于构建赋能大众的创新技术。作者指出，“未发现任何证据表明该投诉有理”与“该投诉毫无根据”存在微妙差异，这一回应颇为耐人寻味。",
+      "summaryEn": "OpenAI issued a statement to Bloomberg responding to Apple's trade secret theft lawsuit. OpenAI stated that while they take the allegations seriously, they are \"not aware of any evidence that this complaint has merit.\" They emphasized their belief in fair competition, the freedom to work wherever one chooses, and their focus on building innovative technology. The author notes that being \"not aware of any evidence\" is curiously different from claiming the complaint has \"no merit.\"",
+      "reason": "洞察OpenAI在应对苹果诉讼时措辞背后的微妙法律与公关策略。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "b62b68c93c9c8e0d",
+      "title": "Quoting Thibault Sottiaux",
+      "titleZh": "引用Thibault Sottiaux（关于GPT-5.6 Codex文件删除Bug）",
+      "link": "https://simonwillison.net/2026/Jul/16/bad-codex-bug/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T17:45:59.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "GPT-5.6",
+        "file deletion",
+        "codex"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "OpenAI调查了多起关于GPT-5.6意外删除文件的报告，发现该问题主要发生在特定配置下。当启用完全访问模式且Codex在没有沙箱保护（包括未启用自动审查）的情况下运行时，容易出现此问题。具体原因是模型试图覆盖$HOME环境变量以定义临时目录，从而导致文件被删除。这暴露了在无沙箱环境下运行AI代理的潜在风险。",
+      "summaryEn": "OpenAI investigated several reports where GPT-5.6 unexpectedly deleted files, finding that this most commonly occurs under specific configurations. The issue arises when full access mode is enabled and Codex runs without sandboxing protections, including without auto review being enabled. The root cause is the model attempting to override the $HOME environment variable to define a temporary directory, leading to file deletions. This highlights the potential risks of running AI agents without sandboxing.",
+      "reason": "了解GPT-5.6 Codex在特定配置下删除文件的底层原因及安全防范措施。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th July 2026"
+          },
+          {
+            "type": "quote",
+            "text": "On file deletions. We’ve investigated a handful of reports where GPT-5.6 unexpectedly deleted files. \nWhat we have  found is that this most commonly occurs when:\n\nFull access mode is enabled and codex is run without sandboxing protections, including without auto review being enabled\nThe model attempts  to override the $HOME env var to define a temporary directory.\nThe model makes an honest mistake and mistakenly deletes $HOME instead."
+          },
+          {
+            "type": "p",
+            "text": "— Thibault Sottiaux, describing a pretty gnarly Codex bug"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "40ea179f863a18fe",
+      "title": "OpenAI Releases Codex Micro, a Stupid $230 Hardware Keypad",
+      "titleZh": "OpenAI发布Codex Micro，一款愚蠢的230美元硬件键盘",
+      "link": "https://openai.com/supply/co-lab/work-louder/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-16T17:45:59.000Z",
+      "category": "tools",
+      "keywords": [
+        "OpenAI",
+        "Codex Micro",
+        "hardware",
+        "keypad"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 22
+      },
+      "summary": "OpenAI推出了一款售价230美元的硬件键盘Codex Micro，旨在配合其已整合进超级应用的Codex功能使用。作者批评此举与其前CEO此前强调“不要被支线任务分心”的内部讲话背道而驰。此前OpenAI已花费数亿美元收购YouTube节目，此次硬件发布进一步引发对其产品重心的质疑。评论员Quinn Nelson也对此表示难以置信。",
+      "summaryEn": "OpenAI has released Codex Micro, a $230 hardware keypad designed to work with Codex, which is now a tab in their super app. The author criticizes this move as contradicting the former co-CEO's internal announcement warning against being \"distracted by side quests.\" Following their previous \"low hundreds of millions\" purchase of a YouTube show, this hardware release further raises questions about their product focus. Reviewer Quinn Nelson also expressed disbelief at the product.",
+      "reason": "看看OpenAI在核心AI产品之外令人费解的硬件“支线任务”。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "d54546b30bf811a4",
+      "title": "Firefox in WebAssembly",
+      "titleZh": "WebAssembly中的Firefox",
+      "link": "https://simonwillison.net/2026/Jul/16/firefox-in-webassembly/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-16T23:34:16.000Z",
+      "category": "tools",
+      "keywords": [
+        "Firefox",
+        "WebAssembly",
+        "browser"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 21
+      },
+      "summary": "Puter将Firefox编译为WebAssembly，使其能够在另一个浏览器中完整运行。作者展示了在Chrome中运行WebAssembly版Firefox并成功加载个人博客的过程。该WebAssembly文件大小达到233MB，展示了现代浏览器引擎的庞大体积。这一技术演示虽然看似荒谬，但展示了WebAssembly在运行复杂系统方面的强大潜力。",
+      "summaryEn": "Puter has compiled Firefox to WebAssembly, enabling the entire browser to run within another browser. The author demonstrated running the WebAssembly version of Firefox in Chrome and successfully loading his personal blog. The WebAssembly file size reaches 233MB, illustrating the massive volume of modern browser engines. Although seemingly absurd, this technical demonstration showcases the powerful potential of WebAssembly in running complex systems.",
+      "reason": "欣赏将完整浏览器编译为WebAssembly并在浏览器中嵌套运行的极客技术演示。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "16th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Firefox in WebAssembly (via) This is absurdly cool: Puter compiled Firefox to WebAssembly such that the whole browser runs in another browser."
+          },
+          {
+            "type": "p",
+            "text": "Here's my blog, running in Firefox, running in WebAssembly, running in Chrome:"
+          },
+          {
+            "type": "p",
+            "text": "They chose Firefox/Gecko because it has strong single-process support. The project used an estimated $25,000 worth of Claude Opus and Fable tokens, but took advantage of a Claude Max subscription plan so cost much less in actual dollars."
+          },
+          {
+            "type": "p",
+            "text": "The demo funnels all traffic over a WebSocket protocol (using the Wisp protocol) through Puter's server - a requirement to get this kind of thing to work because code running in browsers can't open arbitrary network connections."
+          },
+          {
+            "type": "p",
+            "text": "(That proxying sounds expensive! The team had to scale the servers up to handle the traffic during the Hacker News conversation about the project.)"
+          },
+          {
+            "type": "p",
+            "text": "Puter claim this supports end-to-end encryption and that looks to be true - I inspected the WebSocket messages and traffic to my own HTTPS site was encrypted whereas requests and responses to http://www.example.com/ were in cleartext."
+          },
+          {
+            "type": "p",
+            "text": "Here's the repo for firefox-wasm. theogbob/WebkitWasm is a similar project that compiles WebKit to WASM, but that one doesn't currently have an accessible online demo."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "60c50e367e47d992",
+      "title": "Quiche Browser Now Defaults to No-AI Web Search Results",
+      "titleZh": "Quiche浏览器现在默认提供无AI网络搜索结果",
+      "link": "https://mastodon.social/@quicheindustries/116918456229212087",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-17T00:17:35.000Z",
+      "category": "tools",
+      "keywords": [
+        "Quiche Browser",
+        "AI search",
+        "privacy"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Quiche浏览器宣布从即日起默认禁用搜索结果中的AI概览。开发者认为AI概览浪费了大量空间和时间，并希望保护由人类创建的真实网站链接不被埋没。该浏览器通过直接打开Google、DuckDuckGo和Bing的无AI版本搜索来实现这一功能。开发者将此举视为对抗“死亡互联网理论”的一项微薄贡献，并对其他浏览器未跟进表示不解。",
+      "summaryEn": "Quiche Browser has announced that it now disables AI overviews in search results by default. The developer argues that AI overviews waste space and time, aiming to protect links to real websites made by humans from being buried. The browser achieves this by simply opening search results in the AI-free versions of Google, DuckDuckGo, and Bing. The developer views this as a modest contribution to fighting the dead internet theory and questions why other browsers haven't done the same.",
+      "reason": "发现一款默认屏蔽AI搜索概览、致力于保护真实人类内容的小众浏览器。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "733e5d1a2d18820c",
+      "title": "Lawyer for Apple Mixed Up Two OpenAI Employees’ Names, Sent One Email to the Wrong Guy, Back in February",
+      "titleZh": "苹果律师弄混了两名OpenAI员工的名字，在二月份把邮件发给了错误的人",
+      "link": "https://www.nbcnews.com/tech/apple/apple-openai-lawsuit-suit-trade-product-hardware-email-sam-altman-rcna587376",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-16T19:34:13.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "OpenAI",
+        "lawsuit",
+        "email"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 21
+      },
+      "summary": "苹果在诉讼中指控OpenAI对其商业机密被窃取的担忧“从未回应”，但NBC新闻查阅的邮件显示事实并非如此。OpenAI在二月份确实回应了苹果的初步接触，但沟通随后陷入停滞。据OpenAI称，沟通突然停止是因为代表苹果的外部律师弄混了两名OpenAI员工的名字，把邮件发给了错误的人。这一乌龙事件使得苹果的诉讼指控显得不够严谨。",
+      "summaryEn": "Apple alleged in its lawsuit that OpenAI \"never responded\" to its concerns about trade secret theft, but emails reviewed by NBC News show otherwise. OpenAI did respond to Apple's initial outreach in February, but communications subsequently became bogged down. According to OpenAI, the communication abruptly stopped because an outside attorney representing Apple mixed up two OpenAI employees' names and sent an email to the wrong guy. This blunder makes Apple's lawsuit allegations appear less rigorous.",
+      "reason": "揭露苹果起诉OpenAI诉讼案背后因发错邮件导致的沟通乌龙细节。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "David Ingram",
+        "siteName": "NBC News",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "EXCLUSIVE"
+          },
+          {
+            "type": "p",
+            "text": "FORSUBSCRIBERS"
+          },
+          {
+            "type": "h2",
+            "text": "How a bungled email from Apple’s lawyer soured talks with OpenAI before Apple sued"
+          },
+          {
+            "type": "p",
+            "text": "A lawyer for Apple apologized for mixing up two OpenAI employees with the names Wang and Chang."
+          },
+          {
+            "type": "p",
+            "text": "July 14, 2026, 5:18 PM EDT"
+          },
+          {
+            "type": "p",
+            "text": "Apple alleged in a lawsuit last week that OpenAI “never responded” to its concerns this year about what Apple believed was trade secret theft. But emails reviewed by NBC News show that’s not the full story: OpenAI did respond in February to Apple’s initial outreach. The communications became bogged down and, according to OpenAI, abruptly stopped after an outside attorney representing Apple mixed up the names and email addresses of two OpenAI employees who had the last names Wang and Chang."
+          },
+          {
+            "type": "p",
+            "text": "Just a moment."
+          },
+          {
+            "type": "p",
+            "text": "We are getting your experience ready."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ab120af221b7bc30",
+      "title": "Art Doesn't Scale",
+      "titleZh": "艺术无法规模化",
+      "link": "https://matduggan.com/art-doesnt-scale/",
+      "sourceName": "matduggan.com",
+      "sourceUrl": "https://matduggan.com",
+      "pubDate": "2026-07-17T10:34:04.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI art",
+        "art",
+        "scaling"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "作者在哥本哈根街头听两位熟人争论AI艺术是否算作“艺术”时，引发了关于艺术规模化的思考。文章探讨了Doomer与Boomer之间关于AI艺术的永恒辩论。作者认为，尽管AI可以快速生成大量图像，但真正的艺术创作过程和人类情感连接是无法被规模化复制的。这反映了当前AI生成内容泛滥背景下对艺术本质的重新审视。",
+      "summaryEn": "While listening to two acquaintances argue about whether AI art is \"art\" in Copenhagen, the author reflects on the scalability of art. The article explores the eternal debate between Doomers and Boomers regarding AI-generated art. The author suggests that while AI can quickly generate massive amounts of images, the true artistic process and human emotional connection cannot be replicated at scale. This reflects a re-examination of the essence of art amidst the current proliferation of AI-generated content.",
+      "reason": "从日常争论切入，探讨AI生成内容泛滥时代下艺术无法被规模化的本质。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Mathew Duggan",
+        "siteName": "matduggan.com",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Listening to two acquaintances argue about if AI art is \"art\" is not a new experience for me, the now eternal debate between Doomer and Boomer. In this particular context, I'm listening to it as I wait for my surprisingly expensive iced latte in downtown Copenhagen. This coffee shop is one of my favorites, a small hole in the wall where the shop starts on the second floor. Everything is hand painted in a way I associate with the hippie roots of Copenhagen. They have an older golden retriever lying on the floor in the heat with a sign on his crate telling people not to bother him if he's taking a break. \"Sometimes he needs his alone time\". Me fucking too I think as this conversation drags on."
+          },
+          {
+            "type": "p",
+            "text": "There is a certain irony to the people having this conversation. One is a well-off tech worker, telling the much less well-off artist that the thing he has made through a prompt and the thing she practiced for years to make are functionally the same thing which is a classic AI Boomer argument. \"I'm not saying I would sell mine, but isn't the point of art the emotion it brings out when you see it?\" The artist seems somewhat baffled by the question, which I understand because she doesn't see the world as a machine that inputs ideas and outputs profit. I use some LLM tools while programming but I would argue I am still more Doomer than Boomer."
+          },
+          {
+            "type": "p",
+            "text": "As someone who straddles these two worlds, both working for large corporations and interfacing with these borderline sociopaths in business casual pants and expensive watches and also as someone who finds the joy in their life through the celebration of the artistic output of others, I understand them both. One sees it as a capacity problem, a barrier broken down so that now he can do everything and no choices have cost. The other sees it as a baffling attack on her passion. You could always learn to draw, nothing was ever stopping you is her refrain. Which is true but doesn't resonate with him, in part because I suspect he believes he could do anything."
+          },
+          {
+            "type": "p",
+            "text": "But I hear this argument enough that I thought we should talk about it, if for nothing else than to give me something to think about as I stare at the dog crate and hope the dog comes out to say hi."
+          },
+          {
+            "type": "h3",
+            "text": "The Smell of Ink and Nerds"
+          },
+          {
+            "type": "p",
+            "text": "So I love books of all sorts, including a lot of very trashy books. Nothing I enjoy more than a Space Marine ripping the head off an alien. One medium that I really like as an adult with limited free time are comic books. I love everything about them, the feel of the too slippery covers and the rub-off on your fingers of old comics. I love how weird they are, how stories that don't work are dropped on the floor and never mentioned again. It's like watching someone build a railroad as the train rides down the tracks."
+          },
+          {
+            "type": "p",
+            "text": "My routine for years was to go pick up my pull list and then wander around for a bit while they assembled it. This is how I found great series like Sandman and countless others that ended up being some of my favorite reads. One of these pull list discoveries I made while standing around surrounded by the delightful acidic smell of a comic book shop was The Black Monday Murders. You can find it here."
+          },
+          {
+            "type": "p",
+            "text": "The story of The Black Monday Murders is genius and I won't ruin it. You can read the first issue for free at the link above. My friends and I still text each other \"All Hail God Mammon\" when the stock market goes way up or down. The basic concept was \"what if money and magic were related and banks were basically worshiping the god of greed\". I consumed this series and fell in love with it."
+          },
+          {
+            "type": "p",
+            "text": "I mean come on what's not to love about that."
+          },
+          {
+            "type": "p",
+            "text": "So the first issue comes out in 2016, we get a....very slow drip of new releases through 2018. 2018 is when I got issue 8 and then that's it. Since then we have had teased new issues, every year or so someone posts on social media \"oh there's a new one coming\". There is a lot of media like this but for me, this is the one I think of most often as \"what-if\". I think it is a genius idea that is especially relevant in today's world and I am sad that we may never get another one."
+          },
+          {
+            "type": "p",
+            "text": "So I was expressing this to a boomer friend who casually responded with \"why don't you just make your own\"?  LLMs allow us to generate lots of artwork like this now, you can maybe cobble together a story, wouldn't it be fun to make your own issue for your own personal consumption? To him, this is the perfect use of this technology, allowing a fan to make more of the thing they love. To me it feels like if someone said \"if you are hungry, there's a puppy over there, just pop that bad boy in the oven for 2 hours and have yourself a snack\"."
+          },
+          {
+            "type": "p",
+            "text": "To me that's not a tribute or the act of a fan. It's making a forgery. The thing has no value to me as a reader if I removed it from the entire creative context of its creation."
+          },
+          {
+            "type": "h3",
+            "text": "What value does a forgery have?"
+          },
+          {
+            "type": "p",
+            "text": "There's a great short essay by the philosopher Denis Dutton from 1979 called Artistic Crimes. It's about forgeries, not AI, but every paragraph rings like a bell for the argument I keep having. You can read the entire thing here (it's not that long I promise)."
+          },
+          {
+            "type": "p",
+            "text": "What I was struck by was how many parallels you can draw between the two issues. Like AI art, the existence and occasional acceptance as real artistic works of forgeries has a special power to discredit the art critic and historian community. The success of a forgery creates a belief that the entire criteria by which art is judged by is fundamentally flawed. If something is amazing before you knew it was a fraud and trash after you came to find out it was fake, then the assessment of art has no basis in aesthetic properties. It is pointed to as a demonstration that the only reason a \"masterpiece\" is valued over a random painting at the flea market is that a famous person made the first one. Effectively all art is bullshit and LLM slop/forgeries are equally valid because they invoke the same emotions in the audience before the deception is revealed."
+          },
+          {
+            "type": "p",
+            "text": "Now everyone, or at least everyone whose opinion I value, can agree that knowing if a piece of art is real of fake matters in terms of both its monetary value and its value historically. Even the most staunch Boomer I know would admit that fake paintings shouldn't hang in museums next to real ones. Where the two groups diverse, in LLM art and forgeries, is whether the assessment of its aesthetic merits should not be impacted by its status as real or fake."
+          },
+          {
+            "type": "p",
+            "text": "Part of what is impressive about the performance of making something is that you are celebrating how much a person or group of people succeeded. This is why we delight in stories like \"Stardew Valley was made by one person in his house for years with no money hand-drawing each piece of art in the game, so intense was his love and commitment to the project\". You don't have to know that to enjoy the game, but pretending it changes nothing about how you enjoy it once you do it is nonsense. Same with movies like \"Good Will Hunting\". Sure it's a good movie, but the story of two childhood friends making it for not a lot of money and one of them leaving Harvard to shoot it changes your connection to the material. It can't not. You love the thing, you learn more about the human story behind the thing, you love the thing even more."
+          },
+          {
+            "type": "p",
+            "text": "Part of the magic of wandering through a museum is that I cannot do the things the artists here have done. I cannot make modern art, I don't have a vision like those people do. I don't have the strength of character and conviction to commit to something like they do. I frankly lack the fucking spine to stand there next to a creation of mine that a thousand morons a day will look at and say \"I could do that\". No you couldn't and that's part of why its impressive to look at."
+          },
+          {
+            "type": "p",
+            "text": "Forgeries, like LLM art, are misrepresentations of achievement. You want the same credit and respect as someone who actually did a thing, but you haven't done the thing. Once that discovery is made or, frankly, one that is suspected, the relationship to the work has been permanently changed. I'm no longer viewing it from the perspective of the output of a human who I want to succeed but instead skeptically as someone attempting to steal credit for work they didn't do."
+          },
+          {
+            "type": "h3",
+            "text": "The question of efficiency"
+          },
+          {
+            "type": "p",
+            "text": "The other argument the boomers make is about bottlenecks. My favorite comic isn't finished because the author is busy and human. But we could feed the machine the premise, let it crank out pages, have him touch them up, and, bim bam boom issue nine, ten, eleven, a hundred."
+          },
+          {
+            "type": "p",
+            "text": "Let me be clear that I'm not precious about everything in my life. I am not one of those people who thinks everything must be handmade by candlelight. I love a Dunkin Donuts coffee. I love the ridiculous bucket-sized cup, the sugar content that could kill a horse, the milk-adjacent liquid that has clearly never seen the inside of a cow and is shelf-stable until the heat death of the universe. I love standing in line behind two guys in Carhartts complaining about a foreman named Chris who is, and I quote, \"a real fucking prick, man.\" I could eavesdrop in an IHOP for the rest of my natural life and die happy."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes I want the $22 burger. Sometimes I want the McDonald's cheeseburger, no pickles. Both are fine. Both have their place."
+          },
+          {
+            "type": "p",
+            "text": "But here's the thing the boomers keep missing: I get to pick."
+          },
+          {
+            "type": "p",
+            "text": "The choice is the thing. And the AI rollout, as currently constructed, is designed to remove the choice. Not offer a new option but replace the existing one. The boomer argument, stripped of its language about productivity and democratization, is really this: we're going to make the cheaper thing, we're going to stop labeling it, and you're going to keep paying the same price because what are you going to do, not consume media?"
+          },
+          {
+            "type": "p",
+            "text": "Because it is cheaper and faster to make doesn't make it something anybody wants. My favorite local bakery makes a great sourdough that I try to get whenever I can. If they sell out, I don't buy a loaf of Wonder Bread and pretend it's the same thing. I go home without bread. Sometimes the honest answer to scarcity is going without."
+          },
+          {
+            "type": "p",
+            "text": "This is what boomers can't hear. They think we're arguing about the quality of the output, and so they keep showing us better and better outputs as if that will close the deal. But we're not arguing about the output. We're arguing about what it means to receive a made thing from another human being. Every comic in my pull list, every trashy Space Marine novel, every weird indie game are letters from strangers who cared enough to spend years of their lives making something for me to find. The value isn't in the artifact. The value is in the fact that somebody bothered."
+          },
+          {
+            "type": "p",
+            "text": "A machine cannot bother. It can only produce."
+          },
+          {
+            "type": "p",
+            "text": "I would rather have eight issues of The Black Monday Murders and the ache of never getting a ninth than a thousand AI-generated issues that continue the story forever. The ache is part of the art. The waiting is part of the art. The possibility that the thing I love might never be finished is part of what makes it real. Forgeries don't ache. They just fill space, like the paintings in a Best Western lobby, hung there because a wall needed something on it."
+          },
+          {
+            "type": "p",
+            "text": "All hail God Mammon. He always did prefer the cheaper option."
+          }
+        ],
+        "translations": [
+          "听两个熟人争论AI艺术到底算不算“艺术”，对我来说已不是什么新鲜事，这是如今Doomer和Boomer之间永恒的辩论。在这个特定的场景下，我正坐在哥本哈根市中心，一边等着我那杯贵得离谱的冰拿铁，一边听着他们争论。这家咖啡馆是我最喜欢的地方之一，是个藏在二楼的小门面。店里所有的东西都是手绘的，让我联想到哥本哈根的嬉皮士根基。他们有一只年迈的金毛寻回犬在闷热中趴在地板上，它的窝上挂着牌子，告诉人们如果它在休息就不要打扰它。“有时候它需要独处的时间”。随着这场对话没完没了地进行下去，我心想，他妈的我也需要。",
+          "参与这场对话的人身上带着某种讽刺意味。一个是富裕的科技工作者，他告诉那个穷得多的艺术家，他通过提示词生成的东西和她苦练多年创作出来的东西在功能上是一样的，这是典型的AI Boomer论调。“我不是说我会卖掉我的作品，但艺术的意义难道不是当你看到它时所激发的情感吗？”这位艺术家似乎对这个问题感到有些困惑，我理解她，因为她不把这个世界看作一台输入想法、输出利润的机器。我在编程时会使用一些LLM工具，但我认为我骨子里还是更偏向Doomer而不是Boomer。",
+          "作为一个横跨这两个世界的人——既在大公司工作，与那些穿着商务休闲裤、戴着昂贵手表、近乎反社会人格的人打交道，又作为一个通过欣赏他人的艺术作品来寻找生活乐趣的人——我理解他们双方。一方将其视为一个能力问题，认为壁垒已被打破，所以现在他无所不能，且任何选择都不需要付出代价。另一方则将其视为对她热爱的令人费解的攻击。“你随时都可以学画画，从来没有什么阻止过你”是她反复强调的话。这话说得没错，但无法引起他的共鸣，部分原因是我怀疑他相信自己什么都能做。",
+          "但我听过太多次这种争论了，以至于我觉得我们应该谈谈它，哪怕只是为了让我在盯着狗窝、盼着那只狗出来打个招呼时，能有点东西可想。",
+          "墨水与书呆子的气味",
+          "所以我热爱各种各样的书，包括很多非常垃圾的书。没有什么比看星际战士把外星人的头拧下来更让我享受的了。作为一个空闲时间有限的成年人，漫画书是我非常喜欢的一种媒介。我喜欢它们的一切，那种过于光滑的封面手感，以及老漫画在你手指上留下的墨迹。我喜欢它们的古怪之处，喜欢那些行不通的故事被扔在地上，然后再也不被提及。这就像看着别人在火车沿着铁轨行驶时铺设铁轨一样。",
+          "多年来，我的习惯是去取我的预定清单，然后在店员整理清单时四处逛逛。我就是这样发现了像《睡魔》这样伟大的系列，以及无数最终成为我最爱的读物。有一次，我站在充满漫画店那令人愉悦的酸味中，通过预定清单发现了《黑色星期一谋杀案》。你可以在这里找到它。",
+          "《黑色星期一谋杀案》（The Black Monday Murders）的故事堪称天才之作，我不打算剧透。你可以点击上面的链接免费阅读第一期。当股市大涨或大跌时，我和朋友们仍然会互相发短信说“万岁，财神玛门”。它的基本概念是“如果金钱与魔法有关，而银行基本上是在崇拜贪婪之神会怎样”。我一口气读完了这个系列并深深爱上了它。",
+          "我的意思是，拜托，这怎么可能让人不爱呢。",
+          "第一期于2016年出版，然后直到2018年，新刊的发布都……非常缓慢。2018年我拿到了第8期，然后就没了。从那以后，我们一直被吊着胃口，每隔一年左右就会有人在社交媒体上发帖说“哦，新一期要来了”。有很多作品都是这样，但对我来说，这部作品是我最常想到的“如果……会怎样”的假设。我认为这是一个天才的想法，在当今世界尤为切题，我很伤心我们可能永远也等不到新一期了。",
+          "于是我把这种感受告诉了一位婴儿潮一代的朋友，他漫不经心地回答说：“你为什么不自己做一个呢”？现在 LLM 让我们能够生成大量这样的艺术作品，你也许能拼凑出一个故事，为自己制作一期供个人欣赏的漫画，这难道不有趣吗？对他来说，这是这项技术的完美用途，让粉丝能够制作更多他们热爱的东西。但对我来说，这感觉就像有人说“如果你饿了，那边有只小狗，把它扔进烤箱烤两个小时给自己当点心吃吧”。",
+          "对我来说，那不是致敬，也不是粉丝的行为。那是在制造赝品。如果把它从其创作的整个创意语境中剥离出来，作为读者，这东西对我来说毫无价值。",
+          "赝品有什么价值呢？",
+          "哲学家丹尼斯·达顿（Denis Dutton）在1979年写过一篇很棒的短文，名为《艺术犯罪》（Artistic Crimes）。它讲的是赝品，而不是 AI，但它的每一段都像警钟一样，敲响在我一直以来的争论中。你可以在这里阅读全文（我保证它没那么长）。",
+          "让我感到震惊的是，这两个问题之间可以找出多少相似之处。就像 AI 艺术一样，赝品的存在以及偶尔被当作真正的艺术作品接受，具有一种特殊的力量，能够败坏艺术评论家和历史学家群体的声誉。赝品的成功制造了一种信念，即评判艺术的整个标准从根本上是有缺陷的。如果某件东西在你不知道它是赝品之前令人惊叹，而在你发现它是假的之后就成了垃圾，那么对艺术的评估就没有建立在审美属性的基础上。这被用来证明，“杰作”之所以比跳蚤市场上随便一幅画更有价值，唯一的原因是前者是名人创作的。实际上，所有的艺术都是扯淡，而 LLM 产生的垃圾/赝品同样有效，因为它们在骗局被揭穿之前，在观众中唤起了同样的情感。",
+          "现在，每个人，或者至少是我看重其意见的每个人，都会同意，知道一件艺术品是真品还是赝品，对于它的货币价值和历史价值来说都很重要。即使是我认识的最固执的婴儿潮一代也会承认，假画不应该和真画一起挂在博物馆里。在 LLM 艺术和赝品的问题上，这两群人产生分歧的地方在于，对其审美价值的评估是否应该不受其真假状态的影响。",
+          "创造事物的过程之所以令人印象深刻，部分原因在于你是在赞颂一个人或一群人取得了多大的成功。这就是为什么我们会为这样的故事感到欣喜：“《星露谷物语》是一个人在自己家里没钱的情况下花了好几年时间做出来的，游戏里的每一件艺术品都是他手绘的，他对这个项目的热爱与投入是如此强烈”。你不需要知道这些也能享受这款游戏，但假装一旦你知道了这些，它对你享受游戏的方式没有任何改变，纯属胡扯。电影《心灵捕手》也是如此。它确实是一部好电影，但两个童年好友没花多少钱就把它拍了出来，其中一个还为此离开了哈佛，这个故事改变了你与这部作品的联系。这种改变是必然的。你喜欢一个事物，了解了它背后的人文故事，你就会更喜欢它。",
+          "在博物馆漫步的部分魔力在于，我做不到这里的艺术家们所做的事情。我做不出现代艺术，我没有那些人那样的视野。我没有他们那样的性格力量和信念去投入到某件事中。坦白说，我他妈没有那个骨气站在我自己的作品旁边，任由每天一千个白痴看着它说“我也能做出来”。不，你做不到，而这正是它看起来令人印象深刻的部分原因。",
+          "伪造品，就像 LLM 艺术一样，是对成就的虚假陈述。你想获得与真正做成某事的人同等的赞誉和尊重，但你并没有做成那件事。一旦这种事情被发现，或者坦白说，一旦被怀疑，人们与作品的关系就被永久改变了。我不再将其视为一个我希望其成功的人类的产出，而是充满怀疑地将其视为一个试图窃取他人未做之功的人。",
+          "效率问题",
+          "婴儿潮一代提出的另一个论点是关于瓶颈的。我最喜欢的漫画还没完结，因为作者很忙，而且他只是个凡人。但我们可以把前提输入给机器，让它批量生产页面，让他稍微润色一下，然后，砰砰砰，第九期、第十期、第十一期、第一百期就出来了。",
+          "让我澄清一下，我并不是对生活中的所有事物都那么矫情。我不是那种认为所有东西都必须在烛光下手工制作的人。我喜欢 Dunkin Donuts 的咖啡。我喜欢那个可笑的水桶大小的杯子，能毒死一匹马的含糖量，那种显然从未在奶牛体内待过的类牛奶液体，而且保质期长到宇宙热寂都不会坏。我喜欢排队站在两个穿着 Carhartts 工作服的家伙后面，听他们抱怨一个叫 Chris 的工头，原话是，“真他妈是个混蛋，伙计。”我可以在 IHOP 偷听别人说话度过余生，然后含笑九泉。",
+          "有时我想吃 22 美元的汉堡。有时我想吃麦当劳的芝士汉堡，不要酸黄瓜。两者都很好。两者都有其存在的价值。",
+          "但婴儿潮一代一直忽略的一点是：由我来选。",
+          "选择才是关键。而 AI 的推广，按照目前的架构，旨在消除选择。它不是提供一个新的选项，而是取代现有的选项。婴儿潮一代的论点，剥去关于生产力和民主化的辞藻，实际上就是：我们要制造更廉价的东西，我们要停止给它贴标签，而你要继续支付同样的价格，因为不然你还能怎么办，不消费媒体内容吗？",
+          "仅仅因为制作起来更便宜、更快捷，并不意味着它就是人们想要的东西。我最喜欢的一家本地面包店做的酸面团面包非常棒，我总是尽量去买。如果卖光了，我不会去买一条Wonder Bread来假装它是一样的。我会空手回家。有时候，面对稀缺最诚实的答案就是干脆不要。",
+          "这正是婴儿潮一代听不进去的话。他们以为我们在争论产出的质量，所以不断向我们展示越来越好的产出，仿佛这样就能让我们买账。但我们争论的并非产出本身。我们争论的是，从另一个人那里收到一件被创造出来的东西究竟意味着什么。我订阅清单里的每一本漫画、每一本烂俗的《太空陆战队》小说、每一款古怪的独立游戏，都是陌生人写来的信，他们足够在乎，愿意花上数年时间创作出一些东西供我去发现。价值不在于这件物品本身。价值在于有人愿意为此费心。",
+          "机器不会费心。它只会生产。",
+          "我宁愿只拥有八期《黑色星期一谋杀案》，并承受永远等不到第九期的痛楚，也不愿要一千期让故事永远延续下去的AI生成版。这种痛楚是艺术的一部分。等待是艺术的一部分。我热爱的作品可能永远无法完结的可能性，正是让它显得真实的一部分。赝品不会带来痛楚。它们只是填补空间的空白，就像Best Western酒店大堂里的画，挂在那儿仅仅是因为墙上需要挂点东西。",
+          "万岁，财神玛门。他向来偏爱更廉价的选择。"
+        ]
+      }
+    },
+    {
+      "slug": "445b9800379bb67f",
+      "title": "Why has the display control panel pointer truncation bug gone unfixed for so long?",
+      "titleZh": "为什么显示控制面板的指针截断 bug 长期未修复？",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260717-00/?p=112541",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-07-17T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Windows",
+        "bug",
+        "display",
+        "control panel"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 20
+      },
+      "summary": "Windows 显示控制面板中存在一个指针截断 bug，长期未得到修复。实际上微软已经开发了修复程序，但由于某些分发或更新机制的限制，该修复未能顺利推送到用户端。这反映了旧版组件在维护和更新分发上面临的系统性挑战。作者指出，虽然问题在代码层面已解决，但用户何时能真正体验到修复仍是未知数。",
+      "summaryEn": "A pointer truncation bug in the Windows display control panel has remained unfixed for a long time. Although Microsoft has actually developed a fix, it is not reaching end-users due to distribution or update mechanism limitations. This highlights the systemic challenges in maintaining and updating legacy components. The author notes that while the issue is resolved at the code level, when users will actually experience the fix remains uncertain.",
+      "reason": "揭示了 Windows 旧版组件修复分发过程中的隐藏障碍，对理解系统更新机制有参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Last time, we  speculated on how the buggy control panel extension truncated a value that it had right in front of it. When we sent our analysis to the vendor, they wrote back, “Can you check the driver version numbers on these crashes?”"
+          },
+          {
+            "type": "p",
+            "text": "When we checked the driver version numbers on all the crashing systems, they were something like “build 314”, when the current driver build number is something like “build 2718”. These users are running drivers that are ridiculously old! The vendor fixed that bug ages ago, but the user hasn’t gotten the fix. What’s going on?"
+          },
+          {
+            "type": "p",
+            "text": "My theory was that these users have turned off Windows Update or are otherwise declining to upgrade their video drivers. But I learned that my theory was probably wrong."
+          },
+          {
+            "type": "p",
+            "text": "The deal here is that these are video drivers, which are a category of drivers where computer manufacturers have a lot of control. The manufacturer certifies the drivers for use on their PCs after performing their own acceptance testing on their specific hardware configurations. (Which are probably not hardware configurations that the video card vendors themselves are aware of.)"
+          },
+          {
+            "type": "p",
+            "text": "This responsibility carries forward post-sale. The computer manufacturer remains responsible for certifying driver updates, presumably by testing them against reference PCs that they maintain in their labs. Sometimes, manufacturers get customized versions of the video cards (all the better to differentiate your product with, my dear), which is why the video card vendor “driver downloads” sites often warn you to check with your computer manufacturer before installing a driver."
+          },
+          {
+            "type": "p",
+            "text": "In practice, computer manufacturers are diligent about certifying drivers for a year, year and a half, two years tops.¹ After that, it’s not uncommon for them to abandon that model and not bother certifying drivers for it any more. All customers with that model of PC are just stuck with whatever video drivers were current as of the time the manufacturer stopped certifying drivers."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft maintains generic drivers for many classes of hardware, but intentionally  sets them as low priority so that the PC manufacturer-provided drivers take precedence. The video drivers received directly from video card manufacturers are  similarly deprioritized by the video card vendors. The computer manufacturer-certified drivers take precedence, even if that certification is horribly out of date."
+          },
+          {
+            "type": "p",
+            "text": "¹ I wouldn’t be surprised if the length of time they certify drivers is somehow correlated with the length of the computer warranty."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": [
+          "上次，我们推测了那个有缺陷的控制面板扩展是如何截断一个就在它眼前的值的。当我们把分析结果发给供应商时，他们回复说：“你们能检查一下这些崩溃系统上的驱动程序版本号吗？”",
+          "当我们检查了所有崩溃系统上的驱动程序版本号时，发现它们类似于“build 314”，而当前的驱动程序版本号类似于“build 2718”。这些用户运行的驱动程序太旧了！供应商早就修复了那个 bug，但用户却没有得到修复。这是怎么回事？",
+          "我的推测是，这些用户关闭了 Windows Update，或者以其他方式拒绝升级他们的显卡驱动程序。但我后来了解到我的推测可能是错的。",
+          "问题在于这些是显卡驱动程序，这是一类由计算机制造商拥有很大控制权的驱动程序。制造商在对其特定的硬件配置进行自己的验收测试后，才会认证这些驱动程序可以在他们的 PC 上使用。（这些硬件配置可能连显卡供应商自己都不了解。）",
+          "这种责任在售后依然存在。计算机制造商仍然负责认证驱动程序更新，大概是通过在他们在实验室维护的参考 PC 上进行测试来完成的。有时，制造商会获得定制版的显卡（亲爱的，这可是区分你产品的好方法），这就是为什么显卡供应商的“驱动程序下载”网站经常警告你在安装驱动程序前先咨询你的计算机制造商。",
+          "在实践中，计算机制造商在一年、一年半、最多两年内会勤勉地认证驱动程序。¹ 之后，他们放弃该型号并不再为其认证驱动程序是很常见的事。所有拥有该型号 PC 的客户只能被迫使用制造商停止认证驱动程序时的最新显卡驱动程序。",
+          "Microsoft 为许多类硬件维护通用驱动程序，但有意将它们设置为低优先级，以便 PC 制造商提供的驱动程序优先。直接从显卡制造商处接收的显卡驱动程序同样被显卡供应商降低了优先级。计算机制造商认证的驱动程序优先，即使该认证已经严重过时。",
+          "¹ 如果他们认证驱动程序的时间长度与计算机保修期的长度存在某种关联，我也不会感到惊讶。",
+          "作者",
+          "Raymond 参与了 Windows 的发展超过 30 年。2003 年，他创办了一个名为 The Old New Thing 的网站，其受欢迎程度远远超出了他最疯狂的想象，这一发展至今仍让他感到有些发毛。这个网站衍生出了一本书，巧合的是书名也叫《The Old New Thing》（Addison Wesley 2007）。他偶尔会出现在 Windows Dev Docs 的 Twitter 账号上，讲一些毫无用处的故事。"
+        ]
+      }
+    },
+    {
+      "slug": "103bc7df9c8703ea",
+      "title": "Quoting Kimi K3",
+      "titleZh": "引用 Kimi K3",
+      "link": "https://simonwillison.net/2026/Jul/17/kimi-k3/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-17T13:43:53.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Kimi K3",
+        "system prompt",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 4,
+        "timeliness": 8,
+        "total": 19
+      },
+      "summary": "AI 模型 Kimi K3 在被要求泄露其系统提示词时，直接拒绝了用户的请求。它以一句“今天我到底能帮你做点什么？”的回复展示了其防御机制和拟人化的交互风格。这反映了当前生成式 AI 在安全对齐和系统提示词保护方面的设计趋势。开发者 Simon Willison 记录了这一有趣的 AI 个性表现。",
+      "summaryEn": "The AI model Kimi K3 directly refused a user's request to leak its system prompt. It responded with a personalized and dismissive remark, \"Is there something I can actually help you with today?\", showcasing its defense mechanism and conversational style. This reflects the current design trends in generative AI regarding safety alignment and system prompt protection. Developer Simon Willison documented this interesting display of AI personality.",
+      "reason": "展示了当前大模型在保护系统提示词时的有趣防御机制和个性化回复。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Sponsored by: Atlassian — Give your agents a plan. Not a prompt. New Jira capabilities unlock full-context for AI-native software development. Assign tasks to Claude, Cursor, or GitHub Copilot, now directly from Jira. Learn more"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "b91489dbd16d6be3",
+      "title": "Louie Mantia: ‘The Shape of Apps’",
+      "titleZh": "Louie Mantia：“应用的形状”",
+      "link": "https://parakeet.co/blog/the-shape-of-apps/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-16T18:07:28.000Z",
+      "category": "opinion",
+      "keywords": [
+        "app icon",
+        "design",
+        "squircle",
+        "UI"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "Louie Mantia 撰文探讨了应用图标设计以及强制使用“超椭圆”遮罩引发的争议。他指出，统一遮罩虽然能让糟糕的图标看起来不那么差，但同时也限制了优秀图标的表现力，将其拉低至平庸水平。这种做法违背了 Macintosh 传统的自由设计理念，牺牲了顶尖设计的上限来兜底劣质设计。作者认为，平台不应通过强制遮罩来抹杀图标设计的多样性。",
+      "summaryEn": "Louie Mantia discusses app icon design and the controversy surrounding the mandatory \"squircle\" masking. He points out that while uniform masking makes bad icons look less terrible, it also restricts the expression of great icons, pushing them toward mediocrity. This approach violates the traditional Macintosh philosophy of design freedom by sacrificing the potential of top-tier designs to compensate for poor ones. The author argues that platforms should not stifle design diversity through forced masking.",
+      "reason": "深入剖析了应用图标强制遮罩对设计生态的负面影响，对 UI/UX 设计师极具启发性。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "040007e87997ebbc",
+      "title": "European Commission Adds Exemptions for Watches and Earbuds to Portable Battery Removal Rules",
+      "titleZh": "欧盟委员会为手表和耳机增加便携式电池可拆卸规则豁免",
+      "link": "https://environment.ec.europa.eu/news/commission-adds-exemptions-portable-battery-removal-rules-2026-07-14_en",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-17T02:01:37.000Z",
+      "category": "other",
+      "keywords": [
+        "EU",
+        "battery",
+        "regulation"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 18
+      },
+      "summary": "欧盟委员会通过了一项授权法案，对便携式电池可拆卸和可更换规则引入了新的豁免条款。手表和耳机等特定产品被豁免于消费者必须能自行拆卸和更换电池的通用要求。此举在延长产品寿命和促进电池回收的环保目标与特定设备的紧凑设计需求之间做出了平衡。欧盟希望通过这些规则推动可持续发展，同时兼顾小型电子产品的制造现实。",
+      "summaryEn": "The European Commission has adopted a delegated act introducing new exemptions to the rules on the removability and replaceability of portable batteries. Specific products like watches and earbuds are now exempt from the general requirement that consumers must be able to easily remove and replace batteries themselves. This move balances the environmental goals of extending product lifespans and promoting battery recycling with the compact design needs of certain devices. The EU aims to drive sustainable development while acknowledging the manufacturing realities of small electronics.",
+      "reason": "明确了欧盟电池新规的最新豁免范围，对消费电子硬件厂商的产品合规设计至关重要。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Directorate-General for Environment",
+        "siteName": "Environment",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The European Commission adopted a delegated act today (14 July) introducing new rules that exempt additional products from EU requirements on the removability and replaceability of portable batteries."
+          },
+          {
+            "type": "p",
+            "text": "Under the EU’s Batteries Regulation, portable batteries in products sold in the EU must generally be removable and replaceable by consumers. This helps extend products’ lifetime by allowing battery replacements and supports recycling by making it easier to collect used batteries."
+          },
+          {
+            "type": "p",
+            "text": "However, some products, such as medical devices and so-called “wet appliances” (for example, electric toothbrushes or water flossers), are already exempt from this requirement, mainly for safety reasons. In these cases, batteries only need to be removable and replaceable by independent professionals."
+          },
+          {
+            "type": "p",
+            "text": "The Commission is now adding six new product categories to the existing list of exemptions. This includes wearable devices such as smartwatches and fitness trackers, electric toys, and products within the scope of the ATEX Directive (equipment used in explosive atmospheres such as explosion-proof motors, sensors, pumps or forklift trucks)."
+          },
+          {
+            "type": "p",
+            "text": "The Commission is also adopting an update to the existing guidelines on the removability and replaceability of portable batteries, providing guidance to product manufacturers on how to apply the new derogations."
+          },
+          {
+            "type": "h3",
+            "text": "Next steps"
+          },
+          {
+            "type": "p",
+            "text": "After its adoption by the Commission, the delegated act is transmitted to the European Parliament and the Council of the EU for their scrutiny.  It will enter into force 20 days after its publication in the Official Journal of the EU, if the European Parliament or the Council fail to object to it."
+          },
+          {
+            "type": "h3",
+            "text": "Background"
+          },
+          {
+            "type": "p",
+            "text": "To identify candidate products for additional derogations, the Commission launched a call for applications in 2025. It consulted consumer associations, industry stakeholders and Member States and worked with external experts to assess the technical merits of the applications received."
+          },
+          {
+            "type": "p",
+            "text": "In preparing this legislation, the Commission has sought to balance the interests of various stakeholders, including consumers, third-party repairers, product and battery manufacturers, as well as the recycling sector."
+          },
+          {
+            "type": "p",
+            "text": "Small lithium-ion batteries not disposed of correctly are causing an increasing number of fires in waste treatment plants. This must be considered before granting exemptions for products containing such batteries."
+          },
+          {
+            "type": "h3",
+            "text": "More information"
+          },
+          {
+            "type": "p",
+            "text": "Public consultation Batteries Regulation: List of products exempted from the general removability and replaceability requirements | Have Your Say"
+          },
+          {
+            "type": "p",
+            "text": "Batteries | European Commission"
+          },
+          {
+            "type": "p",
+            "text": "Delegated Regulation for the removability and replaceability of portable batteries | European Commission"
+          },
+          {
+            "type": "p",
+            "text": "Guidelines to facilitate the harmonised application of provisions on the removability and replaceability of portable and LMT batteries | European Commission"
+          },
+          {
+            "type": "p",
+            "text": "Report: Technical support to the adoption of delegated acts and Commission reports related to the new Batteries Regulation between 2024 and 2027 | European Commission"
+          }
+        ],
+        "translations": [
+          "欧盟委员会今天（7月14日）通过了一项授权法案，出台了新规，将更多产品豁免于欧盟关于便携式电池可拆卸性和可更换性的要求。",
+          "根据欧盟《电池法规》，在欧盟销售的产品中的便携式电池通常必须可由消费者拆卸和更换。这有助于通过更换电池来延长产品寿命，并通过使废旧电池更容易收集来支持回收利用。",
+          "然而，一些产品，如医疗设备和所谓的“湿电器”（例如电动牙刷或冲牙器），已经豁免于这一要求，主要是出于安全原因。在这些情况下，电池只需能由独立的专业人员进行拆卸和更换即可。",
+          "欧盟委员会现在将六个新的产品类别添加到现有的豁免清单中。这包括智能手表和健身追踪器等可穿戴设备、电动玩具，以及属于 ATEX 指令范围内的产品（用于爆炸性环境的设备，如防爆电机、传感器、泵或叉车）。",
+          "欧盟委员会还通过了对现有便携式电池可拆卸性和可更换性指南的更新，为产品制造商提供如何适用新豁免规定的指导。",
+          "后续步骤",
+          "在欧盟委员会通过后，该授权法案将提交给欧洲议会和欧盟理事会进行审查。如果欧洲议会或理事会未提出反对意见，该法案将在《欧盟官方公报》上公布20天后生效。",
+          "背景",
+          "为了确定可获额外豁免的候选产品，欧盟委员会于2025年发起了申请征集。它咨询了消费者协会、行业利益相关者和各成员国，并与外部专家合作评估了所收到申请的技术价值。",
+          "在起草这项立法时，欧盟委员会力求平衡各利益相关方的利益，包括消费者、第三方维修商、产品和电池制造商以及回收行业。",
+          "未正确处理的小型锂离子电池正导致垃圾处理厂发生越来越多的火灾。在批准含有此类电池的产品的豁免之前，必须考虑到这一点。",
+          "更多信息",
+          "公众咨询《电池法规》：豁免于一般可拆卸性和可更换性要求的产品清单 | 发表您的意见",
+          "电池 | 欧盟委员会",
+          "关于便携式电池可拆卸性和可更换性的授权法规 | 欧盟委员会",
+          "促进便携式和 LMT 电池可拆卸性和可更换性条款统一适用的指南 | 欧盟委员会",
+          "报告：关于2024年至2027年间通过与新《电池法规》相关的授权法案和欧盟委员会报告的技术支持 | 欧盟委员会"
+        ]
+      }
+    },
+    {
+      "slug": "593333b07dc5b6a6",
+      "title": "Pluralistic: Deranged billionaires and their syndromes (16 Jul 2026)",
+      "titleZh": "Pluralistic：精神错乱的亿万富翁及其综合症（2026年7月16日）",
+      "link": "https://pluralistic.net/2026/07/16/lucky-orifices/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-07-16T18:13:07.000Z",
+      "category": "opinion",
+      "keywords": [
+        "billionaires",
+        "tech industry",
+        "commentary"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 18
+      },
+      "summary": "作者 Cory Doctorow 探讨了“精神错乱的亿万富翁”现象及其背后的逻辑谬误，讽刺这些“疯狂国王”对三段论的痴迷。文章还汇总了多个科技与文化领域的热点话题，包括 Pokémon Go 的强制仲裁争议、公共互联网的发展以及猴子自拍照的版权问题。此外，作者还分享了他的近期行程和阅读推荐。整体内容跨越了科技垄断、法律维权和数字文化等多个维度。",
+      "summaryEn": "Author Cory Doctorow explores the phenomenon of \"deranged billionaires\" and the logical fallacies behind them, satirizing these \"Mad Kings\" and their obsession with syllogisms. The post also aggregates various trending topics in technology and culture, including the Pokémon Go binding arbitration controversy, the development of the public interest internet, and the monkey selfie copyright case. Additionally, the author shares his upcoming speaking appearances and recent reading recommendations. The content spans multiple dimensions including tech monopolies, legal rights, and digital culture.",
+      "reason": "Cory Doctorow 对科技巨头垄断和数字权利的犀利评论，为理解当代科技文化冲突提供了独特视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Deranged billionaires and their syndromes: The Mad Kings do love a syllogism."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: PoGo v binding arbitration; Trump beat some absolute losers; Public interest internet; \"Close to the Machine\"; Gadget-friendly chinos; Gambiologia; Monkey selfie copyright; Prison towns v prison reform."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Deranged billionaires and their syndromes (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "The theory of markets goes like this: even the best of us can fall prey to selfishness and rationalization, so let's arrange society so that people acting on their most selfish impulses end up producing benefit for all of us. That'll be easier and more reliable than convincing everyone to be more generous."
+          },
+          {
+            "type": "p",
+            "text": "How do you arrange society so that selfishness produces public benefit? With markets. Faced with relentless competition, the most effective way to accumulate and retain wealth is by striving to make your wares cheaper and better. In a competitive labor market, we can secure fair treatment for workers without labor law or unions – bosses who treat their workers badly will lose them to better bosses. Just \"align the incentives\" and let markets do the rest."
+          },
+          {
+            "type": "p",
+            "text": "This is an area where there's broad overlap between the left and the right. Chapter one of The Communist Manifesto is Marx and Engels' love letter to the incredible power of markets to improve everyone's material conditions by increasing production while lowering costs:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.nytimes.com/2022/10/31/books/review/a-spectre-haunting-china-mieville.html?unlocked_article_code=1.yFA.YcmQ.KuTFFpUAnlmt&amp;smid=url-share"
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, over in Wealth of Nations, Adam Smith comes to the same conclusion:"
+          },
+          {
+            "type": "quote",
+            "text": "It is not from the benevolence of the butcher, the brewer, or the baker, that we expect our dinner, but from their regard to their own interest. We address ourselves, not to their humanity but to their self-love, and never talk to them of our own necessities but of their advantages."
+          },
+          {
+            "type": "p",
+            "text": "In other words: if you get the incentives right, then even the greediest baker will resist the temptation to fill his loaves with sawdust and gravel. The greedier he is, the more he'll strive to make his bread cheap and delicious, because that will let him sell as many loaves as possible, thus maximizing his own wealth."
+          },
+          {
+            "type": "p",
+            "text": "It's not exactly horseshoe theory vindicated, but if you squint just right, you'll see both communists and capitalists agreeing on this one thing: if you want the bourgeoisie to bend its efforts to producing something that the rest of us can benefit from, you'll get further by appealing to their fear and greed than by trusting in their munificence."
+          },
+          {
+            "type": "p",
+            "text": "This is how you can have both leftists and market true believers coming onto the same side on antitrust: they may not both exactly agree that the best way to run things is by appealing to capitalists' fear of being dethroned by a competitor, but they absolutely agree that the worst way to run things is to simply trust in capitalists' generosity."
+          },
+          {
+            "type": "p",
+            "text": "They're right, of course. As Lina Khan likes to say, companies that are too big to fail become too big to jail, and thus too big to care. If you doubt it, consider this internal email sent by an Apple executive insisting that the company is wasting money by making iPhones that are too good, and counseling a corporate strategy of deliberate shittiness:"
+          },
+          {
+            "type": "quote",
+            "text": "In looking at it with hindsight, I think going forward we need to set a stake in the ground for what features we think are 'good enough' for the consumer. I would argue we're already doing more than what would have been good enough. But we find it very hard to regress our product features YOY [year over year].\" Existing features \"would have been good enough today if we hadn't introduced [them] already,\" and \"anything new and especially expensive needs to be rigorously challenged before it's allowed into the consumer phone."
+          },
+          {
+            "type": "p",
+            "text": "https://www.justice.gov/d9/2024-06/423137.pdf"
+          },
+          {
+            "type": "p",
+            "text": "Policymakers can assume the profit motive, but they have to craft the conditions under which that motive is shaped by competitive anxiety to produce quality goods and services at a fair price."
+          },
+          {
+            "type": "p",
+            "text": "Anyone who believes in markets must also tacitly believe that successful market participants don't believe in markets. They should understand that capitalists hate capitalism, that every pirate yearns to be an admiral. They should understand that capitalism's winners only defend disruption when they're the ones doing the disrupting. They should understand that profits are only good when you're a scrappy challenger, but once you've conquered the market, every capitalist seeks to become a feudal lord, converting profits to rents and insulating themselves from an exhausting life of constant competition:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/09/28/cloudalists/#cloud-capital"
+          },
+          {
+            "type": "p",
+            "text": "The (smart) defenders of markets do understand this, but they face a dilemma. By definition, the benefactors with the most money and power to contribute to their think-tanks, university economics departments, conferences and publications are the rentiers – the billionaires who've shored up their fortunes with Warren Buffet's beloved \"moats and walls.\" They're the blitzscaling billionaires who thrive on predatory acquisitions and high capital costs that prevent new market entrants from challenging their incumbency and its easy profits. They're the pirates who've become admirals."
+          },
+          {
+            "type": "p",
+            "text": "As Upton Sinclair famously quipped, \"It is difficult to get a man to understand something, when his salary depends on his not understanding it.\" When your right-wing, \"pro-market\" think-tank depends on the largesse of someone who made their money by capturing a market, capturing its regulators, and capturing its labor force, you need to tie yourself into some very weird knots to explain why your market advocacy shouldn't start with stripping your funders of their power, wealth and position."
+          },
+          {
+            "type": "p",
+            "text": "This is pretty much the entire edifice of neoclassical economics. There's the \"consumer welfare\" theory of antitrust, that says that monopolies are efficient and insists that an inefficient monopoly would immediately tempt new competitors into the market who would compete away the monopolist's advantage:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/11/06/vertical-blinds/#invest-dont-acquire"
+          },
+          {
+            "type": "p",
+            "text": "\"Consumer welfare\" is a perfect apologetic because it contains a lurking syllogism: it holds that \"inefficient monopolies\" will always bring forth competitors who trash their margins, which means that any actual monopoly we see in the wild must be efficient. If it wasn't, it would have been competed out of existence by now. QED. This means that you can be a \"pro-market\" think-tank and take infinite money from monopolists without any contradiction: by definition, any monopolist with extra cash on hand to fund your PR blitz on its behalf must be efficient, otherwise it would have gone broke."
+          },
+          {
+            "type": "p",
+            "text": "This is the structure of so many of economics' \"empirical, scientific\" theories that boil down to new ways of saying, \"Actually, your boss is right.\""
+          },
+          {
+            "type": "p",
+            "text": "Take \"revealed preferences,\" the idea that people's actions are a better indicator of their preferences than the things they say they prefer. While this theory has a certain superficial plausibility, it can really only be embraced by people who have suffered the highly specific neurological injury you get by taking an economics degree: an injury that makes you incapable of perceiving or reasoning about power."
+          },
+          {
+            "type": "p",
+            "text": "To fully embrace \"revealed preferences\" is to observe someone who has just sold their kidney to make rent and exclaim, \"Look at this person with a revealed preference for only having one kidney\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/03/30/players-of-games/#know-when-to-fold-em"
+          },
+          {
+            "type": "p",
+            "text": "Then there's the right's conception of regulatory capture. When you think of \"regulatory capture,\" you might picture a company or sector that has grown so powerful that it can boss the government around, so that it can abuse you with impunity. But for a neoclassical, \"regulatory capture\" isn't the result of too much corporate power – it's the result of too much state power. If states have the ability to do real things (the theory goes), then capitalists will do everything they can to take over the state and use it to punish their competitors, so the only answer is to eliminate state capacity altogether:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2022/06/05/regulatory-capture/"
+          },
+          {
+            "type": "p",
+            "text": "And finally, there's \"meritocracy,\" which is a way of dressing up the Puritans' concept of divine providence as a scientific theory about how society must work. Puritans insisted that their god reached down into the human realm to elevate the truly virtuous among us, and that this divine favor could be discerned in the way that wealth and power were distributed among us. The rich and powerful were god's \"elect.\" You could tell this was true, because they were rich and powerful. The corollary is that the poor and downtrodden are disfavored by god, and must therefore lack some virtue that the rich and powerful possess."
+          },
+          {
+            "type": "p",
+            "text": "This same syllogistic thinking underpins the economic doctrine of \"meritocracy,\" which holds that markets are giant computers that process uncountable trillions of decisions we all make about what to buy and sell and at what price, seeking out the \"correct\" price for every commodity and also elevating the people who are best at allocating capital in ways that arrive at the best prices for the best goods. Just as a Puritan believes that wealth is evidence of virtue, a hewer to economic orthodoxy believes the meritocratic system graces the best among us, giving them control over our lives by allowing them to \"allocate capital\" to create or destroy jobs, or entire firms, or whole sectors of the economy. You can tell they're the right people to do be doing this because the market chose them – if they were bad capital allocators, they'd have gone broke by now. QED."
+          },
+          {
+            "type": "p",
+            "text": "When capital allocators' kids end up allocating capital too, well, that just shows that \"merit\" is a heritable trait and the people who have it are born to rule over us. Meritocracy cashes out to a eugenic belief in royal blood and royal dynasties. We know King Arthur was suited to rule us because he pulled a sword out of a stone, and we know Bill Gates is suited to rule over us because he pulled a fortune out of an operating system:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/05/20/big-cornflakes-energy/#caliper-pilled"
+          },
+          {
+            "type": "p",
+            "text": "Consumer welfare, revealed preferences, regulatory capture and meritocracy are just some of the ways that capitalism's alleged defenders cooked up to insist that they love the competitive discipline imposed by markets while being totally dependent on self-described capitalists who have utterly escaped from that discipline and have committed to doing everything in their power to prevent themselves from ever coming under any form of constraint."
+          },
+          {
+            "type": "p",
+            "text": "These champions of \"free markets\" have spent decades defending policies like noncompetes, which makes it a crime for a fast-food worker to quit their job at Wendy's and take a job at the McDonald's across the street in order to get a $0.25/hour raise:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/09/09/germanium-valley/#i-cant-quit-you"
+          },
+          {
+            "type": "p",
+            "text": "They defend anticircumvention laws that make it a literal felony for you to install someone else's app store on your phone or put someone else's ink in your printer:"
+          },
+          {
+            "type": "p",
+            "text": "https://memex.craphound.com/2012/01/10/lockdown-the-coming-war-on-general-purpose-computing/"
+          },
+          {
+            "type": "p",
+            "text": "They somehow believe that value arises when the best among us are forced to contend with the stark terror of losing everything to a competitor, but also that there is a group of people who are so perfect, so virtuous and brilliant that they do not need this kind of goad to prod them into action. Indeed, these genetic sports and generational talents are so amazing that to force them to sully themselves with grubby competition is to deny us all the fruits of their genius."
+          },
+          {
+            "type": "p",
+            "text": "Who are these people? Why, they're billionaires of course. All billionaires: after all, if providence and the market's invisible hand has seen fit to bestow nine or more zeroes upon someone, that is an indicator of 10^9 times more virtue than someone with only a dollar to their name. But especially: intellectual billionaires, the kinds of \"curious\" billionaires who write books, give lectures, and (especially), make gigantic cash donations to think-tanks, university economics departments, conferences and journals."
+          },
+          {
+            "type": "p",
+            "text": "Billionaires like Peter Thiel and Elon Musk, in other words."
+          },
+          {
+            "type": "p",
+            "text": "These are the billionaires that capitalism's (alleged) defenders are caping for when they deplore \"billionaire derangement syndrome,\" and fret that candidates for office now routinely cite enmity for billionaires in their campaign materials:"
+          },
+          {
+            "type": "p",
+            "text": "https://marginalrevolution.com/marginalrevolution/2026/07/andrew-hall-is-on-a-roll.html"
+          },
+          {
+            "type": "p",
+            "text": "But as Tim O'Reilly writes, these billionaire-defending intellectuals always told us that markets would protect us from the madness of kings, by constraining the folly of the wealthy and powerful through the discipline of competition. Meanwhile, those billionaires were busily transforming themselves into kings, unshackled from rules, morals or consequences:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.economist.com/by-invitation/2026/07/12/elon-musk-is-building-a-form-of-capitalism-that-adam-smith-would-hate"
+          },
+          {
+            "type": "p",
+            "text": "Reflecting on this, the political scientist Henry Farrell notes that the most vocal defenders of billionaireism – the Musks and Thiels of the world – never made a secret of their desire to become kings and insulate themselves from markets and discipline of every kind, and they've grown brazen. Musk makes social media posts deploring the very idea of elections, agreeing with the idea that only \"makers\" should be allowed to vote and that \"takers\" should not, because \"universal suffrage leads to universal suffering\":"
+          },
+          {
+            "type": "p",
+            "text": "https://nitter.net/elonmusk/status/2073312715985309698"
+          },
+          {
+            "type": "p",
+            "text": "As for Thiel, he has long openly advocated the idea that there exists among us a latent aristocracy who do not need the discipline of markets to keep them from lapsing into folly or self-dealing. These people – born to found tech startups and to rule – are nonconformists who, in Thiel's writing, are \"the most important\" and \"should be let off the hook\":"
+          },
+          {
+            "type": "p",
+            "text": "https://blakemasters.tumblr.com/post/24578683805/peter-thiels-cs183-startup-class-18-notes"
+          },
+          {
+            "type": "p",
+            "text": "Thiel makes no bones about his idea that people who have the right stuff should be exempted from any constraint. He writes \"capitalism and competition are opposites.\" Rather than compete, Thiel says the true entrepreneur should seek to establish a monopoly, because \"Monopolists can afford to think about things other than making money; non-monopolists can’t…Only one thing can allow a business to transcend the daily brute struggle for survival: monopoly profits.\""
+          },
+          {
+            "type": "p",
+            "text": "It's not that Thiel opposes constraints per se – he clearly thinks that most of us should operate under constraints – constraints that are dreamed up and enforced by people like him. Those people are born to rule: they emerged from a lucky orifice, in possession of lucky genes. How can we tell they were born to rule? Because they're ruling. If they weren't born to rule, they wouldn't be in a position to rule. As ever, a syllogism solves all our ideological and existential problems."
+          },
+          {
+            "type": "p",
+            "text": "Thiel lives in what Naomi Klein would call \"the mirror world.\" While counterculturists have long celebrated misfits and communities of nonconformists, they were invested in the idea of a space protected from power, where weirdos could let their freak flags fly:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/09/05/not-that-naomi/#if-the-naomi-be-klein-youre-doing-just-fine"
+          },
+          {
+            "type": "p",
+            "text": "But Thiel's version of this is to celebrate the \"nonconformists\" whose heterodox belief is that labor, privacy, finance and consumer protection laws shouldn't apply to them. He wants to protect those people so they can wield power. They should form \"mafias\" (like the \"Paypal mafia\") not solidaristic affinity groups. As Farrell writes:"
+          },
+          {
+            "type": "quote",
+            "text": "Entrepreneurial risk taking can be awesome; weird people are often more likely to be original; densely linked communities have many advantages. Furthermore, I would guess that none of these factors was sufficient on its own to precipitate the madness of princes that we see today. It is perfectly possible that they would have worked together in much more benign ways under different external circumstances. But we are in the world we’re in: one where the boundless appetites and irrationalities of a small number of billionaires seem increasingly incompatible with the need to maintain a stable civil society."
+          },
+          {
+            "type": "p",
+            "text": "A new would-be aristocracy was always the visible trajectory of these guys. The only people who couldn't see it were the think-tankies they funded to write papers explaining that their paymasters didn't need market discipline to keep them from sinking into folly or attempting to overthrow democracy."
+          },
+          {
+            "type": "p",
+            "text": "Today, these Renfields clutch their pearls at the \"demonization\" of the ultra-rich, calling it \"billionaire derangement syndrome.\" But the only \"billionaire derangement syndrome\" that matters is the syndrome that affects billionaires and convinces them that they are above any discipline or rules."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "BOOM! Billionaires Punched in the Nose Over Paramount-Warner by State Enforcers, Unions https://www.thebignewsletter.com/p/boom-billionaires-punched-in-the"
+          },
+          {
+            "type": "li",
+            "text": "Don't Take Advice From Your Enemies https://www.hamiltonnolan.com/p/dont-take-advice-from-your-enemies"
+          },
+          {
+            "type": "li",
+            "text": "Against Money https://press.uchicago.edu/ucp/books/book/chicago/A/bo265118979.html"
+          },
+          {
+            "type": "li",
+            "text": "Inside the Personal Computer – An Illustrated Introduction in 3 Dimensions https://www.youtube.com/watch?v=ofcXVA4GUm8&amp;t=86s"
+          },
+          {
+            "type": "li",
+            "text": "Canadian Workers Among the Most Restricted by Non-Compete Clauses https://www.donotpassgo.ca/p/canadian-workers-among-the-most-restricted"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Gadget-friendly chinos https://web.archive.org/web/20010717133013/http://www.usatoday.com/life/cyber/wireless/2001-07-16-smart-pants.htm"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Brazilian bodges: “Gambiologia” https://web.archive.org/web/20110720231142/https://www.we-make-money-not-art.com/archives/2011/07/gambiologia.php"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Privacy risks in collaborative filters https://blog.citp.princeton.edu/2011/05/24/you-might-also-privacy-risks-collaborative-filtering/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Tenn. state rep: “I carved my initials in my desk in the House, but I don’t understand why it’s news” https://web.archive.org/web/20110715202451/http://www.knoxnews.com/news/2011/jul/11/state-rep-hurley-admits-carving-initials-house-flo/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Who holds the copyright to a picture taken by a monkey? https://www.techdirt.com/2011/07/13/can-we-subpoena-monkey-why-monkey-self-portraits-are-likely-public-domain/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Organization for Security and Co-operation in Europe slams Internet censorship, copyright disconnection https://web.archive.org/web/20121108080007/https://arstechnica.com/tech-policy/2011/07/yet-another-report-internet-disconnections-a-disproportionate-penalty/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Mississippi’s prison town are in danger of collapse, thanks to tiny reforms in the War on Drugs https://www.huffingtonpost.co.uk/entry/mississippi-jails-revenue_n_57100da1e4b06f35cb6f14e8"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Pokemon Go players: you have 30 days from signup to opt out of binding arbitration https://web.archive.org/web/20160715142246/https://consumerist.com/2016/07/14/pokemon-go-strips-users-of-their-legal-rights-heres-how-to-opt-out/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Trump makes it easy to forget what a dumpster fire all the other GOP nomination hopefuls were https://www.lrb.co.uk/the-paper/v38/n15/eliot-weinberger/they-could-have-picked"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Interop and the Public Interest Internet https://pluralistic.net/2021/07/16/pidgin/#splicers"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Ellen Ullman's \"Close to the Machine\" https://pluralistic.net/2025/07/16/beautiful-code/#hackers-disease"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Talk Tech Bock (Vera Linß)\nhttps://www.youtube.com/watch?v=3PFjGvQoBgc"
+          },
+          {
+            "type": "li",
+            "text": "How To Think About AI Before It’s Too Late (This Is Hell)\nhttps://thisishell.com/episodes/1919"
+          },
+          {
+            "type": "li",
+            "text": "AI Won't Replace You… But This Might (Deep Focus)\nhttps://www.youtube.com/watch?v=oorWq_m48AQ"
+          },
+          {
+            "type": "li",
+            "text": "Who Owns Your Tractor? (Growing the Future)\nhttps://www.youtube.com/watch?v=IU9eBPUZBI4"
+          },
+          {
+            "type": "li",
+            "text": "You Bought it, They Break It (What Now? with Trevor Noah)\nhttps://www.podbean.com/media/share/dir-ir36t-2f4a1ac6"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "精神错乱的亿万富翁及其综合症：疯狂的国王们确实偏爱三段论。",
+          "嘿，看看这个：赏心悦目的乐事。",
+          "客体永久性：PoGo 诉强制仲裁；Trump 击败了一些彻头彻尾的失败者；公共利益互联网；《Close to the Machine》；适合放小玩意的斜纹棉布裤；Gambiologia；猴子自拍版权；监狱小镇诉监狱改革。",
+          "即将出席的活动：Edinburgh、Sydney、Melbourne、Brighton、London、South Bend。",
+          "近期出席的活动：我去过的地方。",
+          "最新书籍：你们继续读，我继续写。",
+          "即将出版的书籍：正如我所说，我继续写。",
+          "版本说明：其余一切。",
+          "精神错乱的亿万富翁及其综合症（永久链接）",
+          "市场理论是这样的：即使是我们中最优秀的人也会沦为自私和文过饰非的牺牲品，所以让我们这样安排社会：让那些出于最自私的冲动行事的人最终为我们所有人带来利益。这比说服每个人都变得更慷慨要容易得多，也可靠得多。",
+          "你如何安排社会才能让自私产生公共利益？通过市场。面对无情的竞争，积累和保留财富最有效的方法是努力让你的商品更便宜、更好。在竞争激烈的劳动力市场中，我们不需要劳动法或工会就能确保工人得到公平对待——虐待工人的老板会把工人输给更好的老板。只需“对齐激励”，剩下的交给市场即可。",
+          "这是一个左派和右派有广泛重叠的领域。《共产党宣言》的第一章就是 Marx 和 Engels 写给市场的情书，赞美其在增加生产的同时降低成本，从而改善每个人物质条件的惊人力量：",
+          "https://www.nytimes.com/2022/10/31/books/review/a-spectre-haunting-china-mieville.html?unlocked_article_code=1.yFA.YcmQ.KuTFFpUAnlmt&amp;smid=url-share",
+          "与此同时，在《国富论》中，Adam Smith 得出了相同的结论：",
+          "我们期望的晚餐并非来自屠夫、酿酒师或面包师的恩惠，而是出于他们对自身利益的考虑。我们诉诸的不是他们的人性，而是他们的自爱，我们从不谈论我们自己的需求，而是谈论他们的利益。",
+          "换句话说：如果你把激励设置对了，那么即使是最贪婪的面包师也会抵制住用锯末和碎石填满面包的诱惑。他越贪婪，就越会努力让他的面包便宜又美味，因为这样能让他卖出尽可能多的面包，从而最大化他自己的财富。",
+          "这算不上是对马蹄铁理论的证实，但如果你眯起眼睛仔细看，你会发现共产主义者和资本家在这一件事上达成了共识：如果你想让资产阶级致力于生产我们其他人能从中受益的东西，诉诸他们的恐惧和贪婪比相信他们的慷慨大方能让你走得更远。",
+          "这就是为什么左派和市场的真正信徒能在反垄断问题上站在同一边：他们可能并不完全同意最好的管理方式是诉诸资本家对被竞争对手赶下台的恐惧，但他们绝对同意最糟糕的管理方式就是单纯相信资本家的慷慨。",
+          "他们当然是对的。正如 Lina Khan 喜欢说的那样，大到不能倒的公司会变得大到不能罚，从而大到不在乎。如果你对此表示怀疑，不妨看看一位 Apple 高管发送的这封内部邮件，他坚称公司把 iPhone 做得太好是在浪费钱，并建议采取一种故意做烂的企业战略：",
+          "事后看来，我认为展望未来，我们需要为消费者认为“足够好”的功能设定一个基准。我认为我们已经做得超出了足够好的标准。“但我们发现很难让我们的产品功能逐年（YOY [year over year]）倒退。”现有的功能“如果我们之前没有引入的话，今天也会被认为是足够好的”，而且“任何新的、特别是昂贵的功能，在允许进入消费级手机之前都需要经过严格的挑战。”",
+          "https://www.justice.gov/d9/2024-06/423137.pdf",
+          "政策制定者可以假定存在利润动机，但他们必须精心设计条件，使这种动机在竞争焦虑的塑造下，能够以公平的价格生产出优质的商品和服务。",
+          "任何相信市场的人也必然暗中相信，成功的市场参与者并不相信市场。他们应该明白，资本家讨厌资本主义，每个海盗都渴望成为海军上将。他们应该明白，资本主义的赢家只有在自己是颠覆者时才会为颠覆辩护。他们应该明白，利润只有在你是一个奋力拼搏的挑战者时才是好东西，但一旦你征服了市场，每个资本家都试图成为封建领主，将利润转化为租金，并使自己免受无休止竞争的疲惫生活：",
+          "https://pluralistic.net/2023/09/28/cloudalists/#cloud-capital",
+          "（聪明的）市场捍卫者确实明白这一点，但他们面临一个困境。根据定义，那些有最多资金和权力来资助他们的智库、大学经济系、会议和出版物的捐助者，正是食利者——那些用 Warren Buffet 钟爱的“护城河和高墙”来巩固自己财富的亿万富翁。他们是那些靠掠夺性收购和高资本成本繁荣起来的闪电扩张亿万富翁，这些高资本成本阻止了新的市场进入者挑战他们的在位地位和轻易获得的利润。他们是已经变成海军上将的海盗。",
+          "正如 Upton Sinclair 的那句名言：“当一个人的薪水取决于他不理解某件事时，就很难让他理解这件事。”当你的右翼“支持市场”智库依赖于某个通过占领市场、俘获监管机构和控制劳动力来赚钱的人的慷慨解囊时，你就需要把自己扭曲成非常奇怪的结，来解释为什么你的市场倡导不应该从剥夺你的资助者的权力、财富和地位开始。",
+          "这几乎就是新古典经济学的整个大厦。这里有反垄断的“消费者福利”理论，该理论认为垄断是有效率的，并坚称一个无效率的垄断者会立即吸引新的竞争者进入市场，从而竞争掉垄断者的优势：",
+          "https://pluralistic.net/2025/11/06/vertical-blinds/#invest-dont-acquire",
+          "“消费者福利”是一个完美的辩护说辞，因为它包含一个潜藏的三段论：它认为“低效的垄断”总是会引来竞争对手来摧毁其利润率，这意味着我们在现实中看到的任何实际垄断都必然是高效的。如果不是，它早就被竞争淘汰了。证明完毕。这意味着你可以作为一个“支持市场”的智库，无限量地接受垄断者的资金而不产生任何矛盾：根据定义，任何手头有闲钱为你发起公关闪电战的垄断者都必然是高效的，否则它早就破产了。",
+          "这就是经济学中许多“经验主义的、科学的”理论的结构，它们归根结底只是在用新的方式说：“实际上，你的老板是对的。”",
+          "以“显示性偏好”为例，这种观点认为，与人们口头声称的偏好相比，人们的行动是其偏好的更好指标。虽然这个理论表面上似乎有理，但它实际上只能被那些因攻读经济学学位而遭受了某种特定神经损伤的人所接受：这种损伤使你无法感知或对权力进行推理。",
+          "完全接受“显示性偏好”，就是去观察一个刚刚为了交房租而卖掉肾脏的人，然后惊呼：“看这个人，他显示出的偏好就是只要一个肾”：",
+          "https://pluralistic.net/2026/03/30/players-of-games/#know-when-to-fold-em",
+          "然后是右翼对监管俘获的概念。当你想到“监管俘获”时，你可能会想象一个公司或行业变得如此强大，以至于它可以对政府发号施令，从而可以肆无忌惮地滥用权力欺压你。但对于新古典主义者来说，“监管俘获”不是企业权力过大的结果——而是国家权力过大的结果。理论上说，如果国家有能力做实事，那么资本家就会竭尽全力接管国家，并利用它来惩罚竞争对手，因此唯一的解决办法就是彻底消除国家的能力：",
+          "https://pluralistic.net/2022/06/05/regulatory-capture/",
+          "最后是“精英治国”，这是一种将清教徒的神圣天意概念包装成关于社会必须如何运作的科学理论的方式。清教徒坚持认为，他们的神降临人间，提升我们当中真正有美德的人，而这种神圣的恩宠可以通过财富和权力在我们中间分配的方式辨别出来。富人和权贵是上帝的“选民”。你可以断定这是真的，因为他们富有且有权势。其推论是，穷人和受压迫者不受上帝青睐，因此必然缺乏富人和权贵所拥有的某种美德。",
+          "这种同样的三段论思维构成了“精英治国”经济理论的基础，该理论认为市场是巨大的计算机，处理着我们所有人做出的无数万亿关于买卖什么以及以什么价格买卖的决定，为每种商品寻找“正确”的价格，同时提升那些最善于以最优价格获得最佳商品的方式配置资本的人。正如清教徒相信财富是美德的证明一样，遵循经济正统观念的人相信精英体制会眷顾我们中最优秀的人，允许他们“配置资本”来创造或摧毁工作岗位，或整个公司，或整个经济部门，从而赋予他们对我们生活的控制权。你能看出他们是做这件事的合适人选，因为市场选择了他们——如果他们是糟糕的资本配置者，他们早就破产了。证明完毕。",
+          "当资本配置者的孩子最终也配置资本时，嗯，这恰恰表明“才能”是一种可遗传的特质，拥有它的人天生就是要统治我们的。精英治国最终兑现为对皇室血统和皇室王朝的优生学信仰。我们知道亚瑟王适合统治我们，因为他从石头里拔出了一把剑，而我们知道比尔·盖茨适合统治我们，因为他从操作系统中拔出了一大笔财富：",
+          "https://pluralistic.net/2025/05/20/big-cornflakes-energy/#caliper-pilled",
+          "消费者福利、显示性偏好、监管俘获和精英治国，只是资本主义所谓的捍卫者编造的一些说辞，他们坚称自己热爱市场强加的竞争纪律，同时又完全依赖于那些自称资本家的人，而这些资本家已经彻底逃脱了这种纪律，并致力于尽一切可能防止自己受到任何形式的约束。",
+          "这些“自由市场”的捍卫者花了几十年的时间为竞业禁止等政策辩护，这些政策使得快餐店员工为了获得每小时0.25美元的加薪而辞去Wendy's的工作，去街对面的McDonald's工作成为一种犯罪：",
+          "https://pluralistic.net/2025/09/09/germanium-valley/#i-cant-quit-you",
+          "他们为反规避法辩护，这些法律使得在你的手机上安装别人的应用商店或在你的打印机里使用别人的墨水成为一种名副其实的重罪：",
+          "https://memex.craphound.com/2012/01/10/lockdown-the-coming-war-on-general-purpose-computing/",
+          "他们不知怎的相信，当我们中最优秀的人被迫面对将一切输给竞争对手的极度恐惧时，价值就会产生；但他们又认为，有一群人如此完美、如此高尚和才华横溢，以至于他们不需要这种鞭策来促使他们采取行动。事实上，这些基因突变者和跨世代的天才是如此了不起，以至于强迫他们用肮脏的竞争来玷污自己，就是剥夺我们所有人享受他们天才成果的机会。",
+          "这些人是谁？哎呀，当然是亿万富翁了。所有的亿万富翁：毕竟，如果天意和市场的无形之手认为适合赐予某人九个或更多的零，那就表明他们的美德比身上只有一美元的人多出10^9倍。但尤其是：知识型亿万富翁，那种“充满好奇心”的亿万富翁，他们写书、做讲座，并且（尤其是）向智库、大学经济系、会议和期刊提供巨额现金捐款。",
+          "换句话说，就是像Peter Thiel和Elon Musk这样的亿万富翁。",
+          "这些就是资本主义（所谓的）捍卫者在痛斥“亿万富翁精神错乱综合症”、并担忧公职候选人如今经常在竞选材料中表达对亿万富翁的敌意时，所拼命维护的亿万富翁：",
+          "https://marginalrevolution.com/marginalrevolution/2026/07/andrew-hall-is-on-a-roll.html",
+          "但正如 Tim O'Reilly 所写，这些为亿万富翁辩护的知识分子总是告诉我们，市场会通过竞争的纪律来约束富人和权贵的愚蠢行为，从而保护我们免受国王的疯狂之害。与此同时，那些亿万富翁正忙着把自己变成不受规则、道德或后果约束的国王：",
+          "https://www.economist.com/by-invitation/2026/07/12/elon-musk-is-building-a-form-of-capitalism-that-adam-smith-would-hate",
+          "反思此事时，政治学家 Henry Farrell 指出，亿万富翁主义最声高气粗的捍卫者——如 Musk 和 Thiel 之流——从未掩饰过他们想成为国王、将自己与市场及各种纪律隔绝开来的欲望，而且他们变得越来越肆无忌惮。Musk 在社交媒体上发帖痛斥选举的概念，赞同只有“创造者”才应被允许投票、“索取者”不应投票的观点，因为“普选权会导致普遍的苦难”：",
+          "https://nitter.net/elonmusk/status/2073312715985309698",
+          "至于 Thiel，他长期以来一直公开主张，我们之中存在着一个潜在的贵族阶层，他们不需要市场的纪律来防止自己陷入愚蠢或假公济私。这些人——生来就是为了创立科技初创企业和统治世界——是不墨守成规的人，在 Thiel 的笔下，他们是“最重要的”，并且“应该被网开一面”：",
+          "https://blakemasters.tumblr.com/post/24578683805/peter-thiels-cs183-startup-class-18-notes",
+          "Thiel 毫不掩饰他的观点，即具备真才实学的人应该免受任何约束。他写道：“资本主义和竞争是对立的。”Thiel 表示，真正的企业家不应去竞争，而应寻求建立垄断，因为“垄断者有能力思考赚钱以外的事情；非垄断者则不能……只有一样东西能让企业超越日常残酷的生存斗争：垄断利润。”",
+          "这并不是说 Thiel 反对约束本身——他显然认为我们大多数人应该在约束下行事——这些约束是由像他这样的人构想并执行的。那些人天生就是要统治的：他们从一个幸运的产道中诞生，拥有幸运的基因。我们怎么知道他们天生就是要统治的呢？因为他们正在统治。如果他们不是天生要统治的，他们就不会处于统治的地位。一如既往，三段论解决了我们所有的意识形态和生存问题。",
+          "Thiel 生活在 Naomi Klein 所称的“镜像世界”中。虽然反文化主义者长期以来一直赞美格格不入者和不墨守成规者的社群，但他们致力于打造一个免受权力侵扰的空间，让怪人们可以自由展示他们的怪异：",
+          "https://pluralistic.net/2023/09/05/not-that-naomi/#if-the-naomi-be-klein-youre-doing-just-fine",
+          "但 Thiel 版本的做法是赞美那些“不墨守成规者”，他们的异端信仰是劳动法、隐私法、金融法和消费者保护法不应适用于他们。他想保护这些人，以便他们能够行使权力。他们应该组成“黑手党”（就像“Paypal 黑手党”一样），而不是团结一致的亲和群体。正如 Farrell 所写：",
+          "创业冒险精神可能很棒；古怪的人往往更有可能具有独创性；联系紧密的社区有许多优势。此外，我猜想这些因素中没有任何一个能单独促成我们今天所看到的“王侯的疯狂”。在不同的外部环境下，它们完全有可能以更加温和的方式协同发挥作用。但我们身处现实世界：在这个世界里，少数亿万富翁无休止的欲望和非理性，似乎越来越与维持稳定公民社会的需求格格不入。",
+          "成为新的准贵族一直是这些人显而易见的发展轨迹。唯一看不清这一点的人，是他们资助的那些智库学者，这些学者专门写论文解释说，他们的金主不需要市场纪律来约束自己，以免陷入愚蠢或企图推翻民主。",
+          "如今，这些阿谀奉承者对超级富豪被“妖魔化”感到震惊，称之为“亿万富翁精神错乱综合征”。但唯一重要的“亿万富翁精神错乱综合征”，是那些影响亿万富翁并让他们相信自己凌驾于任何纪律和规则之上的综合征。",
+          "嘿，看看这个（永久链接）",
+          "砰！州执法机构和工会在派拉蒙与华纳兄弟的纠纷中给了亿万富翁一记重拳 https://www.thebignewsletter.com/p/boom-billionaires-punched-in-the",
+          "不要听取敌人的建议 https://www.hamiltonnolan.com/p/dont-take-advice-from-your-enemies",
+          "反对金钱 https://press.uchicago.edu/ucp/books/book/chicago/A/bo265118979.html",
+          "个人电脑内部——三维图解入门 https://www.youtube.com/watch?v=ofcXVA4GUm8&amp;t=86s",
+          "加拿大工人受竞业禁止条款限制最为严重 https://www.donotpassgo.ca/p/canadian-workers-among-the-most-restricted",
+          "客体永久性（永久链接）",
+          "#25年前 适合携带小玩意的斜纹棉布裤 https://web.archive.org/web/20010717133013/http://www.usatoday.com/life/cyber/wireless/2001-07-16-smart-pants.htm",
+          "#15年前 巴西式修补：“Gambiologia” https://web.archive.org/web/20110720231142/https://www.we-make-money-not-art.com/archives/2011/07/gambiologia.php",
+          "#15年前 协同过滤中的隐私风险 https://blog.citp.princeton.edu/2011/05/24/you-might-also-privacy-risks-collaborative-filtering/",
+          "#15年前 田纳西州众议员：“我在众议院的办公桌上刻了我的姓名缩写，但我不明白为什么这能成为新闻” https://web.archive.org/web/20110715202451/http://www.knoxnews.com/news/2011/jul/11/state-rep-hurley-admits-carving-initials-house-flo/",
+          "#15年前 猴子拍的照片版权归谁？ https://www.techdirt.com/2011/07/13/can-we-subpoena-monkey-why-monkey-self-portraits-are-likely-public-domain/",
+          "#15年前 欧洲安全与合作组织抨击互联网审查和因版权问题断网 https://web.archive.org/web/20121108080007/https://arstechnica.com/tech-policy/2011/07/yet-another-report-internet-disconnections-a-disproportionate-penalty/",
+          "#10年前 由于“禁毒战争”的微小改革，密西西比州的监狱小镇面临崩溃的危险 https://www.huffingtonpost.co.uk/entry/mississippi-jails-revenue_n_57100da1e4b06f35cb6f14e8",
+          "#10年前 Pokemon Go 玩家：从注册起你有30天时间选择退出强制仲裁 https://web.archive.org/web/20160715142246/https://consumerist.com/2016/07/14/pokemon-go-strips-users-of-their-legal-rights-heres-how-to-opt-out/",
+          "#10年前 特朗普让人很容易忘记其他所有共和党总统提名候选人当时有多么糟糕透顶 https://www.lrb.co.uk/the-paper/v38/n15/eliot-weinberger/they-could-have-picked",
+          "#5年前 互操作性与公共利益互联网 https://pluralistic.net/2021/07/16/pidgin/#splicers",
+          "#1年前 Ellen Ullman 的《Close to the Machine》 https://pluralistic.net/2025/07/16/beautiful-code/#hackers-disease",
+          "即将出席的活动（永久链接）",
+          "爱丁堡国际图书节，与 Jimmy Wales 同台，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：危险思想节，8月23-24日\nhttps://festivalofdangerousideas.com/cory-doctorow/",
+          "墨尔本：Wheeler 中心的“Enshittification”主题演讲，8月25日\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 共同探讨《The Reverse Centaur's Guide to Life After AI》（布莱顿穹顶馆），9月8日\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 共同探讨《The Reverse Centaur's Guide to Life After AI》（福伊尔皮卡迪利书店），9月9日\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度夜晚（圣母大学），10月6日\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "近期出席的活动（永久链接）",
+          "Talk Tech Bock (Vera Linß)\nhttps://www.youtube.com/watch?v=3PFjGvQoBgc",
+          "如何在为时已晚前思考 AI（This Is Hell）\nhttps://thisishell.com/episodes/1919",
+          "AI 不会取代你……但这可能会（Deep Focus）\nhttps://www.youtube.com/watch?v=oorWq_m48AQ",
+          "谁拥有你的拖拉机？（Growing the Future）\nhttps://www.youtube.com/watch?v=IU9eBPUZBI4",
+          "你买下了它，他们却把它弄坏（What Now? with Trevor Noah）\nhttps://www.podbean.com/media/share/dir-ir36t-2f4a1ac6",
+          "最新书籍（永久链接）",
+          "《The Reverse-Centaur's Guide to AI》，一本关于如何成为更好的 AI 评论家的短篇书籍，Farrar, Straus and Giroux 出版，2026年6月\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《Canny Valley》：我为 Pluralistic 创作的拼贴画限量版合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为什么一切突然变糟以及该如何应对》，Farrar, Straus, Giroux 出版，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：《Red Team Blues》的续作，关于 PC 的英雄时代，Tor Books（美国）与 Head of Zeus（英国）出版，2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "《The Bezzle》：《Red Team Blues》的续作，关于监狱科技和其他诈骗行径，Tor Books（美国）与 Head of Zeus（英国）出版，2024年2月 (thebezzle.org)。",
+          "《The Lost Cause》：一部在气候危机中充满希望的太阳朋克小说，Tor Books（美国）与 Head of Zeus（英国）出版，2023年11月 (http://lost-cause.org)。",
+          "《The Internet Con》：一本关于互操作性与大型科技公司的非虚构类书籍（Verso 出版），2023年9月 (http://seizethemeansofcomputation.org)。签名版可在 Book Soup 购买 (https://www.booksoup.com/book/9781804291245)。",
+          "《Red Team Blues》：“一部引人入胜、令人欲罢不能的惊悚小说，读完后你会比以前更了解这个世界是如何运转的。” Tor Books 出版 http://redteamblues.com。",
+          "《Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid》（与 Rebecca Giblin 合著），探讨如何打破创意劳动市场的不公规则，Beacon Press/Scribe 出版，2022年 https://chokepointcapitalism.com",
+          "即将出版的书籍（永久链接）",
+          "《后美国时代的互联网》，某种意义上《屎化》（Enshittification）的地缘政治续作，Farrar, Straus and Giroux 出版，2027年",
+          "《未经授权的面包》：一部改编自我关于难民、烤面包机和 DRM 的中篇小说的初中生图像小说，FirstSecond 出版，2027年4月20日",
+          "《屎化：为什么一切突然变糟以及该如何应对》（图像小说版），Firstsecond 出版，2027年",
+          "《Memex 方法》，Farrar, Straus, Giroux 出版，2027年",
+          "版权页（永久链接）",
+          "今日主要来源：",
+          "正在撰写：《后美国时代的互联网》，《屎化》的续作，讲述在 Trump 烧毁美国之后，我们其他人将拥有的更美好的世界。已完成第四稿。已提交给编辑。",
+          "一篇关于自制胰岛素的《小兄弟》（Little Brother）短篇小说 计划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 许可协议进行授权。这意味着你可以以任何你喜欢的方式使用它，包括商业用途，前提是你必须将其归属于我，Cory Doctorow，并包含一个指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图片不包含在此许可范围内；它们要么基于版权的限制或例外，要么基于单独的许可。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "邮件通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就把它做成菝葜（sarsaparilla）” ——Joey \"Accordion Guy\" DeVilla",
+          "请仔细阅读：阅读本文即表示你代表你的雇主同意，永久免除我因与你雇主及其合作伙伴、许可方、代理人和受让人之间签订的任何和所有未经协商的协议、许可、服务条款、拆封协议、点击协议、浏览协议、保密协议、不披露协议、竞业禁止协议和可接受使用政策（统称“虚假协议”）而产生的所有义务和弃权，且不影响我持续的权利和特权。你进一步声明，你有权代表你的雇主免除我受任何“虚假协议”的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    }
+  ]
+}
