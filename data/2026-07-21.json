@@ -1,0 +1,1877 @@
+{
+  "date": "2026-07-21",
+  "generatedAt": "2026-07-20T18:16:27.660Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2495,
+    "filteredArticles": 13,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈焦点集中在AI开源生态的博弈与底层工程探索上。在AI领域，中美开源模型竞争加剧，OpenAI计划推出本地运行的开源模型以应对挑战，同时业界呼吁完善法律以解决数据训练的版权限制问题。在工程与工具方面，开发者持续关注内存安全等底层系统难题，并迎来设计即代码等融合AI代理的新型开发工具。此外，公共交通的用户体验设计与数学几何的趣味探讨也为技术社区提供了跨界思考。",
+  "articles": [
+    {
+      "slug": "1ee0543e2b9be04c",
+      "title": "Who’s Afraid of Chinese Models?",
+      "titleZh": "谁害怕中国模型？",
+      "link": "https://simonwillison.net/2026/Jul/20/afraid-of-chinese-models/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-20T17:09:19.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "distillation",
+        "Chinese models"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Ben Thompson 提出了一项旨在解决前沿实验室禁止模型蒸馏却使用未授权数据训练这一虚伪现象的提案。该提案建议美国通过法律明确将收集数据用于模型训练视为合理使用。此举有望帮助美国开源模型更有效地与中国模型竞争。",
+      "summaryEn": "Ben Thompson proposes a solution to the hypocrisy of frontier labs outlawing model distillation while training on unlicensed data. The proposal suggests that the U.S. should pass a law explicitly making data collection for model training fair use. This could help U.S. open models compete more effectively against their Chinese counterparts.",
+      "reason": "深入探讨了中美AI模型竞争中的开源策略与版权争议，提出了具有颠覆性的政策建议。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "20th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Who’s Afraid of Chinese Models? (via) Interesting proposal from Ben Thompson that both addresses the hypocrisy of labs outlawing distillation against their models despite training on unlicensed data, and could help US open models compete more effectively with their Chinese counterparts:"
+          },
+          {
+            "type": "quote",
+            "text": "The U.S. should pass a law that (1) makes explicit that collecting data for training models is fair use, and (2) bars terms of service that forbid distillation, for U.S. companies at a minimum. Stopping distillation — which is literally just querying the API — is nearly impossible; the U.S. should go the other way and lean into a new copyright policy that both indemnifies the labs and also guarantees that what they learned fuels further innovation for everyone else."
+          },
+          {
+            "type": "p",
+            "text": "Ben also theorizes that Alibaba's decision to release Qwen 3.8 Max as open weights - a reversal from their decision not to release Qwen 3.7 Max in May - may have been influenced by a recent speech by Xi Jinping, who said:"
+          },
+          {
+            "type": "quote",
+            "text": "We should seize this rare, historic opportunity to encourage open source, openness, collaboration and sharing."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "39fb82bc57e50803",
+      "title": "‘Who’s Afraid of Chinese Models?’",
+      "titleZh": "“谁害怕中国模型？”",
+      "link": "https://stratechery.com/2026/whos-afraid-of-chinese-models/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-20T16:27:36.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "open weight",
+        "distillation"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 24
+      },
+      "summary": "Ben Thompson 针对 Kimi K3 的热度指出，美国开源权重模型制作者受制于前沿实验室的服务条款，导致其模型劣于中国替代品，且最终只能通过中国实验室间接进行“蒸馏的蒸馏”。文章进一步质问：为什么蒸馏本质上被认为是坏事？呼吁西方开源模型制作者应能直接获取源头数据。",
+      "summaryEn": "Ben Thompson points out regarding the hype around Kimi K3 that U.S. open weight model makers are constrained by frontier labs' terms of service, making them worse than Chinese alternatives and forcing them to distill distillation via a detour through Chinese labs. The article questions why distillation is inherently considered bad and argues that western open weight makers should access the source directly.",
+      "reason": "犀利剖析了当前开源模型在合规与性能之间的两难困境，揭示了中美AI竞争背后的底层逻辑。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Stratechery by Ben Thompson",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Listen to this post:"
+          },
+          {
+            "type": "p",
+            "text": "There’s a story I tell about my first day in STRT-431 at Kellogg School of Management, the introductory class that every first-year MBA was required to take; I leafed through the readings and case studies and was dismayed that there weren’t any tech companies on the docket. Me being me, I spoke to the professor after class wondering why, and was told that the goal of the course was not to necessarily learn about specific industries, but rather to uncover broadly applicable universal principles that could be applied to any company in any industry."
+          },
+          {
+            "type": "p",
+            "text": "I did not, as I usually tell the story, find this very satisfactory: to me the nature of tech, particularly the fact that software and distribution had zero marginal costs (and zero transaction costs), was something fundamentally different; putting in zeroes in formulas tends to wreak havoc! I soon realized, however, that that was my opportunity. The fundamental insight undergirding Aggregation Theory is that zero marginal costs leads to fundamentally different value chains than people once expected from the Internet: centralization and scale in a world where controlling demand mattered more than distributing supply."
+          },
+          {
+            "type": "p",
+            "text": "What is fascinating about AI, however, is the extent to which those old universal principles are coming back to the forefront. That was never more apparent than this past weekend, when arguments raged on X about the implications of Kimi K3, another open weights model out of China, approaching the state-of-the-art in terms of capabilities. The long and short of it is this: marginal costs are back in a big way, both in terms of short-term implications of state-of-the-art free models, and in terms of the long-term structure of the industry."
+          },
+          {
+            "type": "h3",
+            "text": "COGS Versus R&D"
+          },
+          {
+            "type": "p",
+            "text": "One of the most common misconceptions undergirding discussion of open weights models is that they are cheaper — free, even. After all, you can just download the weights, and skip the time and expense and capabilities necessary to create your own model. That is, of course, true, but the “free” in this case is a reference to the amount you need to spend on research and development; R&D is a fixed expense that is independent of the revenue you generate. If you spend $1 million in R&D, it doesn’t matter if you do $100 thousand in revenue or $100 million; you still spent $1 million on R&D (it does, of course, impact your profitability)."
+          },
+          {
+            "type": "p",
+            "text": "What is related to revenue is COGS — cost of goods sold — and COGS is real for AI in a way it hasn’t been for software for a very long time. Specifically, running inference on a model — whether that model be Kimi or Fable — costs money, and the amount of money an AI provider spends on inference is, at least in most business models, directly correlated to revenue. To reuse the above example, generating $100 million versus $100 thousand in revenue will likely require 1,000x COGS. In concrete terms, if it costs 50 cents to generate the tokens that drive $1 in revenue, then $100 million in revenue will have $50 million in COGS; $100 thousand in revenue will only have $50 thousand in COGS."
+          },
+          {
+            "type": "p",
+            "text": "The point in terms of open weight models is that they are not free to serve. Kimi K3 costs $3 per million input tokens, and $15 per million output tokens; that is cheaper than Sol’s $5 per million input tokens and $30 per million output tokens, but that might not even be the right measurement."
+          },
+          {
+            "type": "h3",
+            "text": "Tokens Versus Intelligence"
+          },
+          {
+            "type": "p",
+            "text": "Nvidia CEO Jensen Huang has described what Nvidia is building as “token factories”, and from Nvidia’s perspective that framing makes sense. Nvidia GPUs are model agnostic: they generate tokens, and do so in the fastest and most efficient way possible. That leads to measurements like tokens-per-second, time-to-first-token, tokens-per-watt, token cost, etc., and Huang argues that these metrics will be the basis for decision-making."
+          },
+          {
+            "type": "p",
+            "text": "This is a framing that definitely made sense during the first paradigm of AI, the ChatGPT era, when tokens were delivered straight to the end user. The second paradigm of AI, however, the reasoning era, confounds this measurement. Reasoning entails an explosion in chain-of-thought tokens, and different models need different amounts of reasoning tokens to arrive at the right answer. Kimi, for example, reportedly uses significantly more tokens than Sol, rendering its price advantage moot. Agents introduce a similar dynamic: some models are more efficient than others in terms of the number of tokens they need to execute agentic workflows."
+          },
+          {
+            "type": "p",
+            "text": "What this means is that tokens are not a commodity. The defining characteristic of a commodity is that it is fungible: a gallon of oil is a gallon of oil; a ton of copper is a ton of copper; a bushel of wheat is a bushel of wheat. A token from one model, however, is not the same as a token from another model. What is fungible is what is constructed from tokens, which is to say intelligence. In other words, if both Kimi and Sol generated the right answer, then that answer is fungible; the difference in tokens generated to get to that right answer is a contributor to a difference in COGS."
+          },
+          {
+            "type": "p",
+            "text": "The COGS for intelligence is a function of a few different factors:"
+          },
+          {
+            "type": "li",
+            "text": "Model footprint: The weights and runtime state determine how much expensive memory and how many accelerators are required to host each serving replica."
+          },
+          {
+            "type": "li",
+            "text": "Inference efficiency: Architectural choices (e.g. Mixture-of-Experts) reduce computation per generated token."
+          },
+          {
+            "type": "li",
+            "text": "Memory efficiency: Architectural choices can reduce KV cache requirements, allowing more concurrent requests and better GPU utilization."
+          },
+          {
+            "type": "li",
+            "text": "Serving efficiency: Batching, scheduling, prefix caching, and other inference optimizations maximize utilization and share work across requests."
+          },
+          {
+            "type": "li",
+            "text": "Token efficiency: The fewer tokens required to reach a correct answer, the lower the inference cost."
+          },
+          {
+            "type": "p",
+            "text": "The reason this matters is that we are rapidly approaching a state in which intelligence for many economically beneficial tasks is in fact a commodity. Anyone building a basic CRUD app, for example, can likely do so using models from multiple providers. And, in a commodity market, the route to profitability is not through charging higher prices — again, you can (or will soon be able to) make the exact same app using multiple models — but rather through having a superior cost structure."
+          },
+          {
+            "type": "h3",
+            "text": "Understanding Commodity Markets"
+          },
+          {
+            "type": "p",
+            "text": "It’s worth stepping through the mechanics here, because, as I noted a few months ago in Amazon’s Durability, the dynamics of commodity markets are not something people in tech are generally familiar with:"
+          },
+          {
+            "type": "li",
+            "text": "In commodity markets, everyone charges the same price, because everyone is selling the same thing; that price is determined by supply and demand."
+          },
+          {
+            "type": "li",
+            "text": "The demand for a commodity is a function of price elasticity: the cheaper the commodity, the more demand there is for it, and vice-versa."
+          },
+          {
+            "type": "li",
+            "text": "The supply for a commodity is a function of the marginal cost of producing the commodity."
+          },
+          {
+            "type": "p",
+            "text": "The key thing to understand is that the marginal cost of producing the commodity differs by supplier. What this means in practice is that the supplier with the worst cost structure ends up selling the commodity at their marginal cost (if they can produce at all); the profits of everyone else depend on the extent to which their cost structure is better than the marginal supplier."
+          },
+          {
+            "type": "p",
+            "text": "As an example:"
+          },
+          {
+            "type": "li",
+            "text": "Supplier A can produce 10 units of the commodity for $10 each"
+          },
+          {
+            "type": "li",
+            "text": "Supplier B can produce 10 units of the commodity for $15 each"
+          },
+          {
+            "type": "li",
+            "text": "Supplier C can produce 10 units of the commodity for $20 each"
+          },
+          {
+            "type": "p",
+            "text": "Let’s assume the price elasticity is such that there is demand for 25 units of the commodity at $20. That means:"
+          },
+          {
+            "type": "li",
+            "text": "Supplier A will sell 10 units of the commodity for $20, earning $10/unit"
+          },
+          {
+            "type": "li",
+            "text": "Supplier B will sell 10 units of the commodity for $20, earning $5/unit"
+          },
+          {
+            "type": "li",
+            "text": "Supplier C will sell 5 units of the commodity for $20, earning $0/unit"
+          },
+          {
+            "type": "p",
+            "text": "This isn’t precisely right: the reason why Supplier C will bear the shortfall is because Suppliers A and B will be able to slightly undercut them in price, which will of course affect demand (which is elastic), but it makes the point. Supplier A has a great business, Supplier B has a good business, and Supplier C is going to go bankrupt."
+          },
+          {
+            "type": "p",
+            "text": "Bankruptcy risk is where fixed costs come back to the forefront: Supplier C has both fixed costs (like potentially R&D spend) and also may have taken on debt to finance the equipment necessary to produce the commodity. It can’t price its commodity with these costs in mind — remember, the market-clearing price approximates the marginal cost of the highest-cost unit needed to satisfy demand — but those costs can absolutely drive the supplier out of business. And, if that supplier goes out of business, then prices go up, until another supplier decides to enter (or the other suppliers expand)."
+          },
+          {
+            "type": "h3",
+            "text": "The Intelligence Market"
+          },
+          {
+            "type": "p",
+            "text": "Let’s bring this back to models. Right now, none of the above analysis applies because demand exceeds supply for frontier models, and supply is limited by a lack of compute. This compute shortage doesn’t just mean that a compute supplier like Nvidia makes very large margins, but also that Nvidia’s customers, like SpaceXAI, can turn around and resell compute at high margins as well to a company like Anthropic. Anthropic, meanwhile, can pay the markup because they can sell tokens with a higher markup still."
+          },
+          {
+            "type": "p",
+            "text": "It’s not just excess demand that gives Anthropic great margins, however: Anthropic and OpenAI likely have among the lowest costs per unit of frontier-quality intelligence, thanks to model capability, serving scale, and token efficiency. They are serving models at a particular capability level for months before their competitors, and are simultaneously applying the best models to optimizing those costs."
+          },
+          {
+            "type": "p",
+            "text": "It’s also worth noting that the market is not yet treating intelligence like a commodity: demand is for Anthropic and OpenAI specifically, and much less for models that aren’t as good (thus SpaceXAI and Meta selling capacity to Anthropic); one way to think about the push for optimizing cost is that that is a function of defining jobs-to-be-done by intelligence level, such that intelligence buyers can create a market where intelligence is commoditized. In the long run, however, whoever is on the frontier is the best placed to dominate non-frontier markets as well, which are just the frontier minus n-months, i.e. months in which the frontier model makers have been optimizing their cost of serving."
+          },
+          {
+            "type": "p",
+            "text": "All of this is to say that I think the reaction to Kimi and Chinese models generally is pretty over-blown, at least from an economic perspective. Right now there is a price umbrella that is downstream of the lack of compute; I highly doubt that Chinese models are cheaper to serve on a marginal cost basis, they just seem cheaper because Anthropic and OpenAI are so supply constrained that they are charging far more than they would if there were sufficient supply to meet the demand for intelligence."
+          },
+          {
+            "type": "h3",
+            "text": "Frontier Lab Paranoia"
+          },
+          {
+            "type": "p",
+            "text": "Why, then, do the model makers in particular seem so panicked about Chinese models?"
+          },
+          {
+            "type": "p",
+            "text": "First, I think the frontier labs are anchored in a world where training costs dominated their financial modeling. As long as training consumed more GPUs than inference, it was critical to maximize inference revenue to help fund the next training run, which meant charging very high prices for inference."
+          },
+          {
+            "type": "p",
+            "text": "Going forward, however, I expect the inference market to grow much faster than training costs (and that includes the assumption that training costs will continue to skyrocket), which means they really can make it up in volume. It wasn’t clear this would be the case as recently as eight months ago, but the agent paradigm unlock is so massive that frontier labs should have more confidence that they can not just survive but thrive with lower prices (once they have sufficient compute)."
+          },
+          {
+            "type": "p",
+            "text": "Second, intelligence isn’t in fact a perfect commodity, in part because applied intelligence makes itself smarter. Specifically, whoever is running inference is also collecting data, and that data goes into making the next iteration of the model better. This is, on one hand, all the more reason for the frontier labs to lower prices and increase usage as more compute comes online; on the other hand, this is why companies like Microsoft are increasingly obsessed with helping companies run their own models. That is much more viable if Chinese models are a viable alternative."
+          },
+          {
+            "type": "p",
+            "text": "Third, the other way that frontier labs can not only differentiate from Chinese models but also from each other is by continuing to integrate up into the customer experience. It’s striking the extent to which Claude Code and Codex are proving to be quite sticky; whichever harness you start working with is likely to be the one you stick with, and that figures to be even more the case with non-technical users. And, in the long run, this imperative to move up the stack does mean that frontier models are absolutely a threat to software providers, including Microsoft. On the flipside, the extent to which software companies who currently own the customer experience have access to competitive models is the extent to which they may be able to resist the encroachment of the frontier labs."
+          },
+          {
+            "type": "p",
+            "text": "Finally, the ideological angle of Anthropic in particular is impossible to ignore. This is a company that believes only it can be entrusted with AI, and the existence of open weights alternatives strikes a fatal blow to that presumption."
+          },
+          {
+            "type": "h3",
+            "text": "China’s Motivation"
+          },
+          {
+            "type": "p",
+            "text": "Kimi isn’t the only new Chinese model; from Bloomberg:"
+          },
+          {
+            "type": "quote",
+            "text": "Alibaba Group Holding Ltd. shares rose as much as 5.4% on Monday after the company launched a preview version of its flagship Qwen3.8 Max model, describing it as second only to Anthropic PBC’s Fable 5. The Sunday release came only days after startup Moonshot AI unveiled a powerful new offering that’s roiled markets and triggered concern in the US about China closing the gap on global leaders like Anthropic and OpenAI. Qwen3.8 Max has 2.4 trillion parameters, joining Moonshot’s Kimi K3 in the heavyweight class. With 2.8 trillion parameters, K3 rivals top offerings and Alibaba is setting similarly high expectations.\n\n\n\nDevelopers can now access Qwen3.8 Max through Alibaba’s coding platforms, including Qoder. Alibaba plans to make the model open-weight soon, expanding access beyond the preview release. Interest in these made-in-China artificial intelligence systems and models is so high that Moonshot was forced to pause taking on new subscriptions late on Sunday to manage overwhelming demand."
+          },
+          {
+            "type": "p",
+            "text": "The fact that Qwen3.8 Max will also have open weights is notable. Alibaba stopped releasing weights for its leading edge models earlier this year, but appears to have reverted that change; I suspect that shift was related to last week’s Xi Jinping speech about AI that doubled down on the open weights approach:"
+          },
+          {
+            "type": "quote",
+            "text": "We should adhere to the principle of openness and win-win and boost innovation-driven development. As a new engine of world economic growth and an accelerator for the shift of growth drivers, AI is moving from the digital world into the physical world. We should seize this rare, historic opportunity to encourage open source, openness, collaboration and sharing. We should facilitate technological innovation, industrial development and scenario-based application of AI. We should make coordinated advances in the transformation and upgrade of traditional industries, the cultivation and growth of emerging industries and forward-looking planning for future industries, so that all sectors and businesses can benefit from AI."
+          },
+          {
+            "type": "p",
+            "text": "The strategy for China is obvious: commoditize your complements. Note that Xi explicitly ties openness to AI “moving from the digital world into the physical world”; the physical world is the world dominated by China, and the country’s lead in areas like robotics is going to massively benefit from widely available AI models."
+          },
+          {
+            "type": "p",
+            "text": "Along the same lines, China does not want the U.S. to gain an asymmetric advantage in AI; to the extent that China can weaken the U.S. frontier labs while strengthening any and all potential U.S. adversaries so much the better, and it can benefit from the innovation that will attach itself to an open ecosystem."
+          },
+          {
+            "type": "h3",
+            "text": "The Distillation Question"
+          },
+          {
+            "type": "p",
+            "text": "By the same token, don’t expect China to do anything about distillation attacks on the frontier labs. I think it is mistaken to attribute all of the success of Chinese labs to distillation, but it’s just as much of a mistake to pretend like distillation doesn’t give Chinese labs a big advantage. That advantage has really come to bear in the last year as post-training reinforcement learning has become increasingly crucial to model performance. Instead of having to fashion reinforcement learning environments from scratch, Chinese labs can simply use frontier labs models as teachers, allowing for rapid improvement at much lower costs (this is not the only reason why Chinese models are cheaper to develop, but it’s a big one)."
+          },
+          {
+            "type": "p",
+            "text": "What is interesting is that one of the most important use cases for Chinese models in the West is itself distillation. Thinking Machines, for example, which just released an open-weight model, relies on Chinese models to solve the cold start problem for reinforcement learning. Dean Meyer and Konstantine Buhler wrote an excellent article on X explaining that distillation means that Western open weight models are fundamentally disadvantaged relative to China:"
+          },
+          {
+            "type": "quote",
+            "text": "Distillation does not explain China’s entire open-model lead. Chinese labs have world-class researchers, substantial compute, strong pre-trained models, software-hardware codesign, and rapidly improving post-training capabilities. But distillation compresses the costly final gap between a strong base and a near-frontier system. Even if distillation represents a smaller share of a Chinese model’s total capability, it represents a meaningful share of its advantage over American open models.\n\n\n\nNew enforcement mechanisms will make large-scale distillation harder, slower, and more expensive for Chinese companies. However, enforcement will not eliminate distillation backed by state actors. Every Western frontier advance therefore creates another teacher for Chinese labs. Western builders must either reproduce those capabilities independently or wait to learn from Chinese models. This gap gives Chinese labs a recurring structural advantage over Western companies."
+          },
+          {
+            "type": "p",
+            "text": "This is a point that bears repeating: because U.S. open weight model makers must follow the frontier labs’ terms of service, they (1) are worse than Chinese alternatives and (2) end up distilling the distillation, just with a detour through Chinese labs. Wouldn’t it be better if western open weight model makers could go to the source?"
+          },
+          {
+            "type": "p",
+            "text": "To that end, here’s an even more interesting question around distillation: why exactly is it bad? After all, what are large language models but the distillation of all of the knowledge on the open Internet, scraped by the frontier labs and distilled into the models that are themselves being distilled? Who is exactly being wronged here?"
+          },
+          {
+            "type": "p",
+            "text": "In fact, this paradox is the solution. I believe that open weight models are good for innovation (and, per the above, I think that labs on the frontier will be fine), but it’s a problem to be dependent on China. The U.S. should pass a law that (1) makes explicit that collecting data for training models is fair use, and (2) bars terms of service that forbid distillation, for U.S. companies at a minimum. Stopping distillation — which is literally just querying the API — is nearly impossible; the U.S. should go the other way and lean into a new copyright policy that both indemnifies the labs and also guarantees that what they learned fuels further innovation for everyone else."
+          },
+          {
+            "type": "h3",
+            "text": "The Reason to Be Afraid"
+          },
+          {
+            "type": "p",
+            "text": "This entire Article has been an exercise in defusing overreaction to Kimi K3 specifically and Chinese open weight models generally; however, there is one reason to be concerned, and that is cybersecurity. Consider this story from The Stack:"
+          },
+          {
+            "type": "quote",
+            "text": "Hugging Face said its production infrastructure was breached by an “autonomous” AI agent system early last week. The platform’s security team were initially stymied in their incident response (IR) by unnamed US LLM frontier model guardrails “which cannot distinguish an incident responder from an attacker,” they said. So Hugging Face’s defenders turned instead to the open-source GLM 5.2 model from China’s Z.ai lab – running it on their own infrastructure to analyse the 17,000+ logs, or footprints, that the attackers left behind.\n\n\n\nThat’s a striking public admission for the New York-headquartered Hugging Face, which lets users collaborate on models, datasets and applications, and which this summer hit the $100 million ARR mark. In an incident report, the company recommended that defenders “have a capable model you can run on your own infrastructure [our italics] vetted and ready before an incident, both to avoid guardrail lockout and to keep attacker data and credentials from leaving your environment.”"
+          },
+          {
+            "type": "p",
+            "text": "It’s difficult to overstate how wrong-headed the Trump administration’s panicked response to Anthropic’s release of Fable was, particularly since it exacerbated Anthropic’s worst tendencies in terms of assuming only they can be trusted with powerful AI. In a world with only one AI, it might make sense to reserve the most powerful cybersecurity capabilities for the U.S. government and trusted allies; however, that’s not the world we live in."
+          },
+          {
+            "type": "p",
+            "text": "There are and will be models eminently capable of mounting cybersecurity attacks on existing infrastructure, and those models will be — already are — widely available. The best defense — the only viable defense, in fact — will be to make sure defenders have access to the best models as well. Right now defenders are effectively banned from using Fable or Sol for cybersecurity because of Trump administration directives; that means the best alternative is using models from a country which has been trying to weaken our cyber defenses for years. This is insane!"
+          },
+          {
+            "type": "p",
+            "text": "The better course is clear: first, loosen Fable and Sol restrictions on cybersecurity, and second, ensure that U.S. open weight model makers are on an equal playing field with China. Yes, the frontier labs will kick and scream about this, but the Administration should realize that listening to their histrionics has led the U.S. to a position where U.S. companies are dependent on China for their defenses. Let the frontier labs win by being better; don’t let them define safety or security, or pull up the ladder of humanity’s collective knowledge. China is already hard enough to compete with; letting them carry the standard for openness and innovation is simply giving away our biggest advantage."
+          }
+        ],
+        "translations": [
+          "收听本文：",
+          "我经常讲一个故事，那是我在凯洛格管理学院上 STRT-431 课程的第一天，这是每个一年级 MBA 学生的必修入门课；我翻阅了阅读材料和案例研究，发现名单上没有任何科技公司，这让我感到很沮丧。出于我的性格，下课后我去问了教授原因，他告诉我，这门课的目标不一定是学习特定行业，而是揭示适用于任何行业任何公司的广泛适用的普遍原则。",
+          "正如我通常讲的那样，我并不觉得这个回答很令人满意：对我来说，科技的本质，尤其是软件和分发具有零边际成本（以及零交易成本）这一事实，是根本不同的东西；在公式里代入零往往会引起大乱！然而，我很快意识到，这正是我的机会。支撑聚合理论（Aggregation Theory）的基本洞察是，零边际成本导致了与人们曾经对互联网的预期根本不同的价值链：在一个控制需求比分发供给更重要的世界里，实现中心化和规模化。",
+          "然而，AI 令人着迷之处在于，那些古老的普遍原则正在多大程度上重回前沿。这一点在刚刚过去的这个周末表现得最为明显，当时在 X 上关于 Kimi K3（另一款来自中国的开放权重模型）在能力上接近最先进水平所产生的影响引发了激烈争论。简而言之就是：边际成本正在大规模回归，这不仅体现在最先进免费模型的短期影响上，也体现在该行业的长期结构上。",
+          "COGS 与 R&D 的对比",
+          "关于开放权重模型讨论中最常见的误解之一是它们更便宜——甚至是免费的。毕竟，你可以直接下载权重，从而省去创建自己模型所需的时间、费用和能力。这当然是事实，但这种情况下的“免费”指的是你需要花费在研发上的金额；R&D 是一项与你产生的收入无关的固定支出。如果你在 R&D 上花费了 100 万美元，那么无论你的收入是 10 万美元还是 1 亿美元都无所谓；你仍然在 R&D 上花费了 100 万美元（当然，这确实会影响你的盈利能力）。",
+          "与收入相关的是 COGS——即销货成本——而且对于 AI 来说，COGS 是真实存在的，这在很长一段时间里对软件来说并非如此。具体来说，在模型上运行推理——无论该模型是 Kimi 还是 Fable——都需要花钱，而且 AI 提供商在推理上花费的金额，至少在大多数商业模式中，与收入直接相关。重用上面的例子，产生 1 亿美元收入与 10 万美元收入相比，可能需要 1000 倍的 COGS。具体而言，如果产生能带来 1 美元收入的 tokens 需要 50 美分的成本，那么 1 亿美元的收入将产生 5000 万美元的 COGS；而 10 万美元的收入只会产生 5 万美元的 COGS。",
+          "就开放权重模型而言，关键在于它们提供服务并不是免费的。Kimi K3 每百万输入 tokens 的成本为 3 美元，每百万输出 tokens 的成本为 15 美元；这比 Sol 的每百万输入 tokens 5 美元和每百万输出 tokens 30 美元要便宜，但这甚至可能不是正确的衡量标准。",
+          "Tokens 与智能的对比",
+          "Nvidia CEO 黄仁勋将 Nvidia 正在构建的东西描述为“token 工厂”，从 Nvidia 的角度来看，这种说法很有道理。Nvidia GPU 与模型无关：它们生成 token，并且以最快、最高效的方式完成。这引出了诸如每秒 token 数、首个 token 耗时、每瓦 token 数、token 成本等衡量指标，黄仁勋认为这些指标将成为决策的基础。",
+          "这种说法在 AI 的第一种范式，即 ChatGPT 时代，绝对是有道理的，当时 token 直接交付给最终用户。然而，AI 的第二种范式，即推理时代，却让这种衡量标准变得复杂。推理意味着思维链 token 的爆炸式增长，而不同的模型需要不同数量的推理 token 才能得出正确答案。例如，据报道 Kimi 使用的 token 比 Sol 多得多，使其价格优势变得毫无意义。Agent 引入了类似的动态：在执行 agentic workflows 所需的 token 数量方面，一些模型比其他模型更高效。",
+          "这意味着 token 并不是大宗商品。大宗商品的决定性特征是可互换性：一加仑石油就是一加仑石油；一吨铜就是一吨铜；一蒲式耳小麦就是一蒲式耳小麦。然而，来自一个模型的 token 与来自另一个模型的 token 并不相同。可互换的是由 token 构建的东西，也就是智能。换句话说，如果 Kimi 和 Sol 都生成了正确的答案，那么这个答案就是可互换的；为了得出正确答案而生成的 token 数量差异是导致 COGS（销货成本）差异的一个因素。",
+          "智能的 COGS 是几个不同因素的函数：",
+          "模型占用空间：权重和运行时状态决定了托管每个服务副本需要多少昂贵的内存和多少加速器。",
+          "推理效率：架构选择（例如 Mixture-of-Experts）减少了每个生成 token 的计算量。",
+          "内存效率：架构选择可以降低 KV cache 需求，从而允许更多的并发请求并提高 GPU 利用率。",
+          "服务效率：批处理、调度、前缀缓存和其他推理优化最大化了利用率，并在请求之间共享工作负载。",
+          "Token 效率：达到正确答案所需的 token 越少，推理成本就越低。",
+          "这一点之所以重要，是因为我们正迅速接近这样一种状态：对于许多具有经济效益的任务来说，智能实际上已经成为一种大宗商品。例如，任何构建基本 CRUD 应用程序的人，都可能使用来自多个提供商的模型来完成。而且，在大宗商品市场中，实现盈利的途径不是通过收取更高的价格——再说一次，你可以（或者很快就能）使用多个模型制作完全相同的应用程序——而是通过拥有更优越的成本结构。",
+          "理解大宗商品市场",
+          "这里值得梳理一下其运作机制，因为正如我几个月前在《Amazon’s Durability》一文中指出的那样，科技界人士通常并不熟悉大宗商品市场的动态：",
+          "在大宗商品市场中，每个人的收费都是一样的，因为每个人卖的都是同样的东西；价格由供需决定。",
+          "对大宗商品的需求是价格弹性的函数：商品越便宜，对其需求就越大，反之亦然。",
+          "大宗商品的供给是生产该商品的边际成本的函数。",
+          "需要理解的关键点是，生产商品的边际成本因供应商而异。这在实践中意味着，成本结构最差的供应商最终只能以自己的边际成本出售商品（前提是他们还能生产）；其他所有人的利润则取决于其成本结构优于边际供应商的程度。",
+          "举个例子：",
+          "供应商 A 可以以每件 10 美元的价格生产 10 件该商品",
+          "供应商 B 可以以每件 15 美元的价格生产 10 件该商品",
+          "供应商 C 可以以每件 20 美元的价格生产 10 件该商品",
+          "假设价格弹性使得在 20 美元的价格下，市场对该商品有 25 件的需求。这意味着：",
+          "供应商 A 将以 20 美元的价格出售 10 件该商品，每件赚取 10 美元",
+          "供应商 B 将以 20 美元的价格出售 10 件该商品，每件赚取 5 美元",
+          "供应商 C 将以 20 美元的价格出售 5 件该商品，每件赚取 0 美元",
+          "这并不完全准确：供应商 C 之所以会承担产量缺口，是因为供应商 A 和 B 能够在价格上略微压低他们，这当然会影响需求（需求是有弹性的），但这足以说明问题。供应商 A 拥有一门极好的生意，供应商 B 拥有一门好生意，而供应商 C 即将破产。",
+          "破产风险正是固定成本重新成为焦点之处：供应商 C 既有固定成本（如潜在的研发支出），也可能为了给生产该商品所需的设备融资而背负债务。它无法在定价时将这些成本考虑在内——记住，市场出清价格近似于满足需求所需的最高成本单位的边际成本——但这些成本绝对能将供应商逼上绝路。而且，如果该供应商倒闭，价格就会上涨，直到另一个供应商决定进入市场（或者现有供应商扩大产能）。",
+          "智能市场",
+          "让我们回到模型上来。目前，上述分析并不适用，因为前沿模型供不应求，且供给受限于算力不足。这种算力短缺不仅意味着像 Nvidia 这样的算力供应商能获得极高的利润率，也意味着 Nvidia 的客户（如 SpaceXAI）能够转手以高利润率将算力倒卖给像 Anthropic 这样的公司。同时，Anthropic 能够承受这种加价，因为他们能以更高的加价出售 tokens。",
+          "然而，赋予 Anthropic 极高利润率的不仅仅是超额需求：得益于模型能力、服务规模和 token 效率，Anthropic 和 OpenAI 很可能在单位前沿级智能的成本上是最低的。他们比竞争对手提前数月提供特定能力水平的模型，并同时应用最优秀的模型来优化这些成本。",
+          "同样值得注意的是，市场目前尚未将智能视为商品：需求专门针对 Anthropic 和 OpenAI，而对表现较差的模型需求则少得多（因此 SpaceXAI 和 Meta 会将产能出售给 Anthropic）；理解优化成本这一趋势的一种方式是，它是按智能水平来定义“待办任务”（jobs-to-be-done）的函数，从而使智能买家能够创造出一个智能被商品化的市场。然而，从长远来看，无论谁处于前沿，都最有能力主导非前沿市场，这些市场不过是前沿水平倒退了 n 个月的状态，即前沿模型制造商一直在优化其服务成本的这几个月。",
+          "综上所述，我认为对 Kimi 以及中国模型的反应有些过度了，至少从经济角度来看是这样。目前存在一个由于算力不足而产生的价格保护伞；我非常怀疑中国模型在边际成本上是否真的更便宜，它们看起来便宜只是因为 Anthropic 和 OpenAI 的供应受到严重限制，导致他们的收费远高于在算力供应充足以满足智能需求时的水平。",
+          "前沿实验室的恐慌",
+          "那么，为什么模型制造商尤其是对中国的模型显得如此恐慌呢？",
+          "首先，我认为前沿实验室的思维仍停留在以训练成本主导财务模型的世界里。只要训练比推理消耗更多的 GPU，最大化推理收入来为下一次训练提供资金就至关重要，这意味着推理需要收取极高的价格。",
+          "然而，展望未来，我预计推理市场的增长速度将远超训练成本（这甚至是在假设训练成本将继续飙升的前提下），这意味着他们确实可以通过规模来弥补利润。就在八个月前，情况是否如此还不明朗，但智能体范式的解锁是如此巨大，以至于前沿实验室应该更有信心，他们不仅能以更低的价格生存下来，还能蓬勃发展（一旦他们拥有足够的算力）。",
+          "其次，智能实际上并不是完美的商品，部分原因是应用智能会使自身变得更聪明。具体来说，运行推理的人也在收集数据，而这些数据将用于改进下一版本的模型。一方面，随着更多算力上线，这更是前沿实验室降低价格、增加使用量的理由；另一方面，这也是为什么像 Microsoft 这样的公司越来越热衷于帮助企业运行自己的模型。如果中国模型是一个可行的替代方案，这将会变得更加切实可行。",
+          "第三，前沿实验室不仅能与中国模型区分开来，还能彼此区分开来的另一种方式是继续向上整合到客户体验中。令人惊讶的是，Claude Code 和 Codex 表现出了极强的用户粘性；你一开始使用哪种工具，很可能就会一直用下去，对于非技术用户来说，情况更是如此。而且，从长远来看，这种向上层技术栈发展的必然性确实意味着前沿模型绝对是对软件提供商（包括 Microsoft）的威胁。另一方面，目前掌握客户体验的软件公司能在多大程度上获取有竞争力的模型，就能在多大程度上抵御前沿实验室的入侵。",
+          "最后，特别是 Anthropic 的意识形态角度是不容忽视的。这是一家认为只有自己才值得托付 AI 的公司，而开放权重替代方案的存在对这种假设构成了致命打击。",
+          "中国的动机",
+          "Kimi 并不是唯一的中国新模型；来自 Bloomberg 的报道：",
+          "阿里巴巴集团控股有限公司股价周一上涨高达5.4%，此前该公司发布了其旗舰模型 Qwen3.8 Max 的预览版，并将其描述为仅次于 Anthropic PBC 的 Fable 5。周日的发布距离初创公司 Moonshot AI 推出一款搅动市场并引发美国对中国缩小与 Anthropic 和 OpenAI 等全球领先者差距担忧的强大新产品仅几天时间。Qwen3.8 Max 拥有2.4万亿参数，与 Moonshot 的 Kimi K3 一同跻身重量级阵营。拥有2.8万亿参数的 K3 可与顶级模型相媲美，而阿里巴巴也设定了同样高的期望。开发者现在可以通过阿里巴巴的编程平台（包括 Qoder）访问 Qwen3.8 Max。阿里巴巴计划很快将该模型开源权重，将访问范围扩大到预览版之外。对这些中国制造的人工智能系统和模型的兴趣如此之高，以至于 Moonshot 被迫在周日深夜暂停接受新订阅，以应对激增的需求。",
+          "Qwen3.8 Max 也将开放权重这一事实值得注意。阿里巴巴今年早些时候停止了对其前沿模型发布权重，但似乎已经恢复了这一做法；我怀疑这种转变与上周习近平关于人工智能的讲话有关，该讲话强调了开放权重的方法：",
+          "我们应该坚持开放共赢的原则，促进创新驱动发展。作为世界经济增长的新引擎和增长动力转换的加速器，人工智能正在从数字世界走向物理世界。我们应该抓住这一难得的历史机遇，鼓励开源、开放、协作和共享。我们应该促进人工智能的技术创新、产业发展和基于场景的应用。我们应该统筹推进传统产业的转型升级、新兴产业的培育壮大以及未来产业的前瞻布局，让各行各业都能从人工智能中受益。",
+          "中国的战略显而易见：将互补品商品化。请注意，习近平明确将开放与人工智能“从数字世界走向物理世界”联系起来；物理世界是中国占据主导地位的世界，而该国在机器人等领域的领先地位将极大地受益于广泛可用的人工智能模型。",
+          "同样地，中国不希望美国在人工智能领域获得非对称优势；在某种程度上，中国能够削弱美国的前沿实验室，同时增强所有潜在的美国对手，那就再好不过了，而且它还能从依附于开放生态系统的创新中获益。",
+          "蒸馏问题",
+          "同理，不要指望中国会对针对前沿实验室的蒸馏攻击采取任何行动。我认为将中国实验室的所有成功都归因于蒸馏是错误的，但假装蒸馏没有给中国实验室带来巨大优势同样是错误的。随着后训练强化学习对模型性能变得越来越关键，这种优势在过去一年中真正显现出来。中国实验室无需从头构建强化学习环境，只需将前沿实验室的模型作为教师模型，就能以低得多的成本实现快速提升（这并不是中国模型开发成本更低的唯一原因，但却是一个重要原因）。",
+          "有趣的是，中国模型在西方最重要的用例之一正是蒸馏本身。例如，刚刚发布了开放权重模型的 Thinking Machines，就依赖中国模型来解决强化学习的冷启动问题。Dean Meyer 和 Konstantine Buhler 在 X 上发表了一篇精彩的文章，解释了蒸馏意味着西方开放权重模型相对于中国从根本上处于劣势：",
+          "蒸馏并不能完全解释中国在开放模型领域的领先地位。中国实验室拥有世界级的研究人员、庞大的算力、强大的预训练模型、软硬件协同设计以及快速提升的后训练能力。但蒸馏压缩了从强大的基础模型到接近前沿系统之间代价高昂的最终差距。即使蒸馏在中国模型总能力中所占比例较小，它也占据了其相对于美国开放模型优势的很大一部分。\n\n新的执行机制将使中国公司的大规模蒸馏变得更加困难、缓慢和昂贵。然而，执行机制无法消除由国家行为者支持的蒸馏。因此，西方前沿的每一次进步都为中国实验室创造了另一个“老师”。西方构建者要么必须独立重现这些能力，要么只能等待从中国模型中学习。这种差距赋予了中国实验室相对于西方公司持续的结构性优势。",
+          "这一点值得反复强调：由于美国开放权重模型制造商必须遵守前沿实验室的服务条款，他们（1）比中国同类产品表现更差，并且（2）最终变成了对蒸馏的蒸馏，只是绕道经过了中国实验室。如果西方开放权重模型制造商能够直接从源头获取，难道不是更好吗？",
+          "为此，围绕蒸馏有一个更有趣的问题：它到底为什么不好？毕竟，大型语言模型不就是对开放互联网上所有知识的蒸馏吗？这些知识被前沿实验室抓取并蒸馏到模型中，而这些模型本身又在被蒸馏。这里到底是谁受到了损害？",
+          "事实上，这个悖论正是解决方案。我认为开放权重模型有利于创新（而且如上所述，我认为前沿实验室也会安然无恙），但依赖中国是一个问题。美国应该通过一项法律，（1）明确指出为训练模型收集数据属于合理使用，并且（2）至少对美国公司而言，禁止服务条款中禁止蒸馏的条款。阻止蒸馏——实际上就是查询 API——几乎是不可能的；美国应该反其道而行之，采取一项新的版权政策，既保护实验室免受责任追究，又保证他们所学到的东西能为其他所有人的进一步创新提供动力。",
+          "值得担忧的原因",
+          "本文整体上是在化解对 Kimi K3 以及中国开放权重模型的过度反应；然而，有一个令人担忧的原因，那就是网络安全。看看 The Stack 的这篇报道：",
+          "Hugging Face 表示，上周早些时候其生产基础设施遭到一个“自主” AI 智能体系统的入侵。该平台的安全团队表示，他们最初在事件响应 (IR) 中受到了未具名的美国 LLM 前沿模型护栏的阻碍，“这些护栏无法区分事件响应者和攻击者”。因此，Hugging Face 的防御者转而使用来自中国 Z.ai 实验室的开源 GLM 5.2 模型——在他们自己的基础设施上运行它，以分析攻击者留下的 17,000 多条日志或痕迹。对于总部位于纽约的 Hugging Face 来说，这是一项引人注目的公开承认，该平台允许用户在模型、数据集和应用程序上进行协作，并在今年夏天达到了 1 亿美元的 ARR 里程碑。在一份事件报告中，该公司建议防御者“拥有一个可以在您自己的基础设施上运行的强大模型[我们的斜体]，并在事件发生前经过审查和准备就绪，这既是为了避免护栏锁定，也是为了防止攻击者数据和凭据离开您的环境。”",
+          "特朗普政府对 Anthropic 发布 Fable 的恐慌性反应有多么愚蠢，怎么强调都不为过，特别是因为它加剧了 Anthropic 最坏的倾向，即认为只有他们才能被信任来掌握强大的 AI。在一个只有一个 AI 的世界里，将最强大的网络安全能力保留给美国政府和值得信赖的盟友可能是有意义的；然而，那并不是我们生活的世界。",
+          "现在已经有，而且将来也会有能够对现有基础设施发起网络安全攻击的模型，并且这些模型将会——而且已经——被广泛使用。最好的防御——事实上也是唯一可行的防御——将是确保防御者也能使用最好的模型。由于特朗普政府的指令，现在防御者实际上被禁止将 Fable 或 Sol 用于网络安全；这意味着最好的替代方案是使用来自一个多年来一直试图削弱我们网络防御的国家的模型。这太疯狂了！",
+          "更好的路线很明确：首先，放宽对 Fable 和 Sol 在网络安全方面的限制，其次，确保美国开放权重模型制造商与中国处于平等的竞争环境中。是的，前沿实验室会对此大吵大闹，但政府应该意识到，听从他们的歇斯底里已经使美国处于一种美国公司在防御上依赖中国的境地。让前沿实验室通过做得更好来获胜；不要让他们定义安全或保障，也不要撤走人类集体知识的阶梯。与中国竞争已经够难了；让他们高举开放和创新的旗帜简直就是把我们最大的优势拱手让人。"
+        ]
+      }
+    },
+    {
+      "slug": "b5d7973c852acead",
+      "title": "Quoting Sam Altman",
+      "titleZh": "引用 Sam Altman",
+      "link": "https://simonwillison.net/2026/Jul/20/sam-altman/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-20T03:47:59.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "OpenAI",
+        "open source",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "Sam Altman 在内部讨论中透露了 OpenAI 的开源策略，计划尽快发布一个能力近似 GPT-3 且能在消费级硬件上本地运行的语言模型。此举旨在抢在 Stability 等竞争对手之前发布，以阻止其他公司发布类似模型，从而巩固其市场地位。",
+      "summaryEn": "Sam Altman revealed OpenAI's open source strategy in internal discussions, planning to soon release a language model with approximate GPT-3 capabilities that runs locally on consumer hardware. This move aims to preempt Stability and others, discouraging them from releasing similar models and consolidating OpenAI's market position.",
+      "reason": "展示了 OpenAI 早期在开源策略上的防御性思考，对理解大厂开源动机极具参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "20th July 2026"
+          },
+          {
+            "type": "quote",
+            "text": "We have been having extensive discussions around open source strategy. We will discuss it more at our next board meeting, but one thing we’d like to do soon is to create a language model with the approximate capability of GPT-3 that can run locally on consumer hardware and release that. We’d like to do it soon, before Stability or someone else does. In general, we think this helps discourage others from releasing similarly-powerful models, and makes it harder for new efforts to get funded."
+          },
+          {
+            "type": "p",
+            "text": "— Sam Altman, Email to OpenAI's board, October 1, 2022 - exposed in Musk v. Altman (2026)"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1e6046ae942b2ba6",
+      "title": "Solving a chess puzzle with Grok 4.5",
+      "titleZh": "用 Grok 4.5 解决国际象棋难题",
+      "link": "https://www.johndcook.com/blog/2026/07/20/grok-chess/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-20T14:33:31.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "Grok",
+        "chess",
+        "Prolog",
+        "LLM"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 19
+      },
+      "summary": "作者此前曾使用 Claude 或 ChatGPT 生成 Prolog 或 Lean 代码来解决国际象棋难题，但未对 Grok 抱有期望。在尝试 Grok 4.5 后，发现其表现出色，成功完成了代码生成与难题求解任务。",
+      "summaryEn": "The author previously used Claude or ChatGPT to generate Prolog or Lean code for solving chess puzzles and had low expectations for Grok. After trying Grok 4.5, it performed excellently, successfully completing the code generation and puzzle-solving tasks.",
+      "reason": "通过具体的编程任务实测，直观展现了 Grok 4.5 在复杂逻辑推理与代码生成方面的能力提升。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’ve written several posts about using Claude or ChatGPT to generate Prolog or Lean code to solve a chess puzzle. I didn’t think Grok would be up to the task, though I didn’t try it. I’ve heard good things about Grok 4.5, so I gave it a shot. It did great."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the problem, a variation on the n-queens problem formulated by Martin Gardner."
+          },
+          {
+            "type": "quote",
+            "text": "Can you place five white queens and three black queens on a 5 × 5 board so that no queen of one color attacks a queen of another color?"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the prompt I have Grok 4.5."
+          },
+          {
+            "type": "quote",
+            "text": "Generate SWI Prolog code to solve the following chess puzzle. On a 5 by 5 chessboard, place 5 white queens and 3 black queens so that no queen is attacking a queen of the other color. Have the code enumerate all solutions."
+          },
+          {
+            "type": "p",
+            "text": "The code ran correctly, giving all eight solutions."
+          },
+          {
+            "type": "p",
+            "text": "I then asked Grok"
+          },
+          {
+            "type": "quote",
+            "text": "Now generate Lean 4 code to solve the same puzzle."
+          },
+          {
+            "type": "p",
+            "text": "The code did not run on the first or second attempts but ran correctly on the third iteration. That’s better than I’ve seen before. It’s not an apples-to-apples comparison, but it has usually taken many iterations with Claude before Lean code would run."
+          },
+          {
+            "type": "h2",
+            "text": "Solutions"
+          },
+          {
+            "type": "p",
+            "text": "There are eight solutions, each being a flip or a rotation of one fundamental solution. Here’s a representative."
+          },
+          {
+            "type": "code",
+            "text": ":- use_module(library(clpfd)).\n\n%% Enumerate all ways to place 5 white queens and 3 black queens\n%% on a 5x5 board so that no queen attacks a queen of the opposite colour.\n%% Same-colour queens are allowed to attack each other.\n%%\n%% Positions are numbered 1..25 in row-major order:\n%%   1  2  3  4  5\n%%   6  7  8  9 10\n%%  11 12 13 14 15\n%%  16 17 18 19 20\n%%  21 22 23 24 25\n\nsolve :-\n    solution(Whites, Blacks),\n    print_solution(Whites, Blacks),\n    fail.\nsolve :-\n    writeln('No more solutions.').\n\nsolution(Whites, Blacks) :-\n    length(Whites, 5),\n    length(Blacks, 3),\n    append(Whites, Blacks, All),\n    All ins 1..25,\n    all_distinct(All),\n    % canonical order so each set of positions is generated once\n    Whites = [W1,W2,W3,W4,W5],\n    W1 #< W2, W2 #< W3, W3 #< W4, W4 #< W5,\n    Blacks = [B1,B2,B3],\n    B1 #< B2, B2 #< B3, % every black is safe from every white maplist(safe_from_all(Whites), Blacks), label(All). safe_from_all(Whites, Black) :- maplist(no_attack(Black), Whites). %% Two queens do *not* attack each other. no_attack(P, Q) :- R1 #= (P-1) div 5 + 1, C1 #= (P-1) mod 5 + 1, R2 #= (Q-1) div 5 + 1, C2 #= (Q-1) mod 5 + 1, R1 #\\= R2, % different row C1 #\\= C2, % different column abs(R1-R2) #\\= abs(C1-C2). % different diagonal print_solution(Whites, Blacks) :- format('Whites: ~w~n', [Whites]), format('Blacks: ~w~n', [Blacks]), forall(between(1, 5, R), ( forall(between(1, 5, C), ( Pos is (R-1)*5 + C, ( memberchk(Pos, Whites) -> write('W ')\n                      ; memberchk(Pos, Blacks) -> write('B ')\n                      ; write('. ')\n                      )\n                    )),\n             nl )),\n    nl."
+          },
+          {
+            "type": "h2",
+            "text": "Lean 4 code"
+          },
+          {
+            "type": "code",
+            "text": "-- Lean 4 solution for the 5×5 black-and-white queens puzzle.\n-- 5 white queens + 3 black queens; no opposite-colour attacks.\n\ndef absDiff (a b : Nat) : Nat :=\n  if a ≥ b then a - b else b - a\n\ndef attacks (p q : Nat × Nat) : Bool :=\n  p.1 == q.1 || p.2 == q.2 || absDiff p.1 q.1 == absDiff p.2 q.2\n\n/-- All 25 squares (0-based, row-major). -/\ndef allPositions : List (Nat × Nat) :=\n  (List.range 5).flatMap fun r =>\n    (List.range 5).map fun c => (r, c)\n\n/-- Combinations of length exactly `k` (order-preserving). -/\ndef combinations {α : Type} : Nat → List α → List (List α)\n  | 0,     _      => [[]]\n  | _,     []     => []\n  | k + 1, x::ys  =>\n      (combinations k ys).map (fun zs => x :: zs) ++\n      combinations (k + 1) ys\n\ndef isAttackedBy (pos : Nat × Nat) (queens : List (Nat × Nat)) : Bool :=\n  queens.any (fun q => attacks q pos)\n\n/-- Every solution as a pair (white squares, black squares). -/\ndef solve : List (List (Nat × Nat) × List (Nat × Nat)) :=\n  (combinations 3 allPositions).foldl (fun acc blacks =>\n    let forbidden := allPositions.filter fun p =>\n      blacks.contains p || isAttackedBy p blacks\n    let available := allPositions.filter fun p =>\n      !(forbidden.contains p)\n    acc ++ (combinations 5 available).map fun whites => (whites, blacks)\n  ) []\n\n/-- Pretty-print one board. -/\ndef printBoard (whites blacks : List (Nat × Nat)) : IO Unit := do\n  for r in List.range 5 do\n    let mut row := \"\"\n    for c in List.range 5 do\n      let p := (r, c)\n      row := row ++\n        (if whites.contains p then \"W \"\n         else if blacks.contains p then \"B \"\n         else \". \")\n    IO.println row\n  IO.println \"\"\n\n/-- Enumerate and display every solution. -/\ndef main : IO Unit := do\n  let sols := solve\n  IO.println s!\"Found {sols.length} solutions.\\n\"\n  for p in (List.range sols.length).zip sols do\n    let i := p.1\n    let (whites, blacks) := p.2\n    IO.println s!\"Solution {i + 1}:\"\n    printBoard whites blacks\n\n#eval main"
+          }
+        ],
+        "translations": [
+          "我写过几篇关于使用 Claude 或 ChatGPT 生成 Prolog 或 Lean 代码来解决国际象棋谜题的文章。我原本以为 Grok 无法胜任这项任务，尽管我并没有试过。我听说 Grok 4.5 表现不错，所以试了一下。结果它做得非常好。",
+          "问题是这样的，这是由 Martin Gardner 提出的 n 皇后问题的一个变体。",
+          "你能在 5 × 5 的棋盘上放置五个白皇后和三个黑皇后，使得没有任何一种颜色的皇后攻击另一种颜色的皇后吗？",
+          "这是我给 Grok 4.5 的提示词。",
+          "生成 SWI Prolog 代码来解决以下国际象棋谜题。在 5×5 的棋盘上，放置 5 个白皇后和 3 个黑皇后，使得没有任何皇后攻击另一种颜色的皇后。让代码枚举所有解。",
+          "代码运行正确，给出了全部八个解。",
+          "然后我问 Grok",
+          "现在生成 Lean 4 代码来解决同一个谜题。",
+          "代码在第一次和第二次尝试时未能运行，但在第三次迭代时运行正确。这比我以前见过的要好。虽然这不是绝对公平的比较，但通常 Claude 需要经过多次迭代才能让 Lean 代码运行起来。",
+          "解",
+          "共有八个解，每个解都是一个基本解的翻转或旋转。这里是一个代表性解。",
+          ":- use_module(library(clpfd)).\n\n%% Enumerate all ways to place 5 white queens and 3 black queens\n%% on a 5x5 board so that no queen attacks a queen of the opposite colour.\n%% Same-colour queens are allowed to attack each other.\n%%\n%% Positions are numbered 1..25 in row-major order:\n%%   1  2  3  4  5\n%%   6  7  8  9 10\n%%  11 12 13 14 15\n%%  16 17 18 19 20\n%%  21 22 23 24 25\n\nsolve :-\n    solution(Whites, Blacks),\n    print_solution(Whites, Blacks),\n    fail.\nsolve :-\n    writeln('No more solutions.').\n\nsolution(Whites, Blacks) :-\n    length(Whites, 5),\n    length(Blacks, 3),\n    append(Whites, Blacks, All),\n    All ins 1..25,\n    all_distinct(All),\n    % canonical order so each set of positions is generated once\n    Whites = [W1,W2,W3,W4,W5],\n    W1 #< W2, W2 #< W3, W3 #< W4, W4 #< W5,\n    Blacks = [B1,B2,B3],\n    B1 #< B2, B2 #< B3, % every black is safe from every white maplist(safe_from_all(Whites), Blacks), label(All). safe_from_all(Whites, Black) :- maplist(no_attack(Black), Whites). %% Two queens do *not* attack each other. no_attack(P, Q) :- R1 #= (P-1) div 5 + 1, C1 #= (P-1) mod 5 + 1, R2 #= (Q-1) div 5 + 1, C2 #= (Q-1) mod 5 + 1, R1 #\\= R2, % different row C1 #\\= C2, % different column abs(R1-R2) #\\= abs(C1-C2). % different diagonal print_solution(Whites, Blacks) :- format('Whites: ~w~n', [Whites]), format('Blacks: ~w~n', [Blacks]), forall(between(1, 5, R), ( forall(between(1, 5, C), ( Pos is (R-1)*5 + C, ( memberchk(Pos, Whites) -> write('W ')\n                      ; memberchk(Pos, Blacks) -> write('B ')\n                      ; write('. ')\n                      )\n                    )),\n             nl )),\n    nl.",
+          "Lean 4 代码",
+          "-- Lean 4 solution for the 5×5 black-and-white queens puzzle.\n-- 5 white queens + 3 black queens; no opposite-colour attacks.\n\ndef absDiff (a b : Nat) : Nat :=\n  if a ≥ b then a - b else b - a\n\ndef attacks (p q : Nat × Nat) : Bool :=\n  p.1 == q.1 || p.2 == q.2 || absDiff p.1 q.1 == absDiff p.2 q.2\n\n/-- All 25 squares (0-based, row-major). -/\ndef allPositions : List (Nat × Nat) :=\n  (List.range 5).flatMap fun r =>\n    (List.range 5).map fun c => (r, c)\n\n/-- Combinations of length exactly `k` (order-preserving). -/\ndef combinations {α : Type} : Nat → List α → List (List α)\n  | 0,     _      => [[]]\n  | _,     []     => []\n  | k + 1, x::ys  =>\n      (combinations k ys).map (fun zs => x :: zs) ++\n      combinations (k + 1) ys\n\ndef isAttackedBy (pos : Nat × Nat) (queens : List (Nat × Nat)) : Bool :=\n  queens.any (fun q => attacks q pos)\n\n/-- Every solution as a pair (white squares, black squares). -/\ndef solve : List (List (Nat × Nat) × List (Nat × Nat)) :=\n  (combinations 3 allPositions).foldl (fun acc blacks =>\n    let forbidden := allPositions.filter fun p =>\n      blacks.contains p || isAttackedBy p blacks\n    let available := allPositions.filter fun p =>\n      !(forbidden.contains p)\n    acc ++ (combinations 5 available).map fun whites => (whites, blacks)\n  ) []\n\n/-- Pretty-print one board. -/\ndef printBoard (whites blacks : List (Nat × Nat)) : IO Unit := do\n  for r in List.range 5 do\n    let mut row := \"\"\n    for c in List.range 5 do\n      let p := (r, c)\n      row := row ++\n        (if whites.contains p then \"W \"\n         else if blacks.contains p then \"B \"\n         else \". \")\n    IO.println row\n  IO.println \"\"\n\n/-- Enumerate and display every solution. -/\ndef main : IO Unit := do\n  let sols := solve\n  IO.println s!\"Found {sols.length} solutions.\\n\"\n  for p in (List.range sols.length).zip sols do\n    let i := p.1\n    let (whites, blacks) := p.2\n    IO.println s!\"Solution {i + 1}:\"\n    printBoard whites blacks\n\n#eval main"
+        ]
+      }
+    },
+    {
+      "slug": "2e36e3340b413a19",
+      "title": "Memory Safety's Hardest Problem",
+      "titleZh": "内存安全最难的问题",
+      "link": "https://matklad.github.io/2026/07/20/memory-safety-hardest-problem.html",
+      "sourceName": "matklad.github.io",
+      "sourceUrl": "https://matklad.github.io",
+      "pubDate": "2026-07-20T00:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "memory safety",
+        "Rust",
+        "programming"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 19
+      },
+      "summary": "文章将一个来自 Lobsters 社区的评论提取出来作为独立参考，探讨了内存安全领域中最具挑战性的问题。该内容聚焦于系统编程中内存安全机制难以覆盖的边缘情况或设计盲区。",
+      "summaryEn": "The post uplifts a comment from the Lobsters community for easier reference, discussing the most challenging problem in the field of memory safety. It focuses on edge cases or design blind spots that memory safety mechanisms in systems programming struggle to cover.",
+      "reason": "提炼了社区中关于内存安全深水区的精彩讨论，适合系统级开发者深入思考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Uplifting a\nlobsters comment\nfor easier reference."
+          },
+          {
+            "type": "p",
+            "text": "The central memory safety counter example, the hardest case to solve, doesn’t have anything to do\nwith destructors or heap:"
+          },
+          {
+            "type": "code",
+            "text": "const std = @import(\"std\");\n\nconst E = union(enum) {\n    a: u128,\n    b: []const u8,\n};\n\npub fn main() void {\n    const bad_addr: u128 = @intFromPtr(&main);\n\n    var e: E = .{ .b = \"hello\" };\n    const oh_no_pointer: *const []const u8 = switch (e) {\n        .a => unreachable,\n        .b => |*p| p,\n    };\n    e = .{ .a = (16 << 64) + bad_addr };\n    const oh_no: []const u8 = oh_no_pointer.*;\n    std.debug.print(\"{s}\\n\", .{oh_no});\n}"
+          },
+          {
+            "type": "code",
+            "text": "$ zig run main.zig\n��C�� �"
+          },
+          {
+            "type": "p",
+            "text": "This sort of example also breaks Ada:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.enyo.de/fw/notes/ada-type-safety.html"
+          },
+          {
+            "type": "p",
+            "text": "We have a tagged union, which can hold either A or B. We initialize the union as\nA, take a pointer to its internals, overwrite the original with B, and then use the pointer. The\npointer is still typed as A, but the bytes it points to now belong to B: a type confusion."
+          },
+          {
+            "type": "p",
+            "text": "This being said, we care about memory unsafety primarily because it leads to exploitable software,\nand it’s unclear just how impactful the example above is in practice. It is a happy coincidence that\nby far the most exploitable memory error in practice, the infamous buffer overflow, is also trivial\nto fix with compiler-inserted bounds checks. The biggest miss of the industry when it comes to\nmemory safety is not listening to Walter Bright:"
+          },
+          {
+            "type": "p",
+            "text": "https://digitalmars.com/articles/C-biggest-mistake.html"
+          },
+          {
+            "type": "p",
+            "text": "I bet that, had we got char a[..] syntax around C11, quite a few issues wouldn’t have happened!"
+          },
+          {
+            "type": "p",
+            "text": "See also What is Memory Safety?"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d49c677515b62163",
+      "title": "Making an agile version of a Windows Runtime delegate in C++/WinRT, part 1",
+      "titleZh": "在 C++/WinRT 中制作 Windows 运行时委托的敏捷版本（第 1 部分）",
+      "link": "https://devblogs.microsoft.com/oldnewthing/20260720-00/?p=112545",
+      "sourceName": "devblogs.microsoft.com/oldnewthing",
+      "sourceUrl": "https://devblogs.microsoft.com/oldnewthing",
+      "pubDate": "2026-07-20T14:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "C++",
+        "WinRT",
+        "Windows"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "本系列文章的第一部分介绍了如何在 C++/WinRT 中创建 Windows 运行时委托的敏捷版本。文章从最简单的情况入手，演示了基础场景下的实现方法，为后续更复杂的异步和线程模型处理奠定基础。",
+      "summaryEn": "The first part of this series introduces how to create an agile version of a Windows Runtime delegate in C++/WinRT. Starting with the easiest case, it demonstrates the implementation method for basic scenarios, laying the groundwork for more complex asynchronous and threading models in subsequent parts.",
+      "reason": "Raymond Chen 的经典技术专栏，为 Windows 平台 C++ 开发者提供了实用的异步编程指南。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Raymond Chen",
+        "siteName": "The Old New Thing",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Suppose you have some C++/WinRT code that receives a delegate from an outside source, and you might invoke that delegate from a potentially different COM context. However, the original delegate may not be agile. How can you make an agile version of that delegate?"
+          },
+          {
+            "type": "p",
+            "text": "The easy way is to wrap the delegate in an agile_ref, and then resolve the agile_ref back to a delegate when you want to invoke it."
+          },
+          {
+            "type": "code",
+            "text": "template<typename Delegate>\nDelegate make_agile_delegate(Delegate const& d)\n{\n    return [agile = winrt::agile_ref(d)](auto&&...args) {\n        return agile.get()(std::forward<decltype(args)>(args)...);\n    };\n}"
+          },
+          {
+            "type": "p",
+            "text": "But if it were that easy, why would we call this article “part 1”?"
+          },
+          {
+            "type": "p",
+            "text": "More in part 2."
+          },
+          {
+            "type": "h2",
+            "text": "Author"
+          },
+          {
+            "type": "p",
+            "text": "Raymond has been involved in the evolution of Windows for more than 30 years. In 2003, he began a Web site known as The Old New Thing which has grown in popularity far beyond his wildest imagination, a development which still gives him the heebie-jeebies. The Web site spawned a book, coincidentally also titled The Old New Thing (Addison Wesley 2007). He occasionally appears on the Windows Dev Docs Twitter account to tell stories which convey no useful information."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "30da4932800f8e05",
+      "title": "Paper",
+      "titleZh": "Paper：设计与代码合一的新工具",
+      "link": "https://paper.design/?utm_source=df",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-19T22:31:11.000Z",
+      "category": "tools",
+      "keywords": [
+        "HTML",
+        "CSS",
+        "design tool"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 4,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Paper 是一款全新的专业设计工具，其核心特点是每一层都是真实的 HTML 和 CSS，实现了设计即代码的理念。它支持代码与设计的双向转换，可通过 MCP 连接 AI 代理进行读写，还能使用 Paper Snapshot 将实时网站捕获为可编辑图层，大幅减少了设计与开发之间的交接成本。",
+      "summaryEn": "Paper is a new professional design tool where every layer is real HTML and CSS, realizing the concept of design as code. It supports two-way conversion between code and design, allows AI agents to read and edit via MCP, and can capture live sites as editable layers using Paper Snapshot, significantly reducing handoff costs between design and development.",
+      "reason": "打破了传统设计工具与代码之间的壁垒，结合AI代理能力，代表了前端设计工具的未来演进方向。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Paper",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "design incredible"
+          },
+          {
+            "type": "p",
+            "text": "the connected canvas for"
+          },
+          {
+            "type": "p",
+            "text": "teams shipping with agents"
+          },
+          {
+            "type": "p",
+            "text": "Paper connects your teams, agents, code, and data on a single design space built on web standards, so nothing gets lost in translation"
+          },
+          {
+            "type": "p",
+            "text": "used in production by designers at"
+          },
+          {
+            "type": "h2",
+            "text": "Introducing Paper Desktopa fully connected canvas, a whole new workflow"
+          },
+          {
+            "type": "p",
+            "text": "Paper desktop unlocks a new design workflow that easily connects your visual work with all your apps, agents, and repos, via MCP"
+          },
+          {
+            "type": "p",
+            "text": "design to code and back"
+          },
+          {
+            "type": "h2",
+            "text": "finally a continuous loop,\nfrom Paper to code and back"
+          },
+          {
+            "type": "p",
+            "text": "your agents can sync design tokens, styles, and components between your codebase and your canvas—one source of truth, always current"
+          },
+          {
+            "type": "h3",
+            "text": "connect any agent to your canvas"
+          },
+          {
+            "type": "p",
+            "text": "Connect any IDE or CLI agent and start working in a shared layer that goes from code to design and back"
+          },
+          {
+            "type": "h3",
+            "text": "design and code, one language"
+          },
+          {
+            "type": "p",
+            "text": "Paper's HTML/CSS canvas means your design exports as code. nothing gets lost in translation"
+          },
+          {
+            "type": "p",
+            "text": "good bye lorem ipsum"
+          },
+          {
+            "type": "h2",
+            "text": "connected to real content,\nreal data, from anywhere"
+          },
+          {
+            "type": "p",
+            "text": "bring content, databases, and context from any app on your computer or in the cloud—design with the real thing"
+          },
+          {
+            "type": "h3",
+            "text": "prompt to get data from anywhere"
+          },
+          {
+            "type": "p",
+            "text": "Bring any agent to pull data from any tool or API. Paper connects your files, CMS, or database to your layers"
+          },
+          {
+            "type": "h3",
+            "text": "update content from your canvas"
+          },
+          {
+            "type": "p",
+            "text": "Write and edit your copy on the canvas, iterate together, then ask your agent to send the copy back into your codebase"
+          },
+          {
+            "type": "p",
+            "text": "anti-slop"
+          },
+          {
+            "type": "h2",
+            "text": "hand off boilerplate work,\nfocus on the human touch"
+          },
+          {
+            "type": "p",
+            "text": "leverage agents to handle responsive layouts, style variations, and other repetitive tasks—so you can focus on the decisions only you can make"
+          },
+          {
+            "type": "h3",
+            "text": "agents that see your canvas"
+          },
+          {
+            "type": "p",
+            "text": "Paper canvas lets agents read and write on the right foundations, helping you enhance your workflows in real time"
+          },
+          {
+            "type": "h3",
+            "text": "stay in control"
+          },
+          {
+            "type": "p",
+            "text": "Focus on the creative call while agents deal with the tedious work like responsive variants, consistency checks, and more"
+          },
+          {
+            "type": "p",
+            "text": "close the gap"
+          },
+          {
+            "type": "h2",
+            "text": "the full-circle, anti-slop workflow\nfor humans and agents"
+          },
+          {
+            "type": "p",
+            "text": "a new way to design, from canvas to code and back—connected, fluid, built on the foundations of the web"
+          },
+          {
+            "type": "h3",
+            "text": "what's new in Paper"
+          },
+          {
+            "type": "p",
+            "text": "june, 2026: design tokens, pen tool & vector editing, folders"
+          },
+          {
+            "type": "p",
+            "text": "build log"
+          },
+          {
+            "type": "h3",
+            "text": "design at Paper, two new roles"
+          },
+          {
+            "type": "p",
+            "text": "we’re hiring two principal roles: Product Designer and Design Engineer"
+          },
+          {
+            "type": "p",
+            "text": "read the announcement"
+          }
+        ],
+        "translations": [
+          "设计不可思议",
+          "为",
+          "与智能体协同交付的团队打造的互联画布",
+          "Paper 将你的团队、智能体、代码和数据连接在一个基于 Web 标准构建的单一设计空间中，因此不会在沟通中丢失任何信息",
+          "已被以下公司的设计师用于生产环境",
+          "推出 Paper Desktop：一个完全互联的画布，一种全新的工作流",
+          "Paper Desktop 解锁了全新的设计工作流，通过 MCP 轻松将你的视觉作品与所有应用、智能体和代码库连接起来",
+          "从设计到代码，再回到设计",
+          "终于实现了闭环，从 Paper 到代码，再回到 Paper",
+          "你的智能体可以在代码库和画布之间同步设计令牌、样式和组件——单一事实来源，始终保持最新",
+          "将任何智能体连接到你的画布",
+          "连接任何 IDE 或 CLI 智能体，在一个从代码到设计再回到代码的共享图层中开始工作",
+          "设计与代码，同一种语言",
+          "Paper 的 HTML/CSS 画布意味着你的设计可以直接导出为代码。不会在转换中丢失任何信息",
+          "告别 Lorem ipsum",
+          "连接来自任何地方的真实内容和真实数据",
+          "从你电脑或云端的任何应用中引入内容、数据库和上下文——用真实数据进行设计",
+          "通过提示词从任何地方获取数据",
+          "引入任何智能体从任何工具或 API 拉取数据。Paper 将你的文件、CMS 或数据库连接到你的图层",
+          "从你的画布更新内容",
+          "在画布上编写和编辑文案，共同迭代，然后让智能体将文案发送回你的代码库",
+          "拒绝粗制滥造",
+          "交出样板工作，专注于人工干预",
+          "利用智能体处理响应式布局、样式变体和其他重复性任务——这样你就可以专注于只有你能做出的决策",
+          "能看懂你画布的智能体",
+          "Paper 画布让智能体在正确的基础上进行读写，帮助你实时增强工作流",
+          "保持掌控",
+          "专注于创意决策，同时让智能体处理诸如响应式变体、一致性检查等繁琐工作",
+          "消除隔阂",
+          "为人类和智能体打造的闭环、拒绝粗制滥造的工作流",
+          "一种全新的设计方式，从画布到代码再回到画布——互联、流畅，建立在 Web 的基础之上",
+          "Paper 最新动态",
+          "2026 年 6 月：设计令牌、钢笔工具与矢量编辑、文件夹",
+          "构建日志",
+          "Paper 设计团队，两个新职位",
+          "我们正在招聘两个核心职位：产品设计师和设计工程师",
+          "阅读公告"
+        ]
+      }
+    },
+    {
+      "slug": "1f83777c3472f8d3",
+      "title": "Fitting a regular expression to a list of words",
+      "titleZh": "为单词列表拟合正则表达式",
+      "link": "https://www.johndcook.com/blog/2026/07/19/fitting-a-regex/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-19T19:30:17.000Z",
+      "category": "engineering",
+      "keywords": [
+        "regex",
+        "grep",
+        "search"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "当需要搜索一个单词列表时，可以使用 grep 工具的 -f 标志提供包含正则表达式的文件，并结合 -F 标志明确这些内容只是普通单词而非复杂的正则模式。文章通过实际搜索案例展示了如何高效处理批量字符串匹配需求。",
+      "summaryEn": "When searching for a list of words, you can use the -f flag in grep to provide a file of regular expressions, combined with the -F flag to specify that the contents are just plain words rather than complex regex patterns. The article demonstrates how to efficiently handle batch string matching through a practical search case.",
+      "reason": "提供了 grep 高级用法的实用技巧，对经常处理文本搜索和批量匹配的开发者非常实用。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Suppose you want to search for a list of words. If you’re using grep, you can add the -f flag provide a file of regular expressions, and you can add the -F to tell it that the regular expressions are in fact just words. I did something like this a couple days ago when searching for diagnosis codes."
+          },
+          {
+            "type": "code",
+            "text": "grep -w -F -o -f icd10codes.txt notes.txt"
+          },
+          {
+            "type": "p",
+            "text": "Now you might want to combine your list of words into a singular regular expression, for efficiency or possibly for some other reason. Apparently ripgrep does this because when I tried replacing grep with ripgrep in the command above I got an error saying “Compiled regex exceeds size limit of 104857600 bytes.”"
+          },
+          {
+            "type": "h2",
+            "text": "Beating brute force"
+          },
+          {
+            "type": "p",
+            "text": "Say you wanted to search for the strings “bluecross”, “blueshield”, and “bluey”. You could simply form the brute force regular expression"
+          },
+          {
+            "type": "code",
+            "text": "bluecross|blueshied|bluey"
+          },
+          {
+            "type": "p",
+            "text": "but that doesn’t take advantage of the fact that all three strings begin with “blue.” A smaller regular expression would be"
+          },
+          {
+            "type": "code",
+            "text": "blue(shield|cross|y)"
+          },
+          {
+            "type": "p",
+            "text": "Finding the shortest regular expression that matches a list of words is a hard problem, but finding a regular expression that’s shorter than brute force is not. The Python package trieregex will do this. According to the documentation,"
+          },
+          {
+            "type": "quote",
+            "text": "trieregex creates efficient regular expressions (regexes) by storing a list of words in a trie structure, and translating the trie into a more compact pattern."
+          },
+          {
+            "type": "p",
+            "text": "Let’s try our blue example with trieregex."
+          },
+          {
+            "type": "code",
+            "text": "import re\nfrom trieregex import TrieRegEx as TRE\n\nwords = ['bluecross', 'blueshield', 'bluey']\ntre = TRE(*words) \nprint(tre.regex())"
+          },
+          {
+            "type": "p",
+            "text": "This produces the same regular expression as above, except it adds ?: to make the parentheses non-capturing."
+          },
+          {
+            "type": "code",
+            "text": "blue(?:shield|cross|y)"
+          },
+          {
+            "type": "h2",
+            "text": "Prefixes versus suffixes"
+          },
+          {
+            "type": "p",
+            "text": "The library builds a trie data structure using common prefixes. That works well in the example above, but the result is disappointing when we have common suffixes rather than common prefixes. The following code"
+          },
+          {
+            "type": "code",
+            "text": "words = ['javascript', 'typescript']\ntre = TRE(*words) \nprint(tre.regex())"
+          },
+          {
+            "type": "p",
+            "text": "produces the regular expression"
+          },
+          {
+            "type": "code",
+            "text": "(?:javascript|typescript)"
+          },
+          {
+            "type": "p",
+            "text": "which is no better than brute force, whereas we might have hoped for"
+          },
+          {
+            "type": "code",
+            "text": "(?:java|type)script"
+          },
+          {
+            "type": "h2",
+            "text": "HCPCS examples"
+          },
+          {
+            "type": "p",
+            "text": "As mentioned at the top of the post, ripgrep failed to search on a list of ICD-10 codes. The list of HCPCS codes is about 10x smaller, and more compressible. Ripgrep was able to fit all HCPCS codes into a single regex and was able to search the test file much faster than grep. The command"
+          },
+          {
+            "type": "code",
+            "text": "grep -w -F -o -f hcpcs.txt notes.txt"
+          },
+          {
+            "type": "p",
+            "text": "took 73.426 seconds to execute, while the command"
+          },
+          {
+            "type": "code",
+            "text": "rg -w -F -o -f hcpsc.txt notes.txt"
+          },
+          {
+            "type": "p",
+            "text": "took 0.078 seconds, three orders of magnitude faster."
+          },
+          {
+            "type": "p",
+            "text": "The following code will read a list of HCPCS codes from a file and create a regular expression."
+          },
+          {
+            "type": "code",
+            "text": "tre = TRE()\nwith open('hcpcs.txt', 'r') as file:\n    for line in file:\n        tre.add(line.strip())\nprint(len(tre.regex()))"
+          },
+          {
+            "type": "p",
+            "text": "This shows that the resulting regular expression has 17,198 characters. The file of codes has 8725 five-character codes, so the regex compresses the code characters by roughly a ratio of 5 to 2."
+          }
+        ],
+        "translations": [
+          "假设你想搜索一个单词列表。如果你使用的是 grep，可以添加 -f 标志来提供一个正则表达式文件，并添加 -F 标志来告诉它这些正则表达式实际上只是普通单词。几天前我在搜索诊断代码时就是这么做的。",
+          "grep -w -F -o -f icd10codes.txt notes.txt",
+          "现在你可能出于效率或其他原因，想把这个单词列表合并成一个单一的正则表达式。显然 ripgrep 就是这么做的，因为当我尝试在上面的命令中用 ripgrep 替换 grep 时，我收到了一个错误提示：“Compiled regex exceeds size limit of 104857600 bytes.”",
+          "胜过暴力匹配",
+          "假设你想搜索字符串“bluecross”、“blueshield”和“bluey”。你可以简单地构造一个暴力匹配的正则表达式",
+          "bluecross|blueshied|bluey",
+          "但这并没有利用这三个字符串都以“blue”开头这一事实。一个更小的正则表达式应该是",
+          "blue(shield|cross|y)",
+          "寻找匹配单词列表的最短正则表达式是一个难题，但寻找一个比暴力匹配更短的正则表达式并不难。Python 包 trieregex 就能做到这一点。根据文档说明，",
+          "trieregex 通过将单词列表存储在字典树（trie）结构中，并将该字典树转换为更紧凑的模式，从而创建高效的正则表达式（regexes）。",
+          "让我们用 trieregex 试一下前面的 blue 例子。",
+          "import re\nfrom trieregex import TrieRegEx as TRE\n\nwords = ['bluecross', 'blueshield', 'bluey']\ntre = TRE(*words) \nprint(tre.regex())",
+          "这会生成与上面相同的正则表达式，只是它添加了 ?: 使括号变为非捕获组。",
+          "blue(?:shield|cross|y)",
+          "前缀与后缀",
+          "该库利用公共前缀构建字典树数据结构。这在上述例子中效果很好，但当我们有公共后缀而不是公共前缀时，结果就令人失望了。以下代码",
+          "words = ['javascript', 'typescript']\ntre = TRE(*words) \nprint(tre.regex())",
+          "生成的正则表达式",
+          "(?:javascript|typescript)",
+          "这并不比暴力匹配好多少，而我们原本可能期望的是",
+          "(?:java|type)script",
+          "HCPCS 示例",
+          "正如文章开头提到的，ripgrep 无法搜索 ICD-10 代码列表。HCPCS 代码列表的大小约为前者的十分之一，且更具可压缩性。Ripgrep 能够将所有 HCPCS 代码放入单个正则表达式中，并且搜索测试文件的速度比 grep 快得多。该命令",
+          "grep -w -F -o -f hcpcs.txt notes.txt",
+          "执行耗时 73.426 秒，而命令",
+          "rg -w -F -o -f hcpsc.txt notes.txt",
+          "耗时 0.078 秒，快了三个数量级。",
+          "以下代码将从文件中读取 HCPCS 代码列表并创建一个正则表达式。",
+          "tre = TRE()\nwith open('hcpcs.txt', 'r') as file:\n    for line in file:\n        tre.add(line.strip())\nprint(len(tre.regex()))",
+          "结果显示生成的正则表达式有 17,198 个字符。代码文件包含 8725 个五个字符的代码，因此该正则表达式将代码字符压缩了大约 5:2 的比例。"
+        ]
+      }
+    },
+    {
+      "slug": "c1ed33a669536140",
+      "title": "Public Transport - Don't Make Me Think!",
+      "titleZh": "公共交通：别让我思考！",
+      "link": "https://shkspr.mobi/blog/2026/07/public-transport-dont-make-me-think/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-07-20T11:34:23.000Z",
+      "category": "other",
+      "keywords": [
+        "UX",
+        "public transport",
+        "ticketing"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 11
+      },
+      "summary": "作者在过去一年中体验了十几个城市的公共交通系统，发现购票流程的复杂程度令人咋舌。部分城市采用以用户为中心的购票设计，而另一些则热衷于构建包含复杂区域、应用和限制的官僚迷宫。文章借用计算机系统设计中的经典理念，呼吁公共交通票务系统应遵循“别让我思考”的可用性原则。",
+      "summaryEn": "Having used public transport in over a dozen cities in the past year, the author finds the complexity of buying tickets staggering. While some cities adopt a user-centered approach to ticketing, others delight in a bureaucratic maze of zones, apps, and restrictions. Borrowing a classic concept from computer system design, the article calls for public transport ticketing systems to follow the \"Don't Make Me Think\" usability principle.",
+      "reason": "将软件可用性原则跨界应用于现实公共服务系统，对产品经理和UX设计师具有启发意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In the last year, I've been through over a dozen cities and used public transport in all of them."
+          },
+          {
+            "type": "p",
+            "text": "It is wild just how confusing and complex buying a ticket can be. While some cities obviously take a user-centred approach to ticketing, others appear to take a Kafkaesque delight in a bureaucratic maze of zones, apps, and intricate restrictions."
+          },
+          {
+            "type": "p",
+            "text": "One of the seminal texts in computer systems design is \"Don't Make Me Think\". Every time a service forces the user into making a decision, it is placing a cognitive burden on them. Computers' jobs are to make things easier for us fleshy meatbags."
+          },
+          {
+            "type": "p",
+            "text": "There are some intractable problems with navigating unfamiliar spaces (looking at you Kyoto Station!) and a transport authority can't publish signs and make announcements in every conceivable language, but there's one thing they can control - ticketing."
+          },
+          {
+            "type": "p",
+            "text": "Let me take you through some of the public transport ticket experiences I had - and explain how easy or hard they were to use."
+          },
+          {
+            "type": "h2",
+            "text": "Basel, Switzerland - free"
+          },
+          {
+            "type": "p",
+            "text": "Upon checking in to our hotel I was given a free Basel Card. It entitled me to free public transport across the city."
+          },
+          {
+            "type": "p",
+            "text": "Zero extra cost. I didn't have to remember to take a physical card with me - the details were emailed as a PDF directly from the hotel on check-in."
+          },
+          {
+            "type": "p",
+            "text": "I didn't have to show the bus driver when I entered a tram. If a ticket inspector was present, they could have asked to scan it."
+          },
+          {
+            "type": "p",
+            "text": "This is close to the platonic ideal of \"Don't Make Me Think\" public transport. I didn't have to work out zones, fares, or timings. I didn't need to interact with people or machines. I didn't worry that I was somehow doing it wrong and was going to get shouted at."
+          },
+          {
+            "type": "p",
+            "text": "I tapped my credit card on the reader. Whether it was a bus, tram, or metro the process was the same. Tap, wait a few milliseconds, beep. On the metro the gates opened automatically. On the tram, I just sat down after the beep."
+          },
+          {
+            "type": "p",
+            "text": "The fares have a bit of complexity based on how frequently you travel. If you catch another bus within 90 minutes it only counts as one fare."
+          },
+          {
+            "type": "p",
+            "text": "I didn't care because the daily price was capped."
+          },
+          {
+            "type": "p",
+            "text": "Once I'd taken a few journeys it wasn't going to cost me any more. With a fee-free credit card it was simplicity itself."
+          },
+          {
+            "type": "p",
+            "text": "If I had been on an extremely tight budget, I might have done some thinking - but as the daily cap was less than the price of a cocktail, I didn't bother."
+          },
+          {
+            "type": "h2",
+            "text": "Warsaw - paper ticket validation"
+          },
+          {
+            "type": "p",
+            "text": "I walked up to a touchscreen kiosk, selected the 🇬🇧 flag, and bought a 3 day paper ticket for a few € using contactless. The machine spat out a small paper ticket."
+          },
+          {
+            "type": "p",
+            "text": "I hopped onto a tram, shoved the ticket in a slot and the machine printed a timestamp on  it. Well, in theory. It didn't work the first few times for inscrutable reasons."
+          },
+          {
+            "type": "p",
+            "text": "From then on, I didn't have to do anything. I jumped on whatever public transport I wanted. Only once did a ticket inspector come round demanding to see everyone's proof of validity."
+          },
+          {
+            "type": "p",
+            "text": "The ticket was a slightly inconvenient size for my wallet - being much smaller than a credit card - and I think the kiosk should have validated it automatically. But, for general transport purposes, it was great at not forcing me to think."
+          },
+          {
+            "type": "h2",
+            "text": "Tallinn - scan the app"
+          },
+          {
+            "type": "p",
+            "text": "Install an app, choose ticket type, pay, done."
+          },
+          {
+            "type": "p",
+            "text": "Every time I entered public transport, open the app, click the ticket, wave the resultant QR over a scanner."
+          },
+          {
+            "type": "p",
+            "text": "Obviously choosing a ticket type is a little thinky. Do I want a single ticket, a day pass, something longer?"
+          },
+          {
+            "type": "p",
+            "text": "I'm not averse to installing an app when necessary. Thankfully, this transit app worked on GrapheneOS. There was an optional registration step which I skipped because I was unlikely to come back any time soon."
+          },
+          {
+            "type": "h2",
+            "text": "Riga - scan the bus"
+          },
+          {
+            "type": "p",
+            "text": "OK, this was just weird!"
+          },
+          {
+            "type": "p",
+            "text": "Much like above, install app, choose ticket, pay."
+          },
+          {
+            "type": "p",
+            "text": "Despite buying an all-you-can-eat ticket, I still had to register on every bus/tram I got on. That meant hopping on, finding a QR code, opening the app, and trying to scan it while the driver attempted a new land-speed record."
+          },
+          {
+            "type": "h2",
+            "text": "Melbourne - annoying"
+          },
+          {
+            "type": "p",
+            "text": "We wanted to visit a mate in the suburbs of Melbs. For this we needed to buy a plastic card. We then needed to load it up with (I think) multiples of $5. Our return fare was about $7.50. So our actual journey cost something like double what the fare was."
+          },
+          {
+            "type": "p",
+            "text": "There was no obvious way to get a refund for the credit amount, nor for the cards. So we gave them to a friend to distribute to any other tourists she hosted."
+          },
+          {
+            "type": "h2",
+            "text": "Paris - ridiculous"
+          },
+          {
+            "type": "p",
+            "text": "Fuck Paris. The only way to buy a metro ticket is to download an app. Fair enough. But, after downloading the app it tells you to install another app!"
+          },
+          {
+            "type": "p",
+            "text": "What the actual fuck? A convoluted, messy, and frustrating situation which has resulted in awful reviews for them."
+          },
+          {
+            "type": "p",
+            "text": "Trains and metro travel require separate tickets at different prices. You can't easily hop from one to another. You need to think carefully about the route you're taking. A more convoluted route may be significantly cheaper because it doesn't involve swapping between services."
+          },
+          {
+            "type": "p",
+            "text": "Madness!"
+          },
+          {
+            "type": "p",
+            "text": "The ticket readers use your phone's NFC chip to validate. So there's no technical reason why they can't just use contactless payment cards."
+          },
+          {
+            "type": "p",
+            "text": "To be fair, change is coming… in 2030!"
+          },
+          {
+            "type": "h2",
+            "text": "Japan"
+          },
+          {
+            "type": "p",
+            "text": "Last year we took a trip to Tokyo, Osaka, Hiroshima, and Kyoto. We picked up a physical Suica card (because the digital one only works with iPhone). We topped up the card with cash (which was a bit of a pain). An annoying start - but from then on it was seamless. The same card worked on trains, busses, and trams in all the cities we visited! Brilliant! We didn't need to think at all. Compare that to Germany where every city has its own special app and it was always a pain to remember which one to open."
+          },
+          {
+            "type": "p",
+            "text": "I understand that Japan's public transport system now accepts foreign contactless cards - which should make things easier for travellers."
+          },
+          {
+            "type": "h2",
+            "text": "So what's best?"
+          },
+          {
+            "type": "p",
+            "text": "In an ideal world, all public transport would be free and plentiful. In our less-than-ideal reality, it seems obvious to me that public transport should above all be simple."
+          },
+          {
+            "type": "p",
+            "text": "Tourists don't want to grapple with the complexities of zones, split tickets, random charges, and a different app for each city."
+          },
+          {
+            "type": "p",
+            "text": "Regular travellers don't want yet another piece of plastic tat in their wallets, or to work out in advance what precise combination of journeys they need to take in order to optimise their spending."
+          },
+          {
+            "type": "p",
+            "text": "One app is fine. Having to install a different app for each city you visit - even within the same country! - is infuriating."
+          },
+          {
+            "type": "p",
+            "text": "Visitors should not have to think about how, where, when, or why they need to validate their tickets. Nor should anyone need to figure out which modes of transport are inclusive or not."
+          },
+          {
+            "type": "p",
+            "text": "For the casual visitor, contactless payment with a daily / weekly cap is the simplest possible charging mechanism. It's cheaper for the cities to not have to build, develop, and support apps."
+          },
+          {
+            "type": "p",
+            "text": "If you've come across a better public transport ticketing system - please let me know in the comments."
+          }
+        ],
+        "translations": [
+          "过去一年里，我走过了十几个城市，并在所有这些城市中都乘坐了公共交通。",
+          "买票这件事能有多令人困惑和复杂，简直令人咋舌。虽然有些城市显然在票务上采取了以用户为中心的方法，但其他城市似乎对区域、应用程序和错综复杂的限制所构成的官僚迷宫抱有一种卡夫卡式的狂热。",
+          "计算机系统设计领域的经典著作之一是《Don't Make Me Think》。每当一项服务迫使用户做出决定时，它就在给他们增加认知负担。计算机的工作就是让我们这些血肉之躯的生活变得更轻松。",
+          "在不熟悉的空间里导航会遇到一些棘手的问题（说的就是你，京都站！），而且交通管理部门不可能用所有能想到的语言发布标志和广播，但有一件事是他们可以控制的——票务。",
+          "让我带你回顾一下我的一些公共交通购票体验——并解释它们使用起来有多容易或多困难。",
+          "瑞士巴塞尔——免费",
+          "办理酒店入住时，我得到了一张免费的巴塞尔卡（Basel Card）。它让我可以免费乘坐全市的公共交通。",
+          "零额外费用。我不必记得随身携带实体卡——入住时酒店直接将详细信息以 PDF 格式通过电子邮件发给了我。",
+          "我上电车时不必向司机出示。如果查票员在场，他们可能会要求扫描它。",
+          "这几乎就是“Don't Make Me Think”公共交通的柏拉图式理想。我不必计算区域、票价或时间。我不需要与人或机器互动。我也不用担心自己哪里做错了而挨骂。",
+          "我在读取器上刷了一下信用卡。无论是公交车、电车还是地铁，流程都是一样的。刷卡，等待几毫秒，发出哔声。在地铁上闸门会自动打开。在电车上，哔声后我只需坐下即可。",
+          "票价根据你的出行频率有一些复杂性。如果你在90分钟内乘坐另一辆公交车，它只算作一次票价。",
+          "我并不在乎，因为每日票价有上限。",
+          "一旦我乘坐了几次，就不会再花更多钱了。使用一张免手续费的信用卡，这简直再简单不过了。",
+          "如果我的预算极其紧张，我可能还会盘算一下——但由于每日上限还不到一杯鸡尾酒的价格，我也就懒得费心了。",
+          "华沙——纸质车票验证",
+          "我走到一个触摸屏自助机前，选择了🇬🇧国旗，用非接触式支付花了几欧元买了一张3天的纸质车票。机器吐出了一张小纸票。",
+          "我跳上一辆电车，把车票塞进一个插槽里，机器会在上面打印一个时间戳。嗯，理论上是这样。由于不可名状的原因，前几次并没有成功。",
+          "从那以后，我什么都不用做了。我跳上任何我想坐的公共交通。只有一次查票员过来要求查看每个人的有效凭证。",
+          "这张车票的尺寸对我的钱包来说有点不方便——比信用卡小得多——而且我认为自助机应该自动验证它。但是，就一般交通目的而言，它在避免让我费心思考方面做得很好。",
+          "塔林——扫描应用程序",
+          "安装一个应用程序，选择车票类型，付款，搞定。",
+          "每次我乘坐公共交通时，打开应用程序，点击车票，将生成的二维码在扫描仪上挥一下。",
+          "显然，选择车票类型需要稍微动点脑筋。我是想要单程票、日票，还是时间更长的票？",
+          "必要时我并不排斥安装应用。谢天谢地，这款交通应用能在 GrapheneOS 上运行。有一个可选的注册步骤，我跳过了，因为我近期不太可能再来。",
+          "里加——扫码上车",
+          "好吧，这真是太奇怪了！",
+          "和前面一样，安装应用，选择车票，付款。",
+          "尽管买了不限次乘坐的通票，我每次上公交车/有轨电车时仍然需要打卡。这意味着上车后要找到二维码，打开应用并尝试扫描，而此时司机正试图刷新陆地速度纪录。",
+          "墨尔本——令人烦恼",
+          "我们想去墨尔本郊区拜访一位朋友。为此我们需要买一张塑料卡片。然后我们需要充值（我记得是）5美元的倍数。我们的往返票价大约是7.50美元。所以我们实际行程的花费大约是票价的整整一倍。",
+          "没有明显的方法可以退还卡内余额，也无法退还卡片本身。所以我们把它们交给了一位朋友，让她分发给接待的其他游客。",
+          "巴黎——荒谬可笑",
+          "去他妈的巴黎。购买地铁票的唯一方法是下载一款应用。这还算合理。但是，下载完这款应用后，它居然让你再安装另一款应用！",
+          "这到底是什么鬼？这种复杂、混乱且令人沮丧的情况导致他们收到了糟糕的评论。",
+          "火车和地铁出行需要不同价格的单独车票。你无法轻松地在两者之间换乘。你需要仔细考虑你的路线。一条更复杂的路线可能要便宜得多，因为它不涉及在不同交通工具之间换乘。",
+          "简直疯了！",
+          "检票机使用手机的 NFC 芯片进行验证。因此，从技术上讲，他们没有理由不能直接使用非接触式支付卡。",
+          "平心而论，改变即将到来……在2030年！",
+          "日本",
+          "去年我们去东京、大阪、广岛和京都旅行。我们买了一张实体的 Suica 卡（因为数字卡只能在 iPhone 上使用）。我们用现金给卡充值（这有点麻烦）。开局令人烦恼——但从那以后就非常顺畅了。同一张卡在我们访问的所有城市的火车、公交车和有轨电车上都能用！太棒了！我们完全不需要动脑筋。相比之下，在德国每个城市都有自己的专属应用，总是很难记住该打开哪一个。",
+          "我了解到日本的公共交通系统现在接受国外的非接触式支付卡了——这应该会让旅客的出行更方便。",
+          "那么哪种最好呢？",
+          "在理想的世界里，所有的公共交通都应该是免费且充足的。在我们不那么理想的现实中，对我来说显而易见的是，公共交通首先应该简单。",
+          "游客不想去应对区域划分、分段购票、随机收费以及每个城市都要换一个不同应用的复杂性。",
+          "经常出行的人不想在钱包里再多塞一张没用的塑料卡，也不想提前计算出他们需要乘坐的精确路线组合来优化开销。",
+          "一个应用就够了。为你访问的每个城市安装一个不同的应用——甚至在同一个国家内也是如此！——这令人气愤。",
+          "访客不应该去思考他们需要如何、在哪里、何时或为何验证车票。任何人也不应该去弄清楚哪些交通方式是包含在内的，哪些不包含。",
+          "对于偶尔来访的游客来说，带有每日/每周消费上限的非接触式支付是最简单的计费机制。城市不必去构建、开发和维护应用，这也降低了成本。",
+          "如果你遇到过更好的公共交通票务系统，请在评论中告诉我。"
+        ]
+      }
+    },
+    {
+      "slug": "cfc010ab994f0bec",
+      "title": "Volume to Area ratio for Regular Solids",
+      "titleZh": "正多面体的体积与表面积之比",
+      "link": "https://www.johndcook.com/blog/2026/07/20/volume-area-regular-solids/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-20T14:35:21.000Z",
+      "category": "other",
+      "keywords": [
+        "math",
+        "geometry",
+        "regular solids"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 5,
+        "timeliness": 4,
+        "total": 11
+      },
+      "summary": "球体的体积 V = 4πr³ / 3，表面积 A = 4πr²，其体积与表面积之比 V / A = r / 3。令人惊讶的是，如果 r 代表最大内切球的半径，所有正多面体（如正方体、正四面体等）的体积与表面积之比都遵循这一相同的数学规律。",
+      "summaryEn": "The volume of a sphere is V = 4πr³ / 3 and the surface area is A = 4πr², giving a volume to area ratio of V / A = r / 3. Surprisingly, if r is the radius of the largest inscribed sphere, this same ratio holds true for all regular solids, such as cubes and tetrahedrons.",
+      "reason": "揭示了一个优雅且反直觉的几何数学规律，适合对数学之美感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The volume of a sphere of radius r is"
+          },
+          {
+            "type": "p",
+            "text": "V = 4πr³ / 3"
+          },
+          {
+            "type": "p",
+            "text": "and the surface area is"
+          },
+          {
+            "type": "p",
+            "text": "A = 4πr²"
+          },
+          {
+            "type": "p",
+            "text": "and so the ratio of volume to area is"
+          },
+          {
+            "type": "p",
+            "text": "V / A = r / 3."
+          },
+          {
+            "type": "p",
+            "text": "Surprisingly, the same ratio holds for all regular solids if r is the radius of the largest sphere that can be inscribed inside the regular solid."
+          },
+          {
+            "type": "p",
+            "text": "For example, if the edge of a cube is a, then r = a/2. The volume is 8r³, the area is 24r², and the ratio is r/3."
+          },
+          {
+            "type": "p",
+            "text": "The relationship between edge length and radius, and between radius and volume, is more complicated for the four other regular solids (tetrahedron, octahedron, dodecahedron, and icosahedron). However, in each case the ratio of volume to area is r/3."
+          },
+          {
+            "type": "p",
+            "text": "The proof is surprisingly simple. Pick a face and form a pyramid by connecting each face vertex to the center of the inscribed sphere. The pyramid has height r and volume equal to B/3 where B is the area of the base. If the regular solid has f faces, the volume of the solid is fBr / 3 and the area is fB. So the ratio of volume to area is r/3."
+          },
+          {
+            "type": "p",
+            "text": "The theorem generalizes to n > 3 dimensions. The formula for the volume of a pyramid in n dimensions is Bh/n where B is the (n − 1)-dimensional volume of the base, and so the ratio of n-dimensional volume of a regular solid to (n − 1)-dimensional volume of its boundary is r/n."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7054fbadbfc59c5e",
+      "title": "OpenTK: nu ook met Internetconsultaties & notificaties",
+      "titleZh": "OpenTK：现在也支持互联网咨询和通知",
+      "link": "https://berthub.eu/articles/posts/opentk-internetconsultaties/",
+      "sourceName": "berthub.eu",
+      "sourceUrl": "https://berthub.eu",
+      "pubDate": "2026-07-20T11:37:00.000Z",
+      "category": "other",
+      "keywords": [
+        "OpenTK",
+        "politics",
+        "notifications"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 4,
+        "timeliness": 5,
+        "total": 11
+      },
+      "summary": "OpenTK 是一个自 2024 年起运营的平台，旨在透明化展示荷兰众议院的立法动态并提供邮件通知服务。其创建动机源于作者曾意外发现一项涉及 DNS 的法律即将在几天内投票，而互联网行业对此却毫不知情。为避免此类“信息盲区”再次发生，作者开发了该系统以追踪议会动向。该平台的核心价值在于让互联网从业者能及时掌握并应对可能影响其领域的立法活动。",
+      "summaryEn": "OpenTK is a platform launched in 2024 to transparently track legislative activities in the Dutch House of Representatives and provide email notifications. Its creation was motivated by the author's shocking discovery of an impending DNS-related law that was about to be voted on within days, catching the internet industry completely off guard. To prevent such blind spots from recurring, the author developed this system to monitor parliamentary movements. The platform's core value lies in enabling internet professionals to stay informed and respond to legislative actions that may impact their fields.",
+      "reason": "了解如何通过技术手段追踪立法动态，避免互联网行业因信息滞后而错失政策参与机会。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Bert Hubert's writings",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Sinds 2024 run ik OpenTK, met als doel zo goed mogelijk te laten zien wat er in de Tweede Kamer allemaal gebeurt. En, om daar ook nuttige email-notificaties over te versturen."
+          },
+          {
+            "type": "p",
+            "text": "OpenTK is begonnen omdat ik (vanuit de Internetwereld) ineens geconfronteerd werd met een wet die over DNS (mijn hobby) ging en over een paar dagen in stemming zou komen. Dat was heel erg schrikken en ik dacht, dat kan ons nooit meer gebeuren."
+          },
+          {
+            "type": "p",
+            "text": "De doelen wat verder uitgeschreven:"
+          },
+          {
+            "type": "li",
+            "text": "Zo goed mogelijk inzicht geven in wat er nu in en rond de Tweede Kamer gebeurt. Je hebt iets gelezen in het nieuws over de politiek? Op OpenTK vind je snel wat er precies gezegd is, en ook de context. Al tijdens vergaderingen verschijnen de verslagen live, alsook iedere motie en ingediende schriftelijke vraag."
+          },
+          {
+            "type": "li",
+            "text": "Ben je betrokken bij een onderwerp? Vind zo vroeg mogelijk dat de Kamer er mee bezig is of dat er plannen gemaakt worden. Hoe eerder je dat weet hoe makkelijker het is om jouw hobby/bedrijf/passie te vertegenwoordigen."
+          },
+          {
+            "type": "li",
+            "text": "Alle documenten zijn vindbaar, en worden weergegeven met de beste context (‘onderdeel van deze vergadering, dit agendapunt, ingebracht door dit kamerlid’)"
+          },
+          {
+            "type": "li",
+            "text": "Een goede basis vormen voor data-gedreven onderzoeken"
+          },
+          {
+            "type": "p",
+            "text": "De afgelopen jaren is dit flink uitgebouwd, en het lijkt ook echt te werken. Ik krijg regelmatig mail van stichtingen, families en organisaties dat ze dankzij OpenTK ontdekt hadden dat er op hun vlak relevante dingen aan het gebeuren waren. En waar men ook naar kon handelen. Stuur vooral meer van dat soort mail want ik leef daar echt enorm van op! En mail vooral ook als het niet goed werkt, of als je verbeteringen hebt bedacht: bert@hubertnet.nl"
+          },
+          {
+            "type": "p",
+            "text": "Om mensen nog eerder en beter op de hoogte te stellen van ontwikkelingen zijn per vandaag Internetconsultaties toegevoegd aan opentk.nl, inclusief in de zoekmachine en in de notificatie-service."
+          },
+          {
+            "type": "p",
+            "text": "Voorpagina van opentk.nl met daarop diverse internetconsultaties"
+          },
+          {
+            "type": "h3",
+            "text": "Internetconsultaties"
+          },
+          {
+            "type": "p",
+            "text": "Een nieuwe wet of regeling gaat door veel stappen heen. Het eerste wat we daar publiek van zien is vaak een internetconsultatie. In de woorden van het kabinet:"
+          },
+          {
+            "type": "quote",
+            "text": "“Door internetconsultatie krijgen meer mensen, bedrijven en instellingen informatie over wetgeving die in voorbereiding is en kunnen zij suggesties doen om de kwaliteit en uitvoerbaarheid van deze voorstellen te verbeteren. Internetconsultatie vergroot de transparantie van het proces, de mogelijkheden voor publieke participatie en levert een bijdrage aan de kwaliteit van wetgeving”"
+          },
+          {
+            "type": "p",
+            "text": "Na de consultatie verdwijnt een voorstel vaak weer tijden uit beeld, bijvoorbeeld omdat het eerst langs de Raad van State gaat. Ik heb regelmatig gereageerd op internetconsultaties, en ik weet niet of het enig effect heeft. Ik heb er in ieder geval nooit iets van gemerkt."
+          },
+          {
+            "type": "p",
+            "text": "Toch is zo’n consultatie onvoorstelbaar nuttig. Als je rekening moet houden met nieuw beleid, of als je bestuurders en wetgevers snel wilt informeren over de (nadelige) gevolgen van zulk nieuw beleid, dan kan je er niet vroeg genoeg bij zijn."
+          },
+          {
+            "type": "p",
+            "text": "In het prille begin van beleidsvorming kan er nog makkelijk geschrapt en bijgewerkt worden in voorstellen. Nog niet iedereen zit in de loopgraven, en men staat nog erg open voor suggesties."
+          },
+          {
+            "type": "p",
+            "text": "Internetconsultaties waren natuurlijk al te zien op internetconsultatie.nl, en je kon je ook inschrijven om email te krijgen over alle nieuwe consultaties of per ministerie."
+          },
+          {
+            "type": "p",
+            "text": "De integratie in OpenTK houdt in dat als je al een zoekopdracht had staan op je favoriete onderwerpen, je nu ook automatisch mail krijgt over matchende documenten bij nieuwe internetconsultaties. Dit is fijnmaziger dan hele ministeries aanvinken, en het vindt ook documenten van andere ministeries over jouw onderwerpen. Je kunt ook alle consultaties tegelijk bekijken overigens, en ze verschijnen ook op de voorpagina."
+          },
+          {
+            "type": "p",
+            "text": "Verder, dank aan de mensen van Internetconsultatie.nl, dankzij hun XML-feed is het mogelijk voor OpenTK.nl om hun werk goed weer te geven. Ze hebben ook een RSS feed, al is die vrij goed verstopt."
+          },
+          {
+            "type": "h3",
+            "text": "Hoe dit aan te zetten?"
+          },
+          {
+            "type": "p",
+            "text": "Ga naar OpenTK.nl en zoek op een onderwerp, en dat vindt dan de huidige documenten en consultaties. Rechts van de zoekbalk staat een belletje, en als je daarop klikt kan je een account aanmaken. En vervolgens is het belletje de manier om te zeggen dat je voortaan updates wil ontvangen over dit onderwerp."
+          },
+          {
+            "type": "p",
+            "text": "Er is ook een handleiding voor OpenTK, met screenshots:"
+          },
+          {
+            "type": "li",
+            "text": "Deel 1"
+          },
+          {
+            "type": "li",
+            "text": "Deel 2 (met uitleg over het belletje en zoekopdrachten)"
+          },
+          {
+            "type": "p",
+            "text": "Succes, en laat vooral weten of het naar behoren werkt!"
+          }
+        ],
+        "translations": [
+          "自2024年起，我运营着OpenTK，目标是尽可能清晰地展示众议院（Tweede Kamer）发生的一切。并且，就此发送有用的电子邮件通知。",
+          "OpenTK的创立是因为我（来自互联网世界）突然面临一项关于DNS（我的爱好）的法律，而且几天后就要进行表决。这让我非常震惊，我心想，这种事绝不能再发生在我们身上。",
+          "进一步详细说明的目标：",
+          "尽可能清晰地洞察众议院内部及周边正在发生的事情。你在新闻中读到了关于政治的报道？在OpenTK上，你可以迅速找到确切说了什么以及相关背景。会议记录在会议期间就会实时发布，每一项动议和提交的书面问题也是如此。",
+          "你是否参与了某个议题？尽可能早地发现众议院正在处理该议题或正在制定相关计划。你越早知道这一点，就越容易代表你的爱好/企业/热情发声。",
+          "所有文档都可以被检索到，并附有最佳的背景信息展示（“属于本次会议，此议程项目，由该议员提出”）",
+          "为数据驱动的研究奠定良好基础",
+          "过去几年里，这个项目得到了大幅扩展，而且似乎确实奏效了。我经常收到来自基金会、家庭和组织的邮件，说多亏了OpenTK，他们才发现自己关注的领域正在发生相关的事情，并且可以据此采取行动。请务必多发这类邮件，因为这真的让我备受鼓舞！如果运行不佳或你有改进的想法，也请发邮件给我：bert@hubertnet.nl",
+          "为了让人们更早、更好地了解事态发展，从今天起，互联网咨询（Internetconsultaties）已被添加到opentk.nl中，包括在搜索引擎和通知服务中。",
+          "opentk.nl的首页，上面有各种互联网咨询",
+          "互联网咨询",
+          "一项新法律或法规需要经过许多步骤。我们通常首先在公开场合看到的就是互联网咨询。用内阁的话来说：",
+          "“通过互联网咨询，更多的人、企业和机构能够获取正在起草的立法信息，并可以提出建议，以提高这些提案的质量和可执行性。互联网咨询提高了过程的透明度，增加了公众参与的机会，并为立法质量做出了贡献”",
+          "咨询结束后，提案通常会再次消失很长一段时间，例如因为它首先要经过国务委员会（Raad van State）。我经常对互联网咨询做出回应，但我不知道这是否有任何效果。至少我从未察觉到任何影响。",
+          "然而，这样的咨询却有着难以估量的用处。如果你必须考虑新政策，或者如果你想迅速告知管理者和立法者此类新政策的（不利）后果，那么你介入得越早越好。",
+          "在政策形成的最初阶段，提案中的内容仍然可以很容易地被删减和更新。并不是每个人都已经进入了战壕，而且人们对建议仍然非常开放。",
+          "当然，互联网咨询已经可以在internetconsultatie.nl上看到，你也可以注册以获取关于所有新咨询或按部委分类的电子邮件。",
+          "OpenTK 的集成意味着，如果您已经对喜欢的主题设置了搜索查询，现在也会自动收到关于新互联网咨询中匹配文档的电子邮件。这比勾选整个部委的粒度更细，而且还能找到其他部委关于您所选主题的文档。顺便说一下，您也可以同时查看所有咨询，它们也会显示在首页上。",
+          "此外，感谢 Internetconsultatie.nl 的工作人员，多亏了他们的 XML-feed，OpenTK.nl 才能很好地展示他们的工作。他们还有一个 RSS feed，尽管它隐藏得很深。",
+          "如何启用此功能？",
+          "访问 OpenTK.nl 并搜索某个主题，即可找到当前的文档和咨询。搜索栏右侧有一个铃铛图标，点击它即可创建账户。随后，点击该铃铛图标即可表示您希望今后接收有关此主题的更新。",
+          "OpenTK 还有一份带截图的使用手册：",
+          "第 1 部分",
+          "第 2 部分（包含关于铃铛图标和搜索查询的说明）",
+          "祝您顺利，请务必告诉我们它是否正常运行！"
+        ]
+      }
+    },
+    {
+      "slug": "5b5cd120b819d30f",
+      "title": "I added a blogroll",
+      "titleZh": "我添加了一个博客链接列表",
+      "link": "https://matduggan.com/i-added-a-blogroll/",
+      "sourceName": "matduggan.com",
+      "sourceUrl": "https://matduggan.com",
+      "pubDate": "2026-07-20T11:29:27.000Z",
+      "category": "opinion",
+      "keywords": [
+        "blogroll",
+        "blogging",
+        "web"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 3,
+        "timeliness": 4,
+        "total": 9
+      },
+      "summary": "作者在个人网站上添加了一个“blogroll”（博客链接列表）功能，用于向偶然访问的读者推荐其他可能感兴趣的网站。尽管“blogroll”是一个由来已久的互联网概念，但作者直到今天才首次接触并决定采用它。这一举措旨在通过简单的链接分享，提升访客的浏览体验并促进独立博客间的相互发现。",
+      "summaryEn": "The author added a \"blogroll\" feature to their personal website to recommend other potentially interesting sites to accidental visitors. Although a blogroll is a long-standing internet concept, the author only discovered it today and decided to implement it. This initiative aims to enhance the visitor experience and foster mutual discovery among independent blogs through simple link sharing.",
+      "reason": "看到一位现代开发者重新发现并应用“blogroll”这一经典互联网概念，适合对复古网络文化和独立博客生态感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Mathew Duggan",
+        "siteName": "matduggan.com",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I realized that it might be nice if you happen to stumble on this website if I had a way to recommend other websites you might enjoy. As it turns out this is a \"blogroll\", a concept I have never heard of before today but whatever. It's still a good idea."
+          },
+          {
+            "type": "p",
+            "text": "I tried to add some CSS to make it easier to follow and search, but let me know if you think I missed a great site that people should check out. I'm also always on the hunt for more good stuff to read. You can find my email and social on the About page above."
+          },
+          {
+            "type": "p",
+            "text": "Also if you want to just take this Ghost theme and use it yourself feel free: https://gitlab.com/matdevdug/minimal-ghost-theme"
+          },
+          {
+            "type": "p",
+            "text": "Anyway here is my new blogroll: https://matduggan.com/blogroll/"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4a32a4c924b7ae8a",
+      "title": "The MCI Worldcom merger, bankruptcy, and scandal",
+      "titleZh": "MCI 与 Worldcom 的合并、破产与丑闻",
+      "link": "https://dfarq.homeip.net/the-mci-worldcom-merger-bankruptcy-and-scandal/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-mci-worldcom-merger-bankruptcy-and-scandal",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-07-20T11:00:33.000Z",
+      "category": "other",
+      "keywords": [
+        "MCI",
+        "Worldcom",
+        "scandal",
+        "history"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 4,
+        "timeliness": 1,
+        "total": 7
+      },
+      "summary": "1997 年 11 月 4 日，MCI 与 Worldcom 完成了价值 370 亿美元的合并案。两家大型电信公司试图通过联合来与当时的行业巨头 AT&T 竞争。然而，这场备受瞩目的并购最终演变成了美国历史上最大的企业丑闻和破产案之一。文章回顾了这场从雄心勃勃的合并走向灾难性结局的始末。",
+      "summaryEn": "On November 4, 1997, MCI and Worldcom completed a $37 billion merger. The two major telecommunications companies attempted to combine forces to rival the industry giant AT&T. However, this highly anticipated merger eventually devolved into one of the largest corporate scandals and bankruptcies in U.S. history. The article reviews the trajectory of this ambitious merger from its inception to its disastrous conclusion.",
+      "reason": "回顾美国电信史上最具代表性的并购灾难，为理解企业并购风险与财务丑闻提供经典案例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On November 4th, 1997, MCI and Worldcom merged in a deal worth $37 billion. This was an attempt by two large telecommunications companies to to combine and rival AT&T, but instead it turned into one of the biggest scandals and bankruptcies of its era. On July 21, 2002, the combined company went bankrupt, setting a record at the time as the largest bankruptcy in history."
+          },
+          {
+            "type": "p",
+            "text": "In many ways, MCI represented the past while Worldcom represented the future. MCI specialized in selling long distance service to consumers. Worldcom sold long distance service too, but high-speed data connections were more its specialty. Worldcom had purchased Compuserve’s network services business, among other acquisitions."
+          },
+          {
+            "type": "h2",
+            "text": "The long distance business model"
+          },
+          {
+            "type": "p",
+            "text": "MCI, along with AT&T and Sprint, was one of the largest providers of long distance telephone service in the United States. This is a business model that barely exists today, and there were signs even in the ’90s that it was running on borrowed time. But the merger made MCI Worldcom the second largest long distance provider in 1997. Nearly two years later, Worldcom tried to acquire #3 Sprint to become larger than AT&T, but the US Department of Justice and European Union scuttled the deal due to antitrust concerns. That showed the importance of the business model at the turn of the century."
+          },
+          {
+            "type": "p",
+            "text": "A landline type telephone could make unlimited local phone calls for free. What constituted a local phone call varied and was somewhat arbitrary. In Chicago, a local phone call might actually span multiple area codes because of the population density. Where I lived in St. Louis, the 314 area code covered more than just the St. Louis area. I could call exchanges within the same county for free, but I couldn’t call very far into neighboring counties for free. I had two friends who lived about 30 minutes away from me in essentially opposite directions. One of them was a long distance call and the other wasn’t, simply because one of the calls crossed a county border and the other didn’t, even though we were all in the 314 area code."
+          },
+          {
+            "type": "p",
+            "text": "It turns out I was an MCI/Worldcom customer. Not a super happy one. Here’s a very old blog post where I talked about that experience."
+          },
+          {
+            "type": "h3",
+            "text": "Profit margins"
+          },
+          {
+            "type": "p",
+            "text": "At one time, there was a lot of manual labor involved in making a phone call, with human beings having to physically plug and unplug wires from a switchboard to make the phone call happen. But by the ’90s, virtually all of it was automated, so companies like MCI could charge you around $0.10 per minute to make long distance phone calls and enjoy huge profit margins."
+          },
+          {
+            "type": "p",
+            "text": "It was a business model ripe for disruption. Cellular providers would run advertisements telling college students and young professionals how they could save a lot of money by getting a cell phone and using it to make long-distance calls. I remember seeing those ads as early as 1993. And I remember young Gen Xers, especially single women, encouraging each other to ditch the landline and just use cellular in the late 1990s."
+          },
+          {
+            "type": "p",
+            "text": "Against that backdrop in 1997, the MCI-Worldcom merger made sense. MCI still had some years of good profitability left before the general population switched from primarily using landlines to cellular. So it made sense to ride that out, plow the profits into other business models with better long-term growth, and build for the future."
+          },
+          {
+            "type": "p",
+            "text": "But it became a problem when the growth didn’t happen fast enough."
+          },
+          {
+            "type": "p",
+            "text": "There were three large accounting scandals that happened around the same time: Enron, Worldcom, and the accounting firm Arthur Andersen. Arthur Andersen was the common link between the two, as it was the accounting firm for both companies."
+          },
+          {
+            "type": "p",
+            "text": "On July 13, 2000, the boards of directors of both MCI Worldcom and Sprint terminated their planned merger due to antitrust concerns. But that simply concealed a bigger problem, a problem of Worldcom’s own making. As early as mid-1999, CEO Bernard Ebbers, CFO Scott Sullivan, controller David Myers and general accounting director Buddy Yates started hiding WorldCom’s decreasing earnings to prop up the company’s stock price."
+          },
+          {
+            "type": "h3",
+            "text": "Loans to Worldcom CEO Bernard Ebbers"
+          },
+          {
+            "type": "p",
+            "text": "Between September 2000 and April 2002, Worldcom’s board of directors authorized several loans and loan guarantees to CEO Bernard Ebbers. The dotcom collapse was hurting Worldcom’s share price. These loans protected Ebbers from having to sell his shares to meet margin calls. By April 2002, the board had lost patience with these loans. Directors also believed that Ebbers lacked a coherent strategy after the Sprint merger collapsed."
+          },
+          {
+            "type": "p",
+            "text": "On April 26, 2002, the board asked for Ebbers’ resignation. Ebbers formally resigned on April 30, 2002. As part of his departure, Worldcom consolidated Ebbers’s loans into a single $408.2 million promissory note. In 2003, Ebbers defaulted on the note and WorldCom foreclosed on many of his assets."
+          },
+          {
+            "type": "h3",
+            "text": "Suspicious balance sheet entries"
+          },
+          {
+            "type": "p",
+            "text": "In June 2002, a small team of internal auditors at WorldCom led by division vice president Cynthia Cooper and senior associate Eugene Morse started investigating suspicious balance sheet entries discovered during a routine capital expenditure audit. Ultimately they found $3.8 billion worth of fraudulent entries in WorldCom’s books. Cooper notified the company’s audit committee and board of directors in June 2002. The board forced Myers to resign and fired Sullivan when he refused to resign. Arthur Andersen withdrew its audit opinion for 2001. Worldcom admitted it overstated its assets by more than $11 billion."
+          },
+          {
+            "type": "p",
+            "text": "It was the largest instance of accounting fraud in American history, exceeding the fraud uncovered at Enron less than a year earlier. It would remain the largest accounting fraud ever uncovered until the exposure of Bernard Madoff’s giant Ponzi scheme in 2008."
+          },
+          {
+            "type": "p",
+            "text": "Just two years earlier, Worldcom was attempting the largest corporate merger in history. In 2002, it set two different records, both of which were more dubious."
+          },
+          {
+            "type": "h2",
+            "text": "Worldcom’s Bankruptcy"
+          },
+          {
+            "type": "p",
+            "text": "On July 21, 2002, WorldCom filed for Chapter 11 bankruptcy protection after laying off 17,000 employees. With $107 billion in assets and $30 billion in debt, it was the largest bankruptcy filing in United States history at the time, a record that stood for about six years. The bankruptcies of Lehman Brothers and Washington Mutual in September 2008 as a result of the mortgage crisis broke Worldcom’s dubious record. As part of the bankruptcy reorganization agreement, the company paid $750 million to the Securities and Exchange Commission in cash and stock in the new company, now called MCI, which was intended to be paid to wronged investors."
+          },
+          {
+            "type": "p",
+            "text": "WorldCom agreed to pay a civil penalty of $2.25 billion to the U.S. Securities and Exchange Commission. The SEC and federal judge Jed Rakoff essentially took control of the scandal-ridden company. Rakoff appointed former SEC chairman Richard C. Breeden to oversee WorldCom’s compliance with the SEC agreement. Breeden took an active role in MCI’s management, proposing extensive corporate governance reforms, hoping to create a new model of how shareholders should be protected and how companies should be run."
+          },
+          {
+            "type": "p",
+            "text": "MCI emerged from bankruptcy in 2004 with about $5.7 billion in debt and $6 billion in cash. About half of the cash was intended to pay various claims and settlements. Previous bondholders ended up being paid 35.7 cents on the dollar in bonds and stock in the new MCI company. The previous shareholders’ stock was cancelled."
+          },
+          {
+            "type": "p",
+            "text": "In January 2006, Verizon Communications acquired MCI and later integrated it into Verizon Business. Instead of being bigger than Verizon, Worldcom ended up being part of Verizon."
+          },
+          {
+            "type": "h2",
+            "text": "Criminal fallout from the Worldcom accounting scandal"
+          },
+          {
+            "type": "p",
+            "text": "Six former Worldcom executives were found guilty of criminal charges related to the accounting scandal."
+          },
+          {
+            "type": "p",
+            "text": "On March 15, 2005, Bernard Ebbers was found guilty of all charges and convicted of fraud, conspiracy and filing false documents with regulators. Former CFO Scott Sullivan pleaded guilty on March 2, 2004, to one count each of securities fraud, conspiracy to commit securities fraud, and filing false statements. Former controller David Myers pleaded guilty to securities fraud, conspiracy to commit securities fraud, and filing false statements on September 27, 2002. Ex-accounting director Buford Yates pleaded guilty to conspiracy and fraud charges on October 7, 2002. Finally, former accounting managers Betty Vinson and Troy Normand both pleaded guilty to conspiracy and securities fraud on October 10, 2002."
+          },
+          {
+            "type": "p",
+            "text": "On July 13, 2005, a federal judge sentenced Bernard Ebbers to 25 years in a federal prison in Louisiana. Ebbers was 63 years old. He appealed, allowing him to remain free another year. On September 26, 2006, Ebbers drove himself to prison in a white Mercedes. He was released in late 2019 for health reasons and died February 2, 2020, having served 13 years of his sentence."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "1997年11月4日，MCI与Worldcom以370亿美元的交易额合并。这是两家大型电信公司试图联手抗衡AT&T的尝试，但最终却演变成了那个时代最大的丑闻和破产案之一。2002年7月21日，合并后的公司宣告破产，创下了当时历史上最大破产案的纪录。",
+          "在许多方面，MCI代表着过去，而Worldcom代表着未来。MCI专门向消费者销售长途电话服务。Worldcom也销售长途服务，但其专长更多在于高速数据连接。除其他收购外，Worldcom还收购了Compuserve的网络服务业务。",
+          "长途业务模式",
+          "MCI与AT&T和Sprint一起，曾是美国最大的长途电话服务提供商之一。这种业务模式如今已几乎不复存在，甚至在90年代就有迹象表明它已时日无多。但这次合并使MCI Worldcom在1997年成为第二大长途电话提供商。近两年后，Worldcom试图收购排名第三的Sprint以超越AT&T，但由于反垄断方面的担忧，美国司法部和欧盟阻止了这笔交易。这表明了该业务模式在世纪之交的重要性。",
+          "固定电话可以免费拨打无限量的本地电话。什么算作本地电话因地区而异，且有些随意。在芝加哥，由于人口密度大，一个本地电话实际上可能跨越多个区号。在我居住的圣路易斯，314区号覆盖的范围不止圣路易斯地区。我可以免费拨打同一个县内的交换机，但不能免费拨打相邻县的较远地区。我有两个朋友住的地方离我大约30分钟车程，且方向基本相反。打给其中一个朋友是长途电话，另一个则不是，仅仅因为其中一个电话跨越了县界而另一个没有，尽管我们都在314区号内。",
+          "事实证明，我当时是MCI/Worldcom的客户。而且不是特别满意的客户。这里有一篇很老的博客文章，我在里面谈到了那段经历。",
+          "利润率",
+          "曾经，打电话需要大量人工劳动，需要人工将插头插入和拔出交换机才能接通电话。但到了90年代，几乎所有过程都实现了自动化，因此像MCI这样的公司可以按每分钟约0.10美元的价格收取长途电话费，并享受巨大的利润率。",
+          "这是一个极易被颠覆的业务模式。移动通信运营商投放广告，告诉大学生和年轻职场人士，通过购买手机并使用它拨打长途电话可以省下很多钱。我记得早在1993年就看到过这些广告。我还记得在20世纪90年代末，年轻的X世代，尤其是单身女性，互相鼓励放弃固定电话，只使用手机。",
+          "在1997年的这种背景下，MCI与Worldcom的合并是合理的。在普通大众从主要使用固定电话转向手机之前，MCI仍有几年的良好盈利期。因此，熬过这段时间，将利润投入到具有更好长期增长前景的其他业务模式中，并为未来打下基础，是合乎情理的。",
+          "但当增长速度不够快时，这就成了一个问题。",
+          "大约在同一时期发生了三起大型会计丑闻：Enron、Worldcom 以及会计师事务所 Arthur Andersen。Arthur Andersen 是这两家公司之间的共同纽带，因为它是这两家公司的会计师事务所。",
+          "2000年7月13日，由于反垄断方面的担忧，MCI Worldcom 和 Sprint 的董事会终止了计划中的合并。但这只是掩盖了一个更大的问题，一个由 Worldcom 自己造成的问题。早在1999年中期，首席执行官 Bernard Ebbers、首席财务官 Scott Sullivan、财务总监 David Myers 和总会计主任 Buddy Yates 就开始隐瞒 WorldCom 不断下降的收益，以支撑公司的股价。",
+          "给 Worldcom 首席执行官 Bernard Ebbers 的贷款",
+          "在2000年9月至2002年4月期间，Worldcom 的董事会授权向首席执行官 Bernard Ebbers 提供几笔贷款和贷款担保。互联网泡沫的破裂损害了 Worldcom 的股价。这些贷款使 Ebbers 免于为了满足追加保证金的要求而被迫出售其股份。到2002年4月，董事会对这些贷款失去了耐心。董事们还认为，在 Sprint 合并失败后，Ebbers 缺乏连贯的战略。",
+          "2002年4月26日，董事会要求 Ebbers 辞职。Ebbers 于2002年4月30日正式辞职。作为他离职的一部分，Worldcom 将 Ebbers 的贷款合并为一张4.082亿美元的本票。2003年，Ebbers 违约，WorldCom 取消了他许多资产的赎回权。",
+          "可疑的资产负债表分录",
+          "2002年6月，由部门副总裁 Cynthia Cooper 和高级助理 Eugene Morse 带领的 WorldCom 内部审计师小团队，开始调查在一次常规资本支出审计中发现的可疑资产负债表分录。最终，他们在 WorldCom 的账簿中发现了价值38亿美元的欺诈性分录。Cooper 于2002年6月通知了公司的审计委员会和董事会。董事会迫使 Myers 辞职，并在 Sullivan 拒绝辞职时解雇了他。Arthur Andersen 撤回了其2001年的审计意见。Worldcom 承认其资产被高估了超过110亿美元。",
+          "这是美国历史上最大的会计欺诈案，超过了不到一年前在 Enron 揭露的欺诈案。直到2008年 Bernard Madoff 的巨型庞氏骗局被曝光之前，它一直是被揭露的最大会计欺诈案。",
+          "就在两年前，Worldcom 还在尝试历史上最大的企业合并。而在2002年，它创下了两项不同的纪录，而且这两项纪录都更加声名狼藉。",
+          "Worldcom 的破产",
+          "2002年7月21日，WorldCom 在裁员17,000人后申请了 Chapter 11 破产保护。凭借1070亿美元的资产和300亿美元的债务，它是当时美国历史上最大的破产申请案，这一纪录保持了大约六年。2008年9月，由于抵押贷款危机，Lehman Brothers 和 Washington Mutual 的破产打破了 Worldcom 这项不光彩的纪录。作为破产重组协议的一部分，公司向 Securities and Exchange Commission 支付了7.5亿美元的现金和新公司（现称为 MCI）的股票，这笔款项旨在赔偿受害的投资者。",
+          "WorldCom 同意向美国证券交易委员会支付 22.5 亿美元的民事罚款。SEC 和联邦法官 Jed Rakoff 实际上接管了这家丑闻缠身的公司。Rakoff 任命前 SEC 主席 Richard C. Breeden 监督 WorldCom 遵守与 SEC 达成的协议。Breeden 积极参与 MCI 的管理，提出了广泛的公司治理改革方案，希望为如何保护股东权益以及如何运营公司创建一个新模式。",
+          "MCI 于 2004 年摆脱破产，背负约 57 亿美元债务并拥有 60 亿美元现金。其中约一半现金用于支付各项索赔和和解金。原债券持有人最终按每美元 35.7 美分的比例获得了新 MCI 公司的债券和股票作为赔偿。原股东的股票被注销。",
+          "2006 年 1 月，Verizon Communications 收购了 MCI，随后将其整合进 Verizon Business。WorldCom 没能变得比 Verizon 更大，最终反而成为了 Verizon 的一部分。",
+          "WorldCom 会计丑闻引发的刑事后果",
+          "六名 WorldCom 前高管因与会计丑闻相关的刑事指控被定罪。",
+          "2005 年 3 月 15 日，Bernard Ebbers 被判所有罪名成立，因欺诈、密谋以及向监管机构提交虚假文件被定罪。前 CFO Scott Sullivan 于 2004 年 3 月 2 日对证券欺诈、密谋实施证券欺诈以及提交虚假陈述各认一项罪。前财务总监 David Myers 于 2002 年 9 月 27 日对证券欺诈、密谋实施证券欺诈以及提交虚假陈述认罪。前会计主管 Buford Yates 于 2002 年 10 月 7 日对密谋和欺诈指控认罪。最后，前会计经理 Betty Vinson 和 Troy Normand 均于 2002 年 10 月 10 日对密谋和证券欺诈认罪。",
+          "2005 年 7 月 13 日，一名联邦法官判处 Bernard Ebbers 在路易斯安那州的一所联邦监狱服刑 25 年。Ebbers 当时 63 岁。他提出上诉，这使他得以多保持一年的自由身。2006 年 9 月 26 日，Ebbers 自己开着一辆白色梅赛德斯-奔驰车前往监狱。2019 年底，他因健康原因获释，并于 2020 年 2 月 2 日去世，服刑共 13 年。",
+          "David Farquhar 是一名计算机安全专家、企业家和作家。他从 1991 年起就开始专业撰写关于计算机的文章，因此当复古计算机还是新事物时，他就在写关于它们的内容了。他从 1994 年开始从事专业的 IT 工作，并自 2013 年起专注于漏洞管理。他拥有 Security+ 和 CISSP 认证。如今他每周写五篇博客，主要探讨 1975 年至 2000 年间的复古计算机和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
