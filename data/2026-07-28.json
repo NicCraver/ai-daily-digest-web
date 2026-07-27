@@ -1,0 +1,2221 @@
+{
+  "date": "2026-07-28",
+  "generatedAt": "2026-07-27T17:55:14.208Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2483,
+    "filteredArticles": 12,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈呈现出AI代理加速落地与平台监管博弈并行的态势。一方面，AI代理正深度接管Web平台与系统管理任务，不仅推动了无障碍技术的演进，也暴露出LLM token倒卖等灰产问题；另一方面，欧盟持续加码对谷歌等科技巨头的反垄断制裁，而苹果应用商店广告泛滥则引发了关于平台生态与用户体验的广泛争议。此外，技术社区在底层计算机科学与数学算法领域保持硬核探索，从Haskell电路模拟到浮点数转换及排列根计算，彰显了基础理论的持久魅力。",
+  "articles": [
+    {
+      "slug": "e7bd166c2dcc29ec",
+      "title": "An Inside Look at the Relay Market Powering Token Resellers and Fraud",
+      "titleZh": "深入探究为代币倒卖者和欺诈行为提供动力的中继市场",
+      "link": "https://simonwillison.net/2026/Jul/26/relay-market/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-26T19:30:54.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "LLM",
+        "API",
+        "fraud",
+        "tokens"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "Matt Lenhard 调查了一个通过汇集各种来源的 API 密钥来打折转售 LLM token 的市场。这种现象主要存在于中国，转售商通过滥用免费试用等方式提供远低于正常 API 价格的 LLM 代理访问权限。这种灰色市场不仅涉及折扣 token 的分销，还滋生了欺诈行为。该调查揭示了 LLM API 生态中存在的安全漏洞和滥用模式。",
+      "summaryEn": "Matt Lenhard investigates a market that has emerged around reselling LLM tokens at a discount by pooling API keys from various sources. This phenomenon appears to be primarily concentrated in China, where resellers offer access to LLM proxies at significantly reduced prices by abusing free trials. This gray market not only facilitates the distribution of discounted tokens but also breeds fraud. The investigation exposes security vulnerabilities and abuse patterns within the LLM API ecosystem.",
+      "reason": "揭示了 LLM API 密钥滥用和折扣转售背后的灰色产业链，对了解 AI 服务的安全风险具有警示意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "26th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "An Inside Look at the Relay Market Powering Token Resellers and Fraud (via) Fascinating investigation by Matt Lenhard into the market that has grown up around reselling LLM tokens at a discount by pooling API keys from various sources."
+          },
+          {
+            "type": "p",
+            "text": "This looks to be mostly a thing in China. Resellers sell access to an LLM proxy that offers significant discounts on regular API pricing, which they achieve by abusing free trials, proxying through unprotected support bots, or sometimes through stolen credit cards or chargeback attacks."
+          },
+          {
+            "type": "p",
+            "text": "The software they are using for these proxies is open source - mostly one-api and its more actively developed fork new-api, both legitimate API proxy products which can be used to load. balance requests across a pool of API credentials."
+          },
+          {
+            "type": "p",
+            "text": "The buyers are seeking cheap tokens, avoiding geo-restrictions, and in some cases collecting data for model distillation."
+          },
+          {
+            "type": "p",
+            "text": "I've been cautious about exposing my own LLM-driven applications publicly out of fear of abuse leading to big token bills. The existence of this marketplace makes me even more cautious: there's now an entire ecosystem that can profit from finding a new unprotected endpoint to exploit."
+          },
+          {
+            "type": "p",
+            "text": "LLM vendors really need to get better at offering strict caps for their API keys. I want my LLM apps to stop working the moment they hit a dollar threshold I've set for a period of time."
+          },
+          {
+            "type": "p",
+            "text": "Here's the (Chinese language) forum thread that served as the principal source for Matt's article."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ef0d37d92ccaf45c",
+      "title": "Can the Tide of AI Investment Life All Boats on the Web?",
+      "titleZh": "AI 投资的浪潮能否托起 Web 上的所有船只？",
+      "link": "https://blog.jim-nielsen.com/2026/tide-lifts-all-boats/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-07-27T19:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI agents",
+        "web standards",
+        "Safari"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "Jason Grigsby 探讨了 Web 平台为 AI 所做的改进是否也能惠及所有用户。Safari 团队提出，代表用户操作的 AI 代理实际上是一种辅助技术，它应该像普通用户一样操作网站，网站不应对其进行特殊对待。文章综合了不同观点，思考 AI 的发展是否会推动 Web 技术的整体进步。作者认为，为 AI 优化 Web 体验的举措应当同时提升人类用户的体验。",
+      "summaryEn": "Jason Grigsby explores whether improvements made to the Web platform for AI will also benefit all users. The Safari team argues that an agent acting on a user's behalf is essentially assistive technology and should operate a site as a user would, without special treatment. The article synthesizes various perspectives, considering whether AI development will drive overall progress in Web technology. The author suggests that efforts to optimize the Web for AI should simultaneously enhance the experience for human users.",
+      "reason": "从辅助技术的独特视角审视 AI 代理与 Web 平台的关系，为 Web 开发者提供了兼顾人类与 AI 用户的思考方向。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jim Nielsen",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Jason Grigsby has a great article where he surfaces an opinion from the Safari team about how AI agents shouldn’t get special treatment:"
+          },
+          {
+            "type": "quote",
+            "text": "An agent acting on a user’s behalf is, in effect, assistive technology: it should operate a site as the user would, and the site should not single it out for different treatment."
+          },
+          {
+            "type": "p",
+            "text": "Jason synthesizes different discussions happening at standards levels to argue, in essence, that agents should be required to use existing technologies and solutions (APIs, semantics, etc.) rather than get their own bespoke ones. And where there are gaps in the platform, solutions should be centered around closing those gaps generally for everyone (vs. specifically for agents)."
+          },
+          {
+            "type": "p",
+            "text": "Imagine that! Take the billions being invested in AI and funnel it towards improving and enhancing the existing technology agents already use and profit from. No bespoke solutions just for AI, but generalized solutions everyone can benefit from."
+          },
+          {
+            "type": "p",
+            "text": "In other words: allow the rising tide of AI investment to lift all boats in the platform because the web is for everyone. As Jason says:"
+          },
+          {
+            "type": "quote",
+            "text": "If we’re solving this problem for AI, perhaps we can find a solution that works for end users too."
+          },
+          {
+            "type": "p",
+            "text": "His suggestion being that maybe we should frame AI needs in the web platform the same way we do other needs in the web’s priority of constituents: user needs come before developer needs, implementor needs, spec writer needs — or even agent needs. (UX over DX over AX.)"
+          },
+          {
+            "type": "p",
+            "text": "Now for the funny part. Here’s Jason:"
+          },
+          {
+            "type": "quote",
+            "text": "let’s set aside for the moment the irony that AI is supposed to replace all of our jobs and become a super intelligence and at the same time we also need to add special AI training wheels for it to use the web."
+          },
+          {
+            "type": "p",
+            "text": "It’s like that person you know who prides themselves on their independence, that they don’t bend to society and culture, and that they don’t need anyone or anything — oh, and by the way, could you spot them twenty bucks?"
+          }
+        ],
+        "translations": [
+          "Jason Grigsby 在一篇精彩的文章中提出了 Safari 团队的一个观点：AI 代理不应获得特殊待遇：",
+          "代表用户行事的代理本质上是一种辅助技术：它应该像用户那样操作网站，而网站也不应将其单独拎出来区别对待。",
+          "Jason 综合了标准层面的各种讨论，其核心观点是：应当要求代理使用现有的技术和解决方案（APIs、语义等），而不是为它们量身定制专属方案。当平台存在不足时，解决方案的重点应是普遍地为所有人填补这些空白，而不是专门针对代理。",
+          "想象一下！将投入 AI 的数十亿美元资金，引导至改进和增强代理已经在使用并从中获益的现有技术上。不要只为 AI 提供定制方案，而是提供所有人都能受益的通用方案。",
+          "换句话说：让 AI 投资的涨潮托起平台上的所有船只，因为 Web 是为所有人服务的。正如 Jason 所说：",
+          "如果我们在为 AI 解决这个问题，或许也能找到一个对终端用户同样有效的方案。",
+          "他的建议是，也许我们应当像对待 Web 利益相关者优先级中的其他需求那样，来界定 Web 平台中的 AI 需求：用户需求优先于开发者需求、实现者需求、规范编写者需求——甚至代理需求。（UX 优先于 DX，DX 优先于 AX。）",
+          "接下来是有趣的部分。Jason 是这么说的：",
+          "我们暂且不论这其中的讽刺意味：AI 本应取代我们所有的工作并成为超级智能，但与此同时，我们却还得为它装上专门的 AI 辅助轮，好让它能使用 Web。",
+          "这就像你认识的某个人，以自己的独立性为荣，声称不向社会和文化低头，不需要任何人或任何东西——哦，对了，顺便问一句，你能借给他二十块钱吗？"
+        ]
+      }
+    },
+    {
+      "slug": "3fb70644b0ab9378",
+      "title": "WorkOS MCP",
+      "titleZh": "WorkOS MCP",
+      "link": "https://workos.com/blog/management-mcp-server?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q32026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-27T16:30:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "WorkOS",
+        "MCP",
+        "SSO",
+        "agents"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "WorkOS 推出了其 MCP (Model Context Protocol) 服务器，允许 AI 代理执行以往只能由人类在 UI 上操作的管理任务。该服务器赋予代理与仪表盘登录相同的访问权限，支持数百种可在运行时发现的操作。用户可通过 OAuth 进行单命令连接，使用受限令牌而非主 API 密钥，甚至可以传递营销网站的截图让代理进行配置。这大大简化了 SSO 调试、用户管理、身份验证策略调整等配置工作。",
+      "summaryEn": "WorkOS has introduced its MCP (Model Context Protocol) server, allowing AI agents to perform administrative tasks previously restricted to human-driven UIs. The server grants agents the same access as a dashboard login, supporting hundreds of operations discoverable at runtime. Users can connect via OAuth in a single command using scoped tokens instead of a master API key, and even pass screenshots of marketing sites for agent configuration. This greatly simplifies configuration tasks such as debugging SSO, managing users, and adjusting authentication policies.",
+      "reason": "展示了 MCP 协议在身份与访问管理自动化方面的实际应用，是 AI 代理接管传统运维配置任务的优秀范例。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "WorkOS",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Most configuration tasks in WorkOS have always required a trip to the dashboard. Setting up a domain, adjusting auth policies, managing users and roles, debugging a sign-in issue for a customer: all of it has lived behind a UI that only a human can drive."
+          },
+          {
+            "type": "p",
+            "text": "Dashboards were built with a human on the other end. Someone with a mouse, a browser tab, and the patience to click through nested menus. That assumption made sense for a long time. It makes less sense now that agents are increasingly the ones doing the setup work, wiring up integrations, configuring services, debugging issues. An agent can write code at the speed of thought, but when it hits a dashboard, it stops."
+          },
+          {
+            "type": "p",
+            "text": "Today that changes. The WorkOS MCP server exposes the full management surface of your WorkOS account as tools your agent can use, and it works from anywhere you can run an agent."
+          },
+          {
+            "type": "h2",
+            "text": "What is the WorkOS Management MCP Server"
+          },
+          {
+            "type": "p",
+            "text": "The WorkOS MCP server is a remote, hosted server your agent connects to over OAuth. Once connected, it authenticates as you and inherits exactly the roles and permissions your dashboard login has. If your account is read-only in production, the agent is too. If you have full admin access, the agent does. There is nothing extra to configure and no separate permission model to maintain."
+          },
+          {
+            "type": "p",
+            "text": "This is not a narrow slice of the API. The server exposes hundreds of operations across the full WorkOS product surface: organizations, SSO connections, Directory Sync, AuthKit users and sessions, roles and permissions, audit logs, webhooks, API keys, feature flags, environments, branding, and more."
+          },
+          {
+            "type": "p",
+            "text": "What the server does not expose is equally deliberate. Credential-minting operations, user impersonation, billing flows, and account-level administration are excluded entirely. Secret fields like API keys, client secrets, and webhook signing secrets are stripped from responses before they reach the agent's context. Nine irreversible deletes require a two-call confirmation before they execute. The agent can do everything you would do in the dashboard for day-to-day management, and nothing you would not."
+          },
+          {
+            "type": "h2",
+            "text": "How agents interact with it"
+          },
+          {
+            "type": "p",
+            "text": "Rather than exposing one tool per endpoint, the server uses a discover-then-execute design with four tools: whoami, list_operations, query, and mutate. This matters because every tool gets loaded into the LLM's context window, so exposing hundreds of operations as individual tools would consume the context budget before the agent even starts working. Instead, an agent uses list_operations to find what it needs, then calls query or mutate by operation name with the relevant variables."
+          },
+          {
+            "type": "p",
+            "text": "Here is what that looks like in practice. A support engineer gets a report that a customer cannot sign in:"
+          },
+          {
+            "type": "code",
+            "text": "\nYou: A user at Acme Corp is reporting they cannot sign in. Can you check if their SSO connection is set up correctly and whether they have an active session?\nAgent: I found Acme Corp in your Production environment. They have one active SAML connection. The certificate is valid and not expiring soon, but the connection is pointed at a metadata URL that returned a 404 the last time it was fetched. That is most likely what is breaking sign-in.\nYou: Can you pull their recent SSO sessions to see when the issue started?\nAgent: Their last successful sign-in was three days ago. Sessions since then show a consistent failure at the IdP redirect step, which lines up with the metadata URL issue.\nYou: Generate a setup link so their IT admin can reconfigure it.\nAgent: Done. Here is an Admin Portal setup link for Acme Corp valid for 7 days: [link]. You can send this directly to their IT admin to complete the SAML reconfiguration.\n  "
+          },
+          {
+            "type": "h2",
+            "text": "Getting connected"
+          },
+          {
+            "type": "p",
+            "text": "Setup is a single command. For example, for Claude Code, run the following,then complete the OAuth consent in your browser to finish connecting:"
+          },
+          {
+            "type": "code",
+            "text": "\nclaude mcp add --transport http workos https://mcp.workos.com/mcp\n  "
+          },
+          {
+            "type": "p",
+            "text": "For details on how to connect other clients, check out the docs."
+          },
+          {
+            "type": "p",
+            "text": "From there, Claude Code walks you through an OAuth flow using your existing dashboard login. No new credentials to create, nothing to provision. The same flow works for Cursor, Codex, ChatGPT, and any other agent that supports remote MCP servers."
+          },
+          {
+            "type": "p",
+            "text": "Once connected, you can ask your agent to list your organizations, set up an SSO connection, update auth policy settings, pull audit log events for a specific user, or configure branding, all without leaving your agent conversation."
+          },
+          {
+            "type": "h2",
+            "text": "Managing Team Access to the MCP Server"
+          },
+          {
+            "type": "p",
+            "text": "Team admins can control MCP access from the team authentication settings page in the WorkOS dashboard. Three settings can be toggled independently, and all are enabled by default:"
+          },
+          {
+            "type": "li",
+            "text": "Enable turns MCP access on or off for the entire team. Disabling this also disables the two settings below."
+          },
+          {
+            "type": "li",
+            "text": "Allow production access restricts agents to sandbox environments only when turned off. This never escalates anyone's permissions: agents can still only reach production for members who already have production access in the dashboard."
+          },
+          {
+            "type": "li",
+            "text": "Allow write access restricts the MCP to read-only operations when turned off, so agents can query but not mutate anything."
+          },
+          {
+            "type": "p",
+            "text": "These controls let you adopt the MCP incrementally and set guardrails that match your team's risk tolerance before opening it up more broadly."
+          },
+          {
+            "type": "h2",
+            "text": "How it fits with the WorkOS CLI"
+          },
+          {
+            "type": "p",
+            "text": "The CLI and the MCP server cover a lot of the same ground, and that is by design. The CLI runs in a terminal alongside your codebase and suits developers who are already using it as part of their local setup. The MCP server is remote and requires no install, which means it works from any agent, on any device, without a local development environment. A Slack bot that diagnoses customer sign-in issues, an agent running in Claude Desktop while you are away from your desk, a workflow that reacts to support tickets: these are the cases the MCP server is built for."
+          },
+          {
+            "type": "h2",
+            "text": "What to try first"
+          },
+          {
+            "type": "p",
+            "text": "Connect an agent and describe what you want in plain language. The agent discovers the right operations and runs them for you. A few things worth trying:"
+          },
+          {
+            "type": "li",
+            "text": "Brand your sign-in page from a screenshot: share a screenshot of your marketing site and ask the agent to make your AuthKit sign-in page match its aesthetic."
+          },
+          {
+            "type": "li",
+            "text": "Debug a sign-in problem: ask the agent to investigate why a specific organization is having trouble signing in with SSO."
+          },
+          {
+            "type": "li",
+            "text": "Onboard a new customer: set up a new organization and invite a list of users in a single conversation."
+          },
+          {
+            "type": "li",
+            "text": "Audit your configuration: list every organization with a draft SSO connection, or flag directories that have not synced recently."
+          },
+          {
+            "type": "li",
+            "text": "Manage a user: reset a password, revoke a session, or send a fresh magic link without opening the dashboard."
+          },
+          {
+            "type": "li",
+            "text": "Stream audit logs: configure a Datadog or Splunk audit log stream for a production environment."
+          },
+          {
+            "type": "h2",
+            "text": "Available now"
+          },
+          {
+            "type": "p",
+            "text": "The WorkOS MCP is available today. Connect it to your agent of choice and let us know what you build. Check out the docs for more information."
+          }
+        ],
+        "translations": [
+          "WorkOS 中的大多数配置任务一直都需要访问控制台。设置域名、调整身份验证策略、管理用户和角色、为客户调试登录问题：所有这些操作都隐藏在只有人类才能操作的 UI 背后。",
+          "控制台是为坐在屏幕前的人类构建的。他们有鼠标、浏览器标签页，以及点击嵌套菜单的耐心。这种假设很长一段时间内都是合理的。但现在，越来越多的设置工作、集成连接、服务配置和问题调试是由智能体完成的，这种假设就不太合理了。智能体可以以思维的速度编写代码，但当它遇到控制台时，就会停下来。",
+          "今天，这一切发生了改变。WorkOS MCP 服务器将您 WorkOS 账户的完整管理界面作为智能体可用的工具公开，并且它可以在任何能运行智能体的地方工作。",
+          "什么是 WorkOS 管理 MCP 服务器",
+          "WorkOS MCP 服务器是一个远程托管服务器，您的智能体通过 OAuth 连接到它。连接后，它会以您的身份进行身份验证，并完全继承您控制台登录所具有的角色和权限。如果您的账户在生产环境中是只读的，智能体也是如此。如果您拥有完全的管理员访问权限，智能体也一样。无需额外配置，也无需维护单独的权限模型。",
+          "这并不是 API 的一个狭窄切片。该服务器在整个 WorkOS 产品面上公开了数百项操作：组织、SSO 连接、Directory Sync、AuthKit 用户和会话、角色和权限、审计日志、webhooks、API 密钥、功能开关、环境、品牌设置等。",
+          "服务器不公开的内容同样是经过深思熟虑的。凭据生成操作、用户模拟、计费流程和账户级管理被完全排除在外。像 API 密钥、客户端密钥和 webhook 签名密钥等机密字段在到达智能体上下文之前会从响应中剥离。九项不可逆的删除操作在执行前需要两次调用确认。智能体可以做您在控制台中进行的所有日常管理工作，而不会做您不会做的事情。",
+          "智能体如何与其交互",
+          "服务器并没有为每个端点公开一个工具，而是采用了“先发现后执行”的设计，包含四个工具：whoami、list_operations、query 和 mutate。这很重要，因为每个工具都会被加载到 LLM 的上下文窗口中，因此将数百项操作作为单独的工具公开会在智能体开始工作之前就耗尽上下文预算。相反，智能体使用 list_operations 查找所需内容，然后通过操作名称和相关变量调用 query 或 mutate。",
+          "以下是实际操作中的情况。一位支持工程师收到报告称客户无法登录：",
+          "You: A user at Acme Corp is reporting they cannot sign in. Can you check if their SSO connection is set up correctly and whether they have an active session?\nAgent: I found Acme Corp in your Production environment. They have one active SAML connection. The certificate is valid and not expiring soon, but the connection is pointed at a metadata URL that returned a 404 the last time it was fetched. That is most likely what is breaking sign-in.\nYou: Can you pull their recent SSO sessions to see when the issue started?\nAgent: Their last successful sign-in was three days ago. Sessions since then show a consistent failure at the IdP redirect step, which lines up with the metadata URL issue.\nYou: Generate a setup link so their IT admin can reconfigure it.\nAgent: Done. Here is an Admin Portal setup link for Acme Corp valid for 7 days: [link]. You can send this directly to their IT admin to complete the SAML reconfiguration.",
+          "开始连接",
+          "设置只需一条命令。例如，对于 Claude Code，运行以下命令，然后在浏览器中完成 OAuth 授权以完成连接：",
+          "claude mcp add --transport http workos https://mcp.workos.com/mcp",
+          "有关如何连接其他客户端的详细信息，请查阅文档。",
+          "接下来，Claude Code 将引导您使用现有的控制台登录完成 OAuth 流程。无需创建新凭据，也无需进行任何配置。相同的流程适用于 Cursor、Codex、ChatGPT 以及任何其他支持远程 MCP 服务器的智能体。",
+          "连接后，您可以要求您的智能体列出您的组织、设置 SSO 连接、更新身份验证策略设置、提取特定用户的审计日志事件或配置品牌设置，所有这些都不必离开您的智能体对话。",
+          "管理对 MCP 服务器的团队访问权限",
+          "团队管理员可以在 WorkOS 仪表板的团队身份验证设置页面控制 MCP 访问权限。有三个设置可以独立切换，且默认全部启用：",
+          "“启用”用于为整个团队开启或关闭 MCP 访问权限。禁用此项也会同时禁用以下两项设置。",
+          "“允许生产环境访问”在关闭时，会将智能体限制在沙盒环境中。这绝不会提升任何人的权限：智能体仍然只能访问在仪表板中已拥有生产环境访问权限的成员的生产环境。",
+          "“允许写入访问”在关闭时，会将 MCP 限制为只读操作，因此智能体可以查询数据，但无法修改任何内容。",
+          "这些控制措施允许您逐步采用 MCP，并在更广泛地开放之前，设置符合您团队风险承受能力的防护机制。",
+          "它与 WorkOS CLI 的契合之处",
+          "CLI 和 MCP 服务器涵盖了许多相同的功能，这是有意为之。CLI 在终端中与您的代码库一起运行，适合已将其作为本地设置一部分的开发者。MCP 服务器是远程的且无需安装，这意味着它可以在任何设备上通过任何智能体运行，而无需本地开发环境。诊断客户登录问题的 Slack 机器人、您不在座位时在 Claude Desktop 中运行的智能体、响应支持工单的工作流：这些正是 MCP 服务器所适用的场景。",
+          "首先尝试什么",
+          "连接一个智能体，并用自然语言描述您的需求。智能体会发现正确的操作并为您执行。以下是一些值得尝试的操作：",
+          "通过截图定制您的登录页面：分享您营销网站的截图，并要求智能体让您的 AuthKit 登录页面与其美学风格保持一致。",
+          "调试登录问题：要求智能体调查为什么特定组织在使用 SSO 登录时遇到问题。",
+          "引导新客户：在一次对话中设置一个新组织并邀请一批用户。",
+          "审计您的配置：列出每个具有 SSO 连接草稿的组织，或标记最近未同步的目录。",
+          "管理用户：无需打开仪表板即可重置密码、撤销会话或发送新的 magic link。",
+          "流式传输审计日志：为生产环境配置 Datadog 或 Splunk 审计日志流。",
+          "现已可用",
+          "WorkOS MCP 现已上线。将其连接到您选择的智能体，并让我们知道您构建了什么。查看文档以获取更多信息。"
+        ]
+      }
+    },
+    {
+      "slug": "5abe1750391cc0b2",
+      "title": "Pluralistic: How the EU can punish Google (despite Trump) (27 Jul 2026)",
+      "titleZh": "Pluralistic：欧盟如何惩罚谷歌（尽管有特朗普）(2026年7月27日)",
+      "link": "https://pluralistic.net/2026/07/27/eucd-6/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-07-27T10:52:03.000Z",
+      "category": "opinion",
+      "keywords": [
+        "EU",
+        "Google",
+        "antitrust"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "文章探讨了欧盟如何在特朗普的政治压力下继续对谷歌实施反垄断惩罚。作者讨论了欧盟版权指令（EUCD）等法律工具在制约科技巨头方面的作用。文章还汇集了多个科技与文化领域的热点话题，包括版权勒索、物联网安全灾难以及高管薪酬与业绩倒挂等现象。核心观点是欧盟拥有足够的法律和政策手段来独立维护市场竞争秩序。",
+      "summaryEn": "The article explores how the EU can continue to impose antitrust penalties on Google despite political pressure from Trump. The author discusses the role of legal instruments like the EU Copyright Directive (EUCD) in constraining tech giants. It also compiles various hot topics in technology and culture, including copyright extortion, IoT security disasters, and the inverse correlation between CEO pay and performance. The core argument is that the EU has sufficient legal and policy tools to independently maintain market competition.",
+      "reason": "深入分析了欧盟在跨国政治博弈中利用法律手段制衡科技巨头的策略，对理解全球反垄断格局具有参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "How the EU can punish Google (despite Trump): Grant me the courage to change the things I can."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Chilling Effects; Billy Bragg v Myspace; Glenn Beck calls murdered Norwegian children \"Hitler Youth\"; Photog sues Getty for $1b copyfraud; Best paid CEOs perform worst; Olympics v \"Olympics\"; Alberta tar sands v \"hot lesbians\"; IoT security apocalypse; 3 Little Pigs in pidgin; The nasty party; Copyright extortionist infringed fellow extortionist; Grandpa mobbed for photographing grandson in park; Ice Bucket Challenge didn't cure ALS; Twiddling enshittifies your brain."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "How the EU can punish Google (despite Trump) (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "The \"Serenity Prayer\" (Serenity to accept things I can't change/Courage to change the things I can/Wisdom to know the difference) is usually cited as pop psychology or addiction recovery advice, but I think there's a place for it in policymaking."
+          },
+          {
+            "type": "p",
+            "text": "Take the EU's fight against US Big Tech. During the Biden years, the EU's tech policy matured into something serious and ambitious, culminating in the Digital Markets Act (DMA) and Digital Services Act (DSA), a pair of big, muscular policies that would curb Big Tech's most abusive conduct. The EU's ambition didn't occur in a vacuum: it was part of a global wave of antitrust fervor whose top agenda item was reining in tech:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/06/28/mamdani/#trustbusting"
+          },
+          {
+            "type": "p",
+            "text": "In this fight, the EU had important partners all over the world. For example, South Korea and Japan used the facts uncovered through EU enforcement action against Google and Apple to pursue similar cases:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/04/10/an-injury-to-one/#is-an-injury-to-all"
+          },
+          {
+            "type": "p",
+            "text": "But the EU's most important partner in its fight against American Big Tech was America. Biden's trustbusters – Lina Khan, Rohit Chopra, Jonathan Kanter, Tim Wu, et al – were every bit as serious about Big Tech power as anyone in the EU. After all, the American public are always the first victims of any new tech scam, and America is the only country with a large, affluent population who lack modern, comprehensive consumer privacy protection, making Americans highly prized prey for tech companies:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/04/23/zuckerstreisand/#zdgaf"
+          },
+          {
+            "type": "p",
+            "text": "With America and the EU on the same side of the tech fight, the world had a fighting chance. Tech knew this, which is why Big Tech backed Trump hard during the 2024 election and aggressively curried his favor after he won. From the tech barons who paid $1m each to sit behind Trump on the inaugural dais to the millions tech companies donated to Trump's Epstein Ballroom at the White House, tech has made it clear that it supports anything Trump wants to do, provided he shields Big Tech from any attempt to limit their ability to spy on and steal from Americans and the world."
+          },
+          {
+            "type": "p",
+            "text": "Even before he took office, Trump made it clear how he would reward tech's loyalty: weeks before the inauguration, Trump went to Davos and threatened the EU with reprisals if they enforced the DSA or DMA against his tech companies:"
+          },
+          {
+            "type": "p",
+            "text": "https://techcrunch.com/2025/01/23/trumps-not-happy-with-how-eu-regulators-have-treated-us-tech-giants/"
+          },
+          {
+            "type": "p",
+            "text": "Trump wasted no time leaning on US trading partners on behalf of Big Tech. He bullied Canadian PM Mark Carney into dropping his plan to tax US tech companies. Big Tech uses a variety of tax-cheating gambits to evade taxation around the world, making it impossible for (tax-paying) domestic companies to compete:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.canada.ca/en/department-finance/news/2025/06/canada-rescinds-digital-services-tax-to-advance-broader-trade-negotiations-with-the-united-states.html"
+          },
+          {
+            "type": "p",
+            "text": "Trump also got UK PM Keir Starmer to drop his plan to tax tech:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.theguardian.com/us-news/2025/apr/01/starmer-offered-big-us-tech-firms-tax-cuts-in-return-for-lower-trump-tariffs"
+          },
+          {
+            "type": "p",
+            "text": "And he got the EU to roll back its plan to regulate AI:"
+          },
+          {
+            "type": "p",
+            "text": "https://fortune.com/2025/11/07/eu-ai-act-weaken-regulation-delay-big-tech-trump-government/"
+          },
+          {
+            "type": "p",
+            "text": "None of the governments that caved to Trump got anything in return. As I've written:"
+          },
+          {
+            "type": "quote",
+            "text": "Give Trump everything he asks for and he'll demand more. Deny Trump anything and he'll demand more. Sign a contract with Trump and he'll break it. Send Trump an invoice and he'll stiff you. For Trump, \"the art of the deal\" can be summed up in one word: renege."
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/07/22/table-flipper/#graveyard-of-indispensable-nations"
+          },
+          {
+            "type": "p",
+            "text": "Case in point: after the EU surrendered to Trump on AI regulation, Trump announced that a on ban EU officials who had worked on the Digital Services Act from traveling to the USA:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.state.gov/releases/office-of-the-spokesperson/2025/12/announcement-of-actions-to-combat-the-global-censorship-industrial-complex/"
+          },
+          {
+            "type": "p",
+            "text": "Then, after the EU made more concessions to Trump, he announced a ban on even more EU officials:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.lawfaremedia.org/article/the-trump-administration-targets-europe-s-content-moderation-laws"
+          },
+          {
+            "type": "p",
+            "text": "Trump ordered his tech giants to dig through EU officials' private correspondence so he can figure out who to ban next:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.politico.eu/article/us-congress-judiciary-committee-big-tech-private-communication-eu-officials/"
+          },
+          {
+            "type": "p",
+            "text": "Trump's tech companies got the memo. When the EU ordered Apple to follow the law, Apple told the EU to fuck off:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/02/06/spoil-the-bunch/#dma"
+          },
+          {
+            "type": "p",
+            "text": "After all, Apple is a key partner in the Trump administration's mass deportations. Apple blocked an iPhone app that warns Apple customers if they're about to be kidnapped or murdered by ICE. Trump needs Apple, just as much as Apple needs Trump:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/10/06/rogue-capitalism/#orphaned-syrian-refugees-need-not-apply"
+          },
+          {
+            "type": "p",
+            "text": "Despite this, the EU keeps trying to enforce its laws against Trump's companies. Last week, the Commission announced a $1b fine against Google for violating the Digital Services Act with conduct that cost Europeans many billions:"
+          },
+          {
+            "type": "p",
+            "text": "https://digital-markets-act.ec.europa.eu/commission-fines-google-eur890-million-breaches-digital-markets-act-2026-07-23_en"
+          },
+          {
+            "type": "p",
+            "text": "In other words, Google wasn't even being ordered to disgorge all the money it stole, just some of it. Remember, a fine is a price: the EU's fine here will only make this kind of cheating slightly less profitable."
+          },
+          {
+            "type": "p",
+            "text": "Nevertheless, Trump responded immediately by threatening the EU with many billions more in tariffs if they continue to attempt to enforce the law against one of his companies:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.lemonde.fr/en/international/article/2026/07/24/trump-says-eu-to-pay-very-big-price-for-890-million-google-fine_6755804_4.html"
+          },
+          {
+            "type": "p",
+            "text": "Trump, the European Commission and Google all know this is about more than one $1b fine. The DSA and DMA both provide for steeply rising fines and other penalties for repeat offenders, and Google clearly has no plan to end its very profitable European crime-spree. Trump's threats aren't a bid to kill this enforcement – Trump wants to kill all enforcement."
+          },
+          {
+            "type": "p",
+            "text": "Retaliatory tariffs aren't the only weapon Trump has at his disposal. If the EU (or any other country) levies a serious fine against Google, Apple, Oracle, Microsoft, or any of Trump's other tech companies, Trump can order US banks not to turn over those fines, even after the EU sends them a court order for the money. If a bank defies Trump, he can threaten to yank its charter. Or he could just run the same swindle he pulled on Tiktok: stealing the whole company and selling it to one of his buddies, who will run it the way Trump wants."
+          },
+          {
+            "type": "p",
+            "text": "The reality is that without America's assistance, the EU has precious little hope of forcing American companies to do things they don't want to do. In terms of the Serenity Prayer, this is \"a thing they cannot change.\""
+          },
+          {
+            "type": "p",
+            "text": "The Serenity Prayer doesn't stop with \"things you can't change.\" The next line seeks \"the courage to change the things I can.\" The EU has no control over Google's conduct, but it has total control over its own conduct."
+          },
+          {
+            "type": "p",
+            "text": "Specifically, the EU could get rid of the laws that ban European companies from modifying US tech exports. The EU adopted the Copyright Directive in 2001. Article 6 of the EUCD makes it a crime to reverse-engineer and modify a device without the manufacturer's permission. This law was adopted under pressure from the US Trade Representative, who threatened the EU with tariffs on its exports unless it adopted an \"anticircumvention rule\" that banned EU technologists from making products that let Europeans prevent US tech companies from stealing their money and data\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/01/01/39c3/#the-new-coalition"
+          },
+          {
+            "type": "p",
+            "text": "This law is still in force in the EU, despite the fact that Trump (predictably) reneged on the US side of the bargain, hitting the EU with massive tariffs and even threatening to steal part of Denmark."
+          },
+          {
+            "type": "p",
+            "text": "Article 6 of the Copyright Directive is the reason European tech companies can't jailbreak America's apps, whether that's to get its government and corporate data off of US platforms:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/10/15/freedom-of-movement/#data-dieselgate"
+          },
+          {
+            "type": "p",
+            "text": "Or to modify American social media apps to respect EU privacy laws:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/01/30/zucksauce/#gandersauce"
+          },
+          {
+            "type": "p",
+            "text": "The EU can't control what Apple or Google do. But the EU can absolutely decide whether Trump's companies can use Europe's courts to destroy European companies that defend the privacy and economic integrity of the European people."
+          },
+          {
+            "type": "p",
+            "text": "If the EU kills off Article 6 of the Copyright Directive, they can use European companies to bring Google and Apple's defective tech exports into compliance with European law. Unlike Trump's companies, those companies can be forced to pay their taxes and respect their users' privacy, labor and consumer rights."
+          },
+          {
+            "type": "p",
+            "text": "That's the Serenity Prayer's \"wisdom to know the difference.\""
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Nate Silver discovers the educated poor https://crookedtimber.org/2026/07/25/nate-silver-discovers-the-educated-poor/"
+          },
+          {
+            "type": "li",
+            "text": "Imagine a World in Which Microsoft Sold Cars the Way It Sells Software https://www.thesling.org/imagine-a-world-in-which-microsoft-sold-cars-the-way-it-sells-software/"
+          },
+          {
+            "type": "li",
+            "text": "Tesla swapped a solar owner’s lease contract for the Book of Enoch https://electrek.co/2026/07/23/tesla-solar-lease-contract-book-of-enoch/"
+          },
+          {
+            "type": "li",
+            "text": "Canadian legislator reads out apparent LLM response in floor speech https://arstechnica.com/ai/2026/07/canadian-legislator-reads-out-apparent-llm-response-in-floor-speech/"
+          },
+          {
+            "type": "li",
+            "text": "The Resistance Liberal Lawyers Helping Trump Take Over the Media https://www.thebignewsletter.com/p/the-resistance-liberal-lawyers-helping"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Chilling Effects https://web.archive.org/web/20010801172448/http://eon.law.harvard.edu/chill/"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago 13-year-old hacker's book deal: “The Unofficial Guide to Ethical Hacking\" https://web.archive.org/web/20011102164905/http://www.vnunet.com/News/1124279"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago France’s new copyright law slaughters kills use and open source https://web.archive.org/web/20060812223624/http://soufron.typhon.net/spip.php?article150"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Billy Bragg gets MySpace’s terms of service changed https://web.archive.org/web/20100809150257/http://blogs.myspace.com/index.cfm?fuseaction=blog.view&amp;friendID=34570397&amp;blogID=137856388&amp;MyToken=626131d4-c695-42ba-867b-754b9e2bfeaa"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Buy an Old West town in South Dakota for $0.8M https://web.archive.org/web/20110728012824/https://edition.cnn.com/2011/US/07/27/south.dakota.town.sale/index.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Glenn Beck compares murdered Norway campers to “Hitler Youth” https://www.latimes.com/archives/blogs/top-of-the-ticket/story/2011-07-25/opinion-glenn-beck-hits-new-low-compares-norway-victims-to-hitler-youth"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago 3 Little Pigs rendered into Papua New Guinea pidgin https://www.abc.net.au/reslib/200709/r184705_686227.mp3"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Why they call the Tories “the nasty party” https://www.theguardian.com/uk/2011/jul/28/tory-lib-dems-clash-on-policy"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago US ISP/copyright deal: a one-sided private law for corporations, without public interest https://www.eff.org/deeplinks/2011/07/graduated-response-deal-what-if-users-had-been"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Copyright extortionist ripped off his competitor’s threatening material https://torrentfreak.com/anti-piracy-lawyers-rip-off-work-from-competitor-110727/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Karl Schroeder: Science fiction versus structured study of the future, sf as aspiration https://www.antipope.org/charlie/blog-static/2011/07/beyond-prediction.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Norwegian PM refuses to let terrorist attacks drive his country to intolerance and paranoid “security” https://www.nytimes.com/2011/07/28/world/europe/28norway.html?_r=1"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Man with camera in park who fled angry parent sought by police (turns out he was taking pix of his grandson) https://web.archive.org/web/20110829052009/https://pixiq.com/article/man-photographing-grandkid-in-park-deemed-suspicious"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Laurie Penny at the DNC: “Dissent will not be tolerated. Protest will not be permitted.” https://medium.com/welcome-to-the-scream-room/bad-moon-rising-8cd348df50e9#.9lhcixjn1"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The Ice Bucket Challenge did not fund a breakthrough in ALS treatment https://web.archive.org/web/20160914225439/http://www.healthnewsreview.org/2016/07/ice-bucket-challenge-breakthrough-experts-pour-cold-water-superficial-reporting/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Silicon Valley banks offer tech giants’ new hires 100% mortgages on 24 hours’ notice https://web.archive.org/web/20160727095557/http://www.bloomberg.com/news/articles/2016-07-27/zero-down-on-a-2-million-house-is-no-problem-in-silicon-valley"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Patent fighters attack the crown jewels of three of America’s worst patent trolls https://web.archive.org/web/20160727191625/https://arstechnica.com/tech-policy/2016/07/patent-defense-group-seeks-to-knock-out-top-three-trolls-of-2015/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Censorship company drops bogus lawsuit against researchers who outed them https://citizenlab.ca/research-interest/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Photographer sues Getty Images for $1B because they’re charging for pix she donated to LoC https://hyperallergic.com/photographer-files-1-billion-suit-against-getty-for-licensing-her-public-domain-images/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago First-ever Michelin star for street food awarded to Singaporean hawker stalls https://web.archive.org/web/20160723174014/http://uk.reuters.com/article/us-singapore-food-hawkers-michelin-star-idUKKCN1021XA"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Highest-paid CEOs generate lowest shareholder returns https://www.msci.com/documents/10199/91a7f92b-d4ba-4d29-ae5f-8022f9bb944d"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Olympics to companies: mentioning “Olympics” in social media is a trademark violation #https://web.archive.org/web/20160727075209/https://www.espn.com/olympics/story/_/id/17120510/united-states-olympic-committee-battle-athletes-companies-sponsor-not-olympics"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Pro-tar-sands activists say dirty Canadian oil is better because “lesbians are hot” https://www.joeydevilla.com/2016/07/26/this-ill-advised-hot-lesbians-ad-promoting-canadian-vs-saudi-oil-is-real-and-not-a-parody-by-the-onion/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The infosec apocalypse is nigh https://pluralistic.net/2021/07/27/gas-on-the-fire/#a-safe-place-for-dangerous-ideas"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago How twiddling enshittifies your brain https://pluralistic.net/2025/07/28/twiddlehazard/#outboard-brains-considered-harmful"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: EFFecting Change: Who the Machine Serves, Aug 12\nhttps://www.eff.org/event/effecting-change-who-machine-serves"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/program/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "A Conversation with Lina Khan (Law and Economy Student Network)\nhttps://www.youtube.com/live/7Ak5LZllqwE"
+          },
+          {
+            "type": "li",
+            "text": "Will AI ever come alive, and what happens if it does? (BBC News)\nhttps://www.youtube.com/watch?v=Lzk4o3fPZZE"
+          },
+          {
+            "type": "li",
+            "text": "Waarom jij straks het hulpje van AI bent (VPRO)\nhttps://www.youtube.com/watch?v=tOnvR2fs8CA"
+          },
+          {
+            "type": "li",
+            "text": "Talk Tech Bock (Vera Linß)\nhttps://www.youtube.com/watch?v=3PFjGvQoBgc"
+          },
+          {
+            "type": "li",
+            "text": "How To Think About AI Before It’s Too Late (This Is Hell)\nhttps://thisishell.com/episodes/1919"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "欧盟如何惩罚 Google（尽管有 Trump）：赐予我改变所能改变之事的勇气。",
+          "看看这个：赏心悦目之物。",
+          "客体永久性：寒蝉效应；Billy Bragg 诉 Myspace；Glenn Beck 称被谋杀的挪威儿童为“希特勒青年”；摄影师起诉 Getty 10亿美元版权欺诈；薪酬最高的 CEO 表现最差；奥运会诉“Olympics”；阿尔伯塔焦油砂诉“热辣女同”；IoT 安全末日；洋泾浜语版三只小猪；恶劣的政党；版权勒索者侵犯同行勒索者；爷爷在公园给孙子拍照遭围攻；冰桶挑战没治好 ALS；瞎鼓捣让你的大脑变得糟糕。",
+          "即将出席的活动：爱丁堡、悉尼、墨尔本、布莱顿、伦敦、南本德。",
+          "近期出席的活动：我去过的地方。",
+          "最新书籍：你们继续读，我继续写。",
+          "即将出版的书籍：正如我所说，我继续写。",
+          "版权页：其他所有内容。",
+          "欧盟如何惩罚 Google（尽管有 Trump）（永久链接）",
+          "“宁静祈祷文”（宁静接受我无法改变之事/勇气改变我能改变之事/智慧分辨两者之不同）通常被引用为流行心理学或戒瘾建议，但我认为它在政策制定中也有一席之地。",
+          "以欧盟对抗美国科技巨头为例。在拜登执政期间，欧盟的科技政策成熟为严肃且雄心勃勃的举措，最终形成了《数字市场法》（DMA）和《数字服务法》（DSA），这两项强有力的大政策旨在遏制科技巨头最恶劣的行为。欧盟的雄心并非凭空产生：它是全球反垄断热潮的一部分，该热潮的首要议程就是约束科技行业：",
+          "https://pluralistic.net/2025/06/28/mamdani/#trustbusting",
+          "在这场斗争中，欧盟在世界各地都有重要合作伙伴。例如，韩国和日本利用欧盟对 Google 和 Apple 执法行动中揭露的事实，提起了类似的案件：",
+          "https://pluralistic.net/2024/04/10/an-injury-to-one/#is-an-injury-to-all",
+          "但欧盟在对抗美国科技巨头时最重要的合作伙伴是美国。拜登的反垄断斗士们——Lina Khan、Rohit Chopra、Jonathan Kanter、Tim Wu 等人——对待科技巨头权力的态度与欧盟任何人一样严肃。毕竟，美国公众总是任何新科技骗局的首批受害者，而且美国是唯一一个拥有庞大富裕人口却缺乏现代、全面的消费者隐私保护的国家，这使得美国人成为科技公司眼中的优质猎物：",
+          "https://pluralistic.net/2025/04/23/zuckerstreisand/#zdgaf",
+          "美国和欧盟在科技战中站在同一阵线，世界才有了获胜的机会。科技界深知这一点，这就是为什么科技巨头在2024年大选中大力支持 Trump，并在他获胜后极力讨好他。从各自支付100万美元坐在就职典礼讲台 Trump 身后的科技大亨，到科技公司向白宫 Trump 的 Epstein 宴会厅捐赠的数百万美元，科技界已明确表示，只要 Trump 保护科技巨头免受任何限制其监视和窃取美国及世界人民行为的企图，科技界就支持他想做的任何事。",
+          "甚至在就职前，Trump 就已明确表示他将如何回报科技界的忠诚：在就职典礼前几周，Trump 前往达沃斯，威胁欧盟如果对其科技公司执行 DSA 或 DMA，将遭到报复：",
+          "https://techcrunch.com/2025/01/23/trumps-not-happy-with-how-eu-regulators-have-treated-us-tech-giants/",
+          "特朗普毫不迟疑地代表大型科技公司向美国贸易伙伴施压。他威逼加拿大总理马克·卡尼放弃对美国科技公司征税的计划。大型科技公司利用各种逃税伎俩在全球范围内逃避税收，使得（依法纳税的）本土公司根本无法与之竞争：",
+          "https://www.canada.ca/en/department-finance/news/2025/06/canada-rescinds-digital-services-tax-to-advance-broader-trade-negotiations-with-the-united-states.html",
+          "特朗普还让英国首相基尔·斯塔默放弃了对科技公司征税的计划：",
+          "https://www.theguardian.com/us-news/2025/apr/01/starmer-offered-big-us-tech-firms-tax-cuts-in-return-for-lower-trump-tariffs",
+          "他还让欧盟撤回了监管 AI 的计划：",
+          "https://fortune.com/2025/11/07/eu-ai-act-weaken-regulation-delay-big-tech-trump-government/",
+          "那些向特朗普妥协的政府都没有得到任何回报。正如我所写：",
+          "满足特朗普的所有要求，他会索要更多；拒绝特朗普的任何要求，他也会索要更多。和特朗普签合同，他会违约；给特朗普寄账单，他会赖账。对特朗普来说，“交易的艺术”可以用一个词来概括：毁约。",
+          "https://pluralistic.net/2026/07/22/table-flipper/#graveyard-of-indispensable-nations",
+          "典型的例子是：在欧盟于 AI 监管问题上向特朗普屈服后，特朗普宣布禁止参与制定《数字服务法》的欧盟官员前往美国：",
+          "https://www.state.gov/releases/office-of-the-spokesperson/2025/12/announcement-of-actions-to-combat-the-global-censorship-industrial-complex/",
+          "随后，在欧盟向特朗普做出更多让步后，他又宣布禁止更多欧盟官员入境：",
+          "https://www.lawfaremedia.org/article/the-trump-administration-targets-europe-s-content-moderation-laws",
+          "特朗普命令他的科技巨头们翻查欧盟官员的私人通信，以便他弄清楚接下来该禁止谁入境：",
+          "https://www.politico.eu/article/us-congress-judiciary-committee-big-tech-private-communication-eu-officials/",
+          "特朗普的科技公司心领神会。当欧盟命令 Apple 遵守法律时，Apple 让欧盟滚一边去：",
+          "https://pluralistic.net/2024/02/06/spoil-the-bunch/#dma",
+          "毕竟，Apple 是特朗普政府大规模驱逐行动的关键合作伙伴。Apple 封锁了一款 iPhone 应用程序，该程序原本可以在 Apple 客户即将被 ICE（美国移民和海关执法局）绑架或谋杀时向他们发出警告。特朗普需要 Apple，就像 Apple 需要特朗普一样：",
+          "https://pluralistic.net/2025/10/06/rogue-capitalism/#orphaned-syrian-refugees-need-not-apply",
+          "尽管如此，欧盟仍在继续努力对特朗普的公司执行其法律。上周，欧盟委员会宣布对 Google 处以 10 亿美元的罚款，原因是其违反了《数字服务法》，其行为给欧洲人造成了数十亿的损失：",
+          "https://digital-markets-act.ec.europa.eu/commission-fines-google-eur890-million-breaches-digital-markets-act-2026-07-23_en",
+          "换句话说，Google 甚至没有被勒令吐出所有窃取的钱款，只是一部分。请记住，罚款只是一种代价：欧盟的这笔罚款只会让这种作弊行为的利润稍微降低一点。",
+          "尽管如此，特朗普立即做出回应，威胁如果欧盟继续试图对其公司之一执行法律，将对欧盟征收数十亿美元的额外关税：",
+          "https://www.lemonde.fr/en/international/article/2026/07/24/trump-says-eu-to-pay-very-big-price-for-890-million-google-fine_6755804_4.html",
+          "特朗普、欧盟委员会和 Google 都清楚，这不仅仅关乎一笔 10 亿美元的罚款。《数字服务法》（DSA）和《数字市场法》（DMA）都规定，对屡犯者的罚款和其他处罚将大幅增加，而 Google 显然没有打算结束其在欧洲利润丰厚的“犯罪狂欢”。特朗普的威胁并不是为了叫停这项执法——特朗普想要叫停所有的执法。",
+          "报复性关税并不是特朗普手中唯一的武器。如果欧盟（或任何其他国家）对 Google、Apple、Oracle、Microsoft 或特朗普的其他任何科技公司处以巨额罚款，特朗普可以命令美国银行拒绝交出这些罚款，即使欧盟已经向他们下达了要求付款的法院命令。如果银行违抗特朗普，他可以威胁吊销其营业执照。或者他也可以重演对 Tiktok 玩弄的同样骗局：窃取整个公司并将其卖给他的某个亲信，然后由该亲信按照特朗普的意愿来运营。",
+          "现实情况是，如果没有美国的协助，欧盟几乎毫无希望迫使美国公司做他们不想做的事情。用《宁静祈祷文》的话来说，这就是“他们无法改变的事情”。",
+          "《宁静祈祷文》并没有止步于“你无法改变的事情”。下一句祈求的是“改变我所能改变之事的勇气”。欧盟无法控制 Google 的行为，但它完全可以控制自己的行为。",
+          "具体而言，欧盟可以废除那些禁止欧洲公司修改美国技术出口的法律。欧盟于 2001 年通过了《版权指令》。《欧盟版权指令》（EUCD）第 6 条规定，未经制造商许可对设备进行逆向工程和修改属于犯罪行为。这项法律是在美国贸易代表的压力下通过的，后者威胁要对欧盟出口产品征收关税，除非欧盟采用一项“反规避规则”，禁止欧盟技术人员制造能让欧洲人阻止美国科技公司窃取其金钱和数据的产品：",
+          "https://pluralistic.net/2026/01/01/39c3/#the-new-coalition",
+          "尽管特朗普（不出所料地）违背了美国方面的协议，对欧盟征收了巨额关税，甚至威胁要窃取丹麦的一部分领土，但这项法律在欧盟仍然有效。",
+          "《版权指令》第 6 条正是欧洲科技公司无法越狱美国应用程序的原因，无论这是否是为了将其政府和企业数据从美国平台上转移出去：",
+          "https://pluralistic.net/2025/10/15/freedom-of-movement/#data-dieselgate",
+          "或者是为了修改美国社交媒体应用程序以遵守欧盟隐私法：",
+          "https://pluralistic.net/2026/01/30/zucksauce/#gandersauce",
+          "欧盟无法控制 Apple 或 Google 的行为。但欧盟绝对可以决定，特朗普的公司是否能够利用欧洲的法院来摧毁那些捍卫欧洲人民隐私和经济完整性的欧洲公司。",
+          "如果欧盟废除《版权指令》第 6 条，他们就可以利用欧洲公司让 Google 和 Apple 有缺陷的技术出口符合欧洲法律。与特朗普的公司不同，这些公司可以被强制要求纳税并尊重其用户的隐私、劳工和消费者权利。",
+          "这就是《宁静祈祷文》中所说的“分辨这两者的智慧”。",
+          "看看这个（永久链接）",
+          "Nate Silver 发现了受过教育的穷人 https://crookedtimber.org/2026/07/25/nate-silver-discovers-the-educated-poor/",
+          "想象一个 Microsoft 像卖软件一样卖汽车的世界 https://www.thesling.org/imagine-a-world-in-which-microsoft-sold-cars-the-way-it-sells-software/",
+          "Tesla将一位太阳能用户的租赁合同换成了《以诺书》 https://electrek.co/2026/07/23/tesla-solar-lease-contract-book-of-enoch/",
+          "加拿大议员在议会演讲中读出疑似LLM的回复 https://arstechnica.com/ai/2026/07/canadian-legislator-reads-out-apparent-llm-response-in-floor-speech/",
+          "抵抗运动中的自由派律师正帮助特朗普接管媒体 https://www.thebignewsletter.com/p/the-resistance-liberal-lawyers-helping",
+          "客体永久性（永久链接）",
+          "#25年前 寒蝉效应 https://web.archive.org/web/20010801172448/http://eon.law.harvard.edu/chill/",
+          "#25年前 13岁黑客的出书协议：“非官方道德黑客指南” https://web.archive.org/web/20011102164905/http://www.vnunet.com/News/1124279",
+          "#20年前 法国新版权法扼杀了合理使用和开源 https://web.archive.org/web/20060812223624/http://soufron.typhon.net/spip.php?article150",
+          "#20年前 Billy Bragg促使MySpace修改了服务条款 https://web.archive.org/web/20100809150257/http://blogs.myspace.com/index.cfm?fuseaction=blog.view&amp;friendID=34570397&amp;blogID=137856388&amp;MyToken=626131d4-c695-42ba-867b-754b9e2bfeaa",
+          "#15年前 花80万美元在南达科他州买下一个老西部小镇 https://web.archive.org/web/20110728012824/https://edition.cnn.com/2011/US/07/27/south.dakota.town.sale/index.html",
+          "#15年前 Glenn Beck将挪威遇害的夏令营营员比作“希特勒青年团” https://www.latimes.com/archives/blogs/top-of-the-ticket/story/2011-07-25/opinion-glenn-beck-hits-new-low-compares-norway-victims-to-hitler-youth",
+          "#15年前 《三只小猪》被翻译成巴布亚新几内亚皮钦语 https://www.abc.net.au/reslib/200709/r184705_686227.mp3",
+          "#15年前 为什么他们称保守党为“肮脏的政党” https://www.theguardian.com/uk/2011/jul/28/tory-lib-dems-clash-on-policy",
+          "#15年前 美国ISP/版权协议：一项无视公共利益、偏袒企业的单边私法 https://www.eff.org/deeplinks/2011/07/graduated-response-deal-what-if-users-had-been",
+          "#15年前 版权勒索者剽窃了竞争对手的恐吓材料 https://torrentfreak.com/anti-piracy-lawyers-rip-off-work-from-competitor-110727/",
+          "#15年前 Karl Schroeder：科幻小说与对未来的结构化研究，作为愿景的科幻 https://www.antipope.org/charlie/blog-static/2011/07/beyond-prediction.html",
+          "#15年前 挪威首相拒绝让恐怖袭击驱使国家走向不宽容和偏执的“安全” https://www.nytimes.com/2011/07/28/world/europe/28norway.html?_r=1",
+          "#15年前 警方搜寻在公园带相机逃离愤怒家长的男子（结果发现他只是在给孙子拍照） https://web.archive.org/web/20110829052009/https://pixiq.com/article/man-photographing-grandkid-in-park-deemed-suspicious",
+          "#10年前 Laurie Penny在民主党全国代表大会上：“不容忍异见。不允许抗议。” https://medium.com/welcome-to-the-scream-room/bad-moon-rising-8cd348df50e9#.9lhcixjn1",
+          "#10年前 冰桶挑战并未资助ALS治疗取得突破 https://web.archive.org/web/20160914225439/http://www.healthnewsreview.org/2016/07/ice-bucket-challenge-breakthrough-experts-pour-cold-water-superficial-reporting/",
+          "#10年前 硅谷银行为科技巨头新员工提供24小时内获批的100%全额抵押贷款 https://web.archive.org/web/20160727095557/http://www.bloomberg.com/news/articles/2016-07-27/zero-down-on-a-2-million-house-is-no-problem-in-silicon-valley",
+          "#10年前 专利斗士攻击美国最恶劣的三大专利流氓的皇冠明珠 https://web.archive.org/web/20160727191625/https://arstechnica.com/tech-policy/2016/07/patent-defense-group-seeks-to-knock-out-top-three-trolls-of-2015/",
+          "#10年前 审查公司撤销了对揭露他们的研究人员的虚假诉讼 https://citizenlab.ca/research-interest/",
+          "#10年前 摄影师起诉 Getty Images 索赔10亿美元，因为他们对她捐赠给美国国会图书馆的照片收费 https://hyperallergic.com/photographer-files-1-billion-suit-against-getty-for-licensing-her-public-domain-images/",
+          "#10年前 首个街头小吃米其林星级授予新加坡小贩摊位 https://web.archive.org/web/20160723174014/http://uk.reuters.com/article/us-singapore-food-hawkers-michelin-star-idUKKCN1021XA",
+          "#10年前 薪酬最高的CEO带来最低的股东回报 https://www.msci.com/documents/10199/91a7f92b-d4ba-4d29-ae5f-8022f9bb944d",
+          "#10年前 奥组委警告企业：在社交媒体上提及“Olympics”属于商标侵权 #https://web.archive.org/web/20160727075209/https://www.espn.com/olympics/story/_/id/17120510/united-states-olympic-committee-battle-athletes-companies-sponsor-not-olympics",
+          "#10年前 支持焦油砂的活动人士称肮脏的加拿大石油更好，因为“女同性恋很性感” https://www.joeydevilla.com/2016/07/26/this-ill-advised-hot-lesbians-ad-promoting-canadian-vs-saudi-oil-is-real-and-not-a-parody-by-the-onion/",
+          "#5年前 信息安全末日将至 https://pluralistic.net/2021/07/27/gas-on-the-fire/#a-safe-place-for-dangerous-ideas",
+          "#1年前 胡乱摆弄如何让你的大脑垃圾化 https://pluralistic.net/2025/07/28/twiddlehazard/#outboard-brains-considered-harmful",
+          "即将到来的露面（永久链接）",
+          "线上：EFFecting Change：机器为谁服务，8月12日 https://www.eff.org/event/effecting-change-who-machine-serves",
+          "爱丁堡国际图书节，与 Jimmy Wales 同台，8月17日 https://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：危险思想节，8月23-24日 https://festivalofdangerousideas.com/program/",
+          "墨尔本：Wheeler 中心的平台垃圾化，8月25日 https://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 共谈《反向半人马指南：AI 之后的生活》（布莱顿穹顶剧院），9月8日 https://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 共谈《反向半人马指南：AI 之后的生活》（福伊尔皮卡迪利店），9月9日 https://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度夜晚（圣母大学），10月6日 https://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "近期的露面（永久链接）",
+          "与 Lina Khan 的对话（法律与经济学生网络） https://www.youtube.com/live/7Ak5LZllqwE",
+          "AI 会真正活过来吗？如果会，会发生什么？（BBC 新闻） https://www.youtube.com/watch?v=Lzk4o3fPZZE",
+          "为什么你很快会成为 AI 的帮手（VPRO） https://www.youtube.com/watch?v=tOnvR2fs8CA",
+          "Talk Tech Bock（Vera Linß） https://www.youtube.com/watch?v=3PFjGvQoBgc",
+          "如何在为时已晚之前思考 AI（This Is Hell） https://thisishell.com/episodes/1919",
+          "最新书籍（永久链接）",
+          "《反向半人马指南：AI 之后的生活》，一本关于成为更好的 AI 批评家的短篇书籍，Farrar, Straus and Giroux，2026年6月 https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "\"Canny Valley\"：我为 Pluralistic 创作的拼贴画限量版合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It\"，Farrar, Straus, Giroux 出版，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\"：\"Red Team Blues\" 的续作，关于 PC 的英雄时代，Tor Books（美国）、Head of Zeus（英国）出版，2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "\"The Bezzle\"：\"Red Team Blues\" 的续作，关于监狱科技和其他骗局，Tor Books（美国）、Head of Zeus（英国）出版，2024年2月 (thebezzle.org)。",
+          "\"The Lost Cause:\"：一部关于气候紧急状态下希望的太阳能朋克小说，Tor Books（美国）、Head of Zeus（英国）出版，2023年11月 (http://lost-cause.org)。",
+          "\"The Internet Con\"：一本关于互操作性和大型科技公司的非虚构类书籍（Verso 出版），2023年9月 (http://seizethemeansofcomputation.org)。签名版可在 Book Soup 购买 (https://www.booksoup.com/book/9781804291245)。",
+          "\"Red Team Blues\"：“一部引人入胜、令人欲罢不能的惊悚小说，读完后你会比以前更了解这个世界的运作方式。” Tor Books 出版 http://redteamblues.com。",
+          "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\"，讲述如何打破创意劳动力市场的不公规则，Beacon Press/Scribe 出版，2022年 https://chokepointcapitalism.com",
+          "即将出版的书 (固定链接)",
+          "\"The Post-American Internet\"，某种意义上是 Enshittification 的地缘政治续作，Farrar, Straus and Giroux 出版，2027年",
+          "\"Unauthorized Bread\"：一部改编自我关于难民、烤面包机和 DRM 的中篇小说的中学阶段图像小说，FirstSecond 出版，2027年4月20日",
+          "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\"（图像小说版），Firstsecond 出版，2027年",
+          "\"The Memex Method\"，Farrar, Straus, Giroux 出版，2027年",
+          "版权页 (固定链接)",
+          "今日主要来源：",
+          "目前正在撰写：\"The Post-American Internet\"，\"Enshittification\" 的续作，讲述在特朗普烧毁美国之后，我们其他人将拥有的更美好的世界。已完成第四稿。已提交给编辑。",
+          "一篇关于自制胰岛素的 Little Brother 短篇小说 规划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，前提是你将其归功于我，Cory Doctorow，并包含指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引用和图片不包含在此许可中；它们基于版权的限制或例外，或基于单独的许可而包含在内。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "时事通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就把它做成撒尔沙植物汽水” -Joey \"Accordion Guy\" DeVilla",
+          "仔细阅读：阅读本文即表示您代表您的雇主同意，永久免除我因与您的雇主及其合作伙伴、许可方、代理人和受让人签订的任何及所有未经协商的协议、许可、服务条款、拆封许可、点击许可、浏览许可、保密协议、不披露协议、竞业禁止和可接受使用政策（统称“BOGUS AGREEMENTS”）而产生的所有义务和弃权，且不影响我持续享有的权利和特权。您进一步声明，您有权代表您的雇主免除我受任何 BOGUS AGREEMENTS 的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "65cfa214fc58a592",
+      "title": "★ Ads in Software Are Like Stickers on Laptops",
+      "titleZh": "★ 软件中的广告就像笔记本电脑上的贴纸",
+      "link": "https://daringfireball.net/2026/07/ads_in_software_are_like_stickers_on_laptops",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-27T16:32:51.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "App Store",
+        "ads"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 19
+      },
+      "summary": "作者将软件中的广告比作笔记本电脑上的贴纸，质疑苹果高管在 App Store 搜索应用时希望看到多少广告。这一比喻直指当前应用商店中广告泛滥的问题，暗示过多的广告会破坏用户体验和软件的纯粹性。文章以苹果为切入点，批评了科技公司在追求广告收入时对用户感受的忽视。作者认为，软件界面应保持整洁，不应被商业广告过度侵蚀。",
+      "summaryEn": "The author compares ads in software to stickers on laptops, questioning how many ads Apple executives want to see when searching for an app in the App Store. This metaphor directly addresses the problem of ad proliferation in app stores, implying that excessive ads degrade user experience and software purity. Using Apple as a focal point, the article criticizes tech companies for ignoring user feelings in pursuit of ad revenue. The author argues that software interfaces should remain clean and not be overly eroded by commercial advertising.",
+      "reason": "用生动的贴纸比喻犀利地批判了应用商店广告泛滥的现象，引发对软件商业化与用户体验平衡的反思。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Monday, 27 July 2026",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Regarding my recent pieces regarding Apple’s shitty ads in the App Store and Apple News (and, perhaps soon, Apple Maps), a friend sent me this pithy take:"
+          },
+          {
+            "type": "quote",
+            "text": "The ads Apple is happy to inflict on us in its apps are the\nequivalent of the stickers it would never allow on its physical\nproducts."
+          },
+          {
+            "type": "p",
+            "text": "Bullseye."
+          },
+          {
+            "type": "p",
+            "text": "That’s what those stickers on PCs are: they’re ads. Intel pays for the “Intel Inside” stickers that booger up PC laptop palm rests. Longtime readers will recall that back in August 2007, Apple held a Town Hall event to introduce new iMacs and some iLife and iWork software updates. In a post-event Q&A (imagine that), Bob Keefe of Cox Newspapers asked “Can you say why you all are not participating in the Intel Inside program, putting the stickers on your new or previous Macs?” This question was so absurd from the perspective of those who covered Apple closely that it prompted outright laughter. Jason Snell wrote a great column arguing that it was actually a good question."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the whole exchange (via Dan Moren, then at MacUser). Give it a listen, it’s only 100 seconds or so:"
+          },
+          {
+            "type": "p",
+            "text": "Keefe asks, Steve Jobs answers, Phil Schiller answers, and then Jobs closes it. Jobs broke the ice in his initial answer, with “What can I say? We like our own stickers better.” I was in the room, and that line killed. Jobs at his best. But you can tell that Jobs wasn’t really sure how to answer at first. He didn’t want to throw any shade at Intel, Apple’s partner, but he knew there was a key point to make here about Apple."
+          },
+          {
+            "type": "p",
+            "text": "The whole thing is funny because at a fundamental level we all just know in our bones that Apple never even considered putting “Intel Inside” stickers on Macs. But why? For eons, mankind knew that when you drop something, it will fall to the ground. But why? Gravity is worth asking about. Worth figuring out. I think that’s the point of Snell’s 2007 column arguing that people (like me) were wrong to mock Keefe for asking."
+          },
+          {
+            "type": "p",
+            "text": "It’s when Jobs comes back to the question, after Schiller, that we get the real answer:"
+          },
+          {
+            "type": "quote",
+            "text": "You know, we put ourselves in the customers’ shoes and we say,\nwhat do we want stuck on our product when we take it out of the\nbox? And the answer is, nothing."
+          },
+          {
+            "type": "p",
+            "text": "That’s the answer. Apple still treats its hardware with that level of respect. With reverence. iPhones don’t even say “iPhone” on the hardware. No model or serial numbers. No small print. Just an Apple logo on the back."
+          },
+          {
+            "type": "p",
+            "text": "Putting themselves in customers’ shoes today, how many ads do Apple’s executives want stuck in the results when they search for an app in the App Store? We know the honest answer. But the answer evidenced by the actual App Store is “Two really big ones, including one in the first spot.”"
+          }
+        ],
+        "translations": [
+          "关于我最近写的关于 Apple 在 App Store 和 Apple News（也许很快还有 Apple Maps）中投放的那些糟糕广告的文章，一位朋友发给我这个精辟的见解：",
+          "Apple 乐意在自家应用中强加给我们的广告，就等同于它绝不会允许出现在其实体产品上的那些贴纸。",
+          "正中要害。",
+          "PC 上的那些贴纸就是这回事：它们就是广告。Intel 花钱贴上“Intel Inside”贴纸，把 PC 笔记本的掌托弄得一团糟。老读者可能还记得，早在 2007 年 8 月，Apple 举办了一次 Town Hall 活动来介绍新款 iMac 以及一些 iLife 和 iWork 软件更新。在活动后的问答环节（想象一下），Cox Newspapers 的 Bob Keefe 问道：“你能说说为什么你们不参加 Intel Inside 计划，不在你们的新款或旧款 Mac 上贴这些贴纸吗？”从密切关注 Apple 的人的角度来看，这个问题太荒谬了，以至于引起了哄堂大笑。Jason Snell 写了一篇很棒的专栏文章，认为这其实是个好问题。",
+          "这是完整的交流过程（来自当时在 MacUser 的 Dan Moren）。听一听吧，只有 100 秒左右：",
+          "Keefe 提问，Steve Jobs 回答，Phil Schiller 回答，然后由 Jobs 收尾。Jobs 在最初的回答中用一句“我能说什么呢？我们更喜欢自己的贴纸”打破了僵局。我当时在场，那句话引发了爆笑。Jobs 的巅峰时刻。但你可以看出，Jobs 一开始并不确定该怎么回答。他不想对 Apple 的合作伙伴 Intel 有任何不敬，但他知道在这里需要阐明关于 Apple 的一个关键点。",
+          "整件事很好笑，因为在根本层面上，我们骨子里就知道 Apple 甚至从未考虑过在 Mac 上贴“Intel Inside”贴纸。但为什么呢？长久以来，人类都知道当你扔下东西时，它会掉到地上。但为什么呢？重力值得探究，值得弄清楚。我想这就是 Snell 2007 年那篇专栏文章的观点，他认为人们（像我一样）嘲笑 Keefe 提出这个问题是错误的。",
+          "正是在 Schiller 之后，Jobs 再次回到这个问题时，我们才得到了真正的答案：",
+          "你知道，我们设身处地为顾客着想，我们说，当我们把产品从盒子里拿出来时，我们希望上面贴着什么？答案是，什么都没有。",
+          "这就是答案。Apple 至今仍以这种程度的尊重对待其硬件。怀着敬畏之心。iPhone 硬件上甚至都没有“iPhone”字样。没有型号或序列号。没有小字说明。背面只有一个 Apple 标志。",
+          "如今设身处地为顾客着想，Apple 的高管们在 App Store 中搜索应用时，希望搜索结果里塞进多少广告？我们知道诚实的答案。但实际 App Store 所给出的答案是“两个非常大的广告，其中一个在首位。”"
+        ]
+      }
+    },
+    {
+      "slug": "8f8660aa7e6c9ac7",
+      "title": "Digital circuit simulator in Haskell (SICP 3.3)",
+      "titleZh": "用 Haskell 实现数字电路模拟器 (SICP 3.3)",
+      "link": "https://entropicthoughts.com/sicp-3-3-digital-circuit-simulator-in-haskell",
+      "sourceName": "entropicthoughts.com",
+      "sourceUrl": "https://entropicthoughts.com",
+      "pubDate": "2026-07-26T22:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "Haskell",
+        "SICP",
+        "circuit simulator"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 7,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "作者分享了使用 Haskell 实现《计算机程序的构造和解释》(SICP) 3.3 节中数字电路模拟器的过程。文章回顾了系列前两部分关于泛型函数的实现方法，包括通过标记值进行调度和填充可变的操作-标记对表。通过 Haskell 的函数式特性，作者展示了如何构建和处理数字电路中的信号与逻辑门。这为理解函数式编程在复杂系统模拟中的应用提供了实践参考。",
+      "summaryEn": "The author shares the process of implementing a digital circuit simulator from Section 3.3 of SICP (Structure and Interpretation of Computer Programs) using Haskell. The article reviews the previous two parts of the series on implementing generic functions, including dispatching via tagged values and filling a mutable table of operation-tag pairs. Using Haskell's functional features, the author demonstrates how to construct and handle signals and logic gates in digital circuits. This provides a practical reference for understanding the application of functional programming in complex system simulations.",
+      "reason": "结合经典教材 SICP 与现代函数式语言 Haskell，为对数字电路模拟和泛型编程感兴趣的读者提供了硬核的实践指南。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "kqr",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I have a copy of sicp, or as it is also known, The Wizard\nBook.11 Structure and Interpretation of Computer Programs; Abelson and\nSussman; mit Press; 1996. This book is widely praised, but I can’t take the\ntime to work my way through all of it. Instead, I’m going to occasionally jump\ninto the parts of it that look interesting."
+          },
+          {
+            "type": "p",
+            "text": "In the previous two installations of this series, we looked at ways of\nimplementing generic functions. In the first one, by tagging values and\ndispatching operations on tags. In the second case, by filling a mutable table\nof operation–tag pairs. We saw how these are roughly equivalent to the existing\nHaskell features of sum types and type classes."
+          },
+          {
+            "type": "p",
+            "text": "Now we’ll simulate a digital circuit. The reason this is interesting is that the\nsolution in sicp uses hidden mutable state and message-passing to make the\ncode object-oriented. It even uses a mutable global variable for scheduling! I\nwasn’t sure if it would be possible to replicate that in Haskell, but as we’ll\nsee, it can get incredibly close."
+          },
+          {
+            "type": "h2",
+            "text": "Haskell does have mutable variables"
+          },
+          {
+            "type": "p",
+            "text": "There are many ways to implement mutable state in Haskell, but to begin with,\nwe’ll use the way that’s most similar to the sicp solution: IORefs. An\nIORef is a mutable variable, like in any other programming language.22 The\nonly major difference is that we need a bit of extra machinery to read from\nit, because it’s designed so that we cannot accidentally read from it in pure\ncode. (That would make the code impure, after all.)"
+          },
+          {
+            "type": "p",
+            "text": "We define a type Wire, which starts out with its signal Low, and with an\nempty list of action procedures."
+          },
+          {
+            "type": "p",
+            "text": "The idea of action procedures comes from the sicp implementation of this code;\naction procedures are subscribers to the signal on this wire, and they will be\ninvoked whenever the signal changes. Action procedures will be installed by\ncomponents connected downstream of this wire, so those components can update\nthemselves when the wire value changes."
+          },
+          {
+            "type": "p",
+            "text": "In[1]:"
+          },
+          {
+            "type": "code",
+            "text": "data Signal = Low | High\n  deriving (Show, Eq, Ord, Bounded)\n\ndata Wire = Wire\n  { action_procedures :: IORef [IO ()]\n  , signal_value      :: IORef Signal\n  }\n\nmake_wire = do\n  initial_procs <- newIORef []\n  initial_signal <- newIORef Low\n  pure (Wire initial_procs initial_signal)"
+          },
+          {
+            "type": "p",
+            "text": "We can get the signal from a wire by reading the mutable variable holding its\ncurrent signal."
+          },
+          {
+            "type": "p",
+            "text": "In[2]:"
+          },
+          {
+            "type": "code",
+            "text": "get_signal (Wire _ signal) =\n  readIORef signal"
+          },
+          {
+            "type": "p",
+            "text": "To set a signal on a wire we write to the mutable variable. If this causes a\nstate change of the wire, we’ll also run the installed action procedures to let\ndownstream components know.33 This is the observer pattern, in case it sounds\nfamiliar."
+          },
+          {
+            "type": "p",
+            "text": "In[3]:"
+          },
+          {
+            "type": "code",
+            "text": "set_signal (Wire procs signal) new_value = do\n  current <- readIORef signal\n  when (new_value /= current) $ do\n    writeIORef signal new_value\n    actions <- readIORef procs\n    sequence_ actions"
+          },
+          {
+            "type": "p",
+            "text": "Finally, we have a method on the wire that lets downstream components install\nnew action procedures. To ensure wires are initialised with the proper value\nwhen components are connected, we immediately run all action procedures we\ninstall."
+          },
+          {
+            "type": "p",
+            "text": "In[4]:"
+          },
+          {
+            "type": "code",
+            "text": "add_action (Wire procs _) action = do\n  modifyIORef procs (action:)\n  action"
+          },
+          {
+            "type": "p",
+            "text": "A probe in the sicp implementation is an action procedure installed on a\nwire that reports the value of the wire to the user of the program."
+          },
+          {
+            "type": "p",
+            "text": "In[5]:"
+          },
+          {
+            "type": "code",
+            "text": "probe name wire =\n  add_action wire $ do\n    current <- get_signal wire\n    putStrLn (name <> \" new value: \" <> show current)"
+          },
+          {
+            "type": "p",
+            "text": "At this point the wire object is done, and we can experiment with it in the\nrepl. We create a wire and add a probe to it. If we set its signal to the same\nthing it was before, nothing changes. If we set its signal to a new value, the\nprobe fires."
+          },
+          {
+            "type": "p",
+            "text": "In[6]:"
+          },
+          {
+            "type": "code",
+            "text": "λ> w <- make_wire\nλ> probe \"wire\" w\nwire new value: Low\nλ> set_signal w Low\nλ> set_signal w High\nwire new value: High"
+          },
+          {
+            "type": "p",
+            "text": "Then we can start to implement the most basic components. An inverter is, as in\nthe sicp implementation, an action procedure on the input wire that sets the\nsignal on its output wire to the opposite of the input."
+          },
+          {
+            "type": "p",
+            "text": "In[7]:"
+          },
+          {
+            "type": "code",
+            "text": "inverter input output =\n  add_action input $ do\n    current <- get_signal input\n    set_signal output $ case current of\n      Low  -> High\n      High -> Low"
+          },
+          {
+            "type": "p",
+            "text": "The and_gate works similarly, except it reads two inputs before determining\nits output."
+          },
+          {
+            "type": "p",
+            "text": "In[8]:"
+          },
+          {
+            "type": "code",
+            "text": "and_gate a1 a2 output =\n  let\n    action = do\n      c1 <- get_signal a1\n      c2 <- get_signal a2\n      set_signal output $ case (c1, c2) of\n        (Low, Low)   -> Low\n        (Low, High)  -> Low\n        (High, High) -> High\n        (High, Low)  -> Low\n  in do\n    add_action a1 action\n    add_action a2 action"
+          },
+          {
+            "type": "p",
+            "text": "The or_gate is like the and_gate except with a different truth\ntable.44 Like a true designer of digital circuits, I have put the truth table\nin Grey code."
+          },
+          {
+            "type": "p",
+            "text": "In[9]:"
+          },
+          {
+            "type": "code",
+            "text": "or_gate a1 a2 output =\n  let\n    action = do\n      c1 <- get_signal a1\n      c2 <- get_signal a2\n      set_signal output $ case (c1, c2) of\n        (Low, Low)   -> Low\n        (Low, High)  -> High\n        (High, High) -> High\n        (High, Low)  -> High\n  in do\n    add_action a1 action\n    add_action a2 action"
+          },
+          {
+            "type": "p",
+            "text": "So far, we have invented nothing here; this is all in line with the\nimplementation from sicp. There are three neat properties of this Abelson and\nSussman design:"
+          },
+          {
+            "type": "li",
+            "text": "The set of components is open. If we turn this into a library, any user of the\nlibrary can add their own components and their components would interact\nbeautifully with those we have."
+          },
+          {
+            "type": "li",
+            "text": "The components are not limited to a fixed number of inputs or outputs.\nAnything that reads from wires and writes to other wires is a valid component."
+          },
+          {
+            "type": "li",
+            "text": "We can compose these basic gates into higher-level components, as plain\nprocedure statements."
+          },
+          {
+            "type": "p",
+            "text": "The latter means that we can make a half-adder by composing gates, and a\nfull-adder by composing half-adders and gates."
+          },
+          {
+            "type": "p",
+            "text": "In[10]:"
+          },
+          {
+            "type": "code",
+            "text": "half_adder a b s c = do\n  d <- make_wire\n  e <- make_wire\n  or_gate a b d\n  and_gate a b c\n  inverter c e\n  and_gate d e s\n\nfull_adder a b c_in sum c_out = do\n  s <- make_wire\n  c1 <- make_wire\n  c2 <- make_wire\n  half_adder b c_in s c1\n  half_adder a s sum c2\n  or_gate c1 c2 c_out"
+          },
+          {
+            "type": "p",
+            "text": "This all comes straight out of the sicp implementation. The only thing we’re\nmissing so far is a scheduler to simulate propagation delay."
+          },
+          {
+            "type": "h2",
+            "text": "Adding a scheduler with global mutable state"
+          },
+          {
+            "type": "p",
+            "text": "In sicp, the scheduler is implemented as a global mutable variable. This lets\nany component implicitly access it for scheduling. Let’s go all in and do it\nthat way in Haskell too."
+          },
+          {
+            "type": "p",
+            "text": "Wait, can Haskell even do that?"
+          },
+          {
+            "type": "p",
+            "text": "Yeah. Look at the last line where we define the_agenda. Yuck! Please never\ndo this in production. Global mutable state is a terrible idea.55 It’s a\nterrible idea in any programming language. But it’s even worse in Haskell,\nbecause then we’re opting out of a bunch of extra guarantees only Haskell can\ngive us."
+          },
+          {
+            "type": "p",
+            "text": "In[11]:"
+          },
+          {
+            "type": "code",
+            "text": "data Agenda = Agenda\n  { current_time :: IORef Int\n  , segments     :: IORef (Map.Map Int [IO ()])\n  }\n\nmake_agenda = do\n  time <- newIORef 0\n  segs <- newIORef Map.empty\n  pure (Agenda time segs)\n\nthe_agenda = unsafePerformIO make_agenda"
+          },
+          {
+            "type": "p",
+            "text": "The agenda follows the implementation in sicp, and maintains mutable variables\nfor the current time as well as an ordered list of times and the action\nprocedures scheduled for those times.66 In sicp they use a linked list with\nsome manual bookkeeping to keep it ordered. We could do that in Haskell too, but\nhere we are lazy and use a standard-library ordered dictionary instead."
+          },
+          {
+            "type": "p",
+            "text": "The propagate function uses this agenda to simulate the circuit until it\nstabilises. It pops the smallest next time step from the agenda, updates the\ncurrent time to it, and executes the actions associated with it. It repeats this\nuntil there are no more scheduled time steps."
+          },
+          {
+            "type": "p",
+            "text": "In[12]:"
+          },
+          {
+            "type": "code",
+            "text": "propagate = do\n  segs <- readIORef (segments the_agenda)\n  case Map.minViewWithKey segs of\n    Nothing -> pure ()\n    Just ((time, actions), remaining) -> do\n      writeIORef (current_time the_agenda) time\n      writeIORef (segments the_agenda) remaining\n      sequence_ actions\n      propagate"
+          },
+          {
+            "type": "p",
+            "text": "The sicp code has an after_delay function to help components schedule their\nupdates after their respective propagation delays. We’ll implement the same."
+          },
+          {
+            "type": "p",
+            "text": "In[13]:"
+          },
+          {
+            "type": "code",
+            "text": "after_delay delay action = do\n  time <- readIORef (current_time the_agenda)\n  modifyIORef (segments the_agenda) $\n    Map.insertWith (<>) (delay + time) [action]"
+          },
+          {
+            "type": "p",
+            "text": "Now components need to use this, so they update their outputs only after a\ndelay, rather than immediately. This means inserting an after_delay call\nbefore set_signal in all components. Here it is for the inverter, as an\nexample."
+          },
+          {
+            "type": "p",
+            "text": "In[14]:"
+          },
+          {
+            "type": "code",
+            "text": "inverter input output =\n  add_action input $ do\n    current <- get_signal input\n    after_delay 2 $ do\n      set_signal output $ case current of\n        Low  -> High\n        High -> Low"
+          },
+          {
+            "type": "p",
+            "text": "We also want the probe to show the current time when it makes a reading."
+          },
+          {
+            "type": "p",
+            "text": "In[15]:"
+          },
+          {
+            "type": "code",
+            "text": "probe name wire =\n  add_action wire $ do\n    current <- get_signal wire\n    time <- readIORef (current_time the_agenda)\n    putStrLn (name <> \" (t=\" <> show time <> \") new value: \" <> show current)"
+          },
+          {
+            "type": "p",
+            "text": "And that’s it! Now that we’re done, we can open the repl and run the same\ninteraction as Abelson and Sussman, to test that our code behaves the same way\nthe sicp code does."
+          },
+          {
+            "type": "p",
+            "text": "In[16]:"
+          },
+          {
+            "type": "code",
+            "text": "λ> input_1 <- make_wire\nλ> input_2 <- make_wire\nλ> sum <- make_wire\nλ> carry <- make_wire\nλ> probe \"sum\" sum\nsum (t=0) new value: Low\n\nλ> probe \"carry\" carry\ncarry (t=0) new value: Low\n\nλ> half_adder input_1 input_2 sum carry\n\nλ> set_signal input_1 High\nλ> propagate\nsum (t=8) new value: High\n\nλ> set_signal input_2 High\nλ> propagate\ncarry (t=11) new value: High\nsum (t=16) new value: Low"
+          },
+          {
+            "type": "p",
+            "text": "It actually surprised me how close the Haskell solution got to the one in\nsicp. It’s pretty much the same thing. The only major difference I can\nthink of is that since the_agenda is a top-level binding in Haskell, we cannot\nreassign it in the repl. But that’s about it."
+          },
+          {
+            "type": "p",
+            "text": "We can also do something fun the sicp authors never showed: a ring oscillator.\nIf we connect the output of the inverter to itself, probe it, and then\npropagate, we get an infinite sequence of"
+          },
+          {
+            "type": "p",
+            "text": "In[17]:"
+          },
+          {
+            "type": "code",
+            "text": "--------------- >8 -------\na (t=4558) new value: High\na (t=4560) new value: Low\na (t=4560) new value: High\na (t=4562) new value: Low\na (t=4562) new value: High\na (t=4564) new value: Low\na (t=4564) new value: High\na (t=4566) new value: Low\na (t=4566) new value: High\na (t=4568) new value: Low\n--------------- >8 -------"
+          },
+          {
+            "type": "p",
+            "text": "where the output toggles every propagation delay."
+          },
+          {
+            "type": "h2",
+            "text": "Next challenge: making it pure"
+          },
+          {
+            "type": "p",
+            "text": "The code above is fine. It is rife with side-effects, but it is fine."
+          },
+          {
+            "type": "p",
+            "text": "Many people seem to have this view that Haskell code must be free of side\neffects, and that’s not true. Haskell code doesn’t need to be a pristine pure\ntower of abstraction connected to a dirty effectful layer. Haskell code can be\nlike code in any other language – mostly dirty and effectful – but with some\nislands of purity where they help. That’s a legal way to use Haskell, and it’s\nstill an improvement over other languages."
+          },
+          {
+            "type": "p",
+            "text": "But what if we want to make the simulation pure? One way to do it would be to\nmove the wire state management from IO to ST. While IO is a type of\ncomputation that allows arbitrary side effects, ST is a type of computation\nthat only allows mutable variables, and it’s designed so that no effects can\nescape outside of its local context. That means we could execute ST-based\nmutation inside the circuit simulation in a way that is pure from the outside.\nThis would be a fairly mundane transformation and is not interesting."
+          },
+          {
+            "type": "p",
+            "text": "But Haskell lets us do even better. That’ll be a separate article. Stay tuned."
+          }
+        ],
+        "translations": [
+          "我手头有一本 sicp，也就是众所周知的《巫师书》。11《计算机程序的构造和解释》；Abelson 和 Sussman 著；mit Press 出版；1996年。这本书广受赞誉，但我抽不出时间通读全书。相反，我打算偶尔跳读其中看起来有趣的部分。",
+          "在本系列的前两篇文章中，我们探讨了实现泛型函数的方法。第一种是通过标记值并在标记上进行操作分发。第二种是通过填充一个包含操作-标记对的可变表。我们看到，这些方法大致等同于 Haskell 中已有的求和类型（sum types）和类型类（type classes）特性。",
+          "现在我们来模拟一个数字电路。这之所以有趣，是因为 sicp 中的解决方案使用了隐藏的可变状态和消息传递来实现代码的面向对象。它甚至使用了一个可变全局变量来进行调度！我原本不确定能否在 Haskell 中复现这一点，但正如我们将要看到的，它可以做到极其接近。",
+          "Haskell 确实有可变变量",
+          "在 Haskell 中有多种实现可变状态的方法，但首先，我们将使用与 sicp 解决方案最相似的方式：IORefs。IORef 是一个可变变量，就像在任何其他编程语言中一样。22 唯一的主要区别是，我们需要一些额外的机制来读取它，因为它的设计使得我们不会在纯代码中意外读取它。（毕竟，那会使代码变得不纯。）",
+          "我们定义一个 Wire 类型，其初始信号为 Low，并且带有一个空的动作过程（action procedures）列表。",
+          "动作过程的概念来自 sicp 对这段代码的实现；动作过程是此导线上信号的订阅者，每当信号发生变化时就会被调用。动作过程将由连接在此导线下游的组件安装，以便这些组件在导线值发生变化时能够更新自身。",
+          "In[1]:",
+          "data Signal = Low | High\n  deriving (Show, Eq, Ord, Bounded)\n\ndata Wire = Wire\n  { action_procedures :: IORef [IO ()]\n  , signal_value      :: IORef Signal\n  }\n\nmake_wire = do\n  initial_procs <- newIORef []\n  initial_signal <- newIORef Low\n  pure (Wire initial_procs initial_signal)",
+          "我们可以通过读取保存当前信号的可变变量来从导线获取信号。",
+          "In[2]:",
+          "get_signal (Wire _ signal) =\n  readIORef signal",
+          "要在导线上设置信号，我们向该可变变量写入值。如果这导致导线状态发生改变，我们还将运行已安装的动作过程以通知下游组件。33 这就是观察者模式，听起来可能很耳熟。",
+          "In[3]:",
+          "set_signal (Wire procs signal) new_value = do\n  current <- readIORef signal\n  when (new_value /= current) $ do\n    writeIORef signal new_value\n    actions <- readIORef procs\n    sequence_ actions",
+          "最后，我们在导线上有一个方法，允许下游组件安装新的动作过程。为了确保在连接组件时导线被初始化为正确的值，我们会立即运行所有安装的动作过程。",
+          "In[4]:",
+          "add_action (Wire procs _) action = do\n  modifyIORef procs (action:)\n  action",
+          "在 sicp 的实现中，探针（probe）是安装在导线上的一个动作过程，用于向程序用户报告导线的值。",
+          "In[5]:",
+          "probe name wire =\n  add_action wire $ do\n    current <- get_signal wire\n    putStrLn (name <> \" new value: \" <> show current)",
+          "此时导线对象已经完成，我们可以在 repl 中对它进行实验。我们创建一根导线并为其添加一个探针。如果我们将其信号设置为与之前相同的值，则不会发生任何变化。如果我们将其信号设置为一个新值，探针就会触发。",
+          "In[6]:",
+          "λ> w <- make_wire\nλ> probe \"wire\" w\nwire new value: Low\nλ> set_signal w Low\nλ> set_signal w High\nwire new value: High",
+          "然后我们可以开始实现最基本的组件。正如在 sicp 实现中一样，反相器（inverter）是输入导线上的一个动作过程，它将其输出导线上的信号设置为输入信号的相反值。",
+          "In[7]:",
+          "inverter input output =\n  add_action input $ do\n    current <- get_signal input\n    set_signal output $ case current of\n      Low  -> High\n      High -> Low",
+          "and_gate 的工作原理类似，不同之处在于它在确定输出之前会读取两个输入。",
+          "In[8]:",
+          "and_gate a1 a2 output =\n  let\n    action = do\n      c1 <- get_signal a1\n      c2 <- get_signal a2\n      set_signal output $ case (c1, c2) of\n        (Low, Low)   -> Low\n        (Low, High)  -> Low\n        (High, High) -> High\n        (High, Low)  -> Low\n  in do\n    add_action a1 action\n    add_action a2 action",
+          "or_gate 与 and_gate 类似，只是真值表不同。44 就像真正的数字电路设计师一样，我将真值表用格雷码（Grey code）表示。",
+          "In[9]:",
+          "or_gate a1 a2 output =\n  let\n    action = do\n      c1 <- get_signal a1\n      c2 <- get_signal a2\n      set_signal output $ case (c1, c2) of\n        (Low, Low)   -> Low\n        (Low, High)  -> High\n        (High, High) -> High\n        (High, Low)  -> High\n  in do\n    add_action a1 action\n    add_action a2 action",
+          "到目前为止，我们在这里并没有发明任何新东西；这一切都与 sicp 中的实现一致。Abelson 和 Sussman 的这个设计有三个巧妙的特性：",
+          "组件集合是开放的。如果我们把它变成一个库，该库的任何用户都可以添加自己的组件，并且他们的组件将与我们现有的组件完美交互。",
+          "组件不限于固定数量的输入或输出。任何从导线读取并写入其他导线的东西都是有效的组件。",
+          "我们可以将这些基本逻辑门组合成更高层次的组件，就像普通的程序语句一样。",
+          "后者意味着我们可以通过组合逻辑门来制作半加器，并通过组合半加器和逻辑门来制作全加器。",
+          "In[10]:",
+          "half_adder a b s c = do\n  d <- make_wire\n  e <- make_wire\n  or_gate a b d\n  and_gate a b c\n  inverter c e\n  and_gate d e s\n\nfull_adder a b c_in sum c_out = do\n  s <- make_wire\n  c1 <- make_wire\n  c2 <- make_wire\n  half_adder b c_in s c1\n  half_adder a s sum c2\n  or_gate c1 c2 c_out",
+          "这一切都直接出自 sicp 的实现。到目前为止，我们唯一缺少的是一个用于模拟传播延迟的调度器。",
+          "添加带有全局可变状态的调度器",
+          "在 sicp 中，调度器被实现为一个全局可变变量。这让任何组件都可以隐式访问它进行调度。让我们放手一搏，在 Haskell 中也这样做。",
+          "等等，Haskell 甚至能做到这一点吗？",
+          "是的。看看我们定义 the_agenda 的最后一行。真恶心！请千万不要在生产环境中这样做。全局可变状态是一个糟糕的主意。55 在任何编程语言中这都是个糟糕的主意。但在 Haskell 中情况更糟，因为这样我们就放弃了只有 Haskell 才能提供的一堆额外保证。",
+          "In[11]:",
+          "data Agenda = Agenda\n  { current_time :: IORef Int\n  , segments     :: IORef (Map.Map Int [IO ()])\n  }\n\nmake_agenda = do\n  time <- newIORef 0\n  segs <- newIORef Map.empty\n  pure (Agenda time segs)\n\nthe_agenda = unsafePerformIO make_agenda",
+          "该议程遵循 sicp 中的实现，并为当前时间以及时间列表和为这些时间调度的动作过程维护可变变量。66 在 sicp 中，他们使用带有一些手动记账的链表来保持其有序。我们在 Haskell 中也可以这样做，但在这里我们偷了个懒，改用标准库中的有序字典。",
+          "propagate 函数使用这个议程来模拟电路，直到它稳定下来。它从议程中弹出最小的下一个时间步长，将当前时间更新为该时间，并执行与之关联的动作。它会重复这个过程，直到没有更多已调度的时间步长为止。",
+          "In[12]:",
+          "propagate = do\n  segs <- readIORef (segments the_agenda)\n  case Map.minViewWithKey segs of\n    Nothing -> pure ()\n    Just ((time, actions), remaining) -> do\n      writeIORef (current_time the_agenda) time\n      writeIORef (segments the_agenda) remaining\n      sequence_ actions\n      propagate",
+          "sicp 代码中有一个 after_delay 函数，用于帮助组件在各自的传播延迟后调度其更新。我们也将实现同样的功能。",
+          "In[13]:",
+          "after_delay delay action = do\n  time <- readIORef (current_time the_agenda)\n  modifyIORef (segments the_agenda) $\n    Map.insertWith (<>) (delay + time) [action]",
+          "现在组件需要使用它，以便它们仅在延迟后更新输出，而不是立即更新。这意味着在所有组件的 set_signal 之前插入一个 after_delay 调用。这里以反相器为例。",
+          "In[14]:",
+          "inverter input output =\n  add_action input $ do\n    current <- get_signal input\n    after_delay 2 $ do\n      set_signal output $ case current of\n        Low  -> High\n        High -> Low",
+          "我们还希望探针在进行读取时显示当前时间。",
+          "In[15]:",
+          "probe name wire =\n  add_action wire $ do\n    current <- get_signal wire\n    time <- readIORef (current_time the_agenda)\n    putStrLn (name <> \" (t=\" <> show time <> \") new value: \" <> show current)",
+          "就是这样！现在我们已经完成了，可以打开 repl 并运行与 Abelson 和 Sussman 相同的交互，以测试我们的代码是否与 sicp 代码的行为方式相同。",
+          "In[16]:",
+          "λ> input_1 <- make_wire\nλ> input_2 <- make_wire\nλ> sum <- make_wire\nλ> carry <- make_wire\nλ> probe \"sum\" sum\nsum (t=0) new value: Low\n\nλ> probe \"carry\" carry\ncarry (t=0) new value: Low\n\nλ> half_adder input_1 input_2 sum carry\n\nλ> set_signal input_1 High\nλ> propagate\nsum (t=8) new value: High\n\nλ> set_signal input_2 High\nλ> propagate\ncarry (t=11) new value: High\nsum (t=16) new value: Low",
+          "Haskell 的解决方案与 sicp 中的解决方案如此接近，这确实让我感到惊讶。它们几乎是一回事。我能想到的唯一主要区别是，由于 the_agenda 在 Haskell 中是一个顶层绑定，我们无法在 repl 中重新赋值给它。但也就仅此而已。",
+          "我们还可以做一些 sicp 作者从未展示过的有趣事情：环形振荡器。如果我们把反相器的输出连接到它自身，对其进行探查，然后进行传播，我们会得到一个无限序列的",
+          "In[17]:",
+          "--------------- >8 -------\na (t=4558) new value: High\na (t=4560) new value: Low\na (t=4560) new value: High\na (t=4562) new value: Low\na (t=4562) new value: High\na (t=4564) new value: Low\na (t=4564) new value: High\na (t=4566) new value: Low\na (t=4566) new value: High\na (t=4568) new value: Low\n--------------- >8 -------",
+          "其输出在每个传播延迟时都会翻转。",
+          "下一个挑战：使其纯净化",
+          "上面的代码没问题。它充满了副作用，但没问题。",
+          "很多人似乎认为 Haskell 代码必须没有副作用，但这并不正确。Haskell 代码不需要是一座纯净无瑕的抽象高塔，仅仅连接到一个充满副作用的底层。Haskell 代码可以像任何其他语言的代码一样——大部分是脏乱且带有副作用的——但在需要的地方保留一些纯净的孤岛。这是合法使用 Haskell 的方式，而且相比其他语言仍然是一种进步。",
+          "但如果我们想让模拟过程变得纯净呢？一种方法是将连线状态管理从 IO 移动到 ST。IO 是一种允许任意副作用的计算类型，而 ST 是一种只允许可变变量的计算类型，其设计确保了任何副作用都无法逃逸出其局部上下文。这意味着我们可以在电路模拟内部执行基于 ST 的状态变更，从外部来看它依然是纯净的。这会是一个相当平淡的转换，并没有什么意思。",
+          "但 Haskell 能让我们做得更好。这会留到另一篇文章中讨论。敬请期待。"
+        ]
+      }
+    },
+    {
+      "slug": "520082abf704c7d8",
+      "title": "Printing floating point numbers in binary",
+      "titleZh": "以二进制打印浮点数",
+      "link": "https://www.johndcook.com/blog/2026/07/27/float-binary/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-27T15:34:05.000Z",
+      "category": "engineering",
+      "keywords": [
+        "floating point",
+        "binary",
+        "hex"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "文章介绍了如何将浮点数的十六进制表示直接转换为二进制表示。众所周知，整数的十六进制可以通过逐位转换得到二进制，而作者指出这一方法同样适用于浮点数。通过保留小数点位置并分别转换整数和小数部分，可以轻松实现浮点数的进制转换。这一技巧简化了在底层编程或数值计算中处理浮点数表示的过程。",
+      "summaryEn": "The article introduces how to directly convert the hexadecimal representation of a floating-point number to its binary equivalent. While it is well known that integers can be converted from hex to binary digit by digit, the author points out that this method also applies to floating-point numbers. By keeping track of the decimal point and converting the integer and fractional parts separately, one can easily perform base conversion for floating-point numbers. This technique simplifies handling floating-point representations in low-level programming or numerical computing.",
+      "reason": "揭示了一个鲜为人知但非常实用的数学技巧，对底层开发者处理浮点数进制转换有直接帮助。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It’s well known that you can convert the base 16 (hex) representation of an integer to the base 2 (binary) representation by simply converting each digit from hex to binary. For example,"
+          },
+          {
+            "type": "p",
+            "text": "CAFEhex = 1100 1010 1111 1110two"
+          },
+          {
+            "type": "p",
+            "text": "I imagine it’s less well known that you can do the same thing with floating point numbers."
+          },
+          {
+            "type": "p",
+            "text": "I wanted to find the binary representation of a floating point number using Python, and discovered that it has no function to do this. However, there is a method on floats to show a hex representation. For example, here’s the hex representation of π."
+          },
+          {
+            "type": "code",
+            "text": ">>>import math\n>>>(math.pi).hex()\n'0x1.921fb54442d18p+1'"
+          },
+          {
+            "type": "p",
+            "text": "Curiously, the p+k part at the end is an exponent of 2, not an exponent of 16. So after we convert 1.921fb54442d18 to binary, we’ll need to multiply by 2, i.e. move the fractional point one space to the right."
+          },
+          {
+            "type": "p",
+            "text": "So first we convert 1.921fb54442d18hex to binary by converting 1, 9, 2, etc. each to binary."
+          },
+          {
+            "type": "p",
+            "text": "1.1001 0010 0001 1111 1011 0101 0100 0100 0100 0010 1101 0001 1000two"
+          },
+          {
+            "type": "p",
+            "text": "Then after shifting the fraction point to account for the p+1 part we have"
+          },
+          {
+            "type": "p",
+            "text": "π = 11.001001000011111101101010100010001000010110100011000two"
+          },
+          {
+            "type": "p",
+            "text": "You could use Python’s bin() function to convert the fractional part, interpreted as an integer, to hex, though you may need to pad with 0 bits. For example,"
+          },
+          {
+            "type": "code",
+            "text": ">>>(1.03).hex()\n'0x1.07ae147ae147bp+0\n\n>>>bin(0x7ae147ae147)\n'0b1111010111000010100011110101110000101000111'"
+          },
+          {
+            "type": "p",
+            "text": "The binary representation of 1.03ten is"
+          },
+          {
+            "type": "p",
+            "text": "1.000001111010111000010100011110101110000101000111two"
+          },
+          {
+            "type": "p",
+            "text": "We added a total of five zero bits, four for the 0 after the fractional point and one for converting 7 to 0111two."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "530add54b1bbe885",
+      "title": "Counting permutations with roots",
+      "titleZh": "计算具有根的排列",
+      "link": "https://www.johndcook.com/blog/2026/07/27/counting-permutations-with-roots/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-27T16:03:44.000Z",
+      "category": "engineering",
+      "keywords": [
+        "permutations",
+        "math",
+        "Mathematica"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "文章探讨了如何计算 n 个元素的排列具有 k 次根的概率。作者在之前关于排列根的讨论基础上，提供了使用 Mathematica 查找生成函数中系数的代码。为了进一步说明，文章还展示了如何使用 SymPy 实现相同的计算逻辑。这为组合数学中排列性质的研究提供了具体的计算工具和实现方法。",
+      "summaryEn": "The article explores how to calculate the probability that a permutation of n elements has a kth root. Building on a previous discussion about permutation roots, the author provides Mathematica code to find the coefficient in a generating function. To elaborate further, the article demonstrates how to implement the same computational logic using SymPy. This provides specific computational tools and implementation methods for studying permutation properties in combinatorics.",
+      "reason": "为组合数学中的排列根问题提供了 Mathematica 和 SymPy 的具体代码实现，适合需要处理复杂排列计算的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "My post from yesterday on permutation roots ends with a Mathematica code for finding the probability that a permutation of n elements has a kth root. This is done by finding the coefficient of xn in the generating function"
+          },
+          {
+            "type": "p",
+            "text": "I wanted to say more about this, and look at implementing the same code in SymPy. I was curious how well SymPy would do because I’ve noticed that LLMs often generate SymPy code since it’s an open source CAS."
+          },
+          {
+            "type": "p",
+            "text": "Wilf [1] describes the infinite product above as the exponential generating function (egf) of f(n, k), the number of permutations of n objects that have a kth root. Since egfs have a n! term in the denominator, this is also the ordinary generating function (ogf) of the probability that a randomly chosen permutation on n objects has a kth root."
+          },
+          {
+            "type": "p",
+            "text": "My first attempt at using Mathematica to probe the generating function was"
+          },
+          {
+            "type": "code",
+            "text": "expq[x_, q_] := MittagLefflerE[q, x^q]\t \np[n_, k_] :=  SeriesCoefficient[\t \n    Product[expq[x^m/m, GCD[m, k]], {m, 1, Infinity}], {x, 0, n}]"
+          },
+          {
+            "type": "p",
+            "text": "This hung forever when I tried to use it on a small example. I realized, but apparently Mathematica did not, that Infinity could be replaced by n since terms higher than n do not contribute to the coefficient of xn. With that change, the code ran quickly."
+          },
+          {
+            "type": "p",
+            "text": "This morning I tried converting the Mathematica code to Sympy; Claude did this in one shot. I also reproduced the table of f(n, k) values on page 150 of [1] to test the code. Since Wilf tabulated f(n, k), not f(n, k)/n!, I multiplied the results by n!."
+          },
+          {
+            "type": "p",
+            "text": "Here is the output:"
+          },
+          {
+            "type": "code",
+            "text": "k = 2 [1, 1, 3, 12, 60, 270, 1890, 14280, 128520, 1096200]\nk = 3 [1, 2, 4, 16, 80, 400, 2800, 22400, 181440, 1814400]\nk = 4 [1, 1, 3, 12, 60, 270, 1890, 13020, 117180, 1039500]\nk = 5 [1, 2, 6, 24, 96, 576, 4032, 32256, 290304, 2612736]\nk = 6 [1, 1, 1, 4, 40, 190, 1330, 8680, 52920, 340200]\nk = 7 [1, 2, 6, 24, 120, 720, 4320, 34560, 311040, 3110400]"
+          },
+          {
+            "type": "p",
+            "text": "and here is the SymPy code. I edited the main but the rest is verbatim from Claude."
+          },
+          {
+            "type": "code",
+            "text": "from sympy import symbols, gcd, factorial, Rational, S\n\nx = symbols('x')\n\ndef expq_coeffs(m, q, n):\n    \"\"\"\n    Truncated (degree <= n) series coefficients of\n        expq(x**m/m, q) = MittagLefflerE(q, (x**m/m)**q)\n    Since q is a positive integer:\n        E_q(y^q) = sum_j y^(q*j) / (q*j)!\n    with y = x**m/m, so the term of degree m*q*j has coefficient\n        1 / ( m**(q*j) * (q*j)! ).\n    Returns a list c[0..n] of coefficients.\n    \"\"\"\n    c = [S.Zero] * (n + 1)\n    j = 0\n    while m * q * j <= n:\n        deg = m * q * j\n        c[deg] += Rational(1, m**(q * j) * factorial(q * j))\n        j += 1\n    return c\n\ndef poly_mult_trunc(a, b, n):\n    \"\"\"Multiply two series (lists of coeffs, index = degree) truncated to degree n.\"\"\"\n    c = [S.Zero] * (n + 1)\n    for i, ai in enumerate(a):\n        if ai == 0:\n            continue\n        max_j = n - i\n        for j2 in range(max_j + 1):\n            bj = b[j2]\n            if bj != 0:\n                c[i + j2] += ai * bj\n    return c\n\ndef p(n, k):\n    \"\"\"\n    SymPy equivalent of:\n        expq[x_, q_] := MittagLefflerE[q, x^q]\n        p[n_, k_] := SeriesCoefficient[\n            Product[expq[x^m/m, GCD[m, k]], {m, 1, n}], {x, 0, n}]\n    \"\"\"\n    result = [S.Zero] * (n + 1)\n    result[0] = S.One\n    for m in range(1, n + 1):\n        q = gcd(m, k)\n        factor = expq_coeffs(m, q, n)\n        result = poly_mult_trunc(result, factor, n)\n    return result[n]\n\n# example\nif __name__ == \"__main__\":\n    for k in range(2, 8):\n        print(\"k =\", k, [factorial(n)*p(n, k) for n in range(1,11)])"
+          },
+          {
+            "type": "p",
+            "text": "[1] Herbert Wilf. Generatingfunctionology. Available online here."
+          }
+        ],
+        "translations": [
+          "我昨天关于排列根的博文最后给出了一段 Mathematica 代码，用于计算 n 个元素的排列具有 k 次根的概率。这是通过求生成函数中 xn 的系数来实现的",
+          "我想对此多说几句，并看看如何在 SymPy 中实现相同的代码。我很好奇 SymPy 的表现如何，因为我注意到 LLM 经常生成 SymPy 代码，因为它是一个开源的 CAS。",
+          "Wilf [1] 将上述无穷乘积描述为 f(n, k) 的指数生成函数（egf），其中 f(n, k) 是 n 个对象中具有 k 次根的排列数。由于 egf 的分母中包含 n! 项，它同时也是从 n 个对象中随机选取一个排列且具有 k 次根的概率的普通生成函数（ogf）。",
+          "我第一次尝试使用 Mathematica 来探究该生成函数的代码是",
+          "expq[x_, q_] := MittagLefflerE[q, x^q]\t \np[n_, k_] :=  SeriesCoefficient[\t \n    Product[expq[x^m/m, GCD[m, k]], {m, 1, Infinity}], {x, 0, n}]",
+          "当我尝试在一个小例子上运行它时，它一直卡住。我意识到，但显然 Mathematica 没有，Infinity 可以被 n 替换，因为高于 n 的项对 xn 的系数没有贡献。做出这个修改后，代码很快就运行完了。",
+          "今天早上我尝试将 Mathematica 代码转换为 SymPy；Claude 一次就完成了。我还重现了 [1] 第 150 页上的 f(n, k) 值表来测试代码。由于 Wilf 列出的是 f(n, k) 而不是 f(n, k)/n!，所以我将结果乘以了 n!。",
+          "输出如下：",
+          "k = 2 [1, 1, 3, 12, 60, 270, 1890, 14280, 128520, 1096200]\nk = 3 [1, 2, 4, 16, 80, 400, 2800, 22400, 181440, 1814400]\nk = 4 [1, 1, 3, 12, 60, 270, 1890, 13020, 117180, 1039500]\nk = 5 [1, 2, 6, 24, 96, 576, 4032, 32256, 290304, 2612736]\nk = 6 [1, 1, 1, 4, 40, 190, 1330, 8680, 52920, 340200]\nk = 7 [1, 2, 6, 24, 120, 720, 4320, 34560, 311040, 3110400]",
+          "这是 SymPy 代码。我编辑了主函数，其余部分完全照搬自 Claude。",
+          "from sympy import symbols, gcd, factorial, Rational, S\n\nx = symbols('x')\n\ndef expq_coeffs(m, q, n):\n    \"\"\"\n    Truncated (degree <= n) series coefficients of\n        expq(x**m/m, q) = MittagLefflerE(q, (x**m/m)**q)\n    Since q is a positive integer:\n        E_q(y^q) = sum_j y^(q*j) / (q*j)!\n    with y = x**m/m, so the term of degree m*q*j has coefficient\n        1 / ( m**(q*j) * (q*j)! ).\n    Returns a list c[0..n] of coefficients.\n    \"\"\"\n    c = [S.Zero] * (n + 1)\n    j = 0\n    while m * q * j <= n:\n        deg = m * q * j\n        c[deg] += Rational(1, m**(q * j) * factorial(q * j))\n        j += 1\n    return c\n\ndef poly_mult_trunc(a, b, n):\n    \"\"\"Multiply two series (lists of coeffs, index = degree) truncated to degree n.\"\"\"\n    c = [S.Zero] * (n + 1)\n    for i, ai in enumerate(a):\n        if ai == 0:\n            continue\n        max_j = n - i\n        for j2 in range(max_j + 1):\n            bj = b[j2]\n            if bj != 0:\n                c[i + j2] += ai * bj\n    return c\n\ndef p(n, k):\n    \"\"\"\n    SymPy equivalent of:\n        expq[x_, q_] := MittagLefflerE[q, x^q]\n        p[n_, k_] := SeriesCoefficient[\n            Product[expq[x^m/m, GCD[m, k]], {m, 1, n}], {x, 0, n}]\n    \"\"\"\n    result = [S.Zero] * (n + 1)\n    result[0] = S.One\n    for m in range(1, n + 1):\n        q = gcd(m, k)\n        factor = expq_coeffs(m, q, n)\n        result = poly_mult_trunc(result, factor, n)\n    return result[n]\n\n# example\nif __name__ == \"__main__\":\n    for k in range(2, 8):\n        print(\"k =\", k, [factorial(n)*p(n, k) for n in range(1,11)])",
+          "[1] Herbert Wilf. Generatingfunctionology. 可在此处在线获取。"
+        ]
+      }
+    },
+    {
+      "slug": "3411093d3e05e412",
+      "title": "Permutation roots",
+      "titleZh": "排列的根",
+      "link": "https://www.johndcook.com/blog/2026/07/26/permutation-roots/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-26T20:32:02.000Z",
+      "category": "engineering",
+      "keywords": [
+        "permutations",
+        "math",
+        "roots"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "文章定义并探讨了排列的根的概念。如果存在一个排列 τ，使得对其应用两次的效果等同于对元素列表应用排列 σ 一次，则称 σ = τ²，τ 是 σ 的平方根。作者以整数 0 到 n-1 为元素，深入解释了排列根的数学定义和性质。这为理解抽象代数和组合数学中的排列结构奠定了理论基础。",
+      "summaryEn": "The article defines and explores the concept of permutation roots. If there exists a permutation τ such that applying it twice has the same effect as applying permutation σ once to the list of elements, then σ = τ² and τ is a square root of σ. Using integers from 0 to n-1 as elements, the author deeply explains the mathematical definition and properties of permutation roots. This lays a theoretical foundation for understanding permutation structures in abstract algebra and combinatorics.",
+      "reason": "用通俗易懂的方式解释了排列根这一抽象代数概念，是数学爱好者重温组合数学基础的好材料。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Let σ be a permutation on n elements. If there is a permutation τ such that applying τ twice has the same effect on the list of elements as applying σ once, we say σ = τ² and τ is a square root of σ."
+          },
+          {
+            "type": "p",
+            "text": "If we let our n elements be the integers 0 through n − 1, then we can represent permutations by what they do to this list of numbers. In Python as a tuple of length n and compose permutations with the following function:"
+          },
+          {
+            "type": "code",
+            "text": "import itertools\n\ndef compose(sigma, tau):\n    \"Return the composition σ ∘ τ (apply τ first, then σ).\"\n    return tuple(sigma[j] for j in tau)"
+          },
+          {
+            "type": "p",
+            "text": "We can always construct permutations that have square roots by squaring a permutation. If we run the following code"
+          },
+          {
+            "type": "code",
+            "text": "tau = (3, 1, 4, 5, 2, 0)\nsigma = compose(tau, tau)"
+          },
+          {
+            "type": "p",
+            "text": "we find σ = (5, 1, 2, 0, 4, 3), and by construction (3, 1, 4, 5, 2, 0) is a square root of &sigma, though it’s not the only one."
+          },
+          {
+            "type": "p",
+            "text": "The following code shows that σ has four roots."
+          },
+          {
+            "type": "code",
+            "text": "import itertools\n\ndef numroots(sigma):\n    n = len(sigma)\n    c = 0\n    for tau in itertools.permutations(range(n)):\n        if sigma == compose(tau, tau):\n            c += 1\n    return c\n\nprint( numroots(sigma) )\nprint( numroots( (1, 2, 3, 4, 5, 0) ) )"
+          },
+          {
+            "type": "p",
+            "text": "It also shows that the rotation (1, 2, 3, 4, 5. 0) has no roots."
+          },
+          {
+            "type": "p",
+            "text": "The function numroots has runtime proportional to n! and so it’s not practical for large permutations. There is a theorem that says a permutation σ has a square root if and only if the number of cycles it has of every even length is even. See [1]."
+          },
+          {
+            "type": "p",
+            "text": "We can also define cubes and cube roots of permutations, and higher powers and roots."
+          },
+          {
+            "type": "p",
+            "text": "How common is it for permutations to have square roots, or cube roots, etc.? If you pick a random permutation on n elements, what is the probability that it has a kth root?"
+          },
+          {
+            "type": "p",
+            "text": "This is a hard question in general, but it is equivalent to finding the coefficient of xk in the infinite product"
+          },
+          {
+            "type": "p",
+            "text": "This is theorem 4.8.3 in [1]. This theorem was the motivation for writing about expq in the previous post."
+          },
+          {
+            "type": "p",
+            "text": "Although the product is infinite, there’s no need to compute terms in the product that only contribute powers of x higher than you’re interested in. The following Mathematica code will compute the probability that a permutation on n elements has a kth root."
+          },
+          {
+            "type": "code",
+            "text": "expq[x_, q_] := MittagLefflerE[q, x^q]\t \np[n_, k_] :=  SeriesCoefficient[\t \n    Product[expq[x^m/m, GCD[m, k]], {m, 1, n}], {x, 0, n}]"
+          },
+          {
+            "type": "p",
+            "text": "So, for example, the probability that a permutation of 10 elements has a square root is 29/96."
+          },
+          {
+            "type": "p",
+            "text": "[1] Herbert Wilf. Generatingfunctionology. Available online here."
+          }
+        ],
+        "translations": [
+          "设 σ 是 n 个元素上的一个排列。如果存在一个排列 τ，使得对元素列表应用两次 τ 的效果与应用一次 σ 的效果相同，我们就说 σ = τ²，并且 τ 是 σ 的平方根。",
+          "如果我们让这 n 个元素为整数 0 到 n − 1，那么我们可以通过排列对这个数字列表的作用来表示排列。在 Python 中，可以用长度为 n 的元组来表示，并使用以下函数来组合排列：",
+          "import itertools\n\ndef compose(sigma, tau):\n    \"Return the composition σ ∘ τ (apply τ first, then σ).\"\n    return tuple(sigma[j] for j in tau)",
+          "我们总是可以通过对一个排列进行平方来构造具有平方根的排列。如果我们运行以下代码",
+          "tau = (3, 1, 4, 5, 2, 0)\nsigma = compose(tau, tau)",
+          "我们得到 σ = (5, 1, 2, 0, 4, 3)，并且根据构造方式，(3, 1, 4, 5, 2, 0) 是 σ 的一个平方根，尽管它不是唯一的。",
+          "以下代码表明 σ 有四个根。",
+          "import itertools\n\ndef numroots(sigma):\n    n = len(sigma)\n    c = 0\n    for tau in itertools.permutations(range(n)):\n        if sigma == compose(tau, tau):\n            c += 1\n    return c\n\nprint( numroots(sigma) )\nprint( numroots( (1, 2, 3, 4, 5, 0) ) )",
+          "它还表明轮换 (1, 2, 3, 4, 5, 0) 没有根。",
+          "函数 numroots 的运行时间与 n! 成正比，因此对于大型排列并不实用。有一个定理指出，排列 σ 有平方根当且仅当其每个偶数长度的循环数量都是偶数。参见 [1]。",
+          "我们还可以定义排列的立方和立方根，以及更高次的幂和根。",
+          "排列具有平方根或立方根等情况有多普遍？如果你在 n 个元素上随机选取一个排列，它具有 k 次根的概率是多少？",
+          "这通常是一个困难的问题，但它等价于在无限乘积中寻找 x^k 的系数",
+          "这是 [1] 中的定理 4.8.3。这个定理是上一篇文章中讨论 expq 的动机。",
+          "尽管该乘积是无限的，但不需要计算那些只贡献比你感兴趣的更高次 x 的项。以下 Mathematica 代码将计算 n 个元素上的排列具有 k 次根的概率。",
+          "expq[x_, q_] := MittagLefflerE[q, x^q]\t \np[n_, k_] :=  SeriesCoefficient[\t \n    Product[expq[x^m/m, GCD[m, k]], {m, 1, n}], {x, 0, n}]",
+          "因此，举例来说，10 个元素的排列具有平方根的概率是 29/96。",
+          "[1] Herbert Wilf. Generatingfunctionology. 可在此处在线获取。"
+        ]
+      }
+    },
+    {
+      "slug": "3fe04b26bfb20d35",
+      "title": "exp_q",
+      "titleZh": "exp_q 函数",
+      "link": "https://www.johndcook.com/blog/2026/07/26/exp-q/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-26T18:20:36.000Z",
+      "category": "engineering",
+      "keywords": [
+        "math",
+        "power series",
+        "exp"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "文章介绍了 exp_q(x) 函数的定义及其性质。该函数通过保留指数幂级数中索引为 q 的倍数的项来定义。例如，exp_2(x) 仅保留指数幂级数中的偶数项，因此等于双曲余弦函数 cosh(x)。作者利用 Iverson 括号表示法等数学工具，展示了如何构造和分析这类截断级数函数。这为特殊函数和级数研究提供了有趣的视角。",
+      "summaryEn": "The article introduces the definition and properties of the exp_q(x) function. This function is defined by keeping only the terms in the power series for exp(x) whose indices are multiples of q. For example, exp_2(x) keeps only the even-numbered terms in the exponential power series, thus equaling the hyperbolic cosine function cosh(x). Using mathematical tools like Iverson's bracket notation, the author demonstrates how to construct and analyze such truncated series functions. This provides an interesting perspective for the study of special functions and series.",
+      "reason": "通过对指数级数进行特定规则的截断构造出特殊函数，展示了数学公式背后的奇妙联系，适合对数学分析感兴趣的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The function expq(x) is defined by taking the power series for exp(x) and keeping only the terms whose index is a multiple of q. For example, exp2(x) keeps only the even-numbered terms in the exponential power series and so equals cosh(x)."
+          },
+          {
+            "type": "p",
+            "text": "In general,"
+          },
+          {
+            "type": "p",
+            "text": "The first sum uses Iverson’s bracket notation: a Boolean expression in brackets denotes the function that returns 1 when the expression is true and zero when it is false. Here the bracket equals 1 when q divides n and is zero otherwise."
+          },
+          {
+            "type": "h2",
+            "text": "Closed forms"
+          },
+          {
+            "type": "p",
+            "text": "Let ω = exp(2πi / q). Then"
+          },
+          {
+            "type": "p",
+            "text": "This lets us find closed-form expressions for expq(x). For example, when q = 4, ω = i and"
+          },
+          {
+            "type": "p",
+            "text": "Here’s a proof of the identity above:"
+          },
+          {
+            "type": "p",
+            "text": "In the proof we used the identity"
+          },
+          {
+            "type": "p",
+            "text": "which is important in deriving the properties of the discrete Fourier transform."
+          },
+          {
+            "type": "h2",
+            "text": "Differential equations"
+          },
+          {
+            "type": "p",
+            "text": "The first time I saw the function expq(x) was in differential equations, though I didn’t know at the time the function had a name."
+          },
+          {
+            "type": "p",
+            "text": "When a course in differential equations gets to power series solutions, a common example or homework problem is to solve"
+          },
+          {
+            "type": "p",
+            "text": "for k = 3 or 4, i.e. to find a function that equals its third or fourth derivative."
+          },
+          {
+            "type": "p",
+            "text": "If the initial conditions are"
+          },
+          {
+            "type": "p",
+            "text": "and"
+          },
+          {
+            "type": "p",
+            "text": "the unique solution to"
+          },
+          {
+            "type": "p",
+            "text": "is y(x) = expk(x)."
+          },
+          {
+            "type": "h2",
+            "text": "Mathematica and Mittag-Leffler"
+          },
+          {
+            "type": "p",
+            "text": "Mathematica does not have a built-in function implementing expq(x), but it does have an implementation of the Mittag-Leffler function, and so thanks to a relation between this function and expq(x) you can implement the latter as"
+          },
+          {
+            "type": "code",
+            "text": "expq[x_, q_] := MittagLefflerE[q, x^q]"
+          },
+          {
+            "type": "h2",
+            "text": "Combinatorics"
+          },
+          {
+            "type": "p",
+            "text": "The first time I saw the notation expq(x) was in combinatorics. I had intended to include an application from that book here, but I make that the topic for the next post."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "baafa9af2d453771",
+      "title": "Why $550 Million Medical Debt only Cost $5.5 Million",
+      "titleZh": "为什么5.5亿美元的医疗债务只花了550万美元",
+      "link": "https://idiallo.com/byte-size/550-million-only-cost-5-million",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-07-26T19:03:04.000Z",
+      "category": "other",
+      "keywords": [
+        "medical debt",
+        "finance",
+        "Snap"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 6,
+        "timeliness": 6,
+        "total": 14
+      },
+      "summary": "Snap CEO 夫妇近期因大额医疗债务捐赠登上新闻头条，但媒体报道中刻意模糊了实际捐赠金额，却反复强调 5.5 亿美元这一数字。经过计算发现，他们实际捐赠的金额仅为该数字的百分之一，即 550 万美元。这种夸大金额的做法本质上是一场公关噱头，利用了医疗债务打折交易的机制来制造轰动效应。作者借此揭示了媒体和公关操作如何通过数字游戏误导公众认知。",
+      "summaryEn": "Snap's CEO and his wife recently made headlines for a large medical debt donation, but media reports vaguely emphasized the $550 million figure without specifying the actual amount. A closer calculation reveals they donated only one percent of that figure, which is $5.5 million. This inflated amount is essentially a PR stunt, leveraging the discounted nature of medical debt transactions to create a sensational effect. The author highlights how media and PR operations use number games to mislead public perception.",
+      "reason": "揭示了慈善捐赠背后的公关数字游戏，有助于读者识破媒体夸大其词的报道套路。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A couple weeks ago, the CEO of Snap was all over the news in the US because he and his wife made a large donation. The weird part about it was that every news outlet that covered it had an acrobatic title where they didn't specifically say how much they donated, yet insisted on that $550 Million amount."
+          },
+          {
+            "type": "p",
+            "text": "When you read the article a bit deeper, you can do the math. They donated one hundredth of that amount. So I wondered, why did they inflate the amount in the first place? It looked like a PR stunt."
+          },
+          {
+            "type": "p",
+            "text": "This past couple weeks, I worked on a video to explain what really happened and how we should take this news."
+          },
+          {
+            "type": "p",
+            "text": "Enjoy"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "cbe9ff26c788bd0f",
+      "title": "Advantages and disadvantages of Windows NT 3.1",
+      "titleZh": "Windows NT 3.1 的优缺点",
+      "link": "https://dfarq.homeip.net/advantages-and-disadvantages-of-windows-nt-3-1/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=advantages-and-disadvantages-of-windows-nt-3-1",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-07-27T11:00:38.000Z",
+      "category": "other",
+      "keywords": [
+        "Windows NT",
+        "operating system",
+        "history"
+      ],
+      "score": {
+        "relevance": 2,
+        "quality": 4,
+        "timeliness": 2,
+        "total": 8
+      },
+      "summary": "Windows NT 3.1 于 1993 年 7 月 27 日首次发布，作为操作系统发展史上的重要里程碑，其设计具有独特的时代特征。文章详细评估了该系统在当时的优势，如引入了全新的 NT 内核架构和更高的系统稳定性。同时也指出了其显著的缺点，包括对硬件要求过高以及软件兼容性方面的局限。通过回顾这一经典系统，梳理了微软企业级操作系统发展的早期脉络与技术取舍。",
+      "summaryEn": "Released on July 27, 1993, Windows NT 3.1 is a significant milestone in operating system history with unique characteristics of its era. The article evaluates the system's advantages at the time, such as introducing a brand-new NT kernel architecture and higher system stability. It also points out its notable disadvantages, including high hardware requirements and limitations in software compatibility. By reviewing this classic system, it outlines the early trajectory and technical trade-offs of Microsoft's enterprise-level operating systems.",
+      "reason": "为技术爱好者提供了一份经典的早期 Windows NT 系统客观评估，是了解现代 Windows 内核演进史的绝佳参考。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’ve talked a lot about the advantages and disadvantages of old milestone operating systems. But what were the advantages and disadvantages of Windows NT 3.1, first released July 27, 1993? That’s a fair question, and there are valid reasons it proved transformational even though it initially did anything but take the world by storm."
+          },
+          {
+            "type": "p",
+            "text": "Windows NT 3.1 was a landmark for Microsoft: its first fully 32-bit operating system. It was the weird offspring of Windows 3.1, IBM’s OS/2, and DEC‘s VMS. How could it have three parents? Don’t ask. Just smile and nod."
+          },
+          {
+            "type": "p",
+            "text": "OK, I’ll explain. IBM and Microsoft co-developed OS/2 as a successor to DOS, which was popular but really showing its age by the mid 1980s. But they had a fundamental disagreement over how 16-bit Windows fit into everything. Eventually the disagreements led to a very public divorce that left IBM confused. IBM soldiered alone, developing and eventually releasing OS/2 2.0 and OS/2 2.1, both of which worked rather well and gained a cult following. Microsoft took its nascent code that it intended to form the base of OS/2 3.0, renamed it Windows New Technology, and eventually released it as Windows NT 3.1."
+          },
+          {
+            "type": "p",
+            "text": "So how does DEC VMS fit in? VMS was (and remains) an operating system for minicomputers. Microsoft hired Dave Cutler, the chief architect of VMS, to be the chief architect of Windows NT. Cutler’s work on VMS and other DEC operating systems influenced the internal workings of NT."
+          },
+          {
+            "type": "p",
+            "text": "Being 32-bit, it was more stable than 16-bit Windows 3.1. It also had the ability to do something resembling real security. The implementation wasn’t perfect, but the capability was there. It also did real pre-emptive multitasking like OS/2 and Amiga."
+          },
+          {
+            "type": "p",
+            "text": "Believe it or not, in 1993 there was some question whether Intel x86 would dominate the future of the CPU field. Microsoft hedged its bets by porting NT to any 32-bit chip it could think of. Its initial target was the Intel i860, then the MIPS R3000. When it was released, it ran on two architectures besides Intel x86. One was MIPS, the chip architecture later used many consumer routers, including the venerable Linksys WRT54G. The other was the ill-fated DEC Alpha, a criminally underrated chip from the 1990s. PowerPC followed in 1995, and Sun SPARC was planned. In 1993, this versatility was an advantage. Notably missing was ARM, but ARM wasn’t getting the attention other RISC chips were in 1993. But porting to ARM later proved straightforward because Windows NT was designed to be portable. So was porting to AMD64."
+          },
+          {
+            "type": "p",
+            "text": "Aside from the improved stability and security, it had a new filesystem, NTFS, that was more efficient and faster than the ancient FAT filesystem DOS used."
+          },
+          {
+            "type": "p",
+            "text": "NT 3.1 was mostly compatible with 16-bit Windows, and its “Windows on Windows” approach to running 16-bit apps was more transparent than OS/2’s approach."
+          },
+          {
+            "type": "p",
+            "text": "Finally, its user interface was more familiar than OS/2. It was completely different under the hood, but if you could use Windows 3.1, you could use NT 3.1 too."
+          },
+          {
+            "type": "h2",
+            "text": "Disadvantages of Windows NT 3.1"
+          },
+          {
+            "type": "p",
+            "text": "In 1993, memory was expensive, and Windows NT wanted 16 megabytes of it. In 1993, 4 megabytes of RAM was standard and some systems still came with as little as 2. At the time, 16 MB of RAM cost around $600. The rest of the computer cost around $1,000. So you paid a 40% premium to get enough memory to run NT comfortably."
+          },
+          {
+            "type": "p",
+            "text": "Setting up NT 3.1 was also difficult, since Plug and Play was still a couple of years off."
+          },
+          {
+            "type": "p",
+            "text": "Driver support was also anemic. Most consumer hardware didn’t have NT drivers at first, so you had to dual boot with DOS and Windows 3.1 to use a lot of computer hardware we take for granted today. Power management was non-existent, so battery life was much better on a laptop if you ran something else. Almost anything else. It also couldn’t take advantage of power saving features of the new Energy Star PCs like an IBM PS/2E."
+          },
+          {
+            "type": "p",
+            "text": "In the early 1990s when I would get into operating system debates, I advocated for OS/2. People always said, “What about Windows NT?” That was a short argument because I only ever met one person who ran Windows NT 3.1 on a regular basis. I was working at Best Buy and he came in with a pretty long shopping list. But we couldn’t find a sound card, CD-ROM drive, or flatbed scanner that would work with NT 3.1 at the time. Or at least I couldn’t guarantee any of it would work, since it didn’t say so on the box. DOS worked. Windows 3.1 worked. Even OS/2 usually worked. For NT, you were on your own early on. The best case scenario involved lots of hunting for and downloading drivers from BBSes and Compuserve."
+          },
+          {
+            "type": "p",
+            "text": "Windows NT grew up, but 3.1 was a bit of a rush job and it showed. It was really NT 3.51, released in May 1995, that gained a lot of use, and NT 4.0, released in July 1996, that took Windows NT into something resembling mainstream. For several years, Windows NT was something that people talked about while they ran Windows 3.1 instead."
+          },
+          {
+            "type": "p",
+            "text": "Windows was one of the most important changes of 1990s computing, and Windows NT had a lot to do with that, but the promise of there someday being one Windows that could be everything to everyone, and delivering it a decade later was probably a once in a lifetime event. Microsoft has to move faster than that today."
+          },
+          {
+            "type": "h2",
+            "text": "Legacy"
+          },
+          {
+            "type": "p",
+            "text": "Windows NT 3.1 is probably the most influential operating system nobody used. It lived up to its promise, as every Microsoft operating system from Windows XP onward is its direct descendant. If you ever wondered why you have to hit CTRL-ALT-DEL to log in, it was so Windows NT could get C2 Orange Book certification from the U.S. Government."
+          },
+          {
+            "type": "p",
+            "text": "Windows NT 3.1 was Microsoft’s attempt at a “Unix killer.” That didn’t exactly happen. Both Unix and NT are far, far more widespread now than anyone had any right to imagine in 1993. But NT definitely did put a dent in proprietary Unix. There’s a lot less AIX, Solaris, and HP-UX around today. Much of that is because of Linux, but NT had something to do with it too. And Windows NT turned out to be far, far more successful than Microsoft’s ill-fated Unix product."
+          },
+          {
+            "type": "p",
+            "text": "Oddly, even though NT was designed to leave Intel behind if necessary, it may have saved Intel’s x86 architecture. Since NT could run on cheap PCs, that was what most people bought, and they put up with the limitations of a $1,600 PC. It wasn’t as good as a $3,000 RISC workstation but it was probably better than half as good. Sustaining that market share gave Intel the cashflow it needed to eventually make x86 competitive with those other chip architectures, notably starting with the Pentium Pro. You don’t hear much talk of x86 going away anymore."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "我已经谈了很多关于旧里程碑操作系统的优缺点。但是，1993年7月27日首次发布的 Windows NT 3.1 有哪些优缺点呢？这个问题问得很好，它之所以被证明具有变革性，是有充分理由的，尽管它最初并没有引起轰动。",
+          "Windows NT 3.1 是微软的一个里程碑：其首个完全 32 位的操作系统。它是 Windows 3.1、IBM 的 OS/2 和 DEC 的 VMS 的奇特结合体。它怎么会有三个“父辈”？别问了，微笑点头就好。",
+          "好吧，我来解释一下。IBM 和微软共同开发了 OS/2 作为 DOS 的继任者，DOS 虽然受欢迎，但在 1980 年代中期确实已显老态。但他们在 16 位 Windows 的定位上存在根本分歧。最终，这些分歧导致了一场公开的“分手”，让 IBM 满头雾水。IBM 独自前行，开发并最终发布了 OS/2 2.0 和 OS/2 2.1，这两款系统运行得相当好，并赢得了一批狂热追随者。微软则拿走了原本打算作为 OS/2 3.0 基础的初期代码，将其重命名为 Windows New Technology，并最终作为 Windows NT 3.1 发布。",
+          "那么 DEC VMS 是怎么掺和进来的呢？VMS 过去是（现在也是）一种用于小型计算机的操作系统。微软聘请了 VMS 的首席架构师 Dave Cutler 担任 Windows NT 的首席架构师。Cutler 在 VMS 和其他 DEC 操作系统上的工作影响了 NT 的内部运行机制。",
+          "作为 32 位系统，它比 16 位的 Windows 3.1 更稳定。它还具备了类似于真正安全防护的功能。虽然实现得并不完美，但确实具备这种能力。它还能像 OS/2 和 Amiga 一样实现真正的抢占式多任务处理。",
+          "信不信由你，在 1993 年，Intel x86 能否主导未来的 CPU 领域还是个未知数。微软通过将 NT 移植到它能想到的任何 32 位芯片上来规避风险。其最初的目标是 Intel i860，随后是 MIPS R3000。当它发布时，除了 Intel x86 之外，它还能在另外两种架构上运行。一种是 MIPS，这种芯片架构后来被许多消费级路由器采用，包括经典的 Linksys WRT54G。另一种是命运多舛的 DEC Alpha，一款在 1990 年代被严重低估的芯片。PowerPC 在 1995 年跟进，Sun SPARC 也在计划之中。在 1993 年，这种多平台支持是一个优势。值得注意的是，当时缺少了 ARM，但在 1993 年 ARM 并没有像其他 RISC 芯片那样受到关注。不过，后来证明移植到 ARM 非常简单，因为 Windows NT 的设计初衷就是具备可移植性。移植到 AMD64 同样如此。",
+          "除了提升的稳定性和安全性外，它还引入了新的文件系统 NTFS，比 DOS 使用的古老 FAT 文件系统更高效、更快速。",
+          "NT 3.1 基本兼容 16 位 Windows，而且其运行 16 位应用程序的“Windows on Windows”机制比 OS/2 的方式更加透明。",
+          "最后，它的用户界面比 OS/2 更令人熟悉。虽然底层完全不同，但如果你会用 Windows 3.1，你就能用 NT 3.1。",
+          "Windows NT 3.1 的缺点",
+          "在 1993 年，内存非常昂贵，而 Windows NT 需要 16 兆内存。1993 年，4 兆 RAM 是标准配置，有些系统甚至只有 2 兆。当时，16 MB RAM 的价格约为 600 美元。而电脑的其他部分大约花费 1000 美元。因此，为了获得足够流畅运行 NT 的内存，你需要多支付 40% 的溢价。",
+          "安装配置 NT 3.1 也很困难，因为 Plug and Play（即插即用）技术还要等几年才会出现。",
+          "驱动支持也非常匮乏。起初，大多数消费级硬件都没有 NT 驱动程序，因此你必须与 DOS 和 Windows 3.1 双系统启动，才能使用许多我们今天习以为常的计算机硬件。电源管理根本不存在，所以如果你在笔记本电脑上运行其他系统，电池续航会好得多。几乎任何其他系统都行。它也无法利用像 IBM PS/2E 这样的新型 Energy Star 电脑的节能功能。",
+          "在 20 世纪 90 年代初，当我参与操作系统辩论时，我支持 OS/2。人们总是说：“那 Windows NT 呢？”这个争论通常很短，因为我只遇到过一个人经常使用 Windows NT 3.1。当时我在 Best Buy 工作，他带着一份很长的购物清单进来。但我们找不到当时能与 NT 3.1 兼容的声卡、CD-ROM 驱动器或平板扫描仪。或者至少我无法保证它们能用，因为包装盒上没写。DOS 可以用。Windows 3.1 可以用。甚至 OS/2 通常也能用。对于 NT，在早期你只能靠自己。最好的情况是花大量时间在 BBSes 和 Compuserve 上寻找并下载驱动程序。",
+          "Windows NT 逐渐成熟，但 3.1 版本有些仓促，而且问题很明显。真正被广泛使用的是 1995 年 5 月发布的 NT 3.51，而 1996 年 7 月发布的 NT 4.0 则将 Windows NT 带入了类似主流的地位。有好几年的时间，Windows NT 只是人们谈论的话题，而他们实际运行的却是 Windows 3.1。",
+          "Windows 是 20 世纪 90 年代计算领域最重要的变革之一，而 Windows NT 在其中发挥了重要作用。但是，承诺未来会有一个能满足所有人需求的统一 Windows，并在十年后兑现这一承诺，这可能是千载难逢的事件。如今，Microsoft 必须以更快的速度行动。",
+          "遗产",
+          "Windows NT 3.1 可能是最具影响力却无人使用的操作系统。它兑现了承诺，因为从 Windows XP 开始的每一款 Microsoft 操作系统都是它的直系后代。如果你曾好奇为什么必须按 CTRL-ALT-DEL 才能登录，那是为了让 Windows NT 能够获得美国政府的 C2 Orange Book 认证。",
+          "Windows NT 3.1 是 Microsoft 打造“Unix 杀手”的尝试。这并没有完全实现。如今 Unix 和 NT 的普及程度远远超出了任何人在 1993 年所能想象的。但 NT 确实对专有 Unix 造成了冲击。如今 AIX、Solaris 和 HP-UX 已经少了很多。这在很大程度上是因为 Linux，但 NT 也起到了一定作用。而且事实证明，Windows NT 比 Microsoft 命运多舛的 Unix 产品要成功得多。",
+          "奇怪的是，尽管 NT 的设计初衷是在必要时抛弃 Intel，但它可能拯救了 Intel 的 x86 架构。由于 NT 可以在廉价的 PC 上运行，大多数人购买的就是这种 PC，并且他们忍受了 1600 美元 PC 的局限性。它不如 3000 美元的 RISC 工作站好，但可能比其一半的性能要好。维持这种市场份额为 Intel 提供了所需的现金流，使其最终能够让 x86 与其他芯片架构竞争，尤其是从 Pentium Pro 开始。你现在几乎听不到关于 x86 淘汰的讨论了。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。他自 1991 年起便从事专业的计算机写作，因此当复古计算机还算新事物时，他就在撰写相关文章了。他自 1994 年起在 IT 行业从事专业工作，并自 2013 年起专注于漏洞管理领域。他拥有 Security+ 和 CISSP 认证。如今他每周撰写五篇博客，主要探讨 1975 年至 2000 年间的复古计算机与复古游戏。"
+        ]
+      }
+    }
+  ]
+}
