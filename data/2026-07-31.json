@@ -1,0 +1,1953 @@
+{
+  "date": "2026-07-31",
+  "generatedAt": "2026-07-30T17:47:37.576Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2459,
+    "filteredArticles": 12,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈聚焦于AI安全威胁的升级与底层技术范式的演进。一方面，AI技术正催生新型攻击向量，如通过Word传播的自我复制蠕虫，同时密码学界正加速向后量子算法过渡以应对未来挑战。另一方面，苹果新推出的硬件租赁计划引发了对消费者权益与设备受限模式的广泛争议。此外，从固态电池的产业竞逐到AI时代设计美学的孕育，底层硬件与交互范式的变革正持续重塑科技生态。",
+  "articles": [
+    {
+      "slug": "f34faab803310ac4",
+      "title": "AI Worming through Word",
+      "titleZh": "通过 Word 传播的 AI 蠕虫",
+      "link": "https://simonwillison.net/2026/Jul/29/ai-worming-through-word/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-29T18:43:03.000Z",
+      "category": "security",
+      "keywords": [
+        "prompt injection",
+        "AI worm",
+        "Microsoft Word"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 7,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "Håkon Måløy 发现了一种针对 Microsoft Word 的新型提示词注入变体，能够将攻击升级为自我复制的蠕虫。攻击者在文档中植入隐藏指令，当 Copilot for Word 处理该文档作为素材时，会将这些指令解释为用户的请求并执行。这表明 AI 集成办公软件面临严重的供应链式安全风险。",
+      "summaryEn": "Håkon Måløy discovered a new prompt injection variant targeting Microsoft Word that can upgrade attacks into self-replicating worms. Attackers embed hidden instructions in a document, which Copilot for Word then interprets as part of the user's request when processing the document. This highlights severe supply-chain-like security risks in AI-integrated office software.",
+      "reason": "揭示了 AI 办公助手如何被利用实现蠕虫式传播，对关注 AI 安全的读者有重要警示作用。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "29th July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "AI Worming through Word (via) Neat new prompt injection variant by Håkon Måløy, who found a way to upgrade prompt injection attacks against Microsoft Word to full self-replicating worms:"
+          },
+          {
+            "type": "quote",
+            "text": "An attacker places hidden instructions in a document that is later used as source material in Copilot for Word. Copilot may interpret those instructions as part of the user’s request, causing it to manipulate the document being drafted or edited. Copilot may then also copy the hidden instructions into the resulting document, turning that document into a new carrier. If the carrier is subsequently used in another Copilot-assisted workflow, the instructions can trigger again and propagate into further documents, even without the attacker’s original document being present."
+          },
+          {
+            "type": "p",
+            "text": "We've seen plenty of hidden white-on-white text before - the kids are using it in their job applications now - but this is the first one I've seen that deliberately copies instructions to self-replicate itself."
+          },
+          {
+            "type": "p",
+            "text": "It was responsibly disclosed to Microsoft who then had 144 days to work on a fix, but so far (unsurprisingly) there's no mitigation that covers the full class of attack."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1ef900d67892d700",
+      "title": "Read This Before You Buy That TV Streaming Stick",
+      "titleZh": "购买电视流媒体棒前必读",
+      "link": "https://krebsonsecurity.com/2026/07/read-this-before-you-buy-that-tv-streaming-stick/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-07-30T16:49:00.000Z",
+      "category": "security",
+      "keywords": [
+        "streaming stick",
+        "security",
+        "botnet"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 23
+      },
+      "summary": "安全专家多年来一直警告廉价电视流媒体设备存在将用户网络出租给陌生人的风险。最新分析发现，这些设备还会伪装成手机在 AI 生成的网站上点击广告，参与大规模欺诈在线商家和广告网络的活动。这表明此类设备不仅威胁用户隐私，还可能使其在不知情的情况下成为网络犯罪同谋。",
+      "summaryEn": "Security experts have long warned that cheap TV streaming devices rent out users' internet connections to strangers. A new analysis reveals these devices also spoof mobile phones to click ads on AI-generated websites, participating in large-scale operations to defraud online merchants and ad networks. This shows such devices threaten user privacy and can unknowingly make users accomplices in cybercrime.",
+      "reason": "揭露了廉价流媒体设备背后隐藏的复杂广告欺诈网络，对消费者选购硬件有直接指导意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Security experts have been sounding the alarm for years about the risks of using generic TV boxes that promise unlimited content streaming for a one-time fee, warning that they secretly rent the user’s Internet connection out to strangers. But a groundbreaking new analysis finds these devices also routinely spoof themselves as mobile phones clicking ads on AI-generated websites as part of sprawling operation that seeks to defraud online merchants and advertising networks."
+          },
+          {
+            "type": "p",
+            "text": "Pedro Falé is a threat researcher with the security firm Bitsight. Falé told KrebsOnSecurity he was able to peer inside a vast and complex ad fraud network by registering an expired domain name that was used to coordinate fake ad clicks across a particularly popular brand of these streaming devices known as H96."
+          },
+          {
+            "type": "p",
+            "text": "An H96 TV streaming device currently advertised for sale on Amazon."
+          },
+          {
+            "type": "p",
+            "text": "Falé said the domain he scooped up was previously used for telemetry, periodically collecting full hardware information and the entire list of installed apps from tens of thousands of H96 streaming sticks plugged into television sets around the globe. But upon inspecting the traffic being funneled to the domain, he discovered nearly all of the TV boxes transmitting data claimed to be mobile phone models from a variety of manufacturers, including Samsung, Vivo, Huawei, and Xiaomi."
+          },
+          {
+            "type": "p",
+            "text": "“We noticed something was wildly wrong,” Falé said. “Multiple devices reporting to this factory Android TV Box backdoor were ‘phones.'”"
+          },
+          {
+            "type": "p",
+            "text": "Image: Bitsight."
+          },
+          {
+            "type": "p",
+            "text": "The researcher found all of the devices reported having the same two apps installed, and that those apps were made by a company called Zhejiang Fengwo IoT Technology Ltd, an entity founded in 2019 in mainland China which operates an ad-publishing portfolio under the name Fengwo Group. Further investigation into the Fengwo Group revealed it has registered multiple patents that match the inner workings of these apps."
+          },
+          {
+            "type": "p",
+            "text": "“Bitsight TRACE identified several Hong Kong, Singapore, and single person ‘legal’ shell identities used to collect the monetization and traced the operation back to a mainland China company known as Zhejiang Fengwo IoT Technology Co., Ltd, which operates under the Fengwo Group,” Falé wrote in a report released today about their findings."
+          },
+          {
+            "type": "p",
+            "text": "Falé said an analysis of the apps shows they help to coordinate an ad fraud network that uses these H96 devices as a captive traffic source to click on ads at AI-generated websites operated by the Fengwo Group."
+          },
+          {
+            "type": "p",
+            "text": "Bitsight discovered the websites contain machine-generated news articles and graphics across a range of categories, including finance, health, education, gaming, music and food blogs. But they also found none of those sites displayed ads unless the device visiting the page matched the spoofed mobile profile of these H96 devices."
+          },
+          {
+            "type": "h2",
+            "text": "AI DIGITAL HUMANS"
+          },
+          {
+            "type": "p",
+            "text": "The domain for the Fengwo Group — fwgcloud[.]com — claims the company is “redefining the boundaries of human-AI interaction,” and that it has created more than 120,000 “AI digital humans” available to rent for everything from emotional companionship to 24/7 customer service and creative design."
+          },
+          {
+            "type": "p",
+            "text": "The homepage for fwgcloud dot com."
+          },
+          {
+            "type": "p",
+            "text": "Falé said the Fengwo Group’s domain shared its SSL certificate data with other domains associated with the apps found on H96 devices, specifically the phone spoofing mechanism. He noted the domain also has an internal wiki platform that directly ties the Fengwo Group to a proprietary implementation of a Google-built visual programming language called Blockly, which was originally designed to help kids learn how to write software."
+          },
+          {
+            "type": "p",
+            "text": "According to Bitsight, the Fengwo Group’s employees use Blockly to build the sham websites, allowing low-skilled operators to drag blocks of code together in their Blockly editor — without any need to understand what the underlying code blocks do or how they work."
+          },
+          {
+            "type": "p",
+            "text": "The Blockly homepage."
+          },
+          {
+            "type": "p",
+            "text": "“An operator can drag blocks together in their Blockly editor, to define each fraud routine, given a task type,” reads Bitsight’s report. “Once the routine is saved, it gets exported as JavaScript and uploaded to the S3 buckets. An operator doesn’t need as much understanding of the underlying technicalities, as it is all set in place for ease of use.”"
+          },
+          {
+            "type": "p",
+            "text": "Bitsight even found one of the Fengwo Group app developers mentioning exactly these advantages, noting the developer remarked that “only a small number of highly-skilled developers are needed to build the template execution-unit images,” and that “developers who create execution units from those templates have significantly lower technical requirements, greatly reducing the company’s operating costs.”"
+          },
+          {
+            "type": "p",
+            "text": "Falé said if a user’s H96 streaming stick is selected for a specific fraud task, it will be pushed the appropriate Blockly module according to the task desired, which can include silently launching a web browser, visiting websites, browsing pages, managing tabs, and clicking on ads."
+          },
+          {
+            "type": "p",
+            "text": "To ensure the TV boxes masquerading as mobile phones can reliably click on ads displayed via the AI-generated websites, the Fengwo group “fuses three vision and reasoning systems into a single interface,” allowing the bots to correctly identify an ad on the webpage and navigate the site much like a human would, the Bitsight report observed."
+          },
+          {
+            "type": "p",
+            "text": "Examples of ad landing pages linked to the Fengwo Group. Image: Bitsight."
+          },
+          {
+            "type": "h2",
+            "text": "TV ON? PROXY. TV OFF? AD FRAUD"
+          },
+          {
+            "type": "p",
+            "text": "Bitsight found the H96 devices were either relaying residential proxy traffic or participating in ad fraud, but never both at the same time. In fact, they concluded that when these TV boxes detect an HDMI signal from an attached television — indicating the user intends to stream video content — the box is usually functioning as a residential proxy. When the TV is off, it switches back to waiting for ad fraud jobs."
+          },
+          {
+            "type": "p",
+            "text": "Falé said he believes the TV boxes are set up this way because its ad fraud activities are far more resource intensive and could interfere with the device’s stated purpose — streaming video content over the Internet."
+          },
+          {
+            "type": "p",
+            "text": "Despite repeated warnings from the FBI and security industry leaders about the security and privacy risks of using these streaming devices, major e-commerce providers like Amazon, Best Buy, Newegg and others continue to sell hundreds of different models and brands that bundle unofficial versions of Google’s Android operating system and are frequently marketed (via online influencers) as a way to access a broad array of streaming services and live broadcasts without a subscription."
+          },
+          {
+            "type": "p",
+            "text": "Image: fbi.gov."
+          },
+          {
+            "type": "p",
+            "text": "In addition to enlisting the user’s TV box in ad fraud networks, these off-brand streaming devices almost universally come with residential proxy software pre-installed. This software rents the user’s Internet address out to anonymous paying customers, who run the gamut from aggressive content scraping firms to ticket scalpers and outright cybercriminals."
+          },
+          {
+            "type": "p",
+            "text": "What’s more, because these generic (and generally dirt cheap) TV boxes are all horribly insecure by default and bereft of any kind of authentication, installing one on your home or office network only invites further mischief. In January, the proxy tracking service Synthient documented how multiple botnets had rapidly enslaved millions of TV boxes using a complex interplay of security vulnerabilities in both the residential proxy software and the streaming devices themselves."
+          },
+          {
+            "type": "h2",
+            "text": "SHOW ME THE MONEY"
+          },
+          {
+            "type": "p",
+            "text": "Bitsight said it tracked approximately 38,000 TV boxes globally phoning home to the expired Fengwo Group domain, and based on that number the report estimates this ad fraud network brings in revenues of close to $50,000 a day (not counting substantial revenue from the residential proxy side of the business). However, Falé emphasized that these estimates are highly conservative and based on telemetry from just one of the Fengwo Group’s core (but older) domains."
+          },
+          {
+            "type": "p",
+            "text": "As for the Fengwo Group’s claim to have 120,000 “digital humans” at their disposal, Bitsight’s report concludes it could be just a clever marketing scheme and/or a way to avoid drawing suspicion to the company’s operations."
+          },
+          {
+            "type": "p",
+            "text": "“Historically, when dealing with proxy services or DDoS, we sometimes see these websites undertake inconspicuous facades, so as not to advertise their DDoS capability or botnet size,” Falé wrote in the report. “This could also be the case here.”"
+          },
+          {
+            "type": "p",
+            "text": "If the Fengwo Group truly does have tens of thousands of “AI humans” at its beck and call, it does not appear to have dedicated any of them to fielding inquiries from its own website. KrebsOnSecurity sought comment from the Fengwo Group by emailing the contact address listed on the company’s homepage, but the request bounced back with the reply, “Your message couldn’t be delivered to postmaster@fwgcloud[.]com. Their inbox is full, or it’s getting too much mail right now.”"
+          },
+          {
+            "type": "p",
+            "text": "As Bitsight’s analysis shows, when it comes to TV boxes and streaming sticks, it’s best to stick to name brands from reputable manufacturers, and then to be sparing and careful with any apps you choose to install on the device — as many of those can bundle residential proxy software as well. Google says consumers can confirm whether or not a device is built with the official Android TV OS and Play Protect certification by following these instructions."
+          },
+          {
+            "type": "p",
+            "text": "Additionally, Synthient maintains a running list of IoT devices that have been known to ship to consumers with residential proxy software and other malicious apps pre-installed. Careful readers will notice Synthient’s list includes other IoT devices apart from streaming sticks and boxes: As the FBI has warned, residential proxy software has also been found in other popular consumer IoT devices from random brands, particularly digital photo frames."
+          }
+        ],
+        "translations": [
+          "安全专家多年来一直对使用通用电视盒的风险发出警告，这些电视盒承诺一次性付费即可无限流媒体播放，专家警告称它们会暗中将用户的互联网连接出租给陌生人。但一项突破性的新分析发现，这些设备还经常伪装成手机，在AI生成的网站上点击广告，这是旨在欺诈在线商家和广告网络的庞大行动的一部分。",
+          "Pedro Falé 是安全公司 Bitsight 的威胁研究员。Falé 告诉 KrebsOnSecurity，他通过注册一个过期域名，得以窥探一个庞大而复杂的广告欺诈网络，该域名曾被用于协调一种特别受欢迎的流媒体设备品牌（称为 H96）上的虚假广告点击。",
+          "目前在 Amazon 上宣传出售的一款 H96 电视流媒体设备。",
+          "Falé 表示，他抢注的这个域名以前用于遥测，定期从全球插在电视机上的数以万计的 H96 流媒体棒中收集完整的硬件信息和已安装应用程序的完整列表。但在检查流向该域名的流量时，他发现几乎所有传输数据的电视盒都自称是来自各种制造商的手机型号，包括 Samsung、Vivo、Huawei 和 Xiaomi。",
+          "“我们注意到有些大错特错，”Falé 说。“向这个出厂 Android TV Box 后门报告的多个设备竟然是‘手机’。”",
+          "图片：Bitsight。",
+          "该研究员发现，所有设备都报告安装了相同的两个应用程序，这些应用程序由一家名为 Zhejiang Fengwo IoT Technology Ltd 的公司开发，该公司于2019年在中国大陆成立，以 Fengwo Group 的名义运营广告发布业务。对 Fengwo Group 的进一步调查发现，它注册了多项与这些应用程序内部工作原理相匹配的专利。",
+          "“Bitsight TRACE 识别出几个香港、新加坡和单人‘合法’空壳身份，这些身份被用来收集变现资金，并将该行动追溯到了一家名为 Zhejiang Fengwo IoT Technology Co., Ltd 的中国大陆公司，该公司在 Fengwo Group 下运营，”Falé 在今天发布的关于他们调查结果的报告中写道。",
+          "Falé 表示，对这些应用程序的分析表明，它们帮助协调了一个广告欺诈网络，该网络将这些 H96 设备作为专属流量源，用于点击由 Fengwo Group 运营的 AI 生成的网站上的广告。",
+          "Bitsight 发现这些网站包含涵盖金融、健康、教育、游戏、音乐和美食博客等一系列类别的机器生成的新闻文章和图片。但他们还发现，除非访问页面的设备与这些 H96 设备伪装的移动设备配置相匹配，否则这些网站都不会显示广告。",
+          "AI 数字人",
+          "Fengwo Group 的域名 fwgcloud[.]com 声称该公司正在“重新定义人类与 AI 交互的边界”，并且它已经创建了超过 120,000 个“AI 数字人”，可供出租用于从情感陪伴到 24/7 客户服务和创意设计等方方面面。",
+          "fwgcloud dot com 的主页。",
+          "Falé 表示，蜂巢集团（Fengwo Group）的域名与 H96 设备上应用相关的其他域名（特别是手机伪装机制）共享了其 SSL 证书数据。他指出，该域名还有一个内部 wiki 平台，直接将蜂巢集团与一种名为 Blockly 的专有实现联系起来。Blockly 是 Google 开发的一种可视化编程语言，最初旨在帮助儿童学习如何编写软件。",
+          "据 Bitsight 称，蜂巢集团的员工使用 Blockly 来构建虚假网站，这使得技能较低的运营人员可以在他们的 Blockly 编辑器中将代码块拖拽在一起，而无需了解底层代码块的作用或工作原理。",
+          "Blockly 主页。",
+          "Bitsight 的报告中写道：“在给定任务类型的情况下，运营人员可以在他们的 Blockly 编辑器中拖拽代码块，以定义每个欺诈例程。一旦例程被保存，它就会被导出为 JavaScript 并上传到 S3 存储桶中。运营人员不需要对底层技术细节有太多了解，因为这一切都已设置妥当，方便使用。”",
+          "Bitsight 甚至发现蜂巢集团的一位应用开发者恰好提到了这些优势，并指出该开发者表示“只需要少数高技能开发者来构建模板执行单元镜像”，而且“基于这些模板创建执行单元的开发者所需的技术要求显著降低，大大降低了公司的运营成本。”",
+          "Falé 表示，如果用户的 H96 流媒体电视棒被选中执行特定的欺诈任务，系统会根据所需任务向其推送相应的 Blockly 模块，这可能包括静默启动网络浏览器、访问网站、浏览页面、管理标签页以及点击广告。",
+          "Bitsight 的报告指出，为了确保伪装成手机的电视盒子能够可靠地点击通过 AI 生成的网站上显示的广告，蜂巢集团“将三个视觉和推理系统融合到一个界面中”，使得机器人能够像人类一样正确识别网页上的广告并浏览网站。",
+          "与蜂巢集团相关的广告着陆页示例。图片来源：Bitsight。",
+          "电视开启？代理。电视关闭？广告欺诈。",
+          "Bitsight 发现 H96 设备要么在转发住宅代理流量，要么在参与广告欺诈，但绝不会同时进行这两项操作。事实上，他们得出结论，当这些电视盒子检测到来自所连接电视的 HDMI 信号——表明用户打算流式传输视频内容——时，该盒子通常作为住宅代理运行。当电视关闭时，它会切换回等待广告欺诈任务的状态。",
+          "Falé 表示，他认为电视盒子之所以这样设置，是因为其广告欺诈活动消耗的资源要多得多，可能会干扰设备既定的用途——即通过互联网流式传输视频内容。",
+          "尽管 FBI 和安全行业领导者多次警告使用这些流媒体设备存在安全和隐私风险，但 Amazon、Best Buy、Newegg 等主要电子商务提供商仍在继续销售数百种不同型号和品牌的设备，这些设备捆绑了非官方版本的 Google Android 操作系统，并且经常（通过网络红人）被宣传为无需订阅即可访问各种流媒体服务和直播节目的一种方式。",
+          "图片来源：fbi.gov。",
+          "除了将用户的电视盒子纳入广告欺诈网络外，这些杂牌流媒体设备几乎无一例外地预装了住宅代理软件。该软件将用户的互联网地址出租给匿名的付费客户，这些客户涵盖了从激进的内容抓取公司到黄牛党，再到彻头彻尾的网络犯罪分子等各类群体。",
+          "更重要的是，由于这些通用（通常极其廉价）的电视盒子默认安全性极差且缺乏任何身份验证机制，将其安装在你的家庭或办公网络上只会招致更多的麻烦。今年1月，代理追踪服务 Synthient 记录了多个僵尸网络如何利用住宅代理软件和流媒体设备本身安全漏洞的复杂交互，迅速控制了数百万台电视盒子。",
+          "钱从哪来",
+          "Bitsight 表示，其追踪到全球约有38,000台电视盒子正在向已过期的蜂窝集团（Fengwo Group）域名发送回传数据，基于这一数字，报告估计该广告欺诈网络每天带来近5万美元的收入（尚未计入其住宅代理业务带来的可观收入）。然而，Falé 强调，这些估计非常保守，且仅基于蜂窝集团一个核心（但较旧的）域名的遥测数据。",
+          "至于蜂窝集团声称拥有12万个可供其支配的“数字人”，Bitsight 的报告得出结论，这可能只是一种巧妙的营销策略，和/或是一种避免引起人们对其运营活动产生怀疑的手段。",
+          "“从历史上看，在处理代理服务或 DDoS 时，我们有时会看到这些网站采用不引人注目的伪装，以免宣传其 DDoS 能力或僵尸网络规模，”Falé 在报告中写道。“这里可能也是这种情况。”",
+          "如果蜂窝集团确实拥有数以万计听其调遣的“AI人”，它似乎并没有指派其中任何一个来处理来自其自身网站的咨询。KrebsOnSecurity 通过向该公司主页上列出的联系地址发送电子邮件来寻求蜂窝集团的置评，但该请求被退回，回复称：“您的邮件无法发送至 postmaster@fwgcloud[.]com。他们的收件箱已满，或者目前收到的邮件过多。”",
+          "正如 Bitsight 的分析所示，在购买电视盒子和流媒体电视棒时，最好坚持选择信誉良好的制造商生产的知名品牌，然后对你选择安装在设备上的任何应用都要谨慎且精挑细选——因为其中许多应用也可能捆绑住宅代理软件。Google 表示，消费者可以按照这些说明来确认设备是否搭载了官方的 Android TV OS 并通过了 Play Protect 认证。",
+          "此外，Synthient 维护着一份不断更新的 IoT 设备清单，这些设备已知在交付给消费者时预装了住宅代理软件和其他恶意应用。细心的读者会注意到，Synthient 的清单中除了流媒体电视棒和电视盒子外，还包括其他 IoT 设备：正如 FBI 所警告的那样，在其他随机品牌的流行消费级 IoT 设备中也发现了住宅代理软件，尤其是数码相框。"
+        ]
+      }
+    },
+    {
+      "slug": "37a1e544eed9524b",
+      "title": "Quoting Matthew Green",
+      "titleZh": "引用 Matthew Green 的话",
+      "link": "https://simonwillison.net/2026/Jul/29/matthew-green/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-29T18:18:15.000Z",
+      "category": "security",
+      "keywords": [
+        "post-quantum",
+        "cryptography",
+        "RSA"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "密码学家 Matthew Green 指出，当前正处于从基于 EC 和 RSA 的传统公钥算法向基于新问题的后量子算法过渡的历史性时期。这也是为什么目前有如此多像 HAWK 这样的标准正在被考虑。作者认为，如果有一个完美的时机来上线大规模的公共密码分析能力，那就是现在。",
+      "summaryEn": "Cryptographer Matthew Green notes that we are in a historic transition from traditional public-key algorithms based on EC and RSA to post-quantum algorithms based on novel problems. This is why many standards like HAWK are currently being considered. The author believes if there was ever a perfect time for a massive new public cryptanalysis capability to come online, it is now.",
+      "reason": "点明了密码学向抗量子计算过渡的关键历史节点，对理解当前密码学标准演进极具参考价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "29th July 2026"
+          },
+          {
+            "type": "quote",
+            "text": "Right now we’re in the midst of a historic transition from traditional public-key algorithms based on EC-based cryptography and RSA, moving over to new post-quantum algorithms based on novel problems. This is why there are so many standards like HAWK being considered. If there was ever a perfect time for a massive new public cryptanalysis capability to come on line, we’re in it. So unless AIs succeed in undermining all of our hard problems altogether (or we live in Impagliazzo’s Minicrypt) then this could not be a better time for AI to get good at cryptanalysis. In the best case, the result is that we gain real confidence in the problems we’ve identified, and the cryptanalysis literature gets a lot more robust. Hopefully."
+          },
+          {
+            "type": "p",
+            "text": "— Matthew Green, on Anthropic's recent cryptography work"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "cfcccf116d3f84e6",
+      "title": "The AI Aesthetic",
+      "titleZh": "AI 美学",
+      "link": "https://blog.jim-nielsen.com/2026/ai-aesthetic/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-07-29T19:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "design",
+        "aesthetic",
+        "UI"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 21
+      },
+      "summary": "每个时代精神都会带来应对其挑战的独特设计习语，有些随潮流消失，有些则融入更深层的软件交互范式中。例如，汉堡菜单（≡）因移动设备屏幕尺寸限制而普及，现已扩展到软件设计的各个领域。AI 时代同样正在孕育属于其挑战的全新设计美学和交互模式。",
+      "summaryEn": "Every zeitgeist brings new design idioms unique to its challenges; some fade as fads, while others bake into deeper software interaction paradigms. For instance, the hamburger menu (≡) proliferated due to mobile screen constraints and has since spread across software design. The AI era is similarly spawning new design aesthetics and interaction models tailored to its specific challenges.",
+      "reason": "从设计史角度洞察 AI 时代可能催生的新交互范式，适合产品经理和设计师阅读以获取前瞻性启发。",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "8217a6ff04ed3049",
+      "title": "Apple Says iOS 27 ‘Restricted Mode’ Isn’t for Users Who Miss Payments in New Apple Upgrade Program",
+      "titleZh": "苹果表示 iOS 27“受限模式”并非针对新 Apple Upgrade 计划中逾期付款的用户",
+      "link": "https://9to5mac.com/2026/07/28/apple-says-ios-27-restricted-mode-isnt-for-new-upgrade-program-leases/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-29T20:56:33.000Z",
+      "category": "opinion",
+      "keywords": [
+        "iOS 27",
+        "Apple",
+        "restricted mode"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 20
+      },
+      "summary": "iOS 27 开发者测试版中的代码显示了一种“受限模式”，启用后设备只能使用辅助功能阅读器、App Store、健康、放大镜、电话、时钟、设置、钱包和密码等少数应用。外界合理推测该功能与 Apple Upgrade 计划中用户逾期付款有关，但苹果随后澄清该模式并非用于此目的。",
+      "summaryEn": "Code in the iOS 27 developer beta reveals a \"Restricted Mode\" that, when engaged, limits the device to a few apps like Accessibility Reader, App Store, Health, Magnifier, Phone, Clock, Settings, Wallet, and Passwords. Many reasonably speculated this was related to missed payments in the Apple Upgrade program, but Apple clarified that the mode is not intended for this purpose.",
+      "reason": "揭示了 iOS 27 隐藏的设备锁定功能细节，对关注苹果软硬件生态控制策略的读者有较高价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Marcus Mendes",
+        "siteName": "9to5Mac",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple has told The Verge that missed lease payments will not activate the “Restricted Mode” system currently under development in iOS 27. What the new system is meant for remains uncertain. Here are the details."
+          },
+          {
+            "type": "h2",
+            "text": "A bit of context"
+          },
+          {
+            "type": "p",
+            "text": "Last week, after Bloomberg reported that Apple would soon announce a new leasing program, 9to5Mac reported on a new system included in iOS 27 called App Managed Features."
+          },
+          {
+            "type": "p",
+            "text": "As of iOS 27 beta 4, on iPhones with Developer mode enabled, a new App Managed Features menu item appears under the new Managed Financing Testing section in Settings > Developer."
+          },
+          {
+            "type": "p",
+            "text": "Our reporting also included the actual alert interface that will be displayed when Restricted Mode is activated."
+          },
+          {
+            "type": "p",
+            "text": "At the center of this new system is a daemon called appmanagedfeaturesd, which allows an authorized financing provider’s app to enroll a device, check the status of the financing agreement, and apply restrictions when a contract is no longer in good standing."
+          },
+          {
+            "type": "p",
+            "text": "When those restrictions are enabled, App Managed Features uses Apple’s ManagedSettings framework to block certain apps from launching. A limited set of built-in apps remains available, alongside the financing provider’s own app, any apps the provider chooses to allow, and certain apps with access to critical-alert entitlements."
+          },
+          {
+            "type": "p",
+            "text": "The system also integrates with Find My through a new, dedicated financing context called FMDPartnerFinancingContext and a dedicated entitlement named com.apple.FindMyDevice.PartnerFinancing.access. That integration does not appear to give the financing provider access to the device’s location. Instead, findmydeviced implements a separate lock type called Partner Finance Lock, or PFLock."
+          },
+          {
+            "type": "p",
+            "text": "The implementation also includes a finance-specific device-attestation label, com.apple.icloud.findmydeviced.scrt-baa.partner-finance, and communicates with Apple’s activation infrastructure. After an erase, FindMyUICore and Setup Assistant can display a financing-lock challenge, with MobileActivation handling the authorization required to activate the device."
+          },
+          {
+            "type": "p",
+            "text": "In other words, the App Managed Features, ManagedSettings, Find My, FindMyUICore, and MobileActivation components found in iOS 27 form a complete system for restricting and enforcing the status of a financed device, with the financing partner able to determine when restrictions are applied and which additional apps remain available."
+          },
+          {
+            "type": "p",
+            "text": "All of these frameworks and finance-specific components were introduced in iOS 27 beta 1 and, as of iOS 27 beta 4, remain in place."
+          },
+          {
+            "type": "h2",
+            "text": "iOS 27’s Restricted Mode not meant for Apple Upgrade"
+          },
+          {
+            "type": "p",
+            "text": "Apple has confirmed to The Verge that it will not activate Restricted Mode over missed payments of the Apple Upgrade leasing program announced earlier today."
+          },
+          {
+            "type": "p",
+            "text": "Apple, however, did not tell The Verge what Restricted Mode is intended for. One possibility is that it was developed for financing programs offered by carriers, retailers, or other partners outside Apple Upgrade, potentially including markets where device restrictions are already used to enforce installment agreements."
+          },
+          {
+            "type": "p",
+            "text": "In India, lenders have worked in the past with smartphone manufacturers to remotely block financed devices after borrowers missed payments. As The Economic Times reported last year, the Reserve Bank of India (RBI) told non-bank lenders to stop the practice in late 2024, amid concerns about lenders sharing customers’ default information with device manufacturers."
+          },
+          {
+            "type": "p",
+            "text": "The regulator may now permit a more limited version of the practice. As Reuters reported in May, the RBI proposed allowing lenders to restrict certain functions on financed phones once a loan is at least 90 days overdue, provided the borrower agreed to the measure in the contract and received advance notice."
+          },
+          {
+            "type": "p",
+            "text": "Under the proposal, essential functions (including incoming calls, emergency services, internet access, and government alerts) would have to remain available, much like what appears to be under development for iOS 27."
+          },
+          {
+            "type": "p",
+            "text": "With all of that in mind, the good news is that Apple Upgrade customers won’t have to worry about Restricted Mode if they miss an installment. The more unsettling part is that the system exists, and sooner or later, we’ll likely learn for what (or where) Apple’s financing partners intend to use it."
+          },
+          {
+            "type": "h3",
+            "text": "Worth checking out on Amazon"
+          },
+          {
+            "type": "li",
+            "text": "Geoffrey Cain – ‘Steve Jobs in Exile’"
+          },
+          {
+            "type": "li",
+            "text": "David Pogue – ’Apple: The First 50 Years’"
+          },
+          {
+            "type": "li",
+            "text": "MacBook Neo"
+          },
+          {
+            "type": "li",
+            "text": "Logitech MX Master 4"
+          },
+          {
+            "type": "li",
+            "text": "AirPods Pro 3"
+          },
+          {
+            "type": "li",
+            "text": "AirTag (2nd Generation) – 4 Pack"
+          },
+          {
+            "type": "li",
+            "text": "Apple Watch Series 11"
+          },
+          {
+            "type": "li",
+            "text": "Wireless CarPlay adapter"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": [
+          "苹果已告知 The Verge，未按时支付租赁费用不会触发目前正在 iOS 27 中开发的“Restricted Mode”系统。这个新系统的具体用途尚不明确。以下是详细情况。",
+          "一些背景信息",
+          "上周，在 Bloomberg 报道苹果即将宣布一项新的租赁计划后，9to5Mac 报道了 iOS 27 中包含的一个名为 App Managed Features 的新系统。",
+          "从 iOS 27 beta 4 开始，在启用了 Developer mode 的 iPhone 上，Settings > Developer 下的新 Managed Financing Testing 部分会出现一个新的 App Managed Features 菜单项。",
+          "我们的报道还包含了激活 Restricted Mode 时将显示的实际警告界面。",
+          "这个新系统的核心是一个名为 appmanagedfeaturesd 的守护进程，它允许经过授权的融资提供商应用注册设备、检查融资协议状态，并在合同不再正常履行时施加限制。",
+          "当启用这些限制时，App Managed Features 会使用 Apple 的 ManagedSettings 框架来阻止某些应用启动。有限的一组内置应用仍然可用，同时可用的还有融资提供商自己的应用、提供商选择允许的任何应用，以及某些具有关键警报权限访问权限的应用。",
+          "该系统还通过名为 FMDPartnerFinancingContext 的全新专用融资上下文和名为 com.apple.FindMyDevice.PartnerFinancing.access 的专用权限与 Find My 集成。这种集成似乎并没有让融资提供商获得对设备位置的访问权限。相反，findmydeviced 实现了一种名为 Partner Finance Lock 或 PFLock 的独立锁定类型。",
+          "该实现还包括一个特定于融资的设备证明标签 com.apple.icloud.findmydeviced.scrt-baa.partner-finance，并与 Apple 的激活基础设施进行通信。在抹掉设备后，FindMyUICore 和 Setup Assistant 可以显示融资锁定挑战，由 MobileActivation 处理激活设备所需的授权。",
+          "换言之，iOS 27 中的 App Managed Features、ManagedSettings、Find My、FindMyUICore 和 MobileActivation 组件构成了一个完整的系统，用于限制和执行融资设备的状态，融资合作伙伴可以决定何时施加限制以及哪些额外应用保持可用。",
+          "所有这些框架和特定于融资的组件都是在 iOS 27 beta 1 中引入的，并且截至 iOS 27 beta 4 仍然存在。",
+          "iOS 27 的 Restricted Mode 并非为 Apple Upgrade 设计",
+          "Apple 已向 The Verge 证实，对于今天早些时候宣布的 Apple Upgrade 租赁计划，如果用户未按时付款，它不会激活 Restricted Mode。",
+          "然而，Apple 并未告诉 The Verge Restricted Mode 的用途。一种可能性是，它是为 Apple Upgrade 之外的运营商、零售商或其他合作伙伴提供的融资计划而开发的，可能包括那些已经使用设备限制来执行分期付款协议的市场。",
+          "在印度，贷款机构过去曾与智能手机制造商合作，在借款人逾期未还款时远程锁定融资设备。据 The Economic Times 去年报道，出于对贷款机构与设备制造商共享客户违约信息的担忧，印度储备银行（RBI）在 2024 年底要求非银行贷款机构停止这种做法。",
+          "监管机构现在可能允许这种做法的一个更受限的版本。正如路透社在5月份报道的那样，印度储备银行（RBI）提议允许贷款机构在贷款逾期至少90天后限制融资手机上的某些功能，前提是借款人在合同中同意该措施并收到提前通知。",
+          "根据该提议，基本功能（包括来电、紧急服务、互联网访问和政府警报）必须保持可用，这很像 iOS 27 似乎正在开发中的功能。",
+          "考虑到所有这些，好消息是 Apple Upgrade 客户如果错过分期付款，也不必担心受限模式。更令人不安的是这个系统确实存在，而且迟早我们可能会了解到 Apple 的融资合作伙伴打算将其用于何处（或用于什么目的）。",
+          "亚马逊上值得一看",
+          "Geoffrey Cain – 《流放中的史蒂夫·乔布斯》",
+          "David Pogue – 《Apple：最初的50年》",
+          "MacBook Neo",
+          "Logitech MX Master 4",
+          "AirPods Pro 3",
+          "AirTag（第二代）- 4件装",
+          "Apple Watch Series 11",
+          "无线 CarPlay 适配器",
+          "FTC：我们使用可产生收益的自动联盟链接。更多。"
+        ]
+      }
+    },
+    {
+      "slug": "372cfd011065fa71",
+      "title": "The Differences Between the New ‘Apple Upgrade’ and the Old ‘iPhone Upgrade Program’",
+      "titleZh": "新“Apple Upgrade”与旧“iPhone Upgrade Program”的区别",
+      "link": "https://9to5mac.com/2026/07/30/apple-upgrade-vs-iphone-upgrade-program-here-are-the-key-differences/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-30T15:56:10.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "iPhone",
+        "upgrade program"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 19
+      },
+      "summary": "苹果本周推出了 Apple Upgrade 计划并停止了原有的 iPhone Upgrade Program，两者虽有相似之处但存在关键差异。除了 9to5Mac 指出的区别外，新计划还有一个隐藏条件：通过 Apple Upgrade 租赁 iPhone 时，用户必须在美国三大运营商之一拥有蜂窝网络账户。",
+      "summaryEn": "Apple launched the new Apple Upgrade program this week and discontinued the iPhone Upgrade Program; despite similarities, there are key differences. Beyond what 9to5Mac noted, there is at least one catch: when leasing an iPhone through Apple Upgrade, users must have a cellular account with one of the big three U.S. carriers.",
+      "reason": "明确对比了新旧苹果设备升级计划的差异与隐藏条款，对打算通过官方渠道租赁 iPhone 的消费者极具实用价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ryan Christoffel",
+        "siteName": "9to5Mac",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple Upgrade launched this week, and the iPhone Upgrade Program is being discontinued as a result. But despite some similarities, the two offerings are not the same. Here are the key differences."
+          },
+          {
+            "type": "h2",
+            "text": "#1: Leasing vs financing"
+          },
+          {
+            "type": "p",
+            "text": "Apple Upgrade is a leasing program, whereas the iPhone Upgrade Program used financing."
+          },
+          {
+            "type": "p",
+            "text": "That means if you get a new iPhone through Apple Upgrade, you won’t actually own it. You’ll make monthly payments for a 12-month or 24-month term, then have the option to either return the iPhone outright, exchange it for a new model, or pay the buyout fee to own it."
+          },
+          {
+            "type": "p",
+            "text": "The iPhone Upgrade Program also involved monthly payments. But with that program you actually owned the device, albeit with financial strings attached."
+          },
+          {
+            "type": "p",
+            "text": "Because of the way Apple Upgrade lets you buy your iPhone at the end of the term, and has no fees, the difference between leasing and financing is functionally pretty small. But they are technically different models."
+          },
+          {
+            "type": "h2",
+            "text": "#2: Apple Upgrade has lower monthly payments, with a catch"
+          },
+          {
+            "type": "p",
+            "text": "Similar to car leases vs financing, Apple Upgrade lets you get a new iPhone at a lower monthly cost than the iPhone Upgrade Program."
+          },
+          {
+            "type": "p",
+            "text": "It’s partly more affordable because AppleCare isn’t included. But it’s also a lower cost because you won’t pay off the full value of the iPhone by the end of the lease term."
+          },
+          {
+            "type": "p",
+            "text": "Instead, with Apple Upgrade you’ll pay only the majority of the iPhone’s cost during the lease. At the end of the lease, if you want to buy the iPhone, you’ll have to pay the remaining buyout cost. In the iPhone Upgrade Program, the cost of the full product is split into monthly payments from the start, so there’s no extra charge at the end."
+          },
+          {
+            "type": "h2",
+            "text": "#3: AppleCare: Optional vs mandatory"
+          },
+          {
+            "type": "p",
+            "text": "Apple Upgrade does not include AppleCare by default. Though you always have the option of adding it to your transaction. And it might be a good idea if you’re worried about damaging a leased device."
+          },
+          {
+            "type": "p",
+            "text": "The iPhone Upgrade Program always included AppleCare. There was no way to buy an iPhone without that added protection."
+          },
+          {
+            "type": "p",
+            "text": "But the inclusion came with a higher monthly cost, so it wasn’t technically an advantage—just a difference."
+          },
+          {
+            "type": "h2",
+            "text": "#4: Apple Upgrade isn’t limited to the iPhone"
+          },
+          {
+            "type": "p",
+            "text": "The iPhone Upgrade Program, as the name suggests, is an iPhone-exclusive plan. But Apple Upgrade is much broader."
+          },
+          {
+            "type": "p",
+            "text": "With Apple Upgrade, you can lease not only an iPhone, but also a Mac, iPad, and/or Apple Watch."
+          },
+          {
+            "type": "p",
+            "text": "In theory, you could lease all four products and pay for them monthly. Lease terms are generally longer for Macs and iPads and shorter for iPhone and Apple Watch. You’ll need to apply separately for each new product you want to lease through Apple Upgrade."
+          },
+          {
+            "type": "p",
+            "text": "For more details on Apple Upgrade, see our coverage here. You can find a full list of monthly subscription costs for each eligible product here."
+          },
+          {
+            "type": "h3",
+            "text": "Best iPhone accessories"
+          },
+          {
+            "type": "li",
+            "text": "AirPods Pro 3 (now only $199, down from $249)"
+          },
+          {
+            "type": "li",
+            "text": "MagSafe Car Mount for iPhone"
+          },
+          {
+            "type": "li",
+            "text": "10-year AirTag battery case"
+          },
+          {
+            "type": "li",
+            "text": "100W USB-C fast charging power adapter"
+          },
+          {
+            "type": "li",
+            "text": "AirTag 2 (1-pack / 4-pack)"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": [
+          "Apple Upgrade 本周上线，iPhone Upgrade Program 因此将逐步停用。尽管两者有相似之处，但它们并不完全相同。以下是主要区别。",
+          "#1：租赁与分期付款",
+          "Apple Upgrade 是一项租赁计划，而 iPhone Upgrade Program 采用的是分期付款。",
+          "这意味着，如果你通过 Apple Upgrade 获得一部新 iPhone，你实际上并不拥有它。你将按 12 个月或 24 个月的期限按月付款，然后可以选择直接归还 iPhone、更换新机型，或者支付买断费用来拥有它。",
+          "iPhone Upgrade Program 也需要按月付款。但通过该计划，你实际上拥有该设备，尽管附带了一些财务条件。",
+          "由于 Apple Upgrade 允许你在期满时买断 iPhone 且无需额外手续费，租赁与分期付款在功能上的区别其实很小。但从技术上讲，它们是不同的模式。",
+          "#2：Apple Upgrade 月供更低，但有附加条件",
+          "与汽车租赁和分期付款类似，与 iPhone Upgrade Program 相比，Apple Upgrade 让你能以更低的月供获得一部新 iPhone。",
+          "它之所以更实惠，部分原因是未包含 AppleCare。但月供较低也是因为你在租赁期满时并未付清 iPhone 的全部价值。",
+          "相反，在 Apple Upgrade 中，你在租赁期间只需支付 iPhone 的大部分费用。租赁期满时，如果你想买下这部 iPhone，就必须支付剩余的买断费用。而在 iPhone Upgrade Program 中，产品总价从一开始就分摊到每月的付款中，因此最后无需额外付费。",
+          "#3：AppleCare：可选与强制",
+          "Apple Upgrade 默认不包含 AppleCare。不过，你随时可以选择在交易中添加它。如果你担心损坏租赁的设备，添加它可能是个不错的选择。",
+          "iPhone Upgrade Program 始终包含 AppleCare。如果不加这种额外保护，就无法购买 iPhone。",
+          "但包含该服务意味着更高的月供，因此从技术上讲，这并不是一种优势——只是一种区别。",
+          "#4：Apple Upgrade 不限于 iPhone",
+          "顾名思义，iPhone Upgrade Program 是一项 iPhone 专属计划。但 Apple Upgrade 的范围要广得多。",
+          "通过 Apple Upgrade，你不仅可以租赁 iPhone，还可以租赁 Mac、iPad 和/或 Apple Watch。",
+          "理论上，你可以同时租赁这四款产品并按月付款。Mac 和 iPad 的租赁期通常较长，而 iPhone 和 Apple Watch 的租赁期较短。你需要为想通过 Apple Upgrade 租赁的每款新产品单独提出申请。",
+          "有关 Apple Upgrade 的更多详细信息，请参阅我们的报道。你可以在此处找到每款符合条件产品的月度订阅费用完整列表。",
+          "最佳 iPhone 配件",
+          "AirPods Pro 3（现仅售 $199，原价 $249）",
+          "iPhone MagSafe 车载支架",
+          "10年续航 AirTag 电池保护壳",
+          "100W USB-C 快充电源适配器",
+          "AirTag 2（1件装 / 4件装）",
+          "FTC：我们使用可产生收益的自动联盟营销链接。了解更多。"
+        ]
+      }
+    },
+    {
+      "slug": "3e90a5e08abe7124",
+      "title": "Pluralistic: The stupidest imaginable excuses for surveillance pricing (30 Jul 2026)",
+      "titleZh": "Pluralistic：监控定价最愚蠢的借口（2026年7月30日）",
+      "link": "https://pluralistic.net/2026/07/30/pay-for-privacy/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-07-30T12:51:03.000Z",
+      "category": "opinion",
+      "keywords": [
+        "surveillance",
+        "pricing",
+        "privacy"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 19
+      },
+      "summary": "作者严厉批评了企业为“监控定价”（即根据用户隐私数据定制价格）寻找的荒谬借口。文章回顾了自 1850 年以来旧金山商会的种种行径，并提及了防篡改投票机、RFID 汽车盗窃以及如何对抗平台“屎化”（enshittification）等相关话题，呼吁警惕以隐私为代价的商业模式。",
+      "summaryEn": "The author harshly criticizes the absurd excuses companies make for \"surveillance pricing\"—tailoring prices based on user privacy data. The article references the San Francisco Chamber of Commerce's actions since 1850 and touches on topics like Diebold voting machines, RFID car theft, and fighting platform \"enshittification,\" urging vigilance against business models that sacrifice privacy.",
+      "reason": "以犀利的视角剖析了监控定价背后的荒谬逻辑，适合关注数字隐私和科技伦理的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "The stupidest imaginable excuses for surveillance pricing: Since 1850, San Francisco's Chamber of Commerce has been pissing in our mouths and calling it rain."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: RIP Wau Holland; Diebold voting machines suck; How to steal an RFID-locked car; Pirates are big spenders; You can't fight enshittification."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "The stupidest imaginable excuses for surveillance pricing (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "With \"surveillance pricing,\" businesses have finally found something AI can do way, way, way better than people: price gouging."
+          },
+          {
+            "type": "p",
+            "text": "As the name suggests, \"surveillance pricing\" is the practice of charging every customer a different price for every transaction, based on the massive surveillance dossiers that Big Tech companies and data-brokers have assembled on everyone in the world. Congress hasn't updated federal consumer privacy law since 1988 (when they passed a law banning the disclosure of VHS rentals), so pretty much any form of consumer surveillance is fair game."
+          },
+          {
+            "type": "p",
+            "text": "This is where the AI comes in. One thing AI is indisputably great for is multivariate statistical analysis. You can feed an AI \"behavioral data\" (information about where you go, what you do, what you buy, who you talk to and what you say) about all of your customers and ask it to cluster them according to their shared traits. Then you can direct the AI to automatically run a series of small experiments to discover the maximum markup each group will stomach under which circumstances."
+          },
+          {
+            "type": "p",
+            "text": "This works without you having to direct the AI to rip off certain groups of people – it will simply find the most vulnerable people and rip them off the most. If you're hiring in an industry that practices a lot of tacit racial discrimination, a system like this can figure out on its own that people of color typically accept lower wages because there are fewer employers bidding for their labor, and recommend lowball salary offers, all without you ever typing \"please be racist\" into your AI prompt."
+          },
+          {
+            "type": "p",
+            "text": "This works so well that Google has announced that it is their plan for making a profit off of AI, after losing hundreds of billions of dollars on chatbots:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/01/21/cod-marxism/#wannamaker-slain"
+          },
+          {
+            "type": "p",
+            "text": "In the before times, marketers and demographers had to dream up demographic categories based on limited data and run focus groups to figure out how to maximize revenue from each market segment. Now an AI can segment the data to any degree you choose, and continuously, automatically experiment on each segment to find their weak spots."
+          },
+          {
+            "type": "p",
+            "text": "It's \"theory-free.\" You don't have to discover why a group is willing to pay more under a given set of circumstances, you merely have to observe and weaponize this fact. You don't have to know why one group of purchasers consistently accept higher prices between 6AM and 8AM – you can just automatically jack up prices on them without knowing or caring that you're gouging parents of young children who are re-ordering essential supplies while trying to get their kids to school in the morning."
+          },
+          {
+            "type": "p",
+            "text": "I thought up that example. I don't know if it's really happening. But here's something that really is happening: ecommerce sites charge parents of newborns extra when they order thermometers in the middle of the night. I'm not saying that anyone ever sat down and said, \"Parents with sick children will pay whatever we charge for a thermometer at 2AM.\" They didn't have to: this is the kind of thing an automated system can do without any human intervention:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.ftc.gov/system/files/ftc_gov/pdf/p246202_surveillancepricing6bstudy_researchsummaries_redacted.pdf"
+          },
+          {
+            "type": "p",
+            "text": "The goal of surveillance pricing is to shift all the \"consumer surplus\" (the difference between the highest price you're willing to pay and the price you actually pay) to companies. It's a form of cod-Marxism where you are gouged according to your ability (to pay) and charged according to the desperation of your need:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/01/11/socialism-for-the-wealthy/#rugged-individualism-for-the-poor"
+          },
+          {
+            "type": "p",
+            "text": "The problems of surveillance pricing are well documented. Under Biden, the FTC did a landmark study on the practice, developing a rich factual record that documents the role surveillance pricing plays in the affordability crisis:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/07/24/gouging-the-all-seeing-eye/#i-spy"
+          },
+          {
+            "type": "p",
+            "text": "Companies are already using this technology to rip you off, and they're slavering for the chance to do more of it. Instacart was recently caught marking up some shoppers' items by as much as a third:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography"
+          },
+          {
+            "type": "p",
+            "text": "The problem is that as much as companies love this, shoppers hate it. Last summer, Delta announced that it was going to surveillance price every seat on every flight, only to face such a massive backlash that they had to make another announcement bemoaning the fact that we'd all misunderstood their (unambiguous and extremely damning) announcement and they were actually going to do no such thing:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/07/30/efficiency-washing/#medallion-clubbed"
+          },
+          {
+            "type": "p",
+            "text": "One thing the Mamdani campaign impressed upon every politician in the country is that people are pissed about affordability and they will support anyone who stands up for the public against AI-equipped price gougers. The problem of course is that those price gougers are highly organized and have deep treasuries (stuffed with money they stole from us). With surveillance pricing, politicians face a familiar conundrum: if they do the thing that's popular with voters, they'll enrage donors."
+          },
+          {
+            "type": "p",
+            "text": "One way to cut this knot is to enact legislation that seems to address the problem, but stuff it with so many loopholes that it does nothing. This lets you declare yourself the people's champion without doing anything to protect them from the donors who prey on your voters. That's the approach they took in Maryland:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/30/something-must-be-done/#there-ive-done-something"
+          },
+          {
+            "type": "p",
+            "text": "But in California, they're actually doing something about surveillance pricing. AB-2564 is a smart, well-written bill that bans surveillance pricing. It contains an easily evaluated test for surveillance pricing and carves out legitimate reasons for offering different prices for the same purchase (for example, when it costs more to deliver the product or service):"
+          },
+          {
+            "type": "p",
+            "text": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB2564"
+          },
+          {
+            "type": "p",
+            "text": "Now we're in for the hard yards of turning this bill into a law. That's where California's cities come in. When municipal governments pass resolutions supporting a state bill, it makes it much easier to get that bill through the state legislature (and conversely, without support from major cities, it's that much easier to kill the bill before it becomes law)."
+          },
+          {
+            "type": "p",
+            "text": "A few days ago, the San Francisco Board of Supervisors was on the verge of passing a resolution in support of AB-2564. Now, that vote is stalled, thanks to a letter sent by the San Francisco Chamber of Commerce, an organization that has been pissing in San Franciscans' faces and telling them it was raining since 1850:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.sfexaminer.com/news/community/board-not-yet-ready-to-weigh-in-on-state-surveillance-pricing-ban/article_0ae4d143-cced-4988-abda-0b71bcbe524c.html"
+          },
+          {
+            "type": "p",
+            "text": "The Chamber's letter is – to use a technical term – flaming garbage. It raises the most spurious objections imaginable, claims about the bill's language that are belied by its plain, easily understood text. These objections are demolished in a letter the Electronic Frontier Foundation sent to the Supervisors:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.eff.org/document/letter-sf-bos-re-surveillance"
+          },
+          {
+            "type": "p",
+            "text": "In the letter, EFF explains that claims that surveillance pricing will lower prices are overblown and not borne out by evidence. But more importantly – as EFF points out – privacy is a human right, and the idea that you should have to give up your privacy to get a fair price is just a fancy way of saying that privacy should be the exclusive preserve of people who can afford to pay more:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.eff.org/wp/privacy-first-better-way-address-online-harms#Legislation"
+          },
+          {
+            "type": "p",
+            "text": "EFF's letter goes on to address the Chamber's objections. Far from creating uncertainty about which conduct the bill addresses, AB-2564 crisply defines surveillance pricing as:"
+          },
+          {
+            "type": "quote",
+            "text": "a customized price for a good for a specific consumer or group of consumers based, in whole or in part, on personally identifiable information collected through electronic surveillance."
+          },
+          {
+            "type": "p",
+            "text": "The Chamber raises other tired objections, falsely claiming that banning surveillance pricing will end common discounting strategies like offering seniors cheaper movie tickets, or giving cheaper rates to retain customers who call to cancel their service. EFF replies by pointing out that all the Chamber's concerns are covered by the three comprehensive carve-outs in the bill: the ability to charge higher rates when it costs more to service a given customer; offering discounts to retain customers who want to cancel their service; and finally, discounts for criteria anyone can meet (like an \"early bird special\"), for membership in a broadly defined group (like \"seniors\"), or for participation in a loyalty program."
+          },
+          {
+            "type": "p",
+            "text": "The San Francisco Supervisors could have figured out at a glance that the Chamber was bullshitting them. All it takes is a cursory read of the statute. But now they don't even have to do that: EFF has painstakingly debullshittified the Chamber's FUD."
+          },
+          {
+            "type": "p",
+            "text": "Surveillance pricing is grossly offensive. When a company charges me $0.50 for a product that it charges you $1 for, they're essentially saying that your dollars are worth half as much as mine are. Companies shouldn't be able to reach into your wallet or your bank account and chop your money in half:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/06/24/price-discrimination/#"
+          },
+          {
+            "type": "p",
+            "text": "No wonder AB-2564 has plenty of backers, from EFF to Consumers Union:"
+          },
+          {
+            "type": "p",
+            "text": "https://advocacy.consumerreports.org/press_release/california-state-assembly-passes-key-bill-to-prohibit-surveillance-pricing/"
+          },
+          {
+            "type": "p",
+            "text": "San Francisco's city government should be on that list of supporters."
+          },
+          {
+            "type": "p",
+            "text": "(Image: Takkk, CC BY-SA 3.0, modified)"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Louis Brandeis: The Empiricist https://prospect.org/2026/07/30/aug-2026-louis-brandeis-the-empiricist/"
+          },
+          {
+            "type": "li",
+            "text": "The Rent Is Higher Than You Think https://economicpopulist.substack.com/p/the-rent-is-higher-than-you-think"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago RIP, Wau Holland, founder of the legendary hacker clan, the Chaos Computer Club. https://web.archive.org/web/20010805192406/https://www.wired.com/news/culture/0,1284,45728,00.html"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Diebold voting machines can be beaten with a switch-flip https://web.archive.org/web/20061007120702/http://openvotingfoundation.org/tiki-read_article.php?articleId=1"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago How thieves steal RFID-enabled cars https://web.archive.org/web/20060812065423/https://www.wired.com/wired/archive/14.08/carkey_pr.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Official London anti-terrorist publication says anarchists should be reported to local police https://web.archive.org/web/20110801233618/https://communitysafe.gov.uk/articles/5962-griffin-weekly-briefing-sheet-attached/attachments/801/download.pdf"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago French copyright enforcers: “Pirates are big spenders on legit content” https://www.techdirt.com/2011/07/28/another-day-another-study-that-says-pirates-are-best-customers-this-time-hadopi/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Perma-cookie wars continue: KISSMetrics sneaks cookies back onto your computer even if you turn off every cookie vector https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1898390"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago You can't fight enshittification https://pluralistic.net/2025/07/31/unsatisfying-answers/#systemic-problems"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: EFFecting Change: Who the Machine Serves, Aug 12\nhttps://www.eff.org/event/effecting-change-who-machine-serves"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/program/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "AI and the Enshittification Era (The Weekly Show with Jon Stewart)\nhttps://www.youtube.com/watch?v=-dAIJRjb-Bw"
+          },
+          {
+            "type": "li",
+            "text": "AI is not inevitable (Betakit)\nhttps://www.youtube.com/watch?v=DbiTVkq1WHo"
+          },
+          {
+            "type": "li",
+            "text": "A Conversation with Lina Khan (Law and Economy Student Network)\nhttps://www.youtube.com/live/7Ak5LZllqwE"
+          },
+          {
+            "type": "li",
+            "text": "Will AI ever come alive, and what happens if it does? (BBC News)\nhttps://www.youtube.com/watch?v=Lzk4o3fPZZE"
+          },
+          {
+            "type": "li",
+            "text": "Waarom jij straks het hulpje van AI bent (VPRO)\nhttps://www.youtube.com/watch?v=tOnvR2fs8CA"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "监控定价最愚蠢的借口：自1850年以来，旧金山商会一直往我们嘴里撒尿，却称之为下雨。",
+          "看看这个：赏心悦目之物。",
+          "客体永久性：愿 Wau Holland 安息；Diebold 投票机太烂了；如何偷走 RFID 锁定的汽车；海盗是挥金如土的消费者；你无法对抗“屎化”（enshittification）。",
+          "即将出席的活动：爱丁堡、悉尼、墨尔本、布莱顿、伦敦、南本德。",
+          "近期出席的活动：我去过的地方。",
+          "最新书籍：你们继续读，我继续写。",
+          "即将出版的书：正如我所说，我会继续写下去。",
+          "版权页：其余所有信息。",
+          "监控定价最愚蠢的借口（永久链接）",
+          "借助“监控定价”，企业终于找到了一件 AI 能比人类做得好得多、多得多的事情：哄抬物价。",
+          "顾名思义，“监控定价”是指根据大型科技公司和数据经纪人为世界上每个人收集的大规模监控档案，在每笔交易中向每位客户收取不同的价格。自1988年以来（当时他们通过了一项禁止披露 VHS 录像带租赁记录的法律），国会就没有更新过联邦消费者隐私法，因此几乎任何形式的消费者监控都是合法的。",
+          "这正是 AI 发挥作用的地方。AI 毋庸置疑的强项之一是多变量统计分析。你可以将所有客户的“行为数据”（关于你去哪里、做什么、买什么、和谁交谈以及说了什么的信息）输入给 AI，并要求它根据他们的共同特征进行聚类。然后，你可以指示 AI 自动运行一系列小规模实验，以发现每组客户在不同情况下能承受的最高加价幅度。",
+          "这一切无需你指示 AI 去敲诈特定人群——它会自动找出最脆弱的人群并狠狠敲诈他们。如果你在一个存在大量隐性种族歧视的行业中招聘，这样的系统可以自己弄清楚，由于竞标有色人种劳动力的雇主较少，他们通常会接受较低的工资，从而建议给出极低的薪水报价，而你完全不需要在 AI 提示词中输入“请保持种族歧视”。",
+          "这种方法非常有效，以至于 Google 在聊天机器人上亏损了数千亿美元之后，宣布这就是他们从 AI 中获利的计划：",
+          "https://pluralistic.net/2026/01/21/cod-marxism/#wannamaker-slain",
+          "在过去，营销人员和人口统计学家不得不根据有限的数据凭空构想出人口统计类别，并开展焦点小组调查，以弄清楚如何从每个细分市场中实现收入最大化。现在，AI 可以根据你选择的任何程度对数据进行细分，并持续、自动地对每个细分市场进行实验，以寻找他们的弱点。",
+          "这是“无理论”的。你不必探究为什么某个群体在特定情况下愿意支付更多，你只需观察并利用这一事实即可。你不必知道为什么有一群买家在早上6点到8点之间总是接受更高的价格——你可以直接自动提高对他们的定价，而无需知道或关心你正在敲诈那些在早上试图送孩子上学时重新订购必需品的幼儿父母。",
+          "那个例子是我编的。我不知道现实中是否真的存在。但下面这件事却是真真切切正在发生的：电商网站会在半夜向新生儿父母收取额外的体温计费用。我并不是说有人坐下来明确表示过，“凌晨两点，生病孩子的父母愿意为体温计支付任何价格。”他们不需要这么做：这正是自动化系统无需任何人工干预就能做到的事情：",
+          "https://www.ftc.gov/system/files/ftc_gov/pdf/p246202_surveillancepricing6bstudy_researchsummaries_redacted.pdf",
+          "监控定价的目标是将所有的“消费者剩余”（你愿意支付的最高价格与你实际支付的价格之间的差额）转移到公司手中。这是一种伪马克思主义，根据你的（支付）能力来敲诈你，并根据你需求的迫切程度来收费：",
+          "https://pluralistic.net/2025/01/11/socialism-for-the-wealthy/#rugged-individualism-for-the-poor",
+          "监控定价的问题有充分的记录。在拜登执政期间，FTC 对这种做法进行了一项具有里程碑意义的研究，积累了丰富的事实记录，证明了监控定价在可负担性危机中所扮演的角色：",
+          "https://pluralistic.net/2024/07/24/gouging-the-all-seeing-eye/#i-spy",
+          "公司已经在利用这项技术来坑你的钱，而且他们正垂涎欲滴地寻找机会做更多这样的事。Instacart 最近就被抓到将部分购物者的商品价格提高了多达三分之一：",
+          "https://pluralistic.net/2025/12/11/nothing-personal/#instacartography",
+          "问题在于，尽管公司喜欢这种做法，但购物者却深恶痛绝。去年夏天，达美航空宣布将对每个航班的每个座位实行监控定价，结果却面临巨大的抵制声浪，以至于他们不得不再次发表声明，哀叹我们都误解了他们（明确且极具谴责性的）声明，并表示他们实际上根本不会这么做：",
+          "https://pluralistic.net/2025/07/30/efficiency-washing/#medallion-clubbed",
+          "Mamdani 的竞选活动给全国每一位政治家留下的一个深刻印象是，人们对可负担性感到愤怒，他们会支持任何站出来保护公众、对抗配备 AI 的价格欺诈者的人。当然，问题在于这些价格欺诈者组织严密且资金雄厚（塞满了从我们这里掠夺来的钱）。在监控定价问题上，政治家们面临着一个熟悉的困境：如果他们做受选民欢迎的事情，就会激怒金主。",
+          "解开这个结的一种方法是颁布看似能解决问题的立法，但里面塞满了漏洞，以至于毫无作用。这能让你宣称自己是人民的捍卫者，却不用采取任何实际行动来保护他们免受那些掠夺选民的捐款人的侵害。这就是他们在马里兰州采取的做法：",
+          "https://pluralistic.net/2026/04/30/something-must-be-done/#there-ive-done-something",
+          "但在加利福尼亚州，他们正在对监控定价采取实质性行动。AB-2564 是一项明智且起草精良的法案，旨在禁止监控定价。它包含一个易于评估的监控定价测试标准，并为同一次购买提供不同价格留出了合理的例外情况（例如，当交付产品或服务的成本更高时）：",
+          "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB2564",
+          "现在，我们面临着将这项法案变成法律的艰难阶段。这就轮到加州各个城市发挥作用了。当市政府通过支持某项州法案的决议时，会让该法案在州议会获得通过变得容易得多（反之亦然，如果没有主要城市的支持，在法案成为法律之前将其扼杀也容易得多）。",
+          "几天前，旧金山市议会即将通过一项支持 AB-2564 的决议。现在，由于旧金山商会发出的一封信，该投票被搁置了。这个组织自1850年以来一直在往旧金山人脸上撒尿，却告诉他们那是在下雨：",
+          "https://www.sfexaminer.com/news/community/board-not-yet-ready-to-weigh-in-on-state-surveillance-pricing-ban/article_0ae4d143-cced-4988-abda-0b71bcbe524c.html",
+          "用专业术语来说，商会的这封信就是一堆燃烧的垃圾。它提出了能想象到的最站不住脚的反对意见，对法案措辞的指控被其清晰易懂的文本所反驳。这些反对意见在电子前哨基金会发给市议会的信中被彻底驳倒：",
+          "https://www.eff.org/document/letter-sf-bos-re-surveillance",
+          "在信中，EFF 解释说，关于监控定价会降低价格的说法被夸大了，而且没有证据支持。但更重要的是——正如 EFF 指出的那样——隐私是一项人权，而认为你必须放弃隐私才能获得公平价格的想法，不过是隐私应该成为那些付得起更多钱的人的专属特权的委婉说法：",
+          "https://www.eff.org/wp/privacy-first-better-way-address-online-harms#Legislation",
+          "EFF 的信件继续回应商会的反对意见。AB-2564 并没有对法案针对的行为产生不确定性，而是明确地将监控定价定义为：",
+          "基于通过电子监控收集的个人身份信息（全部或部分）而向特定消费者或消费者群体提供的商品定制价格。",
+          "商会提出了其他一些老生常谈的反对意见，错误地声称禁止监控定价将终结常见的折扣策略，比如为老年人提供更便宜的电影票，或者提供更低的费率来挽留打电话要求取消服务的客户。EFF 回复指出，商会的所有担忧都已被法案中的三项全面豁免条款所涵盖：在为特定客户提供服务成本更高时收取更高费率的能力；为想要取消服务的客户提供折扣以进行挽留；最后，针对任何人都能满足的条件（如“早鸟特惠”）、广泛定义的群体成员身份（如“老年人”）或参与忠诚度计划而提供的折扣。",
+          "旧金山市议员本可以一眼看出商会在胡说八道。只需粗略读一下法规即可。但现在他们连这都不用做了：EFF 已经煞费苦心地揭穿了商会散布的恐惧、不确定和怀疑（FUD）。",
+          "监控定价极其令人反感。当一家公司向我收取0.50美元购买某件产品，却向你收取1美元时，他们本质上是在说你的美元价值只有我的一半。公司不应该能够把手伸进你的钱包或银行账户，把你的钱砍掉一半：",
+          "https://pluralistic.net/2025/06/24/price-discrimination/#",
+          "难怪 AB-2564 有众多支持者，从 EFF 到消费者联盟：",
+          "https://advocacy.consumerreports.org/press_release/california-state-assembly-passes-key-bill-to-prohibit-surveillance-pricing/",
+          "旧金山市政府应该在那份支持者名单上。",
+          "（图片：Takkk，CC BY-SA 3.0，已修改）",
+          "嘿，看看这个（永久链接）",
+          "路易斯·布兰代斯：经验主义者 https://prospect.org/2026/07/30/aug-2026-louis-brandeis-the-empiricist/",
+          "租金比你想象的要高 https://economicpopulist.substack.com/p/the-rent-is-higher-than-you-think",
+          "客体永久性（永久链接）",
+          "#25年前 安息吧，Wau Holland，传奇黑客组织 Chaos Computer Club 的创始人。 https://web.archive.org/web/20010805192406/https://www.wired.com/news/culture/0,1284,45728,00.html",
+          "#20年前 Diebold 投票机只需拨动开关即可被击败 https://web.archive.org/web/20061007120702/http://openvotingfoundation.org/tiki-read_article.php?articleId=1",
+          "#20年前 小偷如何偷窃支持 RFID 的汽车 https://web.archive.org/web/20060812065423/https://www.wired.com/wired/archive/14.08/carkey_pr.html",
+          "#15年前 伦敦官方反恐出版物称应向当地警方举报无政府主义者 https://web.archive.org/web/20110801233618/https://communitysafe.gov.uk/articles/5962-griffin-weekly-briefing-sheet-attached/attachments/801/download.pdf",
+          "#15年前 法国版权执法者：“盗版者是正版内容的大金主” https://www.techdirt.com/2011/07/28/another-day-another-study-that-says-pirates-are-best-customers-this-time-hadopi/",
+          "#15年前 永久 Cookie 大战仍在继续：即使你关闭了所有 Cookie 途径，KISSmetrics 仍会将 Cookie 偷偷放回你的电脑 https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1898390",
+          "#1年前 你无法对抗平台劣化 https://pluralistic.net/2025/07/31/unsatisfying-answers/#systemic-problems",
+          "即将出席的活动（永久链接）",
+          "线上：EFFecting Change：机器为谁服务，8月12日\nhttps://www.eff.org/event/effecting-change-who-machine-serves",
+          "爱丁堡国际图书节，与 Jimmy Wales 同台，8月17日\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：危险思想节，8月23-24日\nhttps://festivalofdangerousideas.com/program/",
+          "墨尔本：Wheeler 中心的平台劣化探讨，8月25日\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 共话《反向半人马指南：AI 之后的生活》（布莱顿穹顶馆），9月8日\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 共话《反向半人马指南：AI 之后的生活》（福伊尔皮卡迪利店），9月9日\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度一晚（圣母大学），10月6日\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "近期出席的活动（永久链接）",
+          "AI 与平台劣化时代（乔恩·斯图尔特每周秀）\nhttps://www.youtube.com/watch?v=-dAIJRjb-Bw",
+          "AI 并非不可避免 (Betakit)\nhttps://www.youtube.com/watch?v=DbiTVkq1WHo",
+          "与 Lina Khan 的对话（法律与经济学生网络）\nhttps://www.youtube.com/live/7Ak5LZllqwE",
+          "AI 会真正活过来吗？如果会，会发生什么？（BBC 新闻）\nhttps://www.youtube.com/watch?v=Lzk4o3fPZZE",
+          "为什么你很快就会成为 AI 的助手 (VPRO)\nhttps://www.youtube.com/watch?v=tOnvR2fs8CA",
+          "最新书籍（永久链接）",
+          "《半人马反向指南：AI》，一本关于如何成为更好的 AI 评论家的短篇书籍，Farrar, Straus and Giroux 出版，2026年6月\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "《Canny Valley》：我为 Pluralistic 创作的拼贴画限量版合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "《Enshittification：为什么一切突然变糟以及如何应对》，Farrar, Straus, Giroux 出版，2025年10月7日\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "《Picks and Shovels》：《Red Team Blues》的续作，关于 PC 的英雄时代，Tor Books（美国）、Head of Zeus（英国）出版，2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "《The Bezzle》：《Red Team Blues》的续作，关于监狱科技和其他骗局，Tor Books（美国）、Head of Zeus（英国）出版，2024年2月 (thebezzle.org)。",
+          "《The Lost Cause》：一部关于气候紧急状态下希望的太阳朋克小说，Tor Books（美国）、Head of Zeus（英国）出版，2023年11月 (http://lost-cause.org)。",
+          "《The Internet Con》：一本关于互操作性和大型科技公司的非虚构书籍（Verso 出版），2023年9月 (http://seizethemeansofcomputation.org)。签名版可在 Book Soup 购买 (https://www.booksoup.com/book/9781804291245)。",
+          "《Red Team Blues》：“一部引人入胜、令人欲罢不能的惊悚小说，读完后你会比以前更了解这个世界的运作方式。” Tor Books 出版 http://redteamblues.com。",
+          "《Chokepoint Capitalism：如何击败大型科技公司、驯服大型内容巨头并让艺术家获得报酬》（与 Rebecca Giblin 合著），探讨如何打破创意劳动市场的操纵，Beacon Press/Scribe 出版，2022年 https://chokepointcapitalism.com",
+          "即将出版的书籍（永久链接）",
+          "《The Post-American Internet》，某种意义上是《Enshittification》的地缘政治续作，Farrar, Straus and Giroux 出版，2027年",
+          "《Unauthorized Bread》：一部改编自我的中篇小说的中学阶段图像小说，讲述关于难民、烤面包机和 DRM 的故事，FirstSecond 出版，2027年4月20日",
+          "《Enshittification，为什么一切突然变糟以及如何应对》（图像小说版），Firstsecond 出版，2027年",
+          "《The Memex Method》，Farrar, Straus, Giroux 出版，2027年",
+          "版权页（永久链接）",
+          "今日主要来源：",
+          "正在撰写：《The Post-American Internet》，《Enshittification》的续作，讲述既然 Trump 已经把美国搞得一团糟，我们其他人将迎来怎样一个更美好的世界。已完成第四稿。已提交给编辑。",
+          "一篇关于自制胰岛素的《Little Brother》短篇小说 计划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 许可协议授权。这意味着您可以以任何方式使用它，包括商业用途，前提是您将其归属于我（Cory Doctorow），并包含指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引文和图像不包含在此许可范围内；它们要么基于版权的限制或例外，要么基于单独的许可。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "时事通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，有付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就做沙士（sarsaparilla）” -Joey \"Accordion Guy\" DeVilla",
+          "请仔细阅读：阅读本文即表示您代表您的雇主同意，永久免除我因与您的雇主及其合作伙伴、许可方、代理人和受让人签订的任何及所有未经协商的协议、许可、服务条款、拆封协议、点击包装协议、浏览包装协议、保密协议、不披露协议、竞业禁止协议和可接受使用政策（统称“虚假协议”）而产生的所有义务和弃权，且不影响我持续享有的权利和特权。您进一步声明，您有权代表您的雇主免除我受任何“虚假协议”的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "6aec8e821ad93145",
+      "title": "Looking for the Catch in Apple Upgrade",
+      "titleZh": "寻找 Apple Upgrade 计划中的陷阱",
+      "link": "https://www.theatlantic.com/technology/2026/07/apple-lease-upgrade-program/688106/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-30T16:59:39.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "iPhone",
+        "lease"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 8,
+        "total": 18
+      },
+      "summary": "The Atlantic 的文章指出，取代 iPhone Upgrade Program 的新计划“Apple Upgrade”在法律上属于真正的租赁，而非 Klarna 通常提供的先买后付贷款。这种模式容易让人混淆，因为用户在 Shein 或 Sephora 使用 Klarna 时是在偿还贷款，而租赁 iPhone 则意味着设备所有权并未转移，形成了一种“iPhone 底层阶级”的陷阱。",
+      "summaryEn": "An article in The Atlantic points out that the new \"Apple Upgrade\" plan, replacing the iPhone Upgrade Program, is legally a true lease, unlike Klarna's typical buy-now, pay-later loans. This is confusing because while using Klarna for retail purchases means paying back a loan, leasing an iPhone means ownership doesn't transfer, creating a trap that forms an \"iPhone underclass.\"",
+      "reason": "深入剖析了苹果新租赁计划的法律本质及其对消费者所有权的剥夺，对理解现代硬件订阅制陷阱有深刻启发。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Damon Beres",
+        "siteName": "The Atlantic",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Buying a new smartphone comes with lots of decisions. iPhone Pro or iPhone Air? “Cosmic Orange” or “Deep Blue”? Now there’s a new consideration to add to the list: buy or rent? Yesterday, Apple announced a new monthly lease program, which will allow prospective buyers to rent new electronics such as iPhones, MacBooks, iPads, and Apple Watches via an agreement with Klarna, the same company that facilitates monthly payments for $4 polyester underthings on Shein."
+          },
+          {
+            "type": "p",
+            "text": "Perhaps you already make monthly payments for your iPhone. Since 2015, Apple has offered an “iPhone Upgrade Program” that similarly offers customers the option to pay off the device over time instead of in one lump sum. But under that arrangement, the monthly payments were not a lease but rather installments of a loan. Failing to pay your bill might have hurt your credit and eventually led to aggravated calls from a collections agency, but your phone was your phone, with all the candy you could crush."
+          },
+          {
+            "type": "p",
+            "text": "Not anymore. The Klarna plan—“Apple Upgrade,” which replaces the iPhone Upgrade Program—is truly, legally, a lease. This is confusing! And it’s confusing in part because this is not how Klarna, a well-known buy-now, pay-later service, typically operates: When you use Klarna for clothing from Shein or lip kits at Sephora or an Xbox at GameStop, you’re paying back a loan, exactly as you were in the original iPhone Upgrade Program. Same if you use Klarna to buy a Samsung Galaxy phone. But with Apple Upgrade, you are renting: The Mac or Apple Watch is not yours until the final payment is made."
+          },
+          {
+            "type": "p",
+            "text": "Read: I am in cloud-storage hell"
+          },
+          {
+            "type": "p",
+            "text": "There’s nothing wrong with flexibility, and leasing models exist for many expensive items—cars, grand pianos, apartments. Not everyone wants or needs to own property. Many people would rather have a high-end device at an affordable monthly cost rather than pay for one outright; all the better that they can upgrade to a new model before they’ve even finished paying off the entire cost."
+          },
+          {
+            "type": "p",
+            "text": "But Apple products are particularly personal things. They’re communication devices that hold your intimate photos and videos, health data, and so forth. A rental model puts consumers in the strange position of storing all of this information in a gadget that Apple and Klarna maintain a lot of control over. Missing three consecutive payments with Klarna will obligate you to return the device or pay off the entire balance immediately. It is also theoretically possible that Apple or Klarna could eventually restrict access to various features if lease payments are missed; 9to5Mac has reported that code for such restrictions is present in a beta version of the upcoming iOS 27. When I reached Apple for comment, the spokesperson Brian Bumbery said that “there will be no restrictions or changes to functionality due to missed payments,” though why iOS 27 includes these options remains unclear. (Klarna did not respond to a request for comment.)"
+          },
+          {
+            "type": "p",
+            "text": "The shift to renting versus owning is also symbolic of darker currents in the tech industry. Thanks to a shortage of memory chips produced by the profoundly resource-hungry and inefficient AI industry, consumer electronics are becoming much more expensive across the board. Last month, Apple raised prices on many of its devices, citing the increasing cost of memory. The new upgrade program will make Apple’s electronics look more affordable than they really are."
+          },
+          {
+            "type": "p",
+            "text": "Read: The $10,000 MacBook Pro is here"
+          },
+          {
+            "type": "p",
+            "text": "Consider a student or a young professional, or perhaps an underemployed older one, who needs a new laptop. They decide on a MacBook. Apple Upgrade will appear to be the best deal: In its announcement, Apple offers the example of a 14-inch MacBook Pro that retails for $1,999 but that can be had for a monthly lease. Perhaps this person goes for the two-year term, which has them paying $54 a month. Best Buy, which currently has the same computer on sale for $1,849, offers an 18-month loan repayment with $103 installments. Apple’s deal appears to be cheaper: The 24-month lease adds up to $1,296; Best Buy’s 18-month loan lands at the store’s full retail price of $1,849."
+          },
+          {
+            "type": "p",
+            "text": "Why does Best Buy’s laptop seem more expensive? It’s because the plan is actually designed for you to fully pay off the device. At the end of the 24-month MacBook Pro lease, meanwhile, the consumer will still owe $703, meaning that the actual total price of the Apple arrangement is $1,999—higher than Best Buy’s offer. A person can choose to pay off the full amount, return the device outright, or swap for a new one. This is a lot of money, and so the likelihood is that this customer will just go ahead and do the trade-in, restarting a cycle in which they are bleeding their bank accounts to pay for a device they do not own and possibly will never own. And on it goes, in perpetuity."
+          },
+          {
+            "type": "p",
+            "text": "Read: Watch Apple trash-compact human culture"
+          },
+          {
+            "type": "p",
+            "text": "Apple, which reached a market value of more than $5 trillion, its highest ever, the same day it announced Apple Upgrade, has produced a scheme that will eke out more money from its customers than it did before. (Notably, the new plan does not include AppleCare+, as the previous iPhone Upgrade Program did, so consumers will have to add the cost of the warranty or risk having to continue paying the rental fee on a device that they lose or break.) All of this can feel cynical, but of course many technology companies are attempting some version of the same premise: At this point, I pay monthly or annual subscription fees to Apple, Google, Anthropic, Amazon, Sony, and Nintendo for services layered on top of products that once took far less from me. Doing so grants me access to cloud storage and advanced features that would now be difficult to separate myself from. I walked into the trap myself—even saw it coming—but I am nonetheless ensnared."
+          }
+        ],
+        "translations": [
+          "购买新智能手机需要做很多决定。选 iPhone Pro 还是 iPhone Air？选“宇宙橙”还是“深蓝色”？现在，这个清单上又多了一个新的考虑因素：买还是租？昨天，Apple 宣布了一项新的按月租赁计划，通过与 Klarna 的协议，潜在买家可以租用 iPhone、MacBook、iPad 和 Apple Watch 等新电子产品。Klarna 也是为 Shein 上 4 美元的聚酯内衣提供按月分期付款服务的公司。",
+          "也许你已经在为你的 iPhone 按月付款了。自 2015 年以来，Apple 就推出了“iPhone Upgrade Program”，同样为客户提供分期付清设备费用的选项，而不是一次性付清。但在这种安排下，每月的付款不是租金，而是贷款的分期付款。未能按时付款可能会损害你的信用，最终导致催收机构不断打来令人烦恼的电话，但你的手机就是你的手机，你可以尽情玩《糖果粉碎传奇》。",
+          "现在情况不同了。取代 iPhone Upgrade Program 的 Klarna 计划——“Apple Upgrade”——在法律上是一项真正的租赁。这让人感到困惑！部分原因在于，这并不是知名的“先买后付”服务 Klarna 通常的运作方式：当你在 Shein 购买衣服、在 Sephora 购买唇彩套装或在 GameStop 购买 Xbox 时使用 Klarna，你是在偿还贷款，就像你在最初的 iPhone Upgrade Program 中一样。如果你使用 Klarna 购买 Samsung Galaxy 手机也是如此。但在 Apple Upgrade 中，你是在租赁：在付清最后一笔款项之前，Mac 或 Apple Watch 都不属于你。",
+          "阅读：我陷入了云存储地狱",
+          "灵活性并没有错，而且许多昂贵的物品都存在租赁模式——汽车、三角钢琴、公寓。并不是每个人都想或需要拥有财产。许多人宁愿以可承受的月租费获得高端设备，也不愿一次性付清全款；如果他们能在付清全部费用之前升级到新机型，那就更好了。",
+          "但 Apple 产品是极其私人的物品。它们是存储你私密照片和视频、健康数据等信息的通讯设备。租赁模式让消费者处于一种奇怪的境地：将所有这些信息存储在一个由 Apple 和 Klarna 掌控很大控制权的设备中。如果连续三次未向 Klarna 付款，你将不得不归还设备或立即付清所有余款。理论上，如果未支付租金，Apple 或 Klarna 最终也有可能限制对各种功能的访问；9to5Mac 报道称，在即将发布的 iOS 27 测试版中已经存在此类限制的代码。当我联系 Apple 置评时，发言人 Brian Bumbery 表示“不会因为逾期付款而对功能进行任何限制或更改”，尽管 iOS 27 为何包含这些选项仍不清楚。（Klarna 未回应置评请求。）",
+          "从拥有转向租赁的转变，也象征着科技行业更深层的暗流。由于极度消耗资源且效率低下的 AI 行业导致内存芯片短缺，消费电子产品正全面变得更加昂贵。上个月，Apple 以内存成本上升为由，提高了许多设备的价格。这项新的升级计划将使 Apple 的电子产品看起来比实际更便宜。",
+          "阅读：售价一万美元的 MacBook Pro 来了",
+          "假设一个学生、年轻职场人，或者可能是一个未充分就业的年长者需要一台新笔记本电脑。他们决定买一台 MacBook。Apple Upgrade 看起来是最划算的选择：在公告中，Apple 举了一个 14 英寸 MacBook Pro 的例子，其零售价为 1999 美元，但可以通过按月租赁的方式获得。也许这个人选择了两年期，每月支付 54 美元。目前以 1849 美元出售同一款电脑的 Best Buy，提供 18 个月分期还款，每月 103 美元。Apple 的方案看起来更便宜：24 个月的租赁总计 1296 美元；而 Best Buy 的 18 个月贷款最终达到该店 1849 美元的全额零售价。",
+          "为什么 Best Buy 的笔记本电脑看起来更贵？因为这个计划实际上是为了让你完全付清设备的款项而设计的。与此同时，在 24 个月的 MacBook Pro 租赁期结束时，消费者仍欠 703 美元，这意味着 Apple 方案的实际总价为 1999 美元——高于 Best Buy 的报价。用户可以选择付清全款、直接归还设备，或者换新。这是一大笔钱，因此这位客户很可能会直接选择以旧换新，从而重新开始一个循环：不断消耗银行账户里的钱，去支付一台他们并不拥有、且可能永远不会拥有的设备。如此循环往复，永无止境。",
+          "延伸阅读：看 Apple 如何压缩人类文化",
+          "在宣布 Apple Upgrade 的同一天，Apple 的市值达到了创纪录的 5 万亿美元以上，它推出了一项将从客户身上榨取比以往更多资金的计划。（值得注意的是，新计划并不像之前的 iPhone Upgrade Program 那样包含 AppleCare+，因此消费者必须额外支付保修费用，否则就要承担风险：如果设备丢失或损坏，他们仍需继续支付租金。）这一切可能让人觉得有些唯利是图，但当然，许多科技公司都在尝试某种基于相同前提的版本：现在，我需要向 Apple、Google、Anthropic、Amazon、Sony 和 Nintendo 支付月度或年度订阅费，以获取叠加在产品之上的服务，而这些产品过去向我索取的要少得多。这样做让我获得了云存储和高级功能的访问权限，而这些功能现在我已经很难割舍。我自己走进了陷阱——甚至眼看着它发生——但我还是被困住了。"
+        ]
+      }
+    },
+    {
+      "slug": "9d4736f08b005ec2",
+      "title": "Quoting D. Richard Hipp",
+      "titleZh": "引用 D. Richard Hipp 的话",
+      "link": "https://simonwillison.net/2026/Jul/29/d-richard-hipp/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-29T21:15:21.000Z",
+      "category": "engineering",
+      "keywords": [
+        "SQL",
+        "COBOL",
+        "database"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 17
+      },
+      "summary": "SQLite 作者 D. Richard Hipp 回顾了 SQL 的历史意义。在 SQL 出现前，查询大型数据集需要昂贵的 COBOL 程序员编写专门软件；SQL 的出现简化了这一过程，用户只需通过非常简单的规范声明，就能自动生成过去需要高薪专业人员编写的所有代码。",
+      "summaryEn": "D. Richard Hipp, creator of SQLite, reflects on the historical significance of SQL. Before SQL, querying large datasets required expensive COBOL programmers to write specialized software; SQL simplified this, allowing users to generate all the code previously written by highly paid professionals through very simple specifications.",
+      "reason": "借用数据库泰斗之口阐释了 SQL 如何降低数据查询门槛，对理解技术工具演进带来的生产力飞跃有启发意义。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "29th July 2026"
+          },
+          {
+            "type": "quote",
+            "text": "Years ago, we didn’t have SQL. There were people whose job was to generate software that would query large data sets. Their job title was COBOL programmer.\nThen SQL comes along—I’m simplifying this only a little bit—and it gives you this convenient way so people could just specify. With a very simple specification, you can generate all of that code that you had to pay the expensive COBOL programmer to do before.\nThat didn’t mean programmers went away. It just meant the job changed a little bit."
+          },
+          {
+            "type": "p",
+            "text": "— D. Richard Hipp"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "48f692240df25def",
+      "title": "Why Is Everyone Trying to Build a Solid-State Battery?",
+      "titleZh": "为什么大家都在尝试制造固态电池？",
+      "link": "https://www.construction-physics.com/p/why-is-everyone-trying-to-build-a",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-07-30T12:04:25.000Z",
+      "category": "other",
+      "keywords": [
+        "solid-state battery",
+        "lithium-ion",
+        "technology"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 8,
+        "timeliness": 6,
+        "total": 17
+      },
+      "summary": "固态电池正成为备受瞩目的电池技术，它是一种用固体材料替代传统液态电解质的锂离子电池。这种转变有望解决现有液态锂电池在能量密度、安全性和稳定性方面的瓶颈，因此吸引了众多厂商投入研发，试图抢占下一代电池技术的制高点。",
+      "summaryEn": "Solid-state batteries are gaining significant attention as a battery technology that replaces the liquid electrolyte in traditional lithium-ion batteries with a solid material. This shift promises to overcome bottlenecks in energy density, safety, and stability, attracting numerous manufacturers to invest in R&D to lead the next generation of battery technology.",
+      "reason": "简明扼要地解释了固态电池成为行业风口的核心原因，适合想快速了解新能源技术趋势的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A battery technology that’s getting a lot of attention is solid-state batteries, lithium-ion batteries that replace the liquid electrolyte with a solid material. Chinese battery manufacturer CATL alone had more than 1,000 people devoted to solid-state battery research as of 2024, and battery manufacturers like BYD, LG, and Samsung are also working on the technology. US and European startups making solid-state batteries have collectively raised over $4 billion as of 2025."
+          },
+          {
+            "type": "p",
+            "text": "Solid-state batteries have several potential advantages over the lithium-ion batteries with liquid electrolyte we use now. For one, replacing the liquid electrolyte with a solid should allow for lighter batteries, requiring less mass per unit of energy delivered. And because the liquid electrolyte currently used in batteries is flammable, replacing it with a solid could make batteries safer and less susceptible to fire."
+          },
+          {
+            "type": "p",
+            "text": "I wanted to better understand why, exactly, solid-state batteries have these advantages compared to conventional lithium-ion batteries, and how they fit into the broader arc of lithium battery improvements."
+          },
+          {
+            "type": "p",
+            "text": "Batteries supply energy by way of chemical reactions. And chemical reactions, regardless of the chemicals involved, all release or absorb energy using the same mechanism: an electron or electrons move from one potential energy well to another. In a chemical reaction that gives off energy (an exothermic reaction), electrons move from a higher potential well to a lower potential well, giving off energy in the process."
+          },
+          {
+            "type": "p",
+            "text": "“Potential well” is fairly abstract, so I find it useful to consider an analogy with gravity. Say a ball is in a shallow groove at the top of a tall hill, and there’s another shallow groove at the bottom. The ball is being tugged downward by gravity, which gives it potential energy, a function of how much mass the ball has and how high it is above the bottom of the hill. By itself, the ball at the top of the hill won’t move, but if you give it a little push to nudge it out of its groove, it will roll downhill, releasing its potential energy in the process. This potential energy is converted to kinetic energy (the velocity of the ball), which in turn converts to thermal energy from friction, slowing the ball down until it stops in the lower groove."
+          },
+          {
+            "type": "p",
+            "text": "Chemical reactions work in a somewhat similar way. But instead of gravity, the potential energy comes from electromagnetism: the positively charged nuclei tugging on the negatively charged electrons. In an exothermic reaction, atoms start in some particular “groove,” their electrons in some particular arrangement. But if you give the atoms a little kick (say, by heating them up so their collisions become more energetic), you can knock them out of their groove, letting them “roll downhill” into a lower-energy configuration, converting their electric potential energy in the process. Some of that potential energy (half, in fact) will go to increasing the electrons’ velocities; the rest will be released as vibration (heat), or as a photon."
+          },
+          {
+            "type": "p",
+            "text": "So, for instance, say you start with one methane molecule (one carbon and four hydrogens, CH4) and two oxygen molecules (each with two oxygen atoms, O2). These molecules start with their electrons in a particular configuration, the oxygen atoms bonded with each other and the hydrogen atoms bonded with the carbon. At room temperature, O2 and CH4 largely won’t react with each other: each is sitting in its own potential well that takes energy to climb out of. But give them a kick by adding heat, and they can “fall downhill,” going through a series of reactions and ending up in a lower-energy configuration — the hydrogen and carbon atoms each bond with oxygen, forming H2O and CO2. The resulting electron configurations are in lower potential energy wells, with much of the difference being released as heat."
+          },
+          {
+            "type": "p",
+            "text": "Lithium-ion batteries work by using, unsurprisingly, chemical reactions with lithium. When a lithium-ion battery discharges, lithium ions and their electrons “fall downhill,” moving from one configuration at the anode (inserted between sheets of graphite, known as “intercalation”) into a different, lower-energy configuration at the cathode (intercalated in another material, such as lithium iron phosphate, LiFePO4). The battery is structured to capture energy from this reaction. Lithium ions can pass from the anode into the electrolyte, but electrons can’t: they must go around, through a metallic conductor that connects the anode and the cathode. This flow of electrons is the electrical current that batteries generate. (When a battery is charging, the reverse happens: a voltage placed on the conductor forces electrons back uphill into the anode, with lithium ions flowing back through the electrolyte to keep the charge balanced.)1"
+          },
+          {
+            "type": "p",
+            "text": "Lithium is a favored choice for a battery because an electron leaving lithium has farther to fall than an electron leaving any other metal when coupled with the appropriate reactant. Lithium is also a very light atom (an atomic mass of around 7), which, combined with the large “drop,” means that lithium reactions yield a high amount of energy. Per unit mass, lithium reactions release roughly as much energy as burning gasoline."
+          },
+          {
+            "type": "p",
+            "text": "But if this is true, why are lithium-ion batteries so much less energy dense than gasoline?"
+          },
+          {
+            "type": "p",
+            "text": "One big reason is the oxidizer. The chemical reactions we rely on for energy typically require some downhill destination for electrons to end up at, which is known as an oxidizer. When burning gasoline, the oxidizer is oxygen in the surrounding air: inside a gasoline engine, fuel and air are mixed together and then ignited, triggering the chemical reaction — an explosion — that powers the engine. Gasoline-powered cars, in other words, don’t need to carry their oxidizer with them, because there’s always one available in the surroundings."
+          },
+          {
+            "type": "p",
+            "text": "Lithium-ion batteries, on the other hand, aren’t so fortunate. They need to carry their electron destination with them, in the form of the cathode. This adds a lot of extra mass compared to what a gasoline-powered car needs to carry. If a car needed to carry its own oxidizer with it, it would need about 3.5 kilograms of oxygen for every 1 kilogram of gasoline."
+          },
+          {
+            "type": "p",
+            "text": "More generally, it just requires a lot of material scaffolding to structure the lithium reaction in a way that lets you extract energy from it in the form of electric current. At the anode, each lithium ion requires an additional six atoms of carbon, forming graphite sheets that the lithium ions can nestle into. A similar intercalation structure is required at the cathode. On top of this is the extra mass for the electrolyte, the separator, the current collectors, and so on. As of 2019, every gram of reacting lithium in a battery required about 70 grams of supporting material (though this number has probably fallen somewhat since then)."
+          },
+          {
+            "type": "p",
+            "text": "Without this material scaffolding, the reaction can still take place, but in a non-useful way. If something creates a direct path between the cathode and the anode, the reaction will run nearly instantly, creating a lot of heat and triggering other chemical reactions that will destroy the battery, but no useful electric current. Modern battery design, in fact, takes a lot of effort to prevent these runaway reactions from taking place."
+          },
+          {
+            "type": "p",
+            "text": "The benefit of all this material scaffolding, of course, is that you can use the same chemicals for the reaction over and over again. The intercalating electrodes on modern lithium-ion batteries in particular are very good at this; because the electrode structure is maintained when the battery charges/discharges, lithium-ion batteries can be used for very large numbers of cycles while maintaining most of their capacity. When you burn gasoline, on the other hand, you’re discharging the products of the reaction continuously (which, of course, is the whole reason we want to switch away from fossil fuels in the first place, to stop the discharged CO2 from building up in the atmosphere). You could, theoretically, dispose of the lithium-ion battery’s scaffolding by having some sort of lithium-based internal combustion engine, but this would work terribly and be outrageously expensive to run (though some people are interested in using oxygen in the air as a battery oxidizer with lithium-air batteries)."
+          },
+          {
+            "type": "p",
+            "text": "The major potential benefit of solid-state batteries is a substantial reduction in this material scaffolding."
+          },
+          {
+            "type": "p",
+            "text": "A pernicious issue with current lithium-ion batteries is dendrites. As we’ve noted, at the anode, lithium ions are nestled between sheets of graphite. But the anode holds the lithium ions very loosely, only slightly better than metallic lithium does. This is useful, because ions can easily migrate into the electrolyte, thus letting the battery work, but it’s a double-edged sword: under the right conditions, the lithium ions that are supposed to enter the anode during charging might instead acquire an electron at the surface of the anode, forming tree-shaped structures of metallic lithium called dendrites, instead of nestling between the sheets of graphite. If a dendrite pierces the separator between the anode and the cathode, it creates a direct path between the two, letting that runaway reaction that batteries are designed to prevent take place. (This doesn’t immediately react all the lithium in the battery — as electric current flows through the dendrite, the dendrite heats up, eventually melting and breaking the path — but the heat from the brief reaction can be enough to trigger other chemical reactions, resulting in thermal runaway and destroying the battery.) A great deal of battery development effort is devoted to preventing these dendrites from forming."
+          },
+          {
+            "type": "p",
+            "text": "If, however, the liquid electrolyte were replaced with some sort of solid material, these dendrites might stop being a problem.2 With a strong, solid electrolyte, dendrites wouldn’t (in theory) be able to make their way through it, though with current solid electrolytes dendrites still seem to find their way through. And if the risk of dendrites were eliminated, you could switch to a different anode, dispensing with the graphite intercalating structure entirely, using an anode of pure lithium metal.3 And because the solid material would eliminate the flammable electrolyte, the resulting battery might be safer as well."
+          },
+          {
+            "type": "p",
+            "text": "Solid-state batteries probably aren’t imminent — the chairman of CATL ranks them as 4 out of 9 on the technological readiness scale, and has indicated that commercial viability “has yet to be established.” But the expectation that they could be “[p]otentially safer, more energy dense, and perhaps eventually cheaper than today’s batteries” is pushing manufacturers around the world to try and make them happen."
+          },
+          {
+            "type": "p",
+            "text": "Thanks to Austin Vernon for reading a draft of this. All errors are my own."
+          },
+          {
+            "type": "p",
+            "text": "1"
+          },
+          {
+            "type": "p",
+            "text": "The reason that electrons migrate during discharge is somewhat complex. At the anode, lithium ions migrate into the electrolyte, because the electrolyte is a more appealing location with a lower potential energy well. At the cathode, the reverse occurs; lithium ions migrate from the electrolyte into the cathode. At each electrode, this creates a net charge which generates an electric field, which stops further migration. But because you now have a net negative charge at the anode interface (since positively charged lithium ions have left) and a net positive charge at the cathode interface (because positively charged lithium ions have entered), electrons flow between the two electrodes when they’re connected by a conductor to equalize the charges. But because each arriving electron is paired with an arriving lithium ion, the charge differences between the anode and the cathode don’t equalize, letting current flow continuously until there’s no more room for lithium ions in the cathode or no more lithium ions left in the anode (though most batteries have a cutoff that stops current flowing when the voltage drops below some level)."
+          },
+          {
+            "type": "p",
+            "text": "2"
+          },
+          {
+            "type": "p",
+            "text": "In a crystalline solid electrolyte, lithium ions migrate through it by hopping from one vacancy in a solid crystal lattice to the next. Thanks to their thermal energy, the ions vibrate back and forth trillions of times per second, and occasionally a vibration will have enough energy and be in the correct direction to squeeze past the surrounding atoms into a nearby vacancy."
+          },
+          {
+            "type": "p",
+            "text": "3"
+          },
+          {
+            "type": "p",
+            "text": "A company in the 1980s, Moli Energy, tried to make lithium batteries with lithium metal anodes but gave up after dendrite problems caused their batteries to catch fire, requiring a massive recall."
+          }
+        ],
+        "translations": [
+          "备受瞩目的一项电池技术是固态电池，这是一种用固体材料取代液态电解质的锂离子电池。截至2024年，仅中国电池制造商宁德时代（CATL）就有超过1000人致力于固态电池研究，而比亚迪（BYD）、LG和三星等电池制造商也在研发该技术。截至2025年，美国和欧洲制造固态电池的初创企业已累计融资超过40亿美元。",
+          "与我们目前使用的液态电解质锂离子电池相比，固态电池具有几个潜在优势。首先，用固体取代液态电解质应该能减轻电池重量，即每输出单位能量所需的质量更少。此外，由于目前电池中使用的液态电解质是易燃的，用固体替代它可以使电池更安全，不易起火。",
+          "我想更好地理解，与传统锂离子电池相比，固态电池究竟为何具备这些优势，以及它们如何融入锂电池改进的更宏大发展脉络中。",
+          "电池通过化学反应提供能量。而化学反应，无论涉及何种化学物质，都通过相同的机制释放或吸收能量：一个或多个电子从一个势阱移动到另一个势阱。在释放能量的化学反应（放热反应）中，电子从较高的势阱移动到较低的势阱，在此过程中释放能量。",
+          "“势阱”这个概念相当抽象，因此我觉得用重力作类比会很有帮助。假设一个球位于高山顶部的浅槽中，而山底有另一个浅槽。球受到向下的重力牵引，这赋予了它势能，其大小取决于球的质量以及它相对于山底的高度。球本身在山顶不会移动，但如果你轻轻推它一下，使其离开浅槽，它就会滚下山坡，在此过程中释放势能。这种势能转化为动能（球的速度），进而通过摩擦转化为热能，使球减速，直到它停在山底的浅槽中。",
+          "化学反应的运作方式与此有些类似。但取代重力的是，势能来源于电磁力：带正电的原子核牵引着带负电的电子。在放热反应中，原子起初处于某种特定的“槽”中，其电子处于某种特定的排列状态。但如果你给原子一点推力（例如，通过加热使它们的碰撞更加剧烈），你就能将它们撞出槽外，让它们“滚下山坡”进入能量更低的构型，在此过程中转化其电势能。其中一部分势能（实际上是一半）会增加电子的速度；其余的则以振动（热能）或光子的形式释放出来。",
+          "例如，假设你从一个甲烷分子（一个碳和四个氢，CH4）和两个氧分子（每个含两个氧原子，O2）开始。这些分子的电子最初处于特定的构型中，氧原子彼此结合，氢原子与碳结合。在室温下，O2 和 CH4 基本上不会发生反应：它们各自处于自己的势阱中，需要能量才能爬出来。但是通过加热给它们一个推力，它们就可以“顺坡而下”，经历一系列反应，最终处于能量更低的构型——氢原子和碳原子各自与氧结合，形成 H2O 和 CO2。由此产生的电子构型处于更低的势能阱中，其中大部分能量差以热量的形式释放出来。",
+          "毫不意外，锂离子电池的工作原理是利用锂的化学反应。当锂离子电池放电时，锂离子及其电子“顺坡而下”，从阳极的一种构型（嵌入石墨片层之间，称为“嵌入”）移动到阴极的另一种能量更低的构型（嵌入另一种材料中，如磷酸铁锂，LiFePO4）。电池的结构旨在捕获该反应产生的能量。锂离子可以从阳极进入电解液，但电子不能：它们必须绕道，通过连接阳极和阴极的金属导体。这种电子流就是电池产生的电流。（当电池充电时，情况正好相反：施加在导体上的电压迫使电子逆流而上回到阳极，同时锂离子流回电解液以保持电荷平衡。）1",
+          "锂是电池的首选材料，因为当与合适的反应物结合时，离开锂的电子比离开任何其他金属的电子下落得都要远。锂也是一种非常轻的原子（原子质量约为7），这与巨大的“落差”相结合，意味着锂反应能产生大量的能量。按单位质量计算，锂反应释放的能量与燃烧汽油大致相当。",
+          "但如果确实如此，为什么锂离子电池的能量密度比汽油低这么多呢？",
+          "一个重要原因是氧化剂。我们赖以获取能量的化学反应通常需要电子有一个下行的终点，这被称为氧化剂。燃烧汽油时，氧化剂是周围空气中的氧气：在汽油发动机内部，燃料和空气混合后被点燃，引发化学反应——即爆炸——从而为发动机提供动力。换句话说，汽油动力汽车不需要随身携带氧化剂，因为周围环境中总是有现成的。",
+          "另一方面，锂离子电池就没这么幸运了。它们需要以阴极的形式随身携带电子的终点。与汽油动力汽车需要携带的重量相比，这增加了许多额外的质量。如果汽车需要自带氧化剂，那么每消耗1公斤汽油就需要携带约3.5公斤的氧气。",
+          "更一般地说，它需要大量的材料支架来构建锂反应，从而让你能够以电流的形式从中提取能量。在阳极，每个锂离子需要额外的六个碳原子，形成锂离子可以嵌入的石墨片。阴极也需要类似的嵌入结构。除此之外，还有电解质、隔膜、集流体等额外的质量。截至2019年，电池中每发生反应的一克锂大约需要70克的支撑材料（尽管自那以后这个数字可能有所下降）。",
+          "如果没有这种材料支架，反应仍然可以发生，但方式毫无用处。如果某种东西在阴极和阳极之间形成了一条直接通路，反应几乎会瞬间发生，产生大量热量并引发其他破坏电池的化学反应，但不会产生有用的电流。事实上，现代电池设计花费了大量精力来防止这些失控反应的发生。",
+          "当然，所有这些材料支架的好处是你可以一次又一次地使用相同的化学物质进行反应。特别是现代锂离子电池的嵌入电极在这方面非常出色；因为电池充放电时电极结构得以维持，锂离子电池可以进行非常多次的循环，同时保持大部分容量。另一方面，当你燃烧汽油时，你会不断排放反应产物（当然，这也是我们想要摆脱化石燃料的根本原因，以阻止排放的二氧化碳在大气中积聚）。理论上，你可以通过某种基于锂的内燃机来摆脱锂离子电池的支架，但这将运行得非常糟糕，而且运行成本极其高昂（尽管有些人对在锂空气电池中使用空气中的氧气作为电池氧化剂很感兴趣）。",
+          "固态电池的主要潜在好处是大幅减少这种材料支架。",
+          "当前锂离子电池的一个棘手问题是枝晶。正如我们所指出的，在阳极，锂离子嵌在石墨片之间。但阳极对锂离子的束缚非常松散，只比金属锂稍微好一点。这很有用，因为离子可以很容易地迁移到电解质中，从而使电池工作，但这把双刃剑：在适当的条件下，充电时本应进入阳极的锂离子可能会在阳极表面获得一个电子，形成被称为枝晶的树状金属锂结构，而不是嵌在石墨片之间。如果枝晶刺穿阳极和阴极之间的隔膜，它就会在两者之间形成一条直接通路，从而引发电池设计旨在防止的失控反应。（这不会立即让电池中的所有锂发生反应——当电流流过枝晶时，枝晶会发热，最终熔化并断开通路——但短暂反应产生的热量足以引发其他化学反应，导致热失控并摧毁电池。）大量的电池研发工作都致力于防止这些枝晶的形成。",
+          "然而，如果将液态电解质替换为某种固态材料，这些枝晶可能就不再是问题了。2 有了坚固的固态电解质，（理论上）枝晶将无法穿透它，尽管就目前的固态电解质而言，枝晶似乎仍能找到穿透的途径。如果消除了枝晶风险，就可以改用不同的阳极，完全摒弃石墨插层结构，转而使用纯锂金属阳极。3 此外，由于固态材料消除了易燃的电解质，最终制成的电池可能也会更安全。",
+          "固态电池可能并不会很快问世——CATL 董事长在技术成熟度量表上将其评为9级中的4级，并指出其商业可行性“尚未确立”。但人们期望它们能“比目前的电池更安全、能量密度更高，或许最终还会更便宜”，这种期望正推动全球制造商努力将其变为现实。",
+          "感谢 Austin Vernon 阅读本文草稿。所有错误均由本人承担。",
+          "1",
+          "放电过程中电子迁移的原因有些复杂。在阳极，锂离子迁移到电解质中，因为电解质是一个势能阱更低、更具吸引力的位置。在阴极则发生相反的过程；锂离子从电解质迁移到阴极。在每个电极处，这都会产生净电荷并形成电场，从而阻止进一步的迁移。但由于此时阳极界面带有净负电荷（因为带正电的锂离子离开了），而阴极界面带有净正电荷（因为带正电的锂离子进入了），当两个电极通过导体连接时，电子会在它们之间流动以平衡电荷。但由于每个到达的电子都与一个到达的锂离子配对，阳极和阴极之间的电荷差无法平衡，从而让电流持续流动，直到阴极中没有空间容纳更多锂离子或阳极中没有剩余的锂离子为止（尽管大多数电池都有一个截止机制，当电压降至某一水平以下时会停止电流流动）。",
+          "2",
+          "在晶体固态电解质中，锂离子通过在固体晶格的空位之间跳跃来进行迁移。得益于热能，离子每秒来回振动数万亿次，偶尔某次振动会具有足够的能量并处于正确的方向，从而挤过周围的原子进入附近的空位。",
+          "3",
+          "20世纪80年代的一家名为 Moli Energy 的公司曾试图制造使用锂金属阳极的锂电池，但在枝晶问题导致其电池起火并引发大规模召回后，他们放弃了这一尝试。"
+        ]
+      }
+    },
+    {
+      "slug": "407dbcc5b55b3db4",
+      "title": "Wheels, Bottles and Images",
+      "titleZh": "轮子、瓶子和镜像",
+      "link": "https://nesbitt.io/2026/07/30/wheels-bottles-images.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-07-30T10:00:00.000Z",
+      "category": "engineering",
+      "keywords": [
+        "package manager",
+        "container registry"
+      ],
+      "score": {
+        "relevance": 6,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 16
+      },
+      "summary": "探讨了高级包管理器与容器镜像仓库在概念上的趋同现象。通过分析Python Wheels、Homebrew Bottles以及容器镜像等打包格式，揭示了它们在软件分发和依赖管理上的高度相似性。随着包管理器功能的不断演进，其复杂度和能力已经达到了与容器镜像仓库难以区分的程度。作者引用“任何足够先进的包管理器都与容器镜像仓库无异”这一观点，总结了现代软件分发机制的演化趋势。",
+      "summaryEn": "Explores the conceptual convergence between advanced package managers and container registries. By analyzing packaging formats like Python Wheels, Homebrew Bottles, and container images, it reveals their high similarities in software distribution and dependency management. As package managers evolve, their complexity and capabilities become indistinguishable from container registries. The author concludes with the notion that any sufficiently advanced package manager is indistinguishable from a container registry, summarizing the evolution of modern software distribution.",
+      "reason": "揭示了现代软件分发机制的趋同演化，为理解包管理和容器技术提供了独特视角。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In February Simon Willison packaged a Go CLI as Python wheels, one wheel per platform with the compiled binary inside, so pip install sqlite-scanner fetches a program containing no Python. His build tool maps each Go target to a wheel tag on the way through: darwin/arm64 to macosx_11_0_arm64, linux/amd64 to manylinux_2_17_x86_64. PyPI accepted the uploads and pip picked the right platforms, and the thread that followed was about whether PyPI should store binaries that serve no Python purpose."
+          },
+          {
+            "type": "p",
+            "text": "Wheels, Homebrew bottles and OCI images are the three big self-service binary distribution systems: the project publishes a compiled artifact and any machine fetches the one matching its platform, with no distro maintainer in between. conda, NuGet’s native assets, RubyGems platform gems and plain GitHub Releases do the same job in their own ecosystems. The three big ones share no specification: each was designed against its own stack. Simon’s trick works because a wheel is a checksummed archive selected by a platform tag, and that description also fits a bottle and an image. Immutable checksummed files are what CDNs serve cheaply and caches hold safely, and all three systems depend on both."
+          },
+          {
+            "type": "h3",
+            "text": "Similarities"
+          },
+          {
+            "type": "p",
+            "text": "All three install by downloading a checksummed file over plain HTTP. pip reads the expected hash from the PyPI index and brew reads a sha256 from the formula, while a container client requests each layer by its digest. The files are ordinary zip and tar.gz archives, and no server inspects or transforms them on the way out."
+          },
+          {
+            "type": "p",
+            "text": "The index and the artifact storage are separate systems, and the storage has been swapped without breaking clients. PyPI’s index points at files.pythonhosted.org, a different host from the API. Homebrew moved every bottle from Bintray to GitHub Packages in Homebrew 3.1.0, and an image is copied between Docker Hub, ghcr.io and a private registry with a retag. Static files and content addressing also make a plain HTTP cache a valid mirror of all three, and Package Manager Mirroring covers how much harder that job is for registries that serve dynamic APIs."
+          },
+          {
+            "type": "p",
+            "text": "A published artifact never changes and a fix ships as a new version. On PyPI that is policy: a used filename cannot be re-uploaded. For bottles and images it comes from the checksums, the sha256 pinned in the formula and the digest computed from the bytes."
+          },
+          {
+            "type": "p",
+            "text": "pip matches wheel tags against the running interpreter, and brew matches bottle tags against the OS and architecture. Even with OCI, where the registry holds structured platform data, the client downloads the image index and picks a manifest itself, so selection is client-side in all three designs."
+          },
+          {
+            "type": "p",
+            "text": "The tags being matched cover the same dimensions: CPU architecture, operating system, and enough ABI detail to tell whether a binary will run. Wheel tags, bottle tags, OCI platform objects and the gem2 proposal each spell that set differently, and Platform Strings compares the spellings."
+          },
+          {
+            "type": "p",
+            "text": "Whatever the host is not guaranteed to provide ships inside the artifact. A wheel carries private copies of the shared libraries it links against, added by auditwheel or delocate, while a bottle includes almost nothing. An image can pack in everything above the kernel."
+          },
+          {
+            "type": "p",
+            "text": "Each format stores a metadata document next to the payload: a wheel’s .dist-info directory, a bottle’s tab file (INSTALL_RECEIPT.json), an image’s config object. All three record a name, a version, and the details of the build."
+          },
+          {
+            "type": "h3",
+            "text": "Differences"
+          },
+          {
+            "type": "p",
+            "text": "A wheel requires an interpreter and a minimum libc from the host, a bottle an OS release and an install prefix, an image only a kernel. manylinux and bottle relocation exist to manage the first two positions, and images carry their own filesystem, so neither mechanism has an OCI equivalent."
+          },
+          {
+            "type": "p",
+            "text": "Wheels and bottles are entries in a dependency graph: pip resolves a wheel’s requirements against the index, and brew resolves the formula tree before pouring a bottle. An image has no dependency model, since layers stack in a fixed order and nothing is resolved at pull time. A bottle can omit most of its runtime because brew resolves the rest of its dependency tree, while an image has to carry the whole userland itself."
+          },
+          {
+            "type": "p",
+            "text": "When no wheel matches the platform, pip downloads the sdist and builds it, and brew builds a missing bottle from the formula. docker pull reads no Dockerfile, so a platform without a published image gets no artifact."
+          },
+          {
+            "type": "p",
+            "text": "Wheel and bottle filenames carry the platform, in a tag grammar private to each ecosystem. OCI records it in the image index, in fields any client library can read, and it is the only one of the three that external tools consume without a translation table."
+          },
+          {
+            "type": "h3",
+            "text": "Convergence"
+          },
+          {
+            "type": "p",
+            "text": "Homebrew has been storing bottles in an OCI registry since 2021. The bottles for hello are artifacts at ghcr.io/homebrew/core/hello, published under an image index whose platform fields record arm64, darwin and macOS 15.7. The dimensions the OCI schema has no field for, the glibc version and the CPU variant, are stored as sh.brew.* annotations next to the build metadata. Helm charts moved to the same registries in Helm 3.8, and ORAS generalises the push and pull to arbitrary artifacts. Media types pass through the registry API unparsed, so bottles and charts fit into infrastructure built for container images with no registry-side changes."
+          },
+          {
+            "type": "p",
+            "text": "The build attestations in all three are sigstore bundles. PyPI has accepted attestations alongside uploads since November 2024 under PEP 740, generated by default when a project publishes from GitHub Actions through trusted publishing. Homebrew’s CI has attested every homebrew-core bottle since 2024, and brew can check a bottle against its attestation at install time. cosign pushes an image’s signature or attestation into the registry holding the image, an artifact whose subject field records the digest it covers, and the OCI 1.1 referrers API lists what is attached to any digest. Where the attestation is stored differs: PyPI serves it from the index next to the file, a registry keeps it beside the image, and brew fetches Homebrew’s from GitHub’s attestation API, separate from both the formula and the bottle storage. What Package Registries Could Borrow from OCI covers what the referrers design offers the other two."
+          },
+          {
+            "type": "p",
+            "text": "Most of the similarities above are also a feature list of an OCI registry: content-addressed immutable blobs, an index separate from the storage, client-side artifact selection, mirroring through pull-through caches. A registry leaves tag grammar, version resolution, dependency metadata and search undefined, and those are where the three systems differ from each other anyway. pip’s resolver, brew’s formula tree and an image’s ordered layers could not share a registry that defined a dependency model. The objection from the PSF board to Go binaries arriving on PyPI was sustainability and mission, and the uploads themselves worked."
+          },
+          {
+            "type": "p",
+            "text": "The remaining design work for an ecosystem adding binary distribution today is narrower than the decade of wheel PEPs suggests: gem2 specifies the tag dimensions, and bottle storage demonstrates that the blob side can be rented from an existing registry. The open decisions are the tag grammar and the index entry."
+          },
+          {
+            "type": "p",
+            "text": "No tag grammar records a GPU, which is why CUDA wheels often cannot be hosted on PyPI today. PEP 817, drafted in December 2025 out of the NVIDIA-started WheelNext initiative, proposes variant wheels selected by installer plugins that detect GPUs, SIMD levels and BLAS libraries at install time. PEP 825 covers the package format for those variants, and PEP 725 adds pyproject.toml metadata naming the dependencies a package uses from outside PyPI, the same libraries the bundling rule currently copies into wheels. Container images have the same gap: an image index records os and arch, and GPU access is wired in at run time through the NVIDIA Container Toolkit rather than selected at pull time. The existing spellings diverged because each ecosystem named the dimensions on its own, PURL’s request for cross-ecosystem platform qualifiers has been open since 2022, and the GPU dimension is still unnamed outside Python."
+          }
+        ],
+        "translations": [
+          "今年二月，Simon Willison 将一个 Go CLI 打包成了 Python wheels，每个平台对应一个 wheel，内含编译好的二进制文件，因此 pip install sqlite-scanner 会获取一个不包含 Python 的程序。他的构建工具在处理过程中将每个 Go 目标映射到一个 wheel 标签：darwin/arm64 映射到 macosx_11_0_arm64，linux/amd64 映射到 manylinux_2_17_x86_64。PyPI 接受了这些上传，pip 也选择了正确的平台，随后的讨论帖则探讨了 PyPI 是否应该存储对 Python 毫无用处的二进制文件。",
+          "Wheels、Homebrew bottles 和 OCI 镜像是三大自助式二进制分发系统：项目发布编译好的构件，任何机器都可以获取与其平台相匹配的版本，中间无需发行版维护者参与。conda、NuGet 的原生资产、RubyGems 平台 gems 以及普通的 GitHub Releases 在各自的生态系统中发挥着相同的作用。这三大系统没有共享的规范：每一个都是针对自己的技术栈设计的。Simon 的技巧之所以奏效，是因为 wheel 是一个由平台标签选择的带有校验和的归档文件，而这个描述同样适用于 bottle 和镜像。不可变的带校验和的文件正是 CDN 能够低成本提供、缓存能够安全保存的内容，而这三大系统都依赖于这两者。",
+          "相似之处",
+          "这三者都是通过普通 HTTP 下载带有校验和的文件来进行安装的。pip 从 PyPI 索引中读取预期的哈希值，brew 从 formula 中读取 sha256，而容器客户端则通过其摘要来请求每一层。这些文件都是普通的 zip 和 tar.gz 归档文件，没有任何服务器在输出时对它们进行检查或转换。",
+          "索引和构件存储是分离的系统，存储系统可以在不破坏客户端的情况下进行替换。PyPI 的索引指向 files.pythonhosted.org，这是一个与 API 不同的主机。Homebrew 在 3.1.0 版本中将所有 bottle 从 Bintray 迁移到了 GitHub Packages，而镜像则可以通过重新打标签在 Docker Hub、ghcr.io 和私有镜像仓库之间复制。静态文件和内容寻址也使得普通的 HTTP 缓存成为这三者有效的镜像，而《Package Manager Mirroring》一文则涵盖了对于提供动态 API 的镜像仓库来说，这项工作有多困难。",
+          "已发布的构件永远不会改变，修复会作为新版本发布。在 PyPI 上这是策略规定：已使用的文件名不能重新上传。对于 bottle 和镜像来说，这源于校验和，即 formula 中固定的 sha256 和根据字节计算出的摘要。",
+          "pip 将 wheel 标签与运行中的解释器进行匹配，而 brew 将 bottle 标签与操作系统和架构进行匹配。即使在拥有结构化平台数据的 OCI 镜像仓库中，客户端也会下载镜像索引并自行选择清单，因此在这三种设计中，选择过程都是在客户端完成的。",
+          "被匹配的标签涵盖了相同的维度：CPU 架构、操作系统，以及足以判断二进制文件能否运行的 ABI 细节。Wheel 标签、bottle 标签、OCI 平台对象和 gem2 提案各自以不同的方式拼写这一集合，而《Platform Strings》一文对这些拼写进行了比较。",
+          "主机无法保证提供的任何内容都会被打包在构件内部。一个 wheel 包含它所链接的共享库的私有副本，这些副本由 auditwheel 或 delocate 添加，而 bottle 几乎不包含任何内容。一个镜像可以打包内核之上的所有内容。",
+          "每种格式都在有效载荷旁边存储一个元数据文档：wheel 的 .dist-info 目录，bottle 的 tab 文件 (INSTALL_RECEIPT.json)，镜像的 config 对象。这三者都记录了名称、版本和构建的详细信息。",
+          "不同之处",
+          "wheel 需要主机提供解释器和最低限度的 libc，bottle 需要 OS 版本和安装前缀，而 image 仅需内核。manylinux 和 bottle 重定位机制用于处理前两者的环境问题，且 image 自带文件系统，因此这两种机制在 OCI 中都没有对应物。",
+          "Wheels 和 bottles 是依赖图中的节点：pip 会根据索引解析 wheel 的依赖要求，而 brew 在安装 bottle 前会解析 formula 树。image 没有依赖模型，因为各层以固定顺序堆叠，在拉取时无需解析任何内容。bottle 可以省略大部分运行时环境，因为 brew 会解析其依赖树的其余部分，而 image 必须自带整个 userland。",
+          "当没有匹配平台的 wheel 时，pip 会下载 sdist 并进行构建，而 brew 会根据 formula 构建缺失的 bottle。docker pull 不会读取 Dockerfile，因此没有发布 image 的平台将无法获取任何 artifact。",
+          "Wheel 和 bottle 的文件名中包含平台信息，采用各自生态系统私有的标签语法。OCI 则将其记录在 image index 中，字段格式可供任何客户端库读取，这也是三者中唯一无需转换表即可供外部工具使用的方式。",
+          "趋同",
+          "自 2021 年起，Homebrew 就开始将 bottles 存储在 OCI registry 中。hello 的 bottles 是位于 ghcr.io/homebrew/core/hello 的 artifacts，发布在某个 image index 下，其 platform 字段记录了 arm64、darwin 和 macOS 15.7。对于 OCI schema 中没有对应字段的维度（如 glibc 版本和 CPU 变体），则作为 sh.brew.* annotations 存储在构建元数据旁边。Helm charts 在 Helm 3.8 中迁移到了相同的 registries，而 ORAS 将推拉操作泛化至任意 artifacts。Media types 未经解析便通过 registry API 传递，因此 bottles 和 charts 能够直接适配为 container images 构建的基础设施，无需对 registry 端进行任何更改。",
+          "这三者的构建证明（build attestations）均为 sigstore bundles。自 2024 年 11 月起，PyPI 依据 PEP 740 开始接受随上传一并提交的证明，当项目通过 trusted publishing 从 GitHub Actions 发布时，默认会生成该证明。自 2024 年起，Homebrew 的 CI 已对每个 homebrew-core bottle 进行了证明，且 brew 可在安装时根据证明对 bottle 进行校验。cosign 会将 image 的签名或证明推送到托管该 image 的 registry 中，此 artifact 的 subject 字段记录了其涵盖的 digest，而 OCI 1.1 referrers API 则列出了附加到任何 digest 上的内容。证明的存储位置各不相同：PyPI 从文件旁的索引提供证明，registry 将其保存在 image 旁，而 brew 则通过 GitHub 的证明 API 获取 Homebrew 的证明，与 formula 和 bottle 的存储位置相互独立。《What Package Registries Could Borrow from OCI》一文探讨了 referrers 设计能为另外两者带来哪些借鉴。",
+          "上述大多数相似之处也是 OCI registry 的功能特性列表：内容寻址的不可变 blob、与存储分离的索引、客户端 artifact 选择以及通过 pull-through 缓存进行镜像。registry 未对标签语法、版本解析、依赖元数据和搜索进行定义，而这些恰恰是这三个系统彼此存在差异的地方。pip 的解析器、brew 的 formula 树以及 image 的有序层，无法共享一个定义了依赖模型的 registry。PSF 董事会反对 Go 二进制文件进入 PyPI 是出于可持续性和使命的考量，而上传操作本身是可行的。",
+          "如今，为一个生态系统添加二进制分发所需的设计工作，比过去十年间关于 wheel 的 PEP 所暗示的范围要窄：gem2 指定了标签维度，而 bottle 存储表明 blob 端可以从现有的注册表中租用。尚未决定的是标签语法和索引条目。",
+          "没有标签语法记录 GPU，这就是为什么如今 CUDA wheel 通常无法托管在 PyPI 上的原因。PEP 817 于 2025 年 12 月起草，源自 NVIDIA 发起的 WheelNext 倡议，它提出了在安装时由安装程序插件通过检测 GPU、SIMD 级别和 BLAS 库来选择的变体 wheel。PEP 825 涵盖了这些变体的包格式，而 PEP 725 增加了 pyproject.toml 元数据，用于命名包从 PyPI 外部使用的依赖项，即当前打包规则复制到 wheel 中的那些库。容器镜像存在同样的空白：镜像索引记录了 os 和 arch，而 GPU 访问是在运行时通过 NVIDIA Container Toolkit 接入的，而不是在拉取时选择的。现有的命名方式存在分歧，因为每个生态系统都各自命名这些维度，PURL 关于跨生态系统平台限定符的请求自 2022 年以来一直处于开放状态，而在 Python 之外，GPU 维度仍然没有命名。"
+        ]
+      }
+    },
+    {
+      "slug": "065c08c15ae9c125",
+      "title": "When Nintendo sued Blockbuster",
+      "titleZh": "当任天堂起诉百视达时",
+      "link": "https://dfarq.homeip.net/when-nintendo-sued-blockbuster/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=when-nintendo-sued-blockbuster",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-07-30T11:00:27.000Z",
+      "category": "other",
+      "keywords": [
+        "Nintendo",
+        "Blockbuster",
+        "history",
+        "lawsuit"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 2,
+        "total": 10
+      },
+      "summary": "回顾了80年代末任天堂起诉百视达（Blockbuster）的历史事件。当时玩家在百视达租借游戏卡带时无法获得说明书，百视达因此复印说明书提供给租客。任天堂认为此举侵犯了版权并提起诉讼。文章揭示了早期游戏租赁市场的版权争议，以及游戏厂商对分发渠道和知识产权的严格控制。",
+      "summaryEn": "Recalls the late 1980s lawsuit where Nintendo sued Blockbuster. When renting game cartridges, customers often didn't receive instruction booklets, leading Blockbuster to photocopy them for renters. Nintendo sued over this copyright infringement, highlighting early copyright disputes in the game rental market. The article illustrates game manufacturers' strict control over distribution channels and intellectual property.",
+      "reason": "以一段有趣的复古游戏行业轶事，展示了早期数字版权与实体分发之间的法律冲突。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Here’s a late ’80s memory you may not have thought about in a while. Do you remember going to the video rental store to rent a video game and getting the cartridge but not getting the instruction booklet? The reason video stores would rent you a cartridge without instructions dates back to events that started in late July 1989, when Nintendo sued Blockbuster."
+          },
+          {
+            "type": "h2",
+            "text": "The Computer Software Rental Act"
+          },
+          {
+            "type": "p",
+            "text": "Video rentals were a big deal in the 1980s. As VCRs became commonplace, small businesses proliferated renting out movies on video cassette for a nominal fee. A trip to the video store to rent a movie or two became part of many families’ weekend routine. It was cheaper than going to the theater, and much cheaper than buying the VHS tape outright."
+          },
+          {
+            "type": "p",
+            "text": "Over time, renting out more than just movies became inevitable. A few pioneers rented out games in the Atari 2600 era in some metro areas. But video game rentals really took off as the Nintendo Entertainment System gained popularity."
+          },
+          {
+            "type": "p",
+            "text": "But there were certain things such stores could not rent out. Music was one of them, and so was computer software. That was the result of a law called the Computer Software Rental Act, signed into law in 1990. Nintendo wanted video games to be illegal to rent just like computer software. They regarded every rental as a lost sale."
+          },
+          {
+            "type": "h3",
+            "text": "Blockbuster’s exception"
+          },
+          {
+            "type": "p",
+            "text": "Blockbuster, the largest video rental chain in the United States, lobbied Congress for the exception. Renting video games only amounted to about 5% of their annual revenue at the time, but they saw it as a growth area. Not to mention the profit margin was better than on video tapes, because game cartridges cost less than VHS tapes and lasted longer. So they argued for an exception, arguing that while music was very easy to copy and floppy disk-based computer software was relatively easy to copy, video game cartridges such as Nintendo games were not."
+          },
+          {
+            "type": "p",
+            "text": "Yes it was technically possible even in the 1980s to copy video game cartridges, that wasn’t something the average household was able to do."
+          },
+          {
+            "type": "p",
+            "text": "Blockbuster won out and got their exception. But it wasn’t long before Nintendo found a technicality, and they used it to intimidate not only Blockbuster, but even the small independent video rental shops. And they didn’t even wait for the law to pass before they struck."
+          },
+          {
+            "type": "h2",
+            "text": "Nintendo sues Blockbuster for copyright infringement"
+          },
+          {
+            "type": "p",
+            "text": "On Monday, July 31, 1989, Nintendo sent a letter to Blockbuster asking them to stop infringing on their copyrights. Later that week, on Friday, August 4, 1989, Nintendo sued Blockbuster for copyright infringement. Nintendo didn’t claim renting out game cartridges violated any copyrights. Nintendo sued because they found out Blockbuster was photocopying the booklets that came with the cartridges."
+          },
+          {
+            "type": "p",
+            "text": "Blockbuster recognized that people renting a video game would want the instruction booklet so they could learn how to play the game. The problem was the booklets that came with game cartridges were really nothing more than a few sheets of glossy paper stapled together. They weren’t especially durable, and they were prone to having snacks or drinks spilled on them during a gaming session."
+          },
+          {
+            "type": "p",
+            "text": "So the booklets frequently came back damaged, if they even came back at all. Frequently, the renters would misplace the booklet or forget to bring it back."
+          },
+          {
+            "type": "h3",
+            "text": "Solving the problem of missing and damaged Nintendo booklets"
+          },
+          {
+            "type": "p",
+            "text": "Blockbuster’s solution was pretty obvious. Photocopy the original booklet, file away the original, and hand out a copy with the rental. If the photocopy came back in poor condition or didn’t come back at all, they could just make a fresh copy for the next time someone rented the game."
+          },
+          {
+            "type": "p",
+            "text": "Nintendo sued, claiming it infringed on their copyright. Which was a valid point, except when Nintendo didn’t hold the copyright. Which they didn’t always. Nintendo produced many of the NES titles themselves, but over time, an increasing part of its library came from third-party publishers like Capcom, Squaresoft, and Enix. The cartridges came in the same gray shells as a Nintendo cartridge, they contained a Nintendo seal of quality, and except in dire circumstances, Nintendo handled the manufacturing. But the copyright to the game and the manual actually belonged to some other software publisher."
+          },
+          {
+            "type": "p",
+            "text": "It was a flimsy case, and Blockbuster warned it would have a chilling effect on smaller, independent video stores."
+          },
+          {
+            "type": "p",
+            "text": "But both companies had too much at stake to risk losing. Nintendo and Blockbuster ended up settling out of court. The result of the settlement was Blockbuster wrote its own documentation and provided copies of those when you rented a game."
+          },
+          {
+            "type": "p",
+            "text": "Contrary to some speculation online, Nintendo’s lawsuit didn’t bring Blockbuster down. Blockbuster didn’t go bankrupt until 2010."
+          },
+          {
+            "type": "h3",
+            "text": "The effect on Nintendo rentals at smaller, independent video stores"
+          },
+          {
+            "type": "p",
+            "text": "For independent video stores, Blockbuster’s solution was really impractical. The typical two-person operation didn’t have the staffing or equipment to produce their own game manuals. They were too busy running their store."
+          },
+          {
+            "type": "p",
+            "text": "Most likely, they read about the legal action in the newspapers or in trade magazines that covered the video rental industry. They may or may not have completely understood the nuances of the case, but they found telling customers that it was legal to rent out the cartridges as long as they didn’t give out the manual worked well enough. Most consumers accepted the explanation. They would simply rent the game, and do their best to figure out how to play it. The best games, after all, didn’t need a lot of instruction."
+          },
+          {
+            "type": "p",
+            "text": "At least in some cases, forcing stores to quit giving out the manuals may have boosted sales by discouraging repeat rentals. If a game seemed promising but too complex to figure out, some people probably did go and buy it rather than renting it repeatedly."
+          },
+          {
+            "type": "h2",
+            "text": "The argument for video game rentals"
+          },
+          {
+            "type": "p",
+            "text": "Nintendo games weren’t exactly cheap. The price varied depending on how old the title was and to some degree, how widely anticipated the title was."
+          },
+          {
+            "type": "p",
+            "text": "But with a manufacturing cost ranging from $7-$14, a game cartridge didn’t turn much profit unless it sold for $30 or more. That was a fair bit of money in 1989, the equivalent of $78 in 2025 dollars."
+          },
+          {
+            "type": "p",
+            "text": "Of course, there were some games you played over and over enough that you didn’t mind paying $30 or $40 to have your own copy. But a typical working class family, especially a single income working class family, couldn’t justify spending $30 on an unknown title."
+          },
+          {
+            "type": "p",
+            "text": "So the idea that you could go to a video store, rent a title for a couple of days, and try it out at home was really appealing. If the game wasn’t very good, you were out $2 instead of $30. And if you liked the game but got tired of it after renting it a few times, you still saved money. Maybe you rented the game five times, so you were out $10 instead of $30."
+          },
+          {
+            "type": "p",
+            "text": "I had friends who got the console when the price hit $100 and they never bought any cartridges aside from whatever cartridge came with it when they bought it. They just rented a game every weekend."
+          },
+          {
+            "type": "h3",
+            "text": "Not a lost sale"
+          },
+          {
+            "type": "p",
+            "text": "And that’s why I disagree with Nintendo’s argument that a rental was a lost sale. The video store owner had to buy the cartridges, so Nintendo got their royalty with the initial sale. If a new title was really popular, video stores could only rent out as many copies as they had managed to buy. When new installments of franchise titles like Mario and Zelda came out, demand would tail off as customers bought their own copies, so it didn’t make sense to tie capital up in 20 copies of each Mario title."
+          },
+          {
+            "type": "h3",
+            "text": "The effect on middling titles"
+          },
+          {
+            "type": "p",
+            "text": "And when a title was low quality, it wasn’t going to set any sales records anyway. People would give it a chance at $2, but after buying a couple too many bad titles untested, they weren’t going to take a chance at $30, at least not very often."
+          },
+          {
+            "type": "p",
+            "text": "And even though Nintendo did reserve the right to veto certain titles, and they often did, some bad titles still made it through the process. Friday the 13th, Bad Street Brawler, and Dr. Jekyll & Mr. Hyde are three examples of side scrolling fighting games that were confusing and not fun to play. And making a low-res video game adaptation of Where’s Waldo was just a bad idea all around."
+          },
+          {
+            "type": "p",
+            "text": "The ideal title for a video rental store was a middling title. These were games that were good but didn’t have universal appeal or games that were fun the first few times you played through them but that you didn’t want to play over and over. You’d rent that game because you’d never played it before, then rent something else once you tired of it. If anything, the rental stores kept these types of titles alive by helping people discover them."
+          },
+          {
+            "type": "h3",
+            "text": "Low income families"
+          },
+          {
+            "type": "p",
+            "text": "And the other thing Nintendo didn’t consider was low income families. If it hadn’t been for rentals, the families who were buying the console and then renting may not have bought the console at all. There wasn’t a lot of incentive to save for the console, only to have to turn around and save for weeks or months to buy another cartridge. Without rentals, most would have either gone without, or bought an Atari console, which had less expensive cartridges."
+          },
+          {
+            "type": "p",
+            "text": "Nintendo wasn’t getting rich off rentals, but they were overestimating the effect on sales. If Nintendo rentals hurt anyone, it was Atari. The rental ecosystem helped Nintendo play in an income bracket that otherwise couldn’t afford to."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "这里有一段80年代末的记忆，你可能有一阵子没想起来了。你还记得去录像带出租店租电子游戏，拿到了卡带却没有拿到说明书吗？录像带出租店之所以只租给你卡带而不附带说明书，可以追溯到1989年7月底开始的一系列事件，当时任天堂起诉了百视达（Blockbuster）。",
+          "《计算机软件出租法》",
+          "在20世纪80年代，录像带出租是一件大事。随着录像机（VCR）的普及，涌现出许多小企业，以微薄的费用出租录像带电影。去录像带店租一两部电影成了许多家庭周末的常规活动。这比去电影院便宜，更比直接买下VHS录像带便宜得多。",
+          "随着时间的推移，出租不仅仅是电影的东西变得不可避免。在Atari 2600时代，一些大都市区的先驱者开始出租游戏。但直到任天堂娱乐系统（Nintendo Entertainment System）流行起来，电子游戏出租业务才真正腾飞。",
+          "但有些东西这类商店是不能出租的。音乐就是其中之一，计算机软件也是如此。这是一项名为《计算机软件出租法》（Computer Software Rental Act）的法律的结果，该法于1990年签署生效。任天堂希望像禁止出租计算机软件一样，将电子游戏出租也定为非法。他们认为每一次出租都意味着失去一次销售。",
+          "百视达的例外",
+          "百视达（Blockbuster）是美国最大的录像带出租连锁店，他们游说国会争取这一例外。当时，电子游戏出租仅占其年收入的5%左右，但他们将其视为一个增长领域。更不用说其利润率比录像带还要好，因为游戏卡带的成本低于VHS录像带，而且使用寿命更长。因此，他们为争取例外而辩护，指出虽然音乐很容易复制，基于软盘的计算机软件也相对容易复制，但像任天堂游戏这样的电子游戏卡带并不容易复制。",
+          "是的，即使在20世纪80年代，复制电子游戏卡带在技术上也是可能的，但这并不是普通家庭能做到的事情。",
+          "百视达最终获胜并获得了例外许可。但没过多久，任天堂就找到了一个法律漏洞，他们利用它不仅恐吓了百视达，甚至恐吓了小型的独立录像带出租店。而且他们甚至没有等法律通过就采取了行动。",
+          "任天堂起诉百视达侵犯版权",
+          "1989年7月31日星期一，任天堂致信百视达，要求他们停止侵犯版权。那周晚些时候，即1989年8月4日星期五，任天堂正式起诉百视达侵犯版权。任天堂并没有声称出租游戏卡带侵犯了任何版权。任天堂起诉的原因是他们发现百视达在复印卡带附带的说明书。",
+          "百视达意识到，租电子游戏的人会想要说明书，以便学习如何玩游戏。问题在于，游戏卡带附带的说明书实际上只是几张用订书钉钉在一起的铜版纸。它们并不特别耐用，而且在玩游戏时很容易被洒上零食或饮料。",
+          "因此，说明书经常被损坏后归还，甚至根本不归还。租客经常会弄丢说明书，或者忘记把它带回来。",
+          "解决任天堂说明书丢失和损坏的问题",
+          "Blockbuster 的解决方案相当简单明了。复印原版说明书，将原件存档，并在出租时提供复印件。如果复印件归还时破损严重或根本没有归还，他们只需为下一位租客重新复印一份即可。",
+          "Nintendo 提起了诉讼，声称此举侵犯了其版权。这倒是个合理的观点，除非版权并不属于 Nintendo。而事实确实并非总是如此。虽然许多 NES 游戏由 Nintendo 自行制作，但随着时间的推移，其游戏库中越来越多的作品来自 Capcom、Squaresoft 和 Enix 等第三方发行商。这些卡带采用与 Nintendo 卡带相同的灰色外壳，印有 Nintendo 品质认证标志，且除非遇到特殊情况，否则均由 Nintendo 负责生产。然而，游戏及说明书的版权实际上属于其他软件发行商。",
+          "这个案子其实站不住脚，Blockbuster 警告称，这会对规模较小的独立录像带租赁店产生寒蝉效应。",
+          "但两家公司都承担不起败诉的风险，利害攸关。最终，Nintendo 和 Blockbuster 达成了庭外和解。和解结果是，Blockbuster 自行编写游戏说明，并在顾客租借游戏时提供这些说明的复印件。",
+          "与网上的一些猜测相反，Nintendo 的诉讼并没有搞垮 Blockbuster。Blockbuster 直到 2010 年才宣告破产。",
+          "对小型独立录像带租赁店 Nintendo 游戏租赁业务的影响",
+          "对于独立录像带租赁店而言，Blockbuster 的解决方案实在是不切实际。典型的两人小店既没有人力也没有设备去自行制作游戏说明书。他们光是打理店铺就已经忙得不可开交了。",
+          "他们多半是从报纸或报道录像带租赁行业的行业杂志上得知这起诉讼的。他们或许并未完全理解案件的细微之处，但他们发现，只要告诉顾客只要不提供说明书，出租卡带就是合法的，这就足够管用了。大多数消费者接受了这种说法。他们干脆租下游戏，然后尽力自己摸索怎么玩。毕竟，最优秀的游戏并不需要太多说明。",
+          "至少在某些情况下，迫使租赁店停止提供说明书，可能通过抑制重复租赁反而促进了销量。如果一款游戏看起来不错，但又过于复杂难以自行摸索，有些人可能确实会选择直接购买，而不是反复租借。",
+          "支持电子游戏租赁的理由",
+          "Nintendo 游戏并不便宜。其价格因游戏发售时间的长短而异，在某种程度上也取决于该游戏的受期待程度。",
+          "但由于制造成本在 7 到 14 美元之间，除非售价达到 30 美元或以上，否则游戏卡带并没有多少利润空间。在 1989 年，这可是一笔不小的钱，相当于 2025 年的 78 美元。",
+          "当然，有些游戏你会反复游玩，因此并不介意花 30 或 40 美元买一份属于自己的拷贝。但对于一个普通的工薪阶层家庭，尤其是单收入工薪家庭来说，花 30 美元买一款未知的游戏是难以接受的。",
+          "因此，去录像带店租一款游戏回家试玩几天的想法就变得非常有吸引力。如果游戏不好玩，你只会损失 2 美元，而不是 30 美元。如果你喜欢这款游戏，但在租了几次之后玩腻了，你依然省了钱。也许你租了五次这款游戏，那么你只花了 10 美元，而不是 30 美元。",
+          "我有些朋友在游戏机价格降到100美元时入手了，除了买机器时自带的那盘卡带外，他们再也没买过其他卡带。他们只是每个周末去租个游戏玩。",
+          "并非流失的销量",
+          "这就是为什么我不同意任天堂关于“出租等于流失销量”的论点。录像带店老板必须购买这些卡带，所以任天堂在首次销售时就拿到了版税。如果一款新游戏真的很受欢迎，录像带店也只能出租他们设法买到的那几份。当像 Mario 和 Zelda 这样的系列游戏推出新作时，随着顾客购买自己的卡带，需求会逐渐减少，因此把资金压在每款 Mario 游戏的20份拷贝上是没有意义的。",
+          "对中等水平游戏的影响",
+          "而当一款游戏质量低劣时，反正它也创不下任何销售记录。人们愿意花2美元试一试，但在未经试玩就买了几款太多糟糕的游戏后，他们就不会再花30美元去碰运气了，至少不会经常这么做。",
+          "尽管任天堂确实保留了否决某些游戏的权利，而且他们也经常这么做，但一些糟糕的游戏还是通过了审核。Friday the 13th、Bad Street Brawler 和 Dr. Jekyll & Mr. Hyde 就是三个例子，这些横版过关格斗游戏让人摸不着头脑，玩起来也没什么意思。而把 Where’s Waldo 改编成低分辨率的电子游戏，完全就是个彻头彻尾的馊主意。",
+          "对于录像带出租店来说，最理想的游戏是中等水平的游戏。这些游戏虽然不错，但并不具备普遍吸引力，或者前几次玩的时候很有趣，但你不想一遍又一遍地玩。你会租这款游戏是因为你以前没玩过，一旦玩腻了就会去租别的。如果说有什么影响的话，反而是出租店通过帮助人们发现这些游戏，让这类游戏保持了生命力。",
+          "低收入家庭",
+          "任天堂没有考虑到的另一件事是低收入家庭。如果不是因为可以出租，那些买了游戏机然后去租游戏的家庭可能根本就不会买游戏机。攒钱买游戏机，结果转头又要攒几周甚至几个月的钱去买另一盘卡带，这没什么吸引力。如果没有出租业务，大多数人要么干脆不买，要么就会去买卡带更便宜的 Atari 游戏机。",
+          "任天堂并没有靠出租业务发财，但他们高估了其对销量的影响。如果说任天堂游戏的出租业务伤害了谁，那就是 Atari。出租生态系统帮助任天堂打入了一个原本负担不起的收入阶层。",
+          "David Farquhar 是一名计算机安全专业人士、企业家和作家。自1991年以来，他一直从事专业的计算机写作，因此当复古计算机还是新事物时，他就在写关于它们的东西。自1994年以来，他一直在IT行业从事专业工作，并自2013年起专注于漏洞管理。他拥有 Security+ 和 CISSP 认证。如今他每周写五篇博客，主要关注1975年至2000年间的复古计算机和复古游戏。"
+        ]
+      }
+    }
+  ]
+}
