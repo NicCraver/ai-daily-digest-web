@@ -1,0 +1,2580 @@
+{
+  "date": "2026-08-02",
+  "generatedAt": "2026-08-01T17:15:15.550Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2526,
+    "filteredArticles": 17,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "今日技术圈焦点集中在AI工具链的深化与开源模型的持续演进。无状态MCP协议引发开发者新一轮关注，相关客户端与探索工具不断涌现，推动AI集成走向轻量化。同时，以DeepSeek为代表的开源权重模型及配套评估工具展现出强劲活力，引发业界对AI商业化宣传与实际落地应用的深度反思。",
+  "articles": [
+    {
+      "slug": "b4abdb1547ac33aa",
+      "title": "Stateless MCP has recaptured my interest (and inspired mcp-explorer and datasette-mcp)",
+      "titleZh": "Stateless MCP has recaptured my interest (and inspired mcp-explorer and datasette-mcp)",
+      "link": "https://simonwillison.net/2026/Jul/31/stateless-mcp/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-31T23:13:22.000Z",
+      "category": "tools",
+      "keywords": [
+        "MCP",
+        "LLM",
+        "protocol"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 9,
+        "total": 25
+      },
+      "summary": "Stateless MCP has recaptured my interest (and inspired mcp-explorer and datasette-mcp)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "31st July 2026"
+          },
+          {
+            "type": "p",
+            "text": "Tuesday was Stateless MCP day—the rollout of MCP 2.0, or the 2026-07-28 Model Context Protocol specification to use the more formal but less memorable name. This is the most significant change to the MCP spec since it first launched, and has also served to reignite my personal interest in the protocol."
+          },
+          {
+            "type": "p",
+            "text": "For background: MCP is the Model Context Protocol, which describes a standard way to expose new tools to LLM-powered agent frameworks. It was introduced by Anthropic back in November 2024, had a huge spike of interest through much of 2025, and then became somewhat eclipsed by Skills (another Anthropic invention) when it became apparent that an agent harness with access to a terminal and curl could do most of what MCP did in a more flexible way. I wrote about that in my review of 2025."
+          },
+          {
+            "type": "p",
+            "text": "I’m coming back around to MCP now. Giving an agent a shell environment with the ability to access the internet is fraught with risk, and requires a strong model that is capable of effectively driving such an environment. MCP tools are easier to audit and control, and simple enough that smaller models that run on a laptop can still drive them reasonably well."
+          },
+          {
+            "type": "p",
+            "text": "The new stateless MCP specification also greatly decreases the complexity of implementing both clients and servers for the protocol. I built three of those this week!"
+          },
+          {
+            "type": "h3",
+            "text": "What’s easier with stateless MCP"
+          },
+          {
+            "type": "p",
+            "text": "The best demonstration of the difference between stateful and stateless MCP is in this May 21st blog post that introduced the RC for the new specification. It included a clear before-and-after example."
+          },
+          {
+            "type": "p",
+            "text": "The older stateful MCP (I’m going to call it “legacy MCP”) required two HTTP requests—the first to initialize a session and obtain a Mcp-Session-Id, and the second to actually call the tool:"
+          },
+          {
+            "type": "code",
+            "text": "POST /mcp HTTP/1.1\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2025-11-25\",\n    \"capabilities\": {\n    },\n    \"clientInfo\": {\n      \"name\": \"my-app\",\n      \"version\": \"1.0\"\n    }\n  }\n}\n\nPOST /mcp HTTP/1.1\nMcp-Session-Id: 1868a90c-3a3f-4f5b\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"search\",\n    \"arguments\": {\n      \"q\": \"otters\"\n    }\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "The new stateless way uses a single HTTP request which looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "POST /mcp HTTP/1.1\nMCP-Protocol-Version: 2026-07-28\nMcp-Method: tools/call\nMcp-Name: search\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"search\",\n    \"arguments\": {\n      \"q\": \"otters\"\n    },\n    \"_meta\": {\n      \"io.modelcontextprotocol/clientInfo\": {\n        \"name\": \"my-app\",\n        \"version\": \"1.0\"\n      }\n    }\n  }\n}"
+          },
+          {
+            "type": "p",
+            "text": "This is so much cleaner from both a client- and server-side implementation perspective. It’s also a better fit for building scalable web applications, since now you don’t need to maintain server-side state to keep track of those session IDs, or worry about routing the same session to the same backend machine."
+          },
+          {
+            "type": "h3",
+            "text": "mcp-explorer"
+          },
+          {
+            "type": "p",
+            "text": "I couldn’t find a great CLI tool for interactively probing an MCP server, so I had Codex help build my own."
+          },
+          {
+            "type": "p",
+            "text": "mcp-explorer is the result. It’s a stateless Python CLI tool, so you don’t even need to install it to try it out—it works with uvx like this:"
+          },
+          {
+            "type": "code",
+            "text": "uvx mcp-explorer list https://agentic-mermaid.dev/mcp"
+          },
+          {
+            "type": "p",
+            "text": "This queries Ade Oshineye’s agentic-mermaid.dev demo MCP. The above command returns the following list of tools:"
+          },
+          {
+            "type": "code",
+            "text": "execute(code: string, timeoutMs?: integer) - Execute Mermaid SDK code\n  Run JavaScript in an isolated sandbox; return a value.\n\ndescribe_sdk(family: string, detail?: string) - Describe Mermaid SDK operations\n  Return version-matched mutation operations for one diagram family.\n\nrender_svg(source: string, options?: object) - Render Mermaid as SVG\n  Render a Mermaid source string to themeable SVG. Returns { ok, svg }.\n\nrender_ascii(source: string, useAscii?: boolean, targetWidth?: integer, options?: object) - Render Mermaid as text\n  Render a Mermaid source string to text. Returns { ok, text }.\n\nrender_png(source: string, scale?: number, background?: string, fitTo?: object, options?: object) - Render Mermaid as PNG\n  Rasterize a Mermaid source string to PNG. Returns { ok, png_base64 }.\n..."
+          },
+          {
+            "type": "p",
+            "text": "Then to inspect a tool:"
+          },
+          {
+            "type": "code",
+            "text": "uvx mcp-explorer inspect render_svg"
+          },
+          {
+            "type": "p",
+            "text": "This outputs a whole bunch of information, including the JSON schema of the inputs and outputs."
+          },
+          {
+            "type": "p",
+            "text": "To call that tool and pass arguments to it:"
+          },
+          {
+            "type": "code",
+            "text": "uvx mcp-explorer call \\\n  https://agentic-mermaid.dev/mcp \\\n  render_svg \\\n  -a source 'graph TD; A-->B' \\\n  -a options '{\"padding\":24}'"
+          },
+          {
+            "type": "p",
+            "text": "Which returns:"
+          },
+          {
+            "type": "code",
+            "text": "{\"ok\":true,\"svg\":\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=..."
+          },
+          {
+            "type": "p",
+            "text": "To get just the raw SVG try adding | jq .svg -r to that command. I got back this image:"
+          },
+          {
+            "type": "p",
+            "text": "There are a few more commands in the README, but you get the general idea. I find building CLI tools like this to be a really productive way to get familiar with a specification, even if an agent writes most of the actual code."
+          },
+          {
+            "type": "h3",
+            "text": "datasette-mcp"
+          },
+          {
+            "type": "p",
+            "text": "The second project is datasette-mcp, a Datasette plugin which adds a /-/mcp endpoint to any Datasette instance."
+          },
+          {
+            "type": "p",
+            "text": "This is probably the fourth time I’ve tried building this plugin, but thanks to the new stateless MCP specification I finally have a version that feels good to release."
+          },
+          {
+            "type": "p",
+            "text": "It provides just three tools: list_databases(), get_database_schema(database_name), and execute_sql(database_name, sql). They do exactly what you would expect them to do—though execute_sql() is read-only for the moment."
+          },
+          {
+            "type": "p",
+            "text": "Wire these into an agent, or a chat tool like ChatGPT or Claude, and they’ll gain the ability to run SQL queries against your hosted Datasette instance."
+          },
+          {
+            "type": "p",
+            "text": "So far I’m running it on the Datasette mirror of my blog, at datasette.simonwillison.net/-/mcp. It took a bit of fiddling to figure out how to attach that to ChatGPT and Claude, but I got there in the end. Here’s a new TIL showing exactly how to do that."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a shared Claude session where I asked it:"
+          },
+          {
+            "type": "quote",
+            "text": "list tables in simonwillison.net"
+          },
+          {
+            "type": "p",
+            "text": "And then:"
+          },
+          {
+            "type": "quote",
+            "text": "what has Simon said recently about MCP?"
+          },
+          {
+            "type": "p",
+            "text": "It ran 7 separate SQL queries to figure out the answer."
+          },
+          {
+            "type": "h3",
+            "text": "llm-mcp-client"
+          },
+          {
+            "type": "p",
+            "text": "My LLM tool is long overdue for an official MCP integration. The new alpha llm-mcp-client plugin is my attempt at exactly that:"
+          },
+          {
+            "type": "code",
+            "text": "llm install llm-mcp-client\nllm -T 'MCP(\"https://datasette.simonwillison.net/-/mcp\")' 'count the notes'"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the output (including reasoning trace, I’m using LLM 0.32rc2):"
+          },
+          {
+            "type": "quote",
+            "text": "Considering note count\nI see the question “count the notes” is probably asking me to tally up blog notes. It could also mean published notes or drafts, so there’s some ambiguity there. I’ll need to figure out the total number of notes, likely by querying the count for both published notes and drafts to get a clear answer. Let’s execute that count!\nThere are 151 notes."
+          },
+          {
+            "type": "p",
+            "text": "And the output of llm logs for that prompt."
+          },
+          {
+            "type": "p",
+            "text": "Once this is fully baked, I’m considering bringing it directly into LLM core. I’m excited to experiment with MCP in Datasette Agent and llm-coding-agent as well."
+          },
+          {
+            "type": "h3",
+            "text": "MCP is a safer way to build with agents"
+          },
+          {
+            "type": "p",
+            "text": "A few months after MCP was first released, I wrote Model Context Protocol has prompt injection security problems, where I noted that the pattern of having end users mix and match tools pushed responsibility for avoiding data exfiltration attacks out to the users themselves. I hadn’t coined the Lethal Trifecta yet, but that was absolutely what I had in mind."
+          },
+          {
+            "type": "p",
+            "text": "Then general agents with arbitrary shell and curl access came along, and that’s so much harder to keep secure!"
+          },
+          {
+            "type": "p",
+            "text": "Something I’ve come to appreciate about MCP is that it’s much easier to reason about agent capabilities and what might go wrong than with arbitrary command execution in an open network environment—the default for most of today’s general and coding agent tools."
+          },
+          {
+            "type": "p",
+            "text": "I plan to lean into MCP a whole lot more when I’m building sensitive applications on top of LLMs."
+          }
+        ],
+        "translations": [
+          "2026年7月31日",
+          "周二是无状态 MCP 日——MCP 2.0 发布，或者用更正式但没那么好记的名字来说，是 2026-07-28 模型上下文协议规范。这是 MCP 规范自首次发布以来最重大的变化，也重新点燃了我对该协议的个人兴趣。",
+          "背景信息：MCP 即模型上下文协议，它描述了一种向基于 LLM 的智能体框架暴露新工具的标准方式。它由 Anthropic 于 2024 年 11 月推出，在 2025 年的大部分时间里引起了极大的关注，但后来当人们发现，能够访问终端和 curl 的智能体框架可以更灵活地完成 MCP 所做的大部分工作时，它就被 Skills（Anthropic 的另一项发明）所掩盖了。我在 2025 年的回顾中写过这件事。",
+          "我现在又重新关注 MCP 了。给智能体提供一个可以访问互联网的 shell 环境充满了风险，并且需要一个强大的模型才能有效地驱动这样的环境。MCP 工具更容易审计和控制，而且足够简单，以至于在笔记本电脑上运行的小型模型也能很好地驱动它们。",
+          "新的无状态 MCP 规范也大大降低了实现该协议客户端和服务器的复杂性。我这周就构建了三个！",
+          "无状态 MCP 让什么变得更容易了",
+          "介绍新规范 RC 版的这篇 5 月 21 日的博客文章最好地展示了有状态和无状态 MCP 之间的区别。它包含了一个清晰的前后对比示例。",
+          "旧的有状态 MCP（我打算称之为“遗留 MCP”）需要两个 HTTP 请求——第一个用于初始化会话并获取 Mcp-Session-Id，第二个用于实际调用工具：",
+          "POST /mcp HTTP/1.1\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2025-11-25\",\n    \"capabilities\": {\n    },\n    \"clientInfo\": {\n      \"name\": \"my-app\",\n      \"version\": \"1.0\"\n    }\n  }\n}\n\nPOST /mcp HTTP/1.1\nMcp-Session-Id: 1868a90c-3a3f-4f5b\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"search\",\n    \"arguments\": {\n      \"q\": \"otters\"\n    }\n  }\n}",
+          "新的无状态方式使用单个 HTTP 请求，如下所示：",
+          "POST /mcp HTTP/1.1\nMCP-Protocol-Version: 2026-07-28\nMcp-Method: tools/call\nMcp-Name: search\nContent-Type: application/json\n\n{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"search\",\n    \"arguments\": {\n      \"q\": \"otters\"\n    },\n    \"_meta\": {\n      \"io.modelcontextprotocol/clientInfo\": {\n        \"name\": \"my-app\",\n        \"version\": \"1.0\"\n      }\n    }\n  }\n}",
+          "从客户端和服务器端的实现角度来看，这都要干净得多。它也更适合构建可扩展的 Web 应用程序，因为现在你不需要维护服务器端状态来跟踪那些会话 ID，也不必担心将同一个会话路由到同一台后端机器。",
+          "mcp-explorer",
+          "我找不到一个很好的 CLI 工具来交互式地探测 MCP 服务器，所以我让 Codex 帮我构建了一个。",
+          "mcp-explorer 就是结果。它是一个无状态的 Python CLI 工具，所以你甚至不需要安装它就可以试用——它可以像这样配合 uvx 使用：",
+          "uvx mcp-explorer list https://agentic-mermaid.dev/mcp",
+          "这会查询 Ade Oshineye 的 agentic-mermaid.dev 演示 MCP。上面的命令返回以下工具列表：",
+          "execute(code: string, timeoutMs?: integer) - Execute Mermaid SDK code\n  Run JavaScript in an isolated sandbox; return a value.\n\ndescribe_sdk(family: string, detail?: string) - Describe Mermaid SDK operations\n  Return version-matched mutation operations for one diagram family.\n\nrender_svg(source: string, options?: object) - Render Mermaid as SVG\n  Render a Mermaid source string to themeable SVG. Returns { ok, svg }.\n\nrender_ascii(source: string, useAscii?: boolean, targetWidth?: integer, options?: object) - Render Mermaid as text\n  Render a Mermaid source string to text. Returns { ok, text }.\n\nrender_png(source: string, scale?: number, background?: string, fitTo?: object, options?: object) - Render Mermaid as PNG\n  Rasterize a Mermaid source string to PNG. Returns { ok, png_base64 }.\n...",
+          "然后检查某个工具：",
+          "uvx mcp-explorer inspect render_svg",
+          "这会输出一大堆信息，包括输入和输出的 JSON schema。",
+          "要调用该工具并向其传递参数：",
+          "uvx mcp-explorer call \\\n  https://agentic-mermaid.dev/mcp \\\n  render_svg \\\n  -a source 'graph TD; A-->B' \\\n  -a options '{\"padding\":24}'",
+          "返回结果如下：",
+          "{\"ok\":true,\"svg\":\"<svg xmlns=\\\"http://www.w3.org/2000/svg\\\" width=...",
+          "如果只想获取原始 SVG，可以尝试在该命令后加上 | jq .svg -r。我得到了这张图片：",
+          "README 中还有更多命令，但你应该已经明白大概的意思了。我发现构建这样的 CLI 工具是熟悉规范的一种非常高效的方法，即使大部分实际代码是由智能体编写的。",
+          "datasette-mcp",
+          "第二个项目是 datasette-mcp，这是一个 Datasette 插件，可以为任何 Datasette 实例添加一个 /-/mcp 端点。",
+          "这大概是我第四次尝试构建这个插件了，但多亏了新的无状态 MCP 规范，我终于有了一个感觉不错可以发布的版本。",
+          "它只提供了三个工具：list_databases()、get_database_schema(database_name) 和 execute_sql(database_name, sql)。它们的作用正如你所料——不过 execute_sql() 目前是只读的。",
+          "将这些工具接入 agent，或者像 ChatGPT 或 Claude 这样的聊天工具，它们就能对你托管的 Datasette 实例运行 SQL 查询。",
+          "目前我把它运行在我博客的 Datasette 镜像上，地址是 datasette.simonwillison.net/-/mcp。弄清楚如何将它接入 ChatGPT 和 Claude 花了一些功夫，但最终还是搞定了。这里有一篇新的 TIL 详细展示了如何操作。",
+          "这里有一个共享的 Claude 会话，我在其中问了它：",
+          "列出 simonwillison.net 中的表",
+          "然后：",
+          "Simon 最近关于 MCP 说了些什么？",
+          "它运行了 7 次独立的 SQL 查询来找出答案。",
+          "llm-mcp-client",
+          "我的 LLM 工具早该有一个官方的 MCP 集成了。新的 alpha 版 llm-mcp-client 插件正是我为此做出的尝试：",
+          "llm install llm-mcp-client\nllm -T 'MCP(\"https://datasette.simonwillison.net/-/mcp\")' 'count the notes'",
+          "这是输出结果（包含推理轨迹，我使用的是 LLM 0.32rc2）：",
+          "考虑到笔记数量 我看到“统计笔记”这个问题可能是让我统计博客笔记。它也可能指已发布的笔记或草稿，所以存在一些歧义。我需要算出笔记的总数，可能是通过查询已发布笔记和草稿的数量来得到明确的答案。让我们执行这个统计吧！ 共有 151 篇笔记。",
+          "以及该提示词的 llm logs 输出。",
+          "一旦这个功能完全成熟，我考虑将其直接引入 LLM 核心。我也很期待在 Datasette Agent 和 llm-coding-agent 中尝试 MCP。",
+          "MCP 是一种更安全的 agent 构建方式",
+          "在 MCP 首次发布几个月后，我写了《Model Context Protocol 存在提示词注入安全问题》一文，在文中我指出，让最终用户混合搭配工具的模式将避免数据泄露攻击的责任推给了用户自己。当时我还没有提出“致命三要素”（Lethal Trifecta）这个词，但这绝对是我当时所考虑的。",
+          "后来出现了具有任意 shell 和 curl 访问权限的通用 agent，要保证它们的安全就难多了！",
+          "我逐渐欣赏 MCP 的一点是，与在开放网络环境中执行任意命令（当今大多数通用和编程 agent 工具的默认行为）相比，推断 agent 的能力以及可能出现的问题要容易得多。",
+          "我计划在基于 LLM 构建敏感应用时，更多地依赖 MCP。"
+        ]
+      }
+    },
+    {
+      "slug": "103782103c4cf9c9",
+      "title": "Pluralistic: Why businesses lie about AI (01 Aug 2026)",
+      "titleZh": "Pluralistic: Why businesses lie about AI (01 Aug 2026)",
+      "link": "https://pluralistic.net/2026/08/01/dare-snot/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-08-01T12:29:28.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "business",
+        "ethics"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 8,
+        "timeliness": 8,
+        "total": 24
+      },
+      "summary": "Pluralistic: Why businesses lie about AI (01 Aug 2026)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Why businesses lie about AI: Humoring the boss all the way into bankruptcy."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Vinge x NYT; Syklarov x publishers; Human hair castles; Gingrich's bot army; Accessibility v Web DRM; David Byrne x WinXP; Furries don't fuck in fursuits; AI's pogo-stick grift."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Edinburgh, Sydney, Melbourne, Brighton, London, South Bend."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Why businesses lie about AI (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Neoclassical economics assumes rationality. The corollary of, \"If you're so smart, why aren't you rich?\" is \"you're rich, so you must be very smart!\" Thus it is that many people assume that if powerful, well-compensated CEOs insist that \"AI is changing everything,\" well then, AI must be changing everything."
+          },
+          {
+            "type": "p",
+            "text": "But the evidence for this \"changing everything\" thesis is thin on the ground. Despite a global mania that has reduced the real, pressing need for digital sovereignty to the imaginary need to create \"sovereign AI,\" no one can really articulate the case for \"sovereign AI.\" If Donald Trump ordered Big Tech to turn off all of your country's chatbots tomorrow, nothing would change. Every one of your country's ministries and corporations would chug on with nary a hitch. Households, too, though perhaps a few of the younger members of those families would have to do their own homework again."
+          },
+          {
+            "type": "p",
+            "text": "(Contrast this with what would transpire if Trump directed his tech giants to switch off your country's Office 365 access, or to brick your Android and iOS phones, or to killswitch your John Deere tractors. Your country would effectively cease to exist. If \"digital sovereignty\" means anything, it means doing something about this urgent fact):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/06/18/their-trillions-our-billions/#eyes-on-the-prize"
+          },
+          {
+            "type": "p",
+            "text": "The world is full of people who insist that \"AI is changing everything\" but who – when pressed – have to admit that what they mean is that they're pretty sure that AI will change everything. Eventually. After we allow it to consume all the planet's energy, carbon, water and financial resources."
+          },
+          {
+            "type": "p",
+            "text": "Maybe."
+          },
+          {
+            "type": "p",
+            "text": "(They're pretty sure.)"
+          },
+          {
+            "type": "p",
+            "text": "One person who's had a lot of opportunity to observe the shear between the stated business/AI situation and the real business AI situation is Nikhil Suresh from Hermit Tech, a consulting firm of \"radically ethical data wizards\" (that is, tech consultants). Suresh reports on his experience talking with hundreds of executives (and, more importantly, their subordinates) about what (if anything) AI is doing for business in an essay entitled \"AI Mania Is Eviscerating Global Decisionmaking\":"
+          },
+          {
+            "type": "p",
+            "text": "https://hermit-tech.com/blog/ai-mania-is-eviscerating-global-decisionmaking"
+          },
+          {
+            "type": "p",
+            "text": "Suresh has a good track record of writing trenchant, frank criticism of AI. You may know him from his 2024 essay, \"I Will Fucking Piledrive You If You Mention AI Again\":"
+          },
+          {
+            "type": "p",
+            "text": "https://ludic.mataroa.blog/blog/i-will-fucking-piledrive-you-if-you-mention-ai-again/"
+          },
+          {
+            "type": "p",
+            "text": "Or possibly from his \"Contra Ptacek's Terrible Article On AI,\" a stinging rebuttal to Thomas Ptacek's widely read \"My AI Skeptic Friends Are All Nuts\":"
+          },
+          {
+            "type": "p",
+            "text": "https://ludic.mataroa.blog/blog/contra-ptaceks-terrible-article-on-ai/"
+          },
+          {
+            "type": "p",
+            "text": "While those are important pieces of critical AI realpolitik, none of them have the heft or urgency of \"AI Mania Is Eviscerating Global Decisionmaking,\" whose thesis can be summed up with this passage from halfway through this 6,000-word article:"
+          },
+          {
+            "type": "quote",
+            "text": "[W]e’re facing a coordination problem around executives being honest around the AI gains they’ve witnessed – if they co-operate, they keep their jobs. If they defect, they will possibly be fired by their embarrassed peers (who have now been implicitly called liars, cowards, or incompetents) and then replaced with someone that will toe the line anyway. If they could all admit the truth at once there might be some hope, but there is no way to coordinate that event."
+          },
+          {
+            "type": "p",
+            "text": "In other words, corporate leadership is starting from the premise that AI has (or will) radically change the business, and they're working backwards from that premise to find the evidence to support this article of faith."
+          },
+          {
+            "type": "p",
+            "text": "In support of this thesis, Suresh cites \"hundreds\" of conversations with execs and employees who spoke to him on the condition that he would \"file the serial numbers\" off their stories. These, combined with his own experience consulting for large, multi-billion-dollar companies make it clear that \"AI mania\" is an absolutely justifiable label for the state of AI in corporate circles."
+          },
+          {
+            "type": "p",
+            "text": "Here are a few highlights from this morning's read – moments where I had to look away from my screen and read out a passage to my wife so that we could share a \"holy shit\" moment."
+          },
+          {
+            "type": "p",
+            "text": "A person worked for a division that \"pivoted\" to re-engineer its software to create interfaces that support AI agents. When it became apparent that only ten users had touched this expensive new technology, they \"pivoted\" again to support \"agentic workflows.\" Why did they double down on AI agents after discovering such yawning market indifference for \"agentic\"? \"Because every company has to do something agentic now.\""
+          },
+          {
+            "type": "p",
+            "text": "Suresh describes this as a literal religious mania. In the 500+ employee businesses Suresh studied, the only people who were promoted – or even spared from being fired – were people who professed \"religious declarations of faith\" about \"the transformative power of AI.\" Employees who voiced honest, informed objections to AI in the workplace were passed over for promotions or targeted for layoffs."
+          },
+          {
+            "type": "p",
+            "text": "This has created a situation in which everyone – \"boards, executives, employees, vendors, consultants\" – has a strong incentive to lie about how much AI is delivering for their companies. Suresh says he's seen announcements from publicly traded companies about their AI triumphs that he knows for a fact never took place."
+          },
+          {
+            "type": "p",
+            "text": "Suresh says he's never seen a successful enterprise AI project: \"Every single one – we have seen 0% success in a year and a half.\" Not one of their clients would face a business challenge if OpenAI went out of business tomorrow. The problem most companies struggle with is that they're \"terminally bad at running software projects effectively.\" Adding AI to the mix doesn't solve this problem – it just adds a whole new range of ways that software deployment can fail."
+          },
+          {
+            "type": "p",
+            "text": "Chatbots don't help. The internally facing chatbot that's supposed to help employees figure out how to navigate the business sucks because it is only as good as its training date – the business's documentation of its own processes. Businesses suck at documenting their processes. Customer-facing chatbots also suck. They either can't solve your problem, or, when they seem to solve your problem, the \"solution\" goes nowhere."
+          },
+          {
+            "type": "p",
+            "text": "Suresh recounts his sole positive customer service chatbot experience: a Mitsubishi chatbot with a natural sounding, responsive voice politely took all the details of an automotive failure and promised him a callback. That callback never came, but Suresh is certain that Mitsubishi has logged this as a chatbot success story, even though the experience convinced him not to buy a Mitsubishi car."
+          },
+          {
+            "type": "p",
+            "text": "Suresh and his team at Hermit Tech now have a policy of not even asking about ongoing AI projects. They've learned that by the time an AI project has begun, no one will discuss it honestly until it reaches a crisis point."
+          },
+          {
+            "type": "p",
+            "text": "Suresh says he frequently encounters people who reflexively utter the AI catechism: \"AI is changing everything.\" But when he presses these people for details, they admit that their organization \"does not currently use LLMs for anything, and indeed, that they cannot name a single thing that has changed other than they get some use out of ChatGPT.\""
+          },
+          {
+            "type": "p",
+            "text": "This shear (\"AI is changing everything\"/\"Well, OK, we're not using AI for anything\") is so extreme that Suresh once met an exec who confessed to crafting an AI-centered AI strategy for a $2b/year business, even though that exec \"had never even used ChatGPT or any AI tool in their life.\""
+          },
+          {
+            "type": "p",
+            "text": "Some people have privately admitted to Suresh that they've embraced AI in order to earn a career-boosting corporate reputation for \"thought leadership.\" But many other people (especially nontechnical people) sincerely believe that AI is about to \"change everything.\" As Suresh says, if you're in business with a liar, you might be able to reason with them in private – but you can't reason with a true believer."
+          },
+          {
+            "type": "p",
+            "text": "The true believers are in charge. Suresh points out that it would be very weird for the CEO of an engineering firm or a hospital to mandate \"specific procedures or building techniques without explicit agreement from the professionals on staff.\" But when it comes to AI, business leaders will confidently demand that the skilled professionals who perform the business's core functions use AI, even if those professionals don't think it will help."
+          },
+          {
+            "type": "p",
+            "text": "As an aside: I remember the dotcom era, when the business press was full of articles about the conflict between CEOs and a new workforce that demanded the right to use the web on the job. Today, the business press is full of articles about the conflict between the workforce and CEOs who demand that they use AI."
+          },
+          {
+            "type": "p",
+            "text": "Suresh describes workers who feel they have to \"AI wash\" their work: \"They just do the work, the same way they have for decades, and say Claude did it.\" To add verisimilitude to this sham, they write circular processes in which one chatbot prompts another, and then the process repeats itself in reverse, for the sole purpose of consuming AI tokens to score a high rank on corporate \"token leaderboards.\""
+          },
+          {
+            "type": "p",
+            "text": "How to account for this wildly, expensively irrational corporate leadership? Suresh places the blame in the hypnotizing, mesmerizing power of the AI demo. For example: Hermit Tech is often engaged to set up a database product called Snowflake for its customers. Snowflake has a useless, expensive AI bolt-on called Cortex, that Snowflake itself describes as being 92% accurate under ideal circumstances (that is, at least 8% of the time, it will mislead you, perhaps very badly)."
+          },
+          {
+            "type": "p",
+            "text": "Suresh describes sales meetings with execs who were lukewarm on the idea of retooling with Snowflake, but who were very interested in Cortex. Against their better judgment, Suresh and his team provided them with a Cortex demo, carefully explaining that this AI tool could not satisfy their requirements. Without fail, this resulted in the previously lukewarm customers insisting that they be allowed to purchase Cortex immediately. Sales prospects who'd been unmoved by a pitch for new technology that would result in millions in savings were hypnotized by demos of a product that was described as unsuitable and unreliable."
+          },
+          {
+            "type": "p",
+            "text": "To their credit, Hermit Tech refused to sell these customers Cortex, and stopped doing Cortex demos altogether. Suresh describes the experience of \"the total 180°, that shift from ice-cold to red-hot buying frenzy\" as \"deeply unsettling.\" What's more, the Cortex demos that Suresh and co performed were, by his account, pretty uninspiring. The thing that these demos had going for them is that they showed AI actually doing something marginally useful, to execs who'd already spent millions on AI without having anything to show for their money. The spectacle of AI that does something galvanizes corporate leaders who feel like they're the only bosses who can't find a revolutionary use for AI in their businesses."
+          },
+          {
+            "type": "p",
+            "text": "This is the situation up and down the corporate org-chart. Suresh has a reader whose title is \"Head of AI\" at a billion-dollar firm who tells him \"their job is totally fraudulent but it was the only promotion pathway remaining at the organisation.\" This exec is hardly alone. They're part of a cohort of executives at companies that have publicly announced \"100x\" productivity gains, but who confessed to Suresh that nothing of the sort has happened."
+          },
+          {
+            "type": "p",
+            "text": "Why did these companies make these claims? Because their customers were making the claims. How could you hope to sell to a company that had 100x'ed its productivity with AI unless you, too had 100x'ed your productivity? If, as a vendor, you walked into a boardroom and said that this wasn't a plausible claim, you'd be calling your sales prospect a liar, with real consequences: \"getting enterprise contracts cancelled because you wanted to opine on something that doesn’t really matter to your organisation’s mission is a great way to get fired.\""
+          },
+          {
+            "type": "p",
+            "text": "With the state of the industry dominated by froth, lies and mutual destruction pacts, it's no wonder that companies are deploying \"totally gameable metrics such as 'money spent on AI'\" as a means of evaluating employees and divisions."
+          },
+          {
+            "type": "p",
+            "text": "Between true believers and people who must find ways to plausibly tout their AI usage, there is now a gigantic market for \"AI solutions.\" At best these are just traditional tech consulting contracts, like migrating a database from Oracle to Snowflake, with some kind of ornamental AI usage around the edges so that the person who commissions the work can claim to be \"procuring AI-enabled services\" for the business."
+          },
+          {
+            "type": "p",
+            "text": "This isn't a harmless frippery: contracts are delayed and work is put off until the work can be made \"sufficiently AI\" to attain the minimum degree of buzzword compliance. Worse: every fake AI project that produces real results (because it's not really AI) adds credibility to the AI true believers, who view these projects as proof that AI can do anything, and therefore demand to know why everything isn't being done by AI."
+          },
+          {
+            "type": "p",
+            "text": "Suresh ends his essay with a long section on how to \"navigate AI mania\" – advice for how to smile and nod politely when you're confronted with AI bullshit, while steering clear of the worst consequences and avoiding needless fights. This looks like very sound advice for anyone in a corporate environment, but thankfully, that isn't me."
+          },
+          {
+            "type": "p",
+            "text": "Rather than summarize that advice, I want to reflect a little on two questions that Suresh's essay raises but doesn't answer. The first is why? Why are people in power such easy converts to this religious mania?"
+          },
+          {
+            "type": "p",
+            "text": "I have my own theory. The most important discomfort that powerful people experience is having ego-shattering conflicts with subordinates who know how to do things they do not know how to do. The fact that you're \"in charge\" is hard to reconcile with the fact that the people you're nominally in charge of tell you that all your ideas are impossible, illegal, immoral, or lethal:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/01/05/fisher-price-steering-wheel/#billionaire-solipsism"
+          },
+          {
+            "type": "p",
+            "text": "Take that Cortex demo. Sure, Cortex is an expensive, unreliable way to address a Snowflake database. But (unlike Snowflake) Cortex is controlled via conversational, plain-language commands. With Cortex, a boss doesn't need to ask an underling to retrieve information from the company Snowflake system, an interaction that might come with unsolicited feedback about the technical or commercial incoherence of the boss's request. Cortex is the underling, except that unlike a human underling, Cortex never back-sasses you about your foolish questions. The fact that it grossly misleads you 8% of the time is a small price to pay for a life untroubled by uppity pismires who insist that your ideas be connected to base reality as they understand it."
+          },
+          {
+            "type": "p",
+            "text": "The other question Suresh implicitly raises is, \"How can you reconcile the failure of AI in the enterprise with the individual claims of skilled technologists who insist that AI is helping them do great work?\" The answer is that these AI users are \"centaurs\" – experienced workers who are assisted by automation on terms that they set for themselves:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/09/11/vulgar-thatcherism/#there-is-an-alternative"
+          },
+          {
+            "type": "p",
+            "text": "Thanks to their skill and experience, these workers possess discernment, the ability to tell good code from bad, and (more importantly) good uses of code-generation tools from bad. They demonstrate the adage that worker-driven automation improves quality, while capital-driven automation improves throughput:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/07/28/hitl-ers/#ai-ai-oh"
+          },
+          {
+            "type": "p",
+            "text": "An automation technique that requires close supervision by skilled and experienced workers isn't going to be a raw productivity powerhouse. You don't \"100x\" your code this way, at least, not in the sense of firing 99 of your coders and having the remaining programmer pick up all their work. Rather, an automation tool that requires the continuous and conscientious exercise of discernment will let individual practitioners improve their work in extremely satisfying and useful ways. It's a way to spend more on operations in order to produce better outputs. It's not a way to cut your workforce, realize a gigantic savings, and still produce comparable goods and services at a far lower cost."
+          },
+          {
+            "type": "p",
+            "text": "That is why some individual coders report such delight with their AI tools. They engage with those tools on their own terms, to improve their work in the ways that they, in their expert judgment, consider beneficial. No one ranks them on a \"token-maximization\" scoreboard. No one tells them they can't do a project if it isn't \"sufficiently AI.\" When they set out to do a project, no one makes them prove that it couldn't be \"done by AI.\""
+          },
+          {
+            "type": "p",
+            "text": "As ever, the most important fact about a given technology isn't \"what it does,\" but \"who it does it for\" and \"who it does it to.\""
+          },
+          {
+            "type": "p",
+            "text": "All the pathologies Suresh observes and documents so well in this piece are hypertrophied versions of the buzzword-compliance dysfunctions from previous bubbles, but at a scale never before seen. Quantity has a quality all its own. These businesses aren't just wasting billions – they're replacing skilled workers with defective chatbots. As I've written before, AI is the asbestos we're shoveling into the walls of our technological society. Our descendants will spend generations digging it out again, and the longer the bubble goes on without popping, the longer it will take to repair the damage."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The rent was already high. Then came the $200 work-from-home fee https://finance.yahoo.com/real-estate/articles/rent-already-high-then-came-174555709.html"
+          },
+          {
+            "type": "li",
+            "text": "Families in London temporary housing told they cannot use in-built air conditioning https://www.theguardian.com/society/2026/jul/27/homeless-families-london-temporary-housing-air-conditioning"
+          },
+          {
+            "type": "li",
+            "text": "The New Defcon Badges Pack a Unique Open Source Chip That Doubles as a Security Key https://www.wired.com/story/defcon-34-badge-baochip-andrew-bunnie-huang/"
+          },
+          {
+            "type": "li",
+            "text": "US government map of Africa mislabels every country at global conference https://www.theguardian.com/us-news/2026/jul/30/government-map-mislabels-african-countries?CMP=Share_AndroidApp_Other"
+          },
+          {
+            "type": "li",
+            "text": "EFF Guide to Recording Law Enforcement https://www.eff.org/deeplinks/2026/07/eff-guide-recording-law-enforcement"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Vernor Vinge in the NYT  https://www.nytimes.com/2001/08/02/technology/a-scientist-s-art-computer-fiction.html"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Why publishers should thank Syklarov https://web.archive.org/web/20011023092940/http://www.zdnet.com/zdnn/stories/comment/0,5859,2800985,00.html"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago David Byrne track to be bundled with WinXP https://web.archive.org/web/20010804040357/http://www.ananova.com/news/story/sm_365899.html?menu=news.technology"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Five things about blogs that no one ever needs to say again https://web.archive.org/web/20060813090449/http://www.stevenberlinjohnson.com/2006/08/five_things_all.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Castles made from human hair https://inhabitat.com/artist-uses-human-hair-to-construct-a-castle-of-3000-bricks/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Wisconsin Democratic voters targeted with Koch-funded absentee ballot notices advising them to vote 2 days after the recall election https://www.politico.com/blogs/david-catanese/2011/08/afp-wisconsin-ballots-have-late-return-date-037977?showall"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Gingrich’s million Twitter followers: “80% dummy accounts, 10% paid followers” https://web.archive.org/web/20110812100159/https://gawker.com/5826645/most-of-newt-gingrichs-twitter-followers-are-fake"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Missouri State business-school professor leads successful campaign to ban Slaughterhouse-Five from local schools https://www.theguardian.com/books/2011/jul/29/slaughterhouse-five-banned-us-school"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Australian media accessibility group raises red flag about DRM in web standards https://hotelsantalya.net/accessiq/news/news/2016-p/08-p/concerns-raised-for-assistive-technology-development-as-w3c-debates-encrypted/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Reminder: the GOP has been attacking veterans and their families for years https://web.archive.org/web/20160803203106/https://crookedtimber.org/2016/08/02/trumps-indecent-proposal/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Isis joins Donald Trump in denouncing Khizr Khan https://web.archive.org/web/20160802161454/https://theintercept.com/2016/08/02/donald-trump-and-islamic-state-agree-no-room-for-people-like-khizr-khan/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Furries don’t have sex in fursuits https://www.ohjoysextoy.com/fursuits-grey-white/"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Machine learning sucks at covid https://pluralistic.net/2021/08/02/autoquack/#gigo"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago AI's pogo-stick grift https://pluralistic.net/2025/08/02/inventing-the-pedestrian/#three-apis-in-a-trenchcoat"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: EFFecting Change: Who the Machine Serves, Aug 12\nhttps://www.eff.org/event/effecting-change-who-machine-serves"
+          },
+          {
+            "type": "li",
+            "text": "Edinburgh International Book Festival with Jimmy Wales, Aug 17\nhttps://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales"
+          },
+          {
+            "type": "li",
+            "text": "Sydney: The Festival of Dangerous Ideas, Aug 23-24\nhttps://festivalofdangerousideas.com/program/"
+          },
+          {
+            "type": "li",
+            "text": "Melbourne: Enshittification at the Wheeler Centre, Aug 25\nhttps://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: BC Policy Solutions Gala, Nov 12\nhttps://bcpolicy.ca/gala/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "F@#$ the AI Overlords (On The Media)\nhttps://www.wnycstudios.org/podcasts/otm/articles/f-the-ai-overlords"
+          },
+          {
+            "type": "li",
+            "text": "Why AI Won't Replace Workers, But Will Crash The Economy (Smart Cookies)\nhttps://www.youtube.com/watch?v=rRRmUuxJolY"
+          },
+          {
+            "type": "li",
+            "text": "AI and the Enshittification Era (The Weekly Show with Jon Stewart)\nhttps://www.youtube.com/watch?v=-dAIJRjb-Bw"
+          },
+          {
+            "type": "li",
+            "text": "AI is not inevitable (Betakit)\nhttps://www.youtube.com/watch?v=DbiTVkq1WHo"
+          },
+          {
+            "type": "li",
+            "text": "A Conversation with Lina Khan (Law and Economy Student Network)\nhttps://www.youtube.com/live/7Ak5LZllqwE"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing: \"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "今日链接",
+          "企业为什么在 AI 上撒谎：一路哄着老板直到破产。",
+          "看看这个：赏心悦目的趣闻。",
+          "客体永久性：Vinge x NYT；Sklyarov x 出版商；人类头发城堡；金里奇的机器人军团；无障碍访问 v Web DRM；David Byrne x WinXP；兽迷不穿兽装做爱；AI 的弹簧高跷骗局。",
+          "即将出席的活动：爱丁堡、悉尼、墨尔本、布莱顿、伦敦、南本德。",
+          "近期出席的活动：我去过的地方。",
+          "最新书籍：你们继续读，我继续写。",
+          "即将出版的书籍：正如我所说，我会继续写。",
+          "版权页：其他所有信息。",
+          "企业为什么在 AI 上撒谎（永久链接）",
+          "新古典经济学假设人是理性的。“如果你那么聪明，为什么没发财？”的推论就是“你发财了，所以你一定很聪明！”因此，许多人认为，如果大权在握、薪酬丰厚的 CEO 们坚称“AI 正在改变一切”，那么 AI 就一定在改变一切。",
+          "但支持这种“改变一切”论点的证据却寥寥无几。尽管全球陷入狂热，将数字主权这一真实而紧迫的需求降格为建立“主权 AI”这种虚构的需求，却没人能真正说清“主权 AI”到底有什么用。如果唐纳德·特朗普明天命令大型科技公司关停你们国家的所有聊天机器人，什么都不会改变。你们国家的各个部委和企业仍会照常运转，毫无波澜。家庭也一样，尽管或许有些家庭里的年轻人得重新自己写作业了。",
+          "（相比之下，如果特朗普指示他的科技巨头切断你们国家对 Office 365 的访问，或者让你的 Android 和 iOS 手机变砖，或者远程锁死你们的约翰迪尔拖拉机，情况又会如何。你们的国家实际上将不复存在。如果“数字主权”有任何意义的话，那就是必须针对这一紧迫事实采取行动）：",
+          "https://pluralistic.net/2026/06/18/their-trillions-our-billions/#eyes-on-the-prize",
+          "世界上到处都是坚称“AI 正在改变一切”的人，但被追问时，他们不得不承认，他们的意思是他们非常确信 AI 最终会改变一切。在我们允许它耗尽地球上所有的能源、碳、水和金融资源之后。",
+          "也许吧。",
+          "（他们非常确信。）",
+          "Nikhil Suresh 是 Hermit Tech（一家自称“极度道德的数据奇才”的咨询公司，即技术咨询师）的员工，他有很多机会观察到商业/AI 的表面情况与真实情况之间的巨大落差。Suresh 在一篇题为《AI 狂热正在掏空全球决策》的文章中，记录了他与数百名高管（更重要的是，与他们的下属）交谈的经验，探讨了 AI 到底（如果有的话）为企业做了什么：",
+          "https://hermit-tech.com/blog/ai-mania-is-eviscerating-global-decisionmaking",
+          "Suresh 在撰写犀利、坦率的 AI 批评文章方面有着良好的记录。你可能知道他 2024 年的文章《如果你再提 AI，我就用打桩机狠狠揍你》：",
+          "https://ludic.mataroa.blog/blog/i-will-fucking-piledrive-you-if-you-mention-ai-again/",
+          "或者你可能读过他的《反驳 Ptacek 关于 AI 的糟糕文章》，这是对 Thomas Ptacek 广为流传的《我那些怀疑 AI 的朋友都疯了》一文的尖锐驳斥：",
+          "https://ludic.mataroa.blog/blog/contra-ptaceks-terrible-article-on-ai/",
+          "尽管这些都是关于 AI 现实政治的重要批判，但它们都不具备《AI 狂热正在摧毁全球决策》一文的分量或紧迫感，该文的核心论点可以用这篇 6000 字文章中间的一段话来概括：",
+          "[W]我们正面临一个关于高管们对所见证的 AI 收益保持诚实的协调问题——如果他们合作，就能保住工作。如果他们背叛，可能会被感到尴尬的同僚（他们现在被含蓄地指责为说谎者、懦夫或无能之辈）解雇，然后被某个无论如何都会乖乖听话的人取代。如果他们能同时承认真相，或许还有一线希望，但根本没有办法协调这种事情的发生。",
+          "换句话说，企业领导层的出发点是 AI 已经（或将会）从根本上改变业务，他们从这个前提出发逆向推导，去寻找支持这一信条的证据。",
+          "为了支持这一论点，Suresh 引用了他与高管和员工进行的“数百次”对话，这些对话对象与他交谈的条件是他要“抹去”他们故事中的可识别细节。这些对话结合他自己为数十亿美元规模的大型企业提供咨询的经验，清楚地表明“AI 狂热”是对企业界 AI 现状的一个绝对合理的标签。",
+          "以下是今早阅读时的几个亮点——那些让我不得不把视线从屏幕上移开，向妻子大声读出一段话，以便我们能共同分享“卧槽”时刻的瞬间。",
+          "有个人在一个“转型”去重构其软件以创建支持 AI 代理接口的部门工作。当发现只有十个用户接触过这项昂贵的新技术时，他们再次“转型”去支持“代理工作流”。既然发现市场对“代理”如此漠不关心，他们为什么还要在 AI 代理上加倍投入？“因为现在每家公司都必须做点跟代理相关的东西。”",
+          "Suresh 将此描述为一种名副其实的宗教狂热。在 Suresh 研究的拥有 500 多名员工的企业中，唯一获得晋升——甚至免于被解雇的人——是那些对“AI 的变革力量”宣称“宗教信仰宣言”的人。对职场中的 AI 提出诚实、有理有据的反对意见的员工，则被剥夺了晋升机会或成为裁员目标。",
+          "这造成了一种局面，每个人——“董事会、高管、员工、供应商、顾问”——都有强烈的动机去谎报 AI 为他们公司带来了多少收益。Suresh 说他见过上市公司发布的关于其 AI 胜利的公告，而他确切地知道这些事情根本没有发生过。",
+          "Suresh 说他从未见过成功的企业 AI 项目：“每一个项目——在一年半的时间里，我们看到了 0% 的成功率。”如果 OpenAI 明天倒闭，他们的客户中没有一家会面临业务挑战。大多数公司苦苦挣扎的问题在于他们“在有效运行软件项目方面无可救药地糟糕”。将 AI 加入其中并不能解决这个问题——它只是增加了一整套全新的软件部署失败方式。",
+          "聊天机器人没什么用。那些旨在帮助员工了解如何熟悉公司业务的内部聊天机器人很糟糕，因为它们的表现完全取决于训练数据的质量——也就是企业对自身流程的文档记录。而企业恰恰很不擅长记录自己的流程。面向客户的聊天机器人同样糟糕。它们要么解决不了你的问题，要么在看似解决了你的问题时，所谓的“解决方案”却毫无下文。",
+          "Suresh 讲述了他唯一一次积极的客服聊天机器人体验：一个三菱的聊天机器人用听起来很自然、反应灵敏的声音，礼貌地记录了汽车故障的所有细节，并承诺会给他回电。那次回电从未发生，但 Suresh 确信三菱已经将此记录为聊天机器人的成功案例，尽管这次经历让他下定决心不买三菱汽车。",
+          "Suresh 和他在 Hermit Tech 的团队现在有一项原则，即根本不询问正在进行中的 AI 项目。他们已经认识到，一旦 AI 项目启动，在达到危机点之前，没有人会诚实地讨论它。",
+          "Suresh 说他经常遇到那些条件反射般念叨 AI 信条的人：“AI 正在改变一切。”但当他追问细节时，他们承认自己的组织“目前根本没有在任何地方使用 LLMs，事实上，除了偶尔用用 ChatGPT 之外，他们根本说不出哪怕一件已经改变的事情。”",
+          "这种反差（“AI 正在改变一切”/“好吧，其实我们什么都没用 AI 做”）如此极端，以至于 Suresh 曾遇到一位高管，对方承认为一家年营收 20 亿美元的企业制定了一套以 AI 为中心的 AI 战略，尽管这位高管“一生中甚至从未使用过 ChatGPT 或任何 AI 工具”。",
+          "有些人私下向 Suresh 承认，他们拥抱 AI 只是为了赢得“思想领导力”的职业提升声誉。但还有许多人（尤其是非技术人员）真诚地相信 AI 即将“改变一切”。正如 Suresh 所说，如果你和一个说谎者做生意，你或许能在私下里和他们讲道理——但你无法和一个真正的信徒讲道理。",
+          "现在掌权的正是这些信徒。Suresh 指出，如果一家工程公司或医院的 CEO 在“没有员工中专业人士明确同意的情况下，强制规定特定的程序或施工技术”，那将非常奇怪。但到了 AI 问题上，商业领袖们会自信地要求执行企业核心职能的熟练专业人员使用 AI，即使这些专业人员认为这并没有帮助。",
+          "顺便说一句：我记得在互联网泡沫时代，商业媒体上充斥着关于 CEO 与要求在工作中使用网络权利的新一代劳动力之间冲突的文章。而今天，商业媒体上则充斥着关于劳动力与要求他们使用 AI 的 CEO 之间冲突的文章。",
+          "Suresh 描述了那些觉得自己必须给工作“AI 洗白”的员工：“他们只是像几十年来一样完成工作，然后说是 Claude 做的。”为了让这种弄虚作假显得更逼真，他们编写了循环流程，让一个聊天机器人向另一个发送提示词，然后过程反向重复，唯一的目的就是消耗 AI tokens，以便在企业内部的“token 排行榜”上获得高分。",
+          "如何解释这种极其疯狂且代价高昂的非理性企业领导行为？Suresh 将责任归咎于 AI 演示那令人着迷、催眠般的力量。例如：Hermit Tech 经常受雇为客户搭建一款名为 Snowflake 的数据库产品。Snowflake 有一个名为 Cortex 的无用且昂贵的 AI 附加组件，Snowflake 自己也承认它在理想情况下的准确率仅为 92%（也就是说，至少有 8% 的时间它会误导你，而且可能误导得非常严重）。",
+          "Suresh 描述了与高管们的销售会议，这些高管对使用 Snowflake 进行技术改造的想法不温不火，却对 Cortex 非常感兴趣。尽管违背了他们自己的专业判断，Suresh 和他的团队还是为他们提供了 Cortex 的演示，并仔细解释了这款 AI 工具无法满足他们的需求。无一例外的是，这导致之前态度冷淡的客户坚持要求立即购买 Cortex。那些对能节省数百万美元的新技术推销无动于衷的潜在客户，却被一款被描述为不合适且不可靠的产品的演示给迷住了。",
+          "值得称赞的是，Hermit Tech 拒绝向这些客户出售 Cortex，并完全停止了 Cortex 的演示。Suresh 将这种“180度大转弯，从极度冷淡到狂热购买”的经历描述为“令人深感不安”。此外，据 Suresh 所说，他和同事进行的 Cortex 演示也相当平淡无奇。这些演示的唯一亮点在于，它们向那些已经在 AI 上花费了数百万美元却拿不出任何成果的高管们展示了 AI 确实在做一些稍微有用的事情。AI 能够做点实事的这种表象，极大地刺激了那些觉得自己是唯一无法在企业中找到 AI 革命性用途的老板们的企业领导者。",
+          "整个企业组织架构中上下皆是如此。Suresh 有一位读者在一家价值十亿美元的公司担任“AI 负责人”，此人告诉他“他们的工作完全是弄虚作假，但这也是该组织仅存的晋升途径了。”这位高管绝非孤例。他们是一群公司高管中的一员，这些公司曾公开宣布实现了“100倍”的生产力提升，但他们向 Suresh 坦白，根本没发生过这种事。",
+          "为什么这些公司会做出这样的声明？因为他们的客户也在这么声明。除非你也把生产力提升了100倍，否则你怎么可能指望把东西卖给一家用 AI 将生产力提升了100倍的公司？如果你作为供应商走进董事会，说这不是一个合理的声明，那你就是在暗示你的潜在客户是个骗子，这会带来真实的后果：“因为想对一些与你们组织使命无关紧要的事情发表意见而导致企业合同被取消，这是被解雇的绝佳方式。”",
+          "鉴于整个行业的现状充斥着泡沫、谎言和互相毁灭的默契，难怪各公司正在采用“像‘在 AI 上的花费’这样完全可操纵的指标”作为评估员工和部门的一种手段。",
+          "在真正的信徒和那些必须想方设法令人信服地吹嘘自己 AI 使用情况的人之间，现在存在着一个巨大的“AI 解决方案”市场。往好了说，这些只是传统的技术咨询合同，比如将数据库从 Oracle 迁移到 Snowflake，只是在边缘地带加上某种装饰性的 AI 用法，以便委托这项工作的人可以声称自己正在为企业“采购 AI 赋能的服务”。",
+          "这并非无害的轻浮之举：合同被推迟，工作被搁置，直到工作能被弄得“足够 AI”，以达到最低限度的流行语合规要求。更糟的是：每一个产生真实结果的虚假 AI 项目（因为它根本不是真正的 AI）都为 AI 的真正信徒增加了可信度，他们将这些项目视为 AI 无所不能的证明，并因此要求知道为什么所有事情不都由 AI 来完成。",
+          "Suresh 在文章结尾用很长的篇幅讲述了如何“应对 AI 狂热”——这些建议教你如何在面对 AI 胡扯时礼貌地微笑点头，同时避开最糟糕的后果并避免不必要的争斗。对于身处企业环境中的任何人来说，这似乎都是非常合理的建议，但谢天谢地，那不是我。",
+          "与其总结那些建议，我更想稍微反思一下 Suresh 的文章提出但未回答的两个问题。第一个是为什么？为什么掌权者如此轻易地就皈依了这种宗教般的狂热？",
+          "我有自己的理论。掌权者所经历的最重要的一种不适感，是与那些知道如何做他们不会做的事情的下属发生粉碎自尊的冲突。你“掌权”的事实很难与你名义上管辖的人告诉你你所有的想法都是不可能的、非法的、不道德的或致命的这一事实相调和：",
+          "https://pluralistic.net/2026/01/05/fisher-price-steering-wheel/#billionaire-solipsism",
+          "拿那个 Cortex 演示来说。当然，Cortex 是一种昂贵且不可靠的访问 Snowflake 数据库的方式。但是（与 Snowflake 不同）Cortex 是通过对话式的自然语言命令来控制的。有了 Cortex，老板不需要让下属从公司的 Snowflake 系统中检索信息，这种互动可能会带来关于老板要求在技术上或商业上不连贯的主动反馈。Cortex 就是那个下属，只不过与人类下属不同，Cortex 从来不会对你愚蠢的问题顶嘴。它有 8% 的时间会严重误导你，这一事实是为了换取不受那些坚持你的想法必须与他们所理解的基本现实相联系的傲慢小人物打扰的生活而付出的小小代价。",
+          "Suresh 隐含提出的另一个问题是，“你如何调和 AI 在企业中的失败与熟练技术人员的个人主张，他们坚持认为 AI 正在帮助他们做出伟大的工作？”答案是这些 AI 用户是“半人马”——由自动化协助的经验丰富的工人，而自动化的条件是由他们自己设定的：",
+          "https://pluralistic.net/2025/09/11/vulgar-thatcherism/#there-is-an-alternative",
+          "得益于他们的技能和经验，这些工人具备辨别力，能够区分好代码和坏代码，并且（更重要的是）区分代码生成工具的好用途和坏用途。他们证明了这样一句格言：由工人驱动的自动化提高质量，而由资本驱动的自动化提高吞吐量：",
+          "https://pluralistic.net/2026/07/28/hitl-ers/#ai-ai-oh",
+          "一种需要熟练且有经验的工人密切监督的自动化技术，不可能成为纯粹的生产力引擎。你无法通过这种方式让代码产出“提升100倍”，至少不是在解雇99名程序员、让剩下的一名程序员接手他们所有工作的意义上。相反，一种需要持续且认真运用判断力的自动化工具，能让个体从业者在极其令人满意且实用的方面改进他们的工作。这是一种通过增加运营投入以产出更好成果的方式，而不是一种削减员工、实现巨额节省，同时以低得多的成本生产出相当商品和服务的方式。",
+          "这就是为什么一些个体程序员对他们的 AI 工具如此满意。他们按照自己的方式使用这些工具，以他们凭借专业判断认为有益的方式来改进工作。没有人在“token 最大化”的记分牌上给他们排名。没有人告诉他们，如果项目不够“AI 化”，就不能做。当他们着手做一个项目时，没有人要求他们证明这个项目不能“由 AI 完成”。",
+          "一如既往，关于某项技术最重要的事实不是“它能做什么”，而是“它为谁服务”以及“它作用于谁”。",
+          "Suresh 在这篇文章中观察并记录得如此之好的所有病态现象，都是以往泡沫中“流行语合规”机能失调的过度膨胀版，但其规模前所未见。数量本身就有一种质量。这些企业不仅在浪费数十亿美元——它们还在用有缺陷的聊天机器人取代熟练工人。正如我之前所写，AI 就是我们正在铲入技术社会墙壁中的石棉。我们的后代将花费几代人的时间将其重新挖出，而且泡沫不破裂的时间越长，修复损害所需的时间就越长。",
+          "嘿，看看这个（永久链接）",
+          "租金已经很高了。然后又出现了200美元的居家办公费 https://finance.yahoo.com/real-estate/articles/rent-already-high-then-came-174555709.html",
+          "住在伦敦临时住房的家庭被告知不能使用内置空调 https://www.theguardian.com/society/2026/jul/27/homeless-families-london-temporary-housing-air-conditioning",
+          "新款 Defcon 徽章配备独特的开源芯片，兼作安全密钥 https://www.wired.com/story/defcon-34-badge-baochip-andrew-bunnie-huang/",
+          "美国政府在全球会议上展示的非洲地图标错了每个国家 https://www.theguardian.com/us-news/2026/jul/30/government-map-mislabels-african-countries?CMP=Share_AndroidApp_Other",
+          "EFF 录制执法活动指南 https://www.eff.org/deeplinks/2026/07/eff-guide-recording-law-enforcement",
+          "客体永久性（永久链接）",
+          "#25年前 Vernor Vinge 在《纽约时报》上的报道 https://www.nytimes.com/2001/08/02/technology/a-scientist-s-art-computer-fiction.html",
+          "#25年前 为什么出版商应该感谢 Syklarov https://web.archive.org/web/20011023092940/http://www.zdnet.com/zdnn/stories/comment/0,5859,2800985,00.html",
+          "#25年前 David Byrne 的曲目将随 WinXP 捆绑发售 https://web.archive.org/web/20010804040357/http://www.ananova.com/news/story/sm_365899.html?menu=news.technology",
+          "#20年前 关于博客的五件永远不需要再提的事 https://web.archive.org/web/20060813090449/http://www.stevenberlinjohnson.com/2006/08/five_things_all.html",
+          "#15年前 用人类头发建造的城堡 https://inhabitat.com/artist-uses-human-hair-to-construct-a-castle-of-3000-bricks/",
+          "#15年前 威斯康星州民主党选民成为科赫家族资助的缺席选票通知的目标，该通知建议他们在罢免选举两天后投票 https://www.politico.com/blogs/david-catanese/2011/08/afp-wisconsin-ballots-have-late-return-date-037977?showall",
+          "#15年前 金里奇的百万 Twitter 粉丝：“80% 是虚假账号，10% 是付费粉丝” https://web.archive.org/web/20110812100159/https://gawker.com/5826645/most-of-newt-gingrichs-twitter-followers-are-fake",
+          "#15年前 密苏里州立大学商学院教授领导了一场成功的运动，将《五号屠场》从当地学校禁掉 https://www.theguardian.com/books/2011/jul/29/slaughterhouse-five-banned-us-school",
+          "#10年前 澳大利亚媒体无障碍组织对 Web 标准中的 DRM 发出警告 https://hotelsantalya.net/accessiq/news/news/2016-p/08-p/concerns-raised-for-assistive-technology-development-as-w3c-debates-encrypted/",
+          "#10年前 提醒：共和党多年来一直在攻击退伍军人及其家属 https://web.archive.org/web/20160803203106/https://crookedtimber.org/2016/08/02/trumps-indecent-proposal/",
+          "#10年前 Isis 与 Donald Trump 一起谴责 Khizr Khan https://web.archive.org/web/20160802161454/https://theintercept.com/2016/08/02/donald-trump-and-islamic-state-agree-no-room-for-people-like-khizr-khan/",
+          "#10年前 兽迷们不会穿着兽人装发生性行为 https://www.ohjoysextoy.com/fursuits-grey-white/",
+          "#5年前 机器学习在应对 covid 方面糟透了 https://pluralistic.net/2021/08/02/autoquack/#gigo",
+          "#1年前 AI 的弹簧高跷骗局 https://pluralistic.net/2025/08/02/inventing-the-pedestrian/#three-apis-in-a-trenchcoat",
+          "即将到来的活动（固定链接）",
+          "线上：EFFecting Change：机器服务于谁，8月12日 https://www.eff.org/event/effecting-change-who-machine-serves",
+          "爱丁堡国际图书节，与 Jimmy Wales 同台，8月17日 https://www.edbookfest.co.uk/events/the-front-list-cory-doctorow-and-jimmy-wales",
+          "悉尼：危险思想节，8月23-24日 https://festivalofdangerousideas.com/program/",
+          "墨尔本：Wheeler 中心的 Enshittification，8月25日 https://www.wheelercentre.com/events-tickets/season-2026/cory-doctorow-enshittification",
+          "布莱顿：与 Carole Cadwalladr 一起探讨《AI 后生活的反向半人马指南》（布莱顿穹顶），9月8日 https://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "伦敦：与 Riley Quinn 一起探讨《AI 后生活的反向半人马指南》（福伊尔皮卡迪利店），9月9日 https://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "南本德：与 Cory Doctorow 共度夜晚（圣母大学），10月6日 https://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "温哥华：BC 政策解决方案晚宴，11月12日 https://bcpolicy.ca/gala/",
+          "近期活动（固定链接）",
+          "F@#$ AI 霸主（On The Media） https://www.wnycstudios.org/podcasts/otm/articles/f-the-ai-overlords",
+          "为什么 AI 不会取代工人，但会摧毁经济（Smart Cookies） https://www.youtube.com/watch?v=rRRmUuxJolY",
+          "AI 与 Enshittification 时代（乔恩·斯图尔特每周秀） https://www.youtube.com/watch?v=-dAIJRjb-Bw",
+          "AI 并非不可避免（Betakit） https://www.youtube.com/watch?v=DbiTVkq1WHo",
+          "与 Lina Khan 的对话（法律与经济学生网络） https://www.youtube.com/live/7Ak5LZllqwE",
+          "最新书籍（固定链接）",
+          "《反向半人马的 AI 指南》，一本关于如何成为更好的 AI 批评家的小册子，Farrar, Straus and Giroux 出版，2026年6月 https://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "\"Canny Valley\"：我为 Pluralistic 创作的拼贴画限量版合集，自出版，2025年9月 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It\"，Farrar, Straus, Giroux 出版，2025年10月7日 https://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\"：\"Red Team Blues\" 的续作，讲述 PC 的英雄时代，Tor Books（美国），Head of Zeus（英国），2025年2月 (https://us.macmillan.com/books/9781250865908/picksandshovels)。",
+          "\"The Bezzle\"：\"Red Team Blues\" 的续作，讲述监狱科技和其他骗局，Tor Books（美国），Head of Zeus（英国），2024年2月 (thebezzle.org)。",
+          "\"The Lost Cause:\"：一部关于气候紧急状态下希望的太阳朋克小说，Tor Books（美国），Head of Zeus（英国），2023年11月 (http://lost-cause.org)。",
+          "\"The Internet Con\"：一本关于互操作性和大型科技公司的非虚构类书籍（Verso 出版）2023年9月 (http://seizethemeansofcomputation.org)。签名版可在 Book Soup 购买 (https://www.booksoup.com/book/9781804291245)。",
+          "\"Red Team Blues\"：“一部引人入胜、令人欲罢不能的惊悚小说，读完后你会比以前更了解这个世界是如何运转的。” Tor Books http://redteamblues.com。",
+          "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\"，讲述如何打破创意劳动市场的不公平规则，Beacon Press/Scribe 2022 https://chokepointcapitalism.com",
+          "即将出版的书籍 (固定链接)",
+          "\"The Post-American Internet\"，某种意义上是 Enshittification 的地缘政治续作，Farrar, Straus and Giroux，2027年",
+          "\"Unauthorized Bread\"：一部改编自我的中篇小说的中学阶段图像小说，讲述难民、烤面包机和 DRM 的故事，FirstSecond，2027年4月20日",
+          "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\"（图像小说版），Firstsecond，2027年",
+          "\"The Memex Method\"，Farrar, Straus, Giroux，2027年",
+          "版权页 (固定链接)",
+          "今日主要来源：",
+          "目前正在撰写：\"The Post-American Internet\"，\"Enshittification\" 的续作，讲述在特朗普烧毁美国之后，我们其他人将拥有的更美好的世界。已完成第四稿。已提交给编辑。",
+          "一篇关于自制胰岛素的 Little Brother 短篇小说 计划中",
+          "本作品——不包括任何连载小说——采用知识共享署名 4.0 许可协议授权。这意味着你可以以任何方式使用它，包括商业用途，前提是你必须将其归功于我，Cory Doctorow，并包含指向 pluralistic.net 的链接。",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "引语和图片不包含在此许可协议内；它们是基于版权的限制或例外，或基于单独的许可协议而包含的。请谨慎使用。",
+          "如何获取 Pluralistic：",
+          "博客（无广告、追踪或数据收集）：",
+          "Pluralistic.net",
+          "时事通讯（无广告、追踪或数据收集）：",
+          "https://pluralistic.net/plura-list",
+          "Mastodon（无广告、追踪或数据收集）：",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky（无广告，可能有追踪和数据收集）：",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium（无广告，付费墙）：",
+          "https://doctorow.medium.com/",
+          "Tumblr（大规模、无限制的第三方监控和广告）：",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "“当生活给了你 SARS，你就把它做成菝葜汽水” -Joey \"Accordion Guy\" DeVilla",
+          "请仔细阅读：阅读此内容即代表你同意代表你的雇主，永久免除我因与你的雇主、其合作伙伴、许可方、代理人及受让人签订的任何及所有未经协商的协议、许可、服务条款、拆封协议、点击协议、浏览协议、保密协议、不披露协议、竞业禁止及可接受使用政策（统称“虚假协议”）而产生的所有义务与弃权，且不影响我持续享有的权利与特权。你进一步声明，你有权代表你的雇主免除我受任何“虚假协议”的约束。",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "49a3b4c1ef7d4f37",
+      "title": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "titleZh": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "link": "https://simonwillison.net/2026/Jul/31/deepseek-v4-flash-0731/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-31T23:59:44.000Z",
+      "category": "ai-ml",
+      "keywords": [
+        "DeepSeek",
+        "LLM",
+        "release"
+      ],
+      "score": {
+        "relevance": 9,
+        "quality": 4,
+        "timeliness": 10,
+        "total": 23
+      },
+      "summary": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "31st July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "deepseek-ai/DeepSeek-V4-Flash-0731 (via) The latest release in DeepSeek's V4 family, \"with substantially enhanced agentic capabilities\". It's 304 billion parameters - 167GB on Hugging Face - but it appears to punch well above its weight."
+          },
+          {
+            "type": "p",
+            "text": "Artificial Analysis rank it ahead of MiniMax M3 - a 428B model. It's $0.14/million input and $0.27/million output pricing means this may currently be the best value-per-intelligence model out there. It's looking very good on the Intelligence Index vs. Cost per Intelligence Index Task chart:"
+          },
+          {
+            "type": "p",
+            "text": "I got a disappointing pelican from it using the default reasoning level via OpenRouter:"
+          },
+          {
+            "type": "p",
+            "text": "But when I bumped reasoning level up to high I got something much better:"
+          },
+          {
+            "type": "p",
+            "text": "llm -m openrouter/deepseek/deepseek-v4-flash-0731 -t pelican -o reasoning_effort high"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ad1b57ca9c00832c",
+      "title": "This Week in Package Management: 1 August 2026",
+      "titleZh": "This Week in Package Management: 1 August 2026",
+      "link": "https://nesbitt.io/2026/08/01/this-week-in-package-management.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-08-01T10:00:00.000Z",
+      "category": "tools",
+      "keywords": [
+        "package-management",
+        "releases",
+        "advisories"
+      ],
+      "score": {
+        "relevance": 8,
+        "quality": 6,
+        "timeliness": 9,
+        "total": 23
+      },
+      "summary": "This Week in Package Management: 1 August 2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Week eleven of the roundup, built from the package manager OPML feed collection and whatever I’ve posted or boosted on Mastodon."
+          },
+          {
+            "type": "h2",
+            "text": "Releases"
+          },
+          {
+            "type": "p",
+            "text": "mise 2026.7.14–18: the default shell-argument settings are now global-only, so an untrusted repo’s local config can’t influence command execution before trust evaluation runs. Experimental task output caching restores a task’s declared outputs and replays logs when its sources, tools and environment are unchanged, and experimental monorepo tasks now infer Node workspace dependency edges and import package.json scripts as node:<package>#<script> tasks."
+          },
+          {
+            "type": "p",
+            "text": "Verdaccio 6.9.0 requires Node.js 22 as the minimum runtime and ships a dual CJS+ESM build with an exports field, so import { runServer } from 'verdaccio' resolves a real ES module. The bundled @verdaccio/config moves to js-yaml 4.3.0, resolving GHSA-52cp-r559-cp3m."
+          },
+          {
+            "type": "p",
+            "text": "setup-uv v9.0.0 flips the prune-cache default to false to reduce load on PyPI infrastructure. The major bump reflects that workflows may see higher GitHub Actions cache usage as a result; the reasoning is written up in #967."
+          },
+          {
+            "type": "p",
+            "text": "Renovate 43.282.0 has the mise manager run mise lock in the MISE_SAFE=1 mode added last week, so lockfile updates against untrusted branches no longer need allowedUnsafeExecutions. 43.283.0 adds a commitTrailers option. 44.0.0 was an accidental major: a squash-merged PR carried a leftover BREAKING CHANGE footer that semantic-release acted on, so 44.x is being treated as a continuation of 43.x with no breaking change."
+          },
+          {
+            "type": "p",
+            "text": "uv 0.11.33 runs the malware check against locked tools before reusing them from cache, and the preview lockfile format can now be written and read without embedded package.metadata. 0.12.0 collects accumulated correctness changes: uv init defaults to a packaged src/ layout with uv_build, wheels that would overwrite the Python interpreter are rejected, and --require-hashes directives in requirements files are now enforced with MD5-only hashes refused. 0.12.1 adds per-package pre-release policies via --prerelease-package, accepts local HTML files as flat indexes, and the preview uv check gains --fix."
+          },
+          {
+            "type": "p",
+            "text": "pip 26.2 adds --only-deps to install only a requirement’s dependencies, an experimental --use-feature=venv-isolation mode that uses a standard venv for build isolation instead of the sitecustomize.py overlay, and caches simple-index responses per their Cache-Control headers so repeated resolves against the same index are faster. The legacy resolver (--use-deprecated=legacy-resolver) is deprecated for removal in 2027. Richard Si has a write-up of the release."
+          },
+          {
+            "type": "p",
+            "text": "pixi 0.74.0 lets environments define dependencies and solve strategy inline without a separate feature block, adds an --offline mode, and pixi global install --git can build a tool from source given only --build-backend and no package manifest. 0.75.0 has pixi publish publish all opted-in workspace packages in dependency order, refusing if a required source dependency has not opted in, and restricts --offline solves to packages already in the local cache or on a file:// channel."
+          },
+          {
+            "type": "p",
+            "text": "pnpm 11.15–11.19 on the stable branch: pnpm update and pnpm outdated now cover GitHub Actions references in workflow files, pnpm update can emit changesets for the bumps it makes, pnpm self-update ignores project-supplied configuration, web-based pnpm login works without a TTY, and peak resolution memory on large workspaces is cut several times over."
+          },
+          {
+            "type": "p",
+            "text": "pnpm 12.0.0-beta.0 is the first beta of the Rust-engine rewrite; it now reads frozenLockfile, savePrefix, savePeer and saveCatalogName from pnpm-workspace.yaml and PNPM_CONFIG_* rather than only accepting them as CLI flags."
+          },
+          {
+            "type": "p",
+            "text": "Maven 4.0.0-rc-6 fixes the RC-5 regressions: a globally-cached field-accessibility state that broke plugin configuration injection, a ConcurrentModificationException in the v4 API, and consumer POM conversion for BOM projects."
+          },
+          {
+            "type": "p",
+            "text": "Docker 29.7.0 adds an experimental embedded-containerd feature that runs containerd inside the daemon process rather than as a separate managed process, promotes the image mount type out of experimental, and updates go-archive to 0.3.0 for CVE-2026-17106. 29.7.1 fixes two regressions from 29.7.0: pulling images whose layers omit explicit parent-directory entries, and CopyToContainer rejecting paths that traverse absolute symlinks."
+          },
+          {
+            "type": "p",
+            "text": "Homebrew 6.0.14 attaches vulnerability data from the GitHub Advisory Database to the generated formula API and adds a brew advisory-match developer command (both from me), removes most subprocess forks from a no-op brew startup, and extends Landlock sandboxing to Linux kernel 6.1’s ABI 2."
+          },
+          {
+            "type": "p",
+            "text": "Also out: npm 12.0.2, Conda 26.7.0, pipx 1.16.5, sbt 2.0.4, snapd 2.77, vcpkg 2026-07-27, Dependabot Core 0.389.0, cabal-install 3.18.1.0, winget 1.30.80-preview, Yarn 4.18.0, Gradle 9.7.0-RC2, APT 3.3.2, Mamba 2.9.0.rc0, Podman 6.1.0-rc1, diffoscope 326."
+          },
+          {
+            "type": "h2",
+            "text": "Security"
+          },
+          {
+            "type": "p",
+            "text": "npm now scans packages at publish time before they become installable, holding or blocking uploads that trip the check. Packages with legitimate security-relevant behaviour declare it via a contentPolicy field in package.json plus a root DISCLOSURE file, and must then be published with 2FA or trusted publishing. Once declared, neither can be removed in later versions."
+          },
+          {
+            "type": "p",
+            "text": "GitHub Actions now holds workflow runs identified as potentially malicious until a collaborator with write access approves them through an authenticated web session. It applies automatically to public repositories on github.com with no configuration."
+          },
+          {
+            "type": "p",
+            "text": "Arch Linux has disabled orphaned-package adoption on the AUR after attackers adopted unmaintained packages to inject a Tor-based remote-access trojan, an escalation of the campaign that began with the alvr takeover in June. New account registration was suspended in June and reopened on 13 July with additional restrictions, which have not been sufficient. LWN has more context."
+          },
+          {
+            "type": "h2",
+            "text": "Articles"
+          },
+          {
+            "type": "p",
+            "text": "Open Source Must Be Fun or It Will Die (Mike McQuaid) argues that maintainer enjoyment is the scarce resource that keeps a project alive, and points at Homebrew’s numbers: 26 of last year’s 29 maintainers are still active, with automation and CI doing the pedantic review work."
+          },
+          {
+            "type": "p",
+            "text": "The Package Manager for Everywhere (Patrick Linnane) breaks down Homebrew’s public analytics by platform: about a quarter of events are on Linux, Universal Blue images (which ship brew by default) account for roughly 26% of non-CI Linux traffic, and WSL is at 3.7%."
+          },
+          {
+            "type": "p",
+            "text": "You Don’t Have a Supply Chain, You Have a Supply Soup (Josh Bressers) argues the supply-chain metaphor breaks down when the inputs to a single dependency include CI runners, developer workstations and everyone with commit access, none of which current tooling captures."
+          },
+          {
+            "type": "h2",
+            "text": "Papers"
+          },
+          {
+            "type": "p",
+            "text": "No Edges, No Verdict (Zięba-Kozarzewski, arXiv) analyses 78,000 SBOMs in the wild and finds 52.9% declare no dependency edges at all, and only 0.10% use CycloneDX compositions to flag that the graph is incomplete; treating edgeless SBOMs as degenerate raised KEV-detection recall from 0.600 to 0.950."
+          },
+          {
+            "type": "p",
+            "text": "No Snake Oil: Verifying Python Package Builds (Dietrich et al., arXiv) rebuilds 12,180 popular PyPI releases with macaron and oss-rebuild: only 15.4% and 19.1% of wheels come out byte-identical to the published artifact, but their daleq4py tool establishes semantic equivalence for 60.2% and 78.9% of source-equivalent rebuilds."
+          },
+          {
+            "type": "h2",
+            "text": "Elsewhere"
+          },
+          {
+            "type": "p",
+            "text": "The EuroPython 2026 Packaging Summit notes are up, following on from last week’s mention of the summit itself. Sessions covered wheel-variant provider trust (PEPs 817 and 825), whether PyPI should distribute application lockfiles separately from libraries, external build-dependency metadata via PURL (PEPs 725 and 804), and the Packaging Council election timeline."
+          },
+          {
+            "type": "p",
+            "text": "Most WASI phase 2 proposals now have OCI packages published and are indexed on wasm.directory, a meta-registry for WebAssembly components that is intended for eventual donation to the Bytecode Alliance."
+          },
+          {
+            "type": "p",
+            "text": "Composer and Packagist.org have launched a formal sponsorship programme with three annual tiers, funding operations, incident response and security-feature work such as malware detection and transparency logs. Ten companies signed on at launch alongside Sovereign Tech Agency funding routed via the PHP Foundation."
+          },
+          {
+            "type": "p",
+            "text": "Renovate maintainer Sebastian Poxhofer has released a Renovate Config Debugger that steps through parsing, migration, validation, preset resolution and packageRules matching using Renovate’s own code compiled to run in the browser."
+          },
+          {
+            "type": "p",
+            "text": "GitHub Actions workflows can now reference actions in the same repository with uses: $/path/to/action, which resolves to the workflow’s own repository at the commit that is running. It works in steps, composite actions and reusable workflow calls without a checkout, and satisfies policies that require full-length SHA pinning."
+          },
+          {
+            "type": "p",
+            "text": "Fedora’s Adopt PURL Metadata change was accepted for Fedora 45: RPMs built from language-ecosystem packages will carry virtual Provides such as purl(pkg:cargo/[email protected]) across nine language ecosystems, with no spec file changes needed."
+          },
+          {
+            "type": "h2",
+            "text": "git-pkgs"
+          },
+          {
+            "type": "p",
+            "text": "I tagged 18 repos this week:"
+          },
+          {
+            "type": "li",
+            "text": "git-pkgs v0.18.2"
+          },
+          {
+            "type": "li",
+            "text": "clone v0.1.2 (new), a Go library for keeping shallow local checkouts of HTTPS Git repositories by shelling out to git"
+          },
+          {
+            "type": "li",
+            "text": "cwe v0.1.0 (new), a Go library for looking up MITRE CWE entries by ID with the catalogue embedded at build time"
+          },
+          {
+            "type": "li",
+            "text": "licenses v0.3.0 (new), a Go library and CLI for matching license text against ScanCode’s rule corpus, with the corpus embedded so matching needs no network, cgo or Python"
+          },
+          {
+            "type": "li",
+            "text": "magic v0.1.0 (new), a pure-Go content-detection library that reports format, MIME type and text encoding for a byte slice with no cgo or third-party dependencies"
+          },
+          {
+            "type": "li",
+            "text": "archives v0.4.0"
+          },
+          {
+            "type": "li",
+            "text": "brief v0.9.4"
+          },
+          {
+            "type": "li",
+            "text": "capcheck v0.1.3"
+          },
+          {
+            "type": "li",
+            "text": "distill v0.1.1"
+          },
+          {
+            "type": "li",
+            "text": "enrichment v0.6.4"
+          },
+          {
+            "type": "li",
+            "text": "forge v0.7.0"
+          },
+          {
+            "type": "li",
+            "text": "manifests v0.6.1"
+          },
+          {
+            "type": "li",
+            "text": "outline v0.1.8"
+          },
+          {
+            "type": "li",
+            "text": "pin v0.1.1"
+          },
+          {
+            "type": "li",
+            "text": "proxy v0.6.0"
+          },
+          {
+            "type": "li",
+            "text": "registries v0.6.4"
+          },
+          {
+            "type": "li",
+            "text": "sigstore v0.1.2"
+          },
+          {
+            "type": "li",
+            "text": "spdx v0.2.0"
+          },
+          {
+            "type": "p",
+            "text": "Send links for next week to @[email protected]."
+          }
+        ],
+        "translations": [
+          "本周是第十一期摘要，内容来源于包管理器 OPML 订阅源集合，以及我在 Mastodon 上发布或转发的内容。",
+          "版本发布",
+          "mise 2026.7.14–18：默认的 shell 参数设置现在仅限全局生效，因此不受信任的仓库本地配置无法在信任评估运行前影响命令执行。实验性的任务输出缓存功能会在任务的源码、工具和环境未发生改变时，恢复任务声明的输出并重放日志，而实验性的 monorepo 任务现在可以推断 Node 工作区依赖边，并将 package.json 脚本作为 node:<package>#<script> 任务导入。",
+          "Verdaccio 6.9.0 要求最低运行环境为 Node.js 22，并附带带有 exports 字段的双 CJS+ESM 构建，因此 import { runServer } from 'verdaccio' 会解析为真正的 ES 模块。内置的 @verdaccio/config 升级至 js-yaml 4.3.0，修复了 GHSA-52cp-r559-cp3m 漏洞。",
+          "setup-uv v9.0.0 将 prune-cache 的默认值改为 false，以减轻 PyPI 基础设施的负载。主版本号的提升反映了工作流可能会因此导致 GitHub Actions 缓存使用量增加；相关原因已在 #967 中说明。",
+          "Renovate 43.282.0 让 mise 管理器在上周新增的 MISE_SAFE=1 模式下运行 mise lock，因此针对不受信任分支的 lockfile 更新不再需要 allowedUnsafeExecutions。43.283.0 新增了 commitTrailers 选项。44.0.0 是一次意外的主版本更新：一个 squash-merged PR 带有遗留的 BREAKING CHANGE 页脚，被 semantic-release 执行了，因此 44.x 被视为 43.x 的延续，没有破坏性更新。",
+          "uv 0.11.33 在从缓存中重用锁定的工具之前会运行恶意软件检查，并且预览版 lockfile 格式现在可以在不嵌入 package.metadata 的情况下进行写入和读取。0.12.0 收集了累积的正确性更改：uv init 默认使用带有 uv_build 的打包 src/ 布局，会覆盖 Python 解释器的 wheels 被拒绝，并且 requirements 文件中的 --require-hashes 指令现在被强制执行，拒绝仅使用 MD5 哈希。0.12.1 通过 --prerelease-package 添加了每个包的预发布策略，接受本地 HTML 文件作为平面索引，并且预览版 uv check 增加了 --fix。",
+          "pip 26.2 添加了 --only-deps 以仅安装某个需求的依赖项，添加了实验性的 --use-feature=venv-isolation 模式，该模式使用标准 venv 进行构建隔离，而不是使用 sitecustomize.py 覆盖，并根据 Cache-Control 标头缓存 simple-index 响应，从而加快对同一索引的重复解析。旧版解析器（--use-deprecated=legacy-resolver）已被弃用，计划于 2027 年移除。Richard Si 撰写了该版本的发布说明。",
+          "pixi 0.74.0 允许环境内联定义依赖项和求解策略，无需单独的 feature 块，添加了 --offline 模式，并且 pixi global install --git 可以在仅提供 --build-backend 且没有包清单的情况下从源码构建工具。0.75.0 让 pixi publish 按依赖顺序发布所有选择加入的工作区包，如果必需的源依赖项未选择加入则拒绝发布，并将 --offline 求解限制为本地缓存中或 file:// 频道上已有的包。",
+          "稳定分支上的 pnpm 11.15–11.19：pnpm update 和 pnpm outdated 现在涵盖工作流文件中的 GitHub Actions 引用，pnpm update 可以为其生成的版本升级生成 changesets，pnpm self-update 会忽略项目提供的配置，基于 Web 的 pnpm login 无需 TTY 即可工作，并且大型工作区上的峰值解析内存被削减了好几倍。",
+          "pnpm 12.0.0-beta.0 是 Rust 引擎重写后的首个测试版；它现在会从 pnpm-workspace.yaml 和 PNPM_CONFIG_* 中读取 frozenLockfile、savePrefix、savePeer 和 saveCatalogName，而不再仅接受它们作为 CLI 标志。",
+          "Maven 4.0.0-rc-6 修复了 RC-5 的回归问题：一个破坏了插件配置注入的全局缓存字段可访问性状态、v4 API 中的 ConcurrentModificationException，以及 BOM 项目的 consumer POM 转换问题。",
+          "Docker 29.7.0 增加了一项实验性的嵌入式 containerd 功能，该功能在守护进程内运行 containerd，而不是作为单独的受管进程运行；同时将镜像挂载类型从实验性功能中转正，并更新 go-archive 至 0.3.0 以修复 CVE-2026-17106。29.7.1 修复了 29.7.0 的两个回归问题：拉取其层省略了显式父目录条目的镜像，以及 CopyToContainer 拒绝遍历绝对符号链接的路径。",
+          "Homebrew 6.0.14 将来自 GitHub Advisory Database 的漏洞数据附加到生成的 formula API 中，并添加了 brew advisory-match 开发者命令（两者均由我贡献），移除了无操作 brew 启动时的大部分子进程分支，并将 Landlock 沙箱扩展到 Linux 内核 6.1 的 ABI 2。",
+          "此外发布的还有：npm 12.0.2、Conda 26.7.0、pipx 1.16.5、sbt 2.0.4、snapd 2.77、vcpkg 2026-07-27、Dependabot Core 0.389.0、cabal-install 3.18.1.0、winget 1.30.80-preview、Yarn 4.18.0、Gradle 9.7.0-RC2、APT 3.3.2、Mamba 2.9.0.rc0、Podman 6.1.0-rc1、diffoscope 326。",
+          "安全",
+          "npm 现在会在包发布时、使其可安装之前对其进行扫描，对未通过检查的上传进行挂起或拦截。具有合法安全相关行为的包通过 package.json 中的 contentPolicy 字段加上根目录的 DISCLOSURE 文件进行声明，并且随后必须使用 2FA 或受信任的发布方式进行发布。一旦声明，两者均无法在后续版本中移除。",
+          "GitHub Actions 现在会挂起被识别为潜在恶意的工作流运行，直到具有写入权限的协作者通过经过身份验证的 Web 会话批准它们。此功能无需配置即可自动应用于 github.com 上的公共仓库。",
+          "在攻击者收养无人维护的包以注入基于 Tor 的远程访问木马后，Arch Linux 禁用了 AUR 上的孤儿包收养功能，这是自 6 月份接管 alvr 以来攻击活动的升级。新账户注册在 6 月份被暂停，并于 7 月 13 日在附加限制下重新开放，但这些限制并不足够。LWN 提供了更多背景信息。",
+          "文章",
+          "《开源必须有趣，否则它将消亡》（Mike McQuaid）认为，维护者的乐趣是保持项目活力的稀缺资源，并指出了 Homebrew 的数据：去年 29 名维护者中有 26 名仍然活跃，而自动化和 CI 负责执行繁琐的审查工作。",
+          "《无处不在的包管理器》（Patrick Linnane）按平台细分了 Homebrew 的公开分析数据：大约四分之一的事件发生在 Linux 上，Universal Blue 镜像（默认附带 brew）约占非 CI Linux 流量的 26%，而 WSL 占 3.7%。",
+          "《你没有供应链，你有的是供应汤》（Josh Bressers）认为，当单个依赖项的输入包括 CI 运行器、开发者工作站以及每个拥有提交权限的人时，供应链的比喻就站不住脚了，而目前的工具都无法捕捉这些内容。",
+          "论文",
+          "No Edges, No Verdict (Zięba-Kozarzewski, arXiv) 分析了 78,000 个实际环境中的 SBOM，发现 52.9% 完全没有声明任何依赖边，只有 0.10% 使用 CycloneDX compositions 标记图不完整；将无边 SBOM 视为退化图，将 KEV 检测的召回率从 0.600 提高到了 0.950。",
+          "No Snake Oil: Verifying Python Package Builds (Dietrich et al., arXiv) 使用 macaron 和 oss-rebuild 重新构建了 12,180 个流行的 PyPI 发行版：只有 15.4% 和 19.1% 的 wheels 与已发布的构件在字节上完全一致，但他们的 daleq4py 工具为 60.2% 和 78.9% 的源码等价重建确立了语义等价性。",
+          "其他动态",
+          "EuroPython 2026 Packaging Summit 的会议记录已发布，这是继上周提及该峰会本身之后的后续报道。会议议题涵盖了 wheel 变体提供者信任（PEP 817 和 825）、PyPI 是否应将应用程序 lockfiles 与库分开分发、通过 PURL 提供外部构建依赖元数据（PEP 725 和 804），以及 Packaging Council 的选举时间表。",
+          "大多数 WASI 第二阶段提案现已发布 OCI 包，并在 wasm.directory 上建立索引，这是一个用于 WebAssembly 组件的元注册表，最终计划捐赠给 Bytecode Alliance。",
+          "Composer 和 Packagist.org 推出了一项包含三个年度等级的正式赞助计划，为运营、事件响应以及恶意软件检测和透明度日志等安全功能开发提供资金。在发布时，已有十家公司签约加入，同时还有通过 PHP Foundation 路由的 Sovereign Tech Agency 资金。",
+          "Renovate 维护者 Sebastian Poxhofer 发布了一款 Renovate Config Debugger，它使用编译为在浏览器中运行的 Renovate 自有代码，逐步执行解析、迁移、验证、预设解析和 packageRules 匹配。",
+          "GitHub Actions 工作流现在可以使用 uses: $/path/to/action 引用同一存储库中的 actions，该路径会解析为正在运行的提交处的工作流自身存储库。它无需 checkout 即可在步骤、复合 actions 和可重用工作流调用中工作，并满足要求使用完整 SHA 进行 pinning 的策略。",
+          "Fedora 的 Adopt PURL Metadata 变更已被 Fedora 45 接受：从语言生态系统包构建的 RPM 将在九个语言生态系统中携带诸如 purl(pkg:cargo/[email protected]) 之类的虚拟 Provides，且无需更改 spec 文件。",
+          "git-pkgs",
+          "本周我为 18 个存储库打了标签：",
+          "git-pkgs v0.18.2",
+          "clone v0.1.2（新增），一个 Go 库，通过调用 git 命令来保持 HTTPS Git 存储库的本地浅表 checkout",
+          "cwe v0.1.0（新增），一个 Go 库，用于通过 ID 查找 MITRE CWE 条目，并在构建时嵌入目录",
+          "licenses v0.3.0（新增），一个 Go 库和 CLI，用于将许可证文本与 ScanCode 的规则语料库进行匹配，语料库已嵌入，因此匹配不需要网络、cgo 或 Python",
+          "magic v0.1.0（新增），一个纯 Go 内容检测库，可报告字节切片的格式、MIME 类型和文本编码，无需 cgo 或第三方依赖",
+          "archives v0.4.0",
+          "brief v0.9.4",
+          "capcheck v0.1.3",
+          "distill v0.1.1",
+          "enrichment v0.6.4",
+          "forge v0.7.0",
+          "manifests v0.6.1",
+          "outline v0.1.8",
+          "pin v0.1.1",
+          "proxy v0.6.0",
+          "registries v0.6.4",
+          "sigstore v0.1.2",
+          "spdx v0.2.0",
+          "将下周的链接发送至 @[email protected]。"
+        ]
+      }
+    },
+    {
+      "slug": "1310d77c864bcd28",
+      "title": "smevals - a small eval suite for evaluating models, prompts, and harnesses",
+      "titleZh": "smevals - a small eval suite for evaluating models, prompts, and harnesses",
+      "link": "https://simonwillison.net/2026/Jul/31/smevals/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-31T21:15:23.000Z",
+      "category": "tools",
+      "keywords": [
+        "evals",
+        "LLM",
+        "testing"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 8,
+        "total": 22
+      },
+      "summary": "smevals - a small eval suite for evaluating models, prompts, and harnesses",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "31st July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "smevals - a small eval suite for evaluating models, prompts, and harnesses. I've been working with Jesse Vincent's Prime Radiant applied AI research lab building out this evals framework to help answer questions about the capabilities of different models."
+          },
+          {
+            "type": "p",
+            "text": "The result is smevals, a new tool for running small eval suites across different model configurations and grading the results."
+          },
+          {
+            "type": "p",
+            "text": "The blog entry describes the tool in detail. Here's the 10 second version:"
+          },
+          {
+            "type": "li",
+            "text": "Tell your coding agent to run uvx smevals docs to learn the tool (this outputs the README)"
+          },
+          {
+            "type": "li",
+            "text": "Then tell it to build you an eval suite"
+          },
+          {
+            "type": "p",
+            "text": "Once you've created an eval - which takes the form of a directory with some YAML files - you can run it against models like this:"
+          },
+          {
+            "type": "code",
+            "text": "uvx smevals run path-to-eval/ -m gpt-5.5 -m claude-opus-4.6"
+          },
+          {
+            "type": "p",
+            "text": "Runs are treated separately from grading operations - you can grade your runs (against your defined set of checks) using:"
+          },
+          {
+            "type": "code",
+            "text": "uvx smevals grade path-to-eval/"
+          },
+          {
+            "type": "p",
+            "text": "Then you can run a localhost web server to explore the results:"
+          },
+          {
+            "type": "code",
+            "text": "uvx smevals serve path-to-eval/"
+          },
+          {
+            "type": "p",
+            "text": "Or run the smevals build command to build that report as static HTML, which you can then host anywhere. Here's an example showing an eval suite I built to evaluate how well models can write haikus."
+          },
+          {
+            "type": "p",
+            "text": "The most time-consuming part of this project was figuring out the vocabulary for it! Here's what I settled on, quoted from the announcement:"
+          },
+          {
+            "type": "quote",
+            "text": "An eval is a collection of challenges designed to answer a question about a model, for example, how good is that model at generating SVGs?\nEach eval is a collection of tasks. A task is a specific challenge, for example \"Generate an SVG of a pelican riding a bicycle\".\nWhen you run the eval you do so against one or more configs. Each config specifies a model to be evaluated, but may also include other parameters to test, such as different system prompts, model parameters, or agent harnesses.\nA run records what happened when a specific config was used to execute a specific task. A runner is the script that executes a run.\nOnce you have collected one or more runs, you need to evaluate the results to see how well the model (or config) did. This is done by a grader, which produces a grade.\nEach grader runs a sequence of checks. These can be simple operations, like checking for a specific string in the output, or confirming that the output is valid XML. They can also be more complicated custom operations (implemented as scripts called checkers), including using other models to answer questions about the run."
+          },
+          {
+            "type": "p",
+            "text": "I've been trying to figure out an approach I like for evals for several years now. smevals is my third iteration on the idea and it feels right to me. I'm looking forward to expanding this more in the future, as well as pointing it at some of my own projects."
+          }
+        ],
+        "translations": [
+          "2026年7月31日 - 链接博客",
+          "smevals - 一个用于评估模型、提示词和测试套件的小型评估套件。我一直在与 Jesse Vincent 的 Prime Radiant 应用 AI 研究实验室合作，开发这个评估框架，以帮助解答关于不同模型能力的问题。",
+          "结果就是 smevals，这是一个新工具，用于在不同的模型配置下运行小型评估套件并对结果进行评分。",
+          "这篇博客文章详细介绍了该工具。以下是10秒速读版：",
+          "告诉你的编程代理运行 uvx smevals docs 来学习这个工具（这会输出 README）",
+          "然后让它为你构建一个评估套件",
+          "一旦你创建了一个评估（它以包含一些 YAML 文件的目录形式存在），你就可以像这样针对模型运行它：",
+          "uvx smevals run path-to-eval/ -m gpt-5.5 -m claude-opus-4.6",
+          "运行与评分操作是分开处理的——你可以使用以下命令对你的运行进行评分（根据你定义的一组检查）：",
+          "uvx smevals grade path-to-eval/",
+          "然后你可以运行一个 localhost Web 服务器来探索结果：",
+          "uvx smevals serve path-to-eval/",
+          "或者运行 smevals build 命令将该报告构建为静态 HTML，然后你可以将其托管在任何地方。这是一个示例，展示了我构建的一个评估套件，用于评估模型写俳句的能力。",
+          "这个项目最耗时的部分是确定它的词汇表！以下是我最终确定的术语，引自发布声明：",
+          "一个 eval 是一系列挑战的集合，旨在回答关于某个模型的问题，例如，该模型在生成 SVG 方面有多好？\n每个 eval 是一系列 task 的集合。一个 task 是一个具体的挑战，例如“生成一幅鹈鹕骑自行车的 SVG”。\n当你运行 eval 时，你是针对一个或多个 config 运行的。每个 config 指定了一个要评估的模型，但也可能包括其他要测试的参数，例如不同的系统提示词、模型参数或代理测试套件（agent harnesses）。\n一个 run 记录了使用特定 config 执行特定 task 时发生的情况。一个 runner 是执行 run 的脚本。\n一旦你收集了一个或多个 run，你需要评估结果以查看模型（或 config）的表现如何。这是由 grader 完成的，它会生成一个 grade。\n每个 grader 运行一系列 check。这些可以是简单的操作，比如在输出中检查特定的字符串，或者确认输出是有效的 XML。它们也可以是更复杂的自定义操作（实现为称为 checker 的脚本），包括使用其他模型来回答关于该 run 的问题。",
+          "几年来，我一直在试图找出一种我喜欢的评估方法。smevals 是我对这个想法的第三次迭代，它让我感觉很对。我期待着未来能进一步扩展它，并将其应用到我自己的一些项目中。"
+        ]
+      }
+    },
+    {
+      "slug": "c3ec41310ae97e73",
+      "title": "Oxide and Friends: The Open Weight Revolution with Simon Willison",
+      "titleZh": "Oxide and Friends: The Open Weight Revolution with Simon Willison",
+      "link": "https://simonwillison.net/2026/Jul/31/oxide-and-friends/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-31T21:33:13.000Z",
+      "category": "opinion",
+      "keywords": [
+        "open weights",
+        "LLM",
+        "podcast"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 7,
+        "timeliness": 7,
+        "total": 21
+      },
+      "summary": "Oxide and Friends: The Open Weight Revolution with Simon Willison",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "31st July 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Oxide and Friends: The Open Weight Revolution with Simon Willison. On Monday Bryan Cantrill and Adam Leventhal invited me to join their podcast to talk about the wild week we've had - with Kimi K3 showing open weight models can stand toe-to-toe with proprietary frontier ones, accidental cybersecurity attacks, and public letters about Open Weights and American AI Leadership signed by almost every big name in AI (with one notable exception)."
+          },
+          {
+            "type": "p",
+            "text": "It was a great conversation, even though it's already out-of-date! DeepSeek V4 Flash 0731 and Anthropic's own embarrassing cyber incident would absolutely have made the cut if we had recorded just a few days later."
+          },
+          {
+            "type": "p",
+            "text": "We also talk about Golden Gate Claude, the Zizians, Alameda wild turkey attacks, Soviet Marburg virus research, the Lead-crime hypothesis, and a bunch of other worthy digressions."
+          },
+          {
+            "type": "p",
+            "text": "Finally, we revisited some of our predictions from January, and we added a new Pope prediction:"
+          },
+          {
+            "type": "quote",
+            "text": "Prediction by the end of this year: the Pope says something about open models."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "68f6ae739f85bd99",
+      "title": "llm-mcp-client 0.1a0",
+      "titleZh": "llm-mcp-client 0.1a0",
+      "link": "https://simonwillison.net/2026/Jul/31/llm-mcp-client/#atom-everything",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-07-31T23:03:47.000Z",
+      "category": "tools",
+      "keywords": [
+        "MCP",
+        "client",
+        "release"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 4,
+        "timeliness": 9,
+        "total": 20
+      },
+      "summary": "llm-mcp-client 0.1a0",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 31st July 2026."
+          },
+          {
+            "type": "p",
+            "text": "llm\n            616\n        \n    \n        \n            model-context-protocol\n            31"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "d990247e761fda46",
+      "title": "How I use AI on this blog",
+      "titleZh": "How I use AI on this blog",
+      "link": "https://www.gilesthomas.com/2026/07/ai-use",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-07-31T19:00:00.000Z",
+      "category": "opinion",
+      "keywords": [
+        "AI",
+        "blogging",
+        "workflow"
+      ],
+      "score": {
+        "relevance": 7,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 20
+      },
+      "summary": "How I use AI on this blog",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Writing the post that I wished I'd found when I started learning whatever it was..."
+          },
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "Inspired by this LessWrong post,\nI thought I'd write about how I use AI here.  This is less in the\ninterest of disclosure, more to provide a snapshot of what I'm doing right now so\nthat I can revisit it in the future and see how it changes.  And hey, maybe it'll be of\ninterest to you, dear readers."
+          },
+          {
+            "type": "p",
+            "text": "If I were to summarise my working philosophy in fewer than ten words, it would be: AIs identify\nproblems and I fix them myself.  With a very specific kind of exception (which I\nalways flag), the text and code on this blog are human-generated.  That's not a\nmoral stand, but more a constraint imposed by what this blog is meant to be -- a place for me to\nlearn in public."
+          },
+          {
+            "type": "h3",
+            "text": "Ideation and running experiments"
+          },
+          {
+            "type": "p",
+            "text": "Every post here is based on an idea I had, and work that I've done.  For many posts\n-- for example, the large-scale coding projects like this one --\nI'll have multiple chat sessions ongoing while I do the work, normally with either\nChatGPT or Claude, or sometimes both.  The amount of input they have varies, but\nbecause the value of these projects is in what I learn when I'm doing them, letting an AI\ndo my thinking for me would make the whole thing pointless -- so I take steps to stop that\nfrom happening."
+          },
+          {
+            "type": "p",
+            "text": "AIs are, of course, trained to be helpful, and will often explain things in their\nreplies that I would have better learned on my own through experimentation.  I'm generally\npretty good at spotting when that happens before I've read more than a sentence or two,\nthough, so I can skip reading that part, scroll straight down to the input field, and ask it\nto operate in more of a rubber duck mode."
+          },
+          {
+            "type": "p",
+            "text": "With the most complicated projects, where each step has a hard dependency on having\ngot the previous one just right, I do use AIs for code review.  Let's say that I've\nbuilt a model that I intend to extend.  I'll test it myself (does the loss go down\nwhen training, is it generating plausible-looking results?), but if I want to be really\ncautious, then I'll run the code past an AI.  I'll paste it into a chat session and tell the LLM what it's meant to\ndo, and ask it to check if I've screwed up 1.  Again, though, I make it clear that I don't want\nit to make fixes -- just to point out any bugs."
+          },
+          {
+            "type": "h3",
+            "text": "Writing things up, and the editorial board"
+          },
+          {
+            "type": "p",
+            "text": "As things progress with a project, I keep detailed notes.  When I'm done, I write them up\nwithout AI assistance, getting the post to a level where it might be a little messy\nin terms of how things are explained, but all of the important information is in there.\nI read it through and make sure I'm reasonably happy with it, and then it's time for what I've taken to calling the editorial board."
+          },
+          {
+            "type": "p",
+            "text": "I paste the draft post into a fresh chat session with an LLM -- right now, this is normally\nClaude -- and ask for comments.  It already has enough information in its memory of earlier conversations to\nknow that what I'm looking for: places where I'm confidently wrong\nor other technical errors, places where my explanations are missing a step, or\nwhere I'm overexplaining things, conclusions that don't really follow from the results of\nan experiment, and that kind of issue.  It tends to spot a few\nsilly grammatical errors and typos at the same time.  An important standing instruction\nis that I do not want it to rewrite anything.  Just as with the code, it should tell me where there is a\nproblem, and let me fix it."
+          },
+          {
+            "type": "p",
+            "text": "We iterate on that for a while until we have something that we're both happy with,\nand then I feed it to the next LLM -- normally ChatGPT."
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT has a much more pernickety attitude than Claude does.  I often use metaphors,\nand it will generally want me to replace them with mathematically rigorous prose.  This\nis still very useful, though.  Sometimes the metaphors aren't flagged as such well\nenough -- or even worse, there are times when the terms I've hit on for a metaphor\nhappen to clash with a technical term, making what I've written misleading at best."
+          },
+          {
+            "type": "p",
+            "text": "I don't always address all of the issues that ChatGPT raises, as otherwise every post\nwould be a mess of hedges and overexplanations and what-have-you, but I like to get\nto a stage where I'm comfortable that I have a good understanding of specifically why I'm rejecting\nthe remaining points it raises."
+          },
+          {
+            "type": "p",
+            "text": "One other point where ChatGPT has helped a lot is that\nit's very diligent about checking supporting materials that I link to.  When I was recently\nabout to post an article on running an eval on a model, it followed the link to the\ntraining code and spotted a silly bug.  It wasn't something that materially changed the\neval's outcome, which is probably why I'd not noticed it, but it was something that\nwas important to get right if I wanted later runs of the same evals to be solid.\nDefinitely helpful."
+          },
+          {
+            "type": "p",
+            "text": "With that done, I run it past a cast of other LLMs.  The exact set varies over time;\nfor the last few posts it has been (in this order) DeepSeek, Grok, GLM-5.2 and Kimi K3.  I\ndid use Gemini in the past, but over time it became less effective and just started\ncomplimenting me on the post and suggesting related topics to chat about, which was\nkind of pointless.  I'll wait until the next release and then try it again."
+          },
+          {
+            "type": "p",
+            "text": "Because the Claude and ChatGPT passes have generally got rid of anything particularly\nnasty, this second group of AIs often don't have much to add.   However, occasionally they will spot\nsomething the others have missed, or have other suggestions, so it's worth spending\nthe five minutes or so it takes to use them.  It also helps to keep me up to date\nwith what the other models out there are like. 2"
+          },
+          {
+            "type": "p",
+            "text": "When all of that's done, I run it past Claude one final time, tidy up any remaining\nissues, then publish it on a private staging site, and read through it carefully myself.\nThe best time for that final readthrough is after dinner, ideally after a glass of\nwine; the goal is to smooth out the prose, and remove anything overly formal.  To make\nit as close to being fun to read as I can manage."
+          },
+          {
+            "type": "p",
+            "text": "Once I'm happy, I can promote it to the live site and hit the publish button."
+          },
+          {
+            "type": "p",
+            "text": "That probably all sounds much more complicated than it actually is.  A short post\nwill normally go through all of that in half an hour -- less if I skip the full editorial board,\nwhich I sometimes do.  The longer ones can take an hour\nor two, but given that they're normally the result of a week of work, on and off,\nin percentage terms it's not that much, and it's worth it for the polish."
+          },
+          {
+            "type": "p",
+            "text": "So, there's no AI-generated text here, but I do lean on AIs to make it the best\nversion I can of what I have to say.  How about the code?"
+          },
+          {
+            "type": "h3",
+            "text": "AI coding"
+          },
+          {
+            "type": "p",
+            "text": "Again, the goal of the projects I document here is to learn in public.\nIf I'm learning some concept that is expressed in code, then I need to write that\ncode.  So that means that anything non-trivial will be something I've written by\nhand, with AI input limited to code review -- the same rule as I have for the text."
+          },
+          {
+            "type": "p",
+            "text": "Of course, sometimes there are things I'd like to publish that I wouldn't learn anything\nby writing.  Coding up matplotlib stuff to chart loss curves, or writing a fancy\nJavaScript visualiser to show what models' parameters are used for\nwould teach me nothing.  So for that kind of thing, I just let the AIs get on with it (and even\nthen, for the parameter visualisation, I hacked a first version together in a spreadsheet\nto check my understanding, and then tested the visualiser against it).  I do always\nmention in the text when a particular bit of code was AI-generated, though."
+          },
+          {
+            "type": "p",
+            "text": "So, my rule is: if I would learn something by writing the code, I'll write it.  If not,\nI'm happy to delegate to an AI."
+          },
+          {
+            "type": "p",
+            "text": "But even then, I apply one restriction: if it's for the blog, I'll ask for the code in a\nchat session, rather than using a more agentic system like Claude Code or Codex.  This is to add friction.\nIf you're using an agent, it's easy for a task to grow, and what started as a throwaway\nidea can come to consume more and more time and cognitive space.  Keeping it in the\nchat interface keeps things minimal -- or at least, that's how it works for me."
+          },
+          {
+            "type": "p",
+            "text": "Does that mean that I'm against coding agents?"
+          },
+          {
+            "type": "h3",
+            "text": "Yes to agents, but not on this blog -- yet"
+          },
+          {
+            "type": "p",
+            "text": "This blog is where I post about experiments I've done and what I've learned.\nAt the moment, what I'm learning is all pretty low-level.  How does an LLM work?  What\nfactors make it smarter or dumber?  It's all pretty hands-on, and involves code that\nI need to understand."
+          },
+          {
+            "type": "p",
+            "text": "I do other things apart from writing this blog, of course :-)   And for that I'm keen on agentic\ntools; I have an OpenClaw agent to help me run my life generally, and use Codex\nand Claude Code for projects where I'm trying to achieve a specific goal, rather than trying\nto learn something.  But by their very nature, those are not projects that will wind\nup here on the blog right now."
+          },
+          {
+            "type": "p",
+            "text": "That might change in the future!  When I feel that I have a solid, large enough foundation,\nperhaps I'll be running experiments that I want to write about, where it would make sense for AIs to handle the\ndetails, while I focus on the broader strokes."
+          },
+          {
+            "type": "p",
+            "text": "But that time is not now, so right now, you can be sure that every word 3, and almost\nevery line of code, was written by hand.  Even if I do need the AIs to keep me on track\nand at least borderline coherent."
+          },
+          {
+            "type": "li",
+            "text": "If you're wondering \"why not use Claude Code or Codex\", I get into why I avoid\nthem for blog-related work towards the end of this post. ↩"
+          },
+          {
+            "type": "li",
+            "text": "Current thoughts:\n\n\nDeepSeek used to be close to Claude and ChatGPT, but has been left somewhat\nbehind.  I have been hearing rumours on X of an upcoming update, though.\nGrok used to have a propensity to try to turn my posts into clickbait.\nIt would always want to rewrite things, and would suggest titles that were\nnot a million miles away from \"Ten things you never knew about RNNs -- number four\nwill shock you!\"  Recent releases have been much better, though, and I might\nexperiment with moving it further forward in the sequence.\nGLM-5.2 recently complimented me on my \"science fiction\" blogpost that mentioned\nChatGPT 5.6 Sol.  I probed it a bit on that and it said that because the publication\ndate on the post was in 2026, it understood that I was writing near-future\nSF.  From its perspective, the real date was sometime in late 2024.  Surprising!  I think the last time I\nsaw that kind of behaviour from a model was, well, sometime in 2024...\nKimi K3 is really quite impressive.  I will be using it more.  I particularly\nlike the way it shows a fairly detailed chain of thought -- something it\nshares with DeepSeek and GLM-5.2, but there seems to be more depth there.\nIt's a pity that Claude and ChatGPT only show summaries in the chat interface, though I understand\ntheir reasoning.\n\n\n↩"
+          },
+          {
+            "type": "li",
+            "text": "ChatGPT, being wonderfully true to form, thinks I should clarify here that I'm\nnot including quotes from models here (like the ones here)\nwhen I say that. ↩"
+          }
+        ],
+        "translations": [
+          "写下我希望自己在刚开始学习某样东西时就能看到的那篇帖子……",
+          "归档",
+          "分类",
+          "友情链接",
+          "受这篇 LessWrong 帖子的启发，我想在这里写写我是如何使用 AI 的。这与其说是为了公开透明，不如说是为了记录我目前的做法，以便将来回顾时能看到它是如何变化的。而且，亲爱的读者们，也许你们也会对此感兴趣。",
+          "如果要用不到十个词来总结我的工作理念，那就是：AI 发现问题，我自己修复。除了一个非常特定的例外情况（我总是会标明），本博客的文本和代码均由人工生成。这并非出于道德立场，而更多是受本博客定位所限——它是我公开学习的地方。",
+          "构思与进行实验",
+          "这里的每一篇帖子都基于我的想法和所做的工作。对于许多帖子——例如像这样的大型编程项目——我在工作时通常会同时进行多个聊天会话，通常是与 ChatGPT 或 Claude，有时两者都用。它们的参与程度各不相同，但由于这些项目的价值在于我在实践过程中学到的东西，让 AI 代替我思考会使整个事情变得毫无意义——因此我会采取措施防止这种情况发生。",
+          "当然，AI 被训练得乐于助人，它们经常会在回复中解释一些我本该通过自己实验能学得更好的东西。不过，我通常很擅长在阅读一两句话后就发现这种情况，因此我可以跳过那部分，直接滚动到输入框，要求它更多地以“小黄鸭调试法”的模式运作。",
+          "在最复杂的项目中，每一步都严格依赖于上一步是否完全正确，我确实会使用 AI 进行代码审查。假设我构建了一个打算进行扩展的模型。我会自己测试它（训练时损失是否下降，是否生成了看起来合理的结果？），但如果我想非常谨慎，我会把代码交给 AI 过目。我会将其粘贴到聊天会话中，告诉 LLM 它的预期功能，并让它检查我是否搞砸了 1。不过同样地，我会明确表示我不希望它进行修复——只需指出任何 bug 即可。",
+          "撰写文章与编辑委员会",
+          "随着项目的推进，我会保留详细的笔记。完成后，我会在没有 AI 辅助的情况下将它们写成文章，使帖子达到这样一种状态：解释方面可能有点凌乱，但所有重要信息都在其中。我会通读一遍，确保自己相当满意，然后就到了我称之为“编辑委员会”的环节。",
+          "我将帖子草稿粘贴到一个与 LLM 的新聊天会话中——目前通常是 Claude——并请求评论。它之前的对话记忆中已经有足够的信息知道我在寻找什么：我自信地犯错的地方或其他技术错误，我的解释缺少步骤的地方，或者我过度解释的地方，以及并非真正从实验结果得出的结论，诸如此类的问题。它往往还会同时发现一些愚蠢的语法错误和拼写错误。一个重要的长期指令是，我不希望它重写任何内容。就像对待代码一样，它应该告诉我哪里有问题，然后让我自己来修复。",
+          "我们就这样反复打磨一段时间，直到我们双方都满意为止，然后我会把它喂给下一个 LLM —— 通常是 ChatGPT。",
+          "ChatGPT 的态度比 Claude 要挑剔得多。我经常使用比喻，而它通常希望我用数学上严谨的文字来替换它们。不过这仍然非常有用。有时候比喻没有被足够清晰地标记出来——或者更糟的是，有时我为了比喻而想到的词恰好与某个技术术语冲突，导致我写的东西往好了说是具有误导性。",
+          "我并不总是解决 ChatGPT 提出的所有问题，否则每篇文章都会变成一堆含糊其辞、过度解释之类的东西，但我希望能达到这样一个阶段：我很清楚自己为什么拒绝了它提出的剩余观点。",
+          "ChatGPT 帮了大忙的另一点是，它非常勤勉地检查我链接的参考资料。最近当我准备发布一篇关于对模型进行 eval 的文章时，它顺着链接查看了训练代码，并发现了一个愚蠢的 bug。这并没有实质性地改变 eval 的结果，这可能也是我之前没注意到它的原因，但如果我想让以后运行相同的 eval 更加可靠，这个问题就必须修正。绝对很有帮助。",
+          "做完这些后，我会把它交给其他一批 LLM 过目。具体的组合会随时间变化；在最近几篇文章中，它们是（按此顺序）DeepSeek、Grok、GLM-5.2 和 Kimi K3。我过去确实用过 Gemini，但随着时间的推移，它变得越来越没效果，只是开始称赞我的文章并建议一些相关的话题来聊，这有点毫无意义。我会等到它的下一个版本发布后再试一次。",
+          "因为 Claude 和 ChatGPT 的检查通常已经去除了任何特别糟糕的内容，这第二批 AI 往往没有太多可补充的。然而，它们偶尔会发现其他 AI 遗漏的问题，或者提出其他建议，所以花上五分钟左右的时间来使用它们还是值得的。这也有助于我了解市面上的其他模型是什么水平。 2",
+          "当这一切都完成后，我会最后让 Claude 过一遍，整理任何遗留问题，然后将其发布到一个私有的预发布站点上，并自己仔细通读一遍。进行最后通读的最佳时间是在晚饭后，最好是在喝了一杯葡萄酒之后；目的是让文字更加流畅，并删掉任何过于正式的内容。尽我所能让它读起来更有趣。",
+          "一旦我满意了，就可以把它推送到正式站点并点击发布按钮。",
+          "这一切听起来可能比实际要复杂得多。一篇短文通常会在半小时内完成所有这些步骤——如果我跳过完整的“编辑委员会”，时间会更短，我有时会这么做。长文可能需要一两个小时，但考虑到它们通常是一周断断续续工作的成果，按比例来说这并不算多，而且为了润色是值得的。",
+          "所以，这里没有 AI 生成的文本，但我确实依赖 AI 将我要表达的内容打造成最好的版本。那么代码呢？",
+          "AI 编程",
+          "再说一次，我在这里记录的这些项目，目标是为了公开学习。如果我在学习某个需要用代码表达的概念，那我就必须亲手编写那些代码。这意味着，任何非简单的内容都将是我亲手编写的，AI 的参与仅限于代码审查——这与我对文本的规定相同。",
+          "当然，有时候我想发布一些自己写下来也学不到任何东西的内容。比如用 matplotlib 编写代码来绘制损失曲线，或者写一个花哨的 JavaScript 可视化工具来展示模型参数的用途，这些对我毫无教学意义。因此对于这类事情，我就直接交给 AI 去做（即便如此，对于参数可视化，我还是先在电子表格里拼凑了一个初始版本来验证我的理解，然后再用它来测试那个可视化工具）。不过，当某段代码是 AI 生成的时候，我总会在文中注明。",
+          "所以，我的原则是：如果写这段代码能让我学到东西，我就自己写。如果不能，我很乐意将其委托给 AI。",
+          "但即便如此，我还是加了一条限制：如果是为博客写代码，我会在聊天会话中向 AI 索要代码，而不是使用像 Claude Code 或 Codex 这样更具代理性质的系统。这是为了增加阻力。如果你使用代理，任务很容易膨胀，一开始只是个随手的想法，最后却可能消耗越来越多的时间和认知空间。将其限制在聊天界面中能让事情保持精简——至少对我来说是这样的。",
+          "这是否意味着我反对编程代理？",
+          "我支持使用代理，但至少目前不会在这个博客上使用。",
+          "这个博客是我发布自己做过的实验和所学内容的地方。目前，我学习的内容都相当底层。LLM 是如何工作的？哪些因素让它变得更聪明或更笨？这些都非常注重实践，并且涉及我需要理解的代码。",
+          "当然，除了写这个博客，我还做其他事情 :-) 对于那些事情，我很热衷于使用代理工具；我有一个 OpenClaw 代理来帮我打理日常事务，在那些旨在实现特定目标而非学习新知识的项目中，我会使用 Codex 和 Claude Code。但就其本质而言，这些项目目前并不会出现在这个博客上。",
+          "未来这可能会改变！当我觉得自己有了足够扎实和庞大的基础时，也许我会进行一些我想写下来的实验，在这些实验中，让 AI 处理细节是合理的，而我则专注于宏观的把控。",
+          "但现在还不是那个时候，所以目前你可以确信，每一个字，以及几乎每一行代码，都是我亲手写的。即使我确实需要 AI 来帮我保持正轨，并至少维持在勉强连贯的状态。",
+          "如果你在想“为什么不用 Claude Code 或 Codex”，我在本文末尾解释了为什么我在与博客相关的工作中避免使用它们。↩",
+          "当前想法：DeepSeek 曾经与 Claude 和 ChatGPT 不相上下，但现在稍微有些落后了。不过，我一直在 X 上听到关于即将更新的传闻。Grok 过去总是倾向于把我的帖子变成标题党。它总是想重写内容，并建议一些类似于“关于 RNN 你不知道的十件事——第四件会让你大吃一惊！”的标题。不过，最近的版本好多了，我可能会尝试在序列中把它往前挪挪。GLM-5.2 最近称赞了我那篇提到 ChatGPT 5.6 Sol 的“科幻”博客文章。我对此试探了它一下，它说因为文章的发布日期是 2026 年，所以它明白我写的是近未来科幻。在它的视角里，真实日期是 2024 年底的某个时候。令人惊讶！我想我上一次看到模型出现这种行为，嗯，也是在 2024 年的某个时候……Kimi K3 确实令人印象深刻。我会更多地使用它。我特别喜欢它展示相当详细的思维链的方式——这是它与 DeepSeek 和 GLM-5.2 共有的特点，但似乎更有深度。遗憾的是 Claude 和 ChatGPT 在聊天界面中只显示摘要，尽管我理解他们的理由。 ↩",
+          "ChatGPT 一如既往地保持其风格，认为我应该在这里澄清，在我这么说的时候，我并没有包含这里的模型引用（就像这里的那些一样）。 ↩"
+        ]
+      }
+    },
+    {
+      "slug": "8e03989838a16761",
+      "title": "Apple Q3 2026 Results",
+      "titleZh": "Apple Q3 2026 Results",
+      "link": "https://sixcolors.com/post/2026/07/apple-announces-record-q3-results/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-01T16:15:15.000Z",
+      "category": "other",
+      "keywords": [
+        "Apple",
+        "earnings",
+        "Q3"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 5,
+        "timeliness": 9,
+        "total": 18
+      },
+      "summary": "Apple Q3 2026 Results",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Apple, technology, and other stuff",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On Thursday, Apple announced record third-quarter earnings, with total revenue of $109.4B, up 16 percent from the year-ago quarter. iPhone revenue was up 22%, Mac revenue was up 10.4%, Services revenue was up 12%, and Wearables revenue was up 6%. iPad revenue was down 6%."
+          },
+          {
+            "type": "p",
+            "text": "Shortly thereafter, Apple execs spent an hour on the phone with financial industry analysts, and we’ve got our usual complete transcript, including many farewells to Tim Cook."
+          },
+          {
+            "type": "p",
+            "text": "And now, to help you visualize what Apple just announced, here is our traditional barrage of charts and graphs:"
+          },
+          {
+            "type": "li",
+            "text": "Report a typo"
+          },
+          {
+            "type": "li",
+            "text": "Discuss in members Discord (app)"
+          },
+          {
+            "type": "p",
+            "text": "If you appreciate articles like this one, support us by becoming a Six Colors subscriber. Subscribers get access to an exclusive podcast, members-only stories, and a special community."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f74ab85dda1a0794",
+      "title": "Reading List 08/01/26",
+      "titleZh": "Reading List 08/01/26",
+      "link": "https://www.construction-physics.com/p/reading-list-080126",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-08-01T12:04:01.000Z",
+      "category": "other",
+      "keywords": [
+        "chips",
+        "fusion",
+        "drones",
+        "infrastructure"
+      ],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 8,
+        "total": 18
+      },
+      "summary": "Reading List 08/01/26",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure, industrial technology. This week we look at pepper-spray drones, China’s chip Manhattan Project, Commonwealth Fusion’s fundraise, and a proposed Dulles Airport renovation. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "It’s been a while since we checked in on 3D printed building company Icon. It seems like they’ve completed printing of 10 barracks buildings for Fort Bliss, and the first two of the buildings are now completed and occupied. [Army]"
+          },
+          {
+            "type": "p",
+            "text": "Some schools are buying pepper spray-equipped drones to deploy against active shooters. “At least nine schools — three in Florida, five in Georgia and one in Colorado — will have storage boxes that house the plastic, nonlethal aircraft made by Austin-based Mithril Defense. The drones, which can be activated by teachers, are capable of reaching a shooter within 15 seconds. The aircraft are designed to distract their targets by flashing strobes, blaring sirens, spraying them with pepper gel, or ramming into them at 60 mph.” [Washington Post]"
+          },
+          {
+            "type": "p",
+            "text": "The Wall Street Journal on the decline of kids in big cities. “The number of children under 18 living in big U.S. cities is down 6% in the past decade, the Journal found, compared with a 1% decline nationwide. The drop is especially stark among families with little kids: The number of children under age 5 in big cities fell 15%, compared with a drop of 7% nationwide. Even cities that are gaining population are losing children.” [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "The Financial Times on how things are turning around at Boeing, and how far the company has to go. “According to aviation research firm Leeham Co, Boeing’s commercial airliner division alone has lost more than $46bn since 2019. It estimates that, left with little pricing power after years of delayed and cancelled aircraft deliveries, the company lost an average of $2.8mn on each of the 314 planes it has delivered this year.” [FT]"
+          },
+          {
+            "type": "p",
+            "text": "Tesla is allegedly considering spinning off its China operation into a separate business, potentially to allow the company to merge with SpaceX. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "Inside China’s “chip Manhattan Project” to catch up to the US in chipmaking technology. “Ding dusted off the same all-out approach China had used to produce its first atomic bombs, hydrogen bombs and satellites in the 1960s during a rift with the Soviet Union. He set up a committee that drew from the country’s best companies and labs to form specialized teams and directed them to master the different elements of the chip supply chain.” [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "Related, a Chinese company is now mass producing deep ultraviolet semiconductor lithography (DUV) machines. DUV is the technology that preceded EUV. [Tom’s Hardware]"
+          },
+          {
+            "type": "p",
+            "text": "Tesla says it plans to open source the designs for the discontinued Model S and Model X. [Electrek]"
+          },
+          {
+            "type": "p",
+            "text": "The US Senate is working on a bill that would ban automakers that have more than 15% Chinese ownership from selling cars in the US. This would include Mercedes Benz. [Car and Driver] And this week the US also banned the import of new models of Chinese robots and power inverters. [Reuters] And Starlink gets an exemption from the recent ban of foreign-made routers. [Ars Technica]"
+          },
+          {
+            "type": "p",
+            "text": "Related, this week China banned export of critical minerals that could be used for military purposes to 14 European companies. “As a result, the companies may struggle to buy many of the critical minerals they need to make products like rare-earth magnets and semiconductors, which are essential for cars, offshore wind turbines, robots, drones and other advanced manufacturing applications.” [NYT]"
+          },
+          {
+            "type": "p",
+            "text": "Both Ford and GM are competing to be the supplier for a new tactical pickup truck for the Army. [WSJ]"
+          }
+        ],
+        "translations": [
+          "欢迎来到阅读清单，这是一个每周汇总建筑、基础设施和工业技术相关新闻与链接的栏目。本周我们将关注辣椒喷雾无人机、中国的芯片曼哈顿计划、Commonwealth Fusion的融资，以及一项杜勒斯机场的翻新提案。大约三分之二的阅读清单内容设有付费墙，如需获取完整访问权限，请成为付费订阅者。",
+          "我们有一段时间没有关注3D打印建筑公司Icon了。他们似乎已经为布利斯堡完成了10栋营房的打印，其中前两栋现已完工并投入使用。[Army]",
+          "一些学校正在购买配备辣椒喷雾的无人机，以应对活跃枪手。“至少有九所学校——佛罗里达州三所、佐治亚州五所、科罗拉多州一所——将配备存储箱，用于存放由总部位于奥斯汀的Mithril Defense制造的塑料非致命飞行器。这些无人机可由教师激活，能够在15秒内抵达枪手所在位置。这些飞行器旨在通过闪烁频闪灯、鸣响警报器、喷射辣椒凝胶或以60英里的时速撞击目标来分散其注意力。”[Washington Post]",
+          "《华尔街日报》关于大城市儿童数量减少的报道。“《华尔街日报》发现，在过去十年中，居住在美国大城市的18岁以下儿童数量下降了6%，而全国范围内的降幅为1%。这种下降在有幼儿的家庭中尤为明显：大城市中5岁以下儿童的数量下降了15%，而全国范围内的降幅为7%。即使是人口正在增长的城市，儿童数量也在减少。”[WSJ]",
+          "《金融时报》关于波音公司状况如何好转以及该公司还有多长的路要走的报道。“据航空研究公司Leeham Co称，自2019年以来，仅波音公司的商用客机部门就亏损超过460亿美元。据估计，由于多年来飞机交付延误和取消导致定价权所剩无几，该公司今年交付的314架飞机平均每架亏损280万美元。”[FT]",
+          "据称，Tesla正在考虑将其中国业务剥离为一家独立公司，这可能旨在允许该公司与SpaceX合并。[WSJ]",
+          "深入了解中国旨在芯片制造技术上追赶美国的“芯片曼哈顿计划”。“丁重拾了中国在20世纪60年代与苏联关系破裂期间用于制造第一批原子弹、氢弹和卫星的全力以赴的方法。他成立了一个委员会，从国内最优秀的公司和实验室抽调人员组成专业团队，并指导他们掌握芯片供应链的不同环节。”[WSJ]",
+          "与此相关，一家中国公司目前正在量产深紫外半导体光刻（DUV）设备。DUV是EUV之前的技术。[Tom’s Hardware]",
+          "Tesla表示，计划将已停产的Model S和Model X的设计开源。[Electrek]",
+          "美国参议院正在制定一项法案，禁止中国持股超过15%的汽车制造商在美国销售汽车。这将包括梅赛德斯-奔驰。[Car and Driver] 此外，本周美国还禁止进口中国机器人和功率逆变器的新型型号。[Reuters] 同时，Starlink获得了近期对外国制造路由器禁令的豁免。[Ars Technica]",
+          "与此相关，本周中国禁止向14家欧洲企业出口可能用于军事目的的关键矿物。“因此，这些企业可能难以采购制造稀土磁体和半导体等产品所需的多种关键矿物，而这些产品对汽车、海上风机、机器人、无人机及其他先进制造应用至关重要。” [NYT]",
+          "福特和通用汽车正在竞争成为陆军新型战术皮卡的供应商。 [WSJ]"
+        ]
+      }
+    },
+    {
+      "slug": "99f9bdb6a7141304",
+      "title": "The Talk Show: ‘What’s in Louie’s Wallet’",
+      "titleZh": "The Talk Show：“Louie 的钱包里有什么”",
+      "link": "https://daringfireball.net/thetalkshow/2026/07/31/ep-453",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-07-31T22:50:04.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "UI",
+        "OpenAI"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 7,
+        "total": 17
+      },
+      "summary": "Louie Mantia 做客 The Talk Show 节目，探讨了苹果平台当前的 UI 和图标设计现状。节目还对苹果起诉 OpenAI 窃取商业机密一案进行了推测与分析。本期节目由 Notion、Even Realities 和 Squarespace 赞助播出。听众可以从中了解苹果设计生态的最新动态及科技巨头的法律博弈。",
+      "summaryEn": "Louie Mantia joins The Talk Show to discuss the current state of UI and icon design across Apple's platforms. The episode also features speculation and analysis regarding Apple's trade secret lawsuit against OpenAI. This episode is sponsored by Notion, Even Realities, and Squarespace. Listeners can gain insights into the latest trends in Apple's design ecosystem and the legal battles among tech giants.",
+      "reason": "如果你对苹果的 UI 设计趋势以及科技巨头间的法律纠纷感兴趣，这期播客值得收听。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Friday, 31 July 2026",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "The Talk Show"
+          },
+          {
+            "type": "h2",
+            "text": "‘What’s in Louie’s Wallet’, With Louie Mantia"
+          },
+          {
+            "type": "p",
+            "text": "Louie Mantia returns to the show to talk about the state of UI and icon design on Apple’s platforms, and some speculation on Apple’s trade secret lawsuit against OpenAI."
+          },
+          {
+            "type": "p",
+            "text": "Sponsored by:"
+          },
+          {
+            "type": "li",
+            "text": "Notion: The collaborative AI workspace where teams and\nagents work side by side, with a Developer Platform teams can build on."
+          },
+          {
+            "type": "li",
+            "text": "Even Realities: Even G2, the everyday display smart glasses. Use promo code talkshow to save 10% off the R1 Ring and/or Even Clip."
+          },
+          {
+            "type": "li",
+            "text": "Squarespace: Save 10% off your first purchase of a website or domain using code TALKSHOW."
+          },
+          {
+            "type": "p",
+            "text": "Transcripts: Unofficial but surprisingly good."
+          },
+          {
+            "type": "p",
+            "text": "Links:"
+          },
+          {
+            "type": "li",
+            "text": "Louie on the squircle: “The Shape of Apps”."
+          },
+          {
+            "type": "li",
+            "text": "Me, linking to Louie on the squircle."
+          },
+          {
+            "type": "li",
+            "text": "Louie on Alan Dye: “A Responsibility to the Industry”."
+          },
+          {
+            "type": "li",
+            "text": "Me: “Bad Dye Job”."
+          },
+          {
+            "type": "li",
+            "text": "Me, after WWDC 2025, comparing Dye’s introduction of Liquid Glass to Steve Jobs’s introduction of Aqua back in January 2000."
+          },
+          {
+            "type": "li",
+            "text": "UI designer Chan Karunamuni’s tweet on Steve Lemay: “Steve’s been my manager for my entire 15 year career so far at Apple and I could not be more excited for this new era.”."
+          },
+          {
+            "type": "li",
+            "text": "Karunamuni’s Twitter/X account, with links regarding Liquid Glass, the Dynamic Island, and the cool Flashlight beam UI."
+          },
+          {
+            "type": "li",
+            "text": "Louie on The Talk Show last year."
+          },
+          {
+            "type": "p",
+            "text": "This episode of The Talk Show was edited by Caleb Sexton."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a52d8fc842ebfbf4",
+      "title": "Counting rooted trees",
+      "titleZh": "计算有根树",
+      "link": "https://www.johndcook.com/blog/2026/08/01/counting-rooted-trees/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-08-01T16:15:53.000Z",
+      "category": "engineering",
+      "keywords": [
+        "rooted-trees",
+        "combinatorics",
+        "algorithms"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "计算具有 n 个节点的无标记有根树数量原本是一个纯数学组合问题。然而，当这类组合问题与组合数学之外的领域产生联系时，会变得更加有趣且出人意料。该问题实际上与设计求解微分方程的数值方法存在意想不到的关联。这种跨学科的联系为纯数学问题赋予了更丰富的应用价值。",
+      "summaryEn": "Counting the number of unlabeled rooted trees with n nodes is originally a pure mathematical combinatorial problem. However, such combinatorial problems become more intriguing when they have unexpected connections to fields outside of combinatorics. Specifically, this counting problem is surprisingly linked to the design of numerical methods for solving differential equations. This interdisciplinary connection gives the pure math problem richer practical applications.",
+      "reason": "它揭示了纯数学组合问题与微分方程数值解法之间意想不到的跨学科联系，视角独特。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Combinatorial problems can be interesting for their own sake, but they are more interesting when there is a connection to a problem outside combinatorics, and the more unexpected the connection the better."
+          },
+          {
+            "type": "p",
+            "text": "Counting the number of unlabeled rooted trees [1] with n nodes is a pure mathematics problem. Designing numerical methods for solving differential equations is an applied mathematics problem. And yet the two are closely linked."
+          },
+          {
+            "type": "p",
+            "text": "Let t(n) be the number of distinct unlabeled rooted trees with n nodes. The diagram below shows that the first few terms of this sequence are 1, 1, 2, and 4."
+          },
+          {
+            "type": "p",
+            "text": "In an earlier post I showed that designing a 4-stage explicit Runge-Kutta method required solving a system of 8 equations in 10 unknowns, leaving two degrees of freedom in the solutions."
+          },
+          {
+            "type": "p",
+            "text": "The number of constraints c(s) needed to design an s-stage explicit RK method is equal to the number of rooted trees with up to s nodes:"
+          },
+          {
+            "type": "p",
+            "text": "c(s) = t(1) + t(2) + t(3) + … + t(s)"
+          },
+          {
+            "type": "p",
+            "text": "This is because there is a one-to-one correspondence between constrains on the nth derivative of an RK formula and rooted trees, and an s stage method has to satisfy the constraints of all stages up to s. In the example of the 4th order RK method, we have"
+          },
+          {
+            "type": "p",
+            "text": "c(4) = t(1) + t(2)  + t(3) + t(4) = 1 + 1 + 2 + 4 = 8."
+          },
+          {
+            "type": "p",
+            "text": "The first few values [2] of t(n) are"
+          },
+          {
+            "type": "p",
+            "text": "1, 1, 2, 4, 9, 20, 48, 115, 286, 719, 1842, 4766, 12486, 32973, …"
+          },
+          {
+            "type": "p",
+            "text": "and so you can see that t(n) grows quickly. In fact, it grows exponentially [3]."
+          },
+          {
+            "type": "p",
+            "text": "However, the number of parameters in an s stage RK method is s(s + 1)/2. The number of equations grows exponentially and the number of variables grows only quadratically, so at some point you have more equations than variables. That’s already the case for s = 5 because you have 17 constraints on 15 variables. The system has a solution because symmetry considerations render some of the equations redundant."
+          },
+          {
+            "type": "p",
+            "text": "A 10th order RK method requires 17 stages. (See the previous post for why the number of stages exceeds the order when the order is greater than 4.) Designing such a method would require solving over a million equations in 153 variables, and yet it can be done. [4]"
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Solving the RK4 equations"
+          },
+          {
+            "type": "li",
+            "text": "Counting permutations with roots"
+          },
+          {
+            "type": "li",
+            "text": "DNA alignment and Kings"
+          },
+          {
+            "type": "p",
+            "text": "[1] This is a slightly contradictory term. Unlabeled means the we don’t distinguish the nodes. But we do distinguish one node, namely the root."
+          },
+          {
+            "type": "p",
+            "text": "[2] See OEIS A000081."
+          },
+          {
+            "type": "p",
+            "text": "[2] Richard Otter proved in 1948 that the number of unlabeled rooted trees with n nodes is asymptotically C αn / n−3/2 where C = 0.4399… and α = 2.9557…. The cumulative sum is at least this large since Otter’s estimate gives the size of the last term in the sum."
+          },
+          {
+            "type": "p",
+            "text": "[3] E. Hairer. A Runge-Kutta Method of Order 10. J. Inst. Maths Applics (1978) 21, 47-59"
+          }
+        ],
+        "translations": [
+          "组合数学问题本身可能就很有趣，但当它们与组合数学之外的问题产生联系时，就变得更加有趣，而且这种联系越是出人意料越好。",
+          "计算具有 n 个节点的无标记有根树 [1] 的数量是一个纯数学问题。设计求解微分方程的数值方法是一个应用数学问题。然而，这两者却紧密相连。",
+          "设 t(n) 为具有 n 个节点的不同无标记有根树的数量。下图显示该序列的前几项为 1、1、2 和 4。",
+          "在之前的文章中，我展示了设计一个 4 级显式 Runge-Kutta 方法需要求解一个包含 8 个方程和 10 个未知数的方程组，从而在解中留下两个自由度。",
+          "设计一个 s 级显式 RK 方法所需的约束数 c(s) 等于节点数不超过 s 的有根树的数量：",
+          "c(s) = t(1) + t(2) + t(3) + … + t(s)",
+          "这是因为 RK 公式的第 n 阶导数的约束与有根树之间存在一一对应关系，并且一个 s 级方法必须满足直到 s 级的所有阶段的约束。在 4 阶 RK 方法的例子中，我们有",
+          "c(4) = t(1) + t(2)  + t(3) + t(4) = 1 + 1 + 2 + 4 = 8.",
+          "t(n) 的前几个值 [2] 是",
+          "1, 1, 2, 4, 9, 20, 48, 115, 286, 719, 1842, 4766, 12486, 32973, …",
+          "因此你可以看到 t(n) 增长得很快。事实上，它呈指数级增长 [3]。",
+          "然而，s 级 RK 方法中的参数数量为 s(s + 1)/2。方程的数量呈指数级增长，而变量的数量仅呈二次级增长，因此在某个时刻，方程的数量会超过变量的数量。对于 s = 5 的情况已经是这样了，因为你有 17 个约束作用于 15 个变量。该系统有解，是因为对称性考虑使得某些方程变得冗余。",
+          "一个 10 阶 RK 方法需要 17 级。（关于当阶数大于 4 时为什么级数会超过阶数，请参见之前的文章。）设计这样的方法需要求解包含 153 个变量的超过一百万个方程，然而这是可以做到的。[4]",
+          "相关文章",
+          "求解 RK4 方程",
+          "计算带有根的排列",
+          "DNA 比对与国王问题",
+          "[1] 这是一个略显矛盾的术语。无标记意味着我们不区分节点。但我们确实区分了一个节点，即根节点。",
+          "[2] 参见 OEIS A000081。",
+          "[2] Richard Otter 在 1948 年证明了具有 n 个节点的无标记有根树的数量渐近于 C αn / n−3/2，其中 C = 0.4399… 且 α = 2.9557…。由于 Otter 的估计给出了求和式中最后一项的大小，因此累积和至少有这么大。",
+          "[3] E. Hairer. A Runge-Kutta Method of Order 10. J. Inst. Maths Applics (1978) 21, 47-59"
+        ]
+      }
+    },
+    {
+      "slug": "6020f41e11cf36f3",
+      "title": "Runge-Kutta order versus stages",
+      "titleZh": "Runge-Kutta 方法的阶数与阶段数",
+      "link": "https://www.johndcook.com/blog/2026/08/01/butcher-barrier/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-08-01T15:58:15.000Z",
+      "category": "engineering",
+      "keywords": [
+        "runge-kutta",
+        "numerical-methods",
+        "differential-equations"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "求解微分方程的教科书版 Runge-Kutta 方法包含 4 个阶段，且具有 4 阶误差。对于较低阶的 RK 方法，阶段数 s 与误差阶数 p 相等。然而，为了实现 p ≥ 5 阶的误差精度，所需阶段数将超过 p。这一现象被称为 Butcher 障碍，限制了高阶 RK 方法的效率。",
+      "summaryEn": "The textbook version of the Runge-Kutta method for solving differential equations has 4 stages and 4th order error. For lower-order RK methods, the number of stages s matches the order of the error p. However, to achieve an error on the order of p ≥ 5, more than p stages are required. This phenomenon, known as the Butcher barrier, limits the efficiency of higher-order RK methods.",
+      "reason": "清晰解释了 Runge-Kutta 方法中阶段数与误差阶数在 p≥5 时不再相等的 Butcher 障碍现象。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The textbook version of the Runge-Kutta method for solving differential equations has 4 stages and has 4th order error. For lower order versions of RK the number of stages s also matches the order of the error p. But in order to achieve error on the order of p ≥ 5, you need more than p stages. This is known as the Butcher barrier."
+          },
+          {
+            "type": "p",
+            "text": "Before going any further, let’s back up and say what we mean by stages and by order."
+          },
+          {
+            "type": "p",
+            "text": "The number of stages in an RK method to solve the equation"
+          },
+          {
+            "type": "p",
+            "text": "is the number of evaluations of the function f on the right-hand side. For example, the textbook RK4 method estimates the solution at each step by"
+          },
+          {
+            "type": "p",
+            "text": "where"
+          },
+          {
+            "type": "p",
+            "text": "which requires four stages, i.e. four evaluations of f."
+          },
+          {
+            "type": "h2",
+            "text": "Order"
+          },
+          {
+            "type": "p",
+            "text": "A differential equation solver is said to have order p if the local error, the error after one step of size h, is O(hp + 1). Then after solving an ODE over a period of time T with N = T/h steps, the global error is O(hp). So, for example, if p = 4, you would expect that cutting your step size h in half would cut your error at T by a factor of 16."
+          },
+          {
+            "type": "h2",
+            "text": "More stages than the order"
+          },
+          {
+            "type": "p",
+            "text": "John C. Butcher proved that an explicit RK method of order p requires s stages where s > p if p > 4."
+          },
+          {
+            "type": "p",
+            "text": "An important example is the Dormand-Prince method. It is a version of RK that has order 5 and 7 stages. The clever thing about this method is that you can make a 4th order solver out of a subset of its function evaluations."
+          },
+          {
+            "type": "p",
+            "text": "That means that after you’ve evaluated one step of the 5th order method, you can also evaluate a 4th order method essentially for free. And by comparing them, you can get a sense of the error. If the solutions given by the two methods are substantially different, you have probably taken too big a step and need to back up. If the two solutions essentially agree, you’re probably good to take the next step."
+          },
+          {
+            "type": "p",
+            "text": "For an explict RK method to have order 5, 6, or 7 you need at least 6, 7, or 9 stages respectively."
+          }
+        ],
+        "translations": [
+          "求解微分方程的龙格-库塔法（Runge-Kutta method）教科书版本有4个阶段，且误差为4阶。对于低阶的 RK 方法，阶段数 s 也与误差阶数 p 相匹配。但是，为了达到 p ≥ 5 阶的误差，你需要多于 p 个阶段。这被称为 Butcher 障碍。",
+          "在继续深入之前，让我们退一步，先说明一下阶段和阶数的含义。",
+          "求解方程的 RK 方法中的阶段数",
+          "是指对右侧函数 f 的求值次数。例如，教科书上的 RK4 方法在每一步通过以下方式估计解：",
+          "其中",
+          "这需要四个阶段，即对 f 进行四次求值。",
+          "阶数",
+          "如果局部误差（即步长为 h 的一步之后的误差）为 O(h^(p+1))，则称该微分方程求解器具有 p 阶。然后，在经过 N = T/h 步求解一段时长 T 的常微分方程（ODE）后，全局误差为 O(h^p)。因此，举例来说，如果 p = 4，你会预期将步长 h 减半会使 T 处的误差减小到原来的 1/16。",
+          "阶段数多于阶数",
+          "John C. Butcher 证明了，如果 p > 4，则 p 阶的显式 RK 方法需要 s 个阶段，其中 s > p。",
+          "一个重要的例子是 Dormand-Prince 方法。它是具有 5 阶和 7 个阶段的 RK 版本。这种方法巧妙之处在于，你可以利用其函数求值的一个子集来构造一个 4 阶求解器。",
+          "这意味着在评估了 5 阶方法的一步之后，你基本上可以免费评估一个 4 阶方法。通过比较它们，你可以了解误差的情况。如果两种方法给出的解差异很大，你可能步长取得太大了，需要退回重算。如果两个解基本一致，你大概就可以继续下一步了。",
+          "要使显式 RK 方法达到 5、6 或 7 阶，你分别需要至少 6、7 或 9 个阶段。"
+        ]
+      }
+    },
+    {
+      "slug": "e7c3d78bc06ec1ee",
+      "title": "Solving the RK4 design equations",
+      "titleZh": "求解 RK4 设计方程",
+      "link": "https://www.johndcook.com/blog/2026/07/31/runge-kutta-design/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-07-31T18:59:02.000Z",
+      "category": "engineering",
+      "keywords": [
+        "runge-kutta",
+        "numerical-methods",
+        "differential-equations"
+      ],
+      "score": {
+        "relevance": 4,
+        "quality": 6,
+        "timeliness": 4,
+        "total": 14
+      },
+      "summary": "四阶 Runge-Kutta 方法的参数必须满足一组包含八个约束条件的设计方程。这些繁琐的计算并未出现在 Kutta 的原始论文中，而是记录在 1900 年的 Huen 论文里。深入推导这些方程有助于理解 RK4 方法参数背后的数学原理与设计逻辑。这组约束条件确保了该方法能够达到四阶误差精度。",
+      "summaryEn": "The parameters of the fourth-order Runge-Kutta method must satisfy a set of design equations consisting of eight constraints. These tedious calculations were not reproduced in Kutta's original paper but are found in Huen's 1900 paper. Diving into these equations helps to understand the mathematical principles and design logic behind the parameters of the RK4 method. These constraints ensure that the method achieves fourth-order error accuracy.",
+      "reason": "深入剖析了 RK4 方法背后未被广泛记录的八个参数约束方程，适合想探究算法底层逻辑的读者。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I was digging into the Runge-Kutta method for solving differential equations and a line from [1] piqued my curiosity."
+          },
+          {
+            "type": "p",
+            "text": "These calculations, which are not reproduced in Kutta’s paper (they are however in Huen (1900)), are very tedious."
+          },
+          {
+            "type": "p",
+            "text": "The calculations are a set of eight constraints that the parameters of a fourth-order Runge-Kutta method must satisfy. I wondered how well Mathematica might have done at assisting Mr. Huen in his “very tedious” calculations if it had been available in 1900."
+          },
+          {
+            "type": "p",
+            "text": "I go into Runge-Kutta methods in this post. Here I’d like to concentrate on a step in the design of the methods, namely solving the set of equations alluded in the quote above."
+          },
+          {
+            "type": "p",
+            "text": "The first thing to note is that there are 10 variables and only 8 equations, and so the solution is not fully determined. What we think of as the fourth order Runge-Kutta method is in fact a fourth order Runge-Kutta method."
+          },
+          {
+            "type": "p",
+            "text": "One could argue that we should have b2 = b3 and c2 = c3. With these additional equations, the system of equations has a unique solution, and Mathematic finds it easily."
+          },
+          {
+            "type": "code",
+            "text": "eqs = {\n    b1 + b2 + b3 + b4 == 1,\n    b2*c2 + b3*c3 + b4*c4 == 1/2,\n    b2*c2^2 + b3*c3^2 + b4*c4^2 == 1/3,\n    b3*a32*c2 + b4*(a42*c2 + a43*c3) == 1/6,\n    b2*c2^3 + b3*c3^3 + b4*c4^3 == 1/4,\n    b3*c3*a32*c2 + b4*c4*(a42*c2 + a43*c3) == 1/8,\n    b3*a32*c2^2 + b4*(a42*c2^2 + a43*c3^2) == 1/12,\n    b4*a43*a32*c2 == 1/24,\n    b2 == b3,\n    c2 == c3\n};\n\nvars = {b1, b2, b3, b4, c2, c3, c4, a32, a42, a43};\n\nsolution = Solve[eqs, vars]"
+          },
+          {
+            "type": "p",
+            "text": "This returns the parameters used for the version of Runge-Kutta presented in every textbook."
+          },
+          {
+            "type": "p",
+            "text": "If you keep the requirement b2 = b3 but substitute the requirement 2c2 = c3 for c‘s Mathematica will return the coefficients for the so-called Runge-Kutta 3/8 rule. This method has some slight advantages by some criteria."
+          },
+          {
+            "type": "p",
+            "text": "In 1951 Gill [2] discovered a fourth order Runge-Kutta rule optimized for running in extremely constrained computer hardware. It’s a strange method, with irrational parameters, but one that was a very clever response to the limitations of its time."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Dormand and Prince"
+          },
+          {
+            "type": "li",
+            "text": "RK4 as a fold"
+          },
+          {
+            "type": "li",
+            "text": "Stiff differential equations"
+          },
+          {
+            "type": "p",
+            "text": "[1] Hairer, Nørsett, and Wanner. Solving Ordinary Differential Equations I: Nonstiff Problems. Springer-Verlag 1987."
+          },
+          {
+            "type": "p",
+            "text": "[2] A. Gill. A process for the step-by-step integration of differential equations in an automatic digital computing machine. Proc. Cambridge Philos. Soc., vol 27, pp 95–108."
+          }
+        ],
+        "translations": [
+          "我在研究求解微分方程的 Runge-Kutta 方法时，[1] 中的一句话引起了我的好奇心。",
+          "这些计算在 Kutta 的论文中并未重现（但在 Huen (1900) 中有记载），非常繁琐。",
+          "这些计算是四阶 Runge-Kutta 方法的参数必须满足的一组八个约束条件。我想知道，如果 1900 年就有 Mathematica，它在协助 Huen 先生进行“非常繁琐”的计算方面能做得有多好。",
+          "在这篇文章中，我将深入探讨 Runge-Kutta 方法。在这里，我想专注于该方法设计中的一个步骤，即求解上述引文中提到的方程组。",
+          "首先要注意的是，有 10 个变量却只有 8 个方程，因此解并未完全确定。我们通常认为的四阶 Runge-Kutta 方法实际上就是一个四阶 Runge-Kutta 方法。",
+          "有人可能会认为我们应该设定 b2 = b3 和 c2 = c3。加上这些额外的方程后，方程组就有了唯一解，Mathematica 很容易就能找到它。",
+          "eqs = {\n    b1 + b2 + b3 + b4 == 1,\n    b2*c2 + b3*c3 + b4*c4 == 1/2,\n    b2*c2^2 + b3*c3^2 + b4*c4^2 == 1/3,\n    b3*a32*c2 + b4*(a42*c2 + a43*c3) == 1/6,\n    b2*c2^3 + b3*c3^3 + b4*c4^3 == 1/4,\n    b3*c3*a32*c2 + b4*c4*(a42*c2 + a43*c3) == 1/8,\n    b3*a32*c2^2 + b4*(a42*c2^2 + a43*c3^2) == 1/12,\n    b4*a43*a32*c2 == 1/24,\n    b2 == b3,\n    c2 == c3\n};\n\nvars = {b1, b2, b3, b4, c2, c3, c4, a32, a42, a43};\n\nsolution = Solve[eqs, vars]",
+          "这会得出每本教科书中展示的 Runge-Kutta 版本所使用的参数。",
+          "如果你保留 b2 = b3 的要求，但将 c 的要求替换为 2c2 = c3，Mathematica 将返回所谓的 Runge-Kutta 3/8 法则的系数。根据某些标准，这种方法具有一些微小的优势。",
+          "1951 年，Gill [2] 发现了一种经过优化的四阶 Runge-Kutta 法则，专为在极度受限的计算机硬件上运行而设计。这是一种奇特的方法，带有无理数参数，但它是对当时局限性的一种非常巧妙的应对。",
+          "相关文章",
+          "Dormand and Prince",
+          "作为折叠的 RK4",
+          "刚性微分方程",
+          "[1] Hairer, Nørsett, and Wanner. Solving Ordinary Differential Equations I: Nonstiff Problems. Springer-Verlag 1987.",
+          "[2] A. Gill. A process for the step-by-step integration of differential equations in an automatic digital computing machine. Proc. Cambridge Philos. Soc., vol 27, pp 95–108."
+        ]
+      }
+    },
+    {
+      "slug": "e1fd5cc12f131283",
+      "title": "The Apple Upgrade Situation",
+      "titleZh": "苹果的升级计划现状",
+      "link": "https://randsinrepose.com/archives/the-apple-upgrade-situation/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-01T16:30:40.000Z",
+      "category": "opinion",
+      "keywords": [
+        "Apple",
+        "iPhone",
+        "upgrade"
+      ],
+      "score": {
+        "relevance": 3,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 13
+      },
+      "summary": "苹果的 iPhone 升级计划不仅是一项划算的交易，更是一次“捡漏”。用户可以申请 0% 利率的全额 iPhone 贷款，并将付款分摊至 24 个月。该计划的真正优势在于每年都能以极低的成本更换新手机，因为苹果会免除旧手机剩余的贷款。这种低门槛的年度换机机制为用户提供了极大的便利与经济价值。",
+      "summaryEn": "Apple's iPhone Upgrade Program is not just a good deal, but an absolute steal. Users can apply for a 0% interest loan for a full-price iPhone and split the payments over 24 months. The real advantage of the program is the ability to get a new phone every year with minimal effort, as Apple forgives the remaining loan payments for the old device. This low-barrier annual upgrade mechanism provides users with immense convenience and economic value.",
+      "reason": "详细拆解了苹果 iPhone 升级计划的运作机制及其为用户带来的隐性经济价值。",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Rands in Repose",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The final measure of any financial negotiation is the feeling of whether or not you got a “deal”."
+          },
+          {
+            "type": "p",
+            "text": "That prior sentence… makes no sense."
+          },
+          {
+            "type": "p",
+            "text": "I wrote “measure,” and then six words later I wrote “feeling”. A feeling is never a measure, but yet, when you hand over your hard-earned money to buy a thing, you’ll feel better because you believe the value received is higher than the dollars paid."
+          },
+          {
+            "type": "p",
+            "text": "Too abstract. Here’s a good example:"
+          },
+          {
+            "type": "p",
+            "text": "I have felt since it was announced that the Apple iPhone Upgrade Program has not just been a deal, but a steal. The specifics:"
+          },
+          {
+            "type": "li",
+            "text": "You apply for a loan for a full-price iPhone at 0%."
+          },
+          {
+            "type": "li",
+            "text": "If approved, your payments are split over 24 months."
+          },
+          {
+            "type": "li",
+            "text": "Pay for 24 months, and the phone is yours."
+          },
+          {
+            "type": "p",
+            "text": "That was just the deal; the steal was that it was low effort every single year to get a new phone. I’d re-up for a new phone, and Apple would forgive the remaining payments of the loan because I’d signed up for another 24 months. Oh, and bonus, AppleCare was included, which was a total steal because I hate iPhone cases (iPhones are designed to be felt) and, uh, also I have been known to drop my phone."
+          },
+          {
+            "type": "p",
+            "text": "Felt fair. The Apple bet was that users would embrace the original plan, were going to re-up regularly, and Apple would refurb the phone on a strong used market. That bet ended on a Tuesday. Apple retired the Upgrade Program and replaced it with Apple Upgrade: a Klarna-financed lease covering iPhones, Watches, iPads, and Macs. The loan became a lease. And it feels different."
+          },
+          {
+            "type": "h2",
+            "text": "Follow the AppleCare Money"
+          },
+          {
+            "type": "p",
+            "text": "At first glance, the new plan looks cheaper. The original plan: one year of iPhone 17 Pro (256GB, $1,099 sticker) was ~$57/month. 12 payments, trade-in, restart: ~$684 for the year. The new one, same phone: $45.99/month on the 12-month lease: $552 for the year."
+          },
+          {
+            "type": "p",
+            "text": "But wait! The first and most important change to the new plan is that AppleCare is no longer included. Adding it back to this phone at $13.99/month: $720 for the year."
+          },
+          {
+            "type": "p",
+            "text": "But wait once more! You have AppleCare One? Well, good news, your new iPhone can ride along in a $5.99/month slot, bringing us to $624 for the year. In fact, and illuminatingly so, the only way to get the good price on iPhone-plus-AppleCare is to get three pieces of hardware on the AppleCare One plan, which means having three pieces of hardware."
+          },
+          {
+            "type": "p",
+            "text": "This might sound reasonable until you think about the number of times I’ve never had the opportunity to drop my Mac Studio. For all Mac hardware in general, there was that one time Rands Jr. somehow cracked her MacBook screen. That one time — in a couple of decades."
+          },
+          {
+            "type": "p",
+            "text": "AppleCare is insurance. Like all insurance, you pay for protection from expensive, but hopefully unlikely disasters. In the event of the unlikely, you don’t pay. My issue with this approach is it appears Apple is removing AppleCare from the upgrade plan and herding folks towards AppleCare One because margins on insurance are sweet — like 2x the margins on hardware. I already pay Apple insurance. It’s not called insurance; it’s called “incredibly high quality hardware.” I gleefully pay Apple a premium not just because of its cutting-edge design, but also exemplary quality. With Dell, I pay for the insurance because the motherboard on my fancy Alienware gaming PC has already failed once."
+          },
+          {
+            "type": "h2",
+            "text": "It Still Feels Like a Deal, Not a Steal"
+          },
+          {
+            "type": "p",
+            "text": "When I buy a ticket at United, just before I click purchase, there is a must-acknowledge box I am required to read. It is a light-fear-inducing reminder that “Stuff changes when you are flying. You never know, but… maybe plop down a couple of hundred dollars because, well, you never know and we know better so maybe yeah, pay us money, and we’ll make it ok.”"
+          },
+          {
+            "type": "p",
+            "text": "Never in the history of ever have I done this. Yes, in the middle of winter when travel plans are truly up in the air, I think about it, but mostly… gross. This is a business trying to eke out high-margin dollars just before the sale when you are most worried about the value of your purchase."
+          },
+          {
+            "type": "p",
+            "text": "There is genuine value in AppleCare, and I’ve considered AppleCare One because the Rands house has a lot of hardware, but the more I stare at the new plan, the more I feel a little gross."
+          },
+          {
+            "type": "p",
+            "text": "I’ll stick with the plan for the phone along with additional AppleCare (not AppleCare One) because, remember, it’s whether or not I feel I got a deal. The primary intangible is that Apple is quite good at operations. The process of re-upping for the new phone has historically been trivial."
+          },
+          {
+            "type": "li",
+            "text": "After the new phone has been announced, click a couple of things in the Store app, and you’re done."
+          },
+          {
+            "type": "li",
+            "text": "New phone arrives promptly along with a pre-labeled return box for your old phone."
+          },
+          {
+            "type": "li",
+            "text": "Drop that box off at FedEx. And done."
+          },
+          {
+            "type": "p",
+            "text": "New phone sitting at the door. Almost like magic. Almost."
+          }
+        ],
+        "translations": [
+          "衡量任何财务谈判的最终标准，是你是否觉得自己“赚到了”的感觉。",
+          "前面这句话……根本说不通。",
+          "我写了“衡量标准”，然后在六个词之后又写了“感觉”。感觉从来都不是衡量标准，但是，当你交出辛苦赚来的钱去买东西时，你会感觉很好，因为你认为获得的价值高于支付的钱。",
+          "太抽象了。这里有个好例子：",
+          "自从 Apple iPhone Upgrade Program 发布以来，我就觉得它不仅是一笔划算的买卖，简直是捡了大便宜。具体情况如下：",
+          "你以 0% 的利率申请一笔全价 iPhone 的贷款。",
+          "如果获批，你的付款将分摊到 24 个月内。",
+          "付满 24 个月，这部手机就是你的了。",
+          "这只是划算的部分；捡到大便宜的地方在于，每年换新手机都毫不费力。我会重新签约一部新手机，而 Apple 会免除我贷款的剩余款项，因为我又签了 24 个月的合约。哦，还有个额外福利，里面包含了 AppleCare，这简直是赚翻了，因为我讨厌 iPhone 手机壳（iPhone 的设计就是为了让你触摸它的），而且，呃，大家都知道我偶尔会摔手机。",
+          "感觉很公平。Apple 押注用户会接受最初的计划，并会定期续约，然后 Apple 会在强劲的二手市场上翻新这些手机。这个赌注在某个星期二结束了。Apple 终止了 Upgrade Program，并用 Apple Upgrade 取而代之：这是一项由 Klarna 提供融资的租赁服务，涵盖 iPhone、Watch、iPad 和 Mac。贷款变成了租赁。感觉也不一样了。",
+          "跟着 AppleCare 的钱走",
+          "乍一看，新计划似乎更便宜。原计划：使用一年的 iPhone 17 Pro（256GB，标价 1,099 美元）大约是每月 57 美元。付 12 个月，折抵换新，重新开始：一年大约 684 美元。新计划，同样的手机：12 个月租赁期每月 45.99 美元：一年 552 美元。",
+          "但是等等！新计划第一个也是最重要的变化是不再包含 AppleCare。为这部手机重新加上 AppleCare 每月需 13.99 美元：一年 720 美元。",
+          "但是再等等！你有 AppleCare One 吗？好消息，你的新 iPhone 可以附带在每月 5.99 美元的档位里，这样一年就是 624 美元。事实上，这也说明了一点，要在 iPhone 加 AppleCare 上获得好价格的唯一方法，就是在 AppleCare One 计划下拥有三台设备，这意味着你得有三台设备。",
+          "这听起来可能很合理，直到你想到我从来就没有机会摔到我的 Mac Studio。对于所有 Mac 硬件来说，只有一次，Rands Jr. 不知怎么地弄坏了她的 MacBook 屏幕。那一次——在过去几十年里唯一的一次。",
+          "AppleCare 是一种保险。像所有保险一样，你付钱是为了防范昂贵但希望不太可能发生的灾难。万一发生这种不太可能的事，你就不必再付钱了。我对这种做法的疑问在于，Apple 似乎正在将 AppleCare 从升级计划中剥离，并引导人们转向 AppleCare One，因为保险的利润很丰厚——大约是硬件利润的两倍。我已经向 Apple 付过保险费了。它不叫保险；它叫“质量极高的硬件”。我乐意付给 Apple 溢价，不仅因为其前沿的设计，还因为其卓越的品质。至于 Dell，我买保险是因为我那台昂贵的 Alienware 游戏电脑的主板已经坏过一次了。",
+          "它仍然感觉像是一笔划算的买卖，而不是捡了大便宜",
+          "当我在联合航空买票时，就在点击购买之前，会有一个我必须阅读并确认的勾选框。这是一种轻微制造恐慌的提醒：“飞行中总有变数。你永远不知道会发生什么，但是……也许可以多花几百美元，因为，嗯，世事难料而我们更懂行，所以也许是的，付钱给我们，我们会帮你搞定一切。”",
+          "我有生以来从未这么做过。是的，在隆冬时节，当旅行计划真的悬而未决时，我考虑过，但大多数时候……感觉很糟。这是一门生意，试图在你最担心所购商品价值的时候，也就是交易即将达成前，榨取高利润的美元。",
+          "AppleCare 确实有其价值，我也考虑过 AppleCare One，因为 Rands 家里有很多硬件设备，但我越是盯着这个新计划看，就越觉得有些反感。",
+          "我会继续坚持手机的计划并额外购买 AppleCare（而不是 AppleCare One），因为请记住，这取决于我是否觉得自己占了便宜。主要的无形优势在于 Apple 的运营能力非常出色。从历史上看，续约换新手机的过程一直非常简单。",
+          "新手机发布后，在 Store 应用中点几下，就搞定了。",
+          "新手机迅速送达，同时附带一个贴好标签的旧手机退货盒。",
+          "把那个盒子扔到 FedEx。搞定。",
+          "新手机就在门口。简直像变魔术一样。差不多吧。"
+        ]
+      }
+    }
+  ]
+}
