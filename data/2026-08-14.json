@@ -1,0 +1,1497 @@
+{
+  "date": "2026-08-14",
+  "generatedAt": "2026-08-13T17:04:17.098Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 80,
+    "totalArticles": 2469,
+    "filteredArticles": 19,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "04d62565190e878d",
+      "title": "DeepSeek V4 Pro 0813 (on OpenRouter)",
+      "titleZh": "DeepSeek V4 Pro 0813 (on OpenRouter)",
+      "link": "https://simonwillison.net/2026/Aug/12/deepseek-v4-pro-0813/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-12T23:59:23.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "DeepSeek V4 Pro 0813 (on OpenRouter)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "DeepSeek V4 Pro 0813 (on OpenRouter). The latest DeepSeek Pro model is now available, via API only. I had to link to OpenRouter because DeepSeek don't have any obvious announcement page for their new model."
+          },
+          {
+            "type": "p",
+            "text": "I haven't been able to confirm if they plan to release the open weights, but given the weights are available for both April's deepseek-ai/DeepSeek-V4-Pro and July's deepseek-ai/DeepSeek-V4-Flash-0731 it seems likely."
+          },
+          {
+            "type": "p",
+            "text": "Interestingly I got very different looking pelicans for the three different reasoning levels of low, medium, and high. I've not noticed this kind of difference from any other model:"
+          },
+          {
+            "type": "p",
+            "text": "Low:"
+          },
+          {
+            "type": "p",
+            "text": "Medium:"
+          },
+          {
+            "type": "p",
+            "text": "High:"
+          },
+          {
+            "type": "p",
+            "text": "In terms of benchmarks... as far as I can tell those were released to the Official DeepSeek WeChat Group, then copied and pasted into a post on Reddit which was deleted by the moderators for being \"low-effort\", then copied into this ASCII-art table on Hacker News."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "96d1d535cf9d161f",
+      "title": "alchemy-utils 0.1a0",
+      "titleZh": "alchemy-utils 0.1a0",
+      "link": "https://simonwillison.net/2026/Aug/12/alchemy-utils/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-12T19:51:30.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "alchemy-utils 0.1a0",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I've long pondered what a database agnostic version of my sqlite-utils Python library and CLI utility might look like. This morning (literally a shower project) I tasked Codex and GPT-5.6 Sol Ultra with building a prototype:"
+          },
+          {
+            "type": "quote",
+            "text": "Do a research spike to see what it would take to build a library with the same core API as SQLite-utils - in particular the insert and upsert and insert_all and upsert_all and create and update methods, and the table introspection stuff - but backed by SQLalchemy so it works for multiple database engines\nTest against PostgreSQL and SQLite and duckdb\nUse ~/dev/sqlite-utils for reference\nCreate a git repo for this and commit and early and often - use uv init to start the project - use red/green TDD and pytest, see ~/dev/django-sql-dashboard for one idea as to how the PostgreSQL tests could work"
+          },
+          {
+            "type": "p",
+            "text": "It took very few follow-up prompts to produce this project in a state good enough to release as an alpha."
+          },
+          {
+            "type": "p",
+            "text": "Here's a one-liner I can use to list the rows in a table in my local PostgreSQL copy of my blog's database:"
+          },
+          {
+            "type": "p",
+            "text": "uvx --with 'alchemy-utils[postgresql]' alchemy-utils rows 'postgresql+psycopg://simon@localhost:5432/simonwillisonblog'  redirects_redirect"
+          },
+          {
+            "type": "p",
+            "text": "The output from that starts like this:"
+          },
+          {
+            "type": "code",
+            "text": "[\n  {\n    \"id\": 2328,\n    \"domain\": \"simonwillison.net\",\n    \"path\": \"2020/May/21/apple-photos-sqlite/\",\n    \"target\": \"/2020/May/21/dogsheep-photos/\",\n    \"created\": \"2020-05-21T13:03:46.591692-07:00\"\n  },\n  {\n    \"id\": 3,\n    \"domain\": \"feeds.simonwillison.net\",\n    \"path\": \"swn-links\",\n    \"target\": \"https://simonwillison.net/atom/links/\",\n    \"created\": \"2017-10-01T14:12:54.820729-07:00\"\n  }"
+          },
+          {
+            "type": "p",
+            "text": "Or if you'd like a DuckDB database with every tree in San Francisco, schema created automatically to match the file:"
+          },
+          {
+            "type": "p",
+            "text": "curl 'https://raw.githubusercontent.com/simonw/sf-tree-history/refs/heads/main/Street_Tree_List.csv' | uvx --with 'alchemy-utils[duckdb]' alchemy-utils insert 'duckdb:////tmp/trees.db' trees - --csv"
+          },
+          {
+            "type": "p",
+            "text": "(That one took nearly an hour the first time I ran it, so I had Codex optimize it and got it down to around 35 seconds.)"
+          }
+        ],
+        "translations": [
+          "I've long pondered what a database agnostic version of my sqlite-utils Python library and CLI utility might look like. This morning (literally a shower project) I tasked Codex and GPT-5.6 Sol Ultra with building a prototype:",
+          "Do a research spike to see what it would take to build a library with the same core API as SQLite-utils - in particular the insert and upsert and insert_all and upsert_all and create and update methods, and the table introspection stuff - but backed by SQLalchemy so it works for multiple database engines\nTest against PostgreSQL and SQLite and duckdb\nUse ~/dev/sqlite-utils for reference\nCreate a git repo for this and commit and early and often - use uv init to start the project - use red/green TDD and pytest, see ~/dev/django-sql-dashboard for one idea as to how the PostgreSQL tests could work",
+          "It took very few follow-up prompts to produce this project in a state good enough to release as an alpha.",
+          "Here's a one-liner I can use to list the rows in a table in my local PostgreSQL copy of my blog's database:",
+          "uvx --with 'alchemy-utils[postgresql]' alchemy-utils rows 'postgresql+psycopg://simon@localhost:5432/simonwillisonblog'  redirects_redirect",
+          "The output from that starts like this:",
+          "[\n  {\n    \"id\": 2328,\n    \"domain\": \"simonwillison.net\",\n    \"path\": \"2020/May/21/apple-photos-sqlite/\",\n    \"target\": \"/2020/May/21/dogsheep-photos/\",\n    \"created\": \"2020-05-21T13:03:46.591692-07:00\"\n  },\n  {\n    \"id\": 3,\n    \"domain\": \"feeds.simonwillison.net\",\n    \"path\": \"swn-links\",\n    \"target\": \"https://simonwillison.net/atom/links/\",\n    \"created\": \"2017-10-01T14:12:54.820729-07:00\"\n  }",
+          "Or if you'd like a DuckDB database with every tree in San Francisco, schema created automatically to match the file:",
+          "curl 'https://raw.githubusercontent.com/simonw/sf-tree-history/refs/heads/main/Street_Tree_List.csv' | uvx --with 'alchemy-utils[duckdb]' alchemy-utils insert 'duckdb:////tmp/trees.db' trees - --csv",
+          "(That one took nearly an hour the first time I ran it, so I had Codex optimize it and got it down to around 35 seconds.)"
+        ]
+      }
+    },
+    {
+      "slug": "7ffbb19a79946f50",
+      "title": "Ceramic Shield 2 Is the Real Deal",
+      "titleZh": "Ceramic Shield 2 Is the Real Deal",
+      "link": "https://www.tomsguide.com/phones/iphones/iphone-17-and-iphone-air-durability-testing-heres-how-the-new-iphones-stand-up-to-bending-scratching-and-dropping",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-13T15:46:41.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Ceramic Shield 2 Is the Real Deal",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Philip Michaels",
+        "siteName": "Tom's Guide",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Durability is a key selling point for the iPhone 17 lineup. But just how well can the latest phones from Apple stand up to the punishment that daily life can dish out?"
+          },
+          {
+            "type": "p",
+            "text": "Pretty well, going by all the different durability tests that have popped up online since the latest iPhones hit the stores earlier this month. Durability testers seem particularly impressed with both the updated Ceramic Shield that adorns the new iPhones, as well as the rigidity of the ultra-thin iPhone Air that Apple just introduced."
+          },
+          {
+            "type": "p",
+            "text": "The iPhone 17 lineup isn't indestructible, as drop testing of the new models indicates. But the tests do back up Apple's claims that the latest iPhones are less susceptible to scratching than their predecessors. And bend tests should reassure people that the iPhone Air can withstand all sorts of pressures despite its seemingly slight frame."
+          },
+          {
+            "type": "p",
+            "text": "The test results come at a good time for Apple, which has spent the past week dealing with \"Scratchgate\" reports detailng incidents where iPhone 17 Pro and iPhone Air models seemed to have picked up scuffs in retail stores. Apple has said the marks have been left by MagSafe risers in its stores and that the scuffs are easy enough for consumers to remove."
+          },
+          {
+            "type": "p",
+            "text": "Here's a round-up of iPhone 17 durability tests that indicate how well the new phones can stand up to rough use."
+          },
+          {
+            "type": "h2",
+            "text": "Ceramic Shield 2 test results"
+          },
+          {
+            "type": "p",
+            "text": "Each of the new iPhones features Ceramic Shield 2 protecting the front display, with Apple claiming the new material is 3x more scratch resistant than the original Ceramic Shield. The iPhone 17 Pro, iPhone 17 Pro Max and iPhone Air use the original Ceramic Shield to shore up the durability of the back panel, while the regular iPhone 17 still relies on glass for its back panel."
+          },
+          {
+            "type": "p",
+            "text": "iPhone 17 torture test videos done by JerryRigEverything indicate that Ceramic Shield 2 certainly resists scratching, with scratch testing leaving only light scratches at level 7 on the Mohs scale of hardness. Scratches typically show up on glass at levels 5 or 6 on that scale."
+          },
+          {
+            "type": "p",
+            "text": "Get instant access to breaking news, the hottest reviews, great deals and helpful tips."
+          },
+          {
+            "type": "p",
+            "text": "\"Ceramic Shield 2 is indeed the best we've ever seen,\" JerryRigEverything remarks in the iPhone 17 Pro testing video."
+          },
+          {
+            "type": "p",
+            "text": "That backs up Apple's own Ceramic Shield 2 video, in which a mineral tip can be seen rubbing against a Ceramic Shield 2-coated display. There's residue left on the screen, but it's material from that tip, as it wipes away fairly easily."
+          },
+          {
+            "type": "p",
+            "text": "The regular Ceramic shield also seems to made the backs of the iPhone Pro and Air models more durable, as the JerryRigEverything video indicates that any scuffs from everyday items like coins and keys can also be wiped away. Rougher materials like aluminum and titanium do leave lasting marks in those tests, but as the video notes, you're not likely to be carrying around titanium rods in your pocket or purse."
+          },
+          {
+            "type": "p",
+            "text": "The new Ceramic Shield backing on the iPhone 17 Pro may have helped the phone in drop-testing conducted by Allstate Protection Plans, which sells insurance for mobile devices. In a 6-foot drop test with the back panel facing down, the iPhone 17 Pro came away with just minor scuffing on the camera housing and along the edges of the phone's frame."
+          },
+          {
+            "type": "p",
+            "text": "The iPhone Air wasn't so lucky in the back-down drop test, with its rear panel cracking after one drop. However, Allstate reports that the phone was still functional."
+          },
+          {
+            "type": "h2",
+            "text": "iPhone 17 drop tests"
+          },
+          {
+            "type": "p",
+            "text": "Speaking of drop tests, gravity remains undefeated when unprotected phones are dropped with their screens facing the ground. In Allstate's 6-foot drop test, both the iPhone Air and iPhone 17 Pro screens suffered from shattered glass, with the cracks in the display too sharp to safely use."
+          },
+          {
+            "type": "p",
+            "text": "\"While iPhone Air impressed, and the Ceramic Shield rear panels of both iPhone Air and 17 Pro are the most durable we’ve tested in years, both iPhones still shattered when dropped face-down,\" said Jason Siciliano, vice president of marketing at Allstate Protection Plans, in a statement accompanying the drop test results. \"If you're spending more than $1,000 on a phone, a case, screen protector, and protection plan are smart investments.”"
+          },
+          {
+            "type": "p",
+            "text": "We certainly agree that phone cases are the best way to keep your new phone looking its best, and we've tracked down the top choices for each new iPhone model."
+          },
+          {
+            "type": "li",
+            "text": "Best iPhone 17 cases"
+          },
+          {
+            "type": "li",
+            "text": "Best iPhone Air cases"
+          },
+          {
+            "type": "li",
+            "text": "Best iPhone 17 Pro cases"
+          },
+          {
+            "type": "li",
+            "text": "Best iPhone 17 Pro Max cases"
+          },
+          {
+            "type": "h2",
+            "text": "iPhone bend tests"
+          },
+          {
+            "type": "p",
+            "text": "Bend tests that show how much pressure it takes to break an iPhone are also drawing more interest than usual given the iPhone Air's slim 5.64mm frame. Apple even released a video where a machine simulates 130 pounds of pressure on the iPhone Air before the handset snaps back into place with no lasting damage."
+          },
+          {
+            "type": "p",
+            "text": "According to other bend tests, Apple may have undersold how durable its new thin phone actually is. In Allstate Protection Plan's bend test, the Air withstood 190 pounds of pressure, approaching the 200-pound limit reached by the iPhone 17 Pro, even though that phones is more than 3mm thicker. For context, the iPhone 6 that was the subject of the Bendgate brouhaha a decade ago bent at 110 pounds and shattered at 179 pounds."
+          },
+          {
+            "type": "p",
+            "text": "Both new iPhones were fully functional after their bend test, according to Allstate."
+          },
+          {
+            "type": "p",
+            "text": "So what would it take to snap an iPhone Air in two? If JerryRigEverything's iPhone Air durability test video is anything to by, you'd need 216 pounds of pressure to make the phone's display crack. That's well above industry standards for bend durability."
+          },
+          {
+            "type": "h2",
+            "text": "Some iPhone 17 Pro durability concerns"
+          },
+          {
+            "type": "p",
+            "text": "While this spate of durability tests has largely offered good news about the chances of the new iPhone 17 models withstanding normal wear and tear, JerryRigEverything did flag up one potential area of concern — the camera plateau on the new iPhone 17 Pro models. Specifically, the edges of the plateau appear vulnerable to chipping and other cosmetic damage."
+          },
+          {
+            "type": "p",
+            "text": "According to the video, anodized aluminum has a hard time sticking to corners and edges, leaving the ridge of the camera plateau on the iPhone 17 Pro models vulnerable to scratches. A chamfer or fillet can add some protection, but Apple didn't include that on its new phones."
+          },
+          {
+            "type": "p",
+            "text": "That said, it's worth noting that Apple claims that the plateau on the iPhone 17 Pros have similar characteristics to the edges of other of anodized cases on other Apple products, such as the MacBook Pro and older iPhones."
+          },
+          {
+            "type": "p",
+            "text": "Regardless, this is an area where a case can come in handy, particularly if it's one that offers a raised ridge around the camera array. That can keep the edges of the camera plateau from coming into contact with the kind of objects that can leave scuff marks."
+          },
+          {
+            "type": "p",
+            "text": "Follow Tom's Guide on Google News to get our up-to-date news, how-tos, and reviews in your feeds. Make sure to click the Follow button."
+          },
+          {
+            "type": "h3",
+            "text": "More from Tom's Guide"
+          },
+          {
+            "type": "li",
+            "text": "I tried to break the iPhone Air during an interview with Apple execs"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 17 Air vs. iPhone 17 Pro Max: Here’s what you give up for a thinner phone"
+          },
+          {
+            "type": "li",
+            "text": "I’m an ex-phone engineer — 3 tips to avoid iPhone 17 Pro Scratchgate"
+          },
+          {
+            "type": "p",
+            "text": "Philip Michaels was a Managing Editor at Tom's Guide. He's been covering personal technology since 1999 and was in the building when Steve Jobs showed off the iPhone for the first time. He's been evaluating smartphones since that first iPhone debuted in 2007, and he's been following phone carriers and smartphone plans since 2015. He has strong opinions about Apple, the Oakland Athletics, old movies and proper butchery techniques. Follow him at @PhilipMichaels."
+          }
+        ],
+        "translations": [
+          "Durability is a key selling point for the iPhone 17 lineup. But just how well can the latest phones from Apple stand up to the punishment that daily life can dish out?",
+          "Pretty well, going by all the different durability tests that have popped up online since the latest iPhones hit the stores earlier this month. Durability testers seem particularly impressed with both the updated Ceramic Shield that adorns the new iPhones, as well as the rigidity of the ultra-thin iPhone Air that Apple just introduced.",
+          "The iPhone 17 lineup isn't indestructible, as drop testing of the new models indicates. But the tests do back up Apple's claims that the latest iPhones are less susceptible to scratching than their predecessors. And bend tests should reassure people that the iPhone Air can withstand all sorts of pressures despite its seemingly slight frame.",
+          "The test results come at a good time for Apple, which has spent the past week dealing with \"Scratchgate\" reports detailng incidents where iPhone 17 Pro and iPhone Air models seemed to have picked up scuffs in retail stores. Apple has said the marks have been left by MagSafe risers in its stores and that the scuffs are easy enough for consumers to remove.",
+          "Here's a round-up of iPhone 17 durability tests that indicate how well the new phones can stand up to rough use.",
+          "Ceramic Shield 2 test results",
+          "Each of the new iPhones features Ceramic Shield 2 protecting the front display, with Apple claiming the new material is 3x more scratch resistant than the original Ceramic Shield. The iPhone 17 Pro, iPhone 17 Pro Max and iPhone Air use the original Ceramic Shield to shore up the durability of the back panel, while the regular iPhone 17 still relies on glass for its back panel.",
+          "iPhone 17 torture test videos done by JerryRigEverything indicate that Ceramic Shield 2 certainly resists scratching, with scratch testing leaving only light scratches at level 7 on the Mohs scale of hardness. Scratches typically show up on glass at levels 5 or 6 on that scale.",
+          "Get instant access to breaking news, the hottest reviews, great deals and helpful tips.",
+          "\"Ceramic Shield 2 is indeed the best we've ever seen,\" JerryRigEverything remarks in the iPhone 17 Pro testing video.",
+          "That backs up Apple's own Ceramic Shield 2 video, in which a mineral tip can be seen rubbing against a Ceramic Shield 2-coated display. There's residue left on the screen, but it's material from that tip, as it wipes away fairly easily.",
+          "The regular Ceramic shield also seems to made the backs of the iPhone Pro and Air models more durable, as the JerryRigEverything video indicates that any scuffs from everyday items like coins and keys can also be wiped away. Rougher materials like aluminum and titanium do leave lasting marks in those tests, but as the video notes, you're not likely to be carrying around titanium rods in your pocket or purse.",
+          "The new Ceramic Shield backing on the iPhone 17 Pro may have helped the phone in drop-testing conducted by Allstate Protection Plans, which sells insurance for mobile devices. In a 6-foot drop test with the back panel facing down, the iPhone 17 Pro came away with just minor scuffing on the camera housing and along the edges of the phone's frame.",
+          "The iPhone Air wasn't so lucky in the back-down drop test, with its rear panel cracking after one drop. However, Allstate reports that the phone was still functional.",
+          "iPhone 17 drop tests",
+          "Speaking of drop tests, gravity remains undefeated when unprotected phones are dropped with their screens facing the ground. In Allstate's 6-foot drop test, both the iPhone Air and iPhone 17 Pro screens suffered from shattered glass, with the cracks in the display too sharp to safely use.",
+          "\"While iPhone Air impressed, and the Ceramic Shield rear panels of both iPhone Air and 17 Pro are the most durable we’ve tested in years, both iPhones still shattered when dropped face-down,\" said Jason Siciliano, vice president of marketing at Allstate Protection Plans, in a statement accompanying the drop test results. \"If you're spending more than $1,000 on a phone, a case, screen protector, and protection plan are smart investments.”",
+          "We certainly agree that phone cases are the best way to keep your new phone looking its best, and we've tracked down the top choices for each new iPhone model.",
+          "Best iPhone 17 cases",
+          "Best iPhone Air cases",
+          "Best iPhone 17 Pro cases",
+          "Best iPhone 17 Pro Max cases",
+          "iPhone bend tests",
+          "Bend tests that show how much pressure it takes to break an iPhone are also drawing more interest than usual given the iPhone Air's slim 5.64mm frame. Apple even released a video where a machine simulates 130 pounds of pressure on the iPhone Air before the handset snaps back into place with no lasting damage.",
+          "According to other bend tests, Apple may have undersold how durable its new thin phone actually is. In Allstate Protection Plan's bend test, the Air withstood 190 pounds of pressure, approaching the 200-pound limit reached by the iPhone 17 Pro, even though that phones is more than 3mm thicker. For context, the iPhone 6 that was the subject of the Bendgate brouhaha a decade ago bent at 110 pounds and shattered at 179 pounds.",
+          "Both new iPhones were fully functional after their bend test, according to Allstate.",
+          "So what would it take to snap an iPhone Air in two? If JerryRigEverything's iPhone Air durability test video is anything to by, you'd need 216 pounds of pressure to make the phone's display crack. That's well above industry standards for bend durability.",
+          "Some iPhone 17 Pro durability concerns",
+          "While this spate of durability tests has largely offered good news about the chances of the new iPhone 17 models withstanding normal wear and tear, JerryRigEverything did flag up one potential area of concern — the camera plateau on the new iPhone 17 Pro models. Specifically, the edges of the plateau appear vulnerable to chipping and other cosmetic damage.",
+          "According to the video, anodized aluminum has a hard time sticking to corners and edges, leaving the ridge of the camera plateau on the iPhone 17 Pro models vulnerable to scratches. A chamfer or fillet can add some protection, but Apple didn't include that on its new phones.",
+          "That said, it's worth noting that Apple claims that the plateau on the iPhone 17 Pros have similar characteristics to the edges of other of anodized cases on other Apple products, such as the MacBook Pro and older iPhones.",
+          "Regardless, this is an area where a case can come in handy, particularly if it's one that offers a raised ridge around the camera array. That can keep the edges of the camera plateau from coming into contact with the kind of objects that can leave scuff marks.",
+          "Follow Tom's Guide on Google News to get our up-to-date news, how-tos, and reviews in your feeds. Make sure to click the Follow button.",
+          "More from Tom's Guide",
+          "I tried to break the iPhone Air during an interview with Apple execs",
+          "iPhone 17 Air vs. iPhone 17 Pro Max: Here’s what you give up for a thinner phone",
+          "I’m an ex-phone engineer — 3 tips to avoid iPhone 17 Pro Scratchgate",
+          "Philip Michaels was a Managing Editor at Tom's Guide. He's been covering personal technology since 1999 and was in the building when Steve Jobs showed off the iPhone for the first time. He's been evaluating smartphones since that first iPhone debuted in 2007, and he's been following phone carriers and smartphone plans since 2015. He has strong opinions about Apple, the Oakland Athletics, old movies and proper butchery techniques. Follow him at @PhilipMichaels."
+        ]
+      }
+    },
+    {
+      "slug": "1a06fa1c96af4dff",
+      "title": "Google Design Pisses Its Pants on Twitter/X",
+      "titleZh": "Google Design Pisses Its Pants on Twitter/X",
+      "link": "https://x.com/googledesign/status/2087195277094695096",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-13T01:03:45.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Google Design Pisses Its Pants on Twitter/X",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Celebrating small wins is hardwired into \"Achieve,\" our goal-tracking sample app.\n\nWe wanted the simple act of checking off a task to feel like a celebration. Instead of the standard #Material ripple, we used Styles to drop in a custom, high-contrast completion animation—specifically, a brand-colored ring that expands and fades on tap, paired with a subtle pressed-state gradient.\n\nIt lets us focus entirely on polishing those custom, rewarding micro-interactions while Material handles the foundation.\n\n#GoogleDesign #MaterialDesign #JetpackCompose #AndroidDev #UXDesign #InteractionDesign"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "8d60e908f93d2e65",
+      "title": "Joanna Stern on the Pixel 11 ‘HiLight’ Notification Light",
+      "titleZh": "Joanna Stern on the Pixel 11 ‘HiLight’ Notification Light",
+      "link": "https://thenewthings.com/p/the-new-pixel-feature-i-want-on-my-iphone?gift_content=e9bf3ebd-db33-4ee5-91b0-84d7acac3263",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T21:23:30.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Joanna Stern on the Pixel 11 ‘HiLight’ Notification Light",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Joanna Stern",
+        "siteName": "The New Things",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Good morning! I’m in your inbox a bit early because Google just announced its new Pixel phones, and I’ve got all the details, including a cool LED ring on the back that lets you know who is trying to get in touch with you. Yes, notification lights are back, baby!"
+          },
+          {
+            "type": "p",
+            "text": "Then, Anthropic is watermarking Claude outputs, Amazon is sending oddly vague shipping emails and Mark Zuckerberg has written his open-model opus. Plus, a LOLz Pro Max roundup because while everything on the internet may be getting worse, it has at least been extremely funny this week."
+          },
+          {
+            "type": "p",
+            "text": "Hey! You’re currently a free subscriber to New Things."
+          },
+          {
+            "type": "p",
+            "text": "Today’s newsletter—including all the premium, human-written words—is for paid subscribers only."
+          },
+          {
+            "type": "p",
+            "text": "Breaking news: Google has reinvented the BlackBerry notification light."
+          },
+          {
+            "type": "p",
+            "text": "The company just announced its new Pixel 11 lineup, including the new 11 Pro, 11 Pro XL and 11 Pro Fold. I want to tell you I’m wildly excited about all of it. But I’ll be honest, most of it feels pretty standard. The Google briefing I attended last week was a parade of new camera specs, Gemini enhancements and processor improvements. But then they showed me…a light."
+          },
+          {
+            "type": "p",
+            "text": "Google calls it the HiLight, a customizable LED ring around the camera flash on the Pro models that lights up differently depending on who is trying to get your attention. Mom calls? Red. Your boss? Blue. Your boss’s mom? Purple."
+          },
+          {
+            "type": "p",
+            "text": "And somehow, of all the fancy new technology in these phones, this is the feature I want. More on that, the higher prices, the latest foldable design and everything else below."
+          },
+          {
+            "type": "p",
+            "text": "It’s been nearly six months since I started building New Things, which means the business is growing—and so is my need to keep an eye on what we’re spending."
+          },
+          {
+            "type": "p",
+            "text": "Lucky for me, Mercury just launched Spend, an expense-management tool that lets me set intelligent budgets for the team. The system can automatically cut off spending when someone hits a limit. And by “someone,” I mostly mean me."
+          },
+          {
+            "type": "p",
+            "text": "For instance, I set up a travel budget that caps monthly travel expenses for me and David (our head of video / my very patient producer) at $5,000. Mercury automatically classifies things like airline tickets, hotel charges and car rentals as travel expenses. Now, David doesn’t have to ask me every time he wants to buy a snack box from the middle seat."
+          },
+          {
+            "type": "p",
+            "text": "Receipts can also be uploaded right from the app, and cards with overdue tasks can be automatically locked until those tasks are resolved. Hahaha, got you all! No chasing receipts, no manual review, no tax-time scramble."
+          },
+          {
+            "type": "p",
+            "text": "More than 300,000 entrepreneurs rely on Mercury. The financial tech company has been an essential partner since we launched New Things, and I’m excited to keep growing my business alongside theirs."
+          },
+          {
+            "type": "p",
+            "text": "(Mercury is a fintech company, not an FDIC-insured bank. Banking services provided through Choice Financial Group and Column N.A., Members FDIC. The IO Card is issued by Patriot Bank, N.A., Member FDIC, pursuant to a license from Mastercard International Incorporated.)"
+          },
+          {
+            "type": "p",
+            "text": "Fun fact:  Fabriano, a small town in Italy famous for its medieval papermaking, is credited with inventing the watermark in the 13th century to identify which mill made which paper. Bet they never imagined that 700 years later, we’d use the same idea to make sure everyone knows Claude wrote my email."
+          },
+          {
+            "type": "p",
+            "text": "This newsletter was written and curated by Joanna Stern and Adele Lowitz."
+          }
+        ],
+        "translations": [
+          "Good morning! I’m in your inbox a bit early because Google just announced its new Pixel phones, and I’ve got all the details, including a cool LED ring on the back that lets you know who is trying to get in touch with you. Yes, notification lights are back, baby!",
+          "Then, Anthropic is watermarking Claude outputs, Amazon is sending oddly vague shipping emails and Mark Zuckerberg has written his open-model opus. Plus, a LOLz Pro Max roundup because while everything on the internet may be getting worse, it has at least been extremely funny this week.",
+          "Hey! You’re currently a free subscriber to New Things.",
+          "Today’s newsletter—including all the premium, human-written words—is for paid subscribers only.",
+          "Breaking news: Google has reinvented the BlackBerry notification light.",
+          "The company just announced its new Pixel 11 lineup, including the new 11 Pro, 11 Pro XL and 11 Pro Fold. I want to tell you I’m wildly excited about all of it. But I’ll be honest, most of it feels pretty standard. The Google briefing I attended last week was a parade of new camera specs, Gemini enhancements and processor improvements. But then they showed me…a light.",
+          "Google calls it the HiLight, a customizable LED ring around the camera flash on the Pro models that lights up differently depending on who is trying to get your attention. Mom calls? Red. Your boss? Blue. Your boss’s mom? Purple.",
+          "And somehow, of all the fancy new technology in these phones, this is the feature I want. More on that, the higher prices, the latest foldable design and everything else below.",
+          "It’s been nearly six months since I started building New Things, which means the business is growing—and so is my need to keep an eye on what we’re spending.",
+          "Lucky for me, Mercury just launched Spend, an expense-management tool that lets me set intelligent budgets for the team. The system can automatically cut off spending when someone hits a limit. And by “someone,” I mostly mean me.",
+          "For instance, I set up a travel budget that caps monthly travel expenses for me and David (our head of video / my very patient producer) at $5,000. Mercury automatically classifies things like airline tickets, hotel charges and car rentals as travel expenses. Now, David doesn’t have to ask me every time he wants to buy a snack box from the middle seat.",
+          "Receipts can also be uploaded right from the app, and cards with overdue tasks can be automatically locked until those tasks are resolved. Hahaha, got you all! No chasing receipts, no manual review, no tax-time scramble.",
+          "More than 300,000 entrepreneurs rely on Mercury. The financial tech company has been an essential partner since we launched New Things, and I’m excited to keep growing my business alongside theirs.",
+          "(Mercury is a fintech company, not an FDIC-insured bank. Banking services provided through Choice Financial Group and Column N.A., Members FDIC. The IO Card is issued by Patriot Bank, N.A., Member FDIC, pursuant to a license from Mastercard International Incorporated.)",
+          "Fun fact:  Fabriano, a small town in Italy famous for its medieval papermaking, is credited with inventing the watermark in the 13th century to identify which mill made which paper. Bet they never imagined that 700 years later, we’d use the same idea to make sure everyone knows Claude wrote my email.",
+          "This newsletter was written and curated by Joanna Stern and Adele Lowitz."
+        ]
+      }
+    },
+    {
+      "slug": "d8a26abeef46f490",
+      "title": "Google Introduces ‘Camera Looks’ With Pixel 11 Phones",
+      "titleZh": "Google Introduces ‘Camera Looks’ With Pixel 11 Phones",
+      "link": "https://www.theverge.com/tech/978084/google-camera-looks-interview-computational-photography",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T20:58:15.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Google Introduces ‘Camera Looks’ With Pixel 11 Phones",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "David Imel",
+        "siteName": "The Verge",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you look at a photo taken by a smartphone today, it’s hard to find much that’s technically wrong. Faces are bright and visible. The skies are pristine and blue. Even at night, scenes are well lit and noise-free. If the physical limitations of a tiny camera are what you’re trying to solve for, you could probably label smartphone photography a mostly solved problem."
+          },
+          {
+            "type": "p",
+            "text": "But in our current moment, the photos people are drawn to are not flawless — and that’s created a real problem for the people making smartphone cameras. “The gap between what two random people want from their camera is growing dramatically,” says Isaac Reynolds, who leads the Pixel camera team at Google. Some people want a perfectly optimized photo, Reynolds says. “But there’s a growing number of people who want something that they feel is more authentic or traditional, by their definition.”"
+          },
+          {
+            "type": "p",
+            "text": "That’s what Reynolds and the Pixel team are setting out to solve with Camera Looks, a total rethink of how the camera captures and styles an image on the Pixel 11 series. The phones include a new suite of processing tools aimed at giving people much more control over the camera’s output. At first glance, they look a lot like filters, with names like Black Tie, Classic, and most strikingly, Digi, in reference to the growing trend of buying cheap digital cameras from the early aughts. But unlike a filter, which generally applies editing tweaks after the processing happens, Camera Looks is changing how image data is processed at the sensor level."
+          },
+          {
+            "type": "p",
+            "text": "“The pipeline spans the entire system,” Reynolds says. “It’s inside HDR Plus. It’s inside the processing engine.  It’s inside the camera app as well in how we make certain decisions about auto exposure and integration time and number of frames packaged and captured.”"
+          },
+          {
+            "type": "p",
+            "text": "In the last decade or so, smartphone cameras have been engineered to do battle with the limitations of physics using what’s known as “computational photography.” Too dark? Night mode uses multi-frame image stacking to brighten the photo without adding too much noise. Need to zoom in but don’t have a telephoto lens? An on-device model can artificially create data it expects to be in your photo. Too small of a sensor for natural blur? Phones can use subject segmentation to recognize objects, cut out the subject, and emulate depth of field."
+          },
+          {
+            "type": "p",
+            "text": "The result has been crisp, clear photos — and also a lot of (mostly younger) consumers carrying around old iPhones and cheap point-and-shoots from the early aughts to get a simpler, less processed, and (to their eye) better look."
+          },
+          {
+            "type": "p",
+            "text": "“If you are looking for a minimal look … we simply don’t do the processing at all.”"
+          },
+          {
+            "type": "p",
+            "text": "The Pixel 11’s new Camera Looks feature is Google’s response to this growing trend. And to solve it, the Pixel team is allowing users to dial back how much processing happens when they snap a shot. Some of the Pixel’s Camera Looks will merge fewer frames together, leaving the highlights a bit blown out instead of compressing them to a midtone. Some of them won’t apply as much sharpening and will instead leave the image softer on the edges. You could argue that these new photos are technically “worse” — with reduced detail and dynamic range — but the result should be a photo closer to what any given user actually wants. This is a completely different way of thinking about computational photography, using tools to optimize for style instead of for technical perfection."
+          },
+          {
+            "type": "p",
+            "text": "Until now, the Pixel camera pipeline has done the same type of processing for every user, and any edits to match their preferred style had to be made after the fact. But when an image is already fully processed, you’re stuck with the data and artifacts caused by that processing. “Once you’ve processed it that way, you can’t do less. If there was a merge artifact, that is baked in. It’s irreversible,” Reynolds says. With the Pixel 11, “we bring it a lot earlier, and that way if you are looking for a minimal look, which is minimally processed, we simply don’t do the processing at all.”"
+          },
+          {
+            "type": "p",
+            "text": "This, I think, is the most Google way to handle this change in camera mindset I could have imagined. In order to keep people from being too confused about technical jargon like tone compression or frame merging, Google is intelligently making processing decisions for you based on style selections most users can understand — and more importantly, can see. Reynolds tells me that there were long debates inside the camera team for just how many sliders users should have access to, and they landed on more than you’d probably expect.“ There are so many in there that I actually had to have an escalation meeting with my PM and my UX team about how many controls we were allowed to put in there,” Reynolds says. “There’s a lot of controls that photographers say are critical to have. We had a lot of trouble cutting it down.” For every Camera Look, you’ll get a set of six or more different levers, like contrast, warmth, tint, and saturation. And some Looks, like the black-and-white look Black Tie, will give you extra options, like red, green, and blue filters, which darken certain frequencies of light on black-and-white film."
+          },
+          {
+            "type": "p",
+            "text": "This is notably different from the way Apple is currently thinking about cameras on the iPhone. Since the iPhone 13, Apple has included “Photographic Styles” in its camera — a series of presets that users can dial in through only two settings, tone and color (brightness/contrast and saturation). Google gives you access to these settings, too, but you’re also getting access to computational settings like sharpness and grain, which can more dramatically tune the look of your image before you shoot."
+          },
+          {
+            "type": "p",
+            "text": "Giving users this much control over their images is a major step change for Google. The last time I had an in-depth conversation with Reynolds was in 2019 for the launch of the Pixel 4. At the time, Google’s priority was not to make a camera at all, but rather a magic box, where the user would simply point, shoot, and get what it considered the “perfect” image."
+          },
+          {
+            "type": "p",
+            "text": "Simplification is not the priority this year. Now, it’s about choice. But Reynolds is still convinced that Google’s default settings are correct for most people, so the first option in the list of Looks is called “Original” — the experience Google has delivered for years. “ We do user studies with large N counts that are global, where we very, very carefully control the demographics, and we’re very confident that the original Pixel look is the right look,” he says. “We have no debate about that.”"
+          },
+          {
+            "type": "p",
+            "text": "The ‘Digi’ Look is going to be popular"
+          },
+          {
+            "type": "p",
+            "text": "There are simpler looks that only make subtle changes from Original, like Natural, Shadows and Vanilla, but there are also much more stylized Looks, like Editorial, Classic, and Velvet. If I were a betting man, I would say Google styled these directly after Fujifilm’s popular film simulations, but Reynolds won’t quite go that far. “These are film-inspired,” he tells me. “I would not say that these are film copies. I wouldn’t want to tell you that this is supposed to be Kodachrome or something.”"
+          },
+          {
+            "type": "p",
+            "text": "I expect that the most popular Camera Look will probably be Digi, though in my brief time with the phone I was partial to Minimal. The Digi Look is inspired by digicams, digital cameras from the early aughts that have low dynamic range and high contrast. In just the last five years, search volume for “digicam” is up 500 percent, according to Google Trends, and cameras that used to sell for $5 at thrift stores now go for hundreds of dollars on the secondhand market. Some companies like Canon have even caught wind and are rereleasing old digicam models just to cash in on the trend. It makes sense for Google to want to adopt the look, too."
+          },
+          {
+            "type": "p",
+            "text": "I’m extremely happy to see Google changing things up in the camera department. At least for me, Google’s Pixel camera processing has gotten far too clinical, and lost the realism that once made it so revered. Now, it’s adapting to what a growing audience says they want from a camera — something real, stylized, and unique to the way they want to see the world."
+          },
+          {
+            "type": "p",
+            "text": "Photography by David Imel / The Verge"
+          },
+          {
+            "type": "p",
+            "text": "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates."
+          },
+          {
+            "type": "li",
+            "text": "David Imel"
+          }
+        ],
+        "translations": [
+          "If you look at a photo taken by a smartphone today, it’s hard to find much that’s technically wrong. Faces are bright and visible. The skies are pristine and blue. Even at night, scenes are well lit and noise-free. If the physical limitations of a tiny camera are what you’re trying to solve for, you could probably label smartphone photography a mostly solved problem.",
+          "But in our current moment, the photos people are drawn to are not flawless — and that’s created a real problem for the people making smartphone cameras. “The gap between what two random people want from their camera is growing dramatically,” says Isaac Reynolds, who leads the Pixel camera team at Google. Some people want a perfectly optimized photo, Reynolds says. “But there’s a growing number of people who want something that they feel is more authentic or traditional, by their definition.”",
+          "That’s what Reynolds and the Pixel team are setting out to solve with Camera Looks, a total rethink of how the camera captures and styles an image on the Pixel 11 series. The phones include a new suite of processing tools aimed at giving people much more control over the camera’s output. At first glance, they look a lot like filters, with names like Black Tie, Classic, and most strikingly, Digi, in reference to the growing trend of buying cheap digital cameras from the early aughts. But unlike a filter, which generally applies editing tweaks after the processing happens, Camera Looks is changing how image data is processed at the sensor level.",
+          "“The pipeline spans the entire system,” Reynolds says. “It’s inside HDR Plus. It’s inside the processing engine.  It’s inside the camera app as well in how we make certain decisions about auto exposure and integration time and number of frames packaged and captured.”",
+          "In the last decade or so, smartphone cameras have been engineered to do battle with the limitations of physics using what’s known as “computational photography.” Too dark? Night mode uses multi-frame image stacking to brighten the photo without adding too much noise. Need to zoom in but don’t have a telephoto lens? An on-device model can artificially create data it expects to be in your photo. Too small of a sensor for natural blur? Phones can use subject segmentation to recognize objects, cut out the subject, and emulate depth of field.",
+          "The result has been crisp, clear photos — and also a lot of (mostly younger) consumers carrying around old iPhones and cheap point-and-shoots from the early aughts to get a simpler, less processed, and (to their eye) better look.",
+          "“If you are looking for a minimal look … we simply don’t do the processing at all.”",
+          "The Pixel 11’s new Camera Looks feature is Google’s response to this growing trend. And to solve it, the Pixel team is allowing users to dial back how much processing happens when they snap a shot. Some of the Pixel’s Camera Looks will merge fewer frames together, leaving the highlights a bit blown out instead of compressing them to a midtone. Some of them won’t apply as much sharpening and will instead leave the image softer on the edges. You could argue that these new photos are technically “worse” — with reduced detail and dynamic range — but the result should be a photo closer to what any given user actually wants. This is a completely different way of thinking about computational photography, using tools to optimize for style instead of for technical perfection.",
+          "Until now, the Pixel camera pipeline has done the same type of processing for every user, and any edits to match their preferred style had to be made after the fact. But when an image is already fully processed, you’re stuck with the data and artifacts caused by that processing. “Once you’ve processed it that way, you can’t do less. If there was a merge artifact, that is baked in. It’s irreversible,” Reynolds says. With the Pixel 11, “we bring it a lot earlier, and that way if you are looking for a minimal look, which is minimally processed, we simply don’t do the processing at all.”",
+          "This, I think, is the most Google way to handle this change in camera mindset I could have imagined. In order to keep people from being too confused about technical jargon like tone compression or frame merging, Google is intelligently making processing decisions for you based on style selections most users can understand — and more importantly, can see. Reynolds tells me that there were long debates inside the camera team for just how many sliders users should have access to, and they landed on more than you’d probably expect.“ There are so many in there that I actually had to have an escalation meeting with my PM and my UX team about how many controls we were allowed to put in there,” Reynolds says. “There’s a lot of controls that photographers say are critical to have. We had a lot of trouble cutting it down.” For every Camera Look, you’ll get a set of six or more different levers, like contrast, warmth, tint, and saturation. And some Looks, like the black-and-white look Black Tie, will give you extra options, like red, green, and blue filters, which darken certain frequencies of light on black-and-white film.",
+          "This is notably different from the way Apple is currently thinking about cameras on the iPhone. Since the iPhone 13, Apple has included “Photographic Styles” in its camera — a series of presets that users can dial in through only two settings, tone and color (brightness/contrast and saturation). Google gives you access to these settings, too, but you’re also getting access to computational settings like sharpness and grain, which can more dramatically tune the look of your image before you shoot.",
+          "Giving users this much control over their images is a major step change for Google. The last time I had an in-depth conversation with Reynolds was in 2019 for the launch of the Pixel 4. At the time, Google’s priority was not to make a camera at all, but rather a magic box, where the user would simply point, shoot, and get what it considered the “perfect” image.",
+          "Simplification is not the priority this year. Now, it’s about choice. But Reynolds is still convinced that Google’s default settings are correct for most people, so the first option in the list of Looks is called “Original” — the experience Google has delivered for years. “ We do user studies with large N counts that are global, where we very, very carefully control the demographics, and we’re very confident that the original Pixel look is the right look,” he says. “We have no debate about that.”",
+          "The ‘Digi’ Look is going to be popular",
+          "There are simpler looks that only make subtle changes from Original, like Natural, Shadows and Vanilla, but there are also much more stylized Looks, like Editorial, Classic, and Velvet. If I were a betting man, I would say Google styled these directly after Fujifilm’s popular film simulations, but Reynolds won’t quite go that far. “These are film-inspired,” he tells me. “I would not say that these are film copies. I wouldn’t want to tell you that this is supposed to be Kodachrome or something.”",
+          "I expect that the most popular Camera Look will probably be Digi, though in my brief time with the phone I was partial to Minimal. The Digi Look is inspired by digicams, digital cameras from the early aughts that have low dynamic range and high contrast. In just the last five years, search volume for “digicam” is up 500 percent, according to Google Trends, and cameras that used to sell for $5 at thrift stores now go for hundreds of dollars on the secondhand market. Some companies like Canon have even caught wind and are rereleasing old digicam models just to cash in on the trend. It makes sense for Google to want to adopt the look, too.",
+          "I’m extremely happy to see Google changing things up in the camera department. At least for me, Google’s Pixel camera processing has gotten far too clinical, and lost the realism that once made it so revered. Now, it’s adapting to what a growing audience says they want from a camera — something real, stylized, and unique to the way they want to see the world.",
+          "Photography by David Imel / The Verge",
+          "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates.",
+          "David Imel"
+        ]
+      }
+    },
+    {
+      "slug": "37e1250be2f2f9c5",
+      "title": "TechCrunch on Google’s Pixel 11 Lineup",
+      "titleZh": "TechCrunch on Google’s Pixel 11 Lineup",
+      "link": "https://techcrunch.com/2026/08/12/pixel-11-has-few-hardware-changes-and-more-gemini/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T19:45:58.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "TechCrunch on Google’s Pixel 11 Lineup",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ivan Mehta",
+        "siteName": "TechCrunch",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "For the last few years, Google’s Pixel has been a showcase of new AI features, with few hardware changes from the previous year’s devices. Similarly, the Pixel 11 series isn’t too different in design and internals from its predecessor."
+          },
+          {
+            "type": "p",
+            "text": "However, this year’s devices have more Gemini features to complete tasks in the background, including a new Wispr Flow-like transcription feature, a live translation feature that works across content, and a new camera feature that captures the right frames."
+          },
+          {
+            "type": "h2",
+            "text": "AI advances on the Pixel 11"
+          },
+          {
+            "type": "p",
+            "text": "With this year’s Pixel 11 series launch, Google is thinking more agentic AI to complete your tasks. With Gemini, U.S.-based users will be able to order groceries, book rides, or get coffee, for instance. Plus, Gemini can call businesses on users’ behalf for table reservations or appointments. Google said that users can take over or stop tasks at any point in time and also review transcripts for AI-operated calls."
+          },
+          {
+            "type": "p",
+            "text": "Over the next few weeks, a new slate of connected apps will be able to work with Gemini to get things done, including Granola, Otter.ai, Wix, Fever, Get Your Guide, Localiza, OpenTable (U.K.), Ticketmaster, iHeartRadio, Pandora, Angi, Thumbtack, and Zocdoc."
+          },
+          {
+            "type": "p",
+            "text": "The company has also evolved the “Magic Cue” feature from last year to use Gemini, which proactively surfaces contextual information, to now display information from across your apps to help you find suggestions for things like a dinner spot or show."
+          },
+          {
+            "type": "p",
+            "text": "In May, Google announced a dictation product called Rambler to take on competitors like Wispr Flow and Aqua. Now, that product is making its way to the Pixel phones."
+          },
+          {
+            "type": "p",
+            "text": "The new Pixel series phones have some other helpful features that might be handy for daily usage, too. First, the device can translate videos, podcasts, and voice messages in the target language. The company is also making its “Circle to Search” gesture-based feature available directly in the camera, something that Apple also did in iOS 27 by making Siri available in the camera."
+          },
+          {
+            "type": "p",
+            "text": "What’s more, Google is adding an accessibility feature to the camera, which uses Gemini to translate sign language into text to help people communicate with others who have hearing impairments. And the company has redesigned the live transcribe interface for improved communication."
+          },
+          {
+            "type": "h2",
+            "text": "Camera features"
+          },
+          {
+            "type": "p",
+            "text": "Google also added a few AI tricks embedded into its camera. One feature is called “Magic Capture,” which picks the best frames out of hundreds of frames it captures between when users press start and end. The idea is to take a video and get photos as a byproduct. Google said that the feature also auto-crops and unblurs the frames to make them ready for sharing."
+          },
+          {
+            "type": "p",
+            "text": "The company has upgraded its super zoom from 100x to 120x for Pro phones, and from 20x to 30x for the base Pixel 11. With the new devices, users will be able to create custom looks for the camera, which are specialized filters that appear when users are snapping images."
+          },
+          {
+            "type": "p",
+            "text": "The Pro phones are also getting faster capture with a feature called “Instant Night Sight,” which takes 4.5x less time than the previous-gen phone’s Night Sight. Google enhanced video shooting, too, with support for 8K resolution with video boost and better stability."
+          },
+          {
+            "type": "p",
+            "text": "For creators, Google added a “creator suite” mode in video settings, which lets you use Pixel 11 devices as a teleprompter while shooting clips. When you are done shooting, the clip is saved in a dedicated folder, making it easier to find for editing."
+          },
+          {
+            "type": "h2",
+            "text": "Hardware upgrades"
+          },
+          {
+            "type": "p",
+            "text": "All the Pixel phones now run the latest Tensor G6 processor, which has 20% better power efficiency and allows for 25% faster browsing, as per Google. Plus, it lets users take faster low-light photos with Night Sight Instant."
+          },
+          {
+            "type": "p",
+            "text": "The new image signal processing on the chip also enables 120x magic zoom on the Pixel 11 Pro XL. The company said that the new processors run the latest models with lower latency, but didn’t offer any specific metrics."
+          },
+          {
+            "type": "p",
+            "text": "The display size on all phones is the same, but the Pro models get a slightly brighter display, which could be helpful in the daylight."
+          },
+          {
+            "type": "p",
+            "text": "Google said Pro models get an updated main camera sensor that takes higher-quality photos than the previous generation without specifying any numbers. It also said the new telephoto sensor allows for 32% more light while capturing an image."
+          },
+          {
+            "type": "p",
+            "text": "London-based startup Nothing made its phones recognizable by Glyph bars and then a Glyph interface. Google is not that extravagant, but it has now placed an LED light on the back, which is built around the flashlight. This acts as an indicator for calls or messages from favorite contacts when Gemini is thinking or listening."
+          },
+          {
+            "type": "p",
+            "text": "All these devices are available to preorder starting today and will start with a base storage of 256GB."
+          },
+          {
+            "type": "p",
+            "text": "The Pixel 11 starts at $899, the 11 Pro starts at $1,099, and the 11 Pro XL starts at $1,299. (The prices of the Pixel 11 and the Pixel 11 Pro are the same as last year’s 256GB models, but you could buy a 128GB model at that time with a $100 lower price tag.)"
+          },
+          {
+            "type": "p",
+            "text": "With the rising prices of components, the company has bumped the price of the top model by $100 compared to the Pixel 10 XL."
+          },
+          {
+            "type": "p",
+            "text": "A new lineup of Pixel 11 accessories is also arriving alongside the phones, including new Pixelsnap cases (which now include clear) and Pixelsnap Ring Stand colors."
+          },
+          {
+            "type": "p",
+            "text": "When you purchase through links in our articles, we may earn a small commission. This doesn’t affect our editorial independence."
+          }
+        ],
+        "translations": [
+          "For the last few years, Google’s Pixel has been a showcase of new AI features, with few hardware changes from the previous year’s devices. Similarly, the Pixel 11 series isn’t too different in design and internals from its predecessor.",
+          "However, this year’s devices have more Gemini features to complete tasks in the background, including a new Wispr Flow-like transcription feature, a live translation feature that works across content, and a new camera feature that captures the right frames.",
+          "AI advances on the Pixel 11",
+          "With this year’s Pixel 11 series launch, Google is thinking more agentic AI to complete your tasks. With Gemini, U.S.-based users will be able to order groceries, book rides, or get coffee, for instance. Plus, Gemini can call businesses on users’ behalf for table reservations or appointments. Google said that users can take over or stop tasks at any point in time and also review transcripts for AI-operated calls.",
+          "Over the next few weeks, a new slate of connected apps will be able to work with Gemini to get things done, including Granola, Otter.ai, Wix, Fever, Get Your Guide, Localiza, OpenTable (U.K.), Ticketmaster, iHeartRadio, Pandora, Angi, Thumbtack, and Zocdoc.",
+          "The company has also evolved the “Magic Cue” feature from last year to use Gemini, which proactively surfaces contextual information, to now display information from across your apps to help you find suggestions for things like a dinner spot or show.",
+          "In May, Google announced a dictation product called Rambler to take on competitors like Wispr Flow and Aqua. Now, that product is making its way to the Pixel phones.",
+          "The new Pixel series phones have some other helpful features that might be handy for daily usage, too. First, the device can translate videos, podcasts, and voice messages in the target language. The company is also making its “Circle to Search” gesture-based feature available directly in the camera, something that Apple also did in iOS 27 by making Siri available in the camera.",
+          "What’s more, Google is adding an accessibility feature to the camera, which uses Gemini to translate sign language into text to help people communicate with others who have hearing impairments. And the company has redesigned the live transcribe interface for improved communication.",
+          "Camera features",
+          "Google also added a few AI tricks embedded into its camera. One feature is called “Magic Capture,” which picks the best frames out of hundreds of frames it captures between when users press start and end. The idea is to take a video and get photos as a byproduct. Google said that the feature also auto-crops and unblurs the frames to make them ready for sharing.",
+          "The company has upgraded its super zoom from 100x to 120x for Pro phones, and from 20x to 30x for the base Pixel 11. With the new devices, users will be able to create custom looks for the camera, which are specialized filters that appear when users are snapping images.",
+          "The Pro phones are also getting faster capture with a feature called “Instant Night Sight,” which takes 4.5x less time than the previous-gen phone’s Night Sight. Google enhanced video shooting, too, with support for 8K resolution with video boost and better stability.",
+          "For creators, Google added a “creator suite” mode in video settings, which lets you use Pixel 11 devices as a teleprompter while shooting clips. When you are done shooting, the clip is saved in a dedicated folder, making it easier to find for editing.",
+          "Hardware upgrades",
+          "All the Pixel phones now run the latest Tensor G6 processor, which has 20% better power efficiency and allows for 25% faster browsing, as per Google. Plus, it lets users take faster low-light photos with Night Sight Instant.",
+          "The new image signal processing on the chip also enables 120x magic zoom on the Pixel 11 Pro XL. The company said that the new processors run the latest models with lower latency, but didn’t offer any specific metrics.",
+          "The display size on all phones is the same, but the Pro models get a slightly brighter display, which could be helpful in the daylight.",
+          "Google said Pro models get an updated main camera sensor that takes higher-quality photos than the previous generation without specifying any numbers. It also said the new telephoto sensor allows for 32% more light while capturing an image.",
+          "London-based startup Nothing made its phones recognizable by Glyph bars and then a Glyph interface. Google is not that extravagant, but it has now placed an LED light on the back, which is built around the flashlight. This acts as an indicator for calls or messages from favorite contacts when Gemini is thinking or listening.",
+          "All these devices are available to preorder starting today and will start with a base storage of 256GB.",
+          "The Pixel 11 starts at $899, the 11 Pro starts at $1,099, and the 11 Pro XL starts at $1,299. (The prices of the Pixel 11 and the Pixel 11 Pro are the same as last year’s 256GB models, but you could buy a 128GB model at that time with a $100 lower price tag.)",
+          "With the rising prices of components, the company has bumped the price of the top model by $100 compared to the Pixel 10 XL.",
+          "A new lineup of Pixel 11 accessories is also arriving alongside the phones, including new Pixelsnap cases (which now include clear) and Pixelsnap Ring Stand colors.",
+          "When you purchase through links in our articles, we may earn a small commission. This doesn’t affect our editorial independence."
+        ]
+      }
+    },
+    {
+      "slug": "10fd442d3ed54df8",
+      "title": "Hands-On With Google Pixel 11 Pro Fold",
+      "titleZh": "Hands-On With Google Pixel 11 Pro Fold",
+      "link": "https://www.engadget.com/2235294/google-pixel-11-pro-fold-hands-on/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T19:40:51.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Hands-On With Google Pixel 11 Pro Fold",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Sam Rutherford",
+        "siteName": "Engadget",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In a year when Samsung made two new flagship foldables, the latest Pixel Pro Fold feels like a letdown."
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "When Google made its first foldable phone, it burst on the scene with a handset sporting a unique design unlike any of its rivals. Then for its second generation Google switched things up again by opting for an even taller and larger display with a re-engineered hinge and the best cameras in its class. And last year, it added substantially better durability that its closest competitor still hasn't matched. But with this year's Pixel 11 Pro Fold, it feels like Google is coasting while Samsung's foldables pass it by."
+          },
+          {
+            "type": "h2",
+            "text": "Design"
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "Packing a 6.5-inch exterior display and a 8-inch flexible interior display, both of the Pixel 11 Pro Fold's OLED displays are essentially the same size as before. Peak brightness has increased 20 percent to 3,600 across both panels, which is nice, and Google says its bezels are thinner than ever. Its weight is also down 10 percent to 239 grams (from 258 grams on the P10 Pro Fold). The issue is that when compared to both the base Z Fold 8 (201 grams) and the Z Fold 8 Ultra (215), the Pixel 11 Pro Fold still feels like brick. And at 10.1mm, it's noticeably thicker than both of Samsung's foldables too."
+          },
+          {
+            "type": "p",
+            "text": "Granted, the P11 Pro Fold still includes IP68 dust and water resistance, which is better than what you get on the Z Fold 8 line (IP48). But after making an absolute tank of a foldable phone with last year's model, I said Google really needed to cut weight and thickness this generation, and it just hasn't. Instead, it seems like Google has leaned even more into the Pro Fold's sturdiness with a new glass fibre material for its rear panel that the company says is nearly impossible to crack. This is great in theory, but obviously I wasn't in a position to smash one of Google's demo units in order to test that claim."
+          },
+          {
+            "type": "h2",
+            "text": "Specs and hardware"
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "On the inside, like the rest of the Pixel 11 family, the Pro Fold comes with a new Tensor G6 processor that delivers up to 25 percent faster web browsing, 20 percent better power efficiency and 15 percent speedier app loading. Google's silicon also features a new ISP for its camera that helps capture Night Sight shots up to 4.5 times faster, while the company's Titan M3 security chip helps guard against ever more complicated cyber attacks."
+          },
+          {
+            "type": "p",
+            "text": "Annoyingly, the P11 Pro Fold's battery capacity has actually fallen year-over-year from 5,015mAh to 4,806mAh. In return, while wired charging is staying the same at 30 watts, the phone goes up to 25 watts when resting on a compatible wireless puck thanks to Qi 2.2 support, up from just 15 watts previously."
+          },
+          {
+            "type": "h2",
+            "text": "Cameras"
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "As for the phone's rear cameras, the big upgrade for this year is a fresh 48-megapixel main sensor, which joins the existing 10.5MP ultra-wide and 10.8MP telephoto cam with a 5x optical zoom. I'm definitely glad to see the Pro Fold's primary camera get a boost as that should secure Google's lead in image quality. The sad part is what the Fold isn't getting compared to its other Pro siblings. This includes being limited to 30x Super Res Zoom instead of 120x, and the lack of a new sensor for telephoto pics."
+          },
+          {
+            "type": "p",
+            "text": "Thankfully, the P11 Pro Fold does come with Google's new HiLight indicator LED system, which allows the phone to alert you when someone calls or when you trigger Gemini. And while I like the feature, not having support for texts at launch feels like a miss. Plus, it's not enough to salvage the lack of innovation elsewhere on the phone all by itself."
+          },
+          {
+            "type": "h2",
+            "text": "Other features"
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "This means the Pro Fold is relying a lot on Pixel 11's new family-wide features and software updates to carry it across the line. Magic Capture is great for letting you sit back and enjoy the scene while the phone uses AI to pick out the best shots and video. Then there are Google's new Camera Looks, which are basically a set of customizable filters that give you more control over the colors your camera records. And if you're an aspiring YouTuber, Google's Creator Suite gives you a bunch of tools like a built-in teleprompter, better project organization and a new storyboard editor for all your upcoming videos. But once again, all of these are available to every handset in the Pixel 11 family. Same goes for all the new advanced intelligence tools, like Rambler, improved support for the phone's AI to summon flight info while texting and task automation."
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "This means the most important software addition to the Pixel 11 Pro Fold is Google's bubbles, which isn't an exclusive feature but it has a major impact on a big foldable like this as it allows you to open most apps into a free-floating window. This feature even comes with a little app switcher that sits in the bottom right corner, so you can flip between things with haste. Unfortunately, Google still doesn't let you pin the Pro Fold's taskbar permanently to the bottom of the screen like you can on a Galaxy Fold, which would have served the same purpose. I should also mention that there are a couple new Made You Look animations that you can throw up on the Pro Fold's cover screen to get a quick smile out of children when taking pictures. But unless you're a regular performer at kids' birthday parties, that's not something you'll use everyday."
+          },
+          {
+            "type": "h2",
+            "text": "Initial thoughts"
+          },
+          {
+            "type": "p",
+            "text": "Sam Rutherford for Engadget"
+          },
+          {
+            "type": "p",
+            "text": "To me, the most frustrating thing about the Pixel 11 Pro Fold is simply the existence of the base Galaxy Z Fold 8. Not only did Samsung double down on foldables this year by making two new book-style foldables, the Z Fold 8's design is basically an updated take on what the original Pixel Fold offered back in 2023. In a lot of ways, it feels like Google is coasting when it comes to its foldables while Samsung has borrowed and improved on something the Pixel family left for dead."
+          },
+          {
+            "type": "p",
+            "text": "Now all this doesn't mean the Pixel 11 Pro Fold is a bad device. I appreciate a new processor along with faster charging, brighter displays (both inside and out) and a new sensor for its main camera. But between a $100 price increase over the previous model and the lack of engaging Pro Fold-specific features, Google's next flagship foldable needs more of everything if it truly wants to compete with the likes of Motorola and Samsung."
+          }
+        ],
+        "translations": [
+          "In a year when Samsung made two new flagship foldables, the latest Pixel Pro Fold feels like a letdown.",
+          "Sam Rutherford for Engadget",
+          "When Google made its first foldable phone, it burst on the scene with a handset sporting a unique design unlike any of its rivals. Then for its second generation Google switched things up again by opting for an even taller and larger display with a re-engineered hinge and the best cameras in its class. And last year, it added substantially better durability that its closest competitor still hasn't matched. But with this year's Pixel 11 Pro Fold, it feels like Google is coasting while Samsung's foldables pass it by.",
+          "Design",
+          "Sam Rutherford for Engadget",
+          "Packing a 6.5-inch exterior display and a 8-inch flexible interior display, both of the Pixel 11 Pro Fold's OLED displays are essentially the same size as before. Peak brightness has increased 20 percent to 3,600 across both panels, which is nice, and Google says its bezels are thinner than ever. Its weight is also down 10 percent to 239 grams (from 258 grams on the P10 Pro Fold). The issue is that when compared to both the base Z Fold 8 (201 grams) and the Z Fold 8 Ultra (215), the Pixel 11 Pro Fold still feels like brick. And at 10.1mm, it's noticeably thicker than both of Samsung's foldables too.",
+          "Granted, the P11 Pro Fold still includes IP68 dust and water resistance, which is better than what you get on the Z Fold 8 line (IP48). But after making an absolute tank of a foldable phone with last year's model, I said Google really needed to cut weight and thickness this generation, and it just hasn't. Instead, it seems like Google has leaned even more into the Pro Fold's sturdiness with a new glass fibre material for its rear panel that the company says is nearly impossible to crack. This is great in theory, but obviously I wasn't in a position to smash one of Google's demo units in order to test that claim.",
+          "Specs and hardware",
+          "Sam Rutherford for Engadget",
+          "On the inside, like the rest of the Pixel 11 family, the Pro Fold comes with a new Tensor G6 processor that delivers up to 25 percent faster web browsing, 20 percent better power efficiency and 15 percent speedier app loading. Google's silicon also features a new ISP for its camera that helps capture Night Sight shots up to 4.5 times faster, while the company's Titan M3 security chip helps guard against ever more complicated cyber attacks.",
+          "Annoyingly, the P11 Pro Fold's battery capacity has actually fallen year-over-year from 5,015mAh to 4,806mAh. In return, while wired charging is staying the same at 30 watts, the phone goes up to 25 watts when resting on a compatible wireless puck thanks to Qi 2.2 support, up from just 15 watts previously.",
+          "Cameras",
+          "Sam Rutherford for Engadget",
+          "As for the phone's rear cameras, the big upgrade for this year is a fresh 48-megapixel main sensor, which joins the existing 10.5MP ultra-wide and 10.8MP telephoto cam with a 5x optical zoom. I'm definitely glad to see the Pro Fold's primary camera get a boost as that should secure Google's lead in image quality. The sad part is what the Fold isn't getting compared to its other Pro siblings. This includes being limited to 30x Super Res Zoom instead of 120x, and the lack of a new sensor for telephoto pics.",
+          "Thankfully, the P11 Pro Fold does come with Google's new HiLight indicator LED system, which allows the phone to alert you when someone calls or when you trigger Gemini. And while I like the feature, not having support for texts at launch feels like a miss. Plus, it's not enough to salvage the lack of innovation elsewhere on the phone all by itself.",
+          "Other features",
+          "Sam Rutherford for Engadget",
+          "This means the Pro Fold is relying a lot on Pixel 11's new family-wide features and software updates to carry it across the line. Magic Capture is great for letting you sit back and enjoy the scene while the phone uses AI to pick out the best shots and video. Then there are Google's new Camera Looks, which are basically a set of customizable filters that give you more control over the colors your camera records. And if you're an aspiring YouTuber, Google's Creator Suite gives you a bunch of tools like a built-in teleprompter, better project organization and a new storyboard editor for all your upcoming videos. But once again, all of these are available to every handset in the Pixel 11 family. Same goes for all the new advanced intelligence tools, like Rambler, improved support for the phone's AI to summon flight info while texting and task automation.",
+          "Sam Rutherford for Engadget",
+          "This means the most important software addition to the Pixel 11 Pro Fold is Google's bubbles, which isn't an exclusive feature but it has a major impact on a big foldable like this as it allows you to open most apps into a free-floating window. This feature even comes with a little app switcher that sits in the bottom right corner, so you can flip between things with haste. Unfortunately, Google still doesn't let you pin the Pro Fold's taskbar permanently to the bottom of the screen like you can on a Galaxy Fold, which would have served the same purpose. I should also mention that there are a couple new Made You Look animations that you can throw up on the Pro Fold's cover screen to get a quick smile out of children when taking pictures. But unless you're a regular performer at kids' birthday parties, that's not something you'll use everyday.",
+          "Initial thoughts",
+          "Sam Rutherford for Engadget",
+          "To me, the most frustrating thing about the Pixel 11 Pro Fold is simply the existence of the base Galaxy Z Fold 8. Not only did Samsung double down on foldables this year by making two new book-style foldables, the Z Fold 8's design is basically an updated take on what the original Pixel Fold offered back in 2023. In a lot of ways, it feels like Google is coasting when it comes to its foldables while Samsung has borrowed and improved on something the Pixel family left for dead.",
+          "Now all this doesn't mean the Pixel 11 Pro Fold is a bad device. I appreciate a new processor along with faster charging, brighter displays (both inside and out) and a new sensor for its main camera. But between a $100 price increase over the previous model and the lack of engaging Pro Fold-specific features, Google's next flagship foldable needs more of everything if it truly wants to compete with the likes of Motorola and Samsung."
+        ]
+      }
+    },
+    {
+      "slug": "1b0e93cced6d2e52",
+      "title": "Google’s Pixel Watch 5",
+      "titleZh": "Google’s Pixel Watch 5",
+      "link": "https://www.theverge.com/tech/978094/pixel-watch-5-hands-on-made-by-google-gemini-wearables-smartwatch",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T19:38:03.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Google’s Pixel Watch 5",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Victoria Song",
+        "siteName": "The Verge",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The $399 Google Pixel Watch 5 isn’t about the hardware. Sure, there’s a new satin pyrite case finish, a few new strap colors, and a Steph Curry Special Edition. Under the hood, there’s a slightly faster Qualcomm processor and an itty-bitty battery bump. There’s a $50 price hike from last year, too, because the Pixel Watch 5 isn’t immune to RAMageddon — none of us are. Otherwise, no one would blame you for looking at this watch and thinking absolutely nothing’s changed. That’s because the big updates this year are all software-based."
+          },
+          {
+            "type": "p",
+            "text": "This isn’t a huge surprise considering Google’s Fitbit Air launch in May. And after seeing some Pixel Watch 5 demos, it’s clear this year’s refresh is furthering the AI and proactive health themes that Google introduced earlier this year."
+          },
+          {
+            "type": "p",
+            "text": "Health and fitness features account for the bulk of the updates, but Gemini on the wrist gets a few key improvements. You can now use it offline for simple tasks like starting timers and launching apps. (Though I noticed in my demo it was notably slower when doing this offline.) Gemini will also be more proactive in making suggestions. One example I saw: a text asking for my availability brought up the option to check Google Calendar from the wrist. Likewise, there’s now an icon right on the watchface that surfaces real-time information for things like timers, Uber ETAs, and workouts. Meanwhile, the pinchy pinch and wrist-flick features came via a software update to Pixel Watches in December, but they’re much more fully integrated into the UI with WearOS 7."
+          },
+          {
+            "type": "p",
+            "text": "You can also use AI to generate watchfaces. I created a watchface featuring “fat cats and an elegant font.” It didn’t quite do that. The fat cats weren’t characters, so much as pleasantly plump, cat-shaped clock numbers. It’s a gimmicky way to shoehorn the Nano Banana model onto the watch… but if that’s your thing, it works."
+          },
+          {
+            "type": "p",
+            "text": "Now for the health stuff. The most novel update is Breathing Emergency Detection. It’s an extension of last year’s Loss of Pulse feature. When the watch detects a severe drop in blood oxygen saturation (aka SpO2), it’ll trigger a call to emergency services and your designated emergency contacts. (A sudden drop in SpO2 may indicate you’re struggling to breathe.) To minimize false positives, the watch uses a combination of heart rate, motion, and altitude sensors. While I didn’t get to see the feature in action, I was told at my demo that the feature won’t kick in unless SpO2 drops to roughly 83 percent — so a significant decrease — for an extended period. It also disables once the watch determines you’ve been asleep for 30 minutes to mitigate false alarms linked to low SpO2 from sleep apnea or side sleeping. The feature also isn’t intended to be used by people with preexisting or chronic respiratory conditions; it’s more for flagging acute instances where a person may have stopped breathing. It’ll be available on both the Pixel Watch 4 and 5 in Europe at launch, and is pending clearance from the FDA in the US."
+          },
+          {
+            "type": "p",
+            "text": "A less high-stakes feature is that the Pixel Watch (and Fitbit Air) will also track nightly sleep breathing quality and provide monthly updates. The idea is to see how your daily trends impact respiratory health at night over a longer time frame."
+          },
+          {
+            "type": "p",
+            "text": "Two other health features are blood pressure trends and insulin resistance trends. First and foremost: Neither of these is diagnostic. Both are wellness features intended to function as “check engine light”-type warnings, require a minimum of a week’s worth of data, and flag trends monthly. They won’t be available right when the Pixel Watch 5 launches; rollout is currently scheduled for September. That said, these features will also come to the Pixel Watch 3 or later, as well as the Fitbit Air."
+          },
+          {
+            "type": "p",
+            "text": "With blood pressure trends, the watch will monitor blood flow using the optical heart rate sensor, as well as motion sensors. That data gets fed into an AI model to estimate the shape and speed of pulse waves traveling under the skin to approximate whether your blood pressure is trending higher or lower. (There will be no direct systolic or diastolic measurements.)"
+          },
+          {
+            "type": "p",
+            "text": "While we’ve seen other wearable players like Apple and Whoop tackle blood pressure insights, Google’s attempt at non-invasive insulin resistance detection is brand spanking new. Insulin resistance describes a condition in which your body doesn’t metabolize food effectively. The pancreas has to produce more insulin to utilize blood glucose, and untreated, it often leads to fatigue, stubborn weight gain, and eventually, Type 2 diabetes. This feature would passively estimate whether your insulin resistance is trending higher or lower month to month based on signals like heart rhythm, sleep quality, and daily movements. To validate the algorithm, Google says it tested the algorithm against blood draws and published its findings in a peer-reviewed study in Nature."
+          },
+          {
+            "type": "p",
+            "text": "1/5"
+          },
+          {
+            "type": "p",
+            "text": "Again, this is not noninvasive blood glucose monitoring. As with blood pressure trends, there are no direct readings involved, and this isn’t a screening feature for diabetes. It’s just flagging when your lifestyle trends indicate sustained metabolic stress over a monthlong period. Even so, I’ve spilled a ton of ink on the decadelong process for me to get diagnosed with insulin resistance. It can remain asymptomatic for several years, it may not show up in routine metabolic tests, and a traditional diagnosis involves nagging doctors to test fasting insulin and glucose via blood draws. We’ll have to see how this feature works in real life, but it’s potentially huge if it works well."
+          },
+          {
+            "type": "p",
+            "text": "That’s health. Google isn’t slacking on the fitness front either. Fitbit and Pixel Watch users have griped for years over dubious GPS maps from outdoor activities, especially in urban areas. Last year, Google introduced dual-frequency GPS. This year, it’s making the bold claim that the Pixel Watch 5 will outperform the Garmin Fenix 8 and Apple Watch Ultra 3 by utilizing satellite and weather station data, as well as 3D models of buildings from Google Maps, to “correct” GPS data using AI in post-processing. Shots fired."
+          },
+          {
+            "type": "p",
+            "text": "Google is also bringing AI-generated strength training plans to the wrist. This feature is already available with Google Health Premium, but the difference is that you no longer need the phone to log reps or move on to the next exercise. At least based on my demo, this seems like an obvious and smart move given the renewed emphasis on strength training in the GLP-1 era."
+          },
+          {
+            "type": "p",
+            "text": "All of these health updates are meant to feed into the Google Health app’s AI coach (which requires a Google Health Premium subscription). As I wrote in my Fitbit Air review, Google’s AI coach is the best of the lot — but that is a remarkably low bar at the moment. AI health remains a work in progress, and Google’s coach is no exception — but so far these updates are a savvy mix of potentially helpful and smart for building a long-term AI health roadmap."
+          },
+          {
+            "type": "p",
+            "text": "The Google Pixel Watch 5 is available for preorder starting today and arrives on shelves August 20th. The Steph Curry Special Edition will hit shelves September 3rd."
+          },
+          {
+            "type": "p",
+            "text": "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates."
+          },
+          {
+            "type": "li",
+            "text": "Victoria Song"
+          }
+        ],
+        "translations": [
+          "The $399 Google Pixel Watch 5 isn’t about the hardware. Sure, there’s a new satin pyrite case finish, a few new strap colors, and a Steph Curry Special Edition. Under the hood, there’s a slightly faster Qualcomm processor and an itty-bitty battery bump. There’s a $50 price hike from last year, too, because the Pixel Watch 5 isn’t immune to RAMageddon — none of us are. Otherwise, no one would blame you for looking at this watch and thinking absolutely nothing’s changed. That’s because the big updates this year are all software-based.",
+          "This isn’t a huge surprise considering Google’s Fitbit Air launch in May. And after seeing some Pixel Watch 5 demos, it’s clear this year’s refresh is furthering the AI and proactive health themes that Google introduced earlier this year.",
+          "Health and fitness features account for the bulk of the updates, but Gemini on the wrist gets a few key improvements. You can now use it offline for simple tasks like starting timers and launching apps. (Though I noticed in my demo it was notably slower when doing this offline.) Gemini will also be more proactive in making suggestions. One example I saw: a text asking for my availability brought up the option to check Google Calendar from the wrist. Likewise, there’s now an icon right on the watchface that surfaces real-time information for things like timers, Uber ETAs, and workouts. Meanwhile, the pinchy pinch and wrist-flick features came via a software update to Pixel Watches in December, but they’re much more fully integrated into the UI with WearOS 7.",
+          "You can also use AI to generate watchfaces. I created a watchface featuring “fat cats and an elegant font.” It didn’t quite do that. The fat cats weren’t characters, so much as pleasantly plump, cat-shaped clock numbers. It’s a gimmicky way to shoehorn the Nano Banana model onto the watch… but if that’s your thing, it works.",
+          "Now for the health stuff. The most novel update is Breathing Emergency Detection. It’s an extension of last year’s Loss of Pulse feature. When the watch detects a severe drop in blood oxygen saturation (aka SpO2), it’ll trigger a call to emergency services and your designated emergency contacts. (A sudden drop in SpO2 may indicate you’re struggling to breathe.) To minimize false positives, the watch uses a combination of heart rate, motion, and altitude sensors. While I didn’t get to see the feature in action, I was told at my demo that the feature won’t kick in unless SpO2 drops to roughly 83 percent — so a significant decrease — for an extended period. It also disables once the watch determines you’ve been asleep for 30 minutes to mitigate false alarms linked to low SpO2 from sleep apnea or side sleeping. The feature also isn’t intended to be used by people with preexisting or chronic respiratory conditions; it’s more for flagging acute instances where a person may have stopped breathing. It’ll be available on both the Pixel Watch 4 and 5 in Europe at launch, and is pending clearance from the FDA in the US.",
+          "A less high-stakes feature is that the Pixel Watch (and Fitbit Air) will also track nightly sleep breathing quality and provide monthly updates. The idea is to see how your daily trends impact respiratory health at night over a longer time frame.",
+          "Two other health features are blood pressure trends and insulin resistance trends. First and foremost: Neither of these is diagnostic. Both are wellness features intended to function as “check engine light”-type warnings, require a minimum of a week’s worth of data, and flag trends monthly. They won’t be available right when the Pixel Watch 5 launches; rollout is currently scheduled for September. That said, these features will also come to the Pixel Watch 3 or later, as well as the Fitbit Air.",
+          "With blood pressure trends, the watch will monitor blood flow using the optical heart rate sensor, as well as motion sensors. That data gets fed into an AI model to estimate the shape and speed of pulse waves traveling under the skin to approximate whether your blood pressure is trending higher or lower. (There will be no direct systolic or diastolic measurements.)",
+          "While we’ve seen other wearable players like Apple and Whoop tackle blood pressure insights, Google’s attempt at non-invasive insulin resistance detection is brand spanking new. Insulin resistance describes a condition in which your body doesn’t metabolize food effectively. The pancreas has to produce more insulin to utilize blood glucose, and untreated, it often leads to fatigue, stubborn weight gain, and eventually, Type 2 diabetes. This feature would passively estimate whether your insulin resistance is trending higher or lower month to month based on signals like heart rhythm, sleep quality, and daily movements. To validate the algorithm, Google says it tested the algorithm against blood draws and published its findings in a peer-reviewed study in Nature.",
+          "1/5",
+          "Again, this is not noninvasive blood glucose monitoring. As with blood pressure trends, there are no direct readings involved, and this isn’t a screening feature for diabetes. It’s just flagging when your lifestyle trends indicate sustained metabolic stress over a monthlong period. Even so, I’ve spilled a ton of ink on the decadelong process for me to get diagnosed with insulin resistance. It can remain asymptomatic for several years, it may not show up in routine metabolic tests, and a traditional diagnosis involves nagging doctors to test fasting insulin and glucose via blood draws. We’ll have to see how this feature works in real life, but it’s potentially huge if it works well.",
+          "That’s health. Google isn’t slacking on the fitness front either. Fitbit and Pixel Watch users have griped for years over dubious GPS maps from outdoor activities, especially in urban areas. Last year, Google introduced dual-frequency GPS. This year, it’s making the bold claim that the Pixel Watch 5 will outperform the Garmin Fenix 8 and Apple Watch Ultra 3 by utilizing satellite and weather station data, as well as 3D models of buildings from Google Maps, to “correct” GPS data using AI in post-processing. Shots fired.",
+          "Google is also bringing AI-generated strength training plans to the wrist. This feature is already available with Google Health Premium, but the difference is that you no longer need the phone to log reps or move on to the next exercise. At least based on my demo, this seems like an obvious and smart move given the renewed emphasis on strength training in the GLP-1 era.",
+          "All of these health updates are meant to feed into the Google Health app’s AI coach (which requires a Google Health Premium subscription). As I wrote in my Fitbit Air review, Google’s AI coach is the best of the lot — but that is a remarkably low bar at the moment. AI health remains a work in progress, and Google’s coach is no exception — but so far these updates are a savvy mix of potentially helpful and smart for building a long-term AI health roadmap.",
+          "The Google Pixel Watch 5 is available for preorder starting today and arrives on shelves August 20th. The Steph Curry Special Edition will hit shelves September 3rd.",
+          "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates.",
+          "Victoria Song"
+        ]
+      }
+    },
+    {
+      "slug": "a3faa36ed3181d98",
+      "title": "Amazon Is Spiting Customers With Unhelpful Order Confirmation Emails",
+      "titleZh": "Amazon Is Spiting Customers With Unhelpful Order Confirmation Emails",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/977733/amazon-order-emails-google-gmail-ai-agents-data",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-08-12T18:51:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Amazon Is Spiting Customers With Unhelpful Order Confirmation Emails",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Mia Sato",
+        "siteName": "The Verge",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Earlier this summer, Amazon customers began noticing that emails related to their online orders looked sparse: Order confirmation emails didn’t name specific items anymore, and instead listed only item categories."
+          },
+          {
+            "type": "p",
+            "text": "“Your Beauty item is confirmed!” an email about my retainer cleaning tablets read. Shoppers have posted other iterations of the redacted emails as well: “Ordered: 1 Hardware item,” “Your Drugstore, Shoes, and other items are here!” and “1 Nutrition & Wellness, 1 Wireless Accessories,” for example. The emails have clip art-style illustrations of general product categories, and a shopper has to exit their email and go to Amazon to see what item it’s actually referring to."
+          },
+          {
+            "type": "p",
+            "text": "Complaints about the vague emails appear to have started in July; orders placed as recently as June contain thumbnails and names of the exact item purchased. Some shoppers are complaining to Amazon about the new system, saying the emails with no details make it harder to keep track of purchases (and kind of look like spam or a phishing attempt). Amazon has a long history of tweaking how order emails look — there are complaints going back years about what’s included and what isn’t — but in the last month and a half, more and more shoppers are noticing the vague order update notifications."
+          },
+          {
+            "type": "p",
+            "text": "AI is likely partially to blame."
+          },
+          {
+            "type": "p",
+            "text": "Over the last year or so, tech companies have asked consumers to imagine a world where an AI “agent” is doing their bidding for them, including spending their money. Google, with a catalog of billions of products in Shopping, is perhaps best situated to make that vision a reality, and indeed has already introduced a slew of shopping features powered by AI. Gemini Spark can mine a user’s email for crumbs of information to, for example, build custom vacation itineraries, pulling in data like concert ticket confirmations and biographical details about family. In May Google unveiled a shopping cart that works across various merchants that would eventually be integrated into Gmail as well, meaning shoppers could add things to their cart while reading their inbox or watching YouTube. How helpful an AI agent can be depends on how much personal information a user is willing to fork over."
+          },
+          {
+            "type": "p",
+            "text": "As users hand over more and more data and agency to AI tools, service providers are caught in a bind: If agents are truly as efficient as tech companies say they are, customers and audiences in theory have no reason to visit a website themselves — the agent can just do it for them. (The Verge has been calling this “the DoorDash problem.”) Still, many big retailers, like Walmart, Target, and Wayfair, have signed on to commerce features built into Google’s AI surfaces, hoping that consumers will research, compare, and ultimately purchase their products via chatbots. Notably not on the list of merchants: Amazon."
+          },
+          {
+            "type": "p",
+            "text": "Amazon has been more protective of its direct relationship with shoppers. Last year the company sued Perplexity for allowing users to shop on Amazon on their behalf; a judge sided with Perplexity earlier this month. Amazon has also been plugging away at AI-powered shopping features of its own, like price tracking and automatic purchasing. Alexa for Shopping is built into the Amazon app, and shoppers can query the chatbot for product recommendations and comparisons without going outside to Gemini or ChatGPT, for example. The Verge asked Amazon directly if the change in email format was to shield purchase information from companies like Google that are building AI-powered shopping tools."
+          },
+          {
+            "type": "p",
+            "text": "”As customers shop with us more frequently, including on their phones, and use the ‘Your Orders’ page in the Amazon app to get real-time, consolidated order details and delivery status, we’ve simplified several order-related emails to direct customers to our app and website for the latest information on their orders,” spokesperson Maxine Tagay said in an email. “This also reduces customer information shared outside the Amazon app and website to further improve customer privacy.”"
+          },
+          {
+            "type": "p",
+            "text": "In other words: It’s a way to hedge against the DoorDash problem by hiding the meaty information on Amazon’s properties, and to keep customers visiting the retailer directly. The upshot for shoppers is that it’s ever so slightly more annoying to access our own information, too."
+          },
+          {
+            "type": "p",
+            "text": "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates."
+          },
+          {
+            "type": "li",
+            "text": "Mia Sato"
+          }
+        ],
+        "translations": [
+          "Earlier this summer, Amazon customers began noticing that emails related to their online orders looked sparse: Order confirmation emails didn’t name specific items anymore, and instead listed only item categories.",
+          "“Your Beauty item is confirmed!” an email about my retainer cleaning tablets read. Shoppers have posted other iterations of the redacted emails as well: “Ordered: 1 Hardware item,” “Your Drugstore, Shoes, and other items are here!” and “1 Nutrition & Wellness, 1 Wireless Accessories,” for example. The emails have clip art-style illustrations of general product categories, and a shopper has to exit their email and go to Amazon to see what item it’s actually referring to.",
+          "Complaints about the vague emails appear to have started in July; orders placed as recently as June contain thumbnails and names of the exact item purchased. Some shoppers are complaining to Amazon about the new system, saying the emails with no details make it harder to keep track of purchases (and kind of look like spam or a phishing attempt). Amazon has a long history of tweaking how order emails look — there are complaints going back years about what’s included and what isn’t — but in the last month and a half, more and more shoppers are noticing the vague order update notifications.",
+          "AI is likely partially to blame.",
+          "Over the last year or so, tech companies have asked consumers to imagine a world where an AI “agent” is doing their bidding for them, including spending their money. Google, with a catalog of billions of products in Shopping, is perhaps best situated to make that vision a reality, and indeed has already introduced a slew of shopping features powered by AI. Gemini Spark can mine a user’s email for crumbs of information to, for example, build custom vacation itineraries, pulling in data like concert ticket confirmations and biographical details about family. In May Google unveiled a shopping cart that works across various merchants that would eventually be integrated into Gmail as well, meaning shoppers could add things to their cart while reading their inbox or watching YouTube. How helpful an AI agent can be depends on how much personal information a user is willing to fork over.",
+          "As users hand over more and more data and agency to AI tools, service providers are caught in a bind: If agents are truly as efficient as tech companies say they are, customers and audiences in theory have no reason to visit a website themselves — the agent can just do it for them. (The Verge has been calling this “the DoorDash problem.”) Still, many big retailers, like Walmart, Target, and Wayfair, have signed on to commerce features built into Google’s AI surfaces, hoping that consumers will research, compare, and ultimately purchase their products via chatbots. Notably not on the list of merchants: Amazon.",
+          "Amazon has been more protective of its direct relationship with shoppers. Last year the company sued Perplexity for allowing users to shop on Amazon on their behalf; a judge sided with Perplexity earlier this month. Amazon has also been plugging away at AI-powered shopping features of its own, like price tracking and automatic purchasing. Alexa for Shopping is built into the Amazon app, and shoppers can query the chatbot for product recommendations and comparisons without going outside to Gemini or ChatGPT, for example. The Verge asked Amazon directly if the change in email format was to shield purchase information from companies like Google that are building AI-powered shopping tools.",
+          "”As customers shop with us more frequently, including on their phones, and use the ‘Your Orders’ page in the Amazon app to get real-time, consolidated order details and delivery status, we’ve simplified several order-related emails to direct customers to our app and website for the latest information on their orders,” spokesperson Maxine Tagay said in an email. “This also reduces customer information shared outside the Amazon app and website to further improve customer privacy.”",
+          "In other words: It’s a way to hedge against the DoorDash problem by hiding the meaty information on Amazon’s properties, and to keep customers visiting the retailer directly. The upshot for shoppers is that it’s ever so slightly more annoying to access our own information, too.",
+          "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates.",
+          "Mia Sato"
+        ]
+      }
+    },
+    {
+      "slug": "1c1e1527fd79028e",
+      "title": "Edinburgh Fringe: Hot Flush – A Bold, We’re Old(ish) Burlesque Show ★★★☆☆",
+      "titleZh": "Edinburgh Fringe: Hot Flush – A Bold, We’re Old(ish) Burlesque Show ★★★☆☆",
+      "link": "https://shkspr.mobi/blog/2026/08/edinburgh-fringe-hot-flush-a-bold-were-oldish-burlesque-show/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-13T16:45:02.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Edinburgh Fringe: Hot Flush – A Bold, We’re Old(ish) Burlesque Show ★★★☆☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Are menopausal women hot? It is often said that pornographic actresses move straight from \"barely legal\" to \"MILF\" without so much as moment in between. Unlike the fringe's other burlesque shows - which seem to exclusively feature nymphettes and twinks with nary a grey hair between them - Hot Flush focuses on the over 40s."
+          },
+          {
+            "type": "p",
+            "text": "Look, you probably don't want to read a review of how tempting I found each temptress, nor a multivariant testing of their erotic powers - so let's just say this…"
+          },
+          {
+            "type": "p",
+            "text": "The lecture in the middle about the menopause and how to cope with it was very educational."
+          },
+          {
+            "type": "p",
+            "text": "The performers were all talented and the costumes (before removal) were sufficiently sufficient for their purpose."
+          },
+          {
+            "type": "p",
+            "text": "The main problem is that it is staged at the least sexy venue on the fringe. A basement meeting room which looks more suitable for a regional sales conference than a burlesque. Perhaps if they were going for a Belinda Blinked cabaret it might have worked better."
+          },
+          {
+            "type": "p",
+            "text": "The performers coped well with the technical difficulties (no doubt caused by a moralising theatre ghost) and recovered their momentum well."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "142c97fceb9f1400",
+      "title": "Edinburgh Fringe - Eleanor Morton: The Mermaid ★★★⯪☆",
+      "titleZh": "Edinburgh Fringe - Eleanor Morton: The Mermaid ★★★⯪☆",
+      "link": "https://shkspr.mobi/blog/2026/08/edinburgh-fringe-eleanor-morton-the-mermaid/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-13T14:55:59.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Edinburgh Fringe - Eleanor Morton: The Mermaid ★★★⯪☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The undisputed queen of short-form viral video comedy snacks takes to the stage. Well, swims to the stage."
+          },
+          {
+            "type": "p",
+            "text": "The Mermaid is a delightful and gentle amble through the confusing world of a girl who just wants to become a mermaid. Less standup and more storytelling, nevertheless it packs in the laughs with some rather clever jokes, a bit of bawdy humour, and - a rarity on The Fringe - a decently designed set!"
+          },
+          {
+            "type": "p",
+            "text": "It stands out by being well-rehearsed (surprisingly not a given here) and with no technical glitches during the performance (and, again, I cannot stress enough how unique that is). Eleanor Morton is an absolute professional who knows how to put on a quality show."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "fb463a378545f9f4",
+      "title": "Book Review: Coding Literacy by Annette Vee ★★⯪☆☆",
+      "titleZh": "Book Review: Coding Literacy by Annette Vee ★★⯪☆☆",
+      "link": "https://shkspr.mobi/blog/2026/08/book-review-coding-literacy-by-annette-vee/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-13T11:34:09.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Book Review: Coding Literacy by Annette Vee ★★⯪☆☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a disappointing and frustrating book - not least because it so nearly hits the mark."
+          },
+          {
+            "type": "p",
+            "text": "The subtitle is \"How Computer Programming Is Changing Writing\" - but it never gets close to discussing that topic, let alone deeply examining it. Instead, it is a book mostly focussed on the history of what we mean by \"literacy\" and, by contrast, what it meant to be \"illiterate\"."
+          },
+          {
+            "type": "p",
+            "text": "As per the standard for academic monographs, it is more interested in endlessly discussing the semantics of a term than engaging with its impacts. The historic stuff is genuinely fascinating. But the endless diversions about what Academic A thinks and how Academic B rebuts is a little tedious. There are clear parallels between a pre-literate society relying on the village scribe and the modern family having that one cousin who \"knows computers\" - but it is only weakly explored."
+          },
+          {
+            "type": "p",
+            "text": "There are moments when it seems like the author is really going to delve in to what coding literacy actually means:"
+          },
+          {
+            "type": "quote",
+            "text": "The relationship between programming as a practice and computer science as a discipline is a central tension in the contemporary programming campaigns that invoke literacy,"
+          },
+          {
+            "type": "p",
+            "text": "But it rarely goes beyond surface level. Most people can write - but only few can write a novel. Many can engage is literary criticism - but few take it any further. How does that model fit on to coding? The book doesn't discuss, but there's an easy parallel there. Only a few people can write an app, but many can use it. Anyone can write a review of an app, but not many can do so from a position of literacy."
+          },
+          {
+            "type": "p",
+            "text": "This was published in 2017, so written a decade or so before LLMs became seemingly ubiquitous. Nevertheless, there are some historic titbits which seem to fit nicely into today's world:"
+          },
+          {
+            "type": "quote",
+            "text": "As early as 1961, Peter Elias claimed that training in programming languages would soon cease because “undergraduates will face the console with such a natural keyboard and such a natural language that there will be little left, if anything, to the teaching of programming. [At this point, we] should hope that it would have disappeared from the curricula of all but a moderate group of specialists.”"
+          },
+          {
+            "type": "p",
+            "text": "But, as the book does briefly discuss, the way the brain is changed by coding literacy forces people to think more in line with a computer. Even if you tell an LLM \"build me an app to do xyz\", you still need to think about what you're doing, why you're doing it, what edge-cases you need to consider, etc."
+          },
+          {
+            "type": "p",
+            "text": "But then it is back to the interminable academic squabbling about whether Wittgenstein's definition of an inconsequential term is compatible with Chomsky's."
+          },
+          {
+            "type": "p",
+            "text": "Perhaps the biggest weakness is that there is almost a complete absence of code! A few examples of BASIC would have done so much to demonstrate how a restricted language set changes how people write and therefore think."
+          },
+          {
+            "type": "p",
+            "text": "There's a brief exploration about how the typewriter and typesetting changed language and literacy - but where's the examination about how the tyranny of ANSI layout curtailed the way programmers wrote? There's an amazing exploration to be done about why coders use => rather than → and how various other symbols got co-opted into their languages."
+          },
+          {
+            "type": "p",
+            "text": "Instead, it is back to the history books again."
+          },
+          {
+            "type": "p",
+            "text": "Here's another good example about how writing changed literacy:"
+          },
+          {
+            "type": "quote",
+            "text": "Written texts provide fewer cues than oral delivery about how to “take” them; for example, ironically, sincerely, or jokingly. Readers must interpret texts, supplying the illocutionary force of the text themselves."
+          },
+          {
+            "type": "p",
+            "text": "It seems obvious to me that this is directly comparable with something like a code review. It isn't immediately clear what a programmer means when they write something down - and even comments can be misleading. What sort of \"oral traditions\" are we building up?"
+          },
+          {
+            "type": "p",
+            "text": "The book then mostly abandons any pretence of talking about code. I think the author really wanted to write a history book but needed the (then) coolness of tying it to the various \"get kids to code\" campaigns."
+          },
+          {
+            "type": "p",
+            "text": "Towards the end, it almost returns to the topic at hand."
+          },
+          {
+            "type": "quote",
+            "text": "We choose our words in terms of what is potentially reportable on Facebook or Instagram or Twitter\n\t\t\t\t\t\t[…]\n\t\t\t\t\t\tAlthough few people know how to program the devices on which code and computation ride into our lives, their manifestations influence us anyhow. In various ways, we have learned to see ourselves as “computed” by the devices and networks on which we depend."
+          },
+          {
+            "type": "p",
+            "text": "As we might say nowadays \"Hey chat! Guess the Cheeto didn't unalive himself today!\" - but that isn't really about coding. The people using those substitute words are ignorant of how algorithms really work and think that their clever doublespeak can bypass censorship."
+          },
+          {
+            "type": "p",
+            "text": "We desperately need more people to be literate in what coding means. Sadly this book only every lightly touches on what coding literacy does to our language, our thoughts, and our society."
+          },
+          {
+            "type": "p",
+            "text": "I'm giving it 2.5 stars because the history was genuinely interesting - but it completely fails to engage with the topic it promised."
+          }
+        ],
+        "translations": [
+          "This is a disappointing and frustrating book - not least because it so nearly hits the mark.",
+          "The subtitle is \"How Computer Programming Is Changing Writing\" - but it never gets close to discussing that topic, let alone deeply examining it. Instead, it is a book mostly focussed on the history of what we mean by \"literacy\" and, by contrast, what it meant to be \"illiterate\".",
+          "As per the standard for academic monographs, it is more interested in endlessly discussing the semantics of a term than engaging with its impacts. The historic stuff is genuinely fascinating. But the endless diversions about what Academic A thinks and how Academic B rebuts is a little tedious. There are clear parallels between a pre-literate society relying on the village scribe and the modern family having that one cousin who \"knows computers\" - but it is only weakly explored.",
+          "There are moments when it seems like the author is really going to delve in to what coding literacy actually means:",
+          "The relationship between programming as a practice and computer science as a discipline is a central tension in the contemporary programming campaigns that invoke literacy,",
+          "But it rarely goes beyond surface level. Most people can write - but only few can write a novel. Many can engage is literary criticism - but few take it any further. How does that model fit on to coding? The book doesn't discuss, but there's an easy parallel there. Only a few people can write an app, but many can use it. Anyone can write a review of an app, but not many can do so from a position of literacy.",
+          "This was published in 2017, so written a decade or so before LLMs became seemingly ubiquitous. Nevertheless, there are some historic titbits which seem to fit nicely into today's world:",
+          "As early as 1961, Peter Elias claimed that training in programming languages would soon cease because “undergraduates will face the console with such a natural keyboard and such a natural language that there will be little left, if anything, to the teaching of programming. [At this point, we] should hope that it would have disappeared from the curricula of all but a moderate group of specialists.”",
+          "But, as the book does briefly discuss, the way the brain is changed by coding literacy forces people to think more in line with a computer. Even if you tell an LLM \"build me an app to do xyz\", you still need to think about what you're doing, why you're doing it, what edge-cases you need to consider, etc.",
+          "But then it is back to the interminable academic squabbling about whether Wittgenstein's definition of an inconsequential term is compatible with Chomsky's.",
+          "Perhaps the biggest weakness is that there is almost a complete absence of code! A few examples of BASIC would have done so much to demonstrate how a restricted language set changes how people write and therefore think.",
+          "There's a brief exploration about how the typewriter and typesetting changed language and literacy - but where's the examination about how the tyranny of ANSI layout curtailed the way programmers wrote? There's an amazing exploration to be done about why coders use => rather than → and how various other symbols got co-opted into their languages.",
+          "Instead, it is back to the history books again.",
+          "Here's another good example about how writing changed literacy:",
+          "Written texts provide fewer cues than oral delivery about how to “take” them; for example, ironically, sincerely, or jokingly. Readers must interpret texts, supplying the illocutionary force of the text themselves.",
+          "It seems obvious to me that this is directly comparable with something like a code review. It isn't immediately clear what a programmer means when they write something down - and even comments can be misleading. What sort of \"oral traditions\" are we building up?",
+          "The book then mostly abandons any pretence of talking about code. I think the author really wanted to write a history book but needed the (then) coolness of tying it to the various \"get kids to code\" campaigns.",
+          "Towards the end, it almost returns to the topic at hand.",
+          "We choose our words in terms of what is potentially reportable on Facebook or Instagram or Twitter\n\t\t\t\t\t\t[…]\n\t\t\t\t\t\tAlthough few people know how to program the devices on which code and computation ride into our lives, their manifestations influence us anyhow. In various ways, we have learned to see ourselves as “computed” by the devices and networks on which we depend.",
+          "As we might say nowadays \"Hey chat! Guess the Cheeto didn't unalive himself today!\" - but that isn't really about coding. The people using those substitute words are ignorant of how algorithms really work and think that their clever doublespeak can bypass censorship.",
+          "We desperately need more people to be literate in what coding means. Sadly this book only every lightly touches on what coding literacy does to our language, our thoughts, and our society.",
+          "I'm giving it 2.5 stars because the history was genuinely interesting - but it completely fails to engage with the topic it promised."
+        ]
+      }
+    },
+    {
+      "slug": "7c48e89948afe3fd",
+      "title": "Edinburgh Fringe - Heated Rivalry: The Unauthorized Musical Parody ★★★★☆",
+      "titleZh": "Edinburgh Fringe - Heated Rivalry: The Unauthorized Musical Parody ★★★★☆",
+      "link": "https://shkspr.mobi/blog/2026/08/edinburgh-fringe-heated-rivalry-the-unauthorized-musical-parody/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-12T21:22:09.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Edinburgh Fringe - Heated Rivalry: The Unauthorized Musical Parody ★★★★☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "There are at least four different Heated Rivalry shows at the Fringe this year. Earlier this week we saw Edinburgh Fringe - Heated Rivalry: The Musical Parody!. This is different because it is the unauthorized musical parody."
+          },
+          {
+            "type": "p",
+            "text": "Oh, and it is in the much larger Udderbelly venue."
+          },
+          {
+            "type": "p",
+            "text": "Some people spend the fringe watching every possible interpretation of Timon of Athens - we decided to go for doubles of gay hockey sticks."
+          },
+          {
+            "type": "p",
+            "text": "So, how does it compare to its twin?"
+          },
+          {
+            "type": "p",
+            "text": "It is good, but deeply conservative. The whole thing is framed through the eyes of a middle-age suburban mom which, sure, is probably a large part of the target audience but felt a bit retrograde. While the other show had a plentiful amount of acrobatic simulated sex with near-nude performers, this only has a couple of shirtless scenes and the actors are reduced to having a couple of trysts with literal mannequins.  Weirdly, the one sex scene they perform together takes place behind a sheet. The leads kiss only twice which, for a parody of a show famed for its explicitness makes it all feel a bit Hays Code."
+          },
+          {
+            "type": "p",
+            "text": "The songs, however, are sumptuous. A full score accompanies the incredibly talented cast. This is very off-Broadway - with soaring melodies, powerful solos, and solid reprises. At times it feels more like a parody of Broadway shows than of the TV show."
+          },
+          {
+            "type": "p",
+            "text": "That isn't to say this is bad. It is very good. The script is full of delightful references and silly jokes. The lyrics at times are downright filthy! It is an excellent show and well worth seeing - but my heart remains with the other parody."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "15369b680fef5d3b",
+      "title": "Edinburgh Fringe - James Rowland: Team Viking ★★⯪☆☆",
+      "titleZh": "Edinburgh Fringe - James Rowland: Team Viking ★★⯪☆☆",
+      "link": "https://shkspr.mobi/blog/2026/08/edinburgh-fringe-james-rowland-team-viking/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-12T19:20:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Edinburgh Fringe - James Rowland: Team Viking ★★⯪☆☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "EdFringe review  · 100 words"
+          },
+          {
+            "type": "p",
+            "text": "This is a technically precise and emotionally complex show with energetic delivery from a talented performer."
+          },
+          {
+            "type": "p",
+            "text": "Sadly, it did nothing for me."
+          },
+          {
+            "type": "p",
+            "text": "I found it a little one note in terms of storytelling. The rhythm of the story followed all the predictable beats which I thought was a little repetitive."
+          },
+          {
+            "type": "p",
+            "text": "There's no doubt he's a gifted storyteller. The comedy is suitably dark with some good moments of joy and catharsis. It is probably the perfect show for some people but I wasn't the right audience for it."
+          },
+          {
+            "type": "h2",
+            "text": "Find out more"
+          },
+          {
+            "type": "li",
+            "text": "Event website"
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
