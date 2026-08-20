@@ -1,0 +1,1078 @@
+{
+  "date": "2026-08-21",
+  "generatedAt": "2026-08-20T16:42:40.675Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2531,
+    "filteredArticles": 9,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "5cb86b7b06ea6e49",
+      "title": "smolmachines / smolvm as a sandbox for untrusted Python & JavaScript",
+      "titleZh": "smolmachines / smolvm as a sandbox for untrusted Python & JavaScript",
+      "link": "https://simonwillison.net/2026/Aug/19/smolmachines-untrusted-sandbox/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-19T23:16:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "smolmachines / smolvm as a sandbox for untrusted Python & JavaScript",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Research\n    \n    smolmachines / smolvm as a sandbox for untrusted Python & JavaScript\n    — Testing smolvm 1.8.3 shows it is well suited for sandboxing untrusted Python and JavaScript data transformations using hardware-isolated VMs rather than shared-kernel containers. Offline local images, no-network execution, CPU/RAM limits, guest-enforced timeouts, storage quotas, read-only input mounts, writable output mounts, and `--unprivileged` all worked as intended, with cold starts around 0.6–1.5 seconds and warm executions around 50 ms."
+          },
+          {
+            "type": "p",
+            "text": "I tasked Claude Fable 5 running in Claude Code for web with the following research task:"
+          },
+          {
+            "type": "quote",
+            "text": "Put https://smolmachines.com through its paces as a fast secure sandbox. Explore what it would take to use this to run untrusted Python and JavaScript code in a way that is limited in what RAM and CPU time it can take up (protection against \"while true\") with no network access and filesystem access only to designated files\nGoal is to be able to use this to execute user-provided tasks for things like data transformations"
+          },
+          {
+            "type": "p",
+            "text": "It quickly ran into a problem: the Claude Code for web environment can't run smol machines. Quoting the notes it wrote:"
+          },
+          {
+            "type": "quote",
+            "text": "This Claude Code container: Linux 6.18.5-fc-v20 (itself a Firecracker guest), 4 vCPU, 15GB RAM. No /dev/kvm, no vmx/svm CPU flags → no nested virt.\nsmolvm machine run fails as expected: \"kvm not available\".\nPlan B: GitHub Actions ubuntu runners DO expose /dev/kvm → run the real test battery via a temporary workflow on this branch, collect logs, remove workflow in final commit."
+          },
+          {
+            "type": "p",
+            "text": "And Plan B is what it did, installing smolvm and running these tests directly in a GitHub Actions runner against that branch."
+          },
+          {
+            "type": "p",
+            "text": "That was a creative solution to the environmental limits posed by Claude Code for web. Another example of Fable being relentlessly proactive."
+          }
+        ],
+        "translations": [
+          "Research\n    \n    smolmachines / smolvm as a sandbox for untrusted Python & JavaScript\n    — Testing smolvm 1.8.3 shows it is well suited for sandboxing untrusted Python and JavaScript data transformations using hardware-isolated VMs rather than shared-kernel containers. Offline local images, no-network execution, CPU/RAM limits, guest-enforced timeouts, storage quotas, read-only input mounts, writable output mounts, and `--unprivileged` all worked as intended, with cold starts around 0.6–1.5 seconds and warm executions around 50 ms.",
+          "I tasked Claude Fable 5 running in Claude Code for web with the following research task:",
+          "Put https://smolmachines.com through its paces as a fast secure sandbox. Explore what it would take to use this to run untrusted Python and JavaScript code in a way that is limited in what RAM and CPU time it can take up (protection against \"while true\") with no network access and filesystem access only to designated files\nGoal is to be able to use this to execute user-provided tasks for things like data transformations",
+          "It quickly ran into a problem: the Claude Code for web environment can't run smol machines. Quoting the notes it wrote:",
+          "This Claude Code container: Linux 6.18.5-fc-v20 (itself a Firecracker guest), 4 vCPU, 15GB RAM. No /dev/kvm, no vmx/svm CPU flags → no nested virt.\nsmolvm machine run fails as expected: \"kvm not available\".\nPlan B: GitHub Actions ubuntu runners DO expose /dev/kvm → run the real test battery via a temporary workflow on this branch, collect logs, remove workflow in final commit.",
+          "And Plan B is what it did, installing smolvm and running these tests directly in a GitHub Actions runner against that branch.",
+          "That was a creative solution to the environmental limits posed by Claude Code for web. Another example of Fable being relentlessly proactive."
+        ]
+      }
+    },
+    {
+      "slug": "287e3b90895c5b3d",
+      "title": "Quoting Jeremy Morrell",
+      "titleZh": "Quoting Jeremy Morrell",
+      "link": "https://simonwillison.net/2026/Aug/19/jeremy-morrell/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-19T22:56:31.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Quoting Jeremy Morrell",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "19th August 2026"
+          },
+          {
+            "type": "quote",
+            "text": "My hypothesis is that there is a new opportunity for Extensible Software on the web. LLMs radically lower the cost of authoring extensions, and modern sandbox primitives lower the deployment cost and provide good security boundaries. We can build our app as a solid, accountable core, and allow users to safely extend it in many directions by having LLMs fill in the missing pieces. We can give our users super powers."
+          },
+          {
+            "type": "p",
+            "text": "— Jeremy Morrell, Extensible Software in the age of LLMs"
+          },
+          {
+            "type": "p",
+            "text": "Posted 19th August 2026 at 10:56 pm"
+          },
+          {
+            "type": "h2",
+            "text": "Recent articles"
+          },
+          {
+            "type": "li",
+            "text": "Conceptual integrity and counting lines of code - 19th August 2026"
+          },
+          {
+            "type": "li",
+            "text": "Qwen 3.8 27B is excellent, but it defaults to wildly overthinking things - 16th August 2026"
+          },
+          {
+            "type": "li",
+            "text": "Now we have a timeline of the OpenAI accidental attack against Hugging Face - 7th August 2026"
+          },
+          {
+            "type": "p",
+            "text": "This is a quotation collected by Simon Willison, posted on 19th August 2026."
+          },
+          {
+            "type": "p",
+            "text": "sandboxing\n            54\n        \n    \n        \n            ai\n            2,194\n        \n    \n        \n            generative-ai\n            1,943\n        \n    \n        \n            llms\n            1,910"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e53691799f9e1e2a",
+      "title": "Conceptual integrity and counting lines of code",
+      "titleZh": "Conceptual integrity and counting lines of code",
+      "link": "https://simonwillison.net/2026/Aug/19/conceptual-integrity-and-counting-lines-of-code/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-19T22:46:07.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Conceptual integrity and counting lines of code",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "19th August 2026"
+          },
+          {
+            "type": "p",
+            "text": "Last week I recorded an episode of the Talking Postgres podcast with Claire Giordano on the subject of “How AI is changing software development”. We had a really great conversation. Here are a couple of my highlights from a lightly edited transcript (prompt to Claude: “very minor edits to remove disfluencies”)."
+          },
+          {
+            "type": "p",
+            "text": "This is the latest version of an argument I’ve been trying to build about why sometimes it does make sense to talk about lines of code as an indicator of productivity with coding agents, at 35:01:"
+          },
+          {
+            "type": "quote",
+            "text": "A lot of people will tell you it makes no sense to measure productivity in lines of code. I’d actually disagree, because there’s a hard limit. In the before-times, a software engineer could produce a few hundred lines of production-ready code per day — and 200 lines of working, debugged, production-level code is an incredibly good day. Most days you’d produce 50 or 60.\nIf agents let you produce a thousand lines of debugged code, that really is a very meaningful improvement — as long as the code is the same quality: maintainable, tested, all of that. You can get to that point with agents, but it takes a huge amount of skill and knowledge and experience. That’s what senior engineers are made of.\nI can do way more work as a single engineer than I could without agents. So you could argue, why should a company have more than one engineer? Beyond the obvious bus factor thing — a team of one is a very badly designed team — the answer is that the new limiting factor is cognitive capacity. I can churn out code a hundred times faster. I don’t have the cognitive capacity to stay on top of 100 times the amount of code. So you still need a team of engineers, so you can load balance that cognitive capacity across the team."
+          },
+          {
+            "type": "p",
+            "text": "And this section on conceptual integrity at 46:03, which Claire equated to the Winchester Mystery House!"
+          },
+          {
+            "type": "quote",
+            "text": "Simon: There’s a concept in The Mythical Man-Month — conceptual integrity — where well-designed software has an integrity to it: there are no surprises in it, it covers exactly the right domain of things, everything fits together and makes sense. That’s so much harder with coding agents, where you can have an idea for a feature, run a prompt, and five minuteslater you’ve got the feature. Your software grows little weird bumps in funny different directions.\nClaire: You know my analogy for that? The Winchester Mystery House.\nSimon: It’s got 140 rooms, because the woman who built it was the widow of the guy who invented the Winchester rifle, and her psychic told her she’d be haunted by the ghosts of everyone killed with that rifle unless she kept building the house forever. So for 40 years she kept adding new rooms.\n\nThat’s exactly the problem with coding agents and software: it’s very easy to keep adding new rooms, because the cost of adding those rooms is so much cheaper. What you end up with is something where the conceptual integrity falls apart — and then it’s harder to make decisions about it.\nIt all keeps coming back to discipline. It used to be that the discipline was enforced on you by the amount of time it took. You’d come up with an idea for a crazy feature and think “yeah, but that would take me a week — I cannot justify that, so I’ll forget about it.” If it takes an hour, it’s so much easier to justify."
+          },
+          {
+            "type": "p",
+            "text": "(Side-note: the Wikipedia article includes credible sources that dispute the story about the psychic.)"
+          }
+        ],
+        "translations": [
+          "19th August 2026",
+          "Last week I recorded an episode of the Talking Postgres podcast with Claire Giordano on the subject of “How AI is changing software development”. We had a really great conversation. Here are a couple of my highlights from a lightly edited transcript (prompt to Claude: “very minor edits to remove disfluencies”).",
+          "This is the latest version of an argument I’ve been trying to build about why sometimes it does make sense to talk about lines of code as an indicator of productivity with coding agents, at 35:01:",
+          "A lot of people will tell you it makes no sense to measure productivity in lines of code. I’d actually disagree, because there’s a hard limit. In the before-times, a software engineer could produce a few hundred lines of production-ready code per day — and 200 lines of working, debugged, production-level code is an incredibly good day. Most days you’d produce 50 or 60.\nIf agents let you produce a thousand lines of debugged code, that really is a very meaningful improvement — as long as the code is the same quality: maintainable, tested, all of that. You can get to that point with agents, but it takes a huge amount of skill and knowledge and experience. That’s what senior engineers are made of.\nI can do way more work as a single engineer than I could without agents. So you could argue, why should a company have more than one engineer? Beyond the obvious bus factor thing — a team of one is a very badly designed team — the answer is that the new limiting factor is cognitive capacity. I can churn out code a hundred times faster. I don’t have the cognitive capacity to stay on top of 100 times the amount of code. So you still need a team of engineers, so you can load balance that cognitive capacity across the team.",
+          "And this section on conceptual integrity at 46:03, which Claire equated to the Winchester Mystery House!",
+          "Simon: There’s a concept in The Mythical Man-Month — conceptual integrity — where well-designed software has an integrity to it: there are no surprises in it, it covers exactly the right domain of things, everything fits together and makes sense. That’s so much harder with coding agents, where you can have an idea for a feature, run a prompt, and five minuteslater you’ve got the feature. Your software grows little weird bumps in funny different directions.\nClaire: You know my analogy for that? The Winchester Mystery House.\nSimon: It’s got 140 rooms, because the woman who built it was the widow of the guy who invented the Winchester rifle, and her psychic told her she’d be haunted by the ghosts of everyone killed with that rifle unless she kept building the house forever. So for 40 years she kept adding new rooms.\n\nThat’s exactly the problem with coding agents and software: it’s very easy to keep adding new rooms, because the cost of adding those rooms is so much cheaper. What you end up with is something where the conceptual integrity falls apart — and then it’s harder to make decisions about it.\nIt all keeps coming back to discipline. It used to be that the discipline was enforced on you by the amount of time it took. You’d come up with an idea for a crazy feature and think “yeah, but that would take me a week — I cannot justify that, so I’ll forget about it.” If it takes an hour, it’s so much easier to justify.",
+          "(Side-note: the Wikipedia article includes credible sources that dispute the story about the psychic.)"
+        ]
+      }
+    },
+    {
+      "slug": "cb2243345b8ec903",
+      "title": "Getting the Steam Deck LCD working on a Raspberry Pi",
+      "titleZh": "Getting the Steam Deck LCD working on a Raspberry Pi",
+      "link": "https://www.jeffgeerling.com/blog/2026/steam-deck-lcd-pi-hat/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-08-20T14:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Getting the Steam Deck LCD working on a Raspberry Pi",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Aug 20, 2026"
+          },
+          {
+            "type": "p",
+            "text": "The BOE TV070WXM-TV0 LCD used in the original Steam Deck can be had for around $30. It's a serviceable 7\" touchscreen with 400 nits of brightness and a resolution of 1280x800 (for a sharp 216 ppi)."
+          },
+          {
+            "type": "p",
+            "text": "The specs are a lot nicer than the Pi 7\" Touch Display, which costs twice as much, with giant bezels and half the resolution!"
+          },
+          {
+            "type": "p",
+            "text": "Until today, the Steam Deck LCD didn't work with a Raspberry Pi. But the folks at Scandent were trying to standardize on a mass-market touchscreen for one of their own devices, and built a Linux kernel driver for it which they intend to upstream."
+          },
+          {
+            "type": "p",
+            "text": "Not only that, they've open sourced a Pi HAT design which adapts the Raspberry Pi 5 or CM4's MIPI connection1 to the special 39-pin connector on the Steam Deck LCD."
+          },
+          {
+            "type": "p",
+            "text": "The repository linked above has detailed build instructions, and the KiCAD project if you'd like to build a HAT of your own. Scandent was kind enough to send me not one but two prototype HATs (the first one was damaged in shipping), and I put together this setup for testing:"
+          },
+          {
+            "type": "p",
+            "text": "Scandent isn't planning on productizing the HAT, they just wanted a decent touchscreen they could use that will be in good supply for at least a few years. Making it more accessible to hobbyists or others building Pi-based touchscreen projects should strengthen the market for this LCD, too."
+          },
+          {
+            "type": "p",
+            "text": "From what I understand, LCD panels like these are often built for a specific purpose, and if a product line that uses it stops being manufactured, the specific LCD gets discontinued at some point, meaning downstream users have to work on supporting another one."
+          },
+          {
+            "type": "p",
+            "text": "Just like switching from one SoC to another creates annoying rework, trying to sync up hardware signaling and a working kernel driver with multiple touchscreens is a pain."
+          },
+          {
+            "type": "p",
+            "text": "I tested the Steam Deck LCD on a Raspberry Pi 5, and found it to work quite well. In person, I didn't see any real flickering or waviness, and brightness was good, even under my studio lights."
+          },
+          {
+            "type": "p",
+            "text": "The touch targets are a little bit iffy at the Pi's default resolution scaling, but if you bump that up or build your own HMI/UI, you can make this thing quite usable. Maybe someone out there will build out the rest of the hardware and a 3D print for a RetroPie-based open source Steam Deck?"
+          },
+          {
+            "type": "li",
+            "text": "The CM5 should work, but has not yet been tested. ↩︎"
+          }
+        ],
+        "translations": [
+          "Aug 20, 2026",
+          "The BOE TV070WXM-TV0 LCD used in the original Steam Deck can be had for around $30. It's a serviceable 7\" touchscreen with 400 nits of brightness and a resolution of 1280x800 (for a sharp 216 ppi).",
+          "The specs are a lot nicer than the Pi 7\" Touch Display, which costs twice as much, with giant bezels and half the resolution!",
+          "Until today, the Steam Deck LCD didn't work with a Raspberry Pi. But the folks at Scandent were trying to standardize on a mass-market touchscreen for one of their own devices, and built a Linux kernel driver for it which they intend to upstream.",
+          "Not only that, they've open sourced a Pi HAT design which adapts the Raspberry Pi 5 or CM4's MIPI connection1 to the special 39-pin connector on the Steam Deck LCD.",
+          "The repository linked above has detailed build instructions, and the KiCAD project if you'd like to build a HAT of your own. Scandent was kind enough to send me not one but two prototype HATs (the first one was damaged in shipping), and I put together this setup for testing:",
+          "Scandent isn't planning on productizing the HAT, they just wanted a decent touchscreen they could use that will be in good supply for at least a few years. Making it more accessible to hobbyists or others building Pi-based touchscreen projects should strengthen the market for this LCD, too.",
+          "From what I understand, LCD panels like these are often built for a specific purpose, and if a product line that uses it stops being manufactured, the specific LCD gets discontinued at some point, meaning downstream users have to work on supporting another one.",
+          "Just like switching from one SoC to another creates annoying rework, trying to sync up hardware signaling and a working kernel driver with multiple touchscreens is a pain.",
+          "I tested the Steam Deck LCD on a Raspberry Pi 5, and found it to work quite well. In person, I didn't see any real flickering or waviness, and brightness was good, even under my studio lights.",
+          "The touch targets are a little bit iffy at the Pi's default resolution scaling, but if you bump that up or build your own HMI/UI, you can make this thing quite usable. Maybe someone out there will build out the rest of the hardware and a 3D print for a RetroPie-based open source Steam Deck?",
+          "The CM5 should work, but has not yet been tested. ↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "482b6d4c0a06921b",
+      "title": "AI-generated ASCII diagrams",
+      "titleZh": "AI-generated ASCII diagrams",
+      "link": "https://www.johndcook.com/blog/2026/08/20/ai-generated-ascii-diagrams/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-08-20T13:48:43.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "AI-generated ASCII diagrams",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I like AI-generated ASCII diagrams. Because nobody would ask AI to generate ASCII diagrams, and so, it’s congruous. I like incongruity [1]."
+          },
+          {
+            "type": "p",
+            "text": "Aside from the incongruity of using a gazillion-parameter neural network to make 1970’s style ASCII art, ASCII diagrams have some uses. They’re absolutely tiny compared to image files. But more importantly they can be inserted into plain text files, such as source code or markdown. A diagram embedded directly into a source file cannot become separated from the code."
+          },
+          {
+            "type": "p",
+            "text": "ASCII diagrams are tedious to create, though there are tools to mitigate the tedium. But if an AI can generate the diagram, the tedium goes away."
+          },
+          {
+            "type": "p",
+            "text": "I was curious how well Claude could create ASCII diagrams, so I tried a few examples. I hope these render well in whatever format you’re reading this post. They look fine for me previewing the post in a browser. I expect they might not turn out so well in an RSS reader."
+          },
+          {
+            "type": "p",
+            "text": "I asked it to reproduce the graphs from my recently post on the graph imbalance theorem and the first diagram turned out nicely."
+          },
+          {
+            "type": "code",
+            "text": "                 +-------+                                +-------+\n                 |   A   |--------------------------------|   B   |\n                 +-------+                                +-------+\n                     |                                        |\n                     |                                        |\n   ------------------|------------------             ---------|---------\n   |        |        |        |        |             |        |        |\n   |        |        |        |        |             |        |        |\n+-----+  +-----+  +-----+  +-----+  +-----+       +-----+  +-----+  +-----+\n| a0  |  | a1  |  | a2  |  | a3  |  | a4  |       | b0  |  | b1  |  | b2  |\n+-----+  +-----+  +-----+  +-----+  +-----+       +-----+  +-----+  +-----+"
+          },
+          {
+            "type": "p",
+            "text": "The second network is more complicated and so the corresponding ASCII diagram is hard to read."
+          },
+          {
+            "type": "code",
+            "text": "   +----------------------------------------------------------------+\n   |                                                                |\n   |+-----------------------------------------------+               |\n   ||                                               |               |\n   ||+-------------------------------+              |               |\n  +-------+       +-------+       +-------+       +-------+       +-------+\n  |  R1   |-------|  R2   |-------|  R3   |-------|  R4   |-------|  R5   |\n  +-------+       +-------+       +-------+       +-------+       +-------+\n      |             | | |          |   |           |   |           |  |  |\n     ++             | | |          |   |           |   |           |  |  |\n     | +---------------------------+   |           |   |           |  |  |\n     | |            ++| |              |           |   |           |  |  |\n     | |             || +--------------+           |   |           |  |  |\n     | |             || |  +---------------------------------------+  |  |\n     | |             |+-|--|-------------+         |   |              |  |\n     | |             |  |  |             |  +------+   |              |  |\n     | |             |  |  |             |  |  +----------------------+  |\n     | |             |  +--|-------------|--|--|-------------+           |\n     | |             |  |  |             |  |  |       +-----|--+        |\n     | |             |  |  |             |  |  |             |  |  +-----+\n     | |             |  |  |             |  |  |             |  |  |\n  +-------+         +-------+           +-------+           +-------+\n  |  G1   |         |  B1   |           |  B2   |           |  B3   |\n  +-------+         +-------+           +-------+           +-------+"
+          },
+          {
+            "type": "p",
+            "text": "For a third example, here is a fairly complicated diagram that nevertheless lends itself to a readable ASCII diagram. It’s a Feistel network diagram for DES encryption."
+          },
+          {
+            "type": "code",
+            "text": "   +-------------+                    +-------------+\n   |   L(i-1)    |                    |   R(i-1)    |--------\n   +-------------+                    +-------------+       |\n          |                                  |              |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |   E (expand 32->48)   |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |     XOR with K(i)     |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |    S-boxes S1..S8     |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |    P (permutation)    |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                                  |              |\n          |            +-------+             |              |\n          +------------|  XOR  |-------------+              |\n                       +-------+                            |\n                           |                                |\n          +----------------|--------------------------------+\n          |                +------------------+\n          |                                   |\n   +-------------+                    +-------------+\n   |    L(i)     |                    |    R(i)     |\n   +-------------+                    +-------------+"
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "The worst tool for the job"
+          },
+          {
+            "type": "li",
+            "text": "ASCII armor"
+          },
+          {
+            "type": "li",
+            "text": "Memorizing the ASCII table"
+          },
+          {
+            "type": "p",
+            "text": "[1] See Christian Wolff’s discussion of dogs playing poker in The Accountant (2016)."
+          }
+        ],
+        "translations": [
+          "I like AI-generated ASCII diagrams. Because nobody would ask AI to generate ASCII diagrams, and so, it’s congruous. I like incongruity [1].",
+          "Aside from the incongruity of using a gazillion-parameter neural network to make 1970’s style ASCII art, ASCII diagrams have some uses. They’re absolutely tiny compared to image files. But more importantly they can be inserted into plain text files, such as source code or markdown. A diagram embedded directly into a source file cannot become separated from the code.",
+          "ASCII diagrams are tedious to create, though there are tools to mitigate the tedium. But if an AI can generate the diagram, the tedium goes away.",
+          "I was curious how well Claude could create ASCII diagrams, so I tried a few examples. I hope these render well in whatever format you’re reading this post. They look fine for me previewing the post in a browser. I expect they might not turn out so well in an RSS reader.",
+          "I asked it to reproduce the graphs from my recently post on the graph imbalance theorem and the first diagram turned out nicely.",
+          "+-------+                                +-------+\n                 |   A   |--------------------------------|   B   |\n                 +-------+                                +-------+\n                     |                                        |\n                     |                                        |\n   ------------------|------------------             ---------|---------\n   |        |        |        |        |             |        |        |\n   |        |        |        |        |             |        |        |\n+-----+  +-----+  +-----+  +-----+  +-----+       +-----+  +-----+  +-----+\n| a0  |  | a1  |  | a2  |  | a3  |  | a4  |       | b0  |  | b1  |  | b2  |\n+-----+  +-----+  +-----+  +-----+  +-----+       +-----+  +-----+  +-----+",
+          "The second network is more complicated and so the corresponding ASCII diagram is hard to read.",
+          "+----------------------------------------------------------------+\n   |                                                                |\n   |+-----------------------------------------------+               |\n   ||                                               |               |\n   ||+-------------------------------+              |               |\n  +-------+       +-------+       +-------+       +-------+       +-------+\n  |  R1   |-------|  R2   |-------|  R3   |-------|  R4   |-------|  R5   |\n  +-------+       +-------+       +-------+       +-------+       +-------+\n      |             | | |          |   |           |   |           |  |  |\n     ++             | | |          |   |           |   |           |  |  |\n     | +---------------------------+   |           |   |           |  |  |\n     | |            ++| |              |           |   |           |  |  |\n     | |             || +--------------+           |   |           |  |  |\n     | |             || |  +---------------------------------------+  |  |\n     | |             |+-|--|-------------+         |   |              |  |\n     | |             |  |  |             |  +------+   |              |  |\n     | |             |  |  |             |  |  +----------------------+  |\n     | |             |  +--|-------------|--|--|-------------+           |\n     | |             |  |  |             |  |  |       +-----|--+        |\n     | |             |  |  |             |  |  |             |  |  +-----+\n     | |             |  |  |             |  |  |             |  |  |\n  +-------+         +-------+           +-------+           +-------+\n  |  G1   |         |  B1   |           |  B2   |           |  B3   |\n  +-------+         +-------+           +-------+           +-------+",
+          "For a third example, here is a fairly complicated diagram that nevertheless lends itself to a readable ASCII diagram. It’s a Feistel network diagram for DES encryption.",
+          "+-------------+                    +-------------+\n   |   L(i-1)    |                    |   R(i-1)    |--------\n   +-------------+                    +-------------+       |\n          |                                  |              |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |   E (expand 32->48)   |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |     XOR with K(i)     |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |    S-boxes S1..S8     |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                      +-----------------------+  |\n          |                      |    P (permutation)    |  |\n          |                      +-----------------------+  |\n          |                                  |              |\n          |                                  |              |\n          |            +-------+             |              |\n          +------------|  XOR  |-------------+              |\n                       +-------+                            |\n                           |                                |\n          +----------------|--------------------------------+\n          |                +------------------+\n          |                                   |\n   +-------------+                    +-------------+\n   |    L(i)     |                    |    R(i)     |\n   +-------------+                    +-------------+",
+          "Related posts",
+          "The worst tool for the job",
+          "ASCII armor",
+          "Memorizing the ASCII table",
+          "[1] See Christian Wolff’s discussion of dogs playing poker in The Accountant (2016)."
+        ]
+      }
+    },
+    {
+      "slug": "5e96decc1a6e24e3",
+      "title": "Use the built-in GELU, don't roll your own!",
+      "titleZh": "Use the built-in GELU, don't roll your own!",
+      "link": "https://www.gilesthomas.com/2026/08/built-in-gelu",
+      "sourceName": "gilesthomas.com",
+      "sourceUrl": "https://gilesthomas.com",
+      "pubDate": "2026-08-20T02:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Use the built-in GELU, don't roll your own!",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Giles Thomas",
+        "siteName": "Giles Thomas",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Writing the post that I wished I'd found when I started learning whatever it was..."
+          },
+          {
+            "type": "p",
+            "text": "Archives"
+          },
+          {
+            "type": "p",
+            "text": "Categories"
+          },
+          {
+            "type": "p",
+            "text": "Blogroll"
+          },
+          {
+            "type": "p",
+            "text": "Unsurprisingly, PyTorch's own built-in GELU function\nis faster than the hand-rolled one I've been using to date.  But I was surprised at\nhow much faster using it made things when training my models.  I discovered this\naccidentally just now while working on something unrelated, but am logging the details\nhere for anyone else that might find it useful."
+          },
+          {
+            "type": "p",
+            "text": "The headline numbers: the same code, training the same model on the same data, ran\nat about:"
+          },
+          {
+            "type": "li",
+            "text": "21,000 tokens per second using the hand-rolled GELU from Sebastian Raschka's book\n\"Build a Large Language Model (from Scratch)\"."
+          },
+          {
+            "type": "li",
+            "text": "25,000 tokens per second using PyTorch's built-in GELU with no arguments."
+          },
+          {
+            "type": "li",
+            "text": "25,000 tokens per second using the built-in GELU with approximate=\"tanh\", which\nuses the same maths as Raschka's version under the hood."
+          },
+          {
+            "type": "p",
+            "text": "That's a 20% increase in throughput for both of the built-in versions -- definitely nothing to be sneezed at."
+          },
+          {
+            "type": "p",
+            "text": "And what is particularly\ninteresting is that there aren't that many GELUs going on -- it's a GPT-2 small-style\nmodel, with 12 layers.  So that's 12 GELUs handling tensors\nshaped (batch_size, seq_len, 4 * d_emb), which is (6, 1024, 3072) for my training setup.\nGiven that the rest of the model is doing all of the normal full attention stuff for GPT-2, it's\nreally surprising that the GELUs alone must have been taking up so much of the time.  The throughput\nnumbers mean that we must have been spending about 17% of our time on the extra overhead from the hand-rolled\nversion, so that sets a lower bound for how much time the GELUs were taking up."
+          },
+          {
+            "type": "p",
+            "text": "More info below the fold."
+          },
+          {
+            "type": "p",
+            "text": "Back when I was doing the \"interventions\" part of my LLM from scratch series, training\ndozens of GPT-2 small-sized models in the cloud and on my local machines, to keep things simple I used\nthe original model code from Raschka's book.\nThat happens to have its own implementation of the GELU function --\nyou can see my copy here."
+          },
+          {
+            "type": "p",
+            "text": "I'm not that sure why the hand-rolled version is in there -- he covers the maths, but the specific implementation isn't explained\nin that much depth, and it seems rather like boilerplate, just a \"type this in and use it\"\nkind of thing.  By contrast, for example, while he does explain the maths behind cross-entropy loss in similar detail,\nwe use the built-in function for it rather than coding it up ourselves."
+          },
+          {
+            "type": "p",
+            "text": "When I switched to using JAX for my own from-scratch implementation,\nI decided to not bother porting the boilerplate, and just used JAX's own built-in version."
+          },
+          {
+            "type": "p",
+            "text": "I was revisiting the PyTorch code -- I'm in the process of extending it with mixture-of-experts\nsupport, about which more in a later post -- and decided to switch from the hand-written GELU to the PyTorch one just to\ntidy things up a bit.\nI noticed something interesting -- my new MoE code suddenly seemed to speed up."
+          },
+          {
+            "type": "p",
+            "text": "Was that a mirage?  Or had I discovered part -- or even all -- of the reason why the\nJAX code was so much faster than the PyTorch code?  With PyTorch, I was typically\ngetting training speeds of about 21,000 tokens per second, while in JAX I was getting 24,000 tps or so.\nI'd been chalking that up to JAX's JIT compilation, but could it have been just a result\nof a random implementation choice I'd made?"
+          },
+          {
+            "type": "p",
+            "text": "I did three partial test training runs, letting each one run for 20 minutes to allow the\ntraining speed to settle down from any startup overhead.  Firstly, with the old\nhand-coded GELU:"
+          },
+          {
+            "type": "code",
+            "text": "giles@poppy:~/Dev/ddp-base-model-from-scratch ((HEAD detached at 16dd249))$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 3173.90it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=19,982]\n\n\nCheckpoint\n\nContinuing training\n  1%|▊                                                                                                     | 257/33165 [20:07<42:53:57,  4.69s/it, loss=6.570, tps=20,920]"
+          },
+          {
+            "type": "p",
+            "text": "So it was getting 20,920 on average over those 257 global steps.  That speed was in line with the original run\nof the configuration I was using."
+          },
+          {
+            "type": "p",
+            "text": "Next, I introduced the built-in PyTorch GELU with no arguments:"
+          },
+          {
+            "type": "code",
+            "text": "-\n-class GELU(nn.Module):\n-\n-    def forward(self, x):\n-        return 0.5 * x * (1 + torch.tanh(torch.sqrt(torch.tensor(2.0 / torch.pi)) * (x + 0.044715 * torch.pow(x, 3))))\n-\n-\n-\n class FeedForward(nn.Module):\n\n     def __init__(self, cfg):\n         super().__init__()\n         self.layers = nn.Sequential(\n             nn.Linear(cfg[\"emb_dim\"], cfg[\"emb_dim\"] * 4),\n-            GELU(),\n+            nn.GELU(),\n             nn.Linear(cfg[\"emb_dim\"] * 4, cfg[\"emb_dim\"])\n         )"
+          },
+          {
+            "type": "p",
+            "text": "That does the full calculations for GELU, rather than using the tanh-based approximation that\nthe hand-rolled code did.  After 20 minutes, it looked like this:"
+          },
+          {
+            "type": "code",
+            "text": "giles@poppy:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 11222.22it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=23,953]\n\n\nCheckpoint\n\nContinuing training\n  1%|▉                                                                                                     | 307/33165 [20:00<35:40:59,  3.91s/it, loss=6.331, tps=25,134]"
+          },
+          {
+            "type": "p",
+            "text": "So this time we were getting 25,134 tokens per second -- 20% faster!"
+          },
+          {
+            "type": "p",
+            "text": "By default, PyTorch's GELU uses an exact calculation of the function -- the hand-written\ncode from the book uses an approximation using tanh.  Luckily, you can get that same\napproximation from PyTorch:"
+          },
+          {
+            "type": "code",
+            "text": "         super().__init__()\n         self.layers = nn.Sequential(\n             nn.Linear(cfg[\"emb_dim\"], cfg[\"emb_dim\"] * 4),\n-            nn.GELU(),\n+            nn.GELU(approximate=\"tanh\"),\n             nn.Linear(cfg[\"emb_dim\"] * 4, cfg[\"emb_dim\"])\n         )"
+          },
+          {
+            "type": "p",
+            "text": "So, training with that for 20 minutes:"
+          },
+          {
+            "type": "code",
+            "text": "giles@poppy:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 4115.09it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=23,875]\n\n\nCheckpoint\n\nContinuing training\n  1%|▉                                                                                                     | 307/33165 [20:00<35:39:42,  3.91s/it, loss=6.332, tps=25,142]"
+          },
+          {
+            "type": "p",
+            "text": "25,142 tokens per second -- basically the same as the non-approximate version."
+          },
+          {
+            "type": "p",
+            "text": "So: switching to the built-in GELU made my PyTorch code run 20% faster, at about 25,000 tps\nrather than 21,000."
+          },
+          {
+            "type": "p",
+            "text": "My JAX code, which used JAX's built-in GELU, ran at around 24,000 tps.  I'd actually\nfound that rather surprising, because in JAX I was training in full-fat 32-bit floating point, while in PyTorch I was using\nAutomatic Mixed Precision (AMP) -- a special mode that allows it to use 16-bit calculations\nwhere it won't hurt the model much."
+          },
+          {
+            "type": "p",
+            "text": "I'd found that\nAMP gave PyTorch a huge speedup -- from 15,402 tps to 19,797 on one test.  So JAX without AMP\nbeing so much faster than PyTorch with AMP was a bit of a surprise.  Its JIT is pretty\namazing, but I didn't expect it to be that much faster."
+          },
+          {
+            "type": "p",
+            "text": "Now I think that we have at least part of an explanation.  I was using JAX's\nbuilt-in GELU (interestingly, with its default parameters, which means that it used the tanh\napproximation), but the PyTorch code was using the hand-rolled one, and that unduly\npenalised it and erased some of the gains it got from AMP."
+          },
+          {
+            "type": "p",
+            "text": "If I really wanted to dig into this, I suppose I might try JAX with a hand-rolled GELU\nto see what happened.  My guess is that because of its JIT, it might actually handle it\nbetter -- the whole hand-rolled thing could be compiled into one thing on the GPU.  Perhaps\nit would also be interesting to try the non-AMP PyTorch code with the built-in GELU.\nBut I doubt that would really be the best use of my time (and my electricity bill),\nso I'll leave it here."
+          },
+          {
+            "type": "p",
+            "text": "On the other hand, I do intend to have a look at torch.compile in the future, to see\nwhat kind of speedup I can get from it.  And it might be able to compile and fuse together\nthe hand-rolled GELU -- so that would be an interesting thing to experiment with in that\npost: does the built-in GELU advantage disappear if we're compiling?"
+          },
+          {
+            "type": "p",
+            "text": "But anyway, for now, lesson learned: use built-in PyTorch modules when you can.\nIt's a pretty obvious one ;-)"
+          },
+          {
+            "type": "p",
+            "text": "[Update] On X, Sebastian Raschka noted that\nhe used the approximate version of GELU in his code so that the models were compatible with the\nOpenAI weights -- they were trained with that version, so they may behave slightly differently\nif you use the \"pure\" version.  That's a great point, and so I've updated my own copy of the\ncode to use approximate=\"tanh\"."
+          }
+        ],
+        "translations": [
+          "Writing the post that I wished I'd found when I started learning whatever it was...",
+          "Archives",
+          "Categories",
+          "Blogroll",
+          "Unsurprisingly, PyTorch's own built-in GELU function\nis faster than the hand-rolled one I've been using to date.  But I was surprised at\nhow much faster using it made things when training my models.  I discovered this\naccidentally just now while working on something unrelated, but am logging the details\nhere for anyone else that might find it useful.",
+          "The headline numbers: the same code, training the same model on the same data, ran\nat about:",
+          "21,000 tokens per second using the hand-rolled GELU from Sebastian Raschka's book\n\"Build a Large Language Model (from Scratch)\".",
+          "25,000 tokens per second using PyTorch's built-in GELU with no arguments.",
+          "25,000 tokens per second using the built-in GELU with approximate=\"tanh\", which\nuses the same maths as Raschka's version under the hood.",
+          "That's a 20% increase in throughput for both of the built-in versions -- definitely nothing to be sneezed at.",
+          "And what is particularly\ninteresting is that there aren't that many GELUs going on -- it's a GPT-2 small-style\nmodel, with 12 layers.  So that's 12 GELUs handling tensors\nshaped (batch_size, seq_len, 4 * d_emb), which is (6, 1024, 3072) for my training setup.\nGiven that the rest of the model is doing all of the normal full attention stuff for GPT-2, it's\nreally surprising that the GELUs alone must have been taking up so much of the time.  The throughput\nnumbers mean that we must have been spending about 17% of our time on the extra overhead from the hand-rolled\nversion, so that sets a lower bound for how much time the GELUs were taking up.",
+          "More info below the fold.",
+          "Back when I was doing the \"interventions\" part of my LLM from scratch series, training\ndozens of GPT-2 small-sized models in the cloud and on my local machines, to keep things simple I used\nthe original model code from Raschka's book.\nThat happens to have its own implementation of the GELU function --\nyou can see my copy here.",
+          "I'm not that sure why the hand-rolled version is in there -- he covers the maths, but the specific implementation isn't explained\nin that much depth, and it seems rather like boilerplate, just a \"type this in and use it\"\nkind of thing.  By contrast, for example, while he does explain the maths behind cross-entropy loss in similar detail,\nwe use the built-in function for it rather than coding it up ourselves.",
+          "When I switched to using JAX for my own from-scratch implementation,\nI decided to not bother porting the boilerplate, and just used JAX's own built-in version.",
+          "I was revisiting the PyTorch code -- I'm in the process of extending it with mixture-of-experts\nsupport, about which more in a later post -- and decided to switch from the hand-written GELU to the PyTorch one just to\ntidy things up a bit.\nI noticed something interesting -- my new MoE code suddenly seemed to speed up.",
+          "Was that a mirage?  Or had I discovered part -- or even all -- of the reason why the\nJAX code was so much faster than the PyTorch code?  With PyTorch, I was typically\ngetting training speeds of about 21,000 tokens per second, while in JAX I was getting 24,000 tps or so.\nI'd been chalking that up to JAX's JIT compilation, but could it have been just a result\nof a random implementation choice I'd made?",
+          "I did three partial test training runs, letting each one run for 20 minutes to allow the\ntraining speed to settle down from any startup overhead.  Firstly, with the old\nhand-coded GELU:",
+          "giles@poppy:~/Dev/ddp-base-model-from-scratch ((HEAD detached at 16dd249))$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 3173.90it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=19,982]\n\n\nCheckpoint\n\nContinuing training\n  1%|▊                                                                                                     | 257/33165 [20:07<42:53:57,  4.69s/it, loss=6.570, tps=20,920]",
+          "So it was getting 20,920 on average over those 257 global steps.  That speed was in line with the original run\nof the configuration I was using.",
+          "Next, I introduced the built-in PyTorch GELU with no arguments:",
+          "-\n-class GELU(nn.Module):\n-\n-    def forward(self, x):\n-        return 0.5 * x * (1 + torch.tanh(torch.sqrt(torch.tensor(2.0 / torch.pi)) * (x + 0.044715 * torch.pow(x, 3))))\n-\n-\n-\n class FeedForward(nn.Module):\n\n     def __init__(self, cfg):\n         super().__init__()\n         self.layers = nn.Sequential(\n             nn.Linear(cfg[\"emb_dim\"], cfg[\"emb_dim\"] * 4),\n-            GELU(),\n+            nn.GELU(),\n             nn.Linear(cfg[\"emb_dim\"] * 4, cfg[\"emb_dim\"])\n         )",
+          "That does the full calculations for GELU, rather than using the tanh-based approximation that\nthe hand-rolled code did.  After 20 minutes, it looked like this:",
+          "giles@poppy:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 11222.22it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=23,953]\n\n\nCheckpoint\n\nContinuing training\n  1%|▉                                                                                                     | 307/33165 [20:00<35:40:59,  3.91s/it, loss=6.331, tps=25,134]",
+          "So this time we were getting 25,134 tokens per second -- 20% faster!",
+          "By default, PyTorch's GELU uses an exact calculation of the function -- the hand-written\ncode from the book uses an approximation using tanh.  Luckily, you can get that same\napproximation from PyTorch:",
+          "super().__init__()\n         self.layers = nn.Sequential(\n             nn.Linear(cfg[\"emb_dim\"], cfg[\"emb_dim\"] * 4),\n-            nn.GELU(),\n+            nn.GELU(approximate=\"tanh\"),\n             nn.Linear(cfg[\"emb_dim\"] * 4, cfg[\"emb_dim\"])\n         )",
+          "So, training with that for 20 minutes:",
+          "giles@poppy:~/Dev/ddp-base-model-from-scratch (main)$ uv run torchrun --nproc_per_node=1 ddp_train.py 1xrtx3090-baseline datasets/\nFetching 4 files: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00<00:00, 4115.09it/s]\nStarting rank 0 training at global step 0\n  0%|                                                                                                                  | 0/33165 [00:04<?, ?it/s, loss=10.991, tps=23,875]\n\n\nCheckpoint\n\nContinuing training\n  1%|▉                                                                                                     | 307/33165 [20:00<35:39:42,  3.91s/it, loss=6.332, tps=25,142]",
+          "25,142 tokens per second -- basically the same as the non-approximate version.",
+          "So: switching to the built-in GELU made my PyTorch code run 20% faster, at about 25,000 tps\nrather than 21,000.",
+          "My JAX code, which used JAX's built-in GELU, ran at around 24,000 tps.  I'd actually\nfound that rather surprising, because in JAX I was training in full-fat 32-bit floating point, while in PyTorch I was using\nAutomatic Mixed Precision (AMP) -- a special mode that allows it to use 16-bit calculations\nwhere it won't hurt the model much.",
+          "I'd found that\nAMP gave PyTorch a huge speedup -- from 15,402 tps to 19,797 on one test.  So JAX without AMP\nbeing so much faster than PyTorch with AMP was a bit of a surprise.  Its JIT is pretty\namazing, but I didn't expect it to be that much faster.",
+          "Now I think that we have at least part of an explanation.  I was using JAX's\nbuilt-in GELU (interestingly, with its default parameters, which means that it used the tanh\napproximation), but the PyTorch code was using the hand-rolled one, and that unduly\npenalised it and erased some of the gains it got from AMP.",
+          "If I really wanted to dig into this, I suppose I might try JAX with a hand-rolled GELU\nto see what happened.  My guess is that because of its JIT, it might actually handle it\nbetter -- the whole hand-rolled thing could be compiled into one thing on the GPU.  Perhaps\nit would also be interesting to try the non-AMP PyTorch code with the built-in GELU.\nBut I doubt that would really be the best use of my time (and my electricity bill),\nso I'll leave it here.",
+          "On the other hand, I do intend to have a look at torch.compile in the future, to see\nwhat kind of speedup I can get from it.  And it might be able to compile and fuse together\nthe hand-rolled GELU -- so that would be an interesting thing to experiment with in that\npost: does the built-in GELU advantage disappear if we're compiling?",
+          "But anyway, for now, lesson learned: use built-in PyTorch modules when you can.\nIt's a pretty obvious one ;-)",
+          "[Update] On X, Sebastian Raschka noted that\nhe used the approximate version of GELU in his code so that the models were compatible with the\nOpenAI weights -- they were trained with that version, so they may behave slightly differently\nif you use the \"pure\" version.  That's a great point, and so I've updated my own copy of the\ncode to use approximate=\"tanh\"."
+        ]
+      }
+    },
+    {
+      "slug": "bed872f3bfaba3a9",
+      "title": "Issues in the Repo",
+      "titleZh": "Issues in the Repo",
+      "link": "https://nesbitt.io/2026/08/20/issues-in-the-repo.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-08-20T09:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Issues in the Repo",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "GitHub had a rough Monday this week, with git operations, Actions, and the issue tracker all unavailable for several hours. Code being unreachable during a forge outage is annoying but survivable because every contributor already has a full clone. Issues and pull request threads going dark is a different matter, since for most projects those exist only in GitHub’s database and nowhere else. I asked on Mastodon about tools that keep issue and review data inside the repository so it clones and pushes with the code, and got pointed at more projects than I expected, spanning about twenty years of people having a go at this."
+          },
+          {
+            "type": "p",
+            "text": "The projects sort by where they physically put the data, and each storage location brings its own answers to the same handful of questions: whether a plain git clone fetches it, what happens when two people edit the same issue offline and then both push, whether you can read it without the tool installed, whether it survives being pushed to a bare git host that has no support for the tool, and who counts as the author of an issue when there are no forge accounts. I wrote about git’s extension points last year and several of these tools use the custom-ref mechanism from that post, but here I’m looking at the data model rather than the plumbing."
+          },
+          {
+            "type": "h3",
+            "text": "Files in the working tree"
+          },
+          {
+            "type": "p",
+            "text": "The oldest approach is to make each issue a text file, or a directory of files, checked in next to the source. Bugs Everywhere did this in 2005 for Bazaar and later added git and Mercurial backends, and ditz stored issues as YAML from 2008. More recently GitRoot builds an entire self-hosted forge on the same idea, keeping issues as issues/<id>-<slug>.md with front-matter status fields, users and permissions as YAML under .gitroot/, and a small server that renders the lot as a web UI. Matthew Martin pointed at his own ticket directory that reuses keep-a-changelog fragments as lightweight work items with no tooling at all, which is about as minimal as this pattern gets."
+          },
+          {
+            "type": "p",
+            "text": "In Diomidis Spinellis’s git-issue the .issues/ directory is itself a nested git repository with its own .git, sha-bucketed as issues/ef/1a04f.../description, .../tags, .../assignee and so on. That keeps the outer project’s history untouched, though the outer clone then doesn’t carry the issues at all."
+          },
+          {
+            "type": "p",
+            "text": "Because the issues are ordinary tracked files, everything git already does works with no extra configuration: git clone fetches them, grep -r searches them, cat reads them, git bundle packs them, any dumb HTTP host or cgit instance serves them, and git log -p .issues/ shows who changed what and when. Concurrent edits to the same issue become a normal three-way text merge. That works cleanly when two people append separate comments to the bottom of a file, and produces a real conflict when they both change the title line, which you resolve the same way you’d resolve a conflict in code. The author of an issue is whoever git blame says created the file, backed by whatever commit signing the project already uses, so identity comes from git’s existing model rather than needing its own."
+          },
+          {
+            "type": "p",
+            "text": "The drawback is that issue history and code history share one commit graph. On a busy project git log fills with “reword issue #34” interleaved with real changes, git bisect steps through issue-edit commits, and creating a feature branch forks the issue state along with the code, so an issue closed on the branch shows as open again the moment you switch back to main. Most of these tools work around the log noise by making each issue operation its own commit with a conventional prefix that’s easy to --invert-grep away, but the branching problem is unavoidable while mutable metadata is in the same tree as the code it describes."
+          },
+          {
+            "type": "h3",
+            "text": "Orphan branch"
+          },
+          {
+            "type": "p",
+            "text": "An orphan branch is a ref under refs/heads/ whose root commit has no parent, so it shares no history with main and its files never appear in a normal checkout. Scott Chacon’s ticgit from 2008 and the later ticgit-ng fork keep issues on a branch literally called ticgit, with each issue as a directory in that branch’s tree, and GitHub’s old gh-pages convention used the same mechanism for documentation. The very new haxy forge from the xit project puts an event log on refs/heads/haxy/events where each commit has an empty tree and the commit message is a JSON event describing an issue creation, comment, or status change; the server replays the log to build its state."
+          },
+          {
+            "type": "p",
+            "text": "The tool reads and writes the branch through plumbing or a second worktree, so git log on main stays free of issue noise, merging concurrent edits works the same as for any files on a branch, and the issue author is whoever authored the commit on the orphan branch. Because the ref is under refs/heads/ a default git clone fetches it automatically, which is the one clear advantage this has over the notes and custom-ref approaches below."
+          },
+          {
+            "type": "code",
+            "text": "$ git ls-tree ticgit\n040000 tree 9b721cc...  1206206148_add-attachment-to-ticket_138\n040000 tree 5d14214...  1206206166_download-attached-file_112\n\n$ git ls-tree ticgit:1206206148_add-attachment-to-ticket_138\n100644 blob cfdb466...  [email protected]\n100644 blob 3074cf0...  [email protected]\n100644 blob f510327...  STATE_open\n100644 blob 6d44874...  TAG_attach\n100644 blob 9ebd07e...  TICKET_ID"
+          },
+          {
+            "type": "p",
+            "text": "Ticgit encodes almost everything in filenames (STATE_open, TAG_attach, ASSIGNED_<email>) so git ls-tree alone shows the state of an issue without reading any blobs. Haxy puts everything in the commit message instead, so git log haxy/events is the entire database, and in both cases the data is legible with stock git and no extra tool installed."
+          },
+          {
+            "type": "p",
+            "text": "The trouble with an orphan branch is that it shows up in git branch -a looking like any other branch, so on a project with enough contributors someone will eventually delete the “stale” ticgit branch while tidying up. A git push --prune or git push --mirror from a clone made with --single-branch, or from a CI job that only fetched main, deletes it on the remote because the local side has no matching ref. Branch protection on most forges is pattern-based (main, release/*) and won’t cover a branch called ticgit unless someone remembers to add it."
+          },
+          {
+            "type": "p",
+            "text": "Checking the orphan out in your only working tree swaps every file for the issue files, which is why the tools read it through git show ticgit:path rather than git checkout. The objects are safe from git gc for as long as the ref exists, but once the ref is deleted the entire disconnected graph becomes unreachable and the next gc --prune removes it, and on a stock bare host there is no server-side reflog to recover from."
+          },
+          {
+            "type": "h3",
+            "text": "git notes"
+          },
+          {
+            "type": "p",
+            "text": "Git ships with a notes facility that attaches arbitrary blobs to existing commits without rewriting them, stored under refs/notes/<namespace>. The notes ref points at an ordinary commit whose tree maps each annotated commit’s SHA to a blob, so adding a note is itself a commit and the full edit history is kept. Google’s now-archived git-appraise built distributed code review entirely on this: review requests are line-delimited JSON under refs/notes/devtools/reviews, threaded comments under refs/notes/devtools/discuss, and CI status under refs/notes/devtools/ci, all attached to the commit being reviewed."
+          },
+          {
+            "type": "code",
+            "text": "$ git for-each-ref refs/notes/\ne70fe480... commit  refs/notes/review\n\n$ git cat-file -p refs/notes/review^{tree}\n100644 blob 677b652c...  0a72c46f9a191c6097f708ccdabcd6af13eebede\n\n$ git cat-file -p 677b652c\n{\"timestamp\":\"2026-08-18T00:00:00Z\",\"reviewRef\":\"refs/heads/main\",\n \"targetRef\":\"refs/heads/master\",\"description\":\"Demo review request\",\n \"requester\":\"[email protected]\"}"
+          },
+          {
+            "type": "p",
+            "text": "Notes are not fetched by a default clone; you add fetch = +refs/notes/*:refs/notes/* to the remote config once and then they travel with every pull and push. Merging has first-class support in git itself via git notes merge, and the cat_sort_uniq strategy concatenates and dedupes conflicting notes line by line, which is why git-appraise stores one JSON object per line rather than a single pretty-printed document. Any git host accepts the ref, git log --notes='*' shows notes inline under each commit, and git bundle create backup.bundle --all packs them. Identity is the author of the notes commit, plus whatever the payload records; git-appraise puts the requester’s email in the JSON. The structural limitation is that a note has to hang off an existing commit, which suits code review and CI results very well and suits a bug report that isn’t about any particular commit rather less."
+          },
+          {
+            "type": "h3",
+            "text": "Custom ref namespaces"
+          },
+          {
+            "type": "p",
+            "text": "The approach most of the currently-active projects have settled on is to store data under a ref namespace outside refs/heads/, so nothing shows up in git branch, nothing touches the working tree, and the tool controls the object layout completely. git-bug is the most developed example: each bug is a chain of commits under refs/bugs/<id>, each commit’s tree holds an ops blob of JSON operations plus zero-byte marker files whose names encode Lamport clock values, and user identities are separate chains under refs/identities/<id>."
+          },
+          {
+            "type": "p",
+            "text": "Gerrit’s NoteDb keeps every change’s review metadata as a commit graph at refs/changes/NN/NNNN/meta and has run Google’s own code review without a SQL database since Gerrit 3.0. Radicle stores issues and patches as collaborative objects under per-peer refs/namespaces/<nodeid>/refs/cobs/ and merges them over a gossip protocol rather than push. git-native-issue keeps each issue as a commit chain under refs/issues/<uuid> where the tree is empty and the metadata is carried in commit-message trailers (State: open, Labels: bug) rather than JSON, with a published format spec intended to be readable by any tool. Even the centralised forges use this layer for the code half of a pull request, exposing refs/pull/N/head on GitHub and refs/merge-requests/N/head on GitLab, though those are written by the forge and read-only to clients."
+          },
+          {
+            "type": "code",
+            "text": "$ git fetch origin 'refs/bugs/*:refs/bugs/*' 'refs/identities/*:refs/identities/*'\n$ git for-each-ref refs/bugs/ | head -1\naecc49e1... commit  refs/bugs/0066216d1e0cc97ad1c9eaa553459ca85a0d57e133e...\n\n$ git cat-file -p aecc49e1^{tree}\n100644 blob e69de29b...  create-clock-354\n100644 blob e69de29b...  edit-clock-2314\n100644 blob 588a2a80...  ops\n100644 blob e69de29b...  version-4\n\n$ git cat-file -p 588a2a80\n{\"author\":{\"id\":\"193531e4590156...\"},\n \"ops\":[{\"type\":1,\"timestamp\":1722433238,\n         \"title\":\"Issue running the example_test.go\",\n         \"message\":\"Hi y'all, I'm really excited...\",\"files\":null}]}"
+          },
+          {
+            "type": "p",
+            "text": "A default clone skips these refs entirely, so the first thing every tool does is add its refspec to .git/config. After that the data pushes to and pulls from any git host that accepts arbitrary ref names, which today is all of the major ones. Every clone that adds the refspec carries the full issue history, which is 454 refs for git-bug’s own repo but would be considerably more on a project with the issue volume of rails or kubernetes."
+          },
+          {
+            "type": "p",
+            "text": "Because each edit is appended as a new commit rather than modifying an existing blob, two people editing the same bug offline produce two divergent tips that the tool merges by replaying both operation logs against the Lamport clocks, and there is never a text-level conflict to resolve by hand. That also means that when two people set the same field offline the replay picks a winner by clock order without surfacing a conflict. The raw objects are inspectable with git cat-file as above but not really readable without the tool. Identity is handled inside the data model: git-bug stores name, avatar and login in a versioned identity object, and Radicle derives it from the node’s Ed25519 key."
+          },
+          {
+            "type": "p",
+            "text": "git-bug also ships bridges that import from and export to GitHub, GitLab and Jira, so an existing tracker can be mirrored into refs/bugs/ and kept usable through exactly the kind of outage that started this post. Forgejo has an open feature request for storing its own issues this way, and one proposal in that discussion is to treat refs/issues/* as the canonical store with the forge’s SQL tables rebuilt from it as a query index."
+          },
+          {
+            "type": "h3",
+            "text": "Built into the VCS"
+          },
+          {
+            "type": "p",
+            "text": "Fossil was designed from the start with tickets, wiki pages, forum threads and technotes as artifact types stored alongside check-ins in the same content-addressed store, all packed into a single SQLite database file per repository. A ticket exists as a set of immutable artifacts that each declare changes to named fields, and the current state of a ticket is computed by applying every artifact with a matching ticket id in timestamp order. SourceGear’s Veracity took a similar line around 2011 with a distributed bug database synced alongside the source DAG, though the project has since been discontinued."
+          },
+          {
+            "type": "code",
+            "text": "$ fossil artifact 94cd0c6265\nD 2026-08-18T06:37:37.865\nJ comment Something\\sis\\sbroken\nJ priority Medium\nJ status Open\nJ title Demo\\sbug\nJ type Code_Defect\nK 821e9e51da937dc2c37227ef8ed57c757e7530f0\nU andrew\nZ 1c440428fff5e32c7c5304e9f6cd5bec"
+          },
+          {
+            "type": "p",
+            "text": "The card format is one letter per line type: D is the timestamp, each J is a field assignment with spaces escaped as \\s, K is the id of the ticket this artifact modifies, U is the user, and Z is an MD5 of the preceding lines. Syncing exchanges any artifacts the other side lacks, concurrent edits to the same ticket both survive as separate artifacts, and because each J card sets one field the effective merge policy is last-writer-wins per field with no conflict markers."
+          },
+          {
+            "type": "p",
+            "text": "Everything travels with fossil sync or fossil clone because there is only one file. Identity is the U card backed by Fossil’s own login system, and the whole thing is readable with fossil ticket show or by opening the SQLite file directly. The obvious drawback is that none of this is git, so it composes with git-based tooling only through import and export."
+          },
+          {
+            "type": "h3",
+            "text": "git bundle"
+          },
+          {
+            "type": "p",
+            "text": "Aslak Raanes asked in the thread whether these approaches survive git bundle, which is the closest thing git has to Fossil’s single-file repository and the easiest way to get an offline backup onto a USB stick. I tried it: git bundle create backup.bundle --all on a clone of the git-bug repo with refs/bugs/* and refs/identities/* fetched packs all 454 bug refs and every identity into the bundle, and the same on a repo with refs/notes/review includes the notes ref. That works because --all to git rev-list means everything under refs/, and a bundle is just a packfile with a ref list on the front. So for every git-based approach here, files in tree, orphan branches, notes, and custom refs alike, one bundle file holds the code and the issue tracker together."
+          }
+        ],
+        "translations": [
+          "GitHub had a rough Monday this week, with git operations, Actions, and the issue tracker all unavailable for several hours. Code being unreachable during a forge outage is annoying but survivable because every contributor already has a full clone. Issues and pull request threads going dark is a different matter, since for most projects those exist only in GitHub’s database and nowhere else. I asked on Mastodon about tools that keep issue and review data inside the repository so it clones and pushes with the code, and got pointed at more projects than I expected, spanning about twenty years of people having a go at this.",
+          "The projects sort by where they physically put the data, and each storage location brings its own answers to the same handful of questions: whether a plain git clone fetches it, what happens when two people edit the same issue offline and then both push, whether you can read it without the tool installed, whether it survives being pushed to a bare git host that has no support for the tool, and who counts as the author of an issue when there are no forge accounts. I wrote about git’s extension points last year and several of these tools use the custom-ref mechanism from that post, but here I’m looking at the data model rather than the plumbing.",
+          "Files in the working tree",
+          "The oldest approach is to make each issue a text file, or a directory of files, checked in next to the source. Bugs Everywhere did this in 2005 for Bazaar and later added git and Mercurial backends, and ditz stored issues as YAML from 2008. More recently GitRoot builds an entire self-hosted forge on the same idea, keeping issues as issues/<id>-<slug>.md with front-matter status fields, users and permissions as YAML under .gitroot/, and a small server that renders the lot as a web UI. Matthew Martin pointed at his own ticket directory that reuses keep-a-changelog fragments as lightweight work items with no tooling at all, which is about as minimal as this pattern gets.",
+          "In Diomidis Spinellis’s git-issue the .issues/ directory is itself a nested git repository with its own .git, sha-bucketed as issues/ef/1a04f.../description, .../tags, .../assignee and so on. That keeps the outer project’s history untouched, though the outer clone then doesn’t carry the issues at all.",
+          "Because the issues are ordinary tracked files, everything git already does works with no extra configuration: git clone fetches them, grep -r searches them, cat reads them, git bundle packs them, any dumb HTTP host or cgit instance serves them, and git log -p .issues/ shows who changed what and when. Concurrent edits to the same issue become a normal three-way text merge. That works cleanly when two people append separate comments to the bottom of a file, and produces a real conflict when they both change the title line, which you resolve the same way you’d resolve a conflict in code. The author of an issue is whoever git blame says created the file, backed by whatever commit signing the project already uses, so identity comes from git’s existing model rather than needing its own.",
+          "The drawback is that issue history and code history share one commit graph. On a busy project git log fills with “reword issue #34” interleaved with real changes, git bisect steps through issue-edit commits, and creating a feature branch forks the issue state along with the code, so an issue closed on the branch shows as open again the moment you switch back to main. Most of these tools work around the log noise by making each issue operation its own commit with a conventional prefix that’s easy to --invert-grep away, but the branching problem is unavoidable while mutable metadata is in the same tree as the code it describes.",
+          "Orphan branch",
+          "An orphan branch is a ref under refs/heads/ whose root commit has no parent, so it shares no history with main and its files never appear in a normal checkout. Scott Chacon’s ticgit from 2008 and the later ticgit-ng fork keep issues on a branch literally called ticgit, with each issue as a directory in that branch’s tree, and GitHub’s old gh-pages convention used the same mechanism for documentation. The very new haxy forge from the xit project puts an event log on refs/heads/haxy/events where each commit has an empty tree and the commit message is a JSON event describing an issue creation, comment, or status change; the server replays the log to build its state.",
+          "The tool reads and writes the branch through plumbing or a second worktree, so git log on main stays free of issue noise, merging concurrent edits works the same as for any files on a branch, and the issue author is whoever authored the commit on the orphan branch. Because the ref is under refs/heads/ a default git clone fetches it automatically, which is the one clear advantage this has over the notes and custom-ref approaches below.",
+          "$ git ls-tree ticgit\n040000 tree 9b721cc...  1206206148_add-attachment-to-ticket_138\n040000 tree 5d14214...  1206206166_download-attached-file_112\n\n$ git ls-tree ticgit:1206206148_add-attachment-to-ticket_138\n100644 blob cfdb466...  [email protected]\n100644 blob 3074cf0...  [email protected]\n100644 blob f510327...  STATE_open\n100644 blob 6d44874...  TAG_attach\n100644 blob 9ebd07e...  TICKET_ID",
+          "Ticgit encodes almost everything in filenames (STATE_open, TAG_attach, ASSIGNED_<email>) so git ls-tree alone shows the state of an issue without reading any blobs. Haxy puts everything in the commit message instead, so git log haxy/events is the entire database, and in both cases the data is legible with stock git and no extra tool installed.",
+          "The trouble with an orphan branch is that it shows up in git branch -a looking like any other branch, so on a project with enough contributors someone will eventually delete the “stale” ticgit branch while tidying up. A git push --prune or git push --mirror from a clone made with --single-branch, or from a CI job that only fetched main, deletes it on the remote because the local side has no matching ref. Branch protection on most forges is pattern-based (main, release/*) and won’t cover a branch called ticgit unless someone remembers to add it.",
+          "Checking the orphan out in your only working tree swaps every file for the issue files, which is why the tools read it through git show ticgit:path rather than git checkout. The objects are safe from git gc for as long as the ref exists, but once the ref is deleted the entire disconnected graph becomes unreachable and the next gc --prune removes it, and on a stock bare host there is no server-side reflog to recover from.",
+          "git notes",
+          "Git ships with a notes facility that attaches arbitrary blobs to existing commits without rewriting them, stored under refs/notes/<namespace>. The notes ref points at an ordinary commit whose tree maps each annotated commit’s SHA to a blob, so adding a note is itself a commit and the full edit history is kept. Google’s now-archived git-appraise built distributed code review entirely on this: review requests are line-delimited JSON under refs/notes/devtools/reviews, threaded comments under refs/notes/devtools/discuss, and CI status under refs/notes/devtools/ci, all attached to the commit being reviewed.",
+          "$ git for-each-ref refs/notes/\ne70fe480... commit  refs/notes/review\n\n$ git cat-file -p refs/notes/review^{tree}\n100644 blob 677b652c...  0a72c46f9a191c6097f708ccdabcd6af13eebede\n\n$ git cat-file -p 677b652c\n{\"timestamp\":\"2026-08-18T00:00:00Z\",\"reviewRef\":\"refs/heads/main\",\n \"targetRef\":\"refs/heads/master\",\"description\":\"Demo review request\",\n \"requester\":\"[email protected]\"}",
+          "Notes are not fetched by a default clone; you add fetch = +refs/notes/*:refs/notes/* to the remote config once and then they travel with every pull and push. Merging has first-class support in git itself via git notes merge, and the cat_sort_uniq strategy concatenates and dedupes conflicting notes line by line, which is why git-appraise stores one JSON object per line rather than a single pretty-printed document. Any git host accepts the ref, git log --notes='*' shows notes inline under each commit, and git bundle create backup.bundle --all packs them. Identity is the author of the notes commit, plus whatever the payload records; git-appraise puts the requester’s email in the JSON. The structural limitation is that a note has to hang off an existing commit, which suits code review and CI results very well and suits a bug report that isn’t about any particular commit rather less.",
+          "Custom ref namespaces",
+          "The approach most of the currently-active projects have settled on is to store data under a ref namespace outside refs/heads/, so nothing shows up in git branch, nothing touches the working tree, and the tool controls the object layout completely. git-bug is the most developed example: each bug is a chain of commits under refs/bugs/<id>, each commit’s tree holds an ops blob of JSON operations plus zero-byte marker files whose names encode Lamport clock values, and user identities are separate chains under refs/identities/<id>.",
+          "Gerrit’s NoteDb keeps every change’s review metadata as a commit graph at refs/changes/NN/NNNN/meta and has run Google’s own code review without a SQL database since Gerrit 3.0. Radicle stores issues and patches as collaborative objects under per-peer refs/namespaces/<nodeid>/refs/cobs/ and merges them over a gossip protocol rather than push. git-native-issue keeps each issue as a commit chain under refs/issues/<uuid> where the tree is empty and the metadata is carried in commit-message trailers (State: open, Labels: bug) rather than JSON, with a published format spec intended to be readable by any tool. Even the centralised forges use this layer for the code half of a pull request, exposing refs/pull/N/head on GitHub and refs/merge-requests/N/head on GitLab, though those are written by the forge and read-only to clients.",
+          "$ git fetch origin 'refs/bugs/*:refs/bugs/*' 'refs/identities/*:refs/identities/*'\n$ git for-each-ref refs/bugs/ | head -1\naecc49e1... commit  refs/bugs/0066216d1e0cc97ad1c9eaa553459ca85a0d57e133e...\n\n$ git cat-file -p aecc49e1^{tree}\n100644 blob e69de29b...  create-clock-354\n100644 blob e69de29b...  edit-clock-2314\n100644 blob 588a2a80...  ops\n100644 blob e69de29b...  version-4\n\n$ git cat-file -p 588a2a80\n{\"author\":{\"id\":\"193531e4590156...\"},\n \"ops\":[{\"type\":1,\"timestamp\":1722433238,\n         \"title\":\"Issue running the example_test.go\",\n         \"message\":\"Hi y'all, I'm really excited...\",\"files\":null}]}",
+          "A default clone skips these refs entirely, so the first thing every tool does is add its refspec to .git/config. After that the data pushes to and pulls from any git host that accepts arbitrary ref names, which today is all of the major ones. Every clone that adds the refspec carries the full issue history, which is 454 refs for git-bug’s own repo but would be considerably more on a project with the issue volume of rails or kubernetes.",
+          "Because each edit is appended as a new commit rather than modifying an existing blob, two people editing the same bug offline produce two divergent tips that the tool merges by replaying both operation logs against the Lamport clocks, and there is never a text-level conflict to resolve by hand. That also means that when two people set the same field offline the replay picks a winner by clock order without surfacing a conflict. The raw objects are inspectable with git cat-file as above but not really readable without the tool. Identity is handled inside the data model: git-bug stores name, avatar and login in a versioned identity object, and Radicle derives it from the node’s Ed25519 key.",
+          "git-bug also ships bridges that import from and export to GitHub, GitLab and Jira, so an existing tracker can be mirrored into refs/bugs/ and kept usable through exactly the kind of outage that started this post. Forgejo has an open feature request for storing its own issues this way, and one proposal in that discussion is to treat refs/issues/* as the canonical store with the forge’s SQL tables rebuilt from it as a query index.",
+          "Built into the VCS",
+          "Fossil was designed from the start with tickets, wiki pages, forum threads and technotes as artifact types stored alongside check-ins in the same content-addressed store, all packed into a single SQLite database file per repository. A ticket exists as a set of immutable artifacts that each declare changes to named fields, and the current state of a ticket is computed by applying every artifact with a matching ticket id in timestamp order. SourceGear’s Veracity took a similar line around 2011 with a distributed bug database synced alongside the source DAG, though the project has since been discontinued.",
+          "$ fossil artifact 94cd0c6265\nD 2026-08-18T06:37:37.865\nJ comment Something\\sis\\sbroken\nJ priority Medium\nJ status Open\nJ title Demo\\sbug\nJ type Code_Defect\nK 821e9e51da937dc2c37227ef8ed57c757e7530f0\nU andrew\nZ 1c440428fff5e32c7c5304e9f6cd5bec",
+          "The card format is one letter per line type: D is the timestamp, each J is a field assignment with spaces escaped as \\s, K is the id of the ticket this artifact modifies, U is the user, and Z is an MD5 of the preceding lines. Syncing exchanges any artifacts the other side lacks, concurrent edits to the same ticket both survive as separate artifacts, and because each J card sets one field the effective merge policy is last-writer-wins per field with no conflict markers.",
+          "Everything travels with fossil sync or fossil clone because there is only one file. Identity is the U card backed by Fossil’s own login system, and the whole thing is readable with fossil ticket show or by opening the SQLite file directly. The obvious drawback is that none of this is git, so it composes with git-based tooling only through import and export.",
+          "git bundle",
+          "Aslak Raanes asked in the thread whether these approaches survive git bundle, which is the closest thing git has to Fossil’s single-file repository and the easiest way to get an offline backup onto a USB stick. I tried it: git bundle create backup.bundle --all on a clone of the git-bug repo with refs/bugs/* and refs/identities/* fetched packs all 454 bug refs and every identity into the bundle, and the same on a repo with refs/notes/review includes the notes ref. That works because --all to git rev-list means everything under refs/, and a bundle is just a packfile with a ref list on the front. So for every git-based approach here, files in tree, orphan branches, notes, and custom refs alike, one bundle file holds the code and the issue tracker together."
+        ]
+      }
+    },
+    {
+      "slug": "4d44c85fbc5313f4",
+      "title": "Our Servants Will Do That For Us",
+      "titleZh": "Our Servants Will Do That For Us",
+      "link": "https://borretti.me/article/our-servants-will-do-that-for-us",
+      "sourceName": "borretti.me",
+      "sourceUrl": "https://borretti.me",
+      "pubDate": "2026-08-20T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Our Servants Will Do That For Us",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Fernando Borretti",
+        "siteName": "Fernando Borretti",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The implicit promise of modernity is: we have to work really hard for a few\ncenturies, but eventually we’ll get to the Star Trek future where we’ve\nautomated all the drudgery, and all work is meaningful, heroic, and dignifies\nthe spirit. We will be artists, scholars, captains of the starship Enterprise,\netc. There’s a few problems with this idea:"
+          },
+          {
+            "type": "li",
+            "text": "“Drudgery” and “meaningful work” are in the same complexity class, so the\ntechnology to automates the former also automates the latter."
+          },
+          {
+            "type": "li",
+            "text": "Our revealed preference seems to be that we prefer solipsistic convenience\nover human relationships."
+          },
+          {
+            "type": "p",
+            "text": "The rest of this post elaborates the argument."
+          },
+          {
+            "type": "h2",
+            "text": "Task Complexity and AGI"
+          },
+          {
+            "type": "p",
+            "text": "We’ve spent the last 250 years building machines to automate one task at a time,\nand the result has been overwhelmingly positive, for the simple reason that if a\nhuman can design a machine or an effective procedure to perform some task, then\nby definition the task is drudgery. And so the economic incentive to automate\nwork has led to more human flourishing: over time work becomes safer,\nhigher-paying, less monotonous, healthier, more intellectually and socially\nstimulating."
+          },
+          {
+            "type": "p",
+            "text": "You can think of it as a graph where the $x$ axis is time and the $y$ axis is\ntask complexity. Somewhere along the $y$ axis there’s a limit: tasks below the\nlimit are those which we can design machines or programs to perform, tasks above\nthe limit are too complex, we have tried and failed (and failed\nand failed and failed) to automate them with software. The\nindustrial revolution, and later the computer revolution, automated most tasks\nunder this limit:"
+          },
+          {
+            "type": "p",
+            "text": "The human-complete tasks are those you need a human to perform. Some are\nmeaningful, like writing essays, some are drudgery, but human-level drudgery,\nlike life admin."
+          },
+          {
+            "type": "p",
+            "text": "But note that nowhere in the $y$ axis is there a “Limit of Drudgery”: the line\nwe draw between “good” and “bad” work is not the line nature draws between easy\nand hard to automate. The invention of AGI—“highly autonomous systems that\noutperform humans at most economically valuable work”, as per the OpenAI\ncharter—creates an obvious discontinuity: suddenly we shoot up to 100%\nautomation, both of the meaningful work and the drudgery:"
+          },
+          {
+            "type": "p",
+            "text": "And at this point AGI the economic incentives work against\nhumanity. The only niche to escape to is the relational economy, where\nhaving a human face is an intrinsic part of the job description, like being a\npodcaster or a human liability crumple zone."
+          },
+          {
+            "type": "h2",
+            "text": "Solipsism"
+          },
+          {
+            "type": "p",
+            "text": "The second problem has to do with people’s preferences. We think of our own work\nas meaningful, but we think of most everyone else’s work in instrumental terms:\nwe care about the ends rather than the human means. Thus when selling we\nemphasize human qualities like experience, reputation, trust, relationships,\netc., and when buying we want cheap, fast, and convenient. And, all else being\nequal, we prefer the transactional and faceless over the human and\nrelational. Waymo is a thousand times better than Uber, even though it’s slower\nand more expensive, because there’s no human."
+          },
+          {
+            "type": "p",
+            "text": "The flip side of this is: whatever work you do, most people would rather an\nalternative that gave them the same outcome or better1, without having to\ndeal with a human person. That is, if you ask everyone on Earth what jobs they’d\nlike to see automated, and take the union of that, it’s everything. There’s\nnothing left."
+          },
+          {
+            "type": "p",
+            "text": "We see this with ordinary consumer products and services, where often the\nadvertising seems premised on you being some kind of stylite who lives in a\nlittle human terrarium, probably in a building called something like “The Soho”,\nfood arrives through a hole in the wall, and you have this sovereign,\nsolipsistic existence that leaves no physical trace in the world."
+          },
+          {
+            "type": "p",
+            "text": "We see this, increasingly, with knowledge work. Personally, I think software\nengineering is a very meaningful and intellectually-rewarding activity. But\nusers just want working software. They’re not paying me to sit around polishing\nthe database API into a jewel of flawless, geometric logic. They don’t care\nabout my opinions on the Standard ML module system. They just want the\nsoftware. Why deal with some opinionated maniac when, for $20 a month, you get\naccess to this little machine ghost that writes reams and reams of mostly\nworking code, tirelessly, instantly?"
+          },
+          {
+            "type": "p",
+            "text": "The revealed preference of many software firms is: let AI write the code, and\nsoftware engineers move one level up, to wrangle the AIs and complement the\nthings they can’t do. But this change in job description is not because firms\nlove employing humans, it’s because today’s AI models have serious limitations:\nno online learning, no mutable long-term memory, and while they can write code\nthat works, they’re not good at organizing and structuring that code. If, in the\nfuture, these limitations are overcome (and trillions of dollars are being spent\non overcoming them), then software engineering as a profession will\ndisappear."
+          },
+          {
+            "type": "p",
+            "text": "Mathematicians are going through this process now, too, and it’s an\nexact parallel of what happened to software engineering, only twelve\nmonths later. The difference is that most mathematicians hate the\nde-intellectualization of their field, while software engineering is\nfull of narrow-minded, hustle culture-brained, incurious, anti-intellectual\nhucksters who are overjoyed that they no longer have to read or write another\nline of code, or think using formal systems at all. Why reason at all? Our\nservants will do that for us."
+          },
+          {
+            "type": "p",
+            "text": "What about art? Art is the ne plus ultra of meaning, so artists should be\nsafe. But every work of art is two things: there’s a concrete thing, a text or a\npainting or a song; and there’s a constellation of human aspects: who made it,\nand why, what madness they were trying to exorcise in making it, what minor\ndeity breathed the work into them, the discourse around the work, later art\ninspired by it, and so on. And these things are separable: you can enjoy a work\nof art for its aesthetic value, as a sequence of sensory impressions, and ignore\nevery other dimension."
+          },
+          {
+            "type": "p",
+            "text": "Now say that a machine could generate texts or images of equivalent aesthetic\nvalue2 to your own, instantly and at ~zero cost. How much of your audience\nwould desert you? Relational jobs have an analogous problem: you might like\nbeing a podcaster, but how much of your audience would prefer an infinite stream\nof AI-generated speech on whatever topic they want to hear about?"
+          },
+          {
+            "type": "p",
+            "text": "This is an empirical question, and we can’t answer it, because AI is not there,\nyet. But we might discover that our preferences are a lot less humanist and a\nlot more solipsistic that we want to believe."
+          },
+          {
+            "type": "h2",
+            "text": "Acknowledgements"
+          },
+          {
+            "type": "p",
+            "text": "Emmy Noether once said that “everything is already in Dedekind”. As for me,\neverything I write about AI was already said by J. D. Pressman."
+          },
+          {
+            "type": "h2",
+            "text": "Footnotes"
+          },
+          {
+            "type": "li",
+            "text": "This is a horrendous oversimplification, because I’ve stuffed all the\ncomplexity into the notion of “same outcome or better”. So let’s try it\nagain, more geometrico and with unnecessary LaTeX. You want to\nbuy a good. You look around, assemble a set of options, sort them by utility\nand pick the winner. And you can think of the utility as like a weighted\nsum:\n\n\\[\\mathfrak{u}(x) = \\sum\\limits_{a \\in A} \\alpha_a x_a\\]\n\n      Where the a’s are the aspects you are weighing (price, shipping speed, trust\nin the brand, how much social status I get from this thing, etc.), the\nvariables quantify these aspects, and the alphas are the coefficients. So if\nyou’re a hypebeast your $\\alpha_\\text{clout}$ is much higher than your\n$\\alpha_\\text{price}$, and if you’re a neckbeard the $x_\\text{clout}$ of a\nbusted ThinkPad is higher than that of a MacBook.\n\n      Now, humans are slow, because biology; and because of Baumol we\nget more expensive over time. Computers are fast and cheap. On top of that,\nthe pace of improvement in AI is vastly greater than the pace of improvement\nin humans. So the utility of automated production gets pulled up, and the\nutility of human production gets pulled down, and eventually they are so far\napart that you have to be an extremist with a very high\n$\\alpha_\\text{human}$ coefficient to choose the human alternative. ↩"
+          },
+          {
+            "type": "li",
+            "text": "I’m being careful to say “texts or images” rather than “art”, and “aesthetic\nvalue” rather than “quality”, because you might object that machine-made art\nis not art. And what I’m trying to say is that is doesn’t have to be art. It\ncan just be a pleasing image, a pleasing text, and so on. ↩"
+          }
+        ],
+        "translations": [
+          "The implicit promise of modernity is: we have to work really hard for a few\ncenturies, but eventually we’ll get to the Star Trek future where we’ve\nautomated all the drudgery, and all work is meaningful, heroic, and dignifies\nthe spirit. We will be artists, scholars, captains of the starship Enterprise,\netc. There’s a few problems with this idea:",
+          "“Drudgery” and “meaningful work” are in the same complexity class, so the\ntechnology to automates the former also automates the latter.",
+          "Our revealed preference seems to be that we prefer solipsistic convenience\nover human relationships.",
+          "The rest of this post elaborates the argument.",
+          "Task Complexity and AGI",
+          "We’ve spent the last 250 years building machines to automate one task at a time,\nand the result has been overwhelmingly positive, for the simple reason that if a\nhuman can design a machine or an effective procedure to perform some task, then\nby definition the task is drudgery. And so the economic incentive to automate\nwork has led to more human flourishing: over time work becomes safer,\nhigher-paying, less monotonous, healthier, more intellectually and socially\nstimulating.",
+          "You can think of it as a graph where the $x$ axis is time and the $y$ axis is\ntask complexity. Somewhere along the $y$ axis there’s a limit: tasks below the\nlimit are those which we can design machines or programs to perform, tasks above\nthe limit are too complex, we have tried and failed (and failed\nand failed and failed) to automate them with software. The\nindustrial revolution, and later the computer revolution, automated most tasks\nunder this limit:",
+          "The human-complete tasks are those you need a human to perform. Some are\nmeaningful, like writing essays, some are drudgery, but human-level drudgery,\nlike life admin.",
+          "But note that nowhere in the $y$ axis is there a “Limit of Drudgery”: the line\nwe draw between “good” and “bad” work is not the line nature draws between easy\nand hard to automate. The invention of AGI—“highly autonomous systems that\noutperform humans at most economically valuable work”, as per the OpenAI\ncharter—creates an obvious discontinuity: suddenly we shoot up to 100%\nautomation, both of the meaningful work and the drudgery:",
+          "And at this point AGI the economic incentives work against\nhumanity. The only niche to escape to is the relational economy, where\nhaving a human face is an intrinsic part of the job description, like being a\npodcaster or a human liability crumple zone.",
+          "Solipsism",
+          "The second problem has to do with people’s preferences. We think of our own work\nas meaningful, but we think of most everyone else’s work in instrumental terms:\nwe care about the ends rather than the human means. Thus when selling we\nemphasize human qualities like experience, reputation, trust, relationships,\netc., and when buying we want cheap, fast, and convenient. And, all else being\nequal, we prefer the transactional and faceless over the human and\nrelational. Waymo is a thousand times better than Uber, even though it’s slower\nand more expensive, because there’s no human.",
+          "The flip side of this is: whatever work you do, most people would rather an\nalternative that gave them the same outcome or better1, without having to\ndeal with a human person. That is, if you ask everyone on Earth what jobs they’d\nlike to see automated, and take the union of that, it’s everything. There’s\nnothing left.",
+          "We see this with ordinary consumer products and services, where often the\nadvertising seems premised on you being some kind of stylite who lives in a\nlittle human terrarium, probably in a building called something like “The Soho”,\nfood arrives through a hole in the wall, and you have this sovereign,\nsolipsistic existence that leaves no physical trace in the world.",
+          "We see this, increasingly, with knowledge work. Personally, I think software\nengineering is a very meaningful and intellectually-rewarding activity. But\nusers just want working software. They’re not paying me to sit around polishing\nthe database API into a jewel of flawless, geometric logic. They don’t care\nabout my opinions on the Standard ML module system. They just want the\nsoftware. Why deal with some opinionated maniac when, for $20 a month, you get\naccess to this little machine ghost that writes reams and reams of mostly\nworking code, tirelessly, instantly?",
+          "The revealed preference of many software firms is: let AI write the code, and\nsoftware engineers move one level up, to wrangle the AIs and complement the\nthings they can’t do. But this change in job description is not because firms\nlove employing humans, it’s because today’s AI models have serious limitations:\nno online learning, no mutable long-term memory, and while they can write code\nthat works, they’re not good at organizing and structuring that code. If, in the\nfuture, these limitations are overcome (and trillions of dollars are being spent\non overcoming them), then software engineering as a profession will\ndisappear.",
+          "Mathematicians are going through this process now, too, and it’s an\nexact parallel of what happened to software engineering, only twelve\nmonths later. The difference is that most mathematicians hate the\nde-intellectualization of their field, while software engineering is\nfull of narrow-minded, hustle culture-brained, incurious, anti-intellectual\nhucksters who are overjoyed that they no longer have to read or write another\nline of code, or think using formal systems at all. Why reason at all? Our\nservants will do that for us.",
+          "What about art? Art is the ne plus ultra of meaning, so artists should be\nsafe. But every work of art is two things: there’s a concrete thing, a text or a\npainting or a song; and there’s a constellation of human aspects: who made it,\nand why, what madness they were trying to exorcise in making it, what minor\ndeity breathed the work into them, the discourse around the work, later art\ninspired by it, and so on. And these things are separable: you can enjoy a work\nof art for its aesthetic value, as a sequence of sensory impressions, and ignore\nevery other dimension.",
+          "Now say that a machine could generate texts or images of equivalent aesthetic\nvalue2 to your own, instantly and at ~zero cost. How much of your audience\nwould desert you? Relational jobs have an analogous problem: you might like\nbeing a podcaster, but how much of your audience would prefer an infinite stream\nof AI-generated speech on whatever topic they want to hear about?",
+          "This is an empirical question, and we can’t answer it, because AI is not there,\nyet. But we might discover that our preferences are a lot less humanist and a\nlot more solipsistic that we want to believe.",
+          "Acknowledgements",
+          "Emmy Noether once said that “everything is already in Dedekind”. As for me,\neverything I write about AI was already said by J. D. Pressman.",
+          "Footnotes",
+          "This is a horrendous oversimplification, because I’ve stuffed all the\ncomplexity into the notion of “same outcome or better”. So let’s try it\nagain, more geometrico and with unnecessary LaTeX. You want to\nbuy a good. You look around, assemble a set of options, sort them by utility\nand pick the winner. And you can think of the utility as like a weighted\nsum:\n\n\\[\\mathfrak{u}(x) = \\sum\\limits_{a \\in A} \\alpha_a x_a\\]\n\n      Where the a’s are the aspects you are weighing (price, shipping speed, trust\nin the brand, how much social status I get from this thing, etc.), the\nvariables quantify these aspects, and the alphas are the coefficients. So if\nyou’re a hypebeast your $\\alpha_\\text{clout}$ is much higher than your\n$\\alpha_\\text{price}$, and if you’re a neckbeard the $x_\\text{clout}$ of a\nbusted ThinkPad is higher than that of a MacBook.\n\n      Now, humans are slow, because biology; and because of Baumol we\nget more expensive over time. Computers are fast and cheap. On top of that,\nthe pace of improvement in AI is vastly greater than the pace of improvement\nin humans. So the utility of automated production gets pulled up, and the\nutility of human production gets pulled down, and eventually they are so far\napart that you have to be an extremist with a very high\n$\\alpha_\\text{human}$ coefficient to choose the human alternative. ↩",
+          "I’m being careful to say “texts or images” rather than “art”, and “aesthetic\nvalue” rather than “quality”, because you might object that machine-made art\nis not art. And what I’m trying to say is that is doesn’t have to be art. It\ncan just be a pleasing image, a pleasing text, and so on. ↩"
+        ]
+      }
+    },
+    {
+      "slug": "1e13f5b15ca0655d",
+      "title": "Adobe Systems IPO August 20, 1986",
+      "titleZh": "Adobe Systems IPO August 20, 1986",
+      "link": "https://dfarq.homeip.net/adobe-systems-ipo-august-20-1986/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=adobe-systems-ipo-august-20-1986",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-08-20T11:00:07.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Adobe Systems IPO August 20, 1986",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On August 20, 1986, Adobe Systems held its initial public offering. Priced at around $11 per share, Adobe has split its stock six times since."
+          },
+          {
+            "type": "h2",
+            "text": "Adobe: The sleeper tech stock of 1986"
+          },
+          {
+            "type": "p",
+            "text": "1986 was a good year for tech stocks. Microsoft held its widely successful IPO that year, but so did Adobe, Oracle, Sun Microsystems, and Silicon Graphics. Sun and Silicon Graphics have faded away, but Adobe, Oracle, and Microsoft are all still going strong."
+          },
+          {
+            "type": "p",
+            "text": "Adobe was easy to overlook in the class of 1986. Founded in 1982 by Xerox PARC alumni John Warnock and Charles Geschke, one of its early investors was Hambrecht & Quist, a venture capital firm that had also invested in Apple Computer and Miniscribe."
+          },
+          {
+            "type": "p",
+            "text": "At the time Adobe went public, it only had one product. That product was a programming language called Postscript. Laser printers used it to describe fonts and graphics in a way that could scale smoothly, using lines and curves rather than pixels. Laser printers were still very new and unusual in 1986. An Apple Laserwriter retailed for $5,995 in 1986, so it wasn’t a mass-market product."
+          },
+          {
+            "type": "p",
+            "text": "Adobe helped invent the product category of desktop publishing. But it was the easiest to overlook of the three companies involved. The key ingredients were a Macintosh computer, Laserwriter printer, and a program called Aldus Pagemaker. Adobe’s contribution was buried inside the Laserwriter printer and you didn’t interact directly with it, the way you did with the computer or printer or Aldus Pagemaker."
+          },
+          {
+            "type": "h2",
+            "text": "Adobe acquisitions"
+          },
+          {
+            "type": "p",
+            "text": "Adobe merged with Aldus in 1994 in a deal worth $525 million. This brought Pagemaker and Postscript under the same roof, along with Adobe Illustrator (introduced in 1987) and Photoshop (introduced in 1989)."
+          },
+          {
+            "type": "p",
+            "text": "Other notable Adobe products include Acrobat, introduced in 1993; Indesign, introduced in 1999; and Premiere, introduced in 1991."
+          },
+          {
+            "type": "p",
+            "text": "Adobe is a company people love to hate, largely because of the cost of its software and use of a subscription model. But the 1994 acquisition of Aldus and 2005 acquisition of Macromedia eliminated two of the companies best positioned to rival it, making it very difficult for creative professionals to avoid Adobe altogether."
+          },
+          {
+            "type": "h2",
+            "text": "Adobe and the dotcom boom"
+          },
+          {
+            "type": "p",
+            "text": "Adobe profited during the dotcom boom, both from the investor hype and in selling software like Illustrator and Photoshop to new startups. On June 1, 1999, its stock was worth $9.06 a share, a disappointment considering 13 years had passed since its IPO at $11. And that was a rebound. In August 1998, it was trading at less than $4 per share. That price was so low that on August 18, 1998, Quark, the makers of QuarkXPress desktop publishing software, attempted to acquire Adobe. Quark abandoned its bid about a month later, on September 15, 1998."
+          },
+          {
+            "type": "p",
+            "text": "By November 2000, Adobe’s stock was trading at $41 per share. But by August 2002, its stock fell to $8.35 a share. It didn’t reach $41 a share again until 2006 and didn’t maintain that level until March 2013. So while it’s easy to say if you’d invested $1,000 in Adobe’s IPO in 1986, or right after the dotcom bust, and held it, you’d be a multimillionaire today, it’s understandable why some investors overlooked the opportunity."
+          },
+          {
+            "type": "p",
+            "text": "And while the takeover Quark didn’t go through with in 1998 looks today like a missed opportunity along the lines of Decca Records rejecting the Beatles, it wasn’t at all clear at the time what the floor was for Adobe, and Quark would have needed $2 billion to complete the deal. Since Quark was a private company, it wasn’t clear if they had the cash on hand or had the financing lined up."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "On August 20, 1986, Adobe Systems held its initial public offering. Priced at around $11 per share, Adobe has split its stock six times since.",
+          "Adobe: The sleeper tech stock of 1986",
+          "1986 was a good year for tech stocks. Microsoft held its widely successful IPO that year, but so did Adobe, Oracle, Sun Microsystems, and Silicon Graphics. Sun and Silicon Graphics have faded away, but Adobe, Oracle, and Microsoft are all still going strong.",
+          "Adobe was easy to overlook in the class of 1986. Founded in 1982 by Xerox PARC alumni John Warnock and Charles Geschke, one of its early investors was Hambrecht & Quist, a venture capital firm that had also invested in Apple Computer and Miniscribe.",
+          "At the time Adobe went public, it only had one product. That product was a programming language called Postscript. Laser printers used it to describe fonts and graphics in a way that could scale smoothly, using lines and curves rather than pixels. Laser printers were still very new and unusual in 1986. An Apple Laserwriter retailed for $5,995 in 1986, so it wasn’t a mass-market product.",
+          "Adobe helped invent the product category of desktop publishing. But it was the easiest to overlook of the three companies involved. The key ingredients were a Macintosh computer, Laserwriter printer, and a program called Aldus Pagemaker. Adobe’s contribution was buried inside the Laserwriter printer and you didn’t interact directly with it, the way you did with the computer or printer or Aldus Pagemaker.",
+          "Adobe acquisitions",
+          "Adobe merged with Aldus in 1994 in a deal worth $525 million. This brought Pagemaker and Postscript under the same roof, along with Adobe Illustrator (introduced in 1987) and Photoshop (introduced in 1989).",
+          "Other notable Adobe products include Acrobat, introduced in 1993; Indesign, introduced in 1999; and Premiere, introduced in 1991.",
+          "Adobe is a company people love to hate, largely because of the cost of its software and use of a subscription model. But the 1994 acquisition of Aldus and 2005 acquisition of Macromedia eliminated two of the companies best positioned to rival it, making it very difficult for creative professionals to avoid Adobe altogether.",
+          "Adobe and the dotcom boom",
+          "Adobe profited during the dotcom boom, both from the investor hype and in selling software like Illustrator and Photoshop to new startups. On June 1, 1999, its stock was worth $9.06 a share, a disappointment considering 13 years had passed since its IPO at $11. And that was a rebound. In August 1998, it was trading at less than $4 per share. That price was so low that on August 18, 1998, Quark, the makers of QuarkXPress desktop publishing software, attempted to acquire Adobe. Quark abandoned its bid about a month later, on September 15, 1998.",
+          "By November 2000, Adobe’s stock was trading at $41 per share. But by August 2002, its stock fell to $8.35 a share. It didn’t reach $41 a share again until 2006 and didn’t maintain that level until March 2013. So while it’s easy to say if you’d invested $1,000 in Adobe’s IPO in 1986, or right after the dotcom bust, and held it, you’d be a multimillionaire today, it’s understandable why some investors overlooked the opportunity.",
+          "And while the takeover Quark didn’t go through with in 1998 looks today like a missed opportunity along the lines of Decca Records rejecting the Beatles, it wasn’t at all clear at the time what the floor was for Adobe, and Quark would have needed $2 billion to complete the deal. Since Quark was a private company, it wasn’t clear if they had the cash on hand or had the financing lined up.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    }
+  ]
+}
