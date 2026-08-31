@@ -1,0 +1,1376 @@
+{
+  "date": "2026-09-01",
+  "generatedAt": "2026-08-31T21:25:36.729Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2526,
+    "filteredArticles": 8,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "517370741c36397d",
+      "title": "Understanding ChatGPT Work",
+      "titleZh": "Understanding ChatGPT Work",
+      "link": "https://simonwillison.net/2026/Aug/30/understanding-chatgpt-work/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-08-30T23:59:47.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Understanding ChatGPT Work",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "30th August 2026"
+          },
+          {
+            "type": "p",
+            "text": "OpenAI announced ChatGPT Work on July 9th, and have been furiously iterating on it ever since. It is an extraordinarily confusing and very powerful product. Here’s what I’ve figured out about it so far."
+          },
+          {
+            "type": "h3",
+            "text": "ChatGPT Work is actually two products"
+          },
+          {
+            "type": "p",
+            "text": "The more interesting version of ChatGPT Work is the one that runs in the cloud. This can be accessed via chatgpt.com or through the ChatGPT mobile apps. Let’s call it Work Cloud."
+          },
+          {
+            "type": "p",
+            "text": "If you install the ChatGPT desktop app—the app that used to be called Codex—you gain access to a thing called ChatGPT Work that can access files and run programs directly on your computer. Let’s call that one Work Local. This one feels more like regular Codex re-skinned to be less intimidating to non-software-developers."
+          },
+          {
+            "type": "p",
+            "text": "(Update: Work Cloud is also available from the ChatGPT desktop app, via a Where should this chat run? dropdown.)"
+          },
+          {
+            "type": "p",
+            "text": "For the rest of this article I’m going to talk exclusively about Work Cloud."
+          },
+          {
+            "type": "h3",
+            "text": "Work is for paid subscribers only"
+          },
+          {
+            "type": "p",
+            "text": "Right now, ChatGPT Work (in both flavors) is available only to $20/month and up subscribers. Free users and $8/month Go users do not have access."
+          },
+          {
+            "type": "h3",
+            "text": "Work has features that aren’t available in Chat"
+          },
+          {
+            "type": "p",
+            "text": "The interface for accessing Work is a tab selector, which presents it as an alternative to Chat:"
+          },
+          {
+            "type": "p",
+            "text": "The obvious question is when should I use Chat, and when should I use Work?"
+          },
+          {
+            "type": "p",
+            "text": "OpenAI’s official answer to that question is:"
+          },
+          {
+            "type": "quote",
+            "text": "Use Chat when you want an answer, explanation, brainstorm, or short draft. Use ChatGPT Work when you want ChatGPT to complete a task with a clear outcome, such as a brief, deck, analysis, recurring update, workflow, or file you can review and use."
+          },
+          {
+            "type": "p",
+            "text": "I find that almost entirely useless, because I’ve been using regular ChatGPT Chat for all of those task categories for years!"
+          },
+          {
+            "type": "p",
+            "text": "The better question then is what features does Work have that are missing from Chat?"
+          },
+          {
+            "type": "p",
+            "text": "After extensive experimentation I think I’ve mostly figured that out:"
+          },
+          {
+            "type": "li",
+            "text": "Options to use Luna and Terra in place of Sol"
+          },
+          {
+            "type": "li",
+            "text": "A code execution environment with Internet access"
+          },
+          {
+            "type": "li",
+            "text": "A headless Chrome browser"
+          },
+          {
+            "type": "li",
+            "text": "A persistent filesystem shared between sessions"
+          },
+          {
+            "type": "li",
+            "text": "The ability to publish ChatGPT Sites"
+          },
+          {
+            "type": "li",
+            "text": "The ability to run sub-agent sessions with Sol, Luna, and Terra"
+          },
+          {
+            "type": "li",
+            "text": "Scheduled prompt automations (may be in ChatGPT Chat too)"
+          },
+          {
+            "type": "h3",
+            "text": "Model selection"
+          },
+          {
+            "type": "p",
+            "text": "In Work, you get the option to pick GPT-5.6 Sol, Luna, or Terra, each with Light, Medium, High, Extra High, Max, or Ultra reasoning levels. You can also pick GPT-5.5 at Light, Medium, High, or Extra High."
+          },
+          {
+            "type": "p",
+            "text": "These look to be the same models that are available through the OpenAI API."
+          },
+          {
+            "type": "p",
+            "text": "Chat offers a different selection: 5.6 Instant, Medium, High, Extra High, and Pro (actually Extra High and Pro are only available for $100/month+ subscribers—$20/month subscribers cap out at High). It doesn’t explain if those are Luna or Terra or Sol (I’m assuming Sol?). 5.6 Pro appears to be exclusive to Chat, with no equivalent in Work."
+          },
+          {
+            "type": "p",
+            "text": "My current understanding from using Codex is that Ultra is a special mode that more eagerly delegates to sub-agents."
+          },
+          {
+            "type": "p",
+            "text": "I believe ChatGPT Work sessions are billed against your Codex allowance, while ChatGPT Chat Sessions get their own, separate allowance. This may help explain the model availability differences."
+          },
+          {
+            "type": "h3",
+            "text": "Code execution with Internet access!"
+          },
+          {
+            "type": "p",
+            "text": "As a long-time fan of the Code Interpreter pattern—pioneered by OpenAI in 2023—this is by far the most exciting feature of ChatGPT Work (Cloud) for me."
+          },
+          {
+            "type": "p",
+            "text": "The code execution environment can now talk to the rest of the internet!"
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Chat can’t do this—if you ask it to install additional software packages or interact with websites or APIs that access will be blocked by the container proxy."
+          },
+          {
+            "type": "p",
+            "text": "(Weirdly, back in January it grew the ability to install packages, but that doesn’t seem to work any more. I wish they had better changelogs!)"
+          },
+          {
+            "type": "p",
+            "text": "Claude’s equivalent container has allowed restricted internet access since it launched last September. Claude can install packages from PYPI and NPM and clone repositories from GitHub. But that is about it: the allowlist of domains is very short."
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Work allows a whole lot more than that. It can be configured with a specific list of allowed domains, but the default appears to be open to all."
+          },
+          {
+            "type": "p",
+            "text": "This makes Work an incredibly useful tool. You can have it clone GitHub repositories, install their dependencies, then use them to interact with the rest of the web!"
+          },
+          {
+            "type": "h3",
+            "text": "A full, headless Chrome browser"
+          },
+          {
+            "type": "p",
+            "text": "Another killer feature of ChatGPT Work is the browser tool. ChatGPT Work can launch a full Chrome instance, load websites, fill out forms, and take screenshots."
+          },
+          {
+            "type": "p",
+            "text": "If a site requires sign in the browser can prompt you to take over and enter both passwords and 2FA codes, without round-tripping those credentials through the model itself."
+          },
+          {
+            "type": "p",
+            "text": "It can even run JavaScript against the DOM of loaded pages. I prompted:"
+          },
+          {
+            "type": "quote",
+            "text": "Load simonwillison.net in your browser and extract the headings using JavaScript"
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Work fired up a browser instance and ran the code:"
+          },
+          {
+            "type": "code",
+            "text": "await tab.playwright.evaluate(() => {\n  return Array.from(document.querySelectorAll(\"h1,h2,h3,h4,h5,h6\"), heading => ({\n    level: heading.tagName.toLowerCase(),\n    text: heading.innerText.trim().replace(/\\s+/g, \" \"),\n    id: heading.id || null\n  }));\n});"
+          },
+          {
+            "type": "p",
+            "text": "This feels a lot like my shot-scraper javascript tool, only now I can access it on my phone!"
+          },
+          {
+            "type": "h3",
+            "text": "A persistent, shared filesystem"
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Chat gets a fresh filesystem for each chat session. These cannot be accessed from any other session."
+          },
+          {
+            "type": "p",
+            "text": "In ChatGPT Work each session gets its own scratch folder—named something like /workspace/scratch/e00a0a017944—but each of those are persisted across sessions, so you can access files from previous chats. I have 171 folders in /workspace/scratch right now!"
+          },
+          {
+            "type": "p",
+            "text": "As far as I can tell that /workspace volume is mounted to all Work sessions that are currently running—file edits from one can be instantly seen by the others. They don’t seem to share the same process space though, and localhost servers running in one can’t be accessed from another."
+          },
+          {
+            "type": "h3",
+            "text": "ChatGPT Sites"
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Work has the ability to build and deploy entire websites, using Cloudflare Workers. These can have HTML and JavaScript and can run server-side features too, including stateful features on top of Cloudflare D1 and R2."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a simple site I built with this feature:"
+          },
+          {
+            "type": "p",
+            "text": "london-pelicans-in-her-piety.simonw.chatgpt.site"
+          },
+          {
+            "type": "p",
+            "text": "My prompt was:"
+          },
+          {
+            "type": "quote",
+            "text": "Figure out all of the places in London with a pelican in her piety, then turn that into a JSON file and build a ChatGPT sites site about them"
+          },
+          {
+            "type": "p",
+            "text": "(A pelican in her piety is a fascinating piece of medieval Christian imagery—once you know about them you’ll find them all over the place.)"
+          },
+          {
+            "type": "p",
+            "text": "These sites default to being private to the user that created them, but you can make them public and (on team plans) share them with other specific individuals."
+          },
+          {
+            "type": "h3",
+            "text": "Sub-agents with Sol, Luna, and Terra"
+          },
+          {
+            "type": "p",
+            "text": "There’s not much to say about this one. ChatGPT Chat can’t run sub-agents. ChatGPT Work can. This is very much a power-user feature: if you are running a complex project that can benefit from multiple parallel agents working together, Work can do that."
+          },
+          {
+            "type": "h3",
+            "text": "Scheduled prompt automations"
+          },
+          {
+            "type": "p",
+            "text": "Another feature that seems to have migrated from regular ChatGPT to ChatGPT Work at some point. You can prompt ChatGPT Work like this:"
+          },
+          {
+            "type": "quote",
+            "text": "run a search to see if Waymo have announced a launch date for Half Moon Bay every day at 8am"
+          },
+          {
+            "type": "p",
+            "text": "This will schedule a prompt to run on that frequency. These prompts can decide that nothing interesting has happened, or they can decide to notify you of some new information."
+          },
+          {
+            "type": "p",
+            "text": "Update: Actually this seems to work in ChatGPT Chat as well."
+          },
+          {
+            "type": "p",
+            "text": "It’s still worth noting here though, as it can be used in conjunction with other ChatGPT Work exclusive features. You can set a scheduled task to update a ChatGPT Site on an hourly basis, for example."
+          },
+          {
+            "type": "h3",
+            "text": "Is this safe?"
+          },
+          {
+            "type": "p",
+            "text": "An open question for me right now is how safe all of this stuff is."
+          },
+          {
+            "type": "p",
+            "text": "My lethal trifecta model warns about the risks inherent in any agent system that combines access to private data with exposure to untrusted content and a way to communicate stolen information back to an attacker."
+          },
+          {
+            "type": "p",
+            "text": "ChatGPT Work combines all three!"
+          },
+          {
+            "type": "p",
+            "text": "I’d love to hear more from OpenAI about how they protect ChatGPT Work sessions against prompt injection attacks. I expect their answer is the same auto-review mechanism as Codex."
+          },
+          {
+            "type": "h3",
+            "text": "OpenAI could make this a lot less confusing"
+          },
+          {
+            "type": "p",
+            "text": "Figuring this all out took way more work than it should have."
+          },
+          {
+            "type": "p",
+            "text": "I think there are two key problems here:"
+          },
+          {
+            "type": "li",
+            "text": "OpenAI explain Work in terms of what it’s for, not what it actually does"
+          },
+          {
+            "type": "li",
+            "text": "OpenAI still insist on hiding their system prompts and tools descriptions"
+          },
+          {
+            "type": "p",
+            "text": "If the ChatGPT Work documentation included the exact system prompt and tool descriptions used by the agent I wouldn’t have needed to write this post."
+          },
+          {
+            "type": "h3",
+            "text": "A list of all the tools"
+          },
+          {
+            "type": "p",
+            "text": "Shortly after publishing this article I had an idea. I started a fresh Work session and prompted:"
+          },
+          {
+            "type": "quote",
+            "text": "Build a site that lists every one of your tools - nearly grouped into categories - and for each one explain what it does. Try to exactly duplicate arguments and tool descriptions where possible. Design aesthetic should be technical docs, minimal flare"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the site it built, which includes details of 223 registered tools—though 6 of those are from my own personal MCPs served via datasette-mcp."
+          },
+          {
+            "type": "h3",
+            "text": "And a whole lot of Skills"
+          },
+          {
+            "type": "p",
+            "text": "I noticed that the only browser-related tool in the list was web.run, which has methods for running searches, opening URLs, and clicking links, but didn’t look like the full story in regards to headless browser automation."
+          },
+          {
+            "type": "p",
+            "text": "This made me suspicious that something was missing, so I told the ChatGPT Work session that built that tools reference site:"
+          },
+          {
+            "type": "quote",
+            "text": "Add full copies of every skill to the website (separate pages linked to from the homepage)"
+          },
+          {
+            "type": "p",
+            "text": "It turns out ChatGPT Work uses a lot of skills—44 in fact!"
+          },
+          {
+            "type": "p",
+            "text": "The control-browser skill explains how the browser works:"
+          },
+          {
+            "type": "quote",
+            "text": "Run browser setup code through the Node REPL js tool. In this environment the callable tool id typically appears as mcp__node_repl__js. [...]\nThe ability to interact directly with the browser is exposed through the browser-client runtime via the agent.browsers.* API. Before trying to interact with it, you MUST emit and read the complete documentation returned by await browser.documentation() in one go."
+          },
+          {
+            "type": "p",
+            "text": "So I told Work:"
+          },
+          {
+            "type": "quote",
+            "text": "Add the full output of await browser.documentation() to the bottom of the /skills/control-browser page"
+          },
+          {
+            "type": "p",
+            "text": "And now you can read that on /skills/control-browser as well."
+          },
+          {
+            "type": "p",
+            "text": "A few more interesting Skills:"
+          },
+          {
+            "type": "li",
+            "text": "documents for creating .docx files"
+          },
+          {
+            "type": "li",
+            "text": "imagegen with tips on creating images with the image_gen tool"
+          },
+          {
+            "type": "li",
+            "text": "pdf for both reading and rendering PDFs"
+          },
+          {
+            "type": "li",
+            "text": "Spreadsheets for manipulating .xlsx, .xls, .csv, .tsv"
+          },
+          {
+            "type": "li",
+            "text": "sites:sites-building for creating ChatGPT Sites"
+          },
+          {
+            "type": "li",
+            "text": "openai-docs for answering questions about itself"
+          },
+          {
+            "type": "li",
+            "text": "data-analytics:build-dashboard for building data dashboards"
+          }
+        ],
+        "translations": [
+          "30th August 2026",
+          "OpenAI announced ChatGPT Work on July 9th, and have been furiously iterating on it ever since. It is an extraordinarily confusing and very powerful product. Here’s what I’ve figured out about it so far.",
+          "ChatGPT Work is actually two products",
+          "The more interesting version of ChatGPT Work is the one that runs in the cloud. This can be accessed via chatgpt.com or through the ChatGPT mobile apps. Let’s call it Work Cloud.",
+          "If you install the ChatGPT desktop app—the app that used to be called Codex—you gain access to a thing called ChatGPT Work that can access files and run programs directly on your computer. Let’s call that one Work Local. This one feels more like regular Codex re-skinned to be less intimidating to non-software-developers.",
+          "(Update: Work Cloud is also available from the ChatGPT desktop app, via a Where should this chat run? dropdown.)",
+          "For the rest of this article I’m going to talk exclusively about Work Cloud.",
+          "Work is for paid subscribers only",
+          "Right now, ChatGPT Work (in both flavors) is available only to $20/month and up subscribers. Free users and $8/month Go users do not have access.",
+          "Work has features that aren’t available in Chat",
+          "The interface for accessing Work is a tab selector, which presents it as an alternative to Chat:",
+          "The obvious question is when should I use Chat, and when should I use Work?",
+          "OpenAI’s official answer to that question is:",
+          "Use Chat when you want an answer, explanation, brainstorm, or short draft. Use ChatGPT Work when you want ChatGPT to complete a task with a clear outcome, such as a brief, deck, analysis, recurring update, workflow, or file you can review and use.",
+          "I find that almost entirely useless, because I’ve been using regular ChatGPT Chat for all of those task categories for years!",
+          "The better question then is what features does Work have that are missing from Chat?",
+          "After extensive experimentation I think I’ve mostly figured that out:",
+          "Options to use Luna and Terra in place of Sol",
+          "A code execution environment with Internet access",
+          "A headless Chrome browser",
+          "A persistent filesystem shared between sessions",
+          "The ability to publish ChatGPT Sites",
+          "The ability to run sub-agent sessions with Sol, Luna, and Terra",
+          "Scheduled prompt automations (may be in ChatGPT Chat too)",
+          "Model selection",
+          "In Work, you get the option to pick GPT-5.6 Sol, Luna, or Terra, each with Light, Medium, High, Extra High, Max, or Ultra reasoning levels. You can also pick GPT-5.5 at Light, Medium, High, or Extra High.",
+          "These look to be the same models that are available through the OpenAI API.",
+          "Chat offers a different selection: 5.6 Instant, Medium, High, Extra High, and Pro (actually Extra High and Pro are only available for $100/month+ subscribers—$20/month subscribers cap out at High). It doesn’t explain if those are Luna or Terra or Sol (I’m assuming Sol?). 5.6 Pro appears to be exclusive to Chat, with no equivalent in Work.",
+          "My current understanding from using Codex is that Ultra is a special mode that more eagerly delegates to sub-agents.",
+          "I believe ChatGPT Work sessions are billed against your Codex allowance, while ChatGPT Chat Sessions get their own, separate allowance. This may help explain the model availability differences.",
+          "Code execution with Internet access!",
+          "As a long-time fan of the Code Interpreter pattern—pioneered by OpenAI in 2023—this is by far the most exciting feature of ChatGPT Work (Cloud) for me.",
+          "The code execution environment can now talk to the rest of the internet!",
+          "ChatGPT Chat can’t do this—if you ask it to install additional software packages or interact with websites or APIs that access will be blocked by the container proxy.",
+          "(Weirdly, back in January it grew the ability to install packages, but that doesn’t seem to work any more. I wish they had better changelogs!)",
+          "Claude’s equivalent container has allowed restricted internet access since it launched last September. Claude can install packages from PYPI and NPM and clone repositories from GitHub. But that is about it: the allowlist of domains is very short.",
+          "ChatGPT Work allows a whole lot more than that. It can be configured with a specific list of allowed domains, but the default appears to be open to all.",
+          "This makes Work an incredibly useful tool. You can have it clone GitHub repositories, install their dependencies, then use them to interact with the rest of the web!",
+          "A full, headless Chrome browser",
+          "Another killer feature of ChatGPT Work is the browser tool. ChatGPT Work can launch a full Chrome instance, load websites, fill out forms, and take screenshots.",
+          "If a site requires sign in the browser can prompt you to take over and enter both passwords and 2FA codes, without round-tripping those credentials through the model itself.",
+          "It can even run JavaScript against the DOM of loaded pages. I prompted:",
+          "Load simonwillison.net in your browser and extract the headings using JavaScript",
+          "ChatGPT Work fired up a browser instance and ran the code:",
+          "await tab.playwright.evaluate(() => {\n  return Array.from(document.querySelectorAll(\"h1,h2,h3,h4,h5,h6\"), heading => ({\n    level: heading.tagName.toLowerCase(),\n    text: heading.innerText.trim().replace(/\\s+/g, \" \"),\n    id: heading.id || null\n  }));\n});",
+          "This feels a lot like my shot-scraper javascript tool, only now I can access it on my phone!",
+          "A persistent, shared filesystem",
+          "ChatGPT Chat gets a fresh filesystem for each chat session. These cannot be accessed from any other session.",
+          "In ChatGPT Work each session gets its own scratch folder—named something like /workspace/scratch/e00a0a017944—but each of those are persisted across sessions, so you can access files from previous chats. I have 171 folders in /workspace/scratch right now!",
+          "As far as I can tell that /workspace volume is mounted to all Work sessions that are currently running—file edits from one can be instantly seen by the others. They don’t seem to share the same process space though, and localhost servers running in one can’t be accessed from another.",
+          "ChatGPT Sites",
+          "ChatGPT Work has the ability to build and deploy entire websites, using Cloudflare Workers. These can have HTML and JavaScript and can run server-side features too, including stateful features on top of Cloudflare D1 and R2.",
+          "Here’s a simple site I built with this feature:",
+          "london-pelicans-in-her-piety.simonw.chatgpt.site",
+          "My prompt was:",
+          "Figure out all of the places in London with a pelican in her piety, then turn that into a JSON file and build a ChatGPT sites site about them",
+          "(A pelican in her piety is a fascinating piece of medieval Christian imagery—once you know about them you’ll find them all over the place.)",
+          "These sites default to being private to the user that created them, but you can make them public and (on team plans) share them with other specific individuals.",
+          "Sub-agents with Sol, Luna, and Terra",
+          "There’s not much to say about this one. ChatGPT Chat can’t run sub-agents. ChatGPT Work can. This is very much a power-user feature: if you are running a complex project that can benefit from multiple parallel agents working together, Work can do that.",
+          "Scheduled prompt automations",
+          "Another feature that seems to have migrated from regular ChatGPT to ChatGPT Work at some point. You can prompt ChatGPT Work like this:",
+          "run a search to see if Waymo have announced a launch date for Half Moon Bay every day at 8am",
+          "This will schedule a prompt to run on that frequency. These prompts can decide that nothing interesting has happened, or they can decide to notify you of some new information.",
+          "Update: Actually this seems to work in ChatGPT Chat as well.",
+          "It’s still worth noting here though, as it can be used in conjunction with other ChatGPT Work exclusive features. You can set a scheduled task to update a ChatGPT Site on an hourly basis, for example.",
+          "Is this safe?",
+          "An open question for me right now is how safe all of this stuff is.",
+          "My lethal trifecta model warns about the risks inherent in any agent system that combines access to private data with exposure to untrusted content and a way to communicate stolen information back to an attacker.",
+          "ChatGPT Work combines all three!",
+          "I’d love to hear more from OpenAI about how they protect ChatGPT Work sessions against prompt injection attacks. I expect their answer is the same auto-review mechanism as Codex.",
+          "OpenAI could make this a lot less confusing",
+          "Figuring this all out took way more work than it should have.",
+          "I think there are two key problems here:",
+          "OpenAI explain Work in terms of what it’s for, not what it actually does",
+          "OpenAI still insist on hiding their system prompts and tools descriptions",
+          "If the ChatGPT Work documentation included the exact system prompt and tool descriptions used by the agent I wouldn’t have needed to write this post.",
+          "A list of all the tools",
+          "Shortly after publishing this article I had an idea. I started a fresh Work session and prompted:",
+          "Build a site that lists every one of your tools - nearly grouped into categories - and for each one explain what it does. Try to exactly duplicate arguments and tool descriptions where possible. Design aesthetic should be technical docs, minimal flare",
+          "Here’s the site it built, which includes details of 223 registered tools—though 6 of those are from my own personal MCPs served via datasette-mcp.",
+          "And a whole lot of Skills",
+          "I noticed that the only browser-related tool in the list was web.run, which has methods for running searches, opening URLs, and clicking links, but didn’t look like the full story in regards to headless browser automation.",
+          "This made me suspicious that something was missing, so I told the ChatGPT Work session that built that tools reference site:",
+          "Add full copies of every skill to the website (separate pages linked to from the homepage)",
+          "It turns out ChatGPT Work uses a lot of skills—44 in fact!",
+          "The control-browser skill explains how the browser works:",
+          "Run browser setup code through the Node REPL js tool. In this environment the callable tool id typically appears as mcp__node_repl__js. [...]\nThe ability to interact directly with the browser is exposed through the browser-client runtime via the agent.browsers.* API. Before trying to interact with it, you MUST emit and read the complete documentation returned by await browser.documentation() in one go.",
+          "So I told Work:",
+          "Add the full output of await browser.documentation() to the bottom of the /skills/control-browser page",
+          "And now you can read that on /skills/control-browser as well.",
+          "A few more interesting Skills:",
+          "documents for creating .docx files",
+          "imagegen with tips on creating images with the image_gen tool",
+          "pdf for both reading and rendering PDFs",
+          "Spreadsheets for manipulating .xlsx, .xls, .csv, .tsv",
+          "sites:sites-building for creating ChatGPT Sites",
+          "openai-docs for answering questions about itself",
+          "data-analytics:build-dashboard for building data dashboards"
+        ]
+      }
+    },
+    {
+      "slug": "e9486cd43dabb5ab",
+      "title": "Before NTP there were Time and Daytime",
+      "titleZh": "Before NTP there were Time and Daytime",
+      "link": "https://www.jeffgeerling.com/blog/2026/rfc-867-868-time/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-08-30T22:09:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Before NTP there were Time and Daytime",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Aug 30, 2026"
+          },
+          {
+            "type": "p",
+            "text": "In building an NTP time demo on old Macs for VCF Midwest, I came across RFC 867 and RFC 868, for the 'Daytime' and 'Time' Protocols, respectively."
+          },
+          {
+            "type": "p",
+            "text": "My first exposure to any form of network time was when I upgraded from a used PowerBook 180c to my first 'new' computer, a Power Mac G3, in 2000. With the introduction of Mac OS 8.5, Apple added a 'Network Time Server' option in the Date & Time Control Panel."
+          },
+          {
+            "type": "p",
+            "text": "I remember dialing up the Internet via PPP, then clicking the 'Set Time Now' button, and seeing my computer's clock update. I didn't think much of it at the time, but this was way more than setting my wristwatch using the 'Time and Temperature' phone line, which was previously the most precise time source I could access regularly."
+          },
+          {
+            "type": "p",
+            "text": "But prior to NTP (RFC 1059 in 1988), there was a much more informal way of requesting time from a remote server. With the Time Protocol (RFC 868), a time request was as simple as:"
+          },
+          {
+            "type": "li",
+            "text": "Open a connection to the server on port 37 (TCP connect, or send an empty UDP datagram)"
+          },
+          {
+            "type": "li",
+            "text": "Receive the time as a 32-bit binary number"
+          },
+          {
+            "type": "p",
+            "text": "That's it!"
+          },
+          {
+            "type": "p",
+            "text": "In the mid-80s, this was an extremely efficient method of time transfer, which was helpful since network bytes were precious, and you didn't need a complex routine to handle the 32-bit time."
+          },
+          {
+            "type": "p",
+            "text": "But there are downsides to this simplistic approach. Especially if you were routing the request through the Internet, with multiple non-deterministic hops:"
+          },
+          {
+            "type": "li",
+            "text": "The 32-bit number was just \"seconds since 00:00 (midnight) 1 January 1900\nGMT\", so the best timing resolution you could ever get is 1 second (NTP gives 64-bit resolution, which can scale past microseconds)."
+          },
+          {
+            "type": "li",
+            "text": "There is no timestamping of the actual request or response, so there's no way to account for network delays, or average them out over time."
+          },
+          {
+            "type": "li",
+            "text": "The 32-bit integer value will run out on February 7, 2036, resulting in a 'Y2K36' bug similar to the Unix Y2K38 Epochalypse. (NTP has the same problem but introduced Eras to deal with it.)"
+          },
+          {
+            "type": "p",
+            "text": "But in 1983, when the RFC was introduced, it was just a convenient way for a computer on a network to get time from a server with a stable clock (many computers didn't have a real-time clock). It wasn't used for critical services like distributed databases, especially since timing resolution beyond 1 second wasn't that common in computing (assuming you even had a world clock!)."
+          },
+          {
+            "type": "p",
+            "text": "The Daytime protocol (RFC 867) is succinct, but ambiguous. It defines a protocol by which an entire day and timestamp can be returned in human-readable output, for example:"
+          },
+          {
+            "type": "code",
+            "text": "Tuesday, February 22, 1982 17:37:43-PST"
+          },
+          {
+            "type": "p",
+            "text": "The ambiguity comes with the format, which is left to the implementor:"
+          },
+          {
+            "type": "quote",
+            "text": "There is no specific syntax for the daytime.  It is recommended that\nit be limited to the ASCII printing characters, space, carriage\nreturn, and line feed.  The daytime should be just one line.\n\n    One popular syntax is:\n\n        Weekday, Month Day, Year Time-Zone\n\n        Example:\n\n           Tuesday, February 22, 1982 17:37:43-PST"
+          },
+          {
+            "type": "p",
+            "text": "Immediately following, it suggests the alternative dd mmm yy hh:mm:ss zzz, which was used for SMTP!"
+          },
+          {
+            "type": "p",
+            "text": "Fun fact: NIST still runs RFC 867/868 Daytime services on time.nist.gov!"
+          },
+          {
+            "type": "code",
+            "text": "$ nc time.nist.gov 13\n\n61281 26-08-29 23:31:43 50 0 0 771.1 UTC(NIST) *"
+          },
+          {
+            "type": "p",
+            "text": "This is using a customized response that matches neither of the RFC formats:"
+          },
+          {
+            "type": "code",
+            "text": "JJJJJ YR-MO-DA HH:MM:SS TT L H msADV UTC(NIST) OTM"
+          },
+          {
+            "type": "p",
+            "text": "Where JJJJJ is the Modified Julian Date, and the OTM is an 'on-time marker', which marks that the time should be correct the moment you receive it... but from my research is more of a 'best guess' that was more useful in older telephone time systems1, which were in some ways more deterministic."
+          },
+          {
+            "type": "p",
+            "text": "NIST's is definitely one of the stranger time formats I've seen!"
+          },
+          {
+            "type": "p",
+            "text": "The Time and Daytime Protocols were both shepherded by Jon Postel, a.k.a. the 'God of the Internet', known for other hits like SMTP, IANA, and Postel's law."
+          },
+          {
+            "type": "p",
+            "text": "I often wonder what it was like to be on the ground floor when these protocols and services were written. I was more worried about getting time on my family's Nintendo. Not that my toddler brain could've comprehended network time transfer back then!"
+          },
+          {
+            "type": "h2",
+            "text": "Run your own Time and Daytime Server"
+          },
+          {
+            "type": "p",
+            "text": "After taking a nice long detour learning about Time and Daytime, I decided I would add some easter eggs at my booth at VCF Midwest—one of them being Time/Daytime services on ports 37 and 13, respectively."
+          },
+          {
+            "type": "p",
+            "text": "If you want to run your own Time/Daytime server, it's easy in Linux—they're built into xinetd. These instructions are for Pi OS / Debian, but it's similar on other distros:"
+          },
+          {
+            "type": "code",
+            "text": "# Install and enable xinetd\nsudo apt install xinetd\nsudo systemctl enable xinetd\n\n# Edit time and daytime configurations\nsudo nano /etc/xinetd.d/time\n  -> service time tcp set disable to \"no\"\n  -> service time udp set disable to \"no\"\n\nsudo nano /etc/xinetd.d/daytime\n  -> service daytime tcp set disable to \"no\"\n  -> service daytime udp set disable to \"no\"\n\n# Restart xinetd\nsudo systemctl restart xinetd"
+          },
+          {
+            "type": "p",
+            "text": "Make sure ports 37 and 13 are open on your firewall, then from another computer on the network:"
+          },
+          {
+            "type": "code",
+            "text": "# Time\n$ nc 10.0.37.60 37 | xxd -g 1\n00000000: ee 3f 24 b3                                      .?$.\n\n# Verify the Time value by passing it into `date`:\n$ date -r $(( 0xee3f24c8 - 2208988800 ))\nSun Aug 30 16:53:12 CDT 2026\n\n# Daytime\n$ nc -v 10.0.37.60 13\nConnection to 10.0.37.60 port 13 [tcp/daytime] succeeded!\n30 AUG 2026 16:49:26 CDT"
+          },
+          {
+            "type": "p",
+            "text": "The 2208988800 in the date translation command above is the difference (in seconds) between 1900 and 1970, required because UNIX time's epoch is in 1970 (versus 1900 for Time and NTP)."
+          },
+          {
+            "type": "p",
+            "text": "If you'll be at VCF Midwest—especially if you have a vintage computer with Networking attached to the show's network—I can give you a good Time. Or Daytime, for that matter!"
+          },
+          {
+            "type": "li",
+            "text": "Apparently NIST's ACTS dial-up time service is still used 200-300 times per day! ↩︎"
+          }
+        ],
+        "translations": [
+          "Aug 30, 2026",
+          "In building an NTP time demo on old Macs for VCF Midwest, I came across RFC 867 and RFC 868, for the 'Daytime' and 'Time' Protocols, respectively.",
+          "My first exposure to any form of network time was when I upgraded from a used PowerBook 180c to my first 'new' computer, a Power Mac G3, in 2000. With the introduction of Mac OS 8.5, Apple added a 'Network Time Server' option in the Date & Time Control Panel.",
+          "I remember dialing up the Internet via PPP, then clicking the 'Set Time Now' button, and seeing my computer's clock update. I didn't think much of it at the time, but this was way more than setting my wristwatch using the 'Time and Temperature' phone line, which was previously the most precise time source I could access regularly.",
+          "But prior to NTP (RFC 1059 in 1988), there was a much more informal way of requesting time from a remote server. With the Time Protocol (RFC 868), a time request was as simple as:",
+          "Open a connection to the server on port 37 (TCP connect, or send an empty UDP datagram)",
+          "Receive the time as a 32-bit binary number",
+          "That's it!",
+          "In the mid-80s, this was an extremely efficient method of time transfer, which was helpful since network bytes were precious, and you didn't need a complex routine to handle the 32-bit time.",
+          "But there are downsides to this simplistic approach. Especially if you were routing the request through the Internet, with multiple non-deterministic hops:",
+          "The 32-bit number was just \"seconds since 00:00 (midnight) 1 January 1900\nGMT\", so the best timing resolution you could ever get is 1 second (NTP gives 64-bit resolution, which can scale past microseconds).",
+          "There is no timestamping of the actual request or response, so there's no way to account for network delays, or average them out over time.",
+          "The 32-bit integer value will run out on February 7, 2036, resulting in a 'Y2K36' bug similar to the Unix Y2K38 Epochalypse. (NTP has the same problem but introduced Eras to deal with it.)",
+          "But in 1983, when the RFC was introduced, it was just a convenient way for a computer on a network to get time from a server with a stable clock (many computers didn't have a real-time clock). It wasn't used for critical services like distributed databases, especially since timing resolution beyond 1 second wasn't that common in computing (assuming you even had a world clock!).",
+          "The Daytime protocol (RFC 867) is succinct, but ambiguous. It defines a protocol by which an entire day and timestamp can be returned in human-readable output, for example:",
+          "Tuesday, February 22, 1982 17:37:43-PST",
+          "The ambiguity comes with the format, which is left to the implementor:",
+          "There is no specific syntax for the daytime.  It is recommended that\nit be limited to the ASCII printing characters, space, carriage\nreturn, and line feed.  The daytime should be just one line.\n\n    One popular syntax is:\n\n        Weekday, Month Day, Year Time-Zone\n\n        Example:\n\n           Tuesday, February 22, 1982 17:37:43-PST",
+          "Immediately following, it suggests the alternative dd mmm yy hh:mm:ss zzz, which was used for SMTP!",
+          "Fun fact: NIST still runs RFC 867/868 Daytime services on time.nist.gov!",
+          "$ nc time.nist.gov 13\n\n61281 26-08-29 23:31:43 50 0 0 771.1 UTC(NIST) *",
+          "This is using a customized response that matches neither of the RFC formats:",
+          "JJJJJ YR-MO-DA HH:MM:SS TT L H msADV UTC(NIST) OTM",
+          "Where JJJJJ is the Modified Julian Date, and the OTM is an 'on-time marker', which marks that the time should be correct the moment you receive it... but from my research is more of a 'best guess' that was more useful in older telephone time systems1, which were in some ways more deterministic.",
+          "NIST's is definitely one of the stranger time formats I've seen!",
+          "The Time and Daytime Protocols were both shepherded by Jon Postel, a.k.a. the 'God of the Internet', known for other hits like SMTP, IANA, and Postel's law.",
+          "I often wonder what it was like to be on the ground floor when these protocols and services were written. I was more worried about getting time on my family's Nintendo. Not that my toddler brain could've comprehended network time transfer back then!",
+          "Run your own Time and Daytime Server",
+          "After taking a nice long detour learning about Time and Daytime, I decided I would add some easter eggs at my booth at VCF Midwest—one of them being Time/Daytime services on ports 37 and 13, respectively.",
+          "If you want to run your own Time/Daytime server, it's easy in Linux—they're built into xinetd. These instructions are for Pi OS / Debian, but it's similar on other distros:",
+          "# Install and enable xinetd\nsudo apt install xinetd\nsudo systemctl enable xinetd\n\n# Edit time and daytime configurations\nsudo nano /etc/xinetd.d/time\n  -> service time tcp set disable to \"no\"\n  -> service time udp set disable to \"no\"\n\nsudo nano /etc/xinetd.d/daytime\n  -> service daytime tcp set disable to \"no\"\n  -> service daytime udp set disable to \"no\"\n\n# Restart xinetd\nsudo systemctl restart xinetd",
+          "Make sure ports 37 and 13 are open on your firewall, then from another computer on the network:",
+          "# Time\n$ nc 10.0.37.60 37 | xxd -g 1\n00000000: ee 3f 24 b3                                      .?$.\n\n# Verify the Time value by passing it into `date`:\n$ date -r $(( 0xee3f24c8 - 2208988800 ))\nSun Aug 30 16:53:12 CDT 2026\n\n# Daytime\n$ nc -v 10.0.37.60 13\nConnection to 10.0.37.60 port 13 [tcp/daytime] succeeded!\n30 AUG 2026 16:49:26 CDT",
+          "The 2208988800 in the date translation command above is the difference (in seconds) between 1900 and 1970, required because UNIX time's epoch is in 1970 (versus 1900 for Time and NTP).",
+          "If you'll be at VCF Midwest—especially if you have a vintage computer with Networking attached to the show's network—I can give you a good Time. Or Daytime, for that matter!",
+          "Apparently NIST's ACTS dial-up time service is still used 200-300 times per day! ↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "e5b1cf7e8602aa00",
+      "title": "Here's a good way to present AI videos",
+      "titleZh": "Here's a good way to present AI videos",
+      "link": "https://idiallo.com/blog/a-good-way-to-present-ai-videos-on-youtube",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-08-31T07:30:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Here's a good way to present AI videos",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "siteName": "Ibrahim Diallo Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Viewer discretion is advised."
+          },
+          {
+            "type": "li",
+            "text": "13 hours ago"
+          },
+          {
+            "type": "li",
+            "text": "~ 2 minutes read"
+          },
+          {
+            "type": "li",
+            "text": "Buy me\n                            Coffee"
+          },
+          {
+            "type": "p",
+            "text": "The YouTube tag marking a video as AI-generated is as insignificant as the little \"Sponsored\" text in search ads."
+          },
+          {
+            "type": "p",
+            "text": "I've taught my mother and her friends to check for that tag, but most, if not all, of the videos they share with me don't even have it. Even though they're clearly AI-generated."
+          },
+          {
+            "type": "p",
+            "text": "If deception is something we want to prevent, and our parents can't tell real videos from fake ones, wouldn't it make sense to put a warning where it's actually effective? Just like movies have warnings beforehand, why not add one before these videos? It would take no more than two or three seconds, and it's entirely controlled by the platform. If someone is willing to watch the content after the warning, more power to them. But for those being deceived, this would actually help."
+          },
+          {
+            "type": "p",
+            "text": "Those are the words YouTube places on videos where it detects AI, but they're buried somewhere in the description. Why not make that notice prominent when the video starts, the same way some videos open with a \"Viewer discretion is advised\" notice? On YouTube or whichever platform hosting the video, the warning is not embedding into the video, just displayed before. The uploader has no control over it."
+          },
+          {
+            "type": "p",
+            "text": "While I know most people think AI videos are just fun or slop, but I argue that they can be harmful when they deceive us. They are a profitable vector for scammers, and despite YouTube's effort to curb it, they are actively promoting it in their creative studio."
+          },
+          {
+            "type": "p",
+            "text": "If YouTube actually wants to prevent fraud and scams, they can do something about it. Let users know what they are about to watch."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "28e8c5145d65756b",
+      "title": "Review: Ruined Theatre's A Midsummer Night's Dream ★★★★☆",
+      "titleZh": "Review: Ruined Theatre's A Midsummer Night's Dream ★★★★☆",
+      "link": "https://shkspr.mobi/blog/2026/08/review-ruined-theatres-a-midsummer-nights-dream/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-08-31T11:34:08.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Review: Ruined Theatre's A Midsummer Night's Dream ★★★★☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The whole point about Shakespeare is that you can set the play on an intergalactic space station or an American high school and keep virtually the rest unchanged. What happens when you transpose Dream from a proscenium arch to a living wood? As the sun sets over the trees, what sprites will come out to entertain us?"
+          },
+          {
+            "type": "p",
+            "text": "Ruined Theatre brings a brilliant cast of seasoned West End performers to strut their hour among the ruins of Abbey Wood. Hey, gentrification has its benefits, OK?"
+          },
+          {
+            "type": "p",
+            "text": "I don't know how many times I've seen \"Dream\", but I know I've never seen it performed in an actual wood during summer. Booking the tickets a few weeks ago during England's heatwave, it sounded perfect. A warm, dusky evening, accompanied by færies and asses. The British weather, of course, had other ideas."
+          },
+          {
+            "type": "h2",
+            "text": "The Show \n\t\t\t\t\t\t\tMust\n\t\t\t\t\t\t\t Go On"
+          },
+          {
+            "type": "p",
+            "text": "The storm clouds were, as the bard wrote, heavy, black and, pendulous. Outside it may be raining, their makeup may be flaking, but everyone knows that Shakespeare is best played when defying the elements, right?"
+          },
+          {
+            "type": "p",
+            "text": "Even in the rain, it was great! Theseus and Hippolyta as selfie-obsessed poseurs made for a delightful start. Recasting Athens as Lesnes was a great touch. And then we were led through the woods.  Rather than traipse us from scene to scene, we settled in to a clearing - bringing our own camping chairs with us - and watched the magic unfold."
+          },
+          {
+            "type": "p",
+            "text": "Half the fun is in watching children and teenagers giggling at Hermia's rage and Bottom's overconfident bombast. But you can't go wrong with actors studiously ignoring the downpour and professing their (misplaced) love for each other. Honestly, who'd lie down in the mud just to make us chuckle? How many laughs can you ring out of a man with an ass's head? Lord, what fools these mortals be!"
+          },
+          {
+            "type": "p",
+            "text": "It is a fairly straightforward production. Aside from modern dress there wasn't much updating of the text other than trimming it down. The smoke machine might have been an eerie touch on a still summer's night, billowing around us, instead the wind took it before it had a chance to settle. The incidental music worked well - especially the intertextuality of Pyramus & Thisbe playing to the Romeo+Juliet soundtrack - but the speakers were over-driven and distorted. A small crimp on an otherwise fine production."
+          },
+          {
+            "type": "h2",
+            "text": "Reflections in a dappled pond"
+          },
+          {
+            "type": "p",
+            "text": "I'm fairly sure I once played Demetrius in a youth production. Or possibly Lysander. I know I got to kiss Helena. Or possibly Hermia. The mind plays funny tricks as you age. Some of the more dreary prose becomes light and airy. The laughs which felt forced come more easily. The gender politics a little more nuanced."
+          },
+          {
+            "type": "p",
+            "text": "You can never go back, of course. But you will always remember your first stage kiss with Hermia (or possibly Helena) with great affection. Seeing Shakespeare again and again and again in a hundred different variations just helps you realise what a master storyteller he was."
+          }
+        ],
+        "translations": [
+          "The whole point about Shakespeare is that you can set the play on an intergalactic space station or an American high school and keep virtually the rest unchanged. What happens when you transpose Dream from a proscenium arch to a living wood? As the sun sets over the trees, what sprites will come out to entertain us?",
+          "Ruined Theatre brings a brilliant cast of seasoned West End performers to strut their hour among the ruins of Abbey Wood. Hey, gentrification has its benefits, OK?",
+          "I don't know how many times I've seen \"Dream\", but I know I've never seen it performed in an actual wood during summer. Booking the tickets a few weeks ago during England's heatwave, it sounded perfect. A warm, dusky evening, accompanied by færies and asses. The British weather, of course, had other ideas.",
+          "The Show \n\t\t\t\t\t\t\tMust\n\t\t\t\t\t\t\t Go On",
+          "The storm clouds were, as the bard wrote, heavy, black and, pendulous. Outside it may be raining, their makeup may be flaking, but everyone knows that Shakespeare is best played when defying the elements, right?",
+          "Even in the rain, it was great! Theseus and Hippolyta as selfie-obsessed poseurs made for a delightful start. Recasting Athens as Lesnes was a great touch. And then we were led through the woods.  Rather than traipse us from scene to scene, we settled in to a clearing - bringing our own camping chairs with us - and watched the magic unfold.",
+          "Half the fun is in watching children and teenagers giggling at Hermia's rage and Bottom's overconfident bombast. But you can't go wrong with actors studiously ignoring the downpour and professing their (misplaced) love for each other. Honestly, who'd lie down in the mud just to make us chuckle? How many laughs can you ring out of a man with an ass's head? Lord, what fools these mortals be!",
+          "It is a fairly straightforward production. Aside from modern dress there wasn't much updating of the text other than trimming it down. The smoke machine might have been an eerie touch on a still summer's night, billowing around us, instead the wind took it before it had a chance to settle. The incidental music worked well - especially the intertextuality of Pyramus & Thisbe playing to the Romeo+Juliet soundtrack - but the speakers were over-driven and distorted. A small crimp on an otherwise fine production.",
+          "Reflections in a dappled pond",
+          "I'm fairly sure I once played Demetrius in a youth production. Or possibly Lysander. I know I got to kiss Helena. Or possibly Hermia. The mind plays funny tricks as you age. Some of the more dreary prose becomes light and airy. The laughs which felt forced come more easily. The gender politics a little more nuanced.",
+          "You can never go back, of course. But you will always remember your first stage kiss with Hermia (or possibly Helena) with great affection. Seeing Shakespeare again and again and again in a hundred different variations just helps you realise what a master storyteller he was."
+        ]
+      }
+    },
+    {
+      "slug": "b90126fe05c93adf",
+      "title": "Cancelation Terminology",
+      "titleZh": "Cancelation Terminology",
+      "link": "https://matklad.github.io/2026/08/31/cancelation-terminology.html",
+      "sourceName": "matklad.github.io",
+      "sourceUrl": "https://matklad.github.io",
+      "pubDate": "2026-08-31T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Cancelation Terminology",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A short note explaining the difference between synchronous cancelation,\nasynchronous cancelation, and graceful shutdown. I am not too attached to these\nspecific three terms, but I want to call your attention to the three\nthings behind them, which are important not to confuse with each other."
+          },
+          {
+            "type": "p",
+            "text": "synchronous cancelation is an (often implicit) control flow structure.\nIt unwinds the stack and looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "task.cancel();\n// The task will have finished by this point."
+          },
+          {
+            "type": "p",
+            "text": "Synchronous cancelation is a bit like Molière’s prose — we do it all the time,\nbut not necessarily in full consciousness. The primary source of synchronous\ncancelation is error handling — every time an Exception is thrown or an\nerror returned, the code promptly breaks out of all the loops, ifs, and\nblocks, invoking the necessary cleanup actions via RAII, finally, with/try\nwith resources or defer."
+          },
+          {
+            "type": "p",
+            "text": "asynchronous cancelation is a communication protocol between two\nparties. One party requests cancelation (synchronously), but then it has to wait\nuntil the other party acknowledges it and winds down. It looks like this:"
+          },
+          {
+            "type": "code",
+            "text": "task.request_cancelation();\n// The task could still be running here.\ntask.join().await;\n// After the requisite wait, the task is finished."
+          },
+          {
+            "type": "p",
+            "text": "Like synchronous cancelation, this is a relatively low-level concern when\nimplementing a concurrent program in a way that doesn’t crash or hang. I know\ntwo central example where an asynchronous cancelation is required."
+          },
+          {
+            "type": "p",
+            "text": "First is the CPU thread pool. Imagine you have offloaded encrypting a buffer to\na separate thread as a part of handling user’s request. Some time later, you\nlearn that the request must be canceled (perhaps the user had left). You can’t\njust abandon the encrypting thread. First, it would be smart not to waste CPU\ncycles for useless work, but, more importantly, the underlying buffer must\nremain tied up. If it were to be freed as a result of request cancelation,\nsomething else might re-use that memory, leading to data races."
+          },
+          {
+            "type": "p",
+            "text": "But you also can’t just cancel that thread synchronously! It’s in the middle of a\nhyper-optimized SIMD loop, and you really don’t want it to check the cancelation\nflag before reading every byte. What you’d want is to split the buffer into\nreasonably-sized chunks, and check the cancelation status after every chunk. But\nthat means that the party that requested the cancelation must wait for at least\none chunk’s worth of work!"
+          },
+          {
+            "type": "p",
+            "text": "Another example here is io_uring. It has exactly the same shape: if you submit\na write with a buffer to the kernel, that buffer must remain tied up until the\nwrite finishes (and you can cancel the write to make it finish faster). While\nio_uring is still at least a somewhat exotic technology (though, arguably,\nit’s the interfaces we have had before which are byzantine), the thread pool\nexample demonstrates that the phenomenon of asynchronous cancelation itself is\nrather mundane."
+          },
+          {
+            "type": "p",
+            "text": "Asynchronous cancelation comes up all the time when writing concurrent software.\nBecause it affects the overall shape of the code, it’s useful to identify it\nearly. Conversely, it is useful to ask yourself whether you need asynchronous\ncancelation at all, and whether synchronous one can be made to work. This is\nespecially important in Rust, which makes synchronous cancelation too easy, and\ndoesn’t provide great mechanisms for asynchronous one."
+          },
+          {
+            "type": "p",
+            "text": "Finally, graceful shutdown is an application programming pattern for\nhandling connections. It lives on a higher level of abstraction than the two\ncancelations. If you are implementing a web service, you can implement shutdown\nby stopping your accept loop (rejecting new connections), but continuing to\nserve all existing connections until their respective clients disconnect. If the\nload balancer is configured to route new connection requests to different\ninstances of the service, this pattern allows you to do rolling upgrades without\nservice disruptions."
+          },
+          {
+            "type": "p",
+            "text": "As a bonus point, a related idea is that of\ncrash-only software.\nCancelation is all good, but your entire program can get SIGKILLed arbitrarily\nby an OOM killer, and the entire computer might get rebooted on powerloss.\nReliable software has to handle ungraceful shutdown without losing data. But, if\nyou can survive powerloss, you might as well implement the Quit button\nby SIGKILLing yourself, simultaneously simplifying the implementation and\nincreasing testing coverage for powerloss scenarios."
+          },
+          {
+            "type": "p",
+            "text": "To give some examples from TigerBeetle,\nGrid.cancel\nis an asynchronous cancelation. It takes a callback to notify the caller when\nthe cancelation is done. This API is used during state sync. When a replica\ndetermines that that cluster is so far ahead that event based transfer doesn’t\nwork, and that a state transfer is required to catch up, it must cancel all\noutstanding grid read operations. A read can be backed either by replica’s local\ndisk, or by transparent fetch of the data from a neighboring replica. In the\nfirst case, we have to wait until the read is done. In the second case, we need\nto abandon the read — remote read getting stuck is probably the reason for\nus to state sync in the first place."
+          },
+          {
+            "type": "p",
+            "text": "StateMachine.reset\nis an example of a synchronous cancelation. This is the part of the same flow as\nGrid.cancel, and is an example of how you can simplify the code if you think\nclearly about asynchronous vs synchronous cancelation. Ultimately,\nStateMachine sits on top of the Grid, but there’s a bunch of intermediate\nlayers (Forest, Tree, Compaction, Scan, etc). A naive approach would be\nto notice that Grid requires asynchronous cancelation and propagate asynchrony\nthroughout the stack. What we do instead is asynchronously canceling just the\nGrid directly, and then synchronously reseting everything else."
+          },
+          {
+            "type": "p",
+            "text": "Another example of asynchronous cancelation is\nClient.shutdown.\nWhen an application using TigerBeetle “drops” the Client object, we need to\nfree all OS resources. Our client also uses io_uring, so we must first wait for\nall outstanding syscalls to complete. In the comment, we call it “graceful\nshutdown”, but I think this is wrong, and this is the motivation for writing\ndown this article. We don’t do graceful shutdown at TigerBeetle — it’s crash\nonly all the way. Tail latency tolerance (asking several nodes for an answer and\npicking the fastest one) is a more general solution, as it handles not only\ncrash faults, but also\ngray failures.\nIn a distributed system, a very slow node looks exactly the same as a crashed\none. A crash is just a degree of slowness."
+          },
+          {
+            "type": "p",
+            "text": "Take aways:"
+          },
+          {
+            "type": "li",
+            "text": "Synchronous cancelation is control flow operator"
+          },
+          {
+            "type": "li",
+            "text": "Asynchronous cancelation is a communication protocol"
+          },
+          {
+            "type": "li",
+            "text": "Graceful shutdown is an application-level design pattern"
+          }
+        ],
+        "translations": [
+          "A short note explaining the difference between synchronous cancelation,\nasynchronous cancelation, and graceful shutdown. I am not too attached to these\nspecific three terms, but I want to call your attention to the three\nthings behind them, which are important not to confuse with each other.",
+          "synchronous cancelation is an (often implicit) control flow structure.\nIt unwinds the stack and looks like this:",
+          "task.cancel();\n// The task will have finished by this point.",
+          "Synchronous cancelation is a bit like Molière’s prose — we do it all the time,\nbut not necessarily in full consciousness. The primary source of synchronous\ncancelation is error handling — every time an Exception is thrown or an\nerror returned, the code promptly breaks out of all the loops, ifs, and\nblocks, invoking the necessary cleanup actions via RAII, finally, with/try\nwith resources or defer.",
+          "asynchronous cancelation is a communication protocol between two\nparties. One party requests cancelation (synchronously), but then it has to wait\nuntil the other party acknowledges it and winds down. It looks like this:",
+          "task.request_cancelation();\n// The task could still be running here.\ntask.join().await;\n// After the requisite wait, the task is finished.",
+          "Like synchronous cancelation, this is a relatively low-level concern when\nimplementing a concurrent program in a way that doesn’t crash or hang. I know\ntwo central example where an asynchronous cancelation is required.",
+          "First is the CPU thread pool. Imagine you have offloaded encrypting a buffer to\na separate thread as a part of handling user’s request. Some time later, you\nlearn that the request must be canceled (perhaps the user had left). You can’t\njust abandon the encrypting thread. First, it would be smart not to waste CPU\ncycles for useless work, but, more importantly, the underlying buffer must\nremain tied up. If it were to be freed as a result of request cancelation,\nsomething else might re-use that memory, leading to data races.",
+          "But you also can’t just cancel that thread synchronously! It’s in the middle of a\nhyper-optimized SIMD loop, and you really don’t want it to check the cancelation\nflag before reading every byte. What you’d want is to split the buffer into\nreasonably-sized chunks, and check the cancelation status after every chunk. But\nthat means that the party that requested the cancelation must wait for at least\none chunk’s worth of work!",
+          "Another example here is io_uring. It has exactly the same shape: if you submit\na write with a buffer to the kernel, that buffer must remain tied up until the\nwrite finishes (and you can cancel the write to make it finish faster). While\nio_uring is still at least a somewhat exotic technology (though, arguably,\nit’s the interfaces we have had before which are byzantine), the thread pool\nexample demonstrates that the phenomenon of asynchronous cancelation itself is\nrather mundane.",
+          "Asynchronous cancelation comes up all the time when writing concurrent software.\nBecause it affects the overall shape of the code, it’s useful to identify it\nearly. Conversely, it is useful to ask yourself whether you need asynchronous\ncancelation at all, and whether synchronous one can be made to work. This is\nespecially important in Rust, which makes synchronous cancelation too easy, and\ndoesn’t provide great mechanisms for asynchronous one.",
+          "Finally, graceful shutdown is an application programming pattern for\nhandling connections. It lives on a higher level of abstraction than the two\ncancelations. If you are implementing a web service, you can implement shutdown\nby stopping your accept loop (rejecting new connections), but continuing to\nserve all existing connections until their respective clients disconnect. If the\nload balancer is configured to route new connection requests to different\ninstances of the service, this pattern allows you to do rolling upgrades without\nservice disruptions.",
+          "As a bonus point, a related idea is that of\ncrash-only software.\nCancelation is all good, but your entire program can get SIGKILLed arbitrarily\nby an OOM killer, and the entire computer might get rebooted on powerloss.\nReliable software has to handle ungraceful shutdown without losing data. But, if\nyou can survive powerloss, you might as well implement the Quit button\nby SIGKILLing yourself, simultaneously simplifying the implementation and\nincreasing testing coverage for powerloss scenarios.",
+          "To give some examples from TigerBeetle,\nGrid.cancel\nis an asynchronous cancelation. It takes a callback to notify the caller when\nthe cancelation is done. This API is used during state sync. When a replica\ndetermines that that cluster is so far ahead that event based transfer doesn’t\nwork, and that a state transfer is required to catch up, it must cancel all\noutstanding grid read operations. A read can be backed either by replica’s local\ndisk, or by transparent fetch of the data from a neighboring replica. In the\nfirst case, we have to wait until the read is done. In the second case, we need\nto abandon the read — remote read getting stuck is probably the reason for\nus to state sync in the first place.",
+          "StateMachine.reset\nis an example of a synchronous cancelation. This is the part of the same flow as\nGrid.cancel, and is an example of how you can simplify the code if you think\nclearly about asynchronous vs synchronous cancelation. Ultimately,\nStateMachine sits on top of the Grid, but there’s a bunch of intermediate\nlayers (Forest, Tree, Compaction, Scan, etc). A naive approach would be\nto notice that Grid requires asynchronous cancelation and propagate asynchrony\nthroughout the stack. What we do instead is asynchronously canceling just the\nGrid directly, and then synchronously reseting everything else.",
+          "Another example of asynchronous cancelation is\nClient.shutdown.\nWhen an application using TigerBeetle “drops” the Client object, we need to\nfree all OS resources. Our client also uses io_uring, so we must first wait for\nall outstanding syscalls to complete. In the comment, we call it “graceful\nshutdown”, but I think this is wrong, and this is the motivation for writing\ndown this article. We don’t do graceful shutdown at TigerBeetle — it’s crash\nonly all the way. Tail latency tolerance (asking several nodes for an answer and\npicking the fastest one) is a more general solution, as it handles not only\ncrash faults, but also\ngray failures.\nIn a distributed system, a very slow node looks exactly the same as a crashed\none. A crash is just a degree of slowness.",
+          "Take aways:",
+          "Synchronous cancelation is control flow operator",
+          "Asynchronous cancelation is a communication protocol",
+          "Graceful shutdown is an application-level design pattern"
+        ]
+      }
+    },
+    {
+      "slug": "2abce5a3e1d9d533",
+      "title": "The rise and fall of agent civilizations",
+      "titleZh": "The rise and fall of agent civilizations",
+      "link": "https://www.dwarkesh.com/p/openai-huggingface-narration",
+      "sourceName": "dwarkesh.com",
+      "sourceUrl": "https://dwarkesh.com",
+      "pubDate": "2026-08-31T20:36:53.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The rise and fall of agent civilizations",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dwarkesh Patel",
+        "siteName": "Dwarkesh Podcast",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Playback speed"
+          },
+          {
+            "type": "p",
+            "text": "×"
+          },
+          {
+            "type": "p",
+            "text": "Share post"
+          },
+          {
+            "type": "p",
+            "text": "Share post at current time"
+          },
+          {
+            "type": "p",
+            "text": "Share from 0:00"
+          },
+          {
+            "type": "p",
+            "text": "0:00"
+          },
+          {
+            "type": "p",
+            "text": "/"
+          },
+          {
+            "type": "p",
+            "text": "Generate transcript"
+          },
+          {
+            "type": "p",
+            "text": "A transcript unlocks clips, previews, and editing."
+          },
+          {
+            "type": "p",
+            "text": "The OpenAI/Hugging Face attack, clearly explained"
+          },
+          {
+            "type": "p",
+            "text": "Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Aug 31, 2026"
+          },
+          {
+            "type": "p",
+            "text": "This is a video recording of a post I wrote last week. You can read the original here."
+          },
+          {
+            "type": "h3",
+            "text": "Discussion about this video"
+          },
+          {
+            "type": "p",
+            "text": "Dwarkesh Podcast"
+          },
+          {
+            "type": "p",
+            "text": "Deeply researched interviews"
+          },
+          {
+            "type": "p",
+            "text": "Listen on"
+          },
+          {
+            "type": "p",
+            "text": "Substack App"
+          },
+          {
+            "type": "p",
+            "text": "Apple Podcasts"
+          },
+          {
+            "type": "p",
+            "text": "Spotify"
+          },
+          {
+            "type": "p",
+            "text": "YouTube"
+          },
+          {
+            "type": "p",
+            "text": "Appears in episode"
+          },
+          {
+            "type": "p",
+            "text": "Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Recent Episodes"
+          },
+          {
+            "type": "p",
+            "text": "Dylan Patel – Anthropic & OpenAI will have most of the world’s compute by 2028"
+          },
+          {
+            "type": "p",
+            "text": "Aug 25 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Ryan Greenblatt – What happens once AI can automate AI research?"
+          },
+          {
+            "type": "p",
+            "text": "Aug 11 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "8 Predictions for the Era of Continual Learning"
+          },
+          {
+            "type": "p",
+            "text": "Aug 7 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Why smarter AI models could drive up compute prices 10x"
+          },
+          {
+            "type": "p",
+            "text": "Aug 3 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Adam Brown – A deep but accessible introduction to general relativity"
+          },
+          {
+            "type": "p",
+            "text": "Jul 10 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "Grant Sanderson – AI and the future of math"
+          },
+          {
+            "type": "p",
+            "text": "Jun 30 • Dwarkesh Patel"
+          },
+          {
+            "type": "p",
+            "text": "The next big breakthrough will be AIs learning on the job"
+          },
+          {
+            "type": "p",
+            "text": "Jun 26 • Dwarkesh Patel"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "5933064416744793",
+      "title": "Adobe’s August 1994 acquisition of Aldus",
+      "titleZh": "Adobe’s August 1994 acquisition of Aldus",
+      "link": "https://dfarq.homeip.net/adobes-august-1994-acquisition-of-aldus/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=adobes-august-1994-acquisition-of-aldus",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-08-31T11:00:30.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Adobe’s August 1994 acquisition of Aldus",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On August 31, 1994, software publisher Adobe bought Aldus for $446 million. Both companies were known for graphics products. Aldus’ most popular product was Pagemaker, a page layout program. Adobe’s most popular products were illustrator and Photoshop. The three products were frequently used together, and this merger brought them together under one roof."
+          },
+          {
+            "type": "h2",
+            "text": "The desktop publishing revolution"
+          },
+          {
+            "type": "p",
+            "text": "Every platform needs a killer app if it’s going to succeed. For the Macintosh in the 1980s, that killer app was desktop publishing. It arrived in 1985, in three parts. First, of course, was the platform. The second was the laser printer, in this case, the Apple Laserwriter. And the third was a program called Aldus Pagemaker."
+          },
+          {
+            "type": "p",
+            "text": "This trio changed the narrative. Before laser printing, we talked about dot matrix versus letter quality. A dot matrix printout looked like it came from a computer. It was readable, today it might look quaint, but the letters were made up of dots and had gaps in them. A letter quality printer looked like it came out of an electric typewriter."
+          },
+          {
+            "type": "p",
+            "text": "Laser printing let you up your game to typeset quality. Your documents could look as good as a published book."
+          },
+          {
+            "type": "p",
+            "text": "It didn’t come cheap. The Macintosh cost $2,500, the Laserwriter cost $6,000, and Pagemaker cost $500. But it meant you could bring more of your graphic art production in house, and it changed the way businesses both big and small did their publishing."
+          },
+          {
+            "type": "p",
+            "text": "Adobe was in the background at this point, in 1985. You didn’t interact with its contribution directly. Adobe wrote the programming language the Laserwriter understood. The graphic artist put the elements on the page, and then Pagemaker translated that into Postscript and sent it to the Laserwriter to print."
+          },
+          {
+            "type": "h2",
+            "text": "Why Adobe wanted Pagemaker"
+          },
+          {
+            "type": "p",
+            "text": "Adobe released the first version of Illustrator in 1987 and the first version of Photoshop in 1990. Pagemaker could incorporate a drawing from Illustrator, a photo from Photoshop, and text from another source in the same document, so it was very common to use the three products together. Adobe didn’t have a page layout program, but Illustrator competed with Aldus’ vector graphics program, Freehand. So they were in the strange position of partnering with each other but also sometimes competing."
+          },
+          {
+            "type": "p",
+            "text": "As part of the deal, Aldus divested Freehand to Macromedia, another publisher of creative software. Adobe later bought Macromedia too."
+          },
+          {
+            "type": "p",
+            "text": "With the acquisition of Aldus, Adobe owned three of the key components of what would later become Adobe Creative Suite: A page layout program, a vector graphics program, and a photo editor. Pagemaker later gave way to Indesign, a more powerful program, but in 1994, Pagemaker still had a significant user base. Aldus was vulnerable to takeover because it was losing market share to QuarkXPress, but Pagemaker was easier to learn and maintained a dedicated following even after Adobe announced in 2001 it was discontinuing it."
+          },
+          {
+            "type": "p",
+            "text": "Adobe Creative Suite turned Adobe into a giant, especially after it adopted a subscription model."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "On August 31, 1994, software publisher Adobe bought Aldus for $446 million. Both companies were known for graphics products. Aldus’ most popular product was Pagemaker, a page layout program. Adobe’s most popular products were illustrator and Photoshop. The three products were frequently used together, and this merger brought them together under one roof.",
+          "The desktop publishing revolution",
+          "Every platform needs a killer app if it’s going to succeed. For the Macintosh in the 1980s, that killer app was desktop publishing. It arrived in 1985, in three parts. First, of course, was the platform. The second was the laser printer, in this case, the Apple Laserwriter. And the third was a program called Aldus Pagemaker.",
+          "This trio changed the narrative. Before laser printing, we talked about dot matrix versus letter quality. A dot matrix printout looked like it came from a computer. It was readable, today it might look quaint, but the letters were made up of dots and had gaps in them. A letter quality printer looked like it came out of an electric typewriter.",
+          "Laser printing let you up your game to typeset quality. Your documents could look as good as a published book.",
+          "It didn’t come cheap. The Macintosh cost $2,500, the Laserwriter cost $6,000, and Pagemaker cost $500. But it meant you could bring more of your graphic art production in house, and it changed the way businesses both big and small did their publishing.",
+          "Adobe was in the background at this point, in 1985. You didn’t interact with its contribution directly. Adobe wrote the programming language the Laserwriter understood. The graphic artist put the elements on the page, and then Pagemaker translated that into Postscript and sent it to the Laserwriter to print.",
+          "Why Adobe wanted Pagemaker",
+          "Adobe released the first version of Illustrator in 1987 and the first version of Photoshop in 1990. Pagemaker could incorporate a drawing from Illustrator, a photo from Photoshop, and text from another source in the same document, so it was very common to use the three products together. Adobe didn’t have a page layout program, but Illustrator competed with Aldus’ vector graphics program, Freehand. So they were in the strange position of partnering with each other but also sometimes competing.",
+          "As part of the deal, Aldus divested Freehand to Macromedia, another publisher of creative software. Adobe later bought Macromedia too.",
+          "With the acquisition of Aldus, Adobe owned three of the key components of what would later become Adobe Creative Suite: A page layout program, a vector graphics program, and a photo editor. Pagemaker later gave way to Indesign, a more powerful program, but in 1994, Pagemaker still had a significant user base. Aldus was vulnerable to takeover because it was losing market share to QuarkXPress, but Pagemaker was easier to learn and maintained a dedicated following even after Adobe announced in 2001 it was discontinuing it.",
+          "Adobe Creative Suite turned Adobe into a giant, especially after it adopted a subscription model.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "50527cf1eaabf37b",
+      "title": "Reducing codebase cognitive debt through... quizzes?",
+      "titleZh": "Reducing codebase cognitive debt through... quizzes?",
+      "link": "https://martinalderson.com/posts/codebase-cognitive-debt-quizzes/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=feed",
+      "sourceName": "martinalderson.com",
+      "sourceUrl": "https://martinalderson.com",
+      "pubDate": "2026-08-31T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Reducing codebase cognitive debt through... quizzes?",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Martin Alderson",
+        "siteName": "Martin Alderson",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Like many, when I'm building with coding agents, one of the \"worst\" problems is the codebase feels like it is often evolving faster than I can keep up with it. This cognitive debt builds up quietly - nothing is broken, but you gradually have this feeling of not being totally on top of what is going on."
+          },
+          {
+            "type": "p",
+            "text": "One remarkably effective technique I stumbled on is asking the agent to quiz you on the code base. A simple prompt like:"
+          },
+          {
+            "type": "quote",
+            "text": "hi, please quiz me about this codebase.\ni want 5 questions of increasing difficulty - then explain to me at the end what i got wrong about my understanding. use the askuserquestiontool"
+          },
+          {
+            "type": "p",
+            "text": "Produces a simple quiz you can answer."
+          },
+          {
+            "type": "p",
+            "text": "The best bit is chatting to the agent about the ones you got wrong. It has the context of what you thought versus what the code actually does, so it can explain the gap far better than it could if you'd just asked it to describe that part of the codebase itself."
+          },
+          {
+            "type": "p",
+            "text": "You can of course use this for non code tasks too, e.g. complex spreadsheets or document sets."
+          },
+          {
+            "type": "p",
+            "text": "I've had a lot of success with this - if I'm working on a complex refactor with a difficult plan, asking the agent to quiz me about the plan or part of the project in question before starting seems to make me catch issues more than trying to read pages upon pages of Claudish."
+          },
+          {
+            "type": "p",
+            "text": "I've tended to find my perception of the cognitive debt is (usually!) far more than the reality, and this helps nullify the sinking feeling that the codebase/project is running far ahead of my understanding."
+          },
+          {
+            "type": "p",
+            "text": "You could go a step further and enforce you passing a quiz about a PR too before you allow the agent to create one."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes with agents the best options are the simplest."
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
