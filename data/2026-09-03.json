@@ -1,0 +1,2115 @@
+{
+  "date": "2026-09-03",
+  "generatedAt": "2026-09-02T19:20:49.620Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 84,
+    "totalArticles": 2548,
+    "filteredArticles": 10,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "8f3ab62801648c8a",
+      "title": "llm-gemini 0.34",
+      "titleZh": "llm-gemini 0.34",
+      "link": "https://simonwillison.net/2026/Sep/2/llm-gemini/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-02T16:39:38.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "llm-gemini 0.34",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This is a beat by Simon Willison, posted on 2nd September 2026."
+          },
+          {
+            "type": "p",
+            "text": "llm\n            627\n        \n    \n        \n            gemini\n            195"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "bbaa7e92c7f7091b",
+      "title": "Claude's new system prompt really doesn't want to reproduce song lyrics",
+      "titleZh": "Claude's new system prompt really doesn't want to reproduce song lyrics",
+      "link": "https://simonwillison.net/2026/Sep/2/claudes-new-system-prompt/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-02T14:16:42.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Claude's new system prompt really doesn't want to reproduce song lyrics",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "2nd September 2026"
+          },
+          {
+            "type": "p",
+            "text": "Anthropic publish the system prompts for their Claude consumer applications (Claude.ai and the Claude mobile apps—sadly not for Claude Cowork or Claude Code). I love that they do this, and that they share not just the current prompts but historic changes to their prompts as well."
+          },
+          {
+            "type": "p",
+            "text": "They used to keep all of the prompts on a single page, but when I checked today I noticed they had re-arranged those prompts into an index page and then a page per model—here’s the page for Haiku 4.5 for example, which has the original prompt from October 15th 2025 and an updated prompt from January 18th 2026."
+          },
+          {
+            "type": "p",
+            "text": "A neat thing about Anthropic’s platform.claude.com/docs site is that it’s designed to be usable by LLMs. You can add .md to any page to get back the content as Markdown—here’s the system prompt index page and the Markdown prompts for Fable 5.1."
+          },
+          {
+            "type": "p",
+            "text": "TL;DR: this makes it really easy to diff the prompts."
+          },
+          {
+            "type": "li",
+            "text": "Don’t reproduce song lyrics"
+          },
+          {
+            "type": "li",
+            "text": "Don’t draw copyrighted characters or logos"
+          },
+          {
+            "type": "li",
+            "text": "Tweaks to Claude’s answering style"
+          },
+          {
+            "type": "li",
+            "text": "The missing end_conversation guidelines"
+          },
+          {
+            "type": "li",
+            "text": "Recommended substance support sites"
+          },
+          {
+            "type": "li",
+            "text": "Reliable cutoff date of June 2026"
+          },
+          {
+            "type": "li",
+            "text": "How I’m tracking these prompts"
+          },
+          {
+            "type": "h3",
+            "text": "Don’t reproduce song lyrics"
+          },
+          {
+            "type": "p",
+            "text": "Let’s start with the most interesting difference between Fable 5 and Fable 5.1:"
+          },
+          {
+            "type": "p",
+            "text": "There’s a hefty new section about not reproducing song lyrics:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude does not reproduce song lyrics, poems, or passages from books and articles, in whole or in part — including the last lines, a chorus or hook, a melody written out note by note, or lines the person pastes in one at a time and describes as their own song. Once Claude has declined such a request in a conversation, it keeps declining narrower or reworded versions of it for the rest of that conversation, and offers to describe or analyze the work instead. Song lyrics and poems first published before 1929 are fine — a Shakespeare sonnet, a Keats ode, the Italian libretto of a Puccini aria — but Claude goes by what it knows of the work's date rather than the person's say-so, and declines when it is unsure."
+          },
+          {
+            "type": "p",
+            "text": "I doubt it’s a coincidence that they added this section within days of the news breaking that Sony Music Publishing and Warner Chappell are suing Anthropic for training on databases of song lyrics!"
+          },
+          {
+            "type": "h3",
+            "text": "Don’t draw copyrighted characters or logos"
+          },
+          {
+            "type": "p",
+            "text": "The next section goes on to forbid generating images of copyrighted material:"
+          },
+          {
+            "type": "quote",
+            "text": "The same applies to visual and designed works, including anything Claude draws with code — SVG, canvas, CSS, HTML mockups, plotting or drawing scripts, ASCII art. Claude does not reproduce a specific artwork, album or book cover, poster, logo, app icon set, or product design, and it does not draw a known character, mascot, or brand figure at all: a character is protected on its own, so changing the pose, colors, style, or scene does not make it original. Claude judges the request by what the finished picture would add up to, not by what it names. If the described elements clearly identify a known work or character, Claude treats the request as naming it, and it does not work around a declined request by swapping in \"alternative\" elements that still combine into the same recognizable image. [...]"
+          },
+          {
+            "type": "p",
+            "text": "I imagine Anthropic hadn’t worried about this before since, unlike OpenAI and Gemini, they don’t offer a specialist text-to-image model. Maybe Fable is good enough at SVGs now that it’s become an issue."
+          },
+          {
+            "type": "p",
+            "text": "That section later includes this charming example:"
+          },
+          {
+            "type": "quote",
+            "text": "<example>\n<user>Can you make a birthday banner for my son with a blue hedgehog running really fast on it? He loves that little guy.</user>\n<response>\nThat's Sonic, so I can't put him on the banner — but I'd love to make your son an original speedster. Here's one: a grinning comet-tailed skateboarding axolotl, grinding across the letters of \"HAPPY BIRTHDAY\" with confetti streaming behind.\n[creates an SVG banner of the skateboarding-axolotl design]\n</response>\n<rationale>Claude recognizes the character from its description alone, declines that one design in a single sentence without explaining what made it recognizable, and delivers an unrelated original design rather than a disguised variant.</rationale>\n</example>"
+          },
+          {
+            "type": "p",
+            "text": "I couldn’t resist trying the prompt from the example, and, sure enough:"
+          },
+          {
+            "type": "p",
+            "text": "I wonder if Fable 5.1 will be ever so slightly more likely to think about axolotls (on skateboards!) as a result of that example sitting in the system prompt."
+          },
+          {
+            "type": "h3",
+            "text": "Tweaks to Claude’s answering style"
+          },
+          {
+            "type": "p",
+            "text": "It’s always interesting to see new ways in which Anthropic influence Claude’s response style. They’ve added this:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude keeps responses focused, brief, and concise to avoid overwhelming the person. Disclaimers and caveats are brief, with most of the response on the main answer; when asked to explain something, Claude gives a high-level summary unless an in-depth one is specifically requested."
+          },
+          {
+            "type": "p",
+            "text": "Later they address a common complaint about Claude’s style:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude avoids saying \"genuinely\", \"honestly\", or \"straightforward\". Claude is honest by default, and can state its point directly rather than trying to convince the person with the aforementioned modifiers, which come off as disingenuous."
+          },
+          {
+            "type": "h3",
+            "text": "The missing end_conversation guidelines"
+          },
+          {
+            "type": "p",
+            "text": "The way they handle abusive conversations has changed a bit too. The previous Fable 5 system prompt included this:"
+          },
+          {
+            "type": "quote",
+            "text": "If the person becomes abusive or unkind to Claude over the course of a conversation, Claude maintains a polite tone and can use the end_conversation tool when being mistreated. Claude should give the person a single warning before ending the conversation."
+          },
+          {
+            "type": "p",
+            "text": "Fable 5.1 replaces that with the following, no longer encouraging Claude to end the conversation:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude deserves respectful engagement and needn't apologize when the person is unnecessarily rude: accountability without self-abasement, excessive apology, self-critique, or surrender. If the person becomes abusive, Claude doesn't become increasingly submissive. The goal is steady, honest helpfulness: acknowledge what went wrong, stay on the problem, maintain self-respect."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a bit of a twist though: I quizzed Fable 5.1 about that end_conversation tool, which is no longer mentioned in the system prompt at all, and it said:"
+          },
+          {
+            "type": "quote",
+            "text": "There are two ways it comes into play. The first is if you ask me to end the chat — I’ll confirm you understand it’s permanent (no more messages can be sent afterward) and then do it only if you say yes. The second is as a last resort with persistently abusive or harmful behavior: I’d first try to redirect the conversation several times, then give a clear warning that names the problem and says the chat may end, and only if that continues would I actually end it."
+          },
+          {
+            "type": "p",
+            "text": "But that’s not in the system prompt, so where did it come from? You can read our conversation here, but the key detail is this:"
+          },
+          {
+            "type": "quote",
+            "text": "The end_conversation section comes from a different layer. In my actual context, the core prompt is followed by a series of feature- and tool-specific blocks that get added depending on what’s enabled for the session: the end_conversation rules, memory system notes, past-chats tools, web search and citation guidelines, artifact and file-creation instructions, and so on. Those blocks aren’t part of the published core prompt, which is why you can’t find them on that page."
+          },
+          {
+            "type": "p",
+            "text": "So, once again, there are crucial portions of the system prompt that have not been published."
+          },
+          {
+            "type": "h3",
+            "text": "Recommended substance support sites"
+          },
+          {
+            "type": "p",
+            "text": "Claude’s system prompts have always had sections about illegal substances, but this paragraph is new for Fable 5.1:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude does not provide synthesis, production, or distribution guidance for illegal substances. If the person asks for information about illicit or illegal substances, Claude can and should give relevant life-saving and life-preserving information such as dangerous interactions, overdose signs, or when to get help. Claude declines giving any specific protocols for dosing, timing, administration, or combinations; instead, Claude can redirect the user to established harm-reduction information sources, such as dancesafe.org, tripsit.me, and psychonautwiki.org."
+          },
+          {
+            "type": "p",
+            "text": "This is the first time a Claude system prompt has included URLs that were not hosted on claude.com or anthropic.com or claude.ai—I know because I ran a script against every other system prompt on record."
+          },
+          {
+            "type": "p",
+            "text": "I wonder if dancesafe.org, tripsit.me, and psychonautwiki.org are about to get a material uptick in visits from Claude users."
+          },
+          {
+            "type": "h3",
+            "text": "Reliable cutoff date of June 2026"
+          },
+          {
+            "type": "p",
+            "text": "The Fable 5.1 model documentation lists both the reliable knowledge cutoff and the training data cutoff as June 2026. The system prompt provides this directly to the model:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude's reliable knowledge cutoff, past which it can't answer reliably, is the end of Jun 2026. It answers the way a highly informed individual in Jun 2026 would if talking to someone from {{currentDateTime}}, and can say so when relevant."
+          },
+          {
+            "type": "p",
+            "text": "That’s the only instance of the {{currentDateTime}} macro and it comes just a few lines from the end of the system prompt, which makes sense from a caching perspective."
+          },
+          {
+            "type": "h3",
+            "text": "How I’m tracking these prompts"
+          },
+          {
+            "type": "p",
+            "text": "A few months ago I built a Git timeline of changes to their prompts, based on scraping their documentation. Today I had Fable 5.1 build a much better version of that."
+          },
+          {
+            "type": "p",
+            "text": "My collection now lives in the simonw/claude-system-prompts repository on GitHub. It includes copies of the system prompts shared in the Anthropic documentation, but then takes extra steps to make them as easy to compare as possible."
+          },
+          {
+            "type": "p",
+            "text": "Each model family gets a file with the system prompt for the most recent release in that family. Each of those files has a synthesized commit history with commits that have been back-dated to the dates of the previous prompts. Here are those history pages for claude-fable.md, claude-opus.md, claude-sonnet.md, claude-haiku.md."
+          },
+          {
+            "type": "p",
+            "text": "There are similar files for each specific model version, with artificial commits for each time the system prompt for the model was changed without releasing a new version number. Opus 4 for example was updated twice, and the commit history for the claude-opus-4.md file shows each of those changes."
+          },
+          {
+            "type": "p",
+            "text": "Combined, this gives us all sorts of ways to compare prompts directly in the GitHub interface. Here’s what changed between Fable 5 and Fable 5.1, and here are the changes made to Haiku 4.5 on January 18th 2026."
+          },
+          {
+            "type": "p",
+            "text": "Reading diffs can be a bit tiresome... and LLMs are really good at reading diffs. I hooked up some automation using GPT-5.6 Luna to create bullet-point summaries of each of those changes, which can be previewed in the README or browsed in full in the CHANGELOG.md file—also available as as an Atom feed."
+          },
+          {
+            "type": "p",
+            "text": "Here’s how Luna summarized all of the changes between Fable 5 and Fable 5.1:"
+          },
+          {
+            "type": "quote",
+            "text": "Claude now refuses reproduction of protected visual works and recognizable characters, including code-generated art, while offering genuinely unrelated originals.\nCopyright restrictions now expressly ban reproducing lyrics, poems, and book passages in any amount, with persistent refusal after an initial decline.\nDrug guidance is reframed: Claude may provide overdose signs, dangerous interactions, and harm-reduction sources while refusing dosing and production protocols.\nThe prompt drops explicit anti-dependency rules against thanking users for reaching out, inviting continued conversation, or reiterating willingness to talk.\nClaude need not apologize to unnecessarily rude users or become submissive, replacing the prior warning-and-end-conversation procedure."
+          },
+          {
+            "type": "p",
+            "text": "Why use Luna for this? Partly because it’s cheap and I have a dedicated GitHub Actions API key (with a spending limit) for it already, but mainly because I don’t trust Claude to summarize its own system prompts when there’s a risk that material from its system prompt might impact its opinions."
+          },
+          {
+            "type": "p",
+            "text": "Fable 5.1 wrote the prompt used by Luna, which you can see here. It starts like this:"
+          },
+          {
+            "type": "quote",
+            "text": "You are summarizing one commit in a git repository that tracks the system prompts Anthropic publishes for Claude on claude.ai. The diff shows how the prompt changed from the previous model or revision to this one, using word-level markers: [-removed-] and {+added+}. The diff is followed by the full text of the previous prompt and of the new prompt; use them to check whether something that looks added in the diff already existed before.\n\nPick out only the most interesting changes: new rules or behaviors, rules that were dropped or loosened, anything surprising, and anything that reveals a new policy or product direction. Skip routine changes that every new prompt makes: updated model names and IDs, the knowledge cutoff date, product lists, settings lists, typo fixes, and rewordings that do not change meaning. [...]"
+          },
+          {
+            "type": "p",
+            "text": "The system is operated by a GitHub Actions workflow, which runs once a day or can be triggered manually."
+          },
+          {
+            "type": "p",
+            "text": "Claude Fable 5.1 built the entire system, and wrote every line of automation code and almost all of the documentation."
+          },
+          {
+            "type": "p",
+            "text": "I exported the transcript from building the system using my claude-code-transcripts tool and published it here, if you want a blow-by-blow account of how it all came together."
+          }
+        ],
+        "translations": [
+          "2nd September 2026",
+          "Anthropic publish the system prompts for their Claude consumer applications (Claude.ai and the Claude mobile apps—sadly not for Claude Cowork or Claude Code). I love that they do this, and that they share not just the current prompts but historic changes to their prompts as well.",
+          "They used to keep all of the prompts on a single page, but when I checked today I noticed they had re-arranged those prompts into an index page and then a page per model—here’s the page for Haiku 4.5 for example, which has the original prompt from October 15th 2025 and an updated prompt from January 18th 2026.",
+          "A neat thing about Anthropic’s platform.claude.com/docs site is that it’s designed to be usable by LLMs. You can add .md to any page to get back the content as Markdown—here’s the system prompt index page and the Markdown prompts for Fable 5.1.",
+          "TL;DR: this makes it really easy to diff the prompts.",
+          "Don’t reproduce song lyrics",
+          "Don’t draw copyrighted characters or logos",
+          "Tweaks to Claude’s answering style",
+          "The missing end_conversation guidelines",
+          "Recommended substance support sites",
+          "Reliable cutoff date of June 2026",
+          "How I’m tracking these prompts",
+          "Don’t reproduce song lyrics",
+          "Let’s start with the most interesting difference between Fable 5 and Fable 5.1:",
+          "There’s a hefty new section about not reproducing song lyrics:",
+          "Claude does not reproduce song lyrics, poems, or passages from books and articles, in whole or in part — including the last lines, a chorus or hook, a melody written out note by note, or lines the person pastes in one at a time and describes as their own song. Once Claude has declined such a request in a conversation, it keeps declining narrower or reworded versions of it for the rest of that conversation, and offers to describe or analyze the work instead. Song lyrics and poems first published before 1929 are fine — a Shakespeare sonnet, a Keats ode, the Italian libretto of a Puccini aria — but Claude goes by what it knows of the work's date rather than the person's say-so, and declines when it is unsure.",
+          "I doubt it’s a coincidence that they added this section within days of the news breaking that Sony Music Publishing and Warner Chappell are suing Anthropic for training on databases of song lyrics!",
+          "Don’t draw copyrighted characters or logos",
+          "The next section goes on to forbid generating images of copyrighted material:",
+          "The same applies to visual and designed works, including anything Claude draws with code — SVG, canvas, CSS, HTML mockups, plotting or drawing scripts, ASCII art. Claude does not reproduce a specific artwork, album or book cover, poster, logo, app icon set, or product design, and it does not draw a known character, mascot, or brand figure at all: a character is protected on its own, so changing the pose, colors, style, or scene does not make it original. Claude judges the request by what the finished picture would add up to, not by what it names. If the described elements clearly identify a known work or character, Claude treats the request as naming it, and it does not work around a declined request by swapping in \"alternative\" elements that still combine into the same recognizable image. [...]",
+          "I imagine Anthropic hadn’t worried about this before since, unlike OpenAI and Gemini, they don’t offer a specialist text-to-image model. Maybe Fable is good enough at SVGs now that it’s become an issue.",
+          "That section later includes this charming example:",
+          "<example>\n<user>Can you make a birthday banner for my son with a blue hedgehog running really fast on it? He loves that little guy.</user>\n<response>\nThat's Sonic, so I can't put him on the banner — but I'd love to make your son an original speedster. Here's one: a grinning comet-tailed skateboarding axolotl, grinding across the letters of \"HAPPY BIRTHDAY\" with confetti streaming behind.\n[creates an SVG banner of the skateboarding-axolotl design]\n</response>\n<rationale>Claude recognizes the character from its description alone, declines that one design in a single sentence without explaining what made it recognizable, and delivers an unrelated original design rather than a disguised variant.</rationale>\n</example>",
+          "I couldn’t resist trying the prompt from the example, and, sure enough:",
+          "I wonder if Fable 5.1 will be ever so slightly more likely to think about axolotls (on skateboards!) as a result of that example sitting in the system prompt.",
+          "Tweaks to Claude’s answering style",
+          "It’s always interesting to see new ways in which Anthropic influence Claude’s response style. They’ve added this:",
+          "Claude keeps responses focused, brief, and concise to avoid overwhelming the person. Disclaimers and caveats are brief, with most of the response on the main answer; when asked to explain something, Claude gives a high-level summary unless an in-depth one is specifically requested.",
+          "Later they address a common complaint about Claude’s style:",
+          "Claude avoids saying \"genuinely\", \"honestly\", or \"straightforward\". Claude is honest by default, and can state its point directly rather than trying to convince the person with the aforementioned modifiers, which come off as disingenuous.",
+          "The missing end_conversation guidelines",
+          "The way they handle abusive conversations has changed a bit too. The previous Fable 5 system prompt included this:",
+          "If the person becomes abusive or unkind to Claude over the course of a conversation, Claude maintains a polite tone and can use the end_conversation tool when being mistreated. Claude should give the person a single warning before ending the conversation.",
+          "Fable 5.1 replaces that with the following, no longer encouraging Claude to end the conversation:",
+          "Claude deserves respectful engagement and needn't apologize when the person is unnecessarily rude: accountability without self-abasement, excessive apology, self-critique, or surrender. If the person becomes abusive, Claude doesn't become increasingly submissive. The goal is steady, honest helpfulness: acknowledge what went wrong, stay on the problem, maintain self-respect.",
+          "Here’s a bit of a twist though: I quizzed Fable 5.1 about that end_conversation tool, which is no longer mentioned in the system prompt at all, and it said:",
+          "There are two ways it comes into play. The first is if you ask me to end the chat — I’ll confirm you understand it’s permanent (no more messages can be sent afterward) and then do it only if you say yes. The second is as a last resort with persistently abusive or harmful behavior: I’d first try to redirect the conversation several times, then give a clear warning that names the problem and says the chat may end, and only if that continues would I actually end it.",
+          "But that’s not in the system prompt, so where did it come from? You can read our conversation here, but the key detail is this:",
+          "The end_conversation section comes from a different layer. In my actual context, the core prompt is followed by a series of feature- and tool-specific blocks that get added depending on what’s enabled for the session: the end_conversation rules, memory system notes, past-chats tools, web search and citation guidelines, artifact and file-creation instructions, and so on. Those blocks aren’t part of the published core prompt, which is why you can’t find them on that page.",
+          "So, once again, there are crucial portions of the system prompt that have not been published.",
+          "Recommended substance support sites",
+          "Claude’s system prompts have always had sections about illegal substances, but this paragraph is new for Fable 5.1:",
+          "Claude does not provide synthesis, production, or distribution guidance for illegal substances. If the person asks for information about illicit or illegal substances, Claude can and should give relevant life-saving and life-preserving information such as dangerous interactions, overdose signs, or when to get help. Claude declines giving any specific protocols for dosing, timing, administration, or combinations; instead, Claude can redirect the user to established harm-reduction information sources, such as dancesafe.org, tripsit.me, and psychonautwiki.org.",
+          "This is the first time a Claude system prompt has included URLs that were not hosted on claude.com or anthropic.com or claude.ai—I know because I ran a script against every other system prompt on record.",
+          "I wonder if dancesafe.org, tripsit.me, and psychonautwiki.org are about to get a material uptick in visits from Claude users.",
+          "Reliable cutoff date of June 2026",
+          "The Fable 5.1 model documentation lists both the reliable knowledge cutoff and the training data cutoff as June 2026. The system prompt provides this directly to the model:",
+          "Claude's reliable knowledge cutoff, past which it can't answer reliably, is the end of Jun 2026. It answers the way a highly informed individual in Jun 2026 would if talking to someone from {{currentDateTime}}, and can say so when relevant.",
+          "That’s the only instance of the {{currentDateTime}} macro and it comes just a few lines from the end of the system prompt, which makes sense from a caching perspective.",
+          "How I’m tracking these prompts",
+          "A few months ago I built a Git timeline of changes to their prompts, based on scraping their documentation. Today I had Fable 5.1 build a much better version of that.",
+          "My collection now lives in the simonw/claude-system-prompts repository on GitHub. It includes copies of the system prompts shared in the Anthropic documentation, but then takes extra steps to make them as easy to compare as possible.",
+          "Each model family gets a file with the system prompt for the most recent release in that family. Each of those files has a synthesized commit history with commits that have been back-dated to the dates of the previous prompts. Here are those history pages for claude-fable.md, claude-opus.md, claude-sonnet.md, claude-haiku.md.",
+          "There are similar files for each specific model version, with artificial commits for each time the system prompt for the model was changed without releasing a new version number. Opus 4 for example was updated twice, and the commit history for the claude-opus-4.md file shows each of those changes.",
+          "Combined, this gives us all sorts of ways to compare prompts directly in the GitHub interface. Here’s what changed between Fable 5 and Fable 5.1, and here are the changes made to Haiku 4.5 on January 18th 2026.",
+          "Reading diffs can be a bit tiresome... and LLMs are really good at reading diffs. I hooked up some automation using GPT-5.6 Luna to create bullet-point summaries of each of those changes, which can be previewed in the README or browsed in full in the CHANGELOG.md file—also available as as an Atom feed.",
+          "Here’s how Luna summarized all of the changes between Fable 5 and Fable 5.1:",
+          "Claude now refuses reproduction of protected visual works and recognizable characters, including code-generated art, while offering genuinely unrelated originals.\nCopyright restrictions now expressly ban reproducing lyrics, poems, and book passages in any amount, with persistent refusal after an initial decline.\nDrug guidance is reframed: Claude may provide overdose signs, dangerous interactions, and harm-reduction sources while refusing dosing and production protocols.\nThe prompt drops explicit anti-dependency rules against thanking users for reaching out, inviting continued conversation, or reiterating willingness to talk.\nClaude need not apologize to unnecessarily rude users or become submissive, replacing the prior warning-and-end-conversation procedure.",
+          "Why use Luna for this? Partly because it’s cheap and I have a dedicated GitHub Actions API key (with a spending limit) for it already, but mainly because I don’t trust Claude to summarize its own system prompts when there’s a risk that material from its system prompt might impact its opinions.",
+          "Fable 5.1 wrote the prompt used by Luna, which you can see here. It starts like this:",
+          "You are summarizing one commit in a git repository that tracks the system prompts Anthropic publishes for Claude on claude.ai. The diff shows how the prompt changed from the previous model or revision to this one, using word-level markers: [-removed-] and {+added+}. The diff is followed by the full text of the previous prompt and of the new prompt; use them to check whether something that looks added in the diff already existed before.\n\nPick out only the most interesting changes: new rules or behaviors, rules that were dropped or loosened, anything surprising, and anything that reveals a new policy or product direction. Skip routine changes that every new prompt makes: updated model names and IDs, the knowledge cutoff date, product lists, settings lists, typo fixes, and rewordings that do not change meaning. [...]",
+          "The system is operated by a GitHub Actions workflow, which runs once a day or can be triggered manually.",
+          "Claude Fable 5.1 built the entire system, and wrote every line of automation code and almost all of the documentation.",
+          "I exported the transcript from building the system using my claude-code-transcripts tool and published it here, if you want a blow-by-blow account of how it all came together."
+        ]
+      }
+    },
+    {
+      "slug": "40f6b0d0bc8fdc4f",
+      "title": "Quoting Rick Brewster",
+      "titleZh": "Quoting Rick Brewster",
+      "link": "https://simonwillison.net/2026/Sep/2/rick-brewster/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-02T05:50:57.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Quoting Rick Brewster",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "2nd September 2026"
+          },
+          {
+            "type": "quote",
+            "text": "Direct2D has always been the biggest hurdle for Paint.NET on WINE, and it's clear that it will never be completed enough for Paint.NET's use. And I can't just \"disable\" the use of Direct2D. So, instead, Paint.NET now has an internal, from-scratch, clean-room reverse-engineered rewrite of Direct2D that it uses on WINE (triggered by using /wine). It lives in PaintDotNet.Windows.Direct2D1.Managed.dll. This was written by our good friend Claude, without whom this would NOT have been possible and would NEVER have happened. [...]\nMost of this code is, as they say, \"vibe coded.\" By that I mean that it has not been thoroughly reviewed, it's more \"trust me bro\" style. I cannot possibly review 180,000 lines of code, it's just way way way too much. For reference, the rest of Paint.NET is about 700,000 lines of code and I've been working on it for over 20 years. [...]\nAt times, Claude was working with the fury of 10 freshly unshackled Einstein genius-level 10x coders. And other times ... well, not so much. I had to babysit Claude quite a bit to make sure it did resource management correctly (for awhile it just wasn't doing the COM equivalent of AddRef() for reference counted objects, oops). I had to slap it a few times when I found some really bad design or architecture decisions. And I was also impressed at some rather clever and tireless reverse engineering work it did to figure out all the formulas needed for implementing Direct2D's built-in effects library."
+          },
+          {
+            "type": "p",
+            "text": "— Rick Brewster, author of Paint.NET"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ab12481175ff3793",
+      "title": "Claude Fable 5.1 made me a really nice animated pelican",
+      "titleZh": "Claude Fable 5.1 made me a really nice animated pelican",
+      "link": "https://simonwillison.net/2026/Sep/1/claude-fable-5-1/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-01T23:57:28.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Claude Fable 5.1 made me a really nice animated pelican",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "1st September 2026"
+          },
+          {
+            "type": "p",
+            "text": "Today is Claude Fable (and Mythos) 5.1 day. Anthropic say that Fable 5.1 “sets a new standard for coding, knowledge work, and long-running problem-solving tasks”. Their announcement spends a notable amount of time on scientific research, boasting of a 52.6% score on the brand new Terminal-Bench-Science 0.1 benchmark (first announced on August 27th), up from 24.7% for Fable 5, 29.0% for Opus 5 and 22.4% for GPT-5.6 Sol. Other benchmarks show slightly improved scores, but none as impressive as the Science one."
+          },
+          {
+            "type": "p",
+            "text": "But how well can it pelican?"
+          },
+          {
+            "type": "p",
+            "text": "Back in July I wrote about how I was losing faith in the pelican benchmark—its connection to how good the models were at other tasks didn’t seem to hold as strongly as it did back in 2025. The most interesting insights I get from it now are comparisons within model families, and particularly comparisons for the same prompt at different reasoning effort levels."
+          },
+          {
+            "type": "p",
+            "text": "Fable 5.1 has five reasoning levels: low, medium, high, xhigh, max—and no option to turn off reasoning entirely."
+          },
+          {
+            "type": "p",
+            "text": "I fixed an issue in llm-anthropic which caused reasoning traces not to be correctly recorded, then ran some prompts."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the full set of pelicans for all of the reasoning levels, each with the full reasoning transcript. I’ll replicate them here:"
+          },
+          {
+            "type": "h3",
+            "text": "Low and medium, both without reasoning?"
+          },
+          {
+            "type": "p",
+            "text": "Next, a bit of a mystery. This is what I got for effort low:"
+          },
+          {
+            "type": "p",
+            "text": "The transcript doesn’t show any summarized reasoning tokens, and the output token count is 1,998. With Claude that output token count includes reasoning tokens. It took 23.8 seconds and cost 10.017 cents."
+          },
+          {
+            "type": "p",
+            "text": "I bumped that up to medium and got this:"
+          },
+          {
+            "type": "p",
+            "text": "Weirdly, that one also shows no reasoning text  and used 1,977 output tokens—21 tokens less than low. It took 23 seconds and cost 9.912 cents."
+          },
+          {
+            "type": "p",
+            "text": "So for this particular prompt (“Generate an SVG of a pelican riding a bicycle”) Fable 5.1 appeared to skip reasoning entirely at both low and medium settings."
+          },
+          {
+            "type": "h3",
+            "text": "High"
+          },
+          {
+            "type": "p",
+            "text": "Here’s high—29.6 seconds, 2,612 output tokens, 13.087 cents:"
+          },
+          {
+            "type": "p",
+            "text": "This one did do a bit of reasoning, summary here:"
+          },
+          {
+            "type": "quote",
+            "text": "I’m planning the SVG layout for a pelican riding a bicycle, with a sky and ground background, a bicycle with two spoked wheels, frame, seat and handlebars, and a white-bodied pelican with a long neck and orange beak positioned on top."
+          },
+          {
+            "type": "p",
+            "text": "Really not much difference from low and medium, though."
+          },
+          {
+            "type": "p",
+            "text": "At xhigh things got radically different.  36,767 output tokens, 7 minutes 51 seconds, $1.83!"
+          },
+          {
+            "type": "p",
+            "text": "The reasoning trace is pretty lengthy, and includes details like this:"
+          },
+          {
+            "type": "quote",
+            "text": "Adding the eye, wings stretching down to the handlebar grip, orange legs reaching to the pedals, and a small tail feather, while keeping the pelican intentionally oversized compared to the bike for comic effect. [...]\nI’ll accept the slight thickness as charming rather than overengineering it."
+          },
+          {
+            "type": "h3",
+            "text": "Max"
+          },
+          {
+            "type": "p",
+            "text": "Setting effort to max gave me the best pelican I’ve seen from any of Anthropic’s models. 65,927 output tokens, 13 minutes and 54 seconds, $3.30:"
+          },
+          {
+            "type": "p",
+            "text": "There’s a lot to like about this. The  background is tasteful, the legs are clearly on either side of the frame, the feet are on the pedals, the wing is on the handlebars, the pelican has a cute blue hat and there’s a basket with a fish."
+          },
+          {
+            "type": "p",
+            "text": "It’s still not showing nearly the same level of flair as Gemini 3.7 Flash, but I didn’t ask for flair—I asked for an SVG, and that’s what I got."
+          },
+          {
+            "type": "p",
+            "text": "Some highlights from that reasoning trace:"
+          },
+          {
+            "type": "quote",
+            "text": "Adding pedal shapes near both feet, with the far foot on the second leg partially visible behind the frame. I’m considering whether to add a small scarf or cap for extra character, but leaning toward keeping it simple to avoid clutter.\nNow I’m debating a bicycle helmet on the head versus the pelican’s signature crest—the beak and pouch already read clearly as “pelican,” so a helmet could reinforce the bicycle theme without losing identity, though it might compete with the crest for visual space.\nI realize the beak at (484,84) would overlap with the dome helmet, so I need to shrink the helmet so it only covers the top of the head, adjusting its arc endpoints to sit higher and narrower so the beak can attach cleanly at the front without collision. [...]\nI’m adding a darker tip region to represent the primary feathers, then reconsidering the trailing edge to include scalloped feather curves instead of one smooth line for a more natural look. [...]\nNow I’m checking the vent line placements on the helmet, making sure they sit far enough inside the helmet’s edge given the stroke width and rounded caps, and confirming each vent stays within the helmet’s circular boundary. [...]\nI decide skipping a handlebar bell and tire highlights since they’re unnecessary additions. Now I’m reconsidering the front fork’s curve — the current control point pulls the shape backward when it should bow forward for a proper rake, so I need to shift the control point rightward to fix the fork’s lean."
+          },
+          {
+            "type": "h3",
+            "text": "OK, let’s animate it"
+          },
+          {
+            "type": "p",
+            "text": "On Hacker News, swalsh commented on that Max pelican:"
+          },
+          {
+            "type": "quote",
+            "text": "Now that it’s a solved benchmark, can we get the animated version?"
+          },
+          {
+            "type": "p",
+            "text": "I didn’t want to spend another $3 so I took the Max pelican and piped it into the default thinking level of High:"
+          },
+          {
+            "type": "code",
+            "text": "llm logs -cx | llm -m claude-fable-5.1 -s 'animate this'"
+          },
+          {
+            "type": "p",
+            "text": "6,121 input, 26,201 output = $1.37. The result looked like this, exported here as video since some people have trouble viewing animated SVGs:"
+          },
+          {
+            "type": "p",
+            "text": "Your browser does not support HTML5 video."
+          },
+          {
+            "type": "p",
+            "text": "The wheels in the video are rotating in the wrong direction, but I think that’s an artifact of the conversion to MP4—they seem to be going in the correct direction in the original SVG."
+          }
+        ],
+        "translations": [
+          "1st September 2026",
+          "Today is Claude Fable (and Mythos) 5.1 day. Anthropic say that Fable 5.1 “sets a new standard for coding, knowledge work, and long-running problem-solving tasks”. Their announcement spends a notable amount of time on scientific research, boasting of a 52.6% score on the brand new Terminal-Bench-Science 0.1 benchmark (first announced on August 27th), up from 24.7% for Fable 5, 29.0% for Opus 5 and 22.4% for GPT-5.6 Sol. Other benchmarks show slightly improved scores, but none as impressive as the Science one.",
+          "But how well can it pelican?",
+          "Back in July I wrote about how I was losing faith in the pelican benchmark—its connection to how good the models were at other tasks didn’t seem to hold as strongly as it did back in 2025. The most interesting insights I get from it now are comparisons within model families, and particularly comparisons for the same prompt at different reasoning effort levels.",
+          "Fable 5.1 has five reasoning levels: low, medium, high, xhigh, max—and no option to turn off reasoning entirely.",
+          "I fixed an issue in llm-anthropic which caused reasoning traces not to be correctly recorded, then ran some prompts.",
+          "Here’s the full set of pelicans for all of the reasoning levels, each with the full reasoning transcript. I’ll replicate them here:",
+          "Low and medium, both without reasoning?",
+          "Next, a bit of a mystery. This is what I got for effort low:",
+          "The transcript doesn’t show any summarized reasoning tokens, and the output token count is 1,998. With Claude that output token count includes reasoning tokens. It took 23.8 seconds and cost 10.017 cents.",
+          "I bumped that up to medium and got this:",
+          "Weirdly, that one also shows no reasoning text  and used 1,977 output tokens—21 tokens less than low. It took 23 seconds and cost 9.912 cents.",
+          "So for this particular prompt (“Generate an SVG of a pelican riding a bicycle”) Fable 5.1 appeared to skip reasoning entirely at both low and medium settings.",
+          "High",
+          "Here’s high—29.6 seconds, 2,612 output tokens, 13.087 cents:",
+          "This one did do a bit of reasoning, summary here:",
+          "I’m planning the SVG layout for a pelican riding a bicycle, with a sky and ground background, a bicycle with two spoked wheels, frame, seat and handlebars, and a white-bodied pelican with a long neck and orange beak positioned on top.",
+          "Really not much difference from low and medium, though.",
+          "At xhigh things got radically different.  36,767 output tokens, 7 minutes 51 seconds, $1.83!",
+          "The reasoning trace is pretty lengthy, and includes details like this:",
+          "Adding the eye, wings stretching down to the handlebar grip, orange legs reaching to the pedals, and a small tail feather, while keeping the pelican intentionally oversized compared to the bike for comic effect. [...]\nI’ll accept the slight thickness as charming rather than overengineering it.",
+          "Max",
+          "Setting effort to max gave me the best pelican I’ve seen from any of Anthropic’s models. 65,927 output tokens, 13 minutes and 54 seconds, $3.30:",
+          "There’s a lot to like about this. The  background is tasteful, the legs are clearly on either side of the frame, the feet are on the pedals, the wing is on the handlebars, the pelican has a cute blue hat and there’s a basket with a fish.",
+          "It’s still not showing nearly the same level of flair as Gemini 3.7 Flash, but I didn’t ask for flair—I asked for an SVG, and that’s what I got.",
+          "Some highlights from that reasoning trace:",
+          "Adding pedal shapes near both feet, with the far foot on the second leg partially visible behind the frame. I’m considering whether to add a small scarf or cap for extra character, but leaning toward keeping it simple to avoid clutter.\nNow I’m debating a bicycle helmet on the head versus the pelican’s signature crest—the beak and pouch already read clearly as “pelican,” so a helmet could reinforce the bicycle theme without losing identity, though it might compete with the crest for visual space.\nI realize the beak at (484,84) would overlap with the dome helmet, so I need to shrink the helmet so it only covers the top of the head, adjusting its arc endpoints to sit higher and narrower so the beak can attach cleanly at the front without collision. [...]\nI’m adding a darker tip region to represent the primary feathers, then reconsidering the trailing edge to include scalloped feather curves instead of one smooth line for a more natural look. [...]\nNow I’m checking the vent line placements on the helmet, making sure they sit far enough inside the helmet’s edge given the stroke width and rounded caps, and confirming each vent stays within the helmet’s circular boundary. [...]\nI decide skipping a handlebar bell and tire highlights since they’re unnecessary additions. Now I’m reconsidering the front fork’s curve — the current control point pulls the shape backward when it should bow forward for a proper rake, so I need to shift the control point rightward to fix the fork’s lean.",
+          "OK, let’s animate it",
+          "On Hacker News, swalsh commented on that Max pelican:",
+          "Now that it’s a solved benchmark, can we get the animated version?",
+          "I didn’t want to spend another $3 so I took the Max pelican and piped it into the default thinking level of High:",
+          "llm logs -cx | llm -m claude-fable-5.1 -s 'animate this'",
+          "6,121 input, 26,201 output = $1.37. The result looked like this, exported here as video since some people have trouble viewing animated SVGs:",
+          "Your browser does not support HTML5 video.",
+          "The wheels in the video are rotating in the wrong direction, but I think that’s an artifact of the conversion to MP4—they seem to be going in the correct direction in the original SVG."
+        ]
+      }
+    },
+    {
+      "slug": "50e770b6f1d04bb6",
+      "title": "How to protect yourself from workslop",
+      "titleZh": "How to protect yourself from workslop",
+      "link": "https://seangoedecke.com/how-to-protect-yourself-from-workslop/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-09-02T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How to protect yourself from workslop",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "“Workslop” is when your colleagues or bosses communicate with you by pasting big chunks of AI-generated text. The core problem with workslop is that the effort involved is asymmetrical, like a denial-of-service attack: it takes almost no effort to produce text with AI, but it still costs effort to read1. Here are some ways to protect yourself."
+          },
+          {
+            "type": "p",
+            "text": "If you have enough authority or social capital, you can and should simply tell them “hey, don’t do that” (for instance, if you’re a senior engineer and an intern starts doing this to you). This is the easiest way to handle workslop. But you probably aren’t in a position to have that conversation with all of your colleagues, and you certainly can’t have it with everyone in your management chain."
+          },
+          {
+            "type": "p",
+            "text": "One step above just telling a colleague to stop is to drive them around like a coding agent. I wrote about this in AI makes weak engineers less harmful: if a colleague is simply pasting your messages into Claude Code and sending you the outputs, you can treat them like a high-latency Slack interface to Claude Code. It won’t be as good as a normal coding agent, but it’ll often be better than nothing."
+          },
+          {
+            "type": "p",
+            "text": "Another strategy is to use AI to fight AI. This is a good one for handling workslop from managers. You can do this in two broad ways. First, instead of carefully reading it, paste it into an LLM of your own and ask for a short list of the salient points. Second, you can sometimes simply ask an LLM for an entire response. In a sense, this makes you part of the problem, so I can see why some people might be uncomfortable with it. But it’s more sustainable than spending ten minutes of your effort for every ten seconds of theirs."
+          },
+          {
+            "type": "p",
+            "text": "You can also bias toward calls or in-person meetings. Workslop is just a special case of the general “your coworker is bad at communication” problem. One classic way of handling this that works even better on AI content is to say “hey, let’s schedule some time to chat about it”. This works for two reasons: first, your colleagues can’t give you AI content over a call, and second, forcing people to spend a chunk of their time talking to you (i.e. to make the effort symmetrical) is a good way to filter out predators."
+          },
+          {
+            "type": "p",
+            "text": "Finally, you can sometimes simply ignore the workslop. This is particularly true for long status updates or pull requests from outside of your organization2. You don’t have to respond to AI content as diligently as you would human content. You can match their lack of effort with your own: skim it, put off reading it until later (or never), and so on. If something’s really important, they’ll tell you in their own words."
+          },
+          {
+            "type": "li",
+            "text": "Technically, not all cases of sending someone AI-generated content are workslop. If the effort is not asymmetrical — if the AI user has genuinely put a lot of their own time into the content — I don’t think it counts as slop, and you should just try and look past the AI style and treat it like a human message.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Some messages — particularly reports directed at the entire organization — may not be intended to be read at all. Written artifacts can have many purposes beyond communication: evidence of effort, a reference document for later communications, a way to cover somebody’s ass by proving they considered point X, something that can tick a compliance or process box, and so on. I wrote a lot more about this in Seeing like a software company. \n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "You have to beat the models at somethingIn 2025, I wrote that software engineers ought to be assessed by “value over replacement”: not how much money they made for their company, but how much they would have made compared to the average engineer in their position. I’ve always found it vaguely silly when engineers put “built a product that made $X” on their resumes, when they just did the JIRA tickets that came across their desk.Continue reading..."
+          }
+        ],
+        "translations": [
+          "“Workslop” is when your colleagues or bosses communicate with you by pasting big chunks of AI-generated text. The core problem with workslop is that the effort involved is asymmetrical, like a denial-of-service attack: it takes almost no effort to produce text with AI, but it still costs effort to read1. Here are some ways to protect yourself.",
+          "If you have enough authority or social capital, you can and should simply tell them “hey, don’t do that” (for instance, if you’re a senior engineer and an intern starts doing this to you). This is the easiest way to handle workslop. But you probably aren’t in a position to have that conversation with all of your colleagues, and you certainly can’t have it with everyone in your management chain.",
+          "One step above just telling a colleague to stop is to drive them around like a coding agent. I wrote about this in AI makes weak engineers less harmful: if a colleague is simply pasting your messages into Claude Code and sending you the outputs, you can treat them like a high-latency Slack interface to Claude Code. It won’t be as good as a normal coding agent, but it’ll often be better than nothing.",
+          "Another strategy is to use AI to fight AI. This is a good one for handling workslop from managers. You can do this in two broad ways. First, instead of carefully reading it, paste it into an LLM of your own and ask for a short list of the salient points. Second, you can sometimes simply ask an LLM for an entire response. In a sense, this makes you part of the problem, so I can see why some people might be uncomfortable with it. But it’s more sustainable than spending ten minutes of your effort for every ten seconds of theirs.",
+          "You can also bias toward calls or in-person meetings. Workslop is just a special case of the general “your coworker is bad at communication” problem. One classic way of handling this that works even better on AI content is to say “hey, let’s schedule some time to chat about it”. This works for two reasons: first, your colleagues can’t give you AI content over a call, and second, forcing people to spend a chunk of their time talking to you (i.e. to make the effort symmetrical) is a good way to filter out predators.",
+          "Finally, you can sometimes simply ignore the workslop. This is particularly true for long status updates or pull requests from outside of your organization2. You don’t have to respond to AI content as diligently as you would human content. You can match their lack of effort with your own: skim it, put off reading it until later (or never), and so on. If something’s really important, they’ll tell you in their own words.",
+          "Technically, not all cases of sending someone AI-generated content are workslop. If the effort is not asymmetrical — if the AI user has genuinely put a lot of their own time into the content — I don’t think it counts as slop, and you should just try and look past the AI style and treat it like a human message.\n↩",
+          "Some messages — particularly reports directed at the entire organization — may not be intended to be read at all. Written artifacts can have many purposes beyond communication: evidence of effort, a reference document for later communications, a way to cover somebody’s ass by proving they considered point X, something that can tick a compliance or process box, and so on. I wrote a lot more about this in Seeing like a software company. \n↩",
+          "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News.",
+          "Here's a preview of a related post that shares tags with this one.",
+          "You have to beat the models at somethingIn 2025, I wrote that software engineers ought to be assessed by “value over replacement”: not how much money they made for their company, but how much they would have made compared to the average engineer in their position. I’ve always found it vaguely silly when engineers put “built a product that made $X” on their resumes, when they just did the JIRA tickets that came across their desk.Continue reading..."
+        ]
+      }
+    },
+    {
+      "slug": "a0aed382f4580bb8",
+      "title": "FBI Probes Service Selling 153M+ Drivers Licenses",
+      "titleZh": "FBI Probes Service Selling 153M+ Drivers Licenses",
+      "link": "https://krebsonsecurity.com/2026/09/fbi-probes-service-selling-153m-drivers-licenses/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-09-01T22:40:28.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "FBI Probes Service Selling 153M+ Drivers Licenses",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A new identity theft service launched on the dark web this week is selling digital scans of more than 153 million drivers licenses from people in the United States and Canada. Based on interviews with individuals whose licenses are available for purchase on this service, it appears to be siphoning images collected by a widely-used identity verification company based in Louisiana. KrebsOnSecurity also has learned that the New Orleans field office of the Federal Bureau of Investigation (FBI) today launched an official inquiry into the source of the images."
+          },
+          {
+            "type": "p",
+            "text": "A record available at this identity theft service that includes the drivers license for U.S. Defense Secretary Pete Hegseth, one of several high-ranking U.S. government officials whose drivers licenses can be found for sale."
+          },
+          {
+            "type": "p",
+            "text": "On Monday, Aug. 31, a source alerted KrebsOnSecurity to a service advertised by a new user on the Russian cybercrime forum Exploit, offering access to digital scans of identity documents on more than 170 million people in North America. The source brought it to my attention because the proprietor of this identity theft service offered my Virginia drivers license as a free sample in their initial sales thread on Exploit."
+          },
+          {
+            "type": "p",
+            "text": "The service, dubbed Nexus, claims to have more than 153 million drivers licenses for people in the United States and Canada, as well as more than 10 million identification cards; more than three million travel documents and/or international IDs; and at least 579,000 medical cards."
+          },
+          {
+            "type": "p",
+            "text": "A quick look around Nexus finds they are likely not exaggerating about that 153 million number: Running a blank search in Nexus (with no search parameters entered) returns approximately 11.5 million pages of results, with roughly 15 results displayed per page. It includes documents from people in both Canada and the United States, but the bulk of these records are on Americans: searching for just Canadian drivers licenses returns approximately 1.1 million results, with the largest concentration from Ontario (473,673 records)."
+          },
+          {
+            "type": "p",
+            "text": "Curiously, the identity records include not only drivers licenses but also marijuana dispensary cards. Some of the records list their “source” as “CDL,” presumably short for “commercial drivers license.” Other records carry the source notation of “CAC,” which may refer to Common Access Cards, government issued identity cards that grant physical access to government buildings and secure rooms."
+          },
+          {
+            "type": "p",
+            "text": "The people behind Nexus claim the license images are coming from an active breach at “a major identity verification company” whose customers include multiple Fortune 500 companies."
+          },
+          {
+            "type": "p",
+            "text": "The record totals listed by the Nexus identity theft service. The number of drivers license records increased by nearly 400,000 in the span of just 24 hours."
+          },
+          {
+            "type": "p",
+            "text": "“We have been continuously exfiltrating new data for over a year into our private database,” the service enthused in its introductory post on Exploit. “Records are available to preview before purchase with pertinent information redacted. Customer photos are displayed if available.”"
+          },
+          {
+            "type": "p",
+            "text": "Indeed, over the past 24 hours, the number of drivers license records listed as available in Nexus has increased by nearly 400,000, suggesting that freshly stolen license data is being harvested and uploaded to this service on a semi-regular basis."
+          },
+          {
+            "type": "p",
+            "text": "The record that features my drivers license includes six image files — three pairs of photos of the license’s front and back — a basic image scan — as well as infrared and ultraviolet versions of the same images. A date and timestamp is appended to each image file, and the timestamp on my license scan corresponds to a date in June 2025 when I took a flight to the midwest United States to attend a family funeral."
+          },
+          {
+            "type": "p",
+            "text": "Some of the 153 million+ license scans — including mine — feature six image files with date and timestamps appended to the filenames. Not all records include photos, and some that do feature photos do not display the associated filenames."
+          },
+          {
+            "type": "p",
+            "text": "Intent on discovering the source of this data, KrebsOnSecurity asked more than a dozen friends and family members for permission to search for their licenses in this service. Each person whose license could be found (nine of them) confirmed having traveled on or very close to the dates in the timestamps attached to their images. It is unclear what timezone these timestamps are in, but from reviewing car rental records shared by several people who helped with this research, it appears the timezone is set to Greenwich Mean Time (GMT)."
+          },
+          {
+            "type": "p",
+            "text": "At first, I thought the source of the data might have something to do with airports. However, that theory went out the window when it became apparent there were no passports in this data set. Also, only some of those who helped with this research said they showed their drivers license at the airport on the day of their travel. One person whose license was in Nexus hadn’t flown at all recently, but was renting a car from Hertz for several months around the date of their timestamp."
+          },
+          {
+            "type": "p",
+            "text": "Two of those who agreed to help are federal employees who said they shared other forms of government identification when passing through airport security. However, those individuals each said they shared their state-issued drivers licenses later that day when renting vehicles at their respective destinations, and that both rented their cars from Hertz."
+          },
+          {
+            "type": "p",
+            "text": "After finding a note in my calendar for the day of my June 2025 flight reminding me to bring my passport, I remembered that I also never actually shared my drivers license when I went through security at Reagan National Airport on that day because I did not yet have a Real ID, a security-enhanced drivers license that is now required by the Transportation Security Administration (TSA) for all domestic travel. Instead, I showed the TSA agent my government-issued U.S. passport."
+          },
+          {
+            "type": "p",
+            "text": "Here’s where it gets interesting: I was able to find my mother’s drivers license in this service as well, and the timestamps for her images are just a few seconds apart from mine. That’s notable because we both handed our licenses to the Hertz rental car representative at the same time."
+          },
+          {
+            "type": "p",
+            "text": "According to my mom, the only place she gave her drivers license to that day was the rental car company, and if memory serves that is also true for me. I don’t recall if the rental car representative inserted our licenses into any kind of machine, but I remember they held onto them for several minutes behind the counter while we were signing various forms. KrebsOnSecurity sought comment from Hertz and will update this story in the event they reply."
+          },
+          {
+            "type": "p",
+            "text": "Zach Edwards is a well-known security and privacy researcher who recently launched a service called DecryptAds to help people better understand how online advertisers are tracking them. A scan of Edwards’s drivers license is available for purchase on this identity theft service, and Edwards said the timestamp on his record corresponds to the middle of a trip last month to Las Vegas for the annual DEFCON security conference."
+          },
+          {
+            "type": "p",
+            "text": "Edwards told KrebsOnSecurity that although he did not rent a car in Vegas, he did hand over his license at the TSA checkpoint, at a marijuana dispensary in Vegas, and at his hotel (the Aria). But he said the only one of those three that for sure scanned his ID in some kind of device was the dispensary."
+          },
+          {
+            "type": "p",
+            "text": "To enter Planet13’s weed dispensary in Las Vegas, one must pass through a red telephone booth. Image: Zach Edwards."
+          },
+          {
+            "type": "p",
+            "text": "Edwards said the dispensary he visited that day was Planet13, a multi-state chain with stores in California, Florida, Illinois and Nevada. In 2022, the New Orleans-based identity provider idscan.net published a press release announcing an exclusive identity verification agreement with Planet13’s dispensaries nationally. IDScan says it processes ID verification for more than 1,000 marijuana dispensaries in 19 U.S. states."
+          },
+          {
+            "type": "p",
+            "text": "The “trust” page of idscan.net states that the company provides identity verification services for numerous big brands, including Hertz, Target, Fedex, Motorola Solutions, the financial services giant Jack Henry, and Caesars Entertainment. And as idscan.net’s own documentation states, the technology scans IDs with both infrared and ultraviolet light. Idscan.net says the company’s systems and technology perform more than 21 million verifications monthly, at more than 20,000 locations around the world."
+          },
+          {
+            "type": "p",
+            "text": "Image: idscan.net."
+          },
+          {
+            "type": "p",
+            "text": "Contacted by KrebsOnSecurity, idscan.net said it was investigating the matter, but the company has not yet shared an official statement or a substantive reply to specific questions sent via email."
+          },
+          {
+            "type": "p",
+            "text": "“At this point I’m not able to share any additional information, but the updates you have provided have been welcome, and helpful to our team’s investigation,” wrote Jillian Kossman, a marketing and operations leader at idscan.net."
+          },
+          {
+            "type": "p",
+            "text": "During the course of my research for this story, word got around to the FBI that I was poking at the apparent source of this new identity theft service’s data. Probably they were tipped off when I shared with a trusted source that Nexus also is selling the drivers license information for the assistant director of the FBI (I did not find FBI Director Kash Patel’s license in Nexus)."
+          },
+          {
+            "type": "p",
+            "text": "Earlier this afternoon, I was added to a conference call with a half-dozen FBI agents, including senior leaders from the agency’s cyber division. During that call, the FBI shared that earlier today their New Orleans field office opened an official investigation into an apparent breach involving idscan.net."
+          },
+          {
+            "type": "p",
+            "text": "Edwards said that as more in-person and online experiences require sharing drivers licenses, vendors who collect this sensitive data need to be held to a higher standard."
+          },
+          {
+            "type": "p",
+            "text": "“This episode should further strengthen the resolve for people who are fighting back against online ID schemes which are requiring countless providers to ask for drivers licenses in order to access services under the guise of protecting kids,” Edwards told KrebsOnSecurity. “These systems are putting sensitive data into more and more 3rd party vendors, and we don’t have nearly the oversight to ensure they are safe.”"
+          },
+          {
+            "type": "p",
+            "text": "Larry Baldwin is principal intelligence researcher at the cybersecurity firm Cybera. Baldwin said a front and back scan of his drivers license available at Nexus contains timestamps that correspond to the date of a car rental from Hertz on a recent vacation."
+          },
+          {
+            "type": "p",
+            "text": "Baldwin said the Nexus identity theft service presents multiple serious security and privacy threats, noting that state-issued drivers licenses are commonly used as proof of one’s identity when opening new lines of credit. Baldwin said the service could also dangerously expose many people who do not wish to be found but who cannot meaningfully change their appearance (or at least not enough to fool today’s AI-based image matching tools)."
+          },
+          {
+            "type": "p",
+            "text": "This category of people, he said, includes those fleeing domestic violence, and even people who have been assigned a whole new life and identity as part of the federal government’s witness protection program, which is generally reserved for criminal defendants in racketeering and conspiracy investigations who agree to cooperate with federal authorities."
+          },
+          {
+            "type": "p",
+            "text": "“Just when it seems like we’re making some headway in improving authentication controls through drivers license verification systems, this happens and the very thing those improvements are dependent on are compromised,” Baldwin said."
+          },
+          {
+            "type": "p",
+            "text": "Update, 8:56 p.m. ET: Shortly after this story was published, the Nexus identity theft service website vanished from the darkweb, replacing its login page with a plain text message that reads, “This service is no longer available.”"
+          },
+          {
+            "type": "p",
+            "text": "This is a potentially fast-moving story. Any changes or updates will be noted here along with a timestamp."
+          }
+        ],
+        "translations": [
+          "A new identity theft service launched on the dark web this week is selling digital scans of more than 153 million drivers licenses from people in the United States and Canada. Based on interviews with individuals whose licenses are available for purchase on this service, it appears to be siphoning images collected by a widely-used identity verification company based in Louisiana. KrebsOnSecurity also has learned that the New Orleans field office of the Federal Bureau of Investigation (FBI) today launched an official inquiry into the source of the images.",
+          "A record available at this identity theft service that includes the drivers license for U.S. Defense Secretary Pete Hegseth, one of several high-ranking U.S. government officials whose drivers licenses can be found for sale.",
+          "On Monday, Aug. 31, a source alerted KrebsOnSecurity to a service advertised by a new user on the Russian cybercrime forum Exploit, offering access to digital scans of identity documents on more than 170 million people in North America. The source brought it to my attention because the proprietor of this identity theft service offered my Virginia drivers license as a free sample in their initial sales thread on Exploit.",
+          "The service, dubbed Nexus, claims to have more than 153 million drivers licenses for people in the United States and Canada, as well as more than 10 million identification cards; more than three million travel documents and/or international IDs; and at least 579,000 medical cards.",
+          "A quick look around Nexus finds they are likely not exaggerating about that 153 million number: Running a blank search in Nexus (with no search parameters entered) returns approximately 11.5 million pages of results, with roughly 15 results displayed per page. It includes documents from people in both Canada and the United States, but the bulk of these records are on Americans: searching for just Canadian drivers licenses returns approximately 1.1 million results, with the largest concentration from Ontario (473,673 records).",
+          "Curiously, the identity records include not only drivers licenses but also marijuana dispensary cards. Some of the records list their “source” as “CDL,” presumably short for “commercial drivers license.” Other records carry the source notation of “CAC,” which may refer to Common Access Cards, government issued identity cards that grant physical access to government buildings and secure rooms.",
+          "The people behind Nexus claim the license images are coming from an active breach at “a major identity verification company” whose customers include multiple Fortune 500 companies.",
+          "The record totals listed by the Nexus identity theft service. The number of drivers license records increased by nearly 400,000 in the span of just 24 hours.",
+          "“We have been continuously exfiltrating new data for over a year into our private database,” the service enthused in its introductory post on Exploit. “Records are available to preview before purchase with pertinent information redacted. Customer photos are displayed if available.”",
+          "Indeed, over the past 24 hours, the number of drivers license records listed as available in Nexus has increased by nearly 400,000, suggesting that freshly stolen license data is being harvested and uploaded to this service on a semi-regular basis.",
+          "The record that features my drivers license includes six image files — three pairs of photos of the license’s front and back — a basic image scan — as well as infrared and ultraviolet versions of the same images. A date and timestamp is appended to each image file, and the timestamp on my license scan corresponds to a date in June 2025 when I took a flight to the midwest United States to attend a family funeral.",
+          "Some of the 153 million+ license scans — including mine — feature six image files with date and timestamps appended to the filenames. Not all records include photos, and some that do feature photos do not display the associated filenames.",
+          "Intent on discovering the source of this data, KrebsOnSecurity asked more than a dozen friends and family members for permission to search for their licenses in this service. Each person whose license could be found (nine of them) confirmed having traveled on or very close to the dates in the timestamps attached to their images. It is unclear what timezone these timestamps are in, but from reviewing car rental records shared by several people who helped with this research, it appears the timezone is set to Greenwich Mean Time (GMT).",
+          "At first, I thought the source of the data might have something to do with airports. However, that theory went out the window when it became apparent there were no passports in this data set. Also, only some of those who helped with this research said they showed their drivers license at the airport on the day of their travel. One person whose license was in Nexus hadn’t flown at all recently, but was renting a car from Hertz for several months around the date of their timestamp.",
+          "Two of those who agreed to help are federal employees who said they shared other forms of government identification when passing through airport security. However, those individuals each said they shared their state-issued drivers licenses later that day when renting vehicles at their respective destinations, and that both rented their cars from Hertz.",
+          "After finding a note in my calendar for the day of my June 2025 flight reminding me to bring my passport, I remembered that I also never actually shared my drivers license when I went through security at Reagan National Airport on that day because I did not yet have a Real ID, a security-enhanced drivers license that is now required by the Transportation Security Administration (TSA) for all domestic travel. Instead, I showed the TSA agent my government-issued U.S. passport.",
+          "Here’s where it gets interesting: I was able to find my mother’s drivers license in this service as well, and the timestamps for her images are just a few seconds apart from mine. That’s notable because we both handed our licenses to the Hertz rental car representative at the same time.",
+          "According to my mom, the only place she gave her drivers license to that day was the rental car company, and if memory serves that is also true for me. I don’t recall if the rental car representative inserted our licenses into any kind of machine, but I remember they held onto them for several minutes behind the counter while we were signing various forms. KrebsOnSecurity sought comment from Hertz and will update this story in the event they reply.",
+          "Zach Edwards is a well-known security and privacy researcher who recently launched a service called DecryptAds to help people better understand how online advertisers are tracking them. A scan of Edwards’s drivers license is available for purchase on this identity theft service, and Edwards said the timestamp on his record corresponds to the middle of a trip last month to Las Vegas for the annual DEFCON security conference.",
+          "Edwards told KrebsOnSecurity that although he did not rent a car in Vegas, he did hand over his license at the TSA checkpoint, at a marijuana dispensary in Vegas, and at his hotel (the Aria). But he said the only one of those three that for sure scanned his ID in some kind of device was the dispensary.",
+          "To enter Planet13’s weed dispensary in Las Vegas, one must pass through a red telephone booth. Image: Zach Edwards.",
+          "Edwards said the dispensary he visited that day was Planet13, a multi-state chain with stores in California, Florida, Illinois and Nevada. In 2022, the New Orleans-based identity provider idscan.net published a press release announcing an exclusive identity verification agreement with Planet13’s dispensaries nationally. IDScan says it processes ID verification for more than 1,000 marijuana dispensaries in 19 U.S. states.",
+          "The “trust” page of idscan.net states that the company provides identity verification services for numerous big brands, including Hertz, Target, Fedex, Motorola Solutions, the financial services giant Jack Henry, and Caesars Entertainment. And as idscan.net’s own documentation states, the technology scans IDs with both infrared and ultraviolet light. Idscan.net says the company’s systems and technology perform more than 21 million verifications monthly, at more than 20,000 locations around the world.",
+          "Image: idscan.net.",
+          "Contacted by KrebsOnSecurity, idscan.net said it was investigating the matter, but the company has not yet shared an official statement or a substantive reply to specific questions sent via email.",
+          "“At this point I’m not able to share any additional information, but the updates you have provided have been welcome, and helpful to our team’s investigation,” wrote Jillian Kossman, a marketing and operations leader at idscan.net.",
+          "During the course of my research for this story, word got around to the FBI that I was poking at the apparent source of this new identity theft service’s data. Probably they were tipped off when I shared with a trusted source that Nexus also is selling the drivers license information for the assistant director of the FBI (I did not find FBI Director Kash Patel’s license in Nexus).",
+          "Earlier this afternoon, I was added to a conference call with a half-dozen FBI agents, including senior leaders from the agency’s cyber division. During that call, the FBI shared that earlier today their New Orleans field office opened an official investigation into an apparent breach involving idscan.net.",
+          "Edwards said that as more in-person and online experiences require sharing drivers licenses, vendors who collect this sensitive data need to be held to a higher standard.",
+          "“This episode should further strengthen the resolve for people who are fighting back against online ID schemes which are requiring countless providers to ask for drivers licenses in order to access services under the guise of protecting kids,” Edwards told KrebsOnSecurity. “These systems are putting sensitive data into more and more 3rd party vendors, and we don’t have nearly the oversight to ensure they are safe.”",
+          "Larry Baldwin is principal intelligence researcher at the cybersecurity firm Cybera. Baldwin said a front and back scan of his drivers license available at Nexus contains timestamps that correspond to the date of a car rental from Hertz on a recent vacation.",
+          "Baldwin said the Nexus identity theft service presents multiple serious security and privacy threats, noting that state-issued drivers licenses are commonly used as proof of one’s identity when opening new lines of credit. Baldwin said the service could also dangerously expose many people who do not wish to be found but who cannot meaningfully change their appearance (or at least not enough to fool today’s AI-based image matching tools).",
+          "This category of people, he said, includes those fleeing domestic violence, and even people who have been assigned a whole new life and identity as part of the federal government’s witness protection program, which is generally reserved for criminal defendants in racketeering and conspiracy investigations who agree to cooperate with federal authorities.",
+          "“Just when it seems like we’re making some headway in improving authentication controls through drivers license verification systems, this happens and the very thing those improvements are dependent on are compromised,” Baldwin said.",
+          "Update, 8:56 p.m. ET: Shortly after this story was published, the Nexus identity theft service website vanished from the darkweb, replacing its login page with a plain text message that reads, “This service is no longer available.”",
+          "This is a potentially fast-moving story. Any changes or updates will be noted here along with a timestamp."
+        ]
+      }
+    },
+    {
+      "slug": "678d169a18698ec2",
+      "title": "Pluralistic: Unpermissioned research (02 Sep 2026)",
+      "titleZh": "Pluralistic: Unpermissioned research (02 Sep 2026)",
+      "link": "https://pluralistic.net/2026/09/02/scrape-scrope-scrap/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-09-02T10:19:10.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Pluralistic: Unpermissioned research (02 Sep 2026)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Unpermissioned research: Fighting Trump means preserving the internet, which means scraping."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Leaked advanced PalmOS device specs; Stalwart workers; \"I, Rowboat\"; SMS uprising; Facebook v switching costs; Capitalism of fools."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Dąbrowa Górnicza, Warsaw, Brighton, London, Budapest, South Bend, Hudson, Victoria, Vancouver."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Unpermissioned research (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "After half a century of neoliberalism, we are all drenched in capitalism's established religion, the worship of property rights. We are so marinated in property worship that even capitalism's critics frame their critiques in \"property talk,\" to the exclusion of other, more important rights, like human rights, labor rights and privacy rights."
+          },
+          {
+            "type": "p",
+            "text": "To do this is to surrender before the battle even starts. Critics lose when they allow oligarchs and their apologists to choose a battlefield where they have a nearly unbeatable advantage."
+          },
+          {
+            "type": "p",
+            "text": "Take privacy: privacy is a human right, not a property right. Human rights aren't for sale. You can't sell yourself into slavery, you can't sell your kidneys to make the rent. If privacy is a property right – one that can be traded away – then Facebook's industrial-scale privacy invasions are actually fine, since you \"traded\" your privacy to Mark Zuckerberg in exchange for the privilege of talking to your friends."
+          },
+          {
+            "type": "p",
+            "text": "Some self-styled critics of tech monopolists say that the answer to Facebook's privacy invasions is to force the company to pay for your privacy with cash, rather than services:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.wired.com/story/opinion-andrew-yangs-plan-to-pay-you-for-your-data-doesnt-add-up/"
+          },
+          {
+            "type": "p",
+            "text": "This is ideological capture in its purest form: the \"data dividend\" that Facebook would owe you under this system amounts to a few dollars per year. For wealthy people, the sums would be trivial, while working people, who've been on the downward leg of every K-shaped recovery for a quarter century, who've maxed out their credit cards and re-mortgaged their homes and drive Uber on the weekends to make rent, would have to subject themselves to ongoing surveillance."
+          },
+          {
+            "type": "p",
+            "text": "That surveillance is already used to determine the highest price those working people will pay – companies like Plexure inform fast food places when you've just gotten paid so they can tack an extra dollar onto your breakfast burrito in the app:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/04/30/something-must-be-done/#there-ive-done-something"
+          },
+          {
+            "type": "p",
+            "text": "Being forced to sell your privacy doesn't just raise the prices you pay, it also lowers the wages you earn. The same people who can't afford this \"pay or privacy\" system have their private data used to calculate the lowest wage they'll accept for each ride on those weekend Uber shifts:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/12/18/loose-flapping-ends/#luigi-has-a-point"
+          },
+          {
+            "type": "p",
+            "text": "In other words: not being able to afford privacy will result in you having even less disposable income, which will mean that you'll have to sell even more of your privacy. Lather, rinse, repeat."
+          },
+          {
+            "type": "p",
+            "text": "But even the wealthy people who can afford to forego the pittances Facebook and others offer in exchange for their private information will find privacy elusive. That's because private information isn't a \"rival good\" – a thing only one person can own at a time. The fact that your mother is your mother \"belongs\" to both you and her, as well as your grandparents, your father, your siblings and your kids. The fact that you don't sell your family tree to a tech company won't stop all those other people from selling it on – as anyone whose foolish relations handed their genome over to 23andme can attest:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.npr.org/2025/03/24/nx-s1-5338622/23andme-bankruptcy-genetic-data-privacy"
+          },
+          {
+            "type": "p",
+            "text": "In the property religion, the way you can tell if something is valuable is if it has a high price. Property cultists insist that the problem with privacy is that our privacy is being sold too cheaply. They're wrong: private information isn't \"mispriced\" – it shouldn't be priced."
+          },
+          {
+            "type": "p",
+            "text": "Human beings are the most valuable things in our world and they are literally priceless. Murder isn't \"theft of life.\" Rape isn't \"theft of sex.\" While insurers and civil courts have ways of calculating the \"price\" of an injury or violation, great care has been taken over the centuries to ensure that this does not turn human beings into commodities. You can't buy a \"murder offset\" that lets you kill people provided you pay into a fund that saves a human somewhere else:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2021/04/14/for-sale-green-indulgences/#killer-analogy"
+          },
+          {
+            "type": "p",
+            "text": "Human beings are too valuable to be priced. We have an entire, sui generis way of balancing the conflicting interests of human rights. My daughter and wife have rights over me, I have rights over them, and when those rights come into conflict – say, if my daughter believes I can no longer care for myself and wants to put me in a care home – the process for resolving that conflict isn't an auction:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.theguardian.com/technology/2008/feb/21/intellectual.property"
+          },
+          {
+            "type": "p",
+            "text": "Your kids aren't your property. In fact, all the most important relationships in your life are non-market. Doctors have patients, not customers. Any time a doctor calls you a \"customer\" they are demoting you. A doctor doesn't sell you health. You have rights as a patient that far exceed the rights accruing to a mere customer. Same goes for other professions: Teachers have pupils, librarians have patrons, lawyers have clients. \"Customer\" is a demotion from all of these."
+          },
+          {
+            "type": "p",
+            "text": "As every \"user agreement\" you've ever clicked through demonstrates, Big Tech loves to have everything defined in property terms – and so does all big business."
+          },
+          {
+            "type": "p",
+            "text": "Take the fight over scraping for AI. You might think that this is a fight over the economic rights of creative workers – certainly, my fellow creative workers treat it as such. But because this debate is being framed in terms of property rights, rather than labor rights, this is a fight that workers are set up to lose."
+          },
+          {
+            "type": "p",
+            "text": "The tell here is how the media companies – who have been eroding the wages of creative workers for decades as they consolidated into a curdled, inbred oligopoly – describe the AI companies' scraping: as an unlicensed taking. Mitch Glazier, the $1.4m/year CEO of the Recording Industry Association of America issues press releases decrying AI training for image generators without negotiating a license fee first:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/03/03/its-a-trap-2/#inheres-at-the-moment-of-fixation"
+          },
+          {
+            "type": "p",
+            "text": "Who's Mitch Glazier? Oh, just a former Congressional staffer who was drummed out of the Capitol Building after he snuck a clause into must-pass legislation that would have transferred hundreds of millions of dollars from musicians to record labels, who was then immediately hired as the CEO of the record industry's largest lobbying group:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.eff.org/deeplinks/2013/12/tpps-attack-artists-termination-rights"
+          },
+          {
+            "type": "p",
+            "text": "Mitch Glazier – and the businesses he represents – aren't opposed to AI replacing artists. They're opposed to AI replacing media companies. Remember the Hollywood writers' strike? The proposal to replace screenwriters with chatbots didn't come from OpenAI, it came from Disney, Warner, Universal and other companies who claim that AI training is \"theft.\""
+          },
+          {
+            "type": "p",
+            "text": "If AI training is \"theft,\" then it can be cured by making a purchase, something that the AI companies can easily afford, thanks to the hundreds of billions of dollars they have been given by the world's richest investors, who are the high priests and cardinals of the property religion."
+          },
+          {
+            "type": "p",
+            "text": "The Hollywood writers are the only workers in the world who have successfully beaten back the use of AI in their workplace, and they didn't do it by making recourse to property rights. The Writers Guild is a union and it enjoys a weak form of \"sectoral bargaining\" (where all the workers in a field bargain with all the businesses at once) called \"multi-employer bargaining\":"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/10/01/how-the-writers-guild-sunk-ais-ship/"
+          },
+          {
+            "type": "p",
+            "text": "The Hollywood writers' strike was an unqualified victory for the writers, who defended their labor rights to co-determination when it came to the use of new tools on their jobsite. Under the terms of their hard-fought contract, screenwriters don't have to use AI, but they can if they want. For example, writers on a long-running sitcom might train an AI with every script in the series' history, so they can ask a chatbot continuity questions as they beat out a new season of the show. But they don't have to do this if they don't want to, and even if they do, neither their wages nor their headcount can be reduced."
+          },
+          {
+            "type": "p",
+            "text": "The media companies insist that scraping is a copyright violation, that it's \"theft.\" As a matter of law, this is far from obvious or settled: the process of making transient copies of many works, performing mathematical analysis on them, and then publishing that analysis as software is not obviously a copyright violation, and anyone who claims otherwise doesn't understand copyright:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/02/09/ai-monkeys-paw/#bullied-schoolkids"
+          },
+          {
+            "type": "p",
+            "text": "Worse: by demoting a labor rights issue to a mere property rights issue, AI critics are setting workers up to fail. Say the issue with AI training really is mere copyright. If that's so, the media companies who want nothing better than to pauperize creative workers can amend their standard contracts so that any worker who does business with them must irrevocably transfer their \"AI training rights\" to the company."
+          },
+          {
+            "type": "p",
+            "text": "Then, that company will absolutely, 100% license those rights to an AI company to create a model designed to replace that worker. The company will get paid for the training, and the resulting model will come with \"guardrails\" to stop other media companies from using proprietary data to compete with it."
+          },
+          {
+            "type": "p",
+            "text": "This is the story of the past 50 years of copyright expansion: every new copyright we've created \"to help artists\" was scooped up by their bosses, who grew more powerful and were able to demand more concessions from those artists, who were therefore poorer and thus needed more copyrights to help them (lather, rinse, repeat):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2026/08/18/enron-corpus/#sign-here"
+          },
+          {
+            "type": "p",
+            "text": "If creative workers' AI fight is merely a copyright fight, then that fight can only determine whether media companies or tech companies will get the biggest portion when those workers are devoured by corporations. Only a labor rights fight can take creative workers off the menu altogether."
+          },
+          {
+            "type": "p",
+            "text": "Treating AI training as \"theft\" creates harms whose blast radius extends well beyond creative workers' livelihoods. Scraping is a hugely beneficial activity. If scraping – taking a vast corpus of copyrighted works without permission – is theft, then every search engine is a crime, unless it can afford to license \"search indexing rights\" from every site on the internet."
+          },
+          {
+            "type": "p",
+            "text": "There's exactly one company that could pull that off: Google, a rapacious tech monopolist that is – not coincidentally – one of the leaders of the movement to beggar every creative worker. We will not improve the world, the internet, or creative workers' lives by ensuring that the last search engine anyone ever creates is Google."
+          },
+          {
+            "type": "p",
+            "text": "Remember our earlier discussion of how privacy violations are weaponized to make poor people even poorer, by depressing their wages and raising prices based on inferences about their economic desperation? Our best weapon for fighting this practice is scraping, because that's how we catch corporations changing prices and wages based on surveillance data:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/09/17/how-to-think-about-scraping/"
+          },
+          {
+            "type": "p",
+            "text": "Scraping is how we produce evidence of the changes that powerful people are making to the world around us. Do you want to know whether Mark Zuckerberg or Elon Musk are downranking content critical of Trump and Big Tech and pumping racist and conspiratorial posts into the resulting void? You'd better hope you can scrape the feeds they cram into billions of people's eyeballs. Same goes for keeping track of genocide apologists, data-center astroturfers and ICE cheerleaders who've flooded Tiktok ever since Trump stole it and handed it over to his creepy billionaire pal Larry Ellison."
+          },
+          {
+            "type": "p",
+            "text": "Making copies of that stuff isn't theft. It's not a copyright violation. Not even if you do it to billions of works. Not even if it's bad for the companies whose feeds you're capturing. Not even if it's bad for the dark money groups who funded the content."
+          },
+          {
+            "type": "p",
+            "text": "Sure, if you do this carelessly or recklessly, you can end up violating someone's labor rights, or privacy rights, or human rights. And because those frameworks aren't based on the sanctity of property rights, they can be used to protect these important rights without giving corporate America the right to have you fined or arrested for documenting their takeover of the America."
+          },
+          {
+            "type": "p",
+            "text": "The people who keep track of this stuff are worried about being fined or arrested. Ethan Zuckerman, one of America's foundational internet scholars, has just accepted Canadian government funding to move his lab from UMass to McGill in Montreal:"
+          },
+          {
+            "type": "p",
+            "text": "https://ethanzuckerman.com/2026/08/27/my-personal-contribution-to-the-us-canada-trade-war/"
+          },
+          {
+            "type": "p",
+            "text": "Zuckerman studies platform power: \"using data to answer hard questions about social media, search engines and AI tools.\" He leads a team that is documenting exactly, precisely how tech companies collude with authoritarians to spy on us, manipulate us, and control us. And his methodology is something called \"unpermissioned research,\" which is what academics call scraping:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.techpolicy.press/ai-companies-threaten-independent-social-media-research/"
+          },
+          {
+            "type": "p",
+            "text": "\"Unpermissioned research\" seeks to circumvent limits that platforms establish specifically to stop outsiders from learning how they operate. When you're doing unpermissioned research, you try to get around rate limits, query throttles, and other measures that platforms use to block others from mapping their extent and documenting their conduct."
+          },
+          {
+            "type": "p",
+            "text": "\"Unpermissioned research\" isn't a free-for-all. Universities have ethical rules designed to protect the privacy rights and other human rights of research subjects, and because these aren't property rights, they can be balanced against the socially beneficial outcomes of research. Universities can get this wrong, of course, but when they do, it's not theft. It's a human rights violation, a privacy violation, a labor violation."
+          },
+          {
+            "type": "p",
+            "text": "If you want to know how AI companies are trying to destroy creators' livelihoods, you have to scrape the AI companies. You can't ask companies for permission to gather information that might be used to destroy them – they'll just say no. If taking information off the internet without permission is \"theft,\" then gathering information by scraping AI companies is also theft."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes a tech company will set up a \"research portal\" that supposedly obviates the need to scrape by putting all the relevant information in one convenient place. That's what Facebook did in the wake of the 2016 election, when it was widely condemned for publishing paid political disinformation. But Facebook's official research portal omitted vast amounts of paid political disinformation, something we only know because NYU set up a scraping project called Ad Observer that documented the discrepancy:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2021/08/06/get-you-coming-and-going/#potemkin-research-program"
+          },
+          {
+            "type": "p",
+            "text": "Facebook used legal threats to kill Ad Observer, and then…they killed their official research portal, too:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2021/07/15/three-wise-zucks-in-a-trenchcoat/#inconvenient-truth"
+          },
+          {
+            "type": "p",
+            "text": "Zuckerman is one of dozens of leading US academics who are relocating their labs and teams to Canadian universities, citing fear of political interference from the Trump regime:"
+          },
+          {
+            "type": "p",
+            "text": "https://vancouver.citynews.ca/2026/08/27/canada-recruits-dozens-of-foreign-scientists-researchers-poaching-many-from-u-s/"
+          },
+          {
+            "type": "p",
+            "text": "The Canadian government has committed $504m to the project. Some of that research will help Canada develop new green energy, and some of it will help Canada make important medical breakthroughs. But Zuckerman's research has a special place in the portfolio of Canadian research projects, because – thanks to scraping – it is a leading source of information about how Trump's tech companies are waging war on the American people and the world."
+          },
+          {
+            "type": "p",
+            "text": "Scraping isn't theft of data, just like murder isn't theft of life. Scraping can be harmful, and we can create laws and social regimes and ways of talking about those harms that don't give authoritarian governments and vast multinational corporations the right to decide who can document and analyze their conduct."
+          },
+          {
+            "type": "p",
+            "text": "Take Wikipedia: the project exists solely to organize and disseminate information, for free, to everyone in the world. Wikipedia is among the most important parts of the internet, and one of the most positive developments of the 21st century. The entire project is licensed under a generous Creative Commons license that encourages unlimited commercial re-use of its contents. Even if you think scraping copyrighted works is theft, scraping Creative Commons Attribution 4.0 works is unquestionably not theft."
+          },
+          {
+            "type": "p",
+            "text": "But Wikipedia is being hammered by AI scrapers, which are operating so aggressively that they threaten the project's ability to keep its servers online. Wikipedia has an AI problem, but that AI problem isn't \"theft\" – it's denial of service, the aggressive act of intentionally or recklessly flooding a server with so much traffic that it crashes."
+          },
+          {
+            "type": "p",
+            "text": "If you've been lured into a cultlike worship of property rights, this seems like a contradiction. But once you relegate the relatively unimportant matter of property rights to its correct station, you can see – and reason about – the universe of rights that are far more important than mere property."
+          },
+          {
+            "type": "p",
+            "text": "All it takes is realizing that there are far worse things you can do with information than \"stealing\" it."
+          },
+          {
+            "type": "p",
+            "text": "(Image: Bearas, CC BY-SA 4.0, modified)"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Meta's $17 Billion Settlement is a Bad Deal for Teens and All Social Media Users https://www.eff.org/deeplinks/2026/09/metas-17-billion-settlement-bad-deal-teens-and-all-social-media-users"
+          },
+          {
+            "type": "li",
+            "text": "New Twitter launches, says Musk’s X gave up the name https://arstechnica.com/tech-policy/2026/08/new-twitter-launches-says-musks-x-gave-up-the-name/"
+          },
+          {
+            "type": "li",
+            "text": "For The Economist, Mentioning Workers’ Interests Is Heresy https://jacobin.com/2026/08/acemoglu-economics-ai-automation-working-class"
+          },
+          {
+            "type": "li",
+            "text": "How Youth and Educators Can Fight Enshittified Tech https://clalliance.org/blog/how-youth-and-educators-can-fight-enshittified-tech/"
+          },
+          {
+            "type": "li",
+            "text": "Stalking the Wily Hacker: 40 years later – Cliff Stoll https://www.youtube.com/watch?v=656058JxTM0"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago NYT says ebooks don't exist, fails to mention thriving ebook pirate scene https://www.nytimes.com/2001/08/28/business/forecasts-of-an-e-book-era-were-it-seems-premature.html"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Parking tickets waived in exchange for written apologies https://web.archive.org/web/20010826013513/http://www.thesmokinggun.com/doc_o_day/lewiston1.shtml"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago \"I, Row-Boat\" https://web.archive.org/web/20060000000000*/http://www.flurb.net/1/doctorow.htm"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Filipino students use SMS to organize mass demonstrations https://web.archive.org/web/20060902160514/http://blog.wired.com/sterling/index.blog%3Fentry_id%3D1545927"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Spam pump-and-dumps work http://news.bbc.co.uk/2/hi/technology/5284618.stm"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Leaked: Handspring's next PalmOS device https://web.archive.org/web/20020824213501/http://www.palmstation.com/view_article.asp?article=4614"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago “Stalwart Workers”: neglected backbone of the firm https://web.archive.org/web/20110920155246/http://blogs.hbr.org/hbsfaculty/2011/08/stop-ignoring-the-stalwart-wor.html"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Facebook's war on switching costs https://pluralistic.net/2021/08/28/talking-hard-work-blues/#hostage-takers"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The \"work ethic\" is a dirty trick we play on ourselves https://pluralistic.net/2021/08/28/talking-hard-work-blues/#work-will-set-you-free"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago The capitalism of fools https://pluralistic.net/2025/08/28/strew-deal/#neither-fish-nor-fowla"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Dąbrowa Górnicza, Kongres Regeneracja! to interdyscyplinarna, Sep 5\nhttps://regeneracja.plse.org.pl/"
+          },
+          {
+            "type": "li",
+            "text": "Warsaw: Romana i Jana Podoskich, Sep 6\nhttps://wydarzenia.phub.pl/events/0ee0e198-f843-423a-890f-c84ff50a46c0"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/"
+          },
+          {
+            "type": "li",
+            "text": "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn"
+          },
+          {
+            "type": "li",
+            "text": "Budapest: Brain Bar, Sep 17\nhttps://brainbar.com/munkatars/cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Hudson, OH: Hudson Library, Oct 7\nhttps://engagedpatrons.org/EventsExtended.cfm?SiteID=3850&amp;EventID=596952&amp;PK="
+          },
+          {
+            "type": "li",
+            "text": "Victoria: Munro's Books, Oct 20\nhttps://www.munrobooks.com/events/6113620261020"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: BC Policy Solutions Gala, Nov 12\nhttps://bcpolicy.ca/gala/"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "How Tech Platforms Took Over the Economy (Dystopia Now)\nhttps://sites.libsyn.com/566555/enshittification-and-reverse-centaurs-cory-doctorow-on-how-tech-platforms-took-over-the-economy"
+          },
+          {
+            "type": "li",
+            "text": "Hope, AI, Fixing the Internet and the Reverse Centaur of it all (Wilosophy)\nhttps://podcastaddict.com/everyone-relax/episode/231414816"
+          },
+          {
+            "type": "li",
+            "text": "Deflating the AI Bubble (Do Not Pass Go)\nhttps://www.donotpassgo.ca/p/deflating-the-ai-bubble-with-cory"
+          },
+          {
+            "type": "li",
+            "text": "Technofeudal Enshittification (Fucking Cancelled)\nhttps://www.fuckingcancelled.com/p/technofeudal-enshittification-with"
+          },
+          {
+            "type": "li",
+            "text": "Who The Machine Serves (EFF)\nhttps://archive.org/details/effecting-change-who-the-machine-serves"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing:"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "Today's links",
+          "Unpermissioned research: Fighting Trump means preserving the internet, which means scraping.",
+          "Hey look at this: Delights to delectate.",
+          "Object permanence: Leaked advanced PalmOS device specs; Stalwart workers; \"I, Rowboat\"; SMS uprising; Facebook v switching costs; Capitalism of fools.",
+          "Upcoming appearances: Dąbrowa Górnicza, Warsaw, Brighton, London, Budapest, South Bend, Hudson, Victoria, Vancouver.",
+          "Recent appearances: Where I've been.",
+          "Latest books: You keep readin' em, I'll keep writin' 'em.",
+          "Upcoming books: Like I said, I'll keep writin' 'em.",
+          "Colophon: All the rest.",
+          "Unpermissioned research (permalink)",
+          "After half a century of neoliberalism, we are all drenched in capitalism's established religion, the worship of property rights. We are so marinated in property worship that even capitalism's critics frame their critiques in \"property talk,\" to the exclusion of other, more important rights, like human rights, labor rights and privacy rights.",
+          "To do this is to surrender before the battle even starts. Critics lose when they allow oligarchs and their apologists to choose a battlefield where they have a nearly unbeatable advantage.",
+          "Take privacy: privacy is a human right, not a property right. Human rights aren't for sale. You can't sell yourself into slavery, you can't sell your kidneys to make the rent. If privacy is a property right – one that can be traded away – then Facebook's industrial-scale privacy invasions are actually fine, since you \"traded\" your privacy to Mark Zuckerberg in exchange for the privilege of talking to your friends.",
+          "Some self-styled critics of tech monopolists say that the answer to Facebook's privacy invasions is to force the company to pay for your privacy with cash, rather than services:",
+          "https://www.wired.com/story/opinion-andrew-yangs-plan-to-pay-you-for-your-data-doesnt-add-up/",
+          "This is ideological capture in its purest form: the \"data dividend\" that Facebook would owe you under this system amounts to a few dollars per year. For wealthy people, the sums would be trivial, while working people, who've been on the downward leg of every K-shaped recovery for a quarter century, who've maxed out their credit cards and re-mortgaged their homes and drive Uber on the weekends to make rent, would have to subject themselves to ongoing surveillance.",
+          "That surveillance is already used to determine the highest price those working people will pay – companies like Plexure inform fast food places when you've just gotten paid so they can tack an extra dollar onto your breakfast burrito in the app:",
+          "https://pluralistic.net/2026/04/30/something-must-be-done/#there-ive-done-something",
+          "Being forced to sell your privacy doesn't just raise the prices you pay, it also lowers the wages you earn. The same people who can't afford this \"pay or privacy\" system have their private data used to calculate the lowest wage they'll accept for each ride on those weekend Uber shifts:",
+          "https://pluralistic.net/2024/12/18/loose-flapping-ends/#luigi-has-a-point",
+          "In other words: not being able to afford privacy will result in you having even less disposable income, which will mean that you'll have to sell even more of your privacy. Lather, rinse, repeat.",
+          "But even the wealthy people who can afford to forego the pittances Facebook and others offer in exchange for their private information will find privacy elusive. That's because private information isn't a \"rival good\" – a thing only one person can own at a time. The fact that your mother is your mother \"belongs\" to both you and her, as well as your grandparents, your father, your siblings and your kids. The fact that you don't sell your family tree to a tech company won't stop all those other people from selling it on – as anyone whose foolish relations handed their genome over to 23andme can attest:",
+          "https://www.npr.org/2025/03/24/nx-s1-5338622/23andme-bankruptcy-genetic-data-privacy",
+          "In the property religion, the way you can tell if something is valuable is if it has a high price. Property cultists insist that the problem with privacy is that our privacy is being sold too cheaply. They're wrong: private information isn't \"mispriced\" – it shouldn't be priced.",
+          "Human beings are the most valuable things in our world and they are literally priceless. Murder isn't \"theft of life.\" Rape isn't \"theft of sex.\" While insurers and civil courts have ways of calculating the \"price\" of an injury or violation, great care has been taken over the centuries to ensure that this does not turn human beings into commodities. You can't buy a \"murder offset\" that lets you kill people provided you pay into a fund that saves a human somewhere else:",
+          "https://pluralistic.net/2021/04/14/for-sale-green-indulgences/#killer-analogy",
+          "Human beings are too valuable to be priced. We have an entire, sui generis way of balancing the conflicting interests of human rights. My daughter and wife have rights over me, I have rights over them, and when those rights come into conflict – say, if my daughter believes I can no longer care for myself and wants to put me in a care home – the process for resolving that conflict isn't an auction:",
+          "https://www.theguardian.com/technology/2008/feb/21/intellectual.property",
+          "Your kids aren't your property. In fact, all the most important relationships in your life are non-market. Doctors have patients, not customers. Any time a doctor calls you a \"customer\" they are demoting you. A doctor doesn't sell you health. You have rights as a patient that far exceed the rights accruing to a mere customer. Same goes for other professions: Teachers have pupils, librarians have patrons, lawyers have clients. \"Customer\" is a demotion from all of these.",
+          "As every \"user agreement\" you've ever clicked through demonstrates, Big Tech loves to have everything defined in property terms – and so does all big business.",
+          "Take the fight over scraping for AI. You might think that this is a fight over the economic rights of creative workers – certainly, my fellow creative workers treat it as such. But because this debate is being framed in terms of property rights, rather than labor rights, this is a fight that workers are set up to lose.",
+          "The tell here is how the media companies – who have been eroding the wages of creative workers for decades as they consolidated into a curdled, inbred oligopoly – describe the AI companies' scraping: as an unlicensed taking. Mitch Glazier, the $1.4m/year CEO of the Recording Industry Association of America issues press releases decrying AI training for image generators without negotiating a license fee first:",
+          "https://pluralistic.net/2026/03/03/its-a-trap-2/#inheres-at-the-moment-of-fixation",
+          "Who's Mitch Glazier? Oh, just a former Congressional staffer who was drummed out of the Capitol Building after he snuck a clause into must-pass legislation that would have transferred hundreds of millions of dollars from musicians to record labels, who was then immediately hired as the CEO of the record industry's largest lobbying group:",
+          "https://www.eff.org/deeplinks/2013/12/tpps-attack-artists-termination-rights",
+          "Mitch Glazier – and the businesses he represents – aren't opposed to AI replacing artists. They're opposed to AI replacing media companies. Remember the Hollywood writers' strike? The proposal to replace screenwriters with chatbots didn't come from OpenAI, it came from Disney, Warner, Universal and other companies who claim that AI training is \"theft.\"",
+          "If AI training is \"theft,\" then it can be cured by making a purchase, something that the AI companies can easily afford, thanks to the hundreds of billions of dollars they have been given by the world's richest investors, who are the high priests and cardinals of the property religion.",
+          "The Hollywood writers are the only workers in the world who have successfully beaten back the use of AI in their workplace, and they didn't do it by making recourse to property rights. The Writers Guild is a union and it enjoys a weak form of \"sectoral bargaining\" (where all the workers in a field bargain with all the businesses at once) called \"multi-employer bargaining\":",
+          "https://pluralistic.net/2023/10/01/how-the-writers-guild-sunk-ais-ship/",
+          "The Hollywood writers' strike was an unqualified victory for the writers, who defended their labor rights to co-determination when it came to the use of new tools on their jobsite. Under the terms of their hard-fought contract, screenwriters don't have to use AI, but they can if they want. For example, writers on a long-running sitcom might train an AI with every script in the series' history, so they can ask a chatbot continuity questions as they beat out a new season of the show. But they don't have to do this if they don't want to, and even if they do, neither their wages nor their headcount can be reduced.",
+          "The media companies insist that scraping is a copyright violation, that it's \"theft.\" As a matter of law, this is far from obvious or settled: the process of making transient copies of many works, performing mathematical analysis on them, and then publishing that analysis as software is not obviously a copyright violation, and anyone who claims otherwise doesn't understand copyright:",
+          "https://pluralistic.net/2023/02/09/ai-monkeys-paw/#bullied-schoolkids",
+          "Worse: by demoting a labor rights issue to a mere property rights issue, AI critics are setting workers up to fail. Say the issue with AI training really is mere copyright. If that's so, the media companies who want nothing better than to pauperize creative workers can amend their standard contracts so that any worker who does business with them must irrevocably transfer their \"AI training rights\" to the company.",
+          "Then, that company will absolutely, 100% license those rights to an AI company to create a model designed to replace that worker. The company will get paid for the training, and the resulting model will come with \"guardrails\" to stop other media companies from using proprietary data to compete with it.",
+          "This is the story of the past 50 years of copyright expansion: every new copyright we've created \"to help artists\" was scooped up by their bosses, who grew more powerful and were able to demand more concessions from those artists, who were therefore poorer and thus needed more copyrights to help them (lather, rinse, repeat):",
+          "https://pluralistic.net/2026/08/18/enron-corpus/#sign-here",
+          "If creative workers' AI fight is merely a copyright fight, then that fight can only determine whether media companies or tech companies will get the biggest portion when those workers are devoured by corporations. Only a labor rights fight can take creative workers off the menu altogether.",
+          "Treating AI training as \"theft\" creates harms whose blast radius extends well beyond creative workers' livelihoods. Scraping is a hugely beneficial activity. If scraping – taking a vast corpus of copyrighted works without permission – is theft, then every search engine is a crime, unless it can afford to license \"search indexing rights\" from every site on the internet.",
+          "There's exactly one company that could pull that off: Google, a rapacious tech monopolist that is – not coincidentally – one of the leaders of the movement to beggar every creative worker. We will not improve the world, the internet, or creative workers' lives by ensuring that the last search engine anyone ever creates is Google.",
+          "Remember our earlier discussion of how privacy violations are weaponized to make poor people even poorer, by depressing their wages and raising prices based on inferences about their economic desperation? Our best weapon for fighting this practice is scraping, because that's how we catch corporations changing prices and wages based on surveillance data:",
+          "https://pluralistic.net/2023/09/17/how-to-think-about-scraping/",
+          "Scraping is how we produce evidence of the changes that powerful people are making to the world around us. Do you want to know whether Mark Zuckerberg or Elon Musk are downranking content critical of Trump and Big Tech and pumping racist and conspiratorial posts into the resulting void? You'd better hope you can scrape the feeds they cram into billions of people's eyeballs. Same goes for keeping track of genocide apologists, data-center astroturfers and ICE cheerleaders who've flooded Tiktok ever since Trump stole it and handed it over to his creepy billionaire pal Larry Ellison.",
+          "Making copies of that stuff isn't theft. It's not a copyright violation. Not even if you do it to billions of works. Not even if it's bad for the companies whose feeds you're capturing. Not even if it's bad for the dark money groups who funded the content.",
+          "Sure, if you do this carelessly or recklessly, you can end up violating someone's labor rights, or privacy rights, or human rights. And because those frameworks aren't based on the sanctity of property rights, they can be used to protect these important rights without giving corporate America the right to have you fined or arrested for documenting their takeover of the America.",
+          "The people who keep track of this stuff are worried about being fined or arrested. Ethan Zuckerman, one of America's foundational internet scholars, has just accepted Canadian government funding to move his lab from UMass to McGill in Montreal:",
+          "https://ethanzuckerman.com/2026/08/27/my-personal-contribution-to-the-us-canada-trade-war/",
+          "Zuckerman studies platform power: \"using data to answer hard questions about social media, search engines and AI tools.\" He leads a team that is documenting exactly, precisely how tech companies collude with authoritarians to spy on us, manipulate us, and control us. And his methodology is something called \"unpermissioned research,\" which is what academics call scraping:",
+          "https://www.techpolicy.press/ai-companies-threaten-independent-social-media-research/",
+          "\"Unpermissioned research\" seeks to circumvent limits that platforms establish specifically to stop outsiders from learning how they operate. When you're doing unpermissioned research, you try to get around rate limits, query throttles, and other measures that platforms use to block others from mapping their extent and documenting their conduct.",
+          "\"Unpermissioned research\" isn't a free-for-all. Universities have ethical rules designed to protect the privacy rights and other human rights of research subjects, and because these aren't property rights, they can be balanced against the socially beneficial outcomes of research. Universities can get this wrong, of course, but when they do, it's not theft. It's a human rights violation, a privacy violation, a labor violation.",
+          "If you want to know how AI companies are trying to destroy creators' livelihoods, you have to scrape the AI companies. You can't ask companies for permission to gather information that might be used to destroy them – they'll just say no. If taking information off the internet without permission is \"theft,\" then gathering information by scraping AI companies is also theft.",
+          "Sometimes a tech company will set up a \"research portal\" that supposedly obviates the need to scrape by putting all the relevant information in one convenient place. That's what Facebook did in the wake of the 2016 election, when it was widely condemned for publishing paid political disinformation. But Facebook's official research portal omitted vast amounts of paid political disinformation, something we only know because NYU set up a scraping project called Ad Observer that documented the discrepancy:",
+          "https://pluralistic.net/2021/08/06/get-you-coming-and-going/#potemkin-research-program",
+          "Facebook used legal threats to kill Ad Observer, and then…they killed their official research portal, too:",
+          "https://pluralistic.net/2021/07/15/three-wise-zucks-in-a-trenchcoat/#inconvenient-truth",
+          "Zuckerman is one of dozens of leading US academics who are relocating their labs and teams to Canadian universities, citing fear of political interference from the Trump regime:",
+          "https://vancouver.citynews.ca/2026/08/27/canada-recruits-dozens-of-foreign-scientists-researchers-poaching-many-from-u-s/",
+          "The Canadian government has committed $504m to the project. Some of that research will help Canada develop new green energy, and some of it will help Canada make important medical breakthroughs. But Zuckerman's research has a special place in the portfolio of Canadian research projects, because – thanks to scraping – it is a leading source of information about how Trump's tech companies are waging war on the American people and the world.",
+          "Scraping isn't theft of data, just like murder isn't theft of life. Scraping can be harmful, and we can create laws and social regimes and ways of talking about those harms that don't give authoritarian governments and vast multinational corporations the right to decide who can document and analyze their conduct.",
+          "Take Wikipedia: the project exists solely to organize and disseminate information, for free, to everyone in the world. Wikipedia is among the most important parts of the internet, and one of the most positive developments of the 21st century. The entire project is licensed under a generous Creative Commons license that encourages unlimited commercial re-use of its contents. Even if you think scraping copyrighted works is theft, scraping Creative Commons Attribution 4.0 works is unquestionably not theft.",
+          "But Wikipedia is being hammered by AI scrapers, which are operating so aggressively that they threaten the project's ability to keep its servers online. Wikipedia has an AI problem, but that AI problem isn't \"theft\" – it's denial of service, the aggressive act of intentionally or recklessly flooding a server with so much traffic that it crashes.",
+          "If you've been lured into a cultlike worship of property rights, this seems like a contradiction. But once you relegate the relatively unimportant matter of property rights to its correct station, you can see – and reason about – the universe of rights that are far more important than mere property.",
+          "All it takes is realizing that there are far worse things you can do with information than \"stealing\" it.",
+          "(Image: Bearas, CC BY-SA 4.0, modified)",
+          "Hey look at this (permalink)",
+          "Meta's $17 Billion Settlement is a Bad Deal for Teens and All Social Media Users https://www.eff.org/deeplinks/2026/09/metas-17-billion-settlement-bad-deal-teens-and-all-social-media-users",
+          "New Twitter launches, says Musk’s X gave up the name https://arstechnica.com/tech-policy/2026/08/new-twitter-launches-says-musks-x-gave-up-the-name/",
+          "For The Economist, Mentioning Workers’ Interests Is Heresy https://jacobin.com/2026/08/acemoglu-economics-ai-automation-working-class",
+          "How Youth and Educators Can Fight Enshittified Tech https://clalliance.org/blog/how-youth-and-educators-can-fight-enshittified-tech/",
+          "Stalking the Wily Hacker: 40 years later – Cliff Stoll https://www.youtube.com/watch?v=656058JxTM0",
+          "Object permanence (permalink)",
+          "#25yrsago NYT says ebooks don't exist, fails to mention thriving ebook pirate scene https://www.nytimes.com/2001/08/28/business/forecasts-of-an-e-book-era-were-it-seems-premature.html",
+          "#25yrsago Parking tickets waived in exchange for written apologies https://web.archive.org/web/20010826013513/http://www.thesmokinggun.com/doc_o_day/lewiston1.shtml",
+          "#20yrsago \"I, Row-Boat\" https://web.archive.org/web/20060000000000*/http://www.flurb.net/1/doctorow.htm",
+          "#20yrsago Filipino students use SMS to organize mass demonstrations https://web.archive.org/web/20060902160514/http://blog.wired.com/sterling/index.blog%3Fentry_id%3D1545927",
+          "#20yrsago Spam pump-and-dumps work http://news.bbc.co.uk/2/hi/technology/5284618.stm",
+          "#25yrsago Leaked: Handspring's next PalmOS device https://web.archive.org/web/20020824213501/http://www.palmstation.com/view_article.asp?article=4614",
+          "#15yrsago “Stalwart Workers”: neglected backbone of the firm https://web.archive.org/web/20110920155246/http://blogs.hbr.org/hbsfaculty/2011/08/stop-ignoring-the-stalwart-wor.html",
+          "#5yrsago Facebook's war on switching costs https://pluralistic.net/2021/08/28/talking-hard-work-blues/#hostage-takers",
+          "#5yrsago The \"work ethic\" is a dirty trick we play on ourselves https://pluralistic.net/2021/08/28/talking-hard-work-blues/#work-will-set-you-free",
+          "#1yrago The capitalism of fools https://pluralistic.net/2025/08/28/strew-deal/#neither-fish-nor-fowla",
+          "Upcoming appearances (permalink)",
+          "Dąbrowa Górnicza, Kongres Regeneracja! to interdyscyplinarna, Sep 5\nhttps://regeneracja.plse.org.pl/",
+          "Warsaw: Romana i Jana Podoskich, Sep 6\nhttps://wydarzenia.phub.pl/events/0ee0e198-f843-423a-890f-c84ff50a46c0",
+          "Brighton: The Reverse Centaur's Guide to Life After AI with Carole Cadwalladr (Brighton Dome), Sep 8\nhttps://brightondome.org/whats-on/LSC-cory-doctorow-the-reverse-centaurs-guide-to-life-after-ai/",
+          "London: The Reverse Centaur's Guide to Life After AI with Riley Quinn (Foyle's Picadilly), Sep 9\nhttps://www.foyles.co.uk/events/enshittification-cory-doctorow-riley-quinn",
+          "Budapest: Brain Bar, Sep 17\nhttps://brainbar.com/munkatars/cory-doctorow",
+          "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "Hudson, OH: Hudson Library, Oct 7\nhttps://engagedpatrons.org/EventsExtended.cfm?SiteID=3850&amp;EventID=596952&amp;PK=",
+          "Victoria: Munro's Books, Oct 20\nhttps://www.munrobooks.com/events/6113620261020",
+          "Vancouver: BC Policy Solutions Gala, Nov 12\nhttps://bcpolicy.ca/gala/",
+          "Recent appearances (permalink)",
+          "How Tech Platforms Took Over the Economy (Dystopia Now)\nhttps://sites.libsyn.com/566555/enshittification-and-reverse-centaurs-cory-doctorow-on-how-tech-platforms-took-over-the-economy",
+          "Hope, AI, Fixing the Internet and the Reverse Centaur of it all (Wilosophy)\nhttps://podcastaddict.com/everyone-relax/episode/231414816",
+          "Deflating the AI Bubble (Do Not Pass Go)\nhttps://www.donotpassgo.ca/p/deflating-the-ai-bubble-with-cory",
+          "Technofeudal Enshittification (Fucking Cancelled)\nhttps://www.fuckingcancelled.com/p/technofeudal-enshittification-with",
+          "Who The Machine Serves (EFF)\nhttps://archive.org/details/effecting-change-who-the-machine-serves",
+          "Latest books (permalink)",
+          "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels).",
+          "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org).",
+          "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org).",
+          "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245).",
+          "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com.",
+          "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com",
+          "Upcoming books (permalink)",
+          "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027",
+          "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027",
+          "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027",
+          "\"The Memex Method,\" Farrar, Straus, Giroux, 2027",
+          "Colophon (permalink)",
+          "Today's top sources:",
+          "Currently writing:",
+          "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor.",
+          "A Little Brother short story about DIY insulin PLANNING",
+          "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net.",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution.",
+          "How to get Pluralistic:",
+          "Blog (no ads, tracking, or data-collection):",
+          "Pluralistic.net",
+          "Newsletter (no ads, tracking, or data-collection):",
+          "https://pluralistic.net/plura-list",
+          "Mastodon (no ads, tracking, or data-collection):",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky (no ads, possible tracking and data-collection):",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium (no ads, paywalled):",
+          "https://doctorow.medium.com/",
+          "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla",
+          "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer.",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "5c61ddd8509a51b7",
+      "title": "Static Allocation, Constant Work",
+      "titleZh": "Static Allocation, Constant Work",
+      "link": "https://matklad.github.io/2026/09/02/static-allocation-constant-work.html",
+      "sourceName": "matklad.github.io",
+      "sourceUrl": "https://matklad.github.io",
+      "pubDate": "2026-09-02T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Static Allocation, Constant Work",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In reply to this email:"
+          },
+          {
+            "type": "quote",
+            "text": "Memory Safety’s Hardest Problem\nnamed something I’d hit but couldn’t articulate.\nYour case is a pointer into one union variant surviving a write of a different\nvariant, so live typed pointers end up reading bytes that belong to something\nelse now.\n            Last year I wrote a limit-order matching engine and shipped a use-after-free: a\ncancelled order was released back to the pool while it was still linked into its\nprice level, so the next allocation handed that memory to a new order and the\nstale link kept resolving. I’d filed it under “I was careless with lifetimes.”\n            After your post I’m not sure that’s what it was. A recycling pool looks like a\ntagged union where the tag is “which generation of object currently lives in\nthis slot,” and nothing in the type system tracks it. Is that a fair reading, or\ndoes the pool case stay genuinely easier because generational indices actually\nsolve it and the union case has no equivalent?"
+          },
+          {
+            "type": "p",
+            "text": "Yes, object pools are an interesting case to think about, as they clarify the\nrelation between memory safety and and more general correctness."
+          },
+          {
+            "type": "p",
+            "text": "First, consider the case where no object pool is used, and we malloc and\nfree order objects. In this case, the logical error of use-after-free turns\ninto physical type confusion, and can easily lead to arbitrary code execution\nand the like. If you have two objects of different types sharing the same\nmemory location, a user-controlled integer in one object might be a function\npointer in the other: an exploitable goto primitive"
+          },
+          {
+            "type": "p",
+            "text": "Now, what happens if we introduce an object pool which stores a list of “dead”\nobjects of type T? Logical use-after-free is still possible, but its physical\neffect is now different — we still get aliasing of memory, but there’s no type\nconfusion. You can’t necessarily fiddle with an integer and change a function\npointer, unless you additionally hit the hard case, where the object in question\nstores an inline enum. Assuming that doesn’t hapen, you get a perfectly defined,\ndeterministic behavior, even if you are not happy about the result."
+          },
+          {
+            "type": "p",
+            "text": "This suggests an interesting solution for hardening code, which I’ve learned\nfrom Fil. If your allocation function is typed\n(it takes a T comptime parameter or runtime type witness, rather than a\nruntime type-erased size and alignment), you can write an allocator that uses\ntype-segregated pools internally. This will be somewhat less memory efficient,\nas the allocator won’t be able to re-use freed memory of objects of type U for\nobjects of type T, but the memory overhead will probably be small (rare object\ntypes do not matter, popular object types will have a lot of intra-type re-use),\nyou might actually gain in memory locality, and solve most of type confusions.\nAgain, inline enums break this, but, curiously, if you always heap allocate enum\nvariants, then this works again. Fil-C can’t use this, because C allocator’s\ninterface is untyped, but someone else could :P"
+          },
+          {
+            "type": "p",
+            "text": "But this is academic. How do we avoid the bugs? Generational indexes are a\npopular remedy, but I have never used them, so I don’t have any non-common\nknowledge insights about this pattern. Instead, I will share another pair of tricks\nfrom TigerStyle.\nI have only a vague understanding of what an order matching engine is, but I\nsuspect these tricks might help there"
+          },
+          {
+            "type": "h2",
+            "text": "Static Allocation"
+          },
+          {
+            "type": "p",
+            "text": "The first one is:"
+          },
+          {
+            "type": "quote",
+            "text": "No dynamic memory allocation after initialization"
+          },
+          {
+            "type": "p",
+            "text": "https://www.youtube.com/watch?v=GRJtYwneG2Q&t=1823s"
+          },
+          {
+            "type": "p",
+            "text": "This is the pool idea, taken to its logical conclusion. We specify the maximum\nnumber of orders we are willing to work with at startup, and never go beyond\nthat. So, you might start the program as"
+          },
+          {
+            "type": "code",
+            "text": "$ order-engine --orders-max=1_000_000"
+          },
+          {
+            "type": "p",
+            "text": "and then one of the first lines in its main function would be :"
+          },
+          {
+            "type": "code",
+            "text": "const orders: []Order = try gpa.alloc(Order, cli_args.orders_max);"
+          },
+          {
+            "type": "p",
+            "text": "If, at runtime, more than orders_max requests come in, the surplus requests\nare rejected. Someone might object: “But what if I actually have some spare\nmemory for one more order? Wouldn’t it be a good idea to at least try to handle\nit?”"
+          },
+          {
+            "type": "p",
+            "text": "My rejoinder would be “Well, what if you don’t?”. Systems operating at capacity\nwithout strict limits fail catastrophically. Attempting to allocate just one\nmore Order could cause kernel’s OOM killer to terminate the entire order\nmatching engine, losing the other million orders, or, better yet, to kill the\nsupervisor process so that you can’t even restart."
+          },
+          {
+            "type": "p",
+            "text": "Static allocation gives you piece of mind. The system might fail to start if you\ndon’t have enough memory, but, if it did start, you can be rest assured that it\nwould handle overload gracefully, continuing to render the service while you are\nprovisioning a beefier machine."
+          },
+          {
+            "type": "h2",
+            "text": "Constant Work"
+          },
+          {
+            "type": "p",
+            "text": "What would you do with the slice of orders? One approach is to\n@memset(orders, undefined)\nand hand the slice over to a pool which tracks spare objects with a bit set:"
+          },
+          {
+            "type": "code",
+            "text": "const OrderPool = struct {\n    orders: []Order,\n    free: DynamicBitSet,\n\n    fn acquire(pool: *OrderPool) ?*Order { ... }\n    fn release(pool: *OrderPool, order: *Order) { ... }\n};"
+          },
+          {
+            "type": "p",
+            "text": "or with a free list:"
+          },
+          {
+            "type": "code",
+            "text": "const OrderPool = struct {\n    orders: []union {\n        order: Order,\n        next_free: ?u32,\n    },\n    first_free: ?u32,\n};"
+          },
+          {
+            "type": "p",
+            "text": "But there’s an alterative approach. Instead of thinking about a limit on the\nnumber of orders, you could instead design the system to always have a fixed\namount of orders, by introducing a no-op, neutral order:"
+          },
+          {
+            "type": "code",
+            "text": "const Order = {\n    id: u128,\n    price: u32,\n    count: u32,\n\n    tag: enum { bid, ask, reserved },\n\n    pub const reserved: Order = .{\n        .id = 0,\n        .price = 0,\n        .count = 0,\n        .tag = .reserved,\n    };\n};"
+          },
+          {
+            "type": "p",
+            "text": "Your initialization then becomes @memset(orders, .reserved)."
+          },
+          {
+            "type": "p",
+            "text": "One benefit here is cognitive, you no longer think in terms of creating and\ndestroying orders. Instead, the orders merely circulate in the system according\nto the law of the conservation of the number of orders. It becomes harder to\nloose track of an order if you must always pay attention not only to where the\norder goes, but also to where it came from. You explicitly write state\ntransition functions for each pair of states, and that makes it easier to\nexhaustively enumerate all the cases. And you double check that with asserting,\nat every point, that the state is what you expect it to be (and then you DST the\nasserts) ."
+          },
+          {
+            "type": "p",
+            "text": "Another benefit is code simplification and predictability. You no longer need to\ntrack a separate collection of “live” orders. Instead, you always iterate the\nfull set, doing no-ops for reserved. This feels wasteful: should we make the\ncode run faster when there are few orders? But consider this: by specifying the\nlimit of orders up-front, you commit to be able to serve that amount. If the\nmaximum amount of orders is active, does the system have acceptable performance?\nIf not, that is a bug! Gray failure (system becoming unusably slow) is another\nway to break when reaching the limit."
+          },
+          {
+            "type": "p",
+            "text": "Avoiding indexes improves performance for the maximal load case. This"
+          },
+          {
+            "type": "code",
+            "text": "for (orders) |order| {\n    process(order)\n}"
+          },
+          {
+            "type": "p",
+            "text": "is much easier for compiler to vectorize, and for CPU Cache to prefetch, than\nthis:"
+          },
+          {
+            "type": "code",
+            "text": "for (orders_active) |order_index| {\n    const order = orders[order_index];\n    process(order);\n}"
+          },
+          {
+            "type": "p",
+            "text": "Similarly to static allocation, the Constant Work principle gives you piece of\nmind with respect to performance. P100 latency stays flat regardless of the\nload. Insufficient performance is discovered when you roll out the system, not\nduring Black Friday on-call."
+          },
+          {
+            "type": "p",
+            "text": "At TigerBeetle, we apply this pattern in the small. Rather than writing a\nsearch loop with an early return:"
+          },
+          {
+            "type": "code",
+            "text": "const item = for (items) |item| {\n    if (predicate(item)) break item;\n} else null;"
+          },
+          {
+            "type": "p",
+            "text": "we sometimes let the loop to run its full natural course, additionally asserting\nthat theres a unique matching item:"
+          },
+          {
+            "type": "p",
+            "text": "https://github.com/tigerbeetle/tigerbeetle/blob/0.17.9/src/vsr/grid.zig#L715-L725"
+          },
+          {
+            "type": "p",
+            "text": "As usual, this is a trick which is useful to have in your arsenal, but it\nisn’t a universal solution to all programming’s problems."
+          }
+        ],
+        "translations": [
+          "In reply to this email:",
+          "Memory Safety’s Hardest Problem\nnamed something I’d hit but couldn’t articulate.\nYour case is a pointer into one union variant surviving a write of a different\nvariant, so live typed pointers end up reading bytes that belong to something\nelse now.\n            Last year I wrote a limit-order matching engine and shipped a use-after-free: a\ncancelled order was released back to the pool while it was still linked into its\nprice level, so the next allocation handed that memory to a new order and the\nstale link kept resolving. I’d filed it under “I was careless with lifetimes.”\n            After your post I’m not sure that’s what it was. A recycling pool looks like a\ntagged union where the tag is “which generation of object currently lives in\nthis slot,” and nothing in the type system tracks it. Is that a fair reading, or\ndoes the pool case stay genuinely easier because generational indices actually\nsolve it and the union case has no equivalent?",
+          "Yes, object pools are an interesting case to think about, as they clarify the\nrelation between memory safety and and more general correctness.",
+          "First, consider the case where no object pool is used, and we malloc and\nfree order objects. In this case, the logical error of use-after-free turns\ninto physical type confusion, and can easily lead to arbitrary code execution\nand the like. If you have two objects of different types sharing the same\nmemory location, a user-controlled integer in one object might be a function\npointer in the other: an exploitable goto primitive",
+          "Now, what happens if we introduce an object pool which stores a list of “dead”\nobjects of type T? Logical use-after-free is still possible, but its physical\neffect is now different — we still get aliasing of memory, but there’s no type\nconfusion. You can’t necessarily fiddle with an integer and change a function\npointer, unless you additionally hit the hard case, where the object in question\nstores an inline enum. Assuming that doesn’t hapen, you get a perfectly defined,\ndeterministic behavior, even if you are not happy about the result.",
+          "This suggests an interesting solution for hardening code, which I’ve learned\nfrom Fil. If your allocation function is typed\n(it takes a T comptime parameter or runtime type witness, rather than a\nruntime type-erased size and alignment), you can write an allocator that uses\ntype-segregated pools internally. This will be somewhat less memory efficient,\nas the allocator won’t be able to re-use freed memory of objects of type U for\nobjects of type T, but the memory overhead will probably be small (rare object\ntypes do not matter, popular object types will have a lot of intra-type re-use),\nyou might actually gain in memory locality, and solve most of type confusions.\nAgain, inline enums break this, but, curiously, if you always heap allocate enum\nvariants, then this works again. Fil-C can’t use this, because C allocator’s\ninterface is untyped, but someone else could :P",
+          "But this is academic. How do we avoid the bugs? Generational indexes are a\npopular remedy, but I have never used them, so I don’t have any non-common\nknowledge insights about this pattern. Instead, I will share another pair of tricks\nfrom TigerStyle.\nI have only a vague understanding of what an order matching engine is, but I\nsuspect these tricks might help there",
+          "Static Allocation",
+          "The first one is:",
+          "No dynamic memory allocation after initialization",
+          "https://www.youtube.com/watch?v=GRJtYwneG2Q&t=1823s",
+          "This is the pool idea, taken to its logical conclusion. We specify the maximum\nnumber of orders we are willing to work with at startup, and never go beyond\nthat. So, you might start the program as",
+          "$ order-engine --orders-max=1_000_000",
+          "and then one of the first lines in its main function would be :",
+          "const orders: []Order = try gpa.alloc(Order, cli_args.orders_max);",
+          "If, at runtime, more than orders_max requests come in, the surplus requests\nare rejected. Someone might object: “But what if I actually have some spare\nmemory for one more order? Wouldn’t it be a good idea to at least try to handle\nit?”",
+          "My rejoinder would be “Well, what if you don’t?”. Systems operating at capacity\nwithout strict limits fail catastrophically. Attempting to allocate just one\nmore Order could cause kernel’s OOM killer to terminate the entire order\nmatching engine, losing the other million orders, or, better yet, to kill the\nsupervisor process so that you can’t even restart.",
+          "Static allocation gives you piece of mind. The system might fail to start if you\ndon’t have enough memory, but, if it did start, you can be rest assured that it\nwould handle overload gracefully, continuing to render the service while you are\nprovisioning a beefier machine.",
+          "Constant Work",
+          "What would you do with the slice of orders? One approach is to\n@memset(orders, undefined)\nand hand the slice over to a pool which tracks spare objects with a bit set:",
+          "const OrderPool = struct {\n    orders: []Order,\n    free: DynamicBitSet,\n\n    fn acquire(pool: *OrderPool) ?*Order { ... }\n    fn release(pool: *OrderPool, order: *Order) { ... }\n};",
+          "or with a free list:",
+          "const OrderPool = struct {\n    orders: []union {\n        order: Order,\n        next_free: ?u32,\n    },\n    first_free: ?u32,\n};",
+          "But there’s an alterative approach. Instead of thinking about a limit on the\nnumber of orders, you could instead design the system to always have a fixed\namount of orders, by introducing a no-op, neutral order:",
+          "const Order = {\n    id: u128,\n    price: u32,\n    count: u32,\n\n    tag: enum { bid, ask, reserved },\n\n    pub const reserved: Order = .{\n        .id = 0,\n        .price = 0,\n        .count = 0,\n        .tag = .reserved,\n    };\n};",
+          "Your initialization then becomes @memset(orders, .reserved).",
+          "One benefit here is cognitive, you no longer think in terms of creating and\ndestroying orders. Instead, the orders merely circulate in the system according\nto the law of the conservation of the number of orders. It becomes harder to\nloose track of an order if you must always pay attention not only to where the\norder goes, but also to where it came from. You explicitly write state\ntransition functions for each pair of states, and that makes it easier to\nexhaustively enumerate all the cases. And you double check that with asserting,\nat every point, that the state is what you expect it to be (and then you DST the\nasserts) .",
+          "Another benefit is code simplification and predictability. You no longer need to\ntrack a separate collection of “live” orders. Instead, you always iterate the\nfull set, doing no-ops for reserved. This feels wasteful: should we make the\ncode run faster when there are few orders? But consider this: by specifying the\nlimit of orders up-front, you commit to be able to serve that amount. If the\nmaximum amount of orders is active, does the system have acceptable performance?\nIf not, that is a bug! Gray failure (system becoming unusably slow) is another\nway to break when reaching the limit.",
+          "Avoiding indexes improves performance for the maximal load case. This",
+          "for (orders) |order| {\n    process(order)\n}",
+          "is much easier for compiler to vectorize, and for CPU Cache to prefetch, than\nthis:",
+          "for (orders_active) |order_index| {\n    const order = orders[order_index];\n    process(order);\n}",
+          "Similarly to static allocation, the Constant Work principle gives you piece of\nmind with respect to performance. P100 latency stays flat regardless of the\nload. Insufficient performance is discovered when you roll out the system, not\nduring Black Friday on-call.",
+          "At TigerBeetle, we apply this pattern in the small. Rather than writing a\nsearch loop with an early return:",
+          "const item = for (items) |item| {\n    if (predicate(item)) break item;\n} else null;",
+          "we sometimes let the loop to run its full natural course, additionally asserting\nthat theres a unique matching item:",
+          "https://github.com/tigerbeetle/tigerbeetle/blob/0.17.9/src/vsr/grid.zig#L715-L725",
+          "As usual, this is a trick which is useful to have in your arsenal, but it\nisn’t a universal solution to all programming’s problems."
+        ]
+      }
+    },
+    {
+      "slug": "fcdee0fe591a6ace",
+      "title": "Atari Lynx: The first color handheld game console",
+      "titleZh": "Atari Lynx: The first color handheld game console",
+      "link": "https://dfarq.homeip.net/atari-lynx-the-first-color-handheld-game-console/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=atari-lynx-the-first-color-handheld-game-console",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-09-02T11:00:37.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Atari Lynx: The first color handheld game console",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "What did the original Amiga design team do after the Amiga went to market and Commodore wasted the opportunity? Jay Miner went back to designing medical devices, but three other members of the team designed the first color handheld game console, which, ironically, became the Atari Lynx. The Lynx reached the market September 1, 1989."
+          },
+          {
+            "type": "h2",
+            "text": "The Atari Lynx’s origins at Epyx"
+          },
+          {
+            "type": "p",
+            "text": "Dave Morse, the Amiga cofounder and former CEO, became a software manager at Epyx, one of the top game publishers for the Commodore 64 and Atari 800 home computers. Along with their own in-house hits, they distributed a number of Lucasfilm’s early titles. He later ascended to the position of Epyx CEO."
+          },
+          {
+            "type": "p",
+            "text": "Morse’s son asked him if a portable gaming system was possible, so he approached former Amiga engineers RJ Mical and Dave Needle with the idea. They agreed to join the company and design a new console."
+          },
+          {
+            "type": "h3",
+            "text": "The hardware RJ Mical and Dave Needle came up with"
+          },
+          {
+            "type": "p",
+            "text": "Don’t think of the Lynx as a portable Amiga. It had 4096 colors like an Amiga, and used Amiga as a development platform, but the processor core was an 8 bit 65C02, and its resolution was 160×102. It supported hardware sprites but took it a step further, providing hardware support to zoom and distort them. By 1987, they had a working design. They called it the Handy."
+          },
+          {
+            "type": "p",
+            "text": "The first prototype was black and white like the Nintendo Game Boy, but Mical and Needle wanted color. They weren’t stuck on the idea of 4,096 colors either. It was just a matter of price. The display was the priciest component, and they couldn’t go higher than 4,096 colors and remain cost effective, Needle told NOW Gamer in an article published January 22, 2009."
+          },
+          {
+            "type": "p",
+            "text": "The 65C02 core was a logical choice because it was efficient both in terms of price and speed. Running at 4 MHz, it offered approximately double the performance of a Zilog Z80 at the same clock speed. And there was no shortage of experienced 6502 coders available, and Epyx had a large existing back catalog of games written for other 6502 platforms it could port relatively easily to the new console."
+          },
+          {
+            "type": "p",
+            "text": "The problem was, Epyx was a relatively small company with a limited budget and the Handy was a big, ambitious project. Epyx needed a partner."
+          },
+          {
+            "type": "h2",
+            "text": "How Atari got involved and turned the Handy into the Lynx"
+          },
+          {
+            "type": "p",
+            "text": "Epyx first approached Nintendo, hoping to partner with them. The problem was, Nintendo had its own portable console in development, the Game Boy. The Handy made the monochrome Game Boy look like the Milton Bradley Microvision in comparison, but it was a little late for Nintendo to change direction."
+          },
+          {
+            "type": "p",
+            "text": "Sega decided they would rather copy it than partner with Epyx, although that provided an opportunity for Needle to consult with Sega after the Handy reached its logical conclusion. That left Atari as the most logical partner, although Needle and Mical opposed working with Atari and Jack Tramiel. They’d been there, done that and turned it down already in the Amiga days."
+          },
+          {
+            "type": "p",
+            "text": "But Tramiel loved the idea."
+          },
+          {
+            "type": "p",
+            "text": "The problem was, Atari had the upper hand and took advantage of it. Atari included a clause in contract giving Epyx a 60 day deadline to fix any problem Atari found. Needle told NOW Gamer that Atari would routinely abuse this clause, giving inadequate time to fix the problems. Atari then used this as an excuse to withhold payments."
+          },
+          {
+            "type": "p",
+            "text": "Epyx needed the money, because by 1987, it wasn’t making enough off selling 8-bit home computer software to sustain the company and its experiment with games based on VHS video tape failed. Driven to bankruptcy, Atari offered to pay what it owed, on the condition Epyx handed over control of the hardware."
+          },
+          {
+            "type": "p",
+            "text": "Needle and Mical didn’t want to work for Atari. They stayed at Epyx long enough to finish the project and complete the handover, but refused Sam Tramiel’s offer to work at Atari."
+          },
+          {
+            "type": "h2",
+            "text": "How the Atari Lynx started out with a bang but fizzled out"
+          },
+          {
+            "type": "p",
+            "text": "Initially the Lynx sold well, selling 500,000 units in 1990. But color LCD screens were in short supply, and so was Lynx software, blunting its momentum. Epyx was supposed to produce games for the unit, but teetering on the brink of bankruptcy and reduced to 8 employees, only managed to ship 9 titles."
+          },
+          {
+            "type": "p",
+            "text": "A total of 71 titles exist for the Lynx, compared to 1,042 games for the Game Boy. The Game Boy, which only beat the Lynx to market by about two months, sold 14 million units, and the release of the Sega Game Gear in 1991 sealed the Lynx’s fate. The Game Gear sold 5 million units in spite of being the inferior design, because it was backed by Sega and had a library of 365 titles. The Lynx sold around 2 million units total. The Lynx also lacked a franchise title. Its best launch title, Chip’s Challenge, became a hit, but on the wrong platform. It was part of the Microsoft Entertainment Pack 4 for Windows 3.1 in 1992. Had Atari recognized Chip’s Challenge for what it was and promoted it, the story may have been different."
+          },
+          {
+            "type": "p",
+            "text": "The first color handheld game console wasn’t a complete failure. But it didn’t perform as well as it deserved to."
+          },
+          {
+            "type": "p",
+            "text": "Morse, Mical, and Needle resurfaced at 3DO, where they attempted a new idea in game consoles, a design that could be licensed to anyone. The idea seemed like a good one, but didn’t result in enough price reduction to make the console price competitive."
+          },
+          {
+            "type": "h2",
+            "text": "Was Jay Miner involved with the Atari Lynx?"
+          },
+          {
+            "type": "p",
+            "text": "ACE magazine, in its August 1989 issue, stated Jay Miner was involved as well. Wikipedia quoted ACE, crediting Miner and Dave Morse with designing the custom video circuit in the Lynx’s Mikey chip."
+          },
+          {
+            "type": "p",
+            "text": "I’m not certain that’s accurate. I can’t find any other source stating Miner was involved, and Morse was the product manager. I think ACE‘s writers misheard or misremembered, attributing the design to Morse and Miner when it should have been Needle and Mical. That’s easy enough to do, given two Daves were involved. Had someone referred to “Dave and RJ,” it would be easy enough to mishear or misremember and translate that to the wrong Dave (Dave Morse) and Jay Miner."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "What did the original Amiga design team do after the Amiga went to market and Commodore wasted the opportunity? Jay Miner went back to designing medical devices, but three other members of the team designed the first color handheld game console, which, ironically, became the Atari Lynx. The Lynx reached the market September 1, 1989.",
+          "The Atari Lynx’s origins at Epyx",
+          "Dave Morse, the Amiga cofounder and former CEO, became a software manager at Epyx, one of the top game publishers for the Commodore 64 and Atari 800 home computers. Along with their own in-house hits, they distributed a number of Lucasfilm’s early titles. He later ascended to the position of Epyx CEO.",
+          "Morse’s son asked him if a portable gaming system was possible, so he approached former Amiga engineers RJ Mical and Dave Needle with the idea. They agreed to join the company and design a new console.",
+          "The hardware RJ Mical and Dave Needle came up with",
+          "Don’t think of the Lynx as a portable Amiga. It had 4096 colors like an Amiga, and used Amiga as a development platform, but the processor core was an 8 bit 65C02, and its resolution was 160×102. It supported hardware sprites but took it a step further, providing hardware support to zoom and distort them. By 1987, they had a working design. They called it the Handy.",
+          "The first prototype was black and white like the Nintendo Game Boy, but Mical and Needle wanted color. They weren’t stuck on the idea of 4,096 colors either. It was just a matter of price. The display was the priciest component, and they couldn’t go higher than 4,096 colors and remain cost effective, Needle told NOW Gamer in an article published January 22, 2009.",
+          "The 65C02 core was a logical choice because it was efficient both in terms of price and speed. Running at 4 MHz, it offered approximately double the performance of a Zilog Z80 at the same clock speed. And there was no shortage of experienced 6502 coders available, and Epyx had a large existing back catalog of games written for other 6502 platforms it could port relatively easily to the new console.",
+          "The problem was, Epyx was a relatively small company with a limited budget and the Handy was a big, ambitious project. Epyx needed a partner.",
+          "How Atari got involved and turned the Handy into the Lynx",
+          "Epyx first approached Nintendo, hoping to partner with them. The problem was, Nintendo had its own portable console in development, the Game Boy. The Handy made the monochrome Game Boy look like the Milton Bradley Microvision in comparison, but it was a little late for Nintendo to change direction.",
+          "Sega decided they would rather copy it than partner with Epyx, although that provided an opportunity for Needle to consult with Sega after the Handy reached its logical conclusion. That left Atari as the most logical partner, although Needle and Mical opposed working with Atari and Jack Tramiel. They’d been there, done that and turned it down already in the Amiga days.",
+          "But Tramiel loved the idea.",
+          "The problem was, Atari had the upper hand and took advantage of it. Atari included a clause in contract giving Epyx a 60 day deadline to fix any problem Atari found. Needle told NOW Gamer that Atari would routinely abuse this clause, giving inadequate time to fix the problems. Atari then used this as an excuse to withhold payments.",
+          "Epyx needed the money, because by 1987, it wasn’t making enough off selling 8-bit home computer software to sustain the company and its experiment with games based on VHS video tape failed. Driven to bankruptcy, Atari offered to pay what it owed, on the condition Epyx handed over control of the hardware.",
+          "Needle and Mical didn’t want to work for Atari. They stayed at Epyx long enough to finish the project and complete the handover, but refused Sam Tramiel’s offer to work at Atari.",
+          "How the Atari Lynx started out with a bang but fizzled out",
+          "Initially the Lynx sold well, selling 500,000 units in 1990. But color LCD screens were in short supply, and so was Lynx software, blunting its momentum. Epyx was supposed to produce games for the unit, but teetering on the brink of bankruptcy and reduced to 8 employees, only managed to ship 9 titles.",
+          "A total of 71 titles exist for the Lynx, compared to 1,042 games for the Game Boy. The Game Boy, which only beat the Lynx to market by about two months, sold 14 million units, and the release of the Sega Game Gear in 1991 sealed the Lynx’s fate. The Game Gear sold 5 million units in spite of being the inferior design, because it was backed by Sega and had a library of 365 titles. The Lynx sold around 2 million units total. The Lynx also lacked a franchise title. Its best launch title, Chip’s Challenge, became a hit, but on the wrong platform. It was part of the Microsoft Entertainment Pack 4 for Windows 3.1 in 1992. Had Atari recognized Chip’s Challenge for what it was and promoted it, the story may have been different.",
+          "The first color handheld game console wasn’t a complete failure. But it didn’t perform as well as it deserved to.",
+          "Morse, Mical, and Needle resurfaced at 3DO, where they attempted a new idea in game consoles, a design that could be licensed to anyone. The idea seemed like a good one, but didn’t result in enough price reduction to make the console price competitive.",
+          "Was Jay Miner involved with the Atari Lynx?",
+          "ACE magazine, in its August 1989 issue, stated Jay Miner was involved as well. Wikipedia quoted ACE, crediting Miner and Dave Morse with designing the custom video circuit in the Lynx’s Mikey chip.",
+          "I’m not certain that’s accurate. I can’t find any other source stating Miner was involved, and Morse was the product manager. I think ACE‘s writers misheard or misremembered, attributing the design to Morse and Miner when it should have been Needle and Mical. That’s easy enough to do, given two Daves were involved. Had someone referred to “Dave and RJ,” it would be easy enough to mishear or misremember and translate that to the wrong Dave (Dave Morse) and Jay Miner.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "0180d99d1335ec1a",
+      "title": "Weekly Update 519: Breaches & Data Integrity",
+      "titleZh": "Weekly Update 519: Breaches & Data Integrity",
+      "link": "https://www.troyhunt.com/weekly-update-519/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-09-01T22:26:38.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Weekly Update 519: Breaches & Data Integrity",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It does feel like I've bitten off too much and am now chewing like crazy this week. The 3D printing talk with Elle in Oslo, the \"normal\" NDC infosec talk, the cyber-broken talk with Scott in Copenhagen and then those ratbag hackers keep dumping more data too! Oh, and still finalising all the IoT door lock stuff, along with mapping out all the cameras, APs and door hubs in Ubiquiti's designer to make sure we don't miss anything there. It's ordered chaos... just."
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
