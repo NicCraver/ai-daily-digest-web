@@ -1,0 +1,981 @@
+{
+  "date": "2026-09-14",
+  "generatedAt": "2026-09-13T18:43:21.742Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2511,
+    "filteredArticles": 8,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "3f37b0a02f79eadd",
+      "title": "Generating running routes with GPT-6 Astra and ChatGPT Work",
+      "titleZh": "Generating running routes with GPT-6 Astra and ChatGPT Work",
+      "link": "https://simonwillison.net/2026/Sep/12/astra-running-routes/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-12T23:56:42.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Generating running routes with GPT-6 Astra and ChatGPT Work",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "12th September 2026"
+          },
+          {
+            "type": "p",
+            "text": "Here’s a neat thing I had ChatGPT Work with GPT-6 Astra (Max) do this morning:"
+          },
+          {
+            "type": "quote",
+            "text": "I live at <my address>. Figure out 5K and 10K running routes from me that loop from my house. Use OSM data."
+          },
+          {
+            "type": "p",
+            "text": "It worked for 27 minutes and produced exactly what I’d asked for, as both an embedded visualization and downloadable GPX file and GeoJSON files. Here’s that 5K route:"
+          },
+          {
+            "type": "p",
+            "text": "When I asked it how it had created the route, it replied:"
+          },
+          {
+            "type": "quote",
+            "text": "I used Nominatim to locate the address and Overpass to download local OpenStreetMap roads and trails, then calculated the loops locally."
+          },
+          {
+            "type": "p",
+            "text": "Frustratingly, the actual code it ran and exact details of what it did weren’t visible to me in the ChatGPT UI. I see this lack of transparency is an anti-feature."
+          },
+          {
+            "type": "p",
+            "text": "By the time I thought to ask for a copy of the Python code it had used, ChatGPT was unable to provide it. This appears to be because the thread had been compacted. I think any LLM system that uses compaction needs to both preserve the pre-compacted text and make that text available via agent tool calls, to protect against this kind of problem."
+          },
+          {
+            "type": "p",
+            "text": "As for displaying the map to me, that used the visualize skill. It created a file called /workspace/el-granada-5k-share.html to embed directly into the ChatGPT UI."
+          },
+          {
+            "type": "p",
+            "text": "Here’s a copy of that HTML, which starts like this:"
+          },
+          {
+            "type": "code",
+            "text": "<div id=\"eg-share-loop\">\n  <div class=\"viz-row\"><h3>El Granada harbor loop</h3><span class=\"text-small\">5.1 km</span></div>\n  <div id=\"eg-share-stage\"></div>\n  <div class=\"text-small text-muted\">Map data © <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap contributors</a></div>\n  <style>\n    #eg-share-loop { width:100%; }\n    #eg-share-loop #eg-share-stage { width:100%; margin:8px 0; }\n    #eg-share-loop .eg-share-map { display:block; width:100%; touch-action:none; }\n    #eg-share-loop .eg-share-map text { fill:var(--foreground); font-size:12px; font-weight:400; }\n    #eg-share-loop .eg-share-label { paint-order:stroke; stroke:var(--background); stroke-width:3px; stroke-linejoin:round; }\n  </style>\n  <script type=\"application/json\" id=\"eg-share-data\">{\"route\":{\"type\":\"LineString\",\"coordinates\":[[-122.467425,37.4997753] ...</script>\n  <script src=\"https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js\"></script>\n  <script>\n  (() => {\n    const root=document.getElementById('eg-share-loop');"
+          },
+          {
+            "type": "p",
+            "text": "The <script type=\"application/json\"> element contains the full geometry needed to render both the running route and the map itself, using D3, which is loaded from an allow-listed CDN location described in this section of the visualize skill:"
+          },
+          {
+            "type": "quote",
+            "text": "External resources\n\nThe CSP allows only cdnjs.cloudflare.com, esm.sh, cdn.jsdelivr.net, unpkg.com, fonts.googleapis.com, fonts.gstatic.com, and fonts.bunny.net. Other origins are blocked and fail silently."
+          }
+        ],
+        "translations": [
+          "12th September 2026",
+          "Here’s a neat thing I had ChatGPT Work with GPT-6 Astra (Max) do this morning:",
+          "I live at <my address>. Figure out 5K and 10K running routes from me that loop from my house. Use OSM data.",
+          "It worked for 27 minutes and produced exactly what I’d asked for, as both an embedded visualization and downloadable GPX file and GeoJSON files. Here’s that 5K route:",
+          "When I asked it how it had created the route, it replied:",
+          "I used Nominatim to locate the address and Overpass to download local OpenStreetMap roads and trails, then calculated the loops locally.",
+          "Frustratingly, the actual code it ran and exact details of what it did weren’t visible to me in the ChatGPT UI. I see this lack of transparency is an anti-feature.",
+          "By the time I thought to ask for a copy of the Python code it had used, ChatGPT was unable to provide it. This appears to be because the thread had been compacted. I think any LLM system that uses compaction needs to both preserve the pre-compacted text and make that text available via agent tool calls, to protect against this kind of problem.",
+          "As for displaying the map to me, that used the visualize skill. It created a file called /workspace/el-granada-5k-share.html to embed directly into the ChatGPT UI.",
+          "Here’s a copy of that HTML, which starts like this:",
+          "<div id=\"eg-share-loop\">\n  <div class=\"viz-row\"><h3>El Granada harbor loop</h3><span class=\"text-small\">5.1 km</span></div>\n  <div id=\"eg-share-stage\"></div>\n  <div class=\"text-small text-muted\">Map data © <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap contributors</a></div>\n  <style>\n    #eg-share-loop { width:100%; }\n    #eg-share-loop #eg-share-stage { width:100%; margin:8px 0; }\n    #eg-share-loop .eg-share-map { display:block; width:100%; touch-action:none; }\n    #eg-share-loop .eg-share-map text { fill:var(--foreground); font-size:12px; font-weight:400; }\n    #eg-share-loop .eg-share-label { paint-order:stroke; stroke:var(--background); stroke-width:3px; stroke-linejoin:round; }\n  </style>\n  <script type=\"application/json\" id=\"eg-share-data\">{\"route\":{\"type\":\"LineString\",\"coordinates\":[[-122.467425,37.4997753] ...</script>\n  <script src=\"https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js\"></script>\n  <script>\n  (() => {\n    const root=document.getElementById('eg-share-loop');",
+          "The <script type=\"application/json\"> element contains the full geometry needed to render both the running route and the map itself, using D3, which is loaded from an allow-listed CDN location described in this section of the visualize skill:",
+          "External resources\n\nThe CSP allows only cdnjs.cloudflare.com, esm.sh, cdn.jsdelivr.net, unpkg.com, fonts.googleapis.com, fonts.gstatic.com, and fonts.bunny.net. Other origins are blocked and fail silently."
+        ]
+      }
+    },
+    {
+      "slug": "86c07f5a755140f4",
+      "title": "California Brown Pelican",
+      "titleZh": "California Brown Pelican",
+      "link": "https://simonwillison.net/2026/Sep/12/sighting-399708714/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-12T21:16:09.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "California Brown Pelican",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Sighting\n    2:16 PM\n    — California Brown Pelican, in San Mateo County, CA, US"
+          },
+          {
+            "type": "p",
+            "text": "The Pacifica Pier shut down at the start of June after a crack in the concrete walkway made access to the pier unsafe."
+          },
+          {
+            "type": "p",
+            "text": "It has since been entirely taken over by pelicans!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "6cf85dbb73060a7b",
+      "title": "AI is breaking our proxies for expertise",
+      "titleZh": "AI is breaking our proxies for expertise",
+      "link": "https://seangoedecke.com/ai-is-breaking-our-proxies-for-expertise/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-09-13T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "AI is breaking our proxies for expertise",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Mathematicians are broadly not anti-AI. They’re more culturally open to using AI as a tool than, say, artists or writers1. However, now that more and more genuinely prestigious problems have fallen to AI, that might be changing. Almost five thousand mathematicians (including twenty-five Fields medalists) have signed a declaration called A Severe Misalignment of AI in Mathematics. The core argument goes something like this:"
+          },
+          {
+            "type": "quote",
+            "text": "In recent months, the success of AI in solving major mathematical problems has made headlines even outside mathematical circles. But solving problems is only a tool and proxy for achieving the primary goal of conceptual understanding and insight. Forgetting this in the world of AI may turn the tool against the primary goal. Indeed, the mass production at faster and faster pace of “true/false” statements could destroy fertile ground instead of breathing life into new ideas."
+          },
+          {
+            "type": "p",
+            "text": "A lot of people online have interpreted this as the expected complaint from any field that gets automated: translators did it, artists and programmers have been doing it, and now it’s the turn of the mathematicians. I think this is too dismissive. Understanding the concrete problem mathematicians are upset about can help us better understand the impact of AI on our own fields, and what we’ll have to do about it."
+          },
+          {
+            "type": "h3",
+            "text": "Puzzle-solving and idea-generating"
+          },
+          {
+            "type": "p",
+            "text": "There are two types of mathematics. Most people are familiar with the first, which we might call “puzzle-solving”: you take a problem and try to find a solution to it. When you’re a student, these problems are typically easy, like simplifying some algebraic expression. When you’re a researcher, these problems can be nearly impossible, like proving Fermat’s Last Theorem. Puzzle-solving is easy to understand but hard to do, which makes it impressive to non-mathematicians, which makes it highly prestigious. In other words, puzzle-solving is legible."
+          },
+          {
+            "type": "p",
+            "text": "The second type of mathematics is “idea-generating”: coming up with new ways of thinking about mathematics, and thus new terms or concepts. For examples of these, just glance down the list of arXiv mathematics papers. “Hardy spaces”, “Schatten exponent”, “Banach lattices” and so on are all concepts someone thought was interesting. This work is largely unimpressive to non-mathematicians, because nobody really knows if the concepts you come up with are particularly difficult or insightful. For instance, I have just generated the concept of a “Goedecke set”, which is the set of all natural numbers whose digits add up to a prime number. Who cares? The categories we want are the “natural kinds” of mathematics — the concepts that “carve nature at its joints” — and it’s almost impossible to tell what those are without years or decades of hard work."
+          },
+          {
+            "type": "p",
+            "text": "How are the two types of mathematics related? We might say2 that generating ideas is the real intellectual work of mathematics. Puzzle-solving is important instrumentally: to identify which ideas can be used to answer longstanding questions, and thus which ideas are worthwhile. Over time, those worthwhile ideas become better understood and easier to use, until they reach the point where they can be used to advance science in general. Eventually the ideas become so well-understood that they can be taught to children: “zero”, “negative numbers”, “imaginary numbers” and “calculus” were all once rarefied mathematical ideas, but are now concepts we’d expect any precocious twelve-year-old to grasp."
+          },
+          {
+            "type": "p",
+            "text": "There’s another, more prosaic purpose of puzzle-solving: to make mathematical skill and progress legible to outsiders. I can’t appreciate Terence Tao’s mathematical work, but I know what a Fields Medal is. I don’t have a good intuitive sense of what a Galois representation is, but I know about the proof of Fermat’s Last Theorem. We might say that puzzles like this have served as a way to indirectly reward skilled mathematicians for their more important idea-generating work (or for conclusively demonstrating3 that the ideas used in the proof are useful)."
+          },
+          {
+            "type": "h3",
+            "text": "Do AI proofs undercut idea generation?"
+          },
+          {
+            "type": "p",
+            "text": "AI proofs undercut both of these purposes. I can now lay out precisely why I think mathematicians are so unhappy:"
+          },
+          {
+            "type": "li",
+            "text": "Puzzles serve as a high-legibility, high-reward target for mathematicians"
+          },
+          {
+            "type": "li",
+            "text": "To solve these puzzles, new ideas must typically be generated; the puzzle’s solution serves as evidence that the ideas are useful"
+          },
+          {
+            "type": "li",
+            "text": "But now AI can solve many of these targets “the hard way”, without generating intuitive new ideas"
+          },
+          {
+            "type": "li",
+            "text": "This undercuts both ways puzzle-solving supports idea-generation: AI companies claim the prestige while not meaningfully advancing mathematical progress"
+          },
+          {
+            "type": "li",
+            "text": "This is bad for mathematics as a whole, because puzzle-solving is ancillary to the real goal of mathematics"
+          },
+          {
+            "type": "p",
+            "text": "This is kind of like Goodhart’s Law. Puzzles were a useful, impossible-to-game measure for mathematical progress. But now that AI companies can game that measure (by solving them in a way that’s inaccessible4 to humans), the whole point of those puzzles disappears."
+          },
+          {
+            "type": "p",
+            "text": "Are the mathematicians right? I think it’s broadly unclear whether (3) is true: i.e. whether frontier AI models aren’t generating or can’t generate new mathematical ideas. We’re still in the very early days of AIs solving our hardest mathematical problems. Who knows what they’re going to be capable of? I give basically zero credence to the idea that AIs are incapable of this because of some intrinsic feature of how LLMs work. For the last three years, we’ve seen people claim that LLMs are intrinsically incapable of X, only to have LLMs excel at X a few months later."
+          },
+          {
+            "type": "p",
+            "text": "Even granted that (3) is true, there’s still work to be done for human mathematicians in building the conceptual machinery that can make AI-generated proofs accessible to humans: i.e. in generating a “human proof” to go alongside the existing “AI proof”. In fact, I’d expect the existence of an AI proof to help with this. If you know proposition X is true, it’s easier to figure out why, because you’re not constantly worried you’re wasting your time. For more on this, I recommend Gwern’s blog On Really Trying, where he quotes a series of instances where simply being told that a solution exists is enough of a clue to help people find it."
+          },
+          {
+            "type": "h3",
+            "text": "Mathematics, chess, and speedrunning"
+          },
+          {
+            "type": "p",
+            "text": "Of course, there’s a prestige and motivation problem. “I’m the first person to solve Navier-Stokes” is a much more compelling target than “I figured out a better way to explain the AI solution to Navier-Stokes”, and it’s much easier to award prizes for. Will mathematicians bother to work on problems that have already been solved? I think so."
+          },
+          {
+            "type": "p",
+            "text": "To see why, we can look at other domains where AI has come in and outcompeted the best humans, such as chess or video game speedrunning. I can run a chess program on my phone that will beat Magnus Carlsen 100-0. Computer programs — called “tool-assisted speedruns” or “TAS” — can finish any video game much faster than even the fastest human. But in both of these areas, humans still compete in human-only leagues, and there’s still prestige attached to the most capable humans. It’s possible that mathematics ends up in this kind of state, where “human mathematics” and “AI mathematics” exist in largely separate spheres, and the first “human” solution to a mathematical problem can still earn acclaim."
+          },
+          {
+            "type": "p",
+            "text": "In fact, in both of those areas, the presence of inhumanly strong computer players has improved the human game. Despite many computer chess moves being basically incomprehensible to humans, top chess players have learned from the computer “style”. In speedrunning, many moves once considered “TAS-only” are now performed by humans. AI mathematics might likewise improve human mathematics."
+          },
+          {
+            "type": "h3",
+            "text": "Software engineering"
+          },
+          {
+            "type": "p",
+            "text": "I am not a mathematician. I did major in mathematics during undergrad, and I have fond memories of proofs from real and complex analysis, but it’s not even close to my field. However, I am watching the effects of powerful AI on mathematics very closely, since my own field — software engineering — is being colonized by AI agents in the same way."
+          },
+          {
+            "type": "p",
+            "text": "The field of software engineering does not have the same structure as mathematics. We write code to make money, not to earn prestige or advance the frontier of human knowledge. But AI is undercutting the traditional avenues for prestige in software engineering as well. It used to be that you could put a meaty project on your GitHub — say, an emulator, or a toy OS — and people would know you were a skilled engineer. But now projects like that are worthless, because everyone just assumes they’re vibe-coded. We used to tell stories about engineers who would disappear and rewrite a system over the weekend, or produce thousands of lines of code a day. Now anyone can do that with an OpenAI subscription."
+          },
+          {
+            "type": "p",
+            "text": "Like mathematics, software engineers are going to have to rebuild our cultural sense of the kind of work we value. We are either going to have to silo “AI work” off from “human work” like chess, or to find some legible human skills to recognize that can’t be easily counterfeited by AI. In the meantime, a lot of people who were successful in the old world are going to be very unhappy."
+          },
+          {
+            "type": "li",
+            "text": "Possibly because current AI models are much better at mathematics than at art or writing.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Again, I am not a mathematician: here I am interpreting what I’ve read from Terence Tao and other mathematicians.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "This kind of idea-sharpening or idea-validating is part and parcel of idea-generation, and just as important. It’s interesting to compare mathematics to, say, philosophy, which has the same idea-generating task without the corresponding puzzles to validate the ideas. That’s one reason why philosophy has less prestige than mathematics.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "A thousand-page Lean proof is theoretically understandable by humans, but if no mathematician can hold the entire idea in their head it doesn’t matter.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "Don't build tools for AI agentsLots of people are making the case that we should stop building software for human users and start building it for AI agents. This kind of makes sense. For instance, my AI agents now use Datadog way more than I use it myself, purely by virtue of them moving much more quickly and running in parallel. But I think most attempts to build “X for AI agents” are going to fail. Here are three reasons why:Continue reading..."
+          }
+        ],
+        "translations": [
+          "Mathematicians are broadly not anti-AI. They’re more culturally open to using AI as a tool than, say, artists or writers1. However, now that more and more genuinely prestigious problems have fallen to AI, that might be changing. Almost five thousand mathematicians (including twenty-five Fields medalists) have signed a declaration called A Severe Misalignment of AI in Mathematics. The core argument goes something like this:",
+          "In recent months, the success of AI in solving major mathematical problems has made headlines even outside mathematical circles. But solving problems is only a tool and proxy for achieving the primary goal of conceptual understanding and insight. Forgetting this in the world of AI may turn the tool against the primary goal. Indeed, the mass production at faster and faster pace of “true/false” statements could destroy fertile ground instead of breathing life into new ideas.",
+          "A lot of people online have interpreted this as the expected complaint from any field that gets automated: translators did it, artists and programmers have been doing it, and now it’s the turn of the mathematicians. I think this is too dismissive. Understanding the concrete problem mathematicians are upset about can help us better understand the impact of AI on our own fields, and what we’ll have to do about it.",
+          "Puzzle-solving and idea-generating",
+          "There are two types of mathematics. Most people are familiar with the first, which we might call “puzzle-solving”: you take a problem and try to find a solution to it. When you’re a student, these problems are typically easy, like simplifying some algebraic expression. When you’re a researcher, these problems can be nearly impossible, like proving Fermat’s Last Theorem. Puzzle-solving is easy to understand but hard to do, which makes it impressive to non-mathematicians, which makes it highly prestigious. In other words, puzzle-solving is legible.",
+          "The second type of mathematics is “idea-generating”: coming up with new ways of thinking about mathematics, and thus new terms or concepts. For examples of these, just glance down the list of arXiv mathematics papers. “Hardy spaces”, “Schatten exponent”, “Banach lattices” and so on are all concepts someone thought was interesting. This work is largely unimpressive to non-mathematicians, because nobody really knows if the concepts you come up with are particularly difficult or insightful. For instance, I have just generated the concept of a “Goedecke set”, which is the set of all natural numbers whose digits add up to a prime number. Who cares? The categories we want are the “natural kinds” of mathematics — the concepts that “carve nature at its joints” — and it’s almost impossible to tell what those are without years or decades of hard work.",
+          "How are the two types of mathematics related? We might say2 that generating ideas is the real intellectual work of mathematics. Puzzle-solving is important instrumentally: to identify which ideas can be used to answer longstanding questions, and thus which ideas are worthwhile. Over time, those worthwhile ideas become better understood and easier to use, until they reach the point where they can be used to advance science in general. Eventually the ideas become so well-understood that they can be taught to children: “zero”, “negative numbers”, “imaginary numbers” and “calculus” were all once rarefied mathematical ideas, but are now concepts we’d expect any precocious twelve-year-old to grasp.",
+          "There’s another, more prosaic purpose of puzzle-solving: to make mathematical skill and progress legible to outsiders. I can’t appreciate Terence Tao’s mathematical work, but I know what a Fields Medal is. I don’t have a good intuitive sense of what a Galois representation is, but I know about the proof of Fermat’s Last Theorem. We might say that puzzles like this have served as a way to indirectly reward skilled mathematicians for their more important idea-generating work (or for conclusively demonstrating3 that the ideas used in the proof are useful).",
+          "Do AI proofs undercut idea generation?",
+          "AI proofs undercut both of these purposes. I can now lay out precisely why I think mathematicians are so unhappy:",
+          "Puzzles serve as a high-legibility, high-reward target for mathematicians",
+          "To solve these puzzles, new ideas must typically be generated; the puzzle’s solution serves as evidence that the ideas are useful",
+          "But now AI can solve many of these targets “the hard way”, without generating intuitive new ideas",
+          "This undercuts both ways puzzle-solving supports idea-generation: AI companies claim the prestige while not meaningfully advancing mathematical progress",
+          "This is bad for mathematics as a whole, because puzzle-solving is ancillary to the real goal of mathematics",
+          "This is kind of like Goodhart’s Law. Puzzles were a useful, impossible-to-game measure for mathematical progress. But now that AI companies can game that measure (by solving them in a way that’s inaccessible4 to humans), the whole point of those puzzles disappears.",
+          "Are the mathematicians right? I think it’s broadly unclear whether (3) is true: i.e. whether frontier AI models aren’t generating or can’t generate new mathematical ideas. We’re still in the very early days of AIs solving our hardest mathematical problems. Who knows what they’re going to be capable of? I give basically zero credence to the idea that AIs are incapable of this because of some intrinsic feature of how LLMs work. For the last three years, we’ve seen people claim that LLMs are intrinsically incapable of X, only to have LLMs excel at X a few months later.",
+          "Even granted that (3) is true, there’s still work to be done for human mathematicians in building the conceptual machinery that can make AI-generated proofs accessible to humans: i.e. in generating a “human proof” to go alongside the existing “AI proof”. In fact, I’d expect the existence of an AI proof to help with this. If you know proposition X is true, it’s easier to figure out why, because you’re not constantly worried you’re wasting your time. For more on this, I recommend Gwern’s blog On Really Trying, where he quotes a series of instances where simply being told that a solution exists is enough of a clue to help people find it.",
+          "Mathematics, chess, and speedrunning",
+          "Of course, there’s a prestige and motivation problem. “I’m the first person to solve Navier-Stokes” is a much more compelling target than “I figured out a better way to explain the AI solution to Navier-Stokes”, and it’s much easier to award prizes for. Will mathematicians bother to work on problems that have already been solved? I think so.",
+          "To see why, we can look at other domains where AI has come in and outcompeted the best humans, such as chess or video game speedrunning. I can run a chess program on my phone that will beat Magnus Carlsen 100-0. Computer programs — called “tool-assisted speedruns” or “TAS” — can finish any video game much faster than even the fastest human. But in both of these areas, humans still compete in human-only leagues, and there’s still prestige attached to the most capable humans. It’s possible that mathematics ends up in this kind of state, where “human mathematics” and “AI mathematics” exist in largely separate spheres, and the first “human” solution to a mathematical problem can still earn acclaim.",
+          "In fact, in both of those areas, the presence of inhumanly strong computer players has improved the human game. Despite many computer chess moves being basically incomprehensible to humans, top chess players have learned from the computer “style”. In speedrunning, many moves once considered “TAS-only” are now performed by humans. AI mathematics might likewise improve human mathematics.",
+          "Software engineering",
+          "I am not a mathematician. I did major in mathematics during undergrad, and I have fond memories of proofs from real and complex analysis, but it’s not even close to my field. However, I am watching the effects of powerful AI on mathematics very closely, since my own field — software engineering — is being colonized by AI agents in the same way.",
+          "The field of software engineering does not have the same structure as mathematics. We write code to make money, not to earn prestige or advance the frontier of human knowledge. But AI is undercutting the traditional avenues for prestige in software engineering as well. It used to be that you could put a meaty project on your GitHub — say, an emulator, or a toy OS — and people would know you were a skilled engineer. But now projects like that are worthless, because everyone just assumes they’re vibe-coded. We used to tell stories about engineers who would disappear and rewrite a system over the weekend, or produce thousands of lines of code a day. Now anyone can do that with an OpenAI subscription.",
+          "Like mathematics, software engineers are going to have to rebuild our cultural sense of the kind of work we value. We are either going to have to silo “AI work” off from “human work” like chess, or to find some legible human skills to recognize that can’t be easily counterfeited by AI. In the meantime, a lot of people who were successful in the old world are going to be very unhappy.",
+          "Possibly because current AI models are much better at mathematics than at art or writing.\n↩",
+          "Again, I am not a mathematician: here I am interpreting what I’ve read from Terence Tao and other mathematicians.\n↩",
+          "This kind of idea-sharpening or idea-validating is part and parcel of idea-generation, and just as important. It’s interesting to compare mathematics to, say, philosophy, which has the same idea-generating task without the corresponding puzzles to validate the ideas. That’s one reason why philosophy has less prestige than mathematics.\n↩",
+          "A thousand-page Lean proof is theoretically understandable by humans, but if no mathematician can hold the entire idea in their head it doesn’t matter.\n↩",
+          "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News.",
+          "Here's a preview of a related post that shares tags with this one.",
+          "Don't build tools for AI agentsLots of people are making the case that we should stop building software for human users and start building it for AI agents. This kind of makes sense. For instance, my AI agents now use Datadog way more than I use it myself, purely by virtue of them moving much more quickly and running in parallel. But I think most attempts to build “X for AI agents” are going to fail. Here are three reasons why:Continue reading..."
+        ]
+      }
+    },
+    {
+      "slug": "3384b496dc7478c1",
+      "title": "Unread 5.0",
+      "titleZh": "Unread 5.0",
+      "link": "https://www.goldenhillsoftware.com/2026/09/unread-50/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-12T19:27:37.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Unread 5.0",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John Brayton",
+        "siteName": "Golden Hill Software",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Unread 5.0 is available now from the App Store. This update adds these improvements and more:"
+          },
+          {
+            "type": "li",
+            "text": "Improvements around hero images, article list thumbnails, and widget thumbnails"
+          },
+          {
+            "type": "li",
+            "text": "Syncing with FreshRSS and Miniflux"
+          },
+          {
+            "type": "li",
+            "text": "The ability to quickly mark old articles read"
+          },
+          {
+            "type": "h2",
+            "text": "Image Improvements"
+          },
+          {
+            "type": "p",
+            "text": "This update adds improvements around hero images, article list thumbnails, and widget thumbnails:"
+          },
+          {
+            "type": "li",
+            "text": "In prior versions when Unread needed to resize an image to generate a thumbnail, it would focus on the center and crop as little as possible. Unread now looks for faces, animals, text, and other salient portions of the image. Unread then crops the image in a way that preserves those most important areas of the image. For example, when Unread needs to generate a thumbnail of a tall and narrow image where a person’s face is near the top, Unread will generate a thumbnail with the person’s face even though it is not near the center of the image."
+          },
+          {
+            "type": "li",
+            "text": "Sometimes there is no way to crop an image to the desired aspect ratio without losing very significant parts of that image. When this is the case, Unread detects that and instead embeds it into the center of a larger image with the correct aspect ratio."
+          },
+          {
+            "type": "li",
+            "text": "When generating a small thumbnail and when there appears to be a small area of focus inside that image, the thumbnail will zoom in on that area of focus. For example, some thumbnails are generated from a photo of one person. Zooming in on that person’s face makes it easier to see it. This applies in compact article lists on iPhone, in article lists on Mac when the article list pane is narrow, and in widgets."
+          },
+          {
+            "type": "li",
+            "text": "In Feedbin accounts, when Feedbin recommends a thumbnail for an article and Unread accepts that recommendation, Unread will now also prepend that image to the article content."
+          },
+          {
+            "type": "li",
+            "text": "Some feed syncing systems indicate when there are images associated with articles beyond those embedded in article content. The image URLs can come from the feed or from the underlying webpage. Under some circumstances, Unread prepends those images to the article content. With this update, Unread now ignores such an image when it appears to apply to the entire website, rather than just the specific article. This change required building a server-side component that retrieves and stores header image information for websites. I added Section 3: Header Images to the privacy policy to reflect this."
+          },
+          {
+            "type": "li",
+            "text": "The small Recent Articles widget no longer fades out the bottom of the image above the article title. Instead the bottom of the image has a clean break, and the article title is below it."
+          },
+          {
+            "type": "h2",
+            "text": "Syncing With FreshRSS and Miniflux"
+          },
+          {
+            "type": "p",
+            "text": "This update adds the ability to sync with FreshRSS accounts and with Miniflux accounts. Both FreshRSS and Miniflux are open source self-hosted web-based RSS readers."
+          },
+          {
+            "type": "p",
+            "text": "Unread syncs with FreshRSS using its implementation of the Google Reader API, and with Miniflux using its REST API. It was already possible to sync with both FreshRSS and Miniflux using their implementations of the Fever API, but using a FreshRSS account or a Miniflux account adds these benefits:"
+          },
+          {
+            "type": "li",
+            "text": "The ability to subscribe to feeds, organize feed subscriptions, and unsubscribe from feeds from within Unread."
+          },
+          {
+            "type": "li",
+            "text": "The ability to subscribe to feeds using the Subscribe in Unread share sheet extension."
+          },
+          {
+            "type": "li",
+            "text": "The ability to mark read on scroll."
+          },
+          {
+            "type": "li",
+            "text": "The ability to mark all articles above or below a specific article in an article list as read."
+          },
+          {
+            "type": "p",
+            "text": "The privacy policy has been updated to reflect the addition of FreshRSS and Miniflux. Unread requires version 2.3.2 or later of Miniflux."
+          },
+          {
+            "type": "p",
+            "text": "If you had been syncing with FreshRSS or Miniflux using their Fever API implementations, Unread makes it easy to add a FreshRSS or Miniflux account to Unread based on the existing Fever account. For FreshRSS this just requires one tap. For Miniflux you will need to enter an API key. Details are available on a separate page."
+          },
+          {
+            "type": "h2",
+            "text": "Mark Old Articles Read"
+          },
+          {
+            "type": "p",
+            "text": "This update adds the ability to mark old articles read. Choose a threshold of 24 hours, 3 days, 7 days, 14 days, or 30 days. When invoked, all articles within the appropriate context that are older than that amount of time will be immediately marked read so that you can focus on newer articles."
+          },
+          {
+            "type": "p",
+            "text": "On iPhone and iPad, you can invoke this from the swipe left menu of any article list or from the top level subscription list of an account."
+          },
+          {
+            "type": "p",
+            "text": "On Mac you can invoke this from the Article menu in the menu bar, as well as from the context menu of any feed subscription or any category, folder, or tag in the sidebar."
+          },
+          {
+            "type": "p",
+            "text": "This capability is not available for Fever accounts."
+          },
+          {
+            "type": "h2",
+            "text": "Additional Improvements"
+          },
+          {
+            "type": "p",
+            "text": "This update also incorporates these improvements:"
+          },
+          {
+            "type": "li",
+            "text": "On version 27 of macOS, iOS, and iPadOS, this update adds an extra large portrait Recent Articles widget and an extra large portrait Unread Counts widget."
+          },
+          {
+            "type": "li",
+            "text": "The Subscribe in Unread extension for Mac has been completely rewritten. Previously it used SwiftUI. Now it uses AppKit."
+          },
+          {
+            "type": "li",
+            "text": "This update adds compatibility with direct touch input on iPad when using Sidecar on macOS 27."
+          },
+          {
+            "type": "li",
+            "text": "This update adds pull-to-refresh capabilities on macOS 27."
+          },
+          {
+            "type": "li",
+            "text": "With this update, posts without titles from Micro.blog feeds and Mastodon feeds in an Inoreader account will look better. This change will apply to new articles downloaded after installing this update."
+          },
+          {
+            "type": "li",
+            "text": "This update adds a variety of minor improvements to the Feed Errors window on Mac, and the Feed Errors screen on iPhone and iPad. The list of feed errors is available for Unread Cloud, Local, Gobbler, and Miniflux accounts."
+          },
+          {
+            "type": "li",
+            "text": "This update reinstates the ability on Mac to set a custom keyboard shortcut that does not have a modifier key, such as Command (⌘), for an article action or a shortcut."
+          },
+          {
+            "type": "li",
+            "text": "The settings screen for an individual account on iPhone and iPad now includes the account username or email address for feed service accounts that are not Unread Cloud or Local accounts. For self-hosted accounts, this screen also includes the Server URL. The account detail view in the Accounts pane of the Settings window on Mac also now has this information."
+          },
+          {
+            "type": "li",
+            "text": "When an iPhone is in landscape mode, the article list will now show a large image thumbnail on the right (like it does on the iPad), regardless of whether the Article List Format setting is set to Compact or Expansive."
+          },
+          {
+            "type": "p",
+            "text": "Unread 5.0 requires macOS 15.0 (Sequoia) or later, iOS 18 or later, or iPadOS 18 or later."
+          },
+          {
+            "type": "p",
+            "text": "If you enjoy using Unread, please consider subscribing to Unread Premium."
+          }
+        ],
+        "translations": [
+          "Unread 5.0 is available now from the App Store. This update adds these improvements and more:",
+          "Improvements around hero images, article list thumbnails, and widget thumbnails",
+          "Syncing with FreshRSS and Miniflux",
+          "The ability to quickly mark old articles read",
+          "Image Improvements",
+          "This update adds improvements around hero images, article list thumbnails, and widget thumbnails:",
+          "In prior versions when Unread needed to resize an image to generate a thumbnail, it would focus on the center and crop as little as possible. Unread now looks for faces, animals, text, and other salient portions of the image. Unread then crops the image in a way that preserves those most important areas of the image. For example, when Unread needs to generate a thumbnail of a tall and narrow image where a person’s face is near the top, Unread will generate a thumbnail with the person’s face even though it is not near the center of the image.",
+          "Sometimes there is no way to crop an image to the desired aspect ratio without losing very significant parts of that image. When this is the case, Unread detects that and instead embeds it into the center of a larger image with the correct aspect ratio.",
+          "When generating a small thumbnail and when there appears to be a small area of focus inside that image, the thumbnail will zoom in on that area of focus. For example, some thumbnails are generated from a photo of one person. Zooming in on that person’s face makes it easier to see it. This applies in compact article lists on iPhone, in article lists on Mac when the article list pane is narrow, and in widgets.",
+          "In Feedbin accounts, when Feedbin recommends a thumbnail for an article and Unread accepts that recommendation, Unread will now also prepend that image to the article content.",
+          "Some feed syncing systems indicate when there are images associated with articles beyond those embedded in article content. The image URLs can come from the feed or from the underlying webpage. Under some circumstances, Unread prepends those images to the article content. With this update, Unread now ignores such an image when it appears to apply to the entire website, rather than just the specific article. This change required building a server-side component that retrieves and stores header image information for websites. I added Section 3: Header Images to the privacy policy to reflect this.",
+          "The small Recent Articles widget no longer fades out the bottom of the image above the article title. Instead the bottom of the image has a clean break, and the article title is below it.",
+          "Syncing With FreshRSS and Miniflux",
+          "This update adds the ability to sync with FreshRSS accounts and with Miniflux accounts. Both FreshRSS and Miniflux are open source self-hosted web-based RSS readers.",
+          "Unread syncs with FreshRSS using its implementation of the Google Reader API, and with Miniflux using its REST API. It was already possible to sync with both FreshRSS and Miniflux using their implementations of the Fever API, but using a FreshRSS account or a Miniflux account adds these benefits:",
+          "The ability to subscribe to feeds, organize feed subscriptions, and unsubscribe from feeds from within Unread.",
+          "The ability to subscribe to feeds using the Subscribe in Unread share sheet extension.",
+          "The ability to mark read on scroll.",
+          "The ability to mark all articles above or below a specific article in an article list as read.",
+          "The privacy policy has been updated to reflect the addition of FreshRSS and Miniflux. Unread requires version 2.3.2 or later of Miniflux.",
+          "If you had been syncing with FreshRSS or Miniflux using their Fever API implementations, Unread makes it easy to add a FreshRSS or Miniflux account to Unread based on the existing Fever account. For FreshRSS this just requires one tap. For Miniflux you will need to enter an API key. Details are available on a separate page.",
+          "Mark Old Articles Read",
+          "This update adds the ability to mark old articles read. Choose a threshold of 24 hours, 3 days, 7 days, 14 days, or 30 days. When invoked, all articles within the appropriate context that are older than that amount of time will be immediately marked read so that you can focus on newer articles.",
+          "On iPhone and iPad, you can invoke this from the swipe left menu of any article list or from the top level subscription list of an account.",
+          "On Mac you can invoke this from the Article menu in the menu bar, as well as from the context menu of any feed subscription or any category, folder, or tag in the sidebar.",
+          "This capability is not available for Fever accounts.",
+          "Additional Improvements",
+          "This update also incorporates these improvements:",
+          "On version 27 of macOS, iOS, and iPadOS, this update adds an extra large portrait Recent Articles widget and an extra large portrait Unread Counts widget.",
+          "The Subscribe in Unread extension for Mac has been completely rewritten. Previously it used SwiftUI. Now it uses AppKit.",
+          "This update adds compatibility with direct touch input on iPad when using Sidecar on macOS 27.",
+          "This update adds pull-to-refresh capabilities on macOS 27.",
+          "With this update, posts without titles from Micro.blog feeds and Mastodon feeds in an Inoreader account will look better. This change will apply to new articles downloaded after installing this update.",
+          "This update adds a variety of minor improvements to the Feed Errors window on Mac, and the Feed Errors screen on iPhone and iPad. The list of feed errors is available for Unread Cloud, Local, Gobbler, and Miniflux accounts.",
+          "This update reinstates the ability on Mac to set a custom keyboard shortcut that does not have a modifier key, such as Command (⌘), for an article action or a shortcut.",
+          "The settings screen for an individual account on iPhone and iPad now includes the account username or email address for feed service accounts that are not Unread Cloud or Local accounts. For self-hosted accounts, this screen also includes the Server URL. The account detail view in the Accounts pane of the Settings window on Mac also now has this information.",
+          "When an iPhone is in landscape mode, the article list will now show a large image thumbnail on the right (like it does on the iPad), regardless of whether the Article List Format setting is set to Compact or Expansive.",
+          "Unread 5.0 requires macOS 15.0 (Sequoia) or later, iOS 18 or later, or iPadOS 18 or later.",
+          "If you enjoy using Unread, please consider subscribing to Unread Premium."
+        ]
+      }
+    },
+    {
+      "slug": "c6865149c89f06b5",
+      "title": "The expectations of privacy in driverless cars",
+      "titleZh": "The expectations of privacy in driverless cars",
+      "link": "https://shkspr.mobi/blog/2026/09/the-expectations-of-privacy-in-driverless-cars/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-09-13T11:34:13.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The expectations of privacy in driverless cars",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Do riders in autonomous vehicles think that they are in a private space? Here's a fascinating story from California where an robotaxi was redirected from its intended destination and, instead, delivered its misbehaving passengers to the police."
+          },
+          {
+            "type": "quote",
+            "text": "The 15-year-old passengers were riding in a driverless autonomous car around San Mateo Monday afternoon. The teens drank alcohol inside the Waymo taxi and shot Orbeez beads with a toy gun toward other vehicles.\n\t\t\t\t\t\tA Waymo employee, who was remotely monitoring the car, tricked the unruly teenagers, authorities said. The employee told the young passengers that the Waymo was having mechanical issues and needed to stop.\n\t\t\t\t\t\tUnknown to the teens, the employee had also called the San Mateo Police Department to report that a gun was firing from the car.\n\t\t\t\t\t\tHere’s how Waymo tricked unruly teen passengers in San Mateo"
+          },
+          {
+            "type": "p",
+            "text": "Is that OK?"
+          },
+          {
+            "type": "p",
+            "text": "Kids shooting (albeit fake) guns out of cars is bad. I've no problem with the long arm of the law feeling their collars."
+          },
+          {
+            "type": "p",
+            "text": "But what sort of reasonable expectation of privacy do you have when you jump into a driverless car?"
+          },
+          {
+            "type": "p",
+            "text": "If you have a blazing row with your partner while sat in the back of a black cab, the driver's going to hear, right? There's no privacy expectation although you might rely on their discretion."
+          },
+          {
+            "type": "p",
+            "text": "Take a phone call and arrange a drug deal, the driver might turn you in to the police. They're not a confidant, are they?"
+          },
+          {
+            "type": "p",
+            "text": "Kiss someone you shouldn't and you accept the risk that the driver might both notice and care."
+          },
+          {
+            "type": "p",
+            "text": "But when there's no driver, there's no risk of your privacy being invaded is there?"
+          },
+          {
+            "type": "quote",
+            "text": "Nine former Tesla employees told Reuters that Tesla workers shared customer videos and images recorded by in-car cameras between 2019 and 2022.\n\t\t\t\t\t\tTesla Workers Shared ‘Intimate’ Videos Recorded By In-Car Cameras"
+          },
+          {
+            "type": "p",
+            "text": "Ah."
+          },
+          {
+            "type": "p",
+            "text": "I don't know how Waymo was alerted to the problems in the car. Perhaps someone called them and reported the numberplate. Perhaps the car heard raised voices and sent an alert. Perhaps Waymo just regularly drops in on all its customers."
+          },
+          {
+            "type": "p",
+            "text": "Rummaging through Waymo's various privacy policies eventually leads to this rather ambiguous page which describes how they monitor the inside of their vehicles."
+          },
+          {
+            "type": "quote",
+            "text": "Our autonomous vehicles are equipped with an advanced suite of sensors – including cameras and microphones – that act as the 'eyes and ears' of our Waymo Driver.\n\t\t\t\t\t\tCameras inside the car\n\t\t\t\t\t\tCameras are a way for us to make sure that your trip goes smoothly. Among other things, we may use cameras to:\n\t\t\t\t\t\t\n\t\t\t\t\t\t\tMake sure that cars are clean\n\t\t\t\t\t\t\tFind lost items\n\t\t\t\t\t\t\tProvide help in case of emergency\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tCheck that in-car rules are being followed\n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t\t[Emphasis added]\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tImprove products and services\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tPromote safety and security\n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t\t[Emphasis added]\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tOur Support team may review video under certain circumstances, including after an issue is brought to our attention. Occasionally, in more urgent circumstances, Support may access live video during a trip.\n\t\t\t\t\t\tMicrophones inside the car\n\t\t\t\t\t\tThe microphones inside the car are only on during voice calls with Rider Support or when you actively choose to enable microphones inside the car."
+          },
+          {
+            "type": "p",
+            "text": "To me, that sounds like riders' voices aren't automatically sent back to the mothership. Indeed, they're at pains to say:"
+          },
+          {
+            "type": "quote",
+            "text": "Waymo vehicles also have a number of sensors, including our audio-detection system used to detect police and emergency vehicle sirens. Waymo has implemented technical and procedural safeguards designed to limit the collection of any human voice data from these microphones."
+          },
+          {
+            "type": "p",
+            "text": "So there is some acknowledgement of privacy - for our voices at least. Meanwhile, passengers are all watched over by machines of loving grace or, at the very least, fallible humans with prurient interests."
+          },
+          {
+            "type": "p",
+            "text": "About a decade ago, people were theorising that a driverless cars would one day deliver to you a rider who died on the journey. I don't think that's happened yet - instead, we have cars watching what what we do. Silently judging us picking our noses. Examining our body language for signs of stress. Tracking our breathing patterns and heart-rates to ensure we aren't going to cause damage to the vehicle."
+          },
+          {
+            "type": "p",
+            "text": "Not listening though. That would be a step too far."
+          },
+          {
+            "type": "p",
+            "text": "Besides, who needs to use a microphone when you've got a high-resolution camera backed by AI?"
+          },
+          {
+            "type": "p",
+            "text": "https://shkspr.mobi/blog/wp-content/uploads/2026/09/2001-lip-reading-web.mp4"
+          },
+          {
+            "type": "p",
+            "text": "Just as I finished writing this post, a story broke about how a Waymo pulled over and called the police on riders who had \"ghost gun\". The company said it alerted the authorities after detecting a terms of service violation."
+          },
+          {
+            "type": "p",
+            "text": "Of course, it didn't say how it detected that!"
+          },
+          {
+            "type": "p",
+            "text": "I also find it curious that in both cases, the alleged perpetrators were juveniles. Maybe children have less of a right to privacy than adults?"
+          },
+          {
+            "type": "p",
+            "text": "I guess when you ride alone, you ride with a snitch."
+          }
+        ],
+        "translations": [
+          "Do riders in autonomous vehicles think that they are in a private space? Here's a fascinating story from California where an robotaxi was redirected from its intended destination and, instead, delivered its misbehaving passengers to the police.",
+          "The 15-year-old passengers were riding in a driverless autonomous car around San Mateo Monday afternoon. The teens drank alcohol inside the Waymo taxi and shot Orbeez beads with a toy gun toward other vehicles.\n\t\t\t\t\t\tA Waymo employee, who was remotely monitoring the car, tricked the unruly teenagers, authorities said. The employee told the young passengers that the Waymo was having mechanical issues and needed to stop.\n\t\t\t\t\t\tUnknown to the teens, the employee had also called the San Mateo Police Department to report that a gun was firing from the car.\n\t\t\t\t\t\tHere’s how Waymo tricked unruly teen passengers in San Mateo",
+          "Is that OK?",
+          "Kids shooting (albeit fake) guns out of cars is bad. I've no problem with the long arm of the law feeling their collars.",
+          "But what sort of reasonable expectation of privacy do you have when you jump into a driverless car?",
+          "If you have a blazing row with your partner while sat in the back of a black cab, the driver's going to hear, right? There's no privacy expectation although you might rely on their discretion.",
+          "Take a phone call and arrange a drug deal, the driver might turn you in to the police. They're not a confidant, are they?",
+          "Kiss someone you shouldn't and you accept the risk that the driver might both notice and care.",
+          "But when there's no driver, there's no risk of your privacy being invaded is there?",
+          "Nine former Tesla employees told Reuters that Tesla workers shared customer videos and images recorded by in-car cameras between 2019 and 2022.\n\t\t\t\t\t\tTesla Workers Shared ‘Intimate’ Videos Recorded By In-Car Cameras",
+          "Ah.",
+          "I don't know how Waymo was alerted to the problems in the car. Perhaps someone called them and reported the numberplate. Perhaps the car heard raised voices and sent an alert. Perhaps Waymo just regularly drops in on all its customers.",
+          "Rummaging through Waymo's various privacy policies eventually leads to this rather ambiguous page which describes how they monitor the inside of their vehicles.",
+          "Our autonomous vehicles are equipped with an advanced suite of sensors – including cameras and microphones – that act as the 'eyes and ears' of our Waymo Driver.\n\t\t\t\t\t\tCameras inside the car\n\t\t\t\t\t\tCameras are a way for us to make sure that your trip goes smoothly. Among other things, we may use cameras to:\n\t\t\t\t\t\t\n\t\t\t\t\t\t\tMake sure that cars are clean\n\t\t\t\t\t\t\tFind lost items\n\t\t\t\t\t\t\tProvide help in case of emergency\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tCheck that in-car rules are being followed\n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t\t[Emphasis added]\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\tImprove products and services\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\tPromote safety and security\n\t\t\t\t\t\t\t\t \n\t\t\t\t\t\t\t\t[Emphasis added]\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\tOur Support team may review video under certain circumstances, including after an issue is brought to our attention. Occasionally, in more urgent circumstances, Support may access live video during a trip.\n\t\t\t\t\t\tMicrophones inside the car\n\t\t\t\t\t\tThe microphones inside the car are only on during voice calls with Rider Support or when you actively choose to enable microphones inside the car.",
+          "To me, that sounds like riders' voices aren't automatically sent back to the mothership. Indeed, they're at pains to say:",
+          "Waymo vehicles also have a number of sensors, including our audio-detection system used to detect police and emergency vehicle sirens. Waymo has implemented technical and procedural safeguards designed to limit the collection of any human voice data from these microphones.",
+          "So there is some acknowledgement of privacy - for our voices at least. Meanwhile, passengers are all watched over by machines of loving grace or, at the very least, fallible humans with prurient interests.",
+          "About a decade ago, people were theorising that a driverless cars would one day deliver to you a rider who died on the journey. I don't think that's happened yet - instead, we have cars watching what what we do. Silently judging us picking our noses. Examining our body language for signs of stress. Tracking our breathing patterns and heart-rates to ensure we aren't going to cause damage to the vehicle.",
+          "Not listening though. That would be a step too far.",
+          "Besides, who needs to use a microphone when you've got a high-resolution camera backed by AI?",
+          "https://shkspr.mobi/blog/wp-content/uploads/2026/09/2001-lip-reading-web.mp4",
+          "Just as I finished writing this post, a story broke about how a Waymo pulled over and called the police on riders who had \"ghost gun\". The company said it alerted the authorities after detecting a terms of service violation.",
+          "Of course, it didn't say how it detected that!",
+          "I also find it curious that in both cases, the alleged perpetrators were juveniles. Maybe children have less of a right to privacy than adults?",
+          "I guess when you ride alone, you ride with a snitch."
+        ]
+      }
+    },
+    {
+      "slug": "8e8a7d061046a6d1",
+      "title": "Anecdotally, programmers dislike \"reduce\"",
+      "titleZh": "Anecdotally, programmers dislike \"reduce\"",
+      "link": "https://evanhahn.com/posts/2026-09-13-programmers-dislike-reduce/",
+      "sourceName": "evanhahn.com",
+      "sourceUrl": "https://evanhahn.com",
+      "pubDate": "2026-09-13T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Anecdotally, programmers dislike \"reduce\"",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "by Evan Hahn,\nposted\nSep 13, 2026, tagged\n#software-development\n#culture",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In short: from my experience, people like map and filter, but not reduce."
+          },
+          {
+            "type": "p",
+            "text": "I use functions like map and filter all the time. When I put that code up for review, my peers rarely complain. I get plenty of feedback about other decisions, but not about my use of map and filter."
+          },
+          {
+            "type": "p",
+            "text": "I cannot say the same for reduce. Often, when I’ve submitted a patch with reduce inside, I get a comment like, “this part is hard to read.” And I see reduce way less than map, filter, some, and so on."
+          },
+          {
+            "type": "p",
+            "text": "Anecdotally, I have come to believe that programmers don’t like reduce as much."
+          },
+          {
+            "type": "p",
+            "text": "I don’t know why, but I have a few theories:"
+          },
+          {
+            "type": "li",
+            "text": "reduce is harder to read."
+          },
+          {
+            "type": "li",
+            "text": "reduce is less familiar."
+          },
+          {
+            "type": "li",
+            "text": "reduce can have worse performance compared to other options."
+          },
+          {
+            "type": "li",
+            "text": "reduce is less elegant in languages I use, like JavaScript, Python, and Swift. In my blissful stint as a Clojure developer, I did not get this feedback."
+          },
+          {
+            "type": "li",
+            "text": "I’m wrong, and I’m seeing a trend that’s not real."
+          },
+          {
+            "type": "p",
+            "text": "I usually just change reduce to something else and move on. Even though I prefer it, I don’t usually care much. But it’s a little social phenomenon I’ve observed, and I thought I’d document it."
+          },
+          {
+            "type": "p",
+            "text": "I’ve also noticed this less recently, possibly because code review is less thorough nowadays."
+          },
+          {
+            "type": "p",
+            "text": "Do you notice this? Do you like reduce? Please tell me."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "3ec810aa80ee41a4",
+      "title": "The spy in your living room",
+      "titleZh": "The spy in your living room",
+      "link": "https://dfarq.homeip.net/the-spy-in-your-living-room/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-spy-in-your-living-room",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-09-13T16:08:43.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The spy in your living room",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Your LG TV knows where you live. The spy in your living room may or may not know your name. But it can find your home on a map. It knows the name of your wifi network, and all your neighbors’ wifi networks, so pinpointing you on a map isn’t hard. Your wifi network name may or may not be unique but the combination in your neighborhood probably is. It knows what’s on your home network too."
+          },
+          {
+            "type": "p",
+            "text": "It knows what you watch, too. Even if you aren’t using their apps to watch."
+          },
+          {
+            "type": "h2",
+            "text": "Why televisions spy on you"
+          },
+          {
+            "type": "p",
+            "text": "And this is immensely profitable, because they can sell this information. And this information affects the ads you see and the prices you pay for things."
+          },
+          {
+            "type": "p",
+            "text": "The last time I was in the market for a car, I looked up a couple of local dealers. I checked their hours and checked their inventory online. And the next thing I knew, I was seeing ads for that make of car on my work computer, on my phone, and I kid you not, on a TV in a store."
+          },
+          {
+            "type": "p",
+            "text": "Advertisers love this because they know I’m at least halfway interested. It’s much better than just buying ads based on demographics alone."
+          },
+          {
+            "type": "h3",
+            "text": "How it works"
+          },
+          {
+            "type": "p",
+            "text": "And how could they follow me around? My phone, of course. But I didn’t search for the car on my phone. I searched it on a computer at home. So how did that innocent search on a computer at home follow me around other places? Well, I owned an LG TV connected to my home network. Based on that, it knew my IP address. It also knew my phone, from being on the same network as my phone. So one or the other of those linked my work computer to that web search. Maybe the oddly specific car ads on the TV in the store were a coincidence. But in theory that wouldn’t have to be, because major retailers track you by your phone."
+          },
+          {
+            "type": "p",
+            "text": "And that affects the price you pay for things. Retailers know that people with certain makes of computers and phones, especially the higher-end models, are likely to have more disposable income and the ability to pay more. They can probably infer from the neighborhood you live in if you’re the type who is willing to pay more. And if they know the TV shows you watch and the music you listen to, they can infer even more from you. Then imagine what they can do when they layer in what you’ve liked on social media, or keywords from social media posts."
+          },
+          {
+            "type": "p",
+            "text": "They already have a dossier on you based on your past purchases. They’ve been doing that for a decade and a half or more. But when they can correlate your purchase history with information about the neighborhood you live in and what smart devices are on your wifi, they can change the price you pay for things."
+          },
+          {
+            "type": "h3",
+            "text": "Digital pricing/surge pricing/exploitation"
+          },
+          {
+            "type": "p",
+            "text": "Digital price tags are controversial, and they aren’t everywhere. But they don’t need digital price tags when you shop online. The price online doesn’t necessarily match what’s in the store. They can adjust the online price based on what they think you’ll pay. And they do. We may not even notice because it’s so much more convenient to order online, pay, then get a text when our order is ready and go pick it up out of a locker. Or just have it delivered."
+          },
+          {
+            "type": "p",
+            "text": "That convenience is worth something. But someone who lives a mile from you may be getting a better price just because they live on a different street. They might even be getting the same convenient and a discounted price."
+          },
+          {
+            "type": "p",
+            "text": "You’ve probably seen this before, where you shop online, then go to the store to get it and find the price in the store is wildly different. Then you ask someone. You pull it up on your phone, they see the lower price, and give it to you."
+          },
+          {
+            "type": "p",
+            "text": "But there are some disturbing implications about this too. Someone trying to cut down on drinking could get bombarded with beer commercials, especially at certain times of the day. This could potentially have long-term health implications."
+          },
+          {
+            "type": "p",
+            "text": "Someone who’s sick might suddenly have to pay $34 for a can of soup where someone else is paying 34 cents, just because the person who’s sick is unable to cook and willing to pay more."
+          },
+          {
+            "type": "p",
+            "text": "So just because you have nothing to hide doesn’t mean you should think it’s OK that your TV is spying on you. Large corporations can buy that information, compile a dossier on you, and manipulate you into spending more, and paying more."
+          },
+          {
+            "type": "p",
+            "text": "My college economics professor would have thought this was fantastic. But there’s a big problem with it. How are you supposed to budget when a week’s worth of groceries costs $100 one week and $1,000 the next?"
+          },
+          {
+            "type": "h2",
+            "text": "So what can you do about it?"
+          },
+          {
+            "type": "p",
+            "text": "I won’t put a smart TV on my home network anymore. If the TV has smart functionality, I leave it disconnected. LG TVs aren’t alone in this behavior but they’re the worst. It kind of makes sense since they control the operating system on their TVs, rather than licensing it from someone else."
+          },
+          {
+            "type": "p",
+            "text": "If you’ve already connected an LG TV, open up its configuration, navigate to the wifi connection, disable its wifi, then scroll down to your wifi network, select the button next to it, then press the button to forget the network. With no network connection, it will continue to spy, but will have noplace to send the data. Although it does scan for unconnected networks, as of 2026, LG TVs don’t connect to unsecured networks without asking. And hopefully none of your neighbors are operating unsecured wifi networks."
+          },
+          {
+            "type": "p",
+            "text": "But Apple, Google, and Roku aren’t your friends either. I use a homebrew streaming device I run on cheap, readily available hardware. If you’re not comfortable loading LineageOS on a device and sideloading apps on it, a set-top box gives you more control than built-in smart TV functionality at least."
+          },
+          {
+            "type": "p",
+            "text": "When you go shopping, leave your phone in your car. It makes you harder to track in-store, and makes digital price tags a little less effective. If they’re engaging in facial recognition, that’s harder to defeat."
+          },
+          {
+            "type": "p",
+            "text": "And of course, when stores engage in digital price tags and other forms of manipulative pricing, shop elsewhere. They’re looking to see what we’ll tolerate."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "Your LG TV knows where you live. The spy in your living room may or may not know your name. But it can find your home on a map. It knows the name of your wifi network, and all your neighbors’ wifi networks, so pinpointing you on a map isn’t hard. Your wifi network name may or may not be unique but the combination in your neighborhood probably is. It knows what’s on your home network too.",
+          "It knows what you watch, too. Even if you aren’t using their apps to watch.",
+          "Why televisions spy on you",
+          "And this is immensely profitable, because they can sell this information. And this information affects the ads you see and the prices you pay for things.",
+          "The last time I was in the market for a car, I looked up a couple of local dealers. I checked their hours and checked their inventory online. And the next thing I knew, I was seeing ads for that make of car on my work computer, on my phone, and I kid you not, on a TV in a store.",
+          "Advertisers love this because they know I’m at least halfway interested. It’s much better than just buying ads based on demographics alone.",
+          "How it works",
+          "And how could they follow me around? My phone, of course. But I didn’t search for the car on my phone. I searched it on a computer at home. So how did that innocent search on a computer at home follow me around other places? Well, I owned an LG TV connected to my home network. Based on that, it knew my IP address. It also knew my phone, from being on the same network as my phone. So one or the other of those linked my work computer to that web search. Maybe the oddly specific car ads on the TV in the store were a coincidence. But in theory that wouldn’t have to be, because major retailers track you by your phone.",
+          "And that affects the price you pay for things. Retailers know that people with certain makes of computers and phones, especially the higher-end models, are likely to have more disposable income and the ability to pay more. They can probably infer from the neighborhood you live in if you’re the type who is willing to pay more. And if they know the TV shows you watch and the music you listen to, they can infer even more from you. Then imagine what they can do when they layer in what you’ve liked on social media, or keywords from social media posts.",
+          "They already have a dossier on you based on your past purchases. They’ve been doing that for a decade and a half or more. But when they can correlate your purchase history with information about the neighborhood you live in and what smart devices are on your wifi, they can change the price you pay for things.",
+          "Digital pricing/surge pricing/exploitation",
+          "Digital price tags are controversial, and they aren’t everywhere. But they don’t need digital price tags when you shop online. The price online doesn’t necessarily match what’s in the store. They can adjust the online price based on what they think you’ll pay. And they do. We may not even notice because it’s so much more convenient to order online, pay, then get a text when our order is ready and go pick it up out of a locker. Or just have it delivered.",
+          "That convenience is worth something. But someone who lives a mile from you may be getting a better price just because they live on a different street. They might even be getting the same convenient and a discounted price.",
+          "You’ve probably seen this before, where you shop online, then go to the store to get it and find the price in the store is wildly different. Then you ask someone. You pull it up on your phone, they see the lower price, and give it to you.",
+          "But there are some disturbing implications about this too. Someone trying to cut down on drinking could get bombarded with beer commercials, especially at certain times of the day. This could potentially have long-term health implications.",
+          "Someone who’s sick might suddenly have to pay $34 for a can of soup where someone else is paying 34 cents, just because the person who’s sick is unable to cook and willing to pay more.",
+          "So just because you have nothing to hide doesn’t mean you should think it’s OK that your TV is spying on you. Large corporations can buy that information, compile a dossier on you, and manipulate you into spending more, and paying more.",
+          "My college economics professor would have thought this was fantastic. But there’s a big problem with it. How are you supposed to budget when a week’s worth of groceries costs $100 one week and $1,000 the next?",
+          "So what can you do about it?",
+          "I won’t put a smart TV on my home network anymore. If the TV has smart functionality, I leave it disconnected. LG TVs aren’t alone in this behavior but they’re the worst. It kind of makes sense since they control the operating system on their TVs, rather than licensing it from someone else.",
+          "If you’ve already connected an LG TV, open up its configuration, navigate to the wifi connection, disable its wifi, then scroll down to your wifi network, select the button next to it, then press the button to forget the network. With no network connection, it will continue to spy, but will have noplace to send the data. Although it does scan for unconnected networks, as of 2026, LG TVs don’t connect to unsecured networks without asking. And hopefully none of your neighbors are operating unsecured wifi networks.",
+          "But Apple, Google, and Roku aren’t your friends either. I use a homebrew streaming device I run on cheap, readily available hardware. If you’re not comfortable loading LineageOS on a device and sideloading apps on it, a set-top box gives you more control than built-in smart TV functionality at least.",
+          "When you go shopping, leave your phone in your car. It makes you harder to track in-store, and makes digital price tags a little less effective. If they’re engaging in facial recognition, that’s harder to defeat.",
+          "And of course, when stores engage in digital price tags and other forms of manipulative pricing, shop elsewhere. They’re looking to see what we’ll tolerate.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "72bb64d075f6e0b5",
+      "title": "A Dick Smith VZ200 without the Dick Smith (but with a serial port)",
+      "titleZh": "A Dick Smith VZ200 without the Dick Smith (but with a serial port)",
+      "link": "https://oldvcr.blogspot.com/feeds/1295709944879299504/comments/default",
+      "sourceName": "oldvcr.blogspot.com",
+      "sourceUrl": "https://oldvcr.blogspot.com",
+      "pubDate": "2026-09-13T02:17:52.821Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "A Dick Smith VZ200 without the Dick Smith (but with a serial port)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    }
+  ]
+}
