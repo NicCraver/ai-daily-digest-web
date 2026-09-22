@@ -1,0 +1,2167 @@
+{
+  "date": "2026-09-23",
+  "generatedAt": "2026-09-22T19:41:47.830Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2518,
+    "filteredArticles": 22,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "df9ee5d27afc5dae",
+      "title": "Quoting @therealcornpop",
+      "titleZh": "Quoting @therealcornpop",
+      "link": "https://simonwillison.net/2026/Sep/22/therealcornpop/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-22T18:03:21.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Quoting @therealcornpop",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "22nd September 2026"
+          },
+          {
+            "type": "quote",
+            "text": "Hey, you know it's like super obvious if you're using AI to write your scripts for TikTok and YouTube, right? [...] It's not just the general AI-isms of \"it's not X, it's Y\", or the rule of three, or the really weird broken staccato-like way of writing where you just say a lot of things with all these punctuation marks. and it sounds really deep, but it's not.\nIt's the lack of anything. It's the lack of a definitive sort of spear of your voice. It's the fact I can tell you don't have opinions about the thing that you're talking about."
+          },
+          {
+            "type": "p",
+            "text": "— @therealcornpop, on TikTok"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7528f5f11fc6fb5e",
+      "title": "llm-typesafe 0.1a0",
+      "titleZh": "llm-typesafe 0.1a0",
+      "link": "https://simonwillison.net/2026/Sep/22/llm-typesafe/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-22T15:54:16.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "llm-typesafe 0.1a0",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I built this new plugin for LLM to add support for TypeSafe AI's new Jev model. Install it like this:"
+          },
+          {
+            "type": "code",
+            "text": "llm install llm-typesafe"
+          },
+          {
+            "type": "p",
+            "text": "Then set an API key (get one here, the waitlist seems to move pretty fast):"
+          },
+          {
+            "type": "code",
+            "text": "llm keys set typesafe\n# Paste key"
+          },
+          {
+            "type": "p",
+            "text": "And now you can ask yes/no \"noul\" questions like this:"
+          },
+          {
+            "type": "code",
+            "text": "llm -m jev 'Please refund my last payment.' \\\n  -s 'Does this message explicitly request a refund?'"
+          },
+          {
+            "type": "p",
+            "text": "Output:"
+          },
+          {
+            "type": "code",
+            "text": "{\"type\": \"noul\", \"noul\": 0.99}"
+          },
+          {
+            "type": "p",
+            "text": "Or choice questions like this:"
+          },
+          {
+            "type": "code",
+            "text": "cat message.txt | llm -m jev \\\n  -s 'Which team should handle this message? If billing and technical issues both occur, choose billing.' \\\n  -o answer_type choice \\\n  -o criteria '{\n    \"billing\":\"Charges, invoices, payments, or refunds\",\n    \"technical\":\"Problems installing or using the product\",\n    \"other\":\"Neither category fits\"\n  }'"
+          },
+          {
+            "type": "p",
+            "text": "Or scoring questions like this:"
+          },
+          {
+            "type": "code",
+            "text": "cat report.txt | llm -m jev \\\n  -s 'How reproducible is the problem described in this report?' \\\n  -o answer_type score \\\n  -o criteria '[\n    \"No reproduction instructions\",\n    \"Some instructions, but important steps are missing\",\n    \"Complete steps with expected and actual results\"\n  ]'"
+          },
+          {
+            "type": "p",
+            "text": "See the README for more details."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "c079d2e6330409d9",
+      "title": "Jev introduces a new shape of LLM - System One, aka Decision Models",
+      "titleZh": "Jev introduces a new shape of LLM - System One, aka Decision Models",
+      "link": "https://simonwillison.net/2026/Sep/21/jev/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-21T23:09:20.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Jev introduces a new shape of LLM - System One, aka Decision Models",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st September 2026"
+          },
+          {
+            "type": "p",
+            "text": "Last week TypeSafe AI unveiled Jev, their first example of a new category of model that they are calling “System One models” (I’m with Maggie Appleton, I think “decision models” is a better name for these). Jev is an interesting variant on the usual LLM format: it still accepts text inputs, but instead of text output it returns floating point numbers corresponding to categories, yes/no questions, ratings, and associated confidence scores."
+          },
+          {
+            "type": "p",
+            "text": "TypeSafe describe Jev like this:"
+          },
+          {
+            "type": "quote",
+            "text": "Think of Jev as a frontier-intelligence function call: unstructured state in, typed probabilistic decisions out."
+          },
+          {
+            "type": "p",
+            "text": "It’s also very fast, and really cheap. Regular LLMs are priced in terms of input and output tokens, with output generally charged at significantly higher rates. Jev charges only for input—output is free—and the input price of their first model is $0.042 per million tokens—cheaper even than OpenAI’s GPT-5 Nano ($0.05/million)."
+          },
+          {
+            "type": "p",
+            "text": "Jev lets you ask questions about text or semi-structured data. You compose a “state” object containing a string, array of strings, or set of name-value pairs—this might describe an article, or a customer, or any other kind of record. You then send that to their API with one or more questions, and get a reply back for each."
+          },
+          {
+            "type": "p",
+            "text": "You can ask three kinds of questions:"
+          },
+          {
+            "type": "li",
+            "text": "Yes/No questions, which Jev calls “Noul” questions—their CEO confirmed on Hacker News that this is short for Bernoulli, from the Bernoulli distribution. You pose a statement and get back a floating point number between 0 and 1 for how confident the model is that the statement is true."
+          },
+          {
+            "type": "li",
+            "text": "Choice questions, where the model picks one from a set of provided options—actually a confidence score plus a probability distribution across all of the options."
+          },
+          {
+            "type": "li",
+            "text": "Score questions, where you provide sequence of numeric levels with descriptions and it provides a floating point score somewhere along that range."
+          },
+          {
+            "type": "p",
+            "text": "The Jev API can accept a single document (“state”) and as many questions as you can cram into the context window. Questions are evaluated in parallel, so sending many questions should take a similar time to sending just one."
+          },
+          {
+            "type": "p",
+            "text": "The Jev 1.13 jaggedness documentation offers useful guidance as to Jev’s strengths and weaknesses. It’s currently not great with numbers, dates, or “adversarial content”."
+          },
+          {
+            "type": "p",
+            "text": "I think the decision model framing is useful for understanding where to use Jev. It’s great for anything that can be expressed as a classification task—think spam detection, suggesting labels, prioritization and ranking."
+          },
+          {
+            "type": "p",
+            "text": "I’ve also been experimenting with it for search reranking, where you fetch 100 likely matches using an inexpensive algorithm like BM25, then have Jev score those 100 candidates for relevance against the original query."
+          },
+          {
+            "type": "h3",
+            "text": "Black boxes are back in fashion"
+          },
+          {
+            "type": "p",
+            "text": "Something I’ve found a little uncomfortable about Jev is how it very much represents a regression even further towards black box machine learning systems."
+          },
+          {
+            "type": "p",
+            "text": "LLMs are black boxes already—you can ask them to justify their decisions, but you can’t guarantee that what they say is useful or accurate."
+          },
+          {
+            "type": "p",
+            "text": "Jev doesn’t even give you that: put in all the text you want, the only thing you’re going to get back is a floating point number. If Jev marks something as spam, which content signals tipped it off?"
+          },
+          {
+            "type": "p",
+            "text": "This also means that concerns about bias should be front and center. I really hope nobody uses Jev to rank job applicants—that floating point number could conceal all manner of unseen bias baked into the models, and experimentally picking that bias apart is going to be a tricky business."
+          },
+          {
+            "type": "p",
+            "text": "(I tried one experiment where I had Jev score every city in the San Francisco Bay Area on a yes/no answer to whether they were a “Good city?”—it rated Cupertino top and East Palo Alto bottom. Huh.)"
+          },
+          {
+            "type": "p",
+            "text": "In practice, this all means that evals and structured experiments are even more important than they are for regular LLM projects. Thankfully, Jev is so cheap that running hundreds or even thousands of experimental prompts through it costs just a few cents."
+          },
+          {
+            "type": "h3",
+            "text": "Unconventional uses for Jev"
+          },
+          {
+            "type": "p",
+            "text": "It’s been really fun watching the wider community come up with potential use-cases for Jev over the past few days. Here are some creative ones that caught my eye:"
+          },
+          {
+            "type": "li",
+            "text": "jevchat by Kyle Pena turns Jev into a (terrible) chat model. “At every step it asks Jev one question: Given the user’s question and the reply written so far, which symbol comes next?”. ericpruitt on Hacker News: “It’s the digital equivalent of Morty speaking with the death crystal”."
+          },
+          {
+            "type": "li",
+            "text": "jev-leftpad by Fatih Kadir Akın implements left-pad with the prompt “How many spaces are needed before value to reach targetLength?” and a choice query allowing options from “0 spaces are needed” to “10 spaces are needed”."
+          },
+          {
+            "type": "li",
+            "text": "jev-2048 by Andy Gayton uses Jev to play the 2048 sliding puzzle game."
+          },
+          {
+            "type": "h3",
+            "text": "Open weight recreations"
+          },
+          {
+            "type": "p",
+            "text": "There’s also been a flurry of projects attempting to create a model like Jev using on top of open weight models. Kev is one interesting example, using Qwen 3.5 to produce 0.8B, 4B, and 9B models. Here’s the accompanying Hacker News thread, where someone linked to a JevBench benchmark that has already cropped up to compare “Jev-class decision models”."
+          },
+          {
+            "type": "p",
+            "text": "Given Jev was released just under a week ago, the amount of activity around it is extremely impressive."
+          }
+        ],
+        "translations": [
+          "21st September 2026",
+          "Last week TypeSafe AI unveiled Jev, their first example of a new category of model that they are calling “System One models” (I’m with Maggie Appleton, I think “decision models” is a better name for these). Jev is an interesting variant on the usual LLM format: it still accepts text inputs, but instead of text output it returns floating point numbers corresponding to categories, yes/no questions, ratings, and associated confidence scores.",
+          "TypeSafe describe Jev like this:",
+          "Think of Jev as a frontier-intelligence function call: unstructured state in, typed probabilistic decisions out.",
+          "It’s also very fast, and really cheap. Regular LLMs are priced in terms of input and output tokens, with output generally charged at significantly higher rates. Jev charges only for input—output is free—and the input price of their first model is $0.042 per million tokens—cheaper even than OpenAI’s GPT-5 Nano ($0.05/million).",
+          "Jev lets you ask questions about text or semi-structured data. You compose a “state” object containing a string, array of strings, or set of name-value pairs—this might describe an article, or a customer, or any other kind of record. You then send that to their API with one or more questions, and get a reply back for each.",
+          "You can ask three kinds of questions:",
+          "Yes/No questions, which Jev calls “Noul” questions—their CEO confirmed on Hacker News that this is short for Bernoulli, from the Bernoulli distribution. You pose a statement and get back a floating point number between 0 and 1 for how confident the model is that the statement is true.",
+          "Choice questions, where the model picks one from a set of provided options—actually a confidence score plus a probability distribution across all of the options.",
+          "Score questions, where you provide sequence of numeric levels with descriptions and it provides a floating point score somewhere along that range.",
+          "The Jev API can accept a single document (“state”) and as many questions as you can cram into the context window. Questions are evaluated in parallel, so sending many questions should take a similar time to sending just one.",
+          "The Jev 1.13 jaggedness documentation offers useful guidance as to Jev’s strengths and weaknesses. It’s currently not great with numbers, dates, or “adversarial content”.",
+          "I think the decision model framing is useful for understanding where to use Jev. It’s great for anything that can be expressed as a classification task—think spam detection, suggesting labels, prioritization and ranking.",
+          "I’ve also been experimenting with it for search reranking, where you fetch 100 likely matches using an inexpensive algorithm like BM25, then have Jev score those 100 candidates for relevance against the original query.",
+          "Black boxes are back in fashion",
+          "Something I’ve found a little uncomfortable about Jev is how it very much represents a regression even further towards black box machine learning systems.",
+          "LLMs are black boxes already—you can ask them to justify their decisions, but you can’t guarantee that what they say is useful or accurate.",
+          "Jev doesn’t even give you that: put in all the text you want, the only thing you’re going to get back is a floating point number. If Jev marks something as spam, which content signals tipped it off?",
+          "This also means that concerns about bias should be front and center. I really hope nobody uses Jev to rank job applicants—that floating point number could conceal all manner of unseen bias baked into the models, and experimentally picking that bias apart is going to be a tricky business.",
+          "(I tried one experiment where I had Jev score every city in the San Francisco Bay Area on a yes/no answer to whether they were a “Good city?”—it rated Cupertino top and East Palo Alto bottom. Huh.)",
+          "In practice, this all means that evals and structured experiments are even more important than they are for regular LLM projects. Thankfully, Jev is so cheap that running hundreds or even thousands of experimental prompts through it costs just a few cents.",
+          "Unconventional uses for Jev",
+          "It’s been really fun watching the wider community come up with potential use-cases for Jev over the past few days. Here are some creative ones that caught my eye:",
+          "jevchat by Kyle Pena turns Jev into a (terrible) chat model. “At every step it asks Jev one question: Given the user’s question and the reply written so far, which symbol comes next?”. ericpruitt on Hacker News: “It’s the digital equivalent of Morty speaking with the death crystal”.",
+          "jev-leftpad by Fatih Kadir Akın implements left-pad with the prompt “How many spaces are needed before value to reach targetLength?” and a choice query allowing options from “0 spaces are needed” to “10 spaces are needed”.",
+          "jev-2048 by Andy Gayton uses Jev to play the 2048 sliding puzzle game.",
+          "Open weight recreations",
+          "There’s also been a flurry of projects attempting to create a model like Jev using on top of open weight models. Kev is one interesting example, using Qwen 3.5 to produce 0.8B, 4B, and 9B models. Here’s the accompanying Hacker News thread, where someone linked to a JevBench benchmark that has already cropped up to compare “Jev-class decision models”.",
+          "Given Jev was released just under a week ago, the amount of activity around it is extremely impressive."
+        ]
+      }
+    },
+    {
+      "slug": "ff3a1364a89f9d84",
+      "title": "Cloudflare Python Workers are now generally available",
+      "titleZh": "Cloudflare Python Workers are now generally available",
+      "link": "https://simonwillison.net/2026/Sep/21/cloudflare-python-worker/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-21T22:25:44.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Cloudflare Python Workers are now generally available",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "21st September 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Cloudflare Python Workers are now generally available (via) After a two year preview, Cloudflare's support for running Python code in their server-side Workers platform is now stable: \"Python is now a first-class, fully supported language on the Cloudflare Developer Platform\"."
+          },
+          {
+            "type": "p",
+            "text": "A neat thing about this is how it works. Cloudflare are running Python compiled to WebAssembly via Pyodide in their V8-based workerd runtime."
+          },
+          {
+            "type": "p",
+            "text": "This comes with some limitations, documented here - most notably both multiprocessing and threading are non-functional in the WebAssembly VM."
+          },
+          {
+            "type": "p",
+            "text": "One particularly interesting detail of this is the local development environment story - their pywrangler development tool (confusingly packaged as workers-py on PyPI) runs a full local simulation of their stack, including executing code with Pyodide in WebAssembly in V8 in a 123MB workerd binary, which for me ended up in node_modules/@cloudflare/workerd-darwin-arm64/bin/workerd."
+          },
+          {
+            "type": "p",
+            "text": "Python Workers represent a significant investment in the wider Python ecosystem by Cloudflare. The release announcement is credited to Gyeongjae Choi, Dominik Picheta, and Hood Chatham - Gyeongjae and Hood are both Pyodide core maintainers."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "54cae7b1359a8316",
+      "title": "Xcode 27.2 Now Supports a New JSON Project File Format",
+      "titleZh": "Xcode 27.2 Now Supports a New JSON Project File Format",
+      "link": "https://developer.apple.com/documentation/xcode-release-notes/xcode-27_2-release-notes",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-22T19:25:52.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Xcode 27.2 Now Supports a New JSON Project File Format",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "be1255310d08c4b4",
+      "title": "Siri AI Class-Action Lawsuit Settlement Website Is Now Live",
+      "titleZh": "Siri AI Class-Action Lawsuit Settlement Website Is Now Live",
+      "link": "https://www.macrumors.com/2026/09/20/siri-ai-settlement-website-now-live/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-22T15:44:45.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Siri AI Class-Action Lawsuit Settlement Website Is Now Live",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Joe Rossignol",
+        "siteName": "MacRumors",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Sunday September 20, 2026 7:24 pm PDT by Joe Rossignol"
+          },
+          {
+            "type": "p",
+            "text": "In May, Apple agreed to pay $250 million to settle a U.S. class action lawsuit over Siri AI's delayed launch, and the settlement website is now live."
+          },
+          {
+            "type": "p",
+            "text": "Apple will pay an estimated $25 per eligible iPhone to eligible customers, who can submit a claim via the settlement website between September 21 and December 21 of this year. The exact payment may be higher or lower than $25 depending on the total number of valid claims submitted and other factors, with the maximum amount set at $95."
+          },
+          {
+            "type": "p",
+            "text": "Apple denies all of the allegations made in the lawsuit. Apple agreed to the settlement to avoid the costs and risks of a trial."
+          },
+          {
+            "type": "p",
+            "text": "Below, we have answered some key questions regarding the lawsuit."
+          },
+          {
+            "type": "h2",
+            "text": "Why Was Apple Sued?"
+          },
+          {
+            "type": "p",
+            "text": "In June 2024, Apple previewed new Siri capabilities powered by Apple Intelligence, including understanding of a user's personal context, on-screen awareness, and deeper per-app controls. For example, Apple showed an iPhone user asking Siri about their mother's flight and lunch reservation plans based on info from the Mail and Messages apps."
+          },
+          {
+            "type": "p",
+            "text": "Apple advertised those Siri features in product presentations, on its website, in a TV commercial starring actor Bella Ramsey, and elsewhere."
+          },
+          {
+            "type": "p",
+            "text": "In March 2025, Apple delayed the launch of the personalized version of Siri, leading to the company being hit with a class action lawsuit alleging false advertising."
+          },
+          {
+            "type": "p",
+            "text": "In a statement, Apple touted a range of other Apple Intelligence features it had already released. Nevertheless, Apple agreed to settle the lawsuit \"to stay focused\" on \"delivering the most innovative products and services to our users.\""
+          },
+          {
+            "type": "p",
+            "text": "Apple finally announced Siri AI at WWDC 2026 in June. Siri AI is available on iPhone 15 Pro models and newer running iOS 27, which was released last week."
+          },
+          {
+            "type": "p",
+            "text": "Siri AI is still considered a beta feature even though iOS 27 is no longer in beta."
+          },
+          {
+            "type": "h2",
+            "text": "Am I Eligible?"
+          },
+          {
+            "type": "p",
+            "text": "To be eligible to submit a claim, you must reside in the U.S. and have purchased one of the iPhone models listed below in the U.S. for purposes other than resale between June 10, 2024 and March 29, 2025."
+          },
+          {
+            "type": "p",
+            "text": "The full list of eligible iPhone models:"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 15 Pro"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 15 Pro Max"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 16"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 16e"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 16 Plus"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 16 Pro"
+          },
+          {
+            "type": "li",
+            "text": "iPhone 16 Pro Max"
+          },
+          {
+            "type": "p",
+            "text": "Over the coming days, eligible customers should be notified about the settlement in an email, which will contain a claim ID and a PIN code. But, the settlement website also offers an option to submit a claim without this information."
+          },
+          {
+            "type": "p",
+            "text": "The claims form asks for your personal information and the eligible iPhone's serial number. If you indicate that you do not have the serial number, the form asks for your Apple Account email address and the eligible iPhone's phone number."
+          },
+          {
+            "type": "h2",
+            "text": "How Much Will Apple Pay Me?"
+          },
+          {
+            "type": "p",
+            "text": "According to the terms of the settlement, each person who files an eligible claim will receive a per-device payment of $25, but this amount could increase up to $95 if the total number of claims submitted is lower than anticipated."
+          },
+          {
+            "type": "h2",
+            "text": "Where and When Can I Submit a Claim?"
+          },
+          {
+            "type": "p",
+            "text": "You can submit a claim on the settlement website between September 21 and December 21."
+          },
+          {
+            "type": "h2",
+            "text": "When Will I Receive Payment?"
+          },
+          {
+            "type": "p",
+            "text": "A final approval hearing is scheduled for February 24, 2027, so payments to customers are not expected to begin until some point next year."
+          },
+          {
+            "type": "h2",
+            "text": "What Else Should I Know?"
+          },
+          {
+            "type": "p",
+            "text": "The settlement website answers some common questions about opting out of the settlement and other important topics, so be sure to read it carefully."
+          },
+          {
+            "type": "h2",
+            "text": "Popular Stories"
+          },
+          {
+            "type": "h3",
+            "text": "Reminder: iOS 27's All-New Siri AI Has a Waitlist, Here's How to Sign Up"
+          },
+          {
+            "type": "p",
+            "text": "Tuesday September 15, 2026 8:54 am PDT by Joe Rossignol"
+          },
+          {
+            "type": "p",
+            "text": "Apple this week released iOS 27 following around three months of beta testing. If you just installed the software update on your iPhone, you might be wondering where the new-and-improved Siri AI and dedicated Siri app are. In case you missed it, you must join Apple's waitlist in order to gain access to these new features.\nKeep in mind that while iOS 27 is compatible with the iPhone 11 and..."
+          },
+          {
+            "type": "h3",
+            "text": "Apple's Siri AI Can Be Swapped Out for Claude, ChatGPT, Code Shows"
+          },
+          {
+            "type": "p",
+            "text": "Monday September 14, 2026 4:37 am PDT by Tim Hardwick"
+          },
+          {
+            "type": "p",
+            "text": "Code sleuth \"pdfu\" has uncovered iOS 27 and macOS Golden Gate private frameworks that show Apple has designed its new Siri architecture to work with third-party AI models at what appears to be a surprisingly deep level.\nOne mechanism called Model Delegation allows Claude to appear as a Siri extension in the same way as the existing built-in ChatGPT extension. In pdfu's video, shared on X,..."
+          },
+          {
+            "type": "h3",
+            "text": "Apple Releases iOS 27 and iPadOS 27 With Siri AI and Liquid Glass Update"
+          },
+          {
+            "type": "p",
+            "text": "Monday September 14, 2026 10:04 am PDT by Juli Clover"
+          },
+          {
+            "type": "p",
+            "text": "Apple today released iOS 27 and iPadOS 27, the newest operating system updates for the iPhone and iPad. The software is available for free on all compatible devices, and can be downloaded over the air by going to Settings > General > Software Update.\nSubscribe to the MacRumors YouTube channel for more videos. \nIt can take several minutes for the updates to propagate to all users due to high..."
+          }
+        ],
+        "translations": [
+          "Sunday September 20, 2026 7:24 pm PDT by Joe Rossignol",
+          "In May, Apple agreed to pay $250 million to settle a U.S. class action lawsuit over Siri AI's delayed launch, and the settlement website is now live.",
+          "Apple will pay an estimated $25 per eligible iPhone to eligible customers, who can submit a claim via the settlement website between September 21 and December 21 of this year. The exact payment may be higher or lower than $25 depending on the total number of valid claims submitted and other factors, with the maximum amount set at $95.",
+          "Apple denies all of the allegations made in the lawsuit. Apple agreed to the settlement to avoid the costs and risks of a trial.",
+          "Below, we have answered some key questions regarding the lawsuit.",
+          "Why Was Apple Sued?",
+          "In June 2024, Apple previewed new Siri capabilities powered by Apple Intelligence, including understanding of a user's personal context, on-screen awareness, and deeper per-app controls. For example, Apple showed an iPhone user asking Siri about their mother's flight and lunch reservation plans based on info from the Mail and Messages apps.",
+          "Apple advertised those Siri features in product presentations, on its website, in a TV commercial starring actor Bella Ramsey, and elsewhere.",
+          "In March 2025, Apple delayed the launch of the personalized version of Siri, leading to the company being hit with a class action lawsuit alleging false advertising.",
+          "In a statement, Apple touted a range of other Apple Intelligence features it had already released. Nevertheless, Apple agreed to settle the lawsuit \"to stay focused\" on \"delivering the most innovative products and services to our users.\"",
+          "Apple finally announced Siri AI at WWDC 2026 in June. Siri AI is available on iPhone 15 Pro models and newer running iOS 27, which was released last week.",
+          "Siri AI is still considered a beta feature even though iOS 27 is no longer in beta.",
+          "Am I Eligible?",
+          "To be eligible to submit a claim, you must reside in the U.S. and have purchased one of the iPhone models listed below in the U.S. for purposes other than resale between June 10, 2024 and March 29, 2025.",
+          "The full list of eligible iPhone models:",
+          "iPhone 15 Pro",
+          "iPhone 15 Pro Max",
+          "iPhone 16",
+          "iPhone 16e",
+          "iPhone 16 Plus",
+          "iPhone 16 Pro",
+          "iPhone 16 Pro Max",
+          "Over the coming days, eligible customers should be notified about the settlement in an email, which will contain a claim ID and a PIN code. But, the settlement website also offers an option to submit a claim without this information.",
+          "The claims form asks for your personal information and the eligible iPhone's serial number. If you indicate that you do not have the serial number, the form asks for your Apple Account email address and the eligible iPhone's phone number.",
+          "How Much Will Apple Pay Me?",
+          "According to the terms of the settlement, each person who files an eligible claim will receive a per-device payment of $25, but this amount could increase up to $95 if the total number of claims submitted is lower than anticipated.",
+          "Where and When Can I Submit a Claim?",
+          "You can submit a claim on the settlement website between September 21 and December 21.",
+          "When Will I Receive Payment?",
+          "A final approval hearing is scheduled for February 24, 2027, so payments to customers are not expected to begin until some point next year.",
+          "What Else Should I Know?",
+          "The settlement website answers some common questions about opting out of the settlement and other important topics, so be sure to read it carefully.",
+          "Popular Stories",
+          "Reminder: iOS 27's All-New Siri AI Has a Waitlist, Here's How to Sign Up",
+          "Tuesday September 15, 2026 8:54 am PDT by Joe Rossignol",
+          "Apple this week released iOS 27 following around three months of beta testing. If you just installed the software update on your iPhone, you might be wondering where the new-and-improved Siri AI and dedicated Siri app are. In case you missed it, you must join Apple's waitlist in order to gain access to these new features.\nKeep in mind that while iOS 27 is compatible with the iPhone 11 and...",
+          "Apple's Siri AI Can Be Swapped Out for Claude, ChatGPT, Code Shows",
+          "Monday September 14, 2026 4:37 am PDT by Tim Hardwick",
+          "Code sleuth \"pdfu\" has uncovered iOS 27 and macOS Golden Gate private frameworks that show Apple has designed its new Siri architecture to work with third-party AI models at what appears to be a surprisingly deep level.\nOne mechanism called Model Delegation allows Claude to appear as a Siri extension in the same way as the existing built-in ChatGPT extension. In pdfu's video, shared on X,...",
+          "Apple Releases iOS 27 and iPadOS 27 With Siri AI and Liquid Glass Update",
+          "Monday September 14, 2026 10:04 am PDT by Juli Clover",
+          "Apple today released iOS 27 and iPadOS 27, the newest operating system updates for the iPhone and iPad. The software is available for free on all compatible devices, and can be downloaded over the air by going to Settings > General > Software Update.\nSubscribe to the MacRumors YouTube channel for more videos. \nIt can take several minutes for the updates to propagate to all users due to high..."
+        ]
+      }
+    },
+    {
+      "slug": "a7481d9276fbbf99",
+      "title": "[Sponsor] Mux: Turn Your Video Into Context",
+      "titleZh": "[Sponsor] Mux: Turn Your Video Into Context",
+      "link": "https://www.mux.com/?utm_campaign=fireball&amp;utm_source=DF",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-21T23:04:15.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "[Sponsor] Mux: Turn Your Video Into Context",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Technical preview"
+          },
+          {
+            "type": "p",
+            "text": "Arrow Right"
+          },
+          {
+            "type": "p",
+            "text": "Mux helps teams do more with video. Stream it, moderate it, search it, analyze it, transform it. Build cost-effectively in minutes, not months."
+          },
+          {
+            "type": "h2",
+            "text": "Features"
+          },
+          {
+            "type": "h3",
+            "text": "Unlock the data in your video"
+          },
+          {
+            "type": "p",
+            "text": "More than just content, video contains a boatload of data for you to build with. Select a video to see Mux in action."
+          },
+          {
+            "type": "h3",
+            "text": "Turn video files into video features"
+          },
+          {
+            "type": "p",
+            "text": "We give you the building blocks to create live and on-demand video exactly how you want."
+          },
+          {
+            "type": "p",
+            "text": "See all Mux Video features"
+          },
+          {
+            "type": "h3",
+            "text": "Understand video analytics at a glance"
+          },
+          {
+            "type": "p",
+            "text": "Track key engagement and quality of experience metrics: views, playing time, viewer retention, startup time, rebuffering, and more."
+          },
+          {
+            "type": "p",
+            "text": "Video views and unique viewers are up, average completion is slightly up, and playing time is down.KViews22%Unique Viewers2.9kk1.317% 3PM 6PMPlaying Timeh1.736%Last 6hOne week ago"
+          },
+          {
+            "type": "p",
+            "text": "Looking for standalone media-grade stream analytics?"
+          },
+          {
+            "type": "p",
+            "text": "Get Mux Data"
+          },
+          {
+            "type": "h3",
+            "text": "Mux Robots"
+          },
+          {
+            "type": "p",
+            "text": "Integrate Mux's pre-built AI workflows or build your own. Our platform is built for humans and robots, from streaming to analysis and everything in between."
+          },
+          {
+            "type": "h3",
+            "text": "Ask questions"
+          },
+          {
+            "type": "p",
+            "text": "Is this video a cartoon?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Does this video feature cats?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Was this video mostly shot outdoors?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "h3",
+            "text": "Summarization"
+          },
+          {
+            "type": "p",
+            "text": "|"
+          },
+          {
+            "type": "p",
+            "text": "AI"
+          },
+          {
+            "type": "p",
+            "text": "Tone:"
+          },
+          {
+            "type": "h3",
+            "text": "Content moderation"
+          },
+          {
+            "type": "p",
+            "text": "NSFW: Violent:"
+          },
+          {
+            "type": "h3",
+            "text": "Chaptering"
+          },
+          {
+            "type": "p",
+            "text": "Analyze your video to identify natural breakpoints, create descriptive chapter titles, and add timestamps"
+          },
+          {
+            "type": "h2",
+            "text": "The video infrastructure for your website"
+          },
+          {
+            "type": "p",
+            "text": "From background videos to simple player embeds, we’ve got you covered."
+          },
+          {
+            "type": "p",
+            "text": "While you perfect your AI models, we take care of encoding, delivery, and scaling your video output reliably and cost-effectively."
+          },
+          {
+            "type": "p",
+            "text": "With videos ready for playback in an average of under 2 seconds you can build what you need for your community."
+          },
+          {
+            "type": "p",
+            "text": "Whether it’s on-demand or live, build video that scales to support your users."
+          },
+          {
+            "type": "p",
+            "text": "Patreon built native video for a more consistent creator and fan experience, going from limited control with third-party solutions to a fully customized, seamless platform.."
+          },
+          {
+            "type": "p",
+            "text": "Go from MVP to launch in no time with API and docs that are designed for developers to build video quickly."
+          },
+          {
+            "type": "p",
+            "text": "With latency as low as 4 seconds and support for SRT (with HEVC) and RTMP, you can stream live, at scale, and without worry."
+          },
+          {
+            "type": "h2",
+            "text": "We speak your language"
+          },
+          {
+            "type": "p",
+            "text": "You don’t have to reinvent your stack to get great video. We’re compatible with your favorite languages and frameworks."
+          },
+          {
+            "type": "h2",
+            "text": "Mux love from around the world"
+          },
+          {
+            "type": "p",
+            "text": "No credit card required to start using Mux."
+          }
+        ],
+        "translations": [
+          "技术预览",
+          "右箭头",
+          "Mux 帮助团队用视频做更多事。对其进行流媒体传输、内容审核、搜索、分析和转换。只需几分钟而非几个月，即可实现高性价比的开发。",
+          "功能特性",
+          "释放视频中的数据价值",
+          "视频不仅是内容，更包含海量可供您用来构建应用的数据。选择一个视频，看看 Mux 的实际运作吧。",
+          "将视频文件转化为视频功能",
+          "我们为您提供基础构建模块，助您按照自己的意愿打造完美的直播和点播视频。",
+          "查看所有 Mux Video 功能",
+          "一目了然，轻松掌握视频分析数据",
+          "跟踪关键的参与度和体验质量指标：播放量、播放时长、观众留存率、启动时间、卡顿率等。",
+          "视频播放量和独立观众数上升，平均完播率略有上升，播放时长下降。KViews22%独立观众2.9kk1.317% 下午3点 下午6点播放时长h1.736%过去6小时一周前",
+          "在寻找独立的媒体级流媒体分析服务吗？",
+          "获取 Mux Data",
+          "Mux Robots",
+          "集成 Mux 预构建的 AI 工作流，或构建您自己的工作流。我们的平台专为人类和机器人设计，涵盖从流媒体传输到数据分析及中间的各个环节。",
+          "提问",
+          "这个视频是动画片吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频里有猫吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频主要是在户外拍摄的吗？",
+          "是/否",
+          "100% 确定性",
+          "内容摘要",
+          "|",
+          "AI",
+          "基调：",
+          "内容审核",
+          "NSFW（工作场所不宜）： 暴力：",
+          "章节划分",
+          "分析您的视频以识别自然断点，生成描述性章节标题，并添加时间戳",
+          "专为您的网站打造的视频基础设施",
+          "从背景视频到简单的播放器嵌入，我们都能为您提供全方位支持。",
+          "当您在完善 AI 模型时，我们将负责可靠且经济高效地处理视频的编码、分发和扩展。",
+          "视频平均仅需不到 2 秒即可准备就绪进行播放，让您能够为社区构建所需的一切。",
+          "无论是点播还是直播，都能构建可扩展的视频服务以支撑您的用户。",
+          "Patreon 打造了原生视频功能，为创作者和粉丝提供更一致的体验，从第三方解决方案的有限控制，转变为完全定制化的无缝平台。",
+          "借助专为开发者快速构建视频应用而设计的 API 和文档，瞬间完成从 MVP 到上线的全过程。",
+          "延迟低至 4 秒，并支持 SRT（包含 HEVC）和 RTMP 协议，让您可以大规模、无顾虑地进行直播。",
+          "我们支持您的开发语言",
+          "您无需为了获得出色的视频体验而重构现有的技术栈。我们与您最喜欢的语言和框架完全兼容。",
+          "来自世界各地的 Mux 好评",
+          "无需信用卡即可开始使用 Mux。"
+        ]
+      }
+    },
+    {
+      "slug": "0dd9e7610da5f301",
+      "title": "Lex Friedman Brings Back Strategery",
+      "titleZh": "Lex Friedman Brings Back Strategery",
+      "link": "https://lexontech.org/strategery-is-back-and-im-the-developer",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-21T22:52:44.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Lex Friedman Brings Back Strategery",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Lex Friedman",
+        "siteName": "Lex on Tech",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’m now the very proud developer and owner of Strategery, the classic iOS game. I just released a brand new version of the app, available now in the App Store. You should absolutely check it out. But I’d love to tell you the backstory."
+          },
+          {
+            "type": "p",
+            "text": "Playing the game"
+          },
+          {
+            "type": "p",
+            "text": "In 2009, I found Strategery in the App Store. I don’t remember exactly how I stumbled across it, but I know that I spent a lot of time exploring the App Store in those days, because it still felt like you could kind of see everything if you spent enough time. There were many apps, but still, you could sort of count them."
+          },
+          {
+            "type": "p",
+            "text": "I recognized Strategery as a sort-of Risk-like game — though I’d never actually played Risk. I thought the name was funny (pulled from Will Ferrell as George W. Bush on Saturday Night Live). And the gameplay was straightforward, fun as heck, and rather addictive: Attack colorful amorphous regions, subject to the whim of dice roll coupled with your gameplay strategy, win or lose, play again."
+          },
+          {
+            "type": "p",
+            "text": "I reviewed the game for Macworld. In April 2009. That’s 17 years ago."
+          },
+          {
+            "type": "quote",
+            "text": "On your turn, you tap any country you control that has at least two armies, and then tap an adjacent nation you wish to attack. Each army involved counts as one die, and if the sum of all the dice your armies roll is greater than the sum of your enemies — well, get ready to plunder. You’ll immediately take ownership of their land … but if the final dice score was close, expect to lose some armies in the process."
+          },
+          {
+            "type": "p",
+            "text": "That review got Fireballed. Strategery got hugely popular."
+          },
+          {
+            "type": "p",
+            "text": "In 2009, Macworld named the app Best Strategy Game. In my writeup for that award, I said, “There is no game I play on my iPhone more than Strategery” — a quote that ended up on the game’s App Store page, which I found exquisitely exciting. I also wrote:"
+          },
+          {
+            "type": "quote",
+            "text": "Simple on the surface, Strategery offers depth that can — and will — claim hours of your time."
+          },
+          {
+            "type": "p",
+            "text": "How the game began"
+          },
+          {
+            "type": "p",
+            "text": "Original developers Sumul Shah and Courtland Idstrom met in college in 1999. Their first app was Top Shelf (née iDrink), which was a cocktail reference tool that hit Apple’s Top 100 chart. With their friend Peter Ju freelancing for them, they built and launched Strategery in 2009."
+          },
+          {
+            "type": "p",
+            "text": "The game offered local multiplayer at the start, and eventually added online multiplayer too. At one point, there was a standalone Lite version — the App Store was a different beast in those days."
+          },
+          {
+            "type": "p",
+            "text": "The last Strategery update in the App Store was version 3.8, released June 2017. It had been a two year gap since its prior update, which came two years after that prior update."
+          },
+          {
+            "type": "p",
+            "text": "Strategery was a hit, but its co-creators eventually moved on. Shah ran a design studio with his wife for nearly a decade, and later founded (and led design for) a medical technology company. Idstrom went to work at Apple back in 2018 and has been there since."
+          },
+          {
+            "type": "p",
+            "text": "But the darn thing kept working. It’s been working with no further updates since 2017. That’s bonkers."
+          },
+          {
+            "type": "p",
+            "text": "99 percent inspiration"
+          },
+          {
+            "type": "p",
+            "text": "In August of this year, Jim Ray posted on Mastodon:"
+          },
+          {
+            "type": "p",
+            "text": "I had noted the same thing — that Strategery had stopped working on iOS 27 betas. It made me sad."
+          },
+          {
+            "type": "p",
+            "text": "As Jim noted, wow was the app a great investment back in the day; you paid a buck or three (depending on when you got it), and got as many as seventeen years of enjoyment out of it. That’s crazy."
+          },
+          {
+            "type": "p",
+            "text": "But I was still sad to let it go. Strategery is a great game, a great time-passer when lines are long or planes are delayed."
+          },
+          {
+            "type": "p",
+            "text": "I decided I’d try to build my own version."
+          },
+          {
+            "type": "p",
+            "text": "I got my app — which I first called “Averse,” as in “Risk Averse,” and later called “Skirmish,” when friends told me “Skirmishish” was terrible — to a pretty good place. But I immediately concluded I wasn’t comfortable sharing the app with anyone but a few friends on TestFlight."
+          },
+          {
+            "type": "p",
+            "text": "(Legally, you can’t copyright game mechanics. So I could have released the app under a different name as my own thing. It’s why so many knockoff games exist. But my concern wasn’t a legal one.)"
+          },
+          {
+            "type": "p",
+            "text": "I loved Strategery. I didn’t feel good about knocking it off. So I reached out to the developers."
+          },
+          {
+            "type": "p",
+            "text": "Or I tried to. The old email addresses I had from some correspondence in 2010 didn’t work anymore. I did some Internet stalking and found the developers. And then when I found a web game Shah had made — Figure — it had an email address. I made contact."
+          },
+          {
+            "type": "p",
+            "text": "I had several delightful video conversations with Sumul and Courtland. And I lucked out: I found two of the nicest developers you could ever hope to meet. They still felt a ton of love for Strategery, they loved how many people still felt warmly about the game — but they didn’t have time to devote to keeping it updated. We worked out a deal for me to take it on."
+          },
+          {
+            "type": "p",
+            "text": "With great power comes great responsibility"
+          },
+          {
+            "type": "p",
+            "text": "I’m lucky. In addition to taking over the app, I also get a direct line to insights from Courtland and Sumul. They pointed out features I’d missed in my recreation, explained why some things worked the way they did, and suggested and talked through various feature ideas. The new Strategery is the same game but also clearly a different game."
+          },
+          {
+            "type": "p",
+            "text": "And I’m inspired by Jim’s Mastodon post — and the two co-creators. We all agreed that the nicest thing to do was update the app in place, so folks who already owned it, still owned it. If you bought it eons ago for $2, you get the new version today. (If you’re overcome with the need to spend money on Strategery anew, I did add a tip jar.)"
+          },
+          {
+            "type": "p",
+            "text": "The new version of the game should be recognizably Strategery to anyone who remembers the original version. But I also aimed to add some Lexisms."
+          },
+          {
+            "type": "p",
+            "text": "There’s some whimsy throughout, in the algorithmically-generated country names, the snarky play by play, and the overall language used by the game. And I added Chaos Mode, where taking over certain regions triggers a roulette wheel that causes mostly good things to happen (extra pegs, a new region), and sometimes instead, you know, takeths away."
+          },
+          {
+            "type": "p",
+            "text": "Newcomers can buy the app outright for $5. (Inflation is the worst. Sorry.) But existing owners get Strategery 4.0 for free. May the blobs be ever in your favor."
+          }
+        ],
+        "translations": [
+          "I’m now the very proud developer and owner of Strategery, the classic iOS game. I just released a brand new version of the app, available now in the App Store. You should absolutely check it out. But I’d love to tell you the backstory.",
+          "Playing the game",
+          "In 2009, I found Strategery in the App Store. I don’t remember exactly how I stumbled across it, but I know that I spent a lot of time exploring the App Store in those days, because it still felt like you could kind of see everything if you spent enough time. There were many apps, but still, you could sort of count them.",
+          "I recognized Strategery as a sort-of Risk-like game — though I’d never actually played Risk. I thought the name was funny (pulled from Will Ferrell as George W. Bush on Saturday Night Live). And the gameplay was straightforward, fun as heck, and rather addictive: Attack colorful amorphous regions, subject to the whim of dice roll coupled with your gameplay strategy, win or lose, play again.",
+          "I reviewed the game for Macworld. In April 2009. That’s 17 years ago.",
+          "On your turn, you tap any country you control that has at least two armies, and then tap an adjacent nation you wish to attack. Each army involved counts as one die, and if the sum of all the dice your armies roll is greater than the sum of your enemies — well, get ready to plunder. You’ll immediately take ownership of their land … but if the final dice score was close, expect to lose some armies in the process.",
+          "That review got Fireballed. Strategery got hugely popular.",
+          "In 2009, Macworld named the app Best Strategy Game. In my writeup for that award, I said, “There is no game I play on my iPhone more than Strategery” — a quote that ended up on the game’s App Store page, which I found exquisitely exciting. I also wrote:",
+          "Simple on the surface, Strategery offers depth that can — and will — claim hours of your time.",
+          "How the game began",
+          "Original developers Sumul Shah and Courtland Idstrom met in college in 1999. Their first app was Top Shelf (née iDrink), which was a cocktail reference tool that hit Apple’s Top 100 chart. With their friend Peter Ju freelancing for them, they built and launched Strategery in 2009.",
+          "The game offered local multiplayer at the start, and eventually added online multiplayer too. At one point, there was a standalone Lite version — the App Store was a different beast in those days.",
+          "The last Strategery update in the App Store was version 3.8, released June 2017. It had been a two year gap since its prior update, which came two years after that prior update.",
+          "Strategery was a hit, but its co-creators eventually moved on. Shah ran a design studio with his wife for nearly a decade, and later founded (and led design for) a medical technology company. Idstrom went to work at Apple back in 2018 and has been there since.",
+          "But the darn thing kept working. It’s been working with no further updates since 2017. That’s bonkers.",
+          "99 percent inspiration",
+          "In August of this year, Jim Ray posted on Mastodon:",
+          "I had noted the same thing — that Strategery had stopped working on iOS 27 betas. It made me sad.",
+          "As Jim noted, wow was the app a great investment back in the day; you paid a buck or three (depending on when you got it), and got as many as seventeen years of enjoyment out of it. That’s crazy.",
+          "But I was still sad to let it go. Strategery is a great game, a great time-passer when lines are long or planes are delayed.",
+          "I decided I’d try to build my own version.",
+          "I got my app — which I first called “Averse,” as in “Risk Averse,” and later called “Skirmish,” when friends told me “Skirmishish” was terrible — to a pretty good place. But I immediately concluded I wasn’t comfortable sharing the app with anyone but a few friends on TestFlight.",
+          "(Legally, you can’t copyright game mechanics. So I could have released the app under a different name as my own thing. It’s why so many knockoff games exist. But my concern wasn’t a legal one.)",
+          "I loved Strategery. I didn’t feel good about knocking it off. So I reached out to the developers.",
+          "Or I tried to. The old email addresses I had from some correspondence in 2010 didn’t work anymore. I did some Internet stalking and found the developers. And then when I found a web game Shah had made — Figure — it had an email address. I made contact.",
+          "I had several delightful video conversations with Sumul and Courtland. And I lucked out: I found two of the nicest developers you could ever hope to meet. They still felt a ton of love for Strategery, they loved how many people still felt warmly about the game — but they didn’t have time to devote to keeping it updated. We worked out a deal for me to take it on.",
+          "With great power comes great responsibility",
+          "I’m lucky. In addition to taking over the app, I also get a direct line to insights from Courtland and Sumul. They pointed out features I’d missed in my recreation, explained why some things worked the way they did, and suggested and talked through various feature ideas. The new Strategery is the same game but also clearly a different game.",
+          "And I’m inspired by Jim’s Mastodon post — and the two co-creators. We all agreed that the nicest thing to do was update the app in place, so folks who already owned it, still owned it. If you bought it eons ago for $2, you get the new version today. (If you’re overcome with the need to spend money on Strategery anew, I did add a tip jar.)",
+          "The new version of the game should be recognizably Strategery to anyone who remembers the original version. But I also aimed to add some Lexisms.",
+          "There’s some whimsy throughout, in the algorithmically-generated country names, the snarky play by play, and the overall language used by the game. And I added Chaos Mode, where taking over certain regions triggers a roulette wheel that causes mostly good things to happen (extra pegs, a new region), and sometimes instead, you know, takeths away.",
+          "Newcomers can buy the app outright for $5. (Inflation is the worst. Sorry.) But existing owners get Strategery 4.0 for free. May the blobs be ever in your favor."
+        ]
+      }
+    },
+    {
+      "slug": "d575f6fbe89b64ee",
+      "title": "GM Confirms They’re Still Smoking Crack",
+      "titleZh": "GM Confirms They’re Still Smoking Crack",
+      "link": "https://x.com/JoannaStern/status/2102105565195288859",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-21T21:52:50.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "GM Confirms They’re Still Smoking Crack",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Joanna Stern"
+          },
+          {
+            "type": "p",
+            "text": "Correction: GM has confirmed it is NOT rolling phone projection to GM EVs. Instead this announcement is specific to JUST their new gas powered light-duty pickups, which have always supported Apple CarPlay and Android Auto. \n\nYou know where I stand on this!"
+          },
+          {
+            "type": "p",
+            "text": "6:39 PM · Sep 21, 2026"
+          },
+          {
+            "type": "p",
+            "text": "9,858"
+          },
+          {
+            "type": "p",
+            "text": "Views"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "bb3044bdbe6f2ae9",
+      "title": "America’s Decline Can Be Measured by the Names of Ballparks and Arenas",
+      "titleZh": "America’s Decline Can Be Measured by the Names of Ballparks and Arenas",
+      "link": "https://www.mlb.com/news/tigers-ballpark-name-changed-to-fifth-third-park",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-21T21:23:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "America’s Decline Can Be Measured by the Names of Ballparks and Arenas",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jason Beck",
+        "siteName": "MLB",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "September 21st, 2026"
+          },
+          {
+            "type": "p",
+            "text": "DETROIT -- Comerica Park has had several alternate identities since it became the Tigers’ home in 2000. Some have called it Comerica National Park for its spacious dimensions. Some fans simply came to call it Comerica, or abbreviated it to CoPa, as they grew comfortable with it over the years."
+          },
+          {
+            "type": "p",
+            "text": "Starting next year, the Tigers’ ballpark will have a new formal name: Fifth Third Park."
+          },
+          {
+            "type": "li",
+            "text": "Tigers Hooded Jersey Giveaway is this Saturday!"
+          },
+          {
+            "type": "p",
+            "text": "The Tigers and Fifth Third Bank announced the name change at a Monday afternoon news conference on the field."
+          },
+          {
+            "type": "p",
+            "text": "The change had been expected for months ever since Fifth Third Bank announced its merger with Comerica Bank, the ballpark’s longtime corporate sponsor, last year. The merger came shortly after Comerica’s name replaced the light-up Tigers script sign atop the giant videoboard beyond left field."
+          },
+          {
+            "type": "p",
+            "text": "The Fifth Third name is already familiar in the Tigers organization. The Toledo Mud Hens, the Tigers’ Triple-A affiliate, have played at Fifth Third Field since it opened in 2002. Their High-A affiliate, the West Michigan Whitecaps, played in Fifth Third Ballpark for about 20 years before Lake Michigan Credit Union became the sponsor of LMCU Park in 2021. The Dayton Dragons, the Reds’ High-A affiliate, also played at a ballpark called Fifth Third Field from its opening in 2000 until '20."
+          },
+          {
+            "type": "p",
+            "text": "Fifth Third Park avoids such an overlap. Comerica Bank’s original naming rights deal was extended in 2018 to run through 2034."
+          },
+          {
+            "type": "p",
+            "text": "Signage around the ballpark will be updated during the offseason. The Tigers are scheduled to open the 2027 season at home against the White Sox on Thursday, March 25."
+          },
+          {
+            "type": "p",
+            "text": "Just nine Major League teams have played longer in their current home without a name change than the Tigers at Comerica Park:"
+          },
+          {
+            "type": "p",
+            "text": "Baltimore Orioles (Oriole Park at Camden Yards)Boston Red Sox (Fenway Park)Chicago Cubs (Wrigley Field)Colorado Rockies (Coors Field)Kansas City Royals (Kauffman Stadium)Los Angeles Angels (Angel Stadium)Los Angeles Dodgers (Dodger Stadium)Pittsburgh Pirates (PNC Park)Tampa Bay Rays (Tropicana Field)"
+          },
+          {
+            "type": "p",
+            "text": "The Arizona Diamondbacks underwent a similar merger-based name change at their home when Bank One Ballpark became Chase Field in 2005."
+          }
+        ],
+        "translations": [
+          "September 21st, 2026",
+          "DETROIT -- Comerica Park has had several alternate identities since it became the Tigers’ home in 2000. Some have called it Comerica National Park for its spacious dimensions. Some fans simply came to call it Comerica, or abbreviated it to CoPa, as they grew comfortable with it over the years.",
+          "Starting next year, the Tigers’ ballpark will have a new formal name: Fifth Third Park.",
+          "Tigers Hooded Jersey Giveaway is this Saturday!",
+          "The Tigers and Fifth Third Bank announced the name change at a Monday afternoon news conference on the field.",
+          "The change had been expected for months ever since Fifth Third Bank announced its merger with Comerica Bank, the ballpark’s longtime corporate sponsor, last year. The merger came shortly after Comerica’s name replaced the light-up Tigers script sign atop the giant videoboard beyond left field.",
+          "The Fifth Third name is already familiar in the Tigers organization. The Toledo Mud Hens, the Tigers’ Triple-A affiliate, have played at Fifth Third Field since it opened in 2002. Their High-A affiliate, the West Michigan Whitecaps, played in Fifth Third Ballpark for about 20 years before Lake Michigan Credit Union became the sponsor of LMCU Park in 2021. The Dayton Dragons, the Reds’ High-A affiliate, also played at a ballpark called Fifth Third Field from its opening in 2000 until '20.",
+          "Fifth Third Park avoids such an overlap. Comerica Bank’s original naming rights deal was extended in 2018 to run through 2034.",
+          "Signage around the ballpark will be updated during the offseason. The Tigers are scheduled to open the 2027 season at home against the White Sox on Thursday, March 25.",
+          "Just nine Major League teams have played longer in their current home without a name change than the Tigers at Comerica Park:",
+          "Baltimore Orioles (Oriole Park at Camden Yards)Boston Red Sox (Fenway Park)Chicago Cubs (Wrigley Field)Colorado Rockies (Coors Field)Kansas City Royals (Kauffman Stadium)Los Angeles Angels (Angel Stadium)Los Angeles Dodgers (Dodger Stadium)Pittsburgh Pirates (PNC Park)Tampa Bay Rays (Tropicana Field)",
+          "The Arizona Diamondbacks underwent a similar merger-based name change at their home when Bank One Ballpark became Chase Field in 2005."
+        ]
+      }
+    },
+    {
+      "slug": "fd468d03e8609cee",
+      "title": "It's Not Just True, It's False",
+      "titleZh": "It's Not Just True, It's False",
+      "link": "https://idiallo.com/byte-size/its-not-just-true-its-false",
+      "sourceName": "idiallo.com",
+      "sourceUrl": "https://idiallo.com",
+      "pubDate": "2026-09-22T01:49:51.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "It's Not Just True, It's False",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ibrahim Diallo",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "We’ve given in to using LLMs for writing at work. From emails and Slack comments to full-on documentation, everything is AI-generated. However, I’ve realized it only ever saves me time when I’m being lazy. That is, it’s great at converting meetings into transcripts, summarizing those transcripts into action items, and keeping information accessible."
+          },
+          {
+            "type": "p",
+            "text": "But it’s pretty bad because the result is ridden with invisible errors. But what counts as an error if you trust the LLM and never meticulously read the output? And how much time are you really saving if you end up spending that time proofreading?"
+          },
+          {
+            "type": "p",
+            "text": "I went back to a meeting transcript after a developer struggled to turn my AI-generated summary into a coherent ticket. Looking through the source transcript, I noticed that at one point it recorded the word \"embroidery.\" I mean, we work for a large telecom company, the chances of me using that word are slim to none. Nevertheless, the AI summarized the conversation and included \"embroidery\" as an action item."
+          },
+          {
+            "type": "p",
+            "text": "In the words of Claude himself:"
+          },
+          {
+            "type": "p",
+            "text": "It's not just true, it's false."
+          },
+          {
+            "type": "p",
+            "text": "I chuckled, but it made me think about all the BI slop we generate daily in the name of using AI technology. It feels helpful. Creating massive documents makes us look productive. Generating a pull request with changes across hundreds of files seems impressive. Asking AI to validate an idea feels instructive. Unless you take the time to scrutinize the results."
+          },
+          {
+            "type": "p",
+            "text": "I can only imagine what the world will look like when we feed all this slop back into the machine."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "39a4c9b03255e936",
+      "title": "Pluralistic: Bonta sold us out to Trump's oligarchs (22 Sep 2026)",
+      "titleZh": "Pluralistic: Bonta sold us out to Trump's oligarchs (22 Sep 2026)",
+      "link": "https://pluralistic.net/2026/09/22/happy-chudmas/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-09-22T08:19:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Pluralistic: Bonta sold us out to Trump's oligarchs (22 Sep 2026)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "Bonta sold us out to Trump's oligarchs: A \"settlement\" that promises less than nothing."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Warren on taxing the rich and class warfare; Psychology v reproducibility; Copyright troll sentenced for beating Uber driver; \"Halloween Moon\"; Enshittification of solar."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Berkeley, Edmonton, Boston, Brighton, South Bend, Hudson, Calgary, Winnipeg, Paris, OVancouver, Victoria, Ottawa, Kilkenny, Montreal."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "Bonta sold us out to Trump's oligarchs (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Well, fuck. California Attorney General Rob Bonta just surrendered to the Trump-aligned Ellison billionaires who want to take over and destroy Warners, merging it with the chudded out husk they've made of Paramount, leaving these two colossal, corrupt, useless assholes to control Warners, Paramount and Tiktok:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.reuters.com/legal/litigation/paramount-settles-with-california-other-states-clearing-major-hurdle-warner-bros-2026-09-21/"
+          },
+          {
+            "type": "p",
+            "text": "In announcing the settlement, Bonta's office touted a long list of concessions the AG had wrung from the Ellisons before greenlighting this indefensible, illegal and dangerous merger. Every! single! one! of these concessions is meaningless bullshit. Bonta just handed the American movie and TV sector to two of the most odious creeps to draw breath, surrendering without firing a shot."
+          },
+          {
+            "type": "p",
+            "text": "For a breakdown of how fucking useless this settlement is, read (who else?) Matt Stoller, whose piece breaking it down is titled \"Happy Oligarch Day!\""
+          },
+          {
+            "type": "p",
+            "text": "https://www.thebignewsletter.com/p/happy-oligarch-day-as-trump-aligned"
+          },
+          {
+            "type": "p",
+            "text": "The first thing Stoller points out is that every one of the \"commitments\" in the settlement only matter if Bonta's office enforces them. Bonta's office will never have as much leverage over Warnermount as it has today, when the company is paying a $7m/day \"ticking fee\" while the merger is stalled (thanks to an injunction secured by the Hollywood unions, whom Bonta has just royally fucked, because they can't afford to litigate this case without the AG office's backing). So even if any of these conditions meant anything (which they do not), they won't be enforced. If Bonta can't bring Warnermount to heel today, when they have to pay $7m/day for so long as they're crosswise with him, how will he ever get them to do shit?"
+          },
+          {
+            "type": "p",
+            "text": "He."
+          },
+          {
+            "type": "p",
+            "text": "Will."
+          },
+          {
+            "type": "p",
+            "text": "Not."
+          },
+          {
+            "type": "p",
+            "text": "But it doesn't matter. It doesn't matter! Because the Ellisons have given Bonta nothing. Take the guarantee that Warnermount \"will make 30 films\" for the next two years, and 32 films thereafter. That's what's been announced, but when former FTC Commissioner Alvaro Bedoya dug into the actual wording, he discovered they are only committing to distributing 30 films, and to making 15 films, which they are allowed to co-produce with other studios. They made 18 movies last year. Under the terms of this deal, they have \"committed\" to making fewer movies than they make today:"
+          },
+          {
+            "type": "p",
+            "text": "https://x.com/BedoyaUSA/status/2102173188557799773"
+          },
+          {
+            "type": "p",
+            "text": "They've committed to not selling the Warner lot. For five years. But they are allowed to move it out of LA, which is something my neighbors in Burbank are doubtless delighted to learn. After that, they can move it to whatever state offers them the biggest sweetheart tax deal and the weakest union protections."
+          },
+          {
+            "type": "p",
+            "text": "They are prohibited from gouging the theater chains and putting them out of business to promote their streaming business. For three years. After that, they can let 'er rip."
+          },
+          {
+            "type": "p",
+            "text": "Then there's the \"editorial board\" that will oversee the Ellisons' management of CNN and MSNBC, nominally to keep it from getting the CBS treatment and going 24/7 Great Replacement/Haitians eating dogs/Charlie Kirk funeral pyrotechnics spectaculars. Guess who chooses the members of the editorial board? The Ellisons. As Stoller writes, \"it’s downright comical [that] they demanded that David Ellison not corrupt CNN by having David Ellison appoint a board ensuring that David Ellison not do that.\""
+          },
+          {
+            "type": "p",
+            "text": "But you can ignore everything you've just read, because the settlement includes a clause that says they don't have to do any of the things it says they have to do. This is the \"force majeure\" clause, which is not like a normal force majeure clause (which allows the parties to back out of their commitment in case of war, wildfires, etc). This force majeure clause lets Warnermount tear up the entire agreement if there's a strike or a recession."
+          },
+          {
+            "type": "p",
+            "text": "So: if (when) the Hollywood unions go on strike over this betrayal (which they absolutely should do), the agreement becomes null. And if (when) the AI bubble bursts and there's a massive recession, the agreement becomes null. And if (when) Trump's War on Oil plunges the US into Jimmy Carter-style oil economic tsunami, the agreement becomes null."
+          },
+          {
+            "type": "p",
+            "text": "As Stoller points out, 12 State Attorneys General signed this piece of shit. Every one of them is a lawyer, and every one of them has a staff of lawyers. None of the glaring, catastrophic, utterly disqualifying defects in this \"settlement\" can possibly be a surprise to them. These Democrat warriors surrendered to Trump's oligarchs, giving them everything, including control over the American film and TV industry for so long as it limps along. They just assumed you wouldn't notice."
+          },
+          {
+            "type": "p",
+            "text": "Stoller says he's \"in a strangely good mood\" about this because of all the political capital it took to get this over the line (unlike, say, Disney-Fox, which sailed through with nary a hitch), saying that it indicates that the public is fed up with monopolies. He's right, they are fed up with monopolies. Everyday Americans, Democrats and Republicans, are telling pollsters they'd back a politician who campaigned on shattering monopoly power:"
+          },
+          {
+            "type": "p",
+            "text": "https://libertyandpower.substack.com/p/pollsters-urge-dems-to-attack-monopoly"
+          },
+          {
+            "type": "p",
+            "text": "So this leaves us to wonder why Bonta (who talked tough in public about this merger and insisted he would never settle for this kind of weaksauce) stabbed the state, the country, Hollywood workers, and the American public in the back like this? Stoller's theory is that Bonta was isolated by \"Democratic insiders\" who wouldn't back his play."
+          },
+          {
+            "type": "p",
+            "text": "OK, fine. As Stoller writes, there's no ambiguity here, this is just straight up corruption, oligarch pals of the President getting to roll up and gut the industry's globally important, culturally essential media sector. The \"teachers' pets\" of the Democratic Party have once again sold out working people in a bid to be liked by the rich and powerful."
+          },
+          {
+            "type": "p",
+            "text": "This will fuel (more) distrust of America's political class, a distrust that has been repeatedly earned over decades and especially in this decade. Our leaders are \"malevolent liars.\" It's been true for a very long time, but we can no longer pretend otherwise. Perhaps Stoller's right and this means we'll finally get some real change. I hope so. But for now, I'm just furious."
+          },
+          {
+            "type": "p",
+            "text": "(Image: Todd Dwyer, CC BY-SA 3.0, modified)"
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Technopolitics https://locusmag.com/feature/commentary-cory-doctorow-technopolitics/"
+          },
+          {
+            "type": "li",
+            "text": "Pollsters Urge Dems to Attack Monopoly Power. Candidates are Listening. https://libertyandpower.substack.com/p/pollsters-urge-dems-to-attack-monopoly"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#25yrsago Finnish hacker's homebrew OS fits on a floppy https://web.archive.org/web/20010923224224/https://www.menuetos.org/"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Can RIAA sue for songs they never verified by downloading from you? https://recordingindustryvspeople.blogspot.com/2006/09/preclusion-motion-filed-in-umg-v.html"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Elizabeth Warren explains why taxing the rich isn’t “class warfare” https://www.youtube.com/watch?v=htX2usfqMEs"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago DoJ audit: meeting served $16 muffins and $8 coffee https://web.archive.org/web/20110921160806/http://news.yahoo.com/16-muffins-8-coffee-served-justice-audit-023623142.html"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Psychology’s reproducibility crisis: why statisticians are publicly calling out social scientists https://statmodeling.stat.columbia.edu/2016/09/21/what-has-happened-down-here-is-the-winds-have-changed/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Notorious copyright troll sentenced to 20 weeks’ prison time for beating Uber driver https://torrentfreak.com/copyright-troll-partner-kicked-uber-driver-in-the-head-160923/"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Understanding vulvas: what do they really look like? https://www.youtube.com/watch?v=qAFvGrOwVug"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago The American public subsidized $125m executive bonus for Wells Fargo exec who led massive fraud https://web.archive.org/web/20160922140758/https://www.ibtimes.com/political-capital/taxpayers-subsidized-wells-fargo-executive-pay-amid-banks-fraud-2419456"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The music monopolists https://pluralistic.net/2021/09/23/remedies-beyond-antitrust/#face-the-music"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The Halloween Moon https://pluralistic.net/2021/09/23/remedies-beyond-antitrust/#creepypasta"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago The enshittification of solar (and how to stop it) https://pluralistic.net/2025/09/23/our-friend-the-electron/#to-every-man-his-castle"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Berkeley: Celebrating 25 Years at the Digital Frontier (Samuelson Clinic), Sep 24\nhttps://www.law.berkeley.edu/experiential/clinics/samuelson-law-technology-public-policy-clinic/samuelson-25th-anniversary-celebration/"
+          },
+          {
+            "type": "li",
+            "text": "Edmonton: Elbows Up (Edmonton Public Library), Sep 28\nhttps://www.epl.ca/blogs/post/elbows-up-with-cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Boston: The Post-American Internet: Possibilities for a new internet created by an American Hermit Kingdom (MIT Media Lab), Sep 30\nhttps://www.media.mit.edu/events/the-post-american-internet-possibilities-for-a-new-internet-created-by-an-american-hermit-kingdom/"
+          },
+          {
+            "type": "li",
+            "text": "Boston: Rethinking Our Relationship with AI, Sep 30 (Emtech)\nhttps://event.technologyreview.com/emtech-future-2026/detailed-agenda"
+          },
+          {
+            "type": "li",
+            "text": "Boston: The Paradox of Enshittification and Reverse Centaurs (Harvard Berkman Klein), Sep 30\nhttps://cyber.harvard.edu/events/running-harder-falling-faster-paradox-enshittification-and-reverse-centaurs"
+          },
+          {
+            "type": "li",
+            "text": "Brighton: Digital Sovereignty and the Post-American Internet (Green Party Conference), Oct 3\nhttps://www.openrightsgroup.org/events/digital-sovereignty-and-the-post-american-internet/"
+          },
+          {
+            "type": "li",
+            "text": "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/"
+          },
+          {
+            "type": "li",
+            "text": "Hudson, OH: Hudson Library, Oct 7\nhttps://engagedpatrons.org/EventsExtended.cfm?SiteID=3850&amp;EventID=596952&amp;PK="
+          },
+          {
+            "type": "li",
+            "text": "Calgary: Wordfest, Oct 8\nhttps://wordfest.com/2026/show/wordfest-presents-cory-doctorow-2026/"
+          },
+          {
+            "type": "li",
+            "text": "Winnipeg: McNally Robinson, Oct 9\nhttps://www.mcnallyrobinson.com/event-18991/An-Evening-with-Cory-Doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Paris: Slow Tech Summit, Oct 15\nhttps://slowtechsummit.com/"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: Read, Resist, Repair, Rejoice (Vancouver Writers Festival), Oct 19\nhttps://writersfest.bc.ca/festival-event-2026/01"
+          },
+          {
+            "type": "li",
+            "text": "Victoria: Munro's Books, Oct 20\nhttps://www.munrobooks.com/events/6113620261020"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: Life After AI (Vancouver Writers Festival), Oct 22\nhttps://writersfest.bc.ca/festival-event-2026/46"
+          },
+          {
+            "type": "li",
+            "text": "Ottawa: Life After AI (Ottawa Writers Festival), Oct 24\nhttps://writersfestival.org/event/life-after-ai"
+          },
+          {
+            "type": "li",
+            "text": "Kilkenny (Kilkenomics), Nov 6-8\nhttps://kilkenomics.com/"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: Enshittification (Sid Williams Theatre Society), Nov 10\nhttps://www.sidwilliamstheatre.com/events/cory-doctorow-talks-enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "Vancouver: BC Policy Solutions Gala, Nov 12\nhttps://bcpolicy.ca/gala/"
+          },
+          {
+            "type": "li",
+            "text": "Montreal: World Science Fiction Convention, Sep 2-6\nhttps://montreal2027.ca/en"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Could Tech Bosses Destroy Life As We Know It? (Politics JOE)\nhttps://www.youtube.com/watch?v=PL4VktU0SgY"
+          },
+          {
+            "type": "li",
+            "text": "Are 'AI Apocalypse' Warnings Just Marketing? (What's Left)\nhttps://www.youtube.com/watch?v=IXd9HwIE5bo"
+          },
+          {
+            "type": "li",
+            "text": "The Real AI Threat Isn’t What You’ve Been Told (The Tea with Myriam François)\nhttps://www.youtube.com/watch?v=Vc8It00fRsA"
+          },
+          {
+            "type": "li",
+            "text": "Fascists may come after the AI bubble bursts (You&AI)\nhttps://www.youtube.com/watch?v=J2WN64aQeYQ"
+          },
+          {
+            "type": "li",
+            "text": "What Would a Normal Person Do (Trashfuture)\nhttps://www.patreon.com/trashfuture/posts/what-would-do-169247456"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing:"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "Today's links",
+          "Bonta sold us out to Trump's oligarchs: A \"settlement\" that promises less than nothing.",
+          "Hey look at this: Delights to delectate.",
+          "Object permanence: Warren on taxing the rich and class warfare; Psychology v reproducibility; Copyright troll sentenced for beating Uber driver; \"Halloween Moon\"; Enshittification of solar.",
+          "Upcoming appearances: Berkeley, Edmonton, Boston, Brighton, South Bend, Hudson, Calgary, Winnipeg, Paris, OVancouver, Victoria, Ottawa, Kilkenny, Montreal.",
+          "Recent appearances: Where I've been.",
+          "Latest books: You keep readin' em, I'll keep writin' 'em.",
+          "Upcoming books: Like I said, I'll keep writin' 'em.",
+          "Colophon: All the rest.",
+          "Bonta sold us out to Trump's oligarchs (permalink)",
+          "Well, fuck. California Attorney General Rob Bonta just surrendered to the Trump-aligned Ellison billionaires who want to take over and destroy Warners, merging it with the chudded out husk they've made of Paramount, leaving these two colossal, corrupt, useless assholes to control Warners, Paramount and Tiktok:",
+          "https://www.reuters.com/legal/litigation/paramount-settles-with-california-other-states-clearing-major-hurdle-warner-bros-2026-09-21/",
+          "In announcing the settlement, Bonta's office touted a long list of concessions the AG had wrung from the Ellisons before greenlighting this indefensible, illegal and dangerous merger. Every! single! one! of these concessions is meaningless bullshit. Bonta just handed the American movie and TV sector to two of the most odious creeps to draw breath, surrendering without firing a shot.",
+          "For a breakdown of how fucking useless this settlement is, read (who else?) Matt Stoller, whose piece breaking it down is titled \"Happy Oligarch Day!\"",
+          "https://www.thebignewsletter.com/p/happy-oligarch-day-as-trump-aligned",
+          "The first thing Stoller points out is that every one of the \"commitments\" in the settlement only matter if Bonta's office enforces them. Bonta's office will never have as much leverage over Warnermount as it has today, when the company is paying a $7m/day \"ticking fee\" while the merger is stalled (thanks to an injunction secured by the Hollywood unions, whom Bonta has just royally fucked, because they can't afford to litigate this case without the AG office's backing). So even if any of these conditions meant anything (which they do not), they won't be enforced. If Bonta can't bring Warnermount to heel today, when they have to pay $7m/day for so long as they're crosswise with him, how will he ever get them to do shit?",
+          "He.",
+          "Will.",
+          "Not.",
+          "But it doesn't matter. It doesn't matter! Because the Ellisons have given Bonta nothing. Take the guarantee that Warnermount \"will make 30 films\" for the next two years, and 32 films thereafter. That's what's been announced, but when former FTC Commissioner Alvaro Bedoya dug into the actual wording, he discovered they are only committing to distributing 30 films, and to making 15 films, which they are allowed to co-produce with other studios. They made 18 movies last year. Under the terms of this deal, they have \"committed\" to making fewer movies than they make today:",
+          "https://x.com/BedoyaUSA/status/2102173188557799773",
+          "They've committed to not selling the Warner lot. For five years. But they are allowed to move it out of LA, which is something my neighbors in Burbank are doubtless delighted to learn. After that, they can move it to whatever state offers them the biggest sweetheart tax deal and the weakest union protections.",
+          "They are prohibited from gouging the theater chains and putting them out of business to promote their streaming business. For three years. After that, they can let 'er rip.",
+          "Then there's the \"editorial board\" that will oversee the Ellisons' management of CNN and MSNBC, nominally to keep it from getting the CBS treatment and going 24/7 Great Replacement/Haitians eating dogs/Charlie Kirk funeral pyrotechnics spectaculars. Guess who chooses the members of the editorial board? The Ellisons. As Stoller writes, \"it’s downright comical [that] they demanded that David Ellison not corrupt CNN by having David Ellison appoint a board ensuring that David Ellison not do that.\"",
+          "But you can ignore everything you've just read, because the settlement includes a clause that says they don't have to do any of the things it says they have to do. This is the \"force majeure\" clause, which is not like a normal force majeure clause (which allows the parties to back out of their commitment in case of war, wildfires, etc). This force majeure clause lets Warnermount tear up the entire agreement if there's a strike or a recession.",
+          "So: if (when) the Hollywood unions go on strike over this betrayal (which they absolutely should do), the agreement becomes null. And if (when) the AI bubble bursts and there's a massive recession, the agreement becomes null. And if (when) Trump's War on Oil plunges the US into Jimmy Carter-style oil economic tsunami, the agreement becomes null.",
+          "As Stoller points out, 12 State Attorneys General signed this piece of shit. Every one of them is a lawyer, and every one of them has a staff of lawyers. None of the glaring, catastrophic, utterly disqualifying defects in this \"settlement\" can possibly be a surprise to them. These Democrat warriors surrendered to Trump's oligarchs, giving them everything, including control over the American film and TV industry for so long as it limps along. They just assumed you wouldn't notice.",
+          "Stoller says he's \"in a strangely good mood\" about this because of all the political capital it took to get this over the line (unlike, say, Disney-Fox, which sailed through with nary a hitch), saying that it indicates that the public is fed up with monopolies. He's right, they are fed up with monopolies. Everyday Americans, Democrats and Republicans, are telling pollsters they'd back a politician who campaigned on shattering monopoly power:",
+          "https://libertyandpower.substack.com/p/pollsters-urge-dems-to-attack-monopoly",
+          "So this leaves us to wonder why Bonta (who talked tough in public about this merger and insisted he would never settle for this kind of weaksauce) stabbed the state, the country, Hollywood workers, and the American public in the back like this? Stoller's theory is that Bonta was isolated by \"Democratic insiders\" who wouldn't back his play.",
+          "OK, fine. As Stoller writes, there's no ambiguity here, this is just straight up corruption, oligarch pals of the President getting to roll up and gut the industry's globally important, culturally essential media sector. The \"teachers' pets\" of the Democratic Party have once again sold out working people in a bid to be liked by the rich and powerful.",
+          "This will fuel (more) distrust of America's political class, a distrust that has been repeatedly earned over decades and especially in this decade. Our leaders are \"malevolent liars.\" It's been true for a very long time, but we can no longer pretend otherwise. Perhaps Stoller's right and this means we'll finally get some real change. I hope so. But for now, I'm just furious.",
+          "(Image: Todd Dwyer, CC BY-SA 3.0, modified)",
+          "Hey look at this (permalink)",
+          "Technopolitics https://locusmag.com/feature/commentary-cory-doctorow-technopolitics/",
+          "Pollsters Urge Dems to Attack Monopoly Power. Candidates are Listening. https://libertyandpower.substack.com/p/pollsters-urge-dems-to-attack-monopoly",
+          "Object permanence (permalink)",
+          "#25yrsago Finnish hacker's homebrew OS fits on a floppy https://web.archive.org/web/20010923224224/https://www.menuetos.org/",
+          "#20yrsago Can RIAA sue for songs they never verified by downloading from you? https://recordingindustryvspeople.blogspot.com/2006/09/preclusion-motion-filed-in-umg-v.html",
+          "#15yrsago Elizabeth Warren explains why taxing the rich isn’t “class warfare” https://www.youtube.com/watch?v=htX2usfqMEs",
+          "#15yrsago DoJ audit: meeting served $16 muffins and $8 coffee https://web.archive.org/web/20110921160806/http://news.yahoo.com/16-muffins-8-coffee-served-justice-audit-023623142.html",
+          "#10yrsago Psychology’s reproducibility crisis: why statisticians are publicly calling out social scientists https://statmodeling.stat.columbia.edu/2016/09/21/what-has-happened-down-here-is-the-winds-have-changed/",
+          "#10yrsago Notorious copyright troll sentenced to 20 weeks’ prison time for beating Uber driver https://torrentfreak.com/copyright-troll-partner-kicked-uber-driver-in-the-head-160923/",
+          "#10yrsago Understanding vulvas: what do they really look like? https://www.youtube.com/watch?v=qAFvGrOwVug",
+          "#10yrsago The American public subsidized $125m executive bonus for Wells Fargo exec who led massive fraud https://web.archive.org/web/20160922140758/https://www.ibtimes.com/political-capital/taxpayers-subsidized-wells-fargo-executive-pay-amid-banks-fraud-2419456",
+          "#5yrsago The music monopolists https://pluralistic.net/2021/09/23/remedies-beyond-antitrust/#face-the-music",
+          "#5yrsago The Halloween Moon https://pluralistic.net/2021/09/23/remedies-beyond-antitrust/#creepypasta",
+          "#1yrago The enshittification of solar (and how to stop it) https://pluralistic.net/2025/09/23/our-friend-the-electron/#to-every-man-his-castle",
+          "Upcoming appearances (permalink)",
+          "Berkeley: Celebrating 25 Years at the Digital Frontier (Samuelson Clinic), Sep 24\nhttps://www.law.berkeley.edu/experiential/clinics/samuelson-law-technology-public-policy-clinic/samuelson-25th-anniversary-celebration/",
+          "Edmonton: Elbows Up (Edmonton Public Library), Sep 28\nhttps://www.epl.ca/blogs/post/elbows-up-with-cory-doctorow/",
+          "Boston: The Post-American Internet: Possibilities for a new internet created by an American Hermit Kingdom (MIT Media Lab), Sep 30\nhttps://www.media.mit.edu/events/the-post-american-internet-possibilities-for-a-new-internet-created-by-an-american-hermit-kingdom/",
+          "Boston: Rethinking Our Relationship with AI, Sep 30 (Emtech)\nhttps://event.technologyreview.com/emtech-future-2026/detailed-agenda",
+          "Boston: The Paradox of Enshittification and Reverse Centaurs (Harvard Berkman Klein), Sep 30\nhttps://cyber.harvard.edu/events/running-harder-falling-faster-paradox-enshittification-and-reverse-centaurs",
+          "Brighton: Digital Sovereignty and the Post-American Internet (Green Party Conference), Oct 3\nhttps://www.openrightsgroup.org/events/digital-sovereignty-and-the-post-american-internet/",
+          "South Bend: An Evening With Cory Doctorow (Notre Dame), Oct 6\nhttps://franco.nd.edu/events/2026/10/06/an-evening-with-cory-doctorow/",
+          "Hudson, OH: Hudson Library, Oct 7\nhttps://engagedpatrons.org/EventsExtended.cfm?SiteID=3850&amp;EventID=596952&amp;PK=",
+          "Calgary: Wordfest, Oct 8\nhttps://wordfest.com/2026/show/wordfest-presents-cory-doctorow-2026/",
+          "Winnipeg: McNally Robinson, Oct 9\nhttps://www.mcnallyrobinson.com/event-18991/An-Evening-with-Cory-Doctorow",
+          "Paris: Slow Tech Summit, Oct 15\nhttps://slowtechsummit.com/",
+          "Vancouver: Read, Resist, Repair, Rejoice (Vancouver Writers Festival), Oct 19\nhttps://writersfest.bc.ca/festival-event-2026/01",
+          "Victoria: Munro's Books, Oct 20\nhttps://www.munrobooks.com/events/6113620261020",
+          "Vancouver: Life After AI (Vancouver Writers Festival), Oct 22\nhttps://writersfest.bc.ca/festival-event-2026/46",
+          "Ottawa: Life After AI (Ottawa Writers Festival), Oct 24\nhttps://writersfestival.org/event/life-after-ai",
+          "Kilkenny (Kilkenomics), Nov 6-8\nhttps://kilkenomics.com/",
+          "Vancouver: Enshittification (Sid Williams Theatre Society), Nov 10\nhttps://www.sidwilliamstheatre.com/events/cory-doctorow-talks-enshittification/",
+          "Vancouver: BC Policy Solutions Gala, Nov 12\nhttps://bcpolicy.ca/gala/",
+          "Montreal: World Science Fiction Convention, Sep 2-6\nhttps://montreal2027.ca/en",
+          "Recent appearances (permalink)",
+          "Could Tech Bosses Destroy Life As We Know It? (Politics JOE)\nhttps://www.youtube.com/watch?v=PL4VktU0SgY",
+          "Are 'AI Apocalypse' Warnings Just Marketing? (What's Left)\nhttps://www.youtube.com/watch?v=IXd9HwIE5bo",
+          "The Real AI Threat Isn’t What You’ve Been Told (The Tea with Myriam François)\nhttps://www.youtube.com/watch?v=Vc8It00fRsA",
+          "Fascists may come after the AI bubble bursts (You&AI)\nhttps://www.youtube.com/watch?v=J2WN64aQeYQ",
+          "What Would a Normal Person Do (Trashfuture)\nhttps://www.patreon.com/trashfuture/posts/what-would-do-169247456",
+          "Latest books (permalink)",
+          "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels).",
+          "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org).",
+          "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org).",
+          "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245).",
+          "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com.",
+          "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com",
+          "Upcoming books (permalink)",
+          "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027",
+          "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027",
+          "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027",
+          "\"The Memex Method,\" Farrar, Straus, Giroux, 2027",
+          "Colophon (permalink)",
+          "Today's top sources:",
+          "Currently writing:",
+          "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor.",
+          "A Little Brother short story about DIY insulin PLANNING",
+          "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net.",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution.",
+          "How to get Pluralistic:",
+          "Blog (no ads, tracking, or data-collection):",
+          "Pluralistic.net",
+          "Newsletter (no ads, tracking, or data-collection):",
+          "https://pluralistic.net/plura-list",
+          "Mastodon (no ads, tracking, or data-collection):",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky (no ads, possible tracking and data-collection):",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium (no ads, paywalled):",
+          "https://doctorow.medium.com/",
+          "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla",
+          "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer.",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "6f2aa6a612b2544d",
+      "title": "Are LLMs still surprisingly bad at some simple tasks?",
+      "titleZh": "Are LLMs still surprisingly bad at some simple tasks?",
+      "link": "https://shkspr.mobi/blog/2026/09/are-llms-still-surprisingly-bad-at-some-simple-tasks/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-09-22T11:34:27.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Are LLMs still surprisingly bad at some simple tasks?",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Loader"
+          },
+          {
+            "type": "p",
+            "text": "Please wait while your request is being verified..."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "9935750efb604083",
+      "title": "Nathaniel Bowditch",
+      "titleZh": "Nathaniel Bowditch",
+      "link": "https://www.johndcook.com/blog/2026/09/22/nathaniel-bowditch/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-09-22T14:01:30.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Nathaniel Bowditch",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A couple days ago a friend told me about the book Carry On, Mr. Bowditch, a fictional account of the life of Nathaniel Bowditch (1773–1838). I’ve been listening to the book on Audible, and apparently it’s only lightly fictionalized."
+          },
+          {
+            "type": "p",
+            "text": "Bowditch was a self-educated mathematician and astronomer, best known for his book The American Practical Navigator, first published in 1801. The book has been continually revised over the last two centuries and is still in print, available for download from the National Geospatial-Intelligence Agency. The latest edition begins with a brief account of Bowditch’s life, confirming the essential details of the fictional biography."
+          },
+          {
+            "type": "p",
+            "text": "Two things stand out about Bowditch: his attention to detail and his desire to make ideas accessible. He taught himself Latin in order to read Newton’s Principia and followed the text so closely that he found a number of errors."
+          },
+          {
+            "type": "p",
+            "text": "Bowditch’s navigation book grew out of the numerous corrections he made to error he found in John Hamilton Moore’s The Practical Navigator, the leading navigation text of the time."
+          },
+          {
+            "type": "p",
+            "text": "At the beginning of the 19th century it was theoretically possible to determine time, and hence longitude, from lunar observation. However, the method required ideal observation conditions and laborious calculation. Bowditch developed a way to make the necessary measurements under more general conditions, and simplified the necessary calculations. According to the biographical preface mentioned above,"
+          },
+          {
+            "type": "quote",
+            "text": "Bowditch vowed while writing this edition [of his navigation text] to “put down in the book nothing I can’t teach the crew,” and it is said that every member of his crew including the cook could take a lunar observation and plot the ship’s position."
+          },
+          {
+            "type": "p",
+            "text": "After completing The American Practical Navigator, Bowditch began an English translation of Pierre Laplace’s encyclopedic Mecanique Celeste, filling in details to make the work accessible to a wider audience. He was able to translate four out of the five volumes by the end of his life."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "The navigational triangle"
+          },
+          {
+            "type": "li",
+            "text": "Line of position"
+          },
+          {
+            "type": "li",
+            "text": "Intersecting spheres and GPS"
+          }
+        ],
+        "translations": [
+          "A couple days ago a friend told me about the book Carry On, Mr. Bowditch, a fictional account of the life of Nathaniel Bowditch (1773–1838). I’ve been listening to the book on Audible, and apparently it’s only lightly fictionalized.",
+          "Bowditch was a self-educated mathematician and astronomer, best known for his book The American Practical Navigator, first published in 1801. The book has been continually revised over the last two centuries and is still in print, available for download from the National Geospatial-Intelligence Agency. The latest edition begins with a brief account of Bowditch’s life, confirming the essential details of the fictional biography.",
+          "Two things stand out about Bowditch: his attention to detail and his desire to make ideas accessible. He taught himself Latin in order to read Newton’s Principia and followed the text so closely that he found a number of errors.",
+          "Bowditch’s navigation book grew out of the numerous corrections he made to error he found in John Hamilton Moore’s The Practical Navigator, the leading navigation text of the time.",
+          "At the beginning of the 19th century it was theoretically possible to determine time, and hence longitude, from lunar observation. However, the method required ideal observation conditions and laborious calculation. Bowditch developed a way to make the necessary measurements under more general conditions, and simplified the necessary calculations. According to the biographical preface mentioned above,",
+          "Bowditch vowed while writing this edition [of his navigation text] to “put down in the book nothing I can’t teach the crew,” and it is said that every member of his crew including the cook could take a lunar observation and plot the ship’s position.",
+          "After completing The American Practical Navigator, Bowditch began an English translation of Pierre Laplace’s encyclopedic Mecanique Celeste, filling in details to make the work accessible to a wider audience. He was able to translate four out of the five volumes by the end of his life.",
+          "Related posts",
+          "The navigational triangle",
+          "Line of position",
+          "Intersecting spheres and GPS"
+        ]
+      }
+    },
+    {
+      "slug": "119d2b858acf33b8",
+      "title": "Haversine law",
+      "titleZh": "Haversine law",
+      "link": "https://www.johndcook.com/blog/2026/09/21/haversine-law/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-09-21T23:13:22.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Haversine law",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Suppose you want to solve a triangle. You know two sides and the angle between them. Then you can solve for the third side using the law of cosines."
+          },
+          {
+            "type": "p",
+            "text": "Now suppose you want to solve a big triangle, a triangle on the surface of the earth so large that the curvature of the earth matters. You can still use the law of cosines, but you’ll need the spherical law of cosines:"
+          },
+          {
+            "type": "p",
+            "text": "cos(c) = cos(a) cos(b) + sin(a) sin(b) cos(C)."
+          },
+          {
+            "type": "p",
+            "text": "If you know the (angular) lengths of sides a and b, and (tangential) angle C between the two sides, you can solve for c by taking the inverse cosine of the right hand side above."
+          },
+          {
+            "type": "p",
+            "text": "Now suppose you want to solve this big triangle because you’re a navigator on a ship a couple centuries ago, doing calculations by looking up trig functions and inverse trig functions in a table. You’re interested in triangles that are so big that you have to account for the fact that you’re living on a sphere. But at the same time, your triangles are still fairly small relative to the size of the globe."
+          },
+          {
+            "type": "h2",
+            "text": "The problem with the law of cosines"
+          },
+          {
+            "type": "p",
+            "text": "The numbers a and b will often be fairly small, and so their cosines will be near 1 and their sines are near zero. So the calculation"
+          },
+          {
+            "type": "p",
+            "text": "cos(a) cos(b) + sin(a) sin(b) cos(C)"
+          },
+          {
+            "type": "p",
+            "text": "will add a number near 1 and a number near zero. That’s a problem."
+          },
+          {
+            "type": "p",
+            "text": "Say you’re working with five decimal place arithmetic. Then if the second term above is less than 10−5, its contribution to the sum gets completely lost in the addition to the first term. If the second term is larger than 10−5 but still small, its contribution to the sum will be partially lost."
+          },
+          {
+            "type": "h2",
+            "text": "Law of haversines"
+          },
+          {
+            "type": "p",
+            "text": "Enter the haversine, defined by"
+          },
+          {
+            "type": "p",
+            "text": "hav(θ) = (1 − cos(θ))/2."
+          },
+          {
+            "type": "p",
+            "text": "The expression 1 − cos θ was called the versine, and so half of the versine is the haversine."
+          },
+          {
+            "type": "p",
+            "text": "In terms of the haversine, the law of cosines above becomes the law of haversines:"
+          },
+          {
+            "type": "p",
+            "text": "hav(c) = hav(a − b) + sin(a) sin(b) hav(C)."
+          },
+          {
+            "type": "p",
+            "text": "Now suppose you have a table of haversines and inverse haversines. The law of haversines requires a little less work: you have one less table lookup, and you trade a product for a subtraction."
+          },
+          {
+            "type": "p",
+            "text": "But the primary advantage is numerical accuracy: the terms on the right side have roughly the same size."
+          },
+          {
+            "type": "h2",
+            "text": "Tables"
+          },
+          {
+            "type": "p",
+            "text": "Note that we’re assuming the values in your table of haversines have been calculated correctly to the given precision. If you calculated your own values of haversines from the definition above, you’d lose precision in the subtraction 1 − cos θ, defeating the advantage of the law of haversines [1]."
+          },
+          {
+            "type": "h2",
+            "text": "History"
+          },
+          {
+            "type": "p",
+            "text": "According to Wikipedia."
+          },
+          {
+            "type": "quote",
+            "text": "The first table of haversines in English was published by James Andrew in 1805, but Florian Cajori credits an earlier use by José de Mendoza y Ríos in 1801. The term haversine was coined in 1835 by James Inman."
+          },
+          {
+            "type": "h2",
+            "text": "Experiments"
+          },
+          {
+            "type": "p",
+            "text": "I ran some experiments that carried out arithmetic in float16 (11 bits of precision) to approximate what someone might have done by hand. When the difference between a and b was on the order of 1° or 0.1°, the law of cosine method often overflowed: the right-hand side evaluated to something larger than 1 even though theoretically it should be less than 1. The haversine method never overflowed."
+          },
+          {
+            "type": "p",
+            "text": "The median error for the haversine method was a couple orders of magnitude less than that of the cosine method."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Lews & Clark navigation"
+          },
+          {
+            "type": "li",
+            "text": "How many trig functions are there?"
+          },
+          {
+            "type": "li",
+            "text": "Analog of Heron’s formula for a sphere"
+          },
+          {
+            "type": "p",
+            "text": "[1] hav(θ) = (1 − cos(θ))/2 = sin²(θ/2). If you calculated hav θ by looking up sin(θ/2) and squaring it, you’d be doing extra work, but you wouldn’t have numerical problems."
+          }
+        ],
+        "translations": [
+          "Suppose you want to solve a triangle. You know two sides and the angle between them. Then you can solve for the third side using the law of cosines.",
+          "Now suppose you want to solve a big triangle, a triangle on the surface of the earth so large that the curvature of the earth matters. You can still use the law of cosines, but you’ll need the spherical law of cosines:",
+          "cos(c) = cos(a) cos(b) + sin(a) sin(b) cos(C).",
+          "If you know the (angular) lengths of sides a and b, and (tangential) angle C between the two sides, you can solve for c by taking the inverse cosine of the right hand side above.",
+          "Now suppose you want to solve this big triangle because you’re a navigator on a ship a couple centuries ago, doing calculations by looking up trig functions and inverse trig functions in a table. You’re interested in triangles that are so big that you have to account for the fact that you’re living on a sphere. But at the same time, your triangles are still fairly small relative to the size of the globe.",
+          "The problem with the law of cosines",
+          "The numbers a and b will often be fairly small, and so their cosines will be near 1 and their sines are near zero. So the calculation",
+          "cos(a) cos(b) + sin(a) sin(b) cos(C)",
+          "will add a number near 1 and a number near zero. That’s a problem.",
+          "Say you’re working with five decimal place arithmetic. Then if the second term above is less than 10−5, its contribution to the sum gets completely lost in the addition to the first term. If the second term is larger than 10−5 but still small, its contribution to the sum will be partially lost.",
+          "Law of haversines",
+          "Enter the haversine, defined by",
+          "hav(θ) = (1 − cos(θ))/2.",
+          "The expression 1 − cos θ was called the versine, and so half of the versine is the haversine.",
+          "In terms of the haversine, the law of cosines above becomes the law of haversines:",
+          "hav(c) = hav(a − b) + sin(a) sin(b) hav(C).",
+          "Now suppose you have a table of haversines and inverse haversines. The law of haversines requires a little less work: you have one less table lookup, and you trade a product for a subtraction.",
+          "But the primary advantage is numerical accuracy: the terms on the right side have roughly the same size.",
+          "Tables",
+          "Note that we’re assuming the values in your table of haversines have been calculated correctly to the given precision. If you calculated your own values of haversines from the definition above, you’d lose precision in the subtraction 1 − cos θ, defeating the advantage of the law of haversines [1].",
+          "History",
+          "According to Wikipedia.",
+          "The first table of haversines in English was published by James Andrew in 1805, but Florian Cajori credits an earlier use by José de Mendoza y Ríos in 1801. The term haversine was coined in 1835 by James Inman.",
+          "Experiments",
+          "I ran some experiments that carried out arithmetic in float16 (11 bits of precision) to approximate what someone might have done by hand. When the difference between a and b was on the order of 1° or 0.1°, the law of cosine method often overflowed: the right-hand side evaluated to something larger than 1 even though theoretically it should be less than 1. The haversine method never overflowed.",
+          "The median error for the haversine method was a couple orders of magnitude less than that of the cosine method.",
+          "Related posts",
+          "Lews & Clark navigation",
+          "How many trig functions are there?",
+          "Analog of Heron’s formula for a sphere",
+          "[1] hav(θ) = (1 − cos(θ))/2 = sin²(θ/2). If you calculated hav θ by looking up sin(θ/2) and squaring it, you’d be doing extra work, but you wouldn’t have numerical problems."
+        ]
+      }
+    }
+  ]
+}
