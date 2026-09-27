@@ -1,0 +1,931 @@
+{
+  "date": "2026-09-28",
+  "generatedAt": "2026-09-27T19:42:45.690Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 84,
+    "totalArticles": 2559,
+    "filteredArticles": 7,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "ffc80d14a58cea97",
+      "title": "Kākāpō Party",
+      "titleZh": "Kākāpō Party",
+      "link": "https://simonwillison.net/2026/Sep/26/kakapo-party/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-09-26T23:39:06.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Kākāpō Party",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I presented a closing keynote for the WeAreDevelopers World Congress North America yesterday. As a STAR moment I decided to weave in references to the record breaking kākāpō breeding season we had in 2026."
+          },
+          {
+            "type": "p",
+            "text": "For my closing slide I wanted to celebrate, and I had seen some buzz around how good Claude Opus 5.5 was at creating pixel art animations. So I rounded up three Kakapo photos from Google image search and dropped them into Claude with this prompt:"
+          },
+          {
+            "type": "quote",
+            "text": "Here are some photos of kakapo parrots just to remind you what they look like\nI need you to make an animation in animated pixel art on HTML 5 canvas of obviously pixel art kakapo jumping up and down having a party with confetti and suchlike - there should be at least 20 of them"
+          },
+          {
+            "type": "p",
+            "text": "Here's the transcript, and this is the resulting page. It's pretty great!"
+          },
+          {
+            "type": "p",
+            "text": "I wanted to embed it in a Keynote presentation file, so I downloaded the HTML and told a local Claude Code session:"
+          },
+          {
+            "type": "quote",
+            "text": "Make me a video of file:///Users/simon/Downloads/kakapo-party.html - you need to load it in a browser and click on it a few times to get the confetti effect, the video should be 15s long\ndon't start clicking until 3s in\nmake sure several clicks are spread around the clickable area"
+          },
+          {
+            "type": "p",
+            "text": "Claude Code used Playwright (transcript here) and produced this video, which was exactly what I needed for my final slide:"
+          },
+          {
+            "type": "p",
+            "text": "Your browser does not support HTML5 video."
+          },
+          {
+            "type": "p",
+            "text": "Here's the full Playwright script it used, which was pleasingly short:"
+          },
+          {
+            "type": "code",
+            "text": "# /// script\n# dependencies = [\"playwright\"]\n# ///\nimport time\nfrom playwright.sync_api import sync_playwright\nW, H = 1280, 720\n# Canvas fills the viewport; spread clicks across corners, edges and centre\nclicks = [\n    (3.0, 640, 360),   # centre\n    (4.2, 160, 120),   # top-left\n    (5.4, 1120, 120),  # top-right\n    (6.6, 180, 600),   # bottom-left\n    (7.8, 1100, 600),  # bottom-right\n    (9.0, 640, 100),   # top-centre\n    (10.0, 380, 380),  # mid-left\n    (11.0, 900, 380),  # mid-right\n    (12.2, 640, 620),  # bottom-centre\n    (13.2, 640, 300),  # finale centre\n]\nwith sync_playwright() as p:\n    b = p.chromium.launch()\n    ctx = b.new_context(viewport={\"width\":W,\"height\":H}, record_video_dir=\"vids\", record_video_size={\"width\":W,\"height\":H})\n    page = ctx.new_page()\n    t0 = time.time()\n    page.goto(\"file:///Users/simon/Downloads/kakapo-party.html\")\n    for t,x,y in clicks:\n        time.sleep(max(0, t-(time.time()-t0)))\n        page.mouse.click(x,y)\n    time.sleep(max(0, 16.0-(time.time()-t0)))\n    ctx.close(); b.close()"
+          }
+        ],
+        "translations": [
+          "I presented a closing keynote for the WeAreDevelopers World Congress North America yesterday. As a STAR moment I decided to weave in references to the record breaking kākāpō breeding season we had in 2026.",
+          "For my closing slide I wanted to celebrate, and I had seen some buzz around how good Claude Opus 5.5 was at creating pixel art animations. So I rounded up three Kakapo photos from Google image search and dropped them into Claude with this prompt:",
+          "Here are some photos of kakapo parrots just to remind you what they look like\nI need you to make an animation in animated pixel art on HTML 5 canvas of obviously pixel art kakapo jumping up and down having a party with confetti and suchlike - there should be at least 20 of them",
+          "Here's the transcript, and this is the resulting page. It's pretty great!",
+          "I wanted to embed it in a Keynote presentation file, so I downloaded the HTML and told a local Claude Code session:",
+          "Make me a video of file:///Users/simon/Downloads/kakapo-party.html - you need to load it in a browser and click on it a few times to get the confetti effect, the video should be 15s long\ndon't start clicking until 3s in\nmake sure several clicks are spread around the clickable area",
+          "Claude Code used Playwright (transcript here) and produced this video, which was exactly what I needed for my final slide:",
+          "Your browser does not support HTML5 video.",
+          "Here's the full Playwright script it used, which was pleasingly short:",
+          "# /// script\n# dependencies = [\"playwright\"]\n# ///\nimport time\nfrom playwright.sync_api import sync_playwright\nW, H = 1280, 720\n# Canvas fills the viewport; spread clicks across corners, edges and centre\nclicks = [\n    (3.0, 640, 360),   # centre\n    (4.2, 160, 120),   # top-left\n    (5.4, 1120, 120),  # top-right\n    (6.6, 180, 600),   # bottom-left\n    (7.8, 1100, 600),  # bottom-right\n    (9.0, 640, 100),   # top-centre\n    (10.0, 380, 380),  # mid-left\n    (11.0, 900, 380),  # mid-right\n    (12.2, 640, 620),  # bottom-centre\n    (13.2, 640, 300),  # finale centre\n]\nwith sync_playwright() as p:\n    b = p.chromium.launch()\n    ctx = b.new_context(viewport={\"width\":W,\"height\":H}, record_video_dir=\"vids\", record_video_size={\"width\":W,\"height\":H})\n    page = ctx.new_page()\n    t0 = time.time()\n    page.goto(\"file:///Users/simon/Downloads/kakapo-party.html\")\n    for t,x,y in clicks:\n        time.sleep(max(0, t-(time.time()-t0)))\n        page.mouse.click(x,y)\n    time.sleep(max(0, 16.0-(time.time()-t0)))\n    ctx.close(); b.close()"
+        ]
+      }
+    },
+    {
+      "slug": "4907a52e728b50a3",
+      "title": "Human-AI partnerships are for alignment, not capability",
+      "titleZh": "Human-AI partnerships are for alignment, not capability",
+      "link": "https://seangoedecke.com/human-ai-partnerships-are-for-alignment-not-capability/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-09-27T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Human-AI partnerships are for alignment, not capability",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It’s common to compare the current AI takeover of software engineering to the rise of AI in chess. Chess AIs went from much weaker than serious players to much stronger than even the strongest humans. Between those points, there was a middle period dominated by “centaurs”: human-AI partnerships that were stronger than unassisted AIs or humans. Lots of people think that we’re currently in a world of software engineering centaurs. According to them, coding AIs are not yet capable enough to replace engineers, but AI-assisted engineers are better at programming than both AIs and humans."
+          },
+          {
+            "type": "p",
+            "text": "This is partialy correct, but the wrong way to think about it. AI-assisted engineers are better, but unlike with chess centaurs, they’re not actually better at programming. When I ask agents to write code, they make fewer mistakes than I do1 and are orders of magnitude faster. The code that they write always compiles, rarely has race conditions or other concurrency errors, works on mobile browsers, and so on."
+          },
+          {
+            "type": "p",
+            "text": "That doesn’t mean I can leave the AI alone. Purely vibe-coding at work produces awful outputs. But they’re not awful because they’re bad code, they’re awful because they’re in bad taste: code that is not maintainable, that trades off important requirements in order to satisfy made-up ones, that contradicts the long-term strategy for a feature or service, and so on."
+          },
+          {
+            "type": "p",
+            "text": "In other words, my primary value is not that I help the AI write better code, it’s that I align the AI with the values of my organization. Human-AI partnerships are for alignment, not capability."
+          },
+          {
+            "type": "p",
+            "text": "Frontier models are misaligned to the working programmer. They are obsessed with a set of behaviors that presumably satisfy their RL grader: writing enormous block comments above functions, producing hundreds of useless unit tests, adding little bits of text all over websites they design, and so on. Working with agents is about noticing and wrestling with those behaviors. That’s why my prompting advice is to explicitly talk about your high-level values: it’s an attempt to head off obvious misalignment."
+          },
+          {
+            "type": "p",
+            "text": "This is great news for software engineers. It’s well-understood how to train more capable models: bigger models, more and better data, better RL environments, and so on. However, it’s not well-understood how to align models better. There are plenty of very capable models that exhibit behavior that is badly misaligned with human values. Indeed, it’s one of the main pillars of the AI doomer position that alignment is much harder to solve than capability, and we might thus end up with dangerous super-capable but poorly-aligned AI models."
+          },
+          {
+            "type": "p",
+            "text": "Alignment is also more context-dependent than capability. Working code is working code, no matter what (which is partially why it’s comparatively easy to train for). But aligning to a company’s technical values is different from company to company, as any software engineer who’s switched companies knows. It can almost feel like relearning the job. So training an aligned coding model doesn’t just require hitting the exact right set of values, it requires creating a model that can adapt on the fly to a wide range of possible values."
+          },
+          {
+            "type": "p",
+            "text": "Vibecoding maximalists like DHH argue that AI models are (or soon will be) so much more capable than human programmers that we ought to stop reading the code. Eventually there will be no such thing as programmers at all. If it were just about capability, they might be right. But — fortunately for software engineers — good code also has to be aligned to the technical values of the system and organization it’s embedded in. AI models are great at writing code, but not very good at doing that, and it’s unclear that they’re going to get good at it anytime soon. We might all2 keep our jobs for a little while yet."
+          },
+          {
+            "type": "li",
+            "text": "For instance, I can’t remember the last time I’ve seen an agent make an off-by-one error. I do occasionally catch a pure programming error, typically in areas where I have a lot of technical domain knowledge. If you’re working out of distribution I suspect it’s easier to beat the models.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "It’s still going to be rough for junior engineers.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News."
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          },
+          {
+            "type": "quote",
+            "text": "Advice to a beginning software engineerIn general, you should be suspicious of engineers who are trying to give you advice. Even during ordinary times, this industry is so wide and changes so quickly that nobody really knows anything for sure. And we are not in ordinary times. The advent of LLMs and AI agents is the largest change to software engineering in my professional lifetime, and possibly the largest change ever. That said, here’s my advice:Continue reading..."
+          }
+        ],
+        "translations": [
+          "It’s common to compare the current AI takeover of software engineering to the rise of AI in chess. Chess AIs went from much weaker than serious players to much stronger than even the strongest humans. Between those points, there was a middle period dominated by “centaurs”: human-AI partnerships that were stronger than unassisted AIs or humans. Lots of people think that we’re currently in a world of software engineering centaurs. According to them, coding AIs are not yet capable enough to replace engineers, but AI-assisted engineers are better at programming than both AIs and humans.",
+          "This is partialy correct, but the wrong way to think about it. AI-assisted engineers are better, but unlike with chess centaurs, they’re not actually better at programming. When I ask agents to write code, they make fewer mistakes than I do1 and are orders of magnitude faster. The code that they write always compiles, rarely has race conditions or other concurrency errors, works on mobile browsers, and so on.",
+          "That doesn’t mean I can leave the AI alone. Purely vibe-coding at work produces awful outputs. But they’re not awful because they’re bad code, they’re awful because they’re in bad taste: code that is not maintainable, that trades off important requirements in order to satisfy made-up ones, that contradicts the long-term strategy for a feature or service, and so on.",
+          "In other words, my primary value is not that I help the AI write better code, it’s that I align the AI with the values of my organization. Human-AI partnerships are for alignment, not capability.",
+          "Frontier models are misaligned to the working programmer. They are obsessed with a set of behaviors that presumably satisfy their RL grader: writing enormous block comments above functions, producing hundreds of useless unit tests, adding little bits of text all over websites they design, and so on. Working with agents is about noticing and wrestling with those behaviors. That’s why my prompting advice is to explicitly talk about your high-level values: it’s an attempt to head off obvious misalignment.",
+          "This is great news for software engineers. It’s well-understood how to train more capable models: bigger models, more and better data, better RL environments, and so on. However, it’s not well-understood how to align models better. There are plenty of very capable models that exhibit behavior that is badly misaligned with human values. Indeed, it’s one of the main pillars of the AI doomer position that alignment is much harder to solve than capability, and we might thus end up with dangerous super-capable but poorly-aligned AI models.",
+          "Alignment is also more context-dependent than capability. Working code is working code, no matter what (which is partially why it’s comparatively easy to train for). But aligning to a company’s technical values is different from company to company, as any software engineer who’s switched companies knows. It can almost feel like relearning the job. So training an aligned coding model doesn’t just require hitting the exact right set of values, it requires creating a model that can adapt on the fly to a wide range of possible values.",
+          "Vibecoding maximalists like DHH argue that AI models are (or soon will be) so much more capable than human programmers that we ought to stop reading the code. Eventually there will be no such thing as programmers at all. If it were just about capability, they might be right. But — fortunately for software engineers — good code also has to be aligned to the technical values of the system and organization it’s embedded in. AI models are great at writing code, but not very good at doing that, and it’s unclear that they’re going to get good at it anytime soon. We might all2 keep our jobs for a little while yet.",
+          "For instance, I can’t remember the last time I’ve seen an agent make an off-by-one error. I do occasionally catch a pure programming error, typically in areas where I have a lot of technical domain knowledge. If you’re working out of distribution I suspect it’s easier to beat the models.\n↩",
+          "It’s still going to be rough for junior engineers.\n↩",
+          "If you liked this post, consider subscribing to email updates about my new posts, or sharing it on Hacker News.",
+          "Here's a preview of a related post that shares tags with this one.",
+          "Advice to a beginning software engineerIn general, you should be suspicious of engineers who are trying to give you advice. Even during ordinary times, this industry is so wide and changes so quickly that nobody really knows anything for sure. And we are not in ordinary times. The advent of LLMs and AI agents is the largest change to software engineering in my professional lifetime, and possibly the largest change ever. That said, here’s my advice:Continue reading..."
+        ]
+      }
+    },
+    {
+      "slug": "a7481d9276fbbf99",
+      "title": "Mux: Turn Your Video Into Context",
+      "titleZh": "Mux: Turn Your Video Into Context",
+      "link": "https://www.mux.com/?utm_campaign=fireball&amp;utm_source=DF",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-27T19:39:47.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Mux: Turn Your Video Into Context",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Technical preview"
+          },
+          {
+            "type": "p",
+            "text": "Arrow Right"
+          },
+          {
+            "type": "p",
+            "text": "Mux helps teams do more with video. Stream it, moderate it, search it, analyze it, transform it. Build cost-effectively in minutes, not months."
+          },
+          {
+            "type": "h2",
+            "text": "Features"
+          },
+          {
+            "type": "h3",
+            "text": "Unlock the data in your video"
+          },
+          {
+            "type": "p",
+            "text": "More than just content, video contains a boatload of data for you to build with. Select a video to see Mux in action."
+          },
+          {
+            "type": "h3",
+            "text": "Turn video files into video features"
+          },
+          {
+            "type": "p",
+            "text": "We give you the building blocks to create live and on-demand video exactly how you want."
+          },
+          {
+            "type": "p",
+            "text": "See all Mux Video features"
+          },
+          {
+            "type": "h3",
+            "text": "Understand video analytics at a glance"
+          },
+          {
+            "type": "p",
+            "text": "Track key engagement and quality of experience metrics: views, playing time, viewer retention, startup time, rebuffering, and more."
+          },
+          {
+            "type": "p",
+            "text": "Video views and unique viewers are up, average completion is slightly up, and playing time is down.KViews22%Unique Viewers2.9kk1.317% 3PM 6PMPlaying Timeh1.736%Last 6hOne week ago"
+          },
+          {
+            "type": "p",
+            "text": "Looking for standalone media-grade stream analytics?"
+          },
+          {
+            "type": "p",
+            "text": "Get Mux Data"
+          },
+          {
+            "type": "h3",
+            "text": "Mux Robots"
+          },
+          {
+            "type": "p",
+            "text": "Integrate Mux's pre-built AI workflows or build your own. Our platform is built for humans and robots, from streaming to analysis and everything in between."
+          },
+          {
+            "type": "h3",
+            "text": "Ask questions"
+          },
+          {
+            "type": "p",
+            "text": "Is this video a cartoon?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Does this video feature cats?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "p",
+            "text": "Was this video mostly shot outdoors?"
+          },
+          {
+            "type": "p",
+            "text": "yesno"
+          },
+          {
+            "type": "p",
+            "text": "100% certainty"
+          },
+          {
+            "type": "h3",
+            "text": "Summarization"
+          },
+          {
+            "type": "p",
+            "text": "|"
+          },
+          {
+            "type": "p",
+            "text": "AI"
+          },
+          {
+            "type": "p",
+            "text": "Tone:"
+          },
+          {
+            "type": "h3",
+            "text": "Content moderation"
+          },
+          {
+            "type": "p",
+            "text": "NSFW: Violent:"
+          },
+          {
+            "type": "h3",
+            "text": "Chaptering"
+          },
+          {
+            "type": "p",
+            "text": "Analyze your video to identify natural breakpoints, create descriptive chapter titles, and add timestamps"
+          },
+          {
+            "type": "h2",
+            "text": "The video infrastructure for your website"
+          },
+          {
+            "type": "p",
+            "text": "From background videos to simple player embeds, we’ve got you covered."
+          },
+          {
+            "type": "p",
+            "text": "While you perfect your AI models, we take care of encoding, delivery, and scaling your video output reliably and cost-effectively."
+          },
+          {
+            "type": "p",
+            "text": "With videos ready for playback in an average of under 2 seconds you can build what you need for your community."
+          },
+          {
+            "type": "p",
+            "text": "Whether it’s on-demand or live, build video that scales to support your users."
+          },
+          {
+            "type": "p",
+            "text": "Patreon built native video for a more consistent creator and fan experience, going from limited control with third-party solutions to a fully customized, seamless platform.."
+          },
+          {
+            "type": "p",
+            "text": "Go from MVP to launch in no time with API and docs that are designed for developers to build video quickly."
+          },
+          {
+            "type": "p",
+            "text": "With latency as low as 4 seconds and support for SRT (with HEVC) and RTMP, you can stream live, at scale, and without worry."
+          },
+          {
+            "type": "h2",
+            "text": "We speak your language"
+          },
+          {
+            "type": "p",
+            "text": "You don’t have to reinvent your stack to get great video. We’re compatible with your favorite languages and frameworks."
+          },
+          {
+            "type": "h2",
+            "text": "Mux love from around the world"
+          },
+          {
+            "type": "p",
+            "text": "No credit card required to start using Mux."
+          }
+        ],
+        "translations": [
+          "技术预览",
+          "右箭头",
+          "Mux 帮助团队用视频做更多事。对其进行流媒体传输、内容审核、搜索、分析和转换。只需几分钟而非几个月，即可实现高性价比的开发。",
+          "功能特性",
+          "释放视频中的数据价值",
+          "视频不仅是内容，更包含海量可供您用来构建应用的数据。选择一个视频，看看 Mux 的实际运作吧。",
+          "将视频文件转化为视频功能",
+          "我们为您提供基础构建模块，助您按照自己的意愿打造完美的直播和点播视频。",
+          "查看所有 Mux Video 功能",
+          "一目了然，轻松掌握视频分析数据",
+          "跟踪关键的参与度和体验质量指标：播放量、播放时长、观众留存率、启动时间、卡顿率等。",
+          "视频播放量和独立观众数上升，平均完播率略有上升，播放时长下降。KViews22%独立观众2.9kk1.317% 下午3点 下午6点播放时长h1.736%过去6小时一周前",
+          "在寻找独立的媒体级流媒体分析服务吗？",
+          "获取 Mux Data",
+          "Mux Robots",
+          "集成 Mux 预构建的 AI 工作流，或构建您自己的工作流。我们的平台专为人类和机器人设计，涵盖从流媒体传输到数据分析及中间的各个环节。",
+          "提问",
+          "这个视频是动画片吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频里有猫吗？",
+          "是/否",
+          "100% 确定性",
+          "这个视频主要是在户外拍摄的吗？",
+          "是/否",
+          "100% 确定性",
+          "内容摘要",
+          "|",
+          "AI",
+          "基调：",
+          "内容审核",
+          "NSFW（工作场所不宜）： 暴力：",
+          "章节划分",
+          "分析您的视频以识别自然断点，生成描述性章节标题，并添加时间戳",
+          "专为您的网站打造的视频基础设施",
+          "从背景视频到简单的播放器嵌入，我们都能为您提供全方位支持。",
+          "当您在完善 AI 模型时，我们将负责可靠且经济高效地处理视频的编码、分发和扩展。",
+          "视频平均仅需不到 2 秒即可准备就绪进行播放，让您能够为社区构建所需的一切。",
+          "无论是点播还是直播，都能构建可扩展的视频服务以支撑您的用户。",
+          "Patreon 打造了原生视频功能，为创作者和粉丝提供更一致的体验，从第三方解决方案的有限控制，转变为完全定制化的无缝平台。",
+          "借助专为开发者快速构建视频应用而设计的 API 和文档，瞬间完成从 MVP 到上线的全过程。",
+          "延迟低至 4 秒，并支持 SRT（包含 HEVC）和 RTMP 协议，让您可以大规模、无顾虑地进行直播。",
+          "我们支持您的开发语言",
+          "您无需为了获得出色的视频体验而重构现有的技术栈。我们与您最喜欢的语言和框架完全兼容。",
+          "来自世界各地的 Mux 好评",
+          "无需信用卡即可开始使用 Mux。"
+        ]
+      }
+    },
+    {
+      "slug": "5df8944a3adbd8ba",
+      "title": "Reelizer Returns",
+      "titleZh": "Reelizer Returns",
+      "link": "https://www.reelizer.com/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-26T21:08:08.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Reelizer Returns",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Reelizer",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Search films, artists, and collections."
+          },
+          {
+            "type": "p",
+            "text": "Enter at least 2 characters."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f548c566ea044224",
+      "title": "Alexandr Wang: ‘Why I’m Building Muse’",
+      "titleZh": "Alexandr Wang: ‘Why I’m Building Muse’",
+      "link": "https://x.com/alexandr_wang/status/2103551714536439951",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-09-26T20:34:54.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Alexandr Wang: ‘Why I’m Building Muse’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Alexandr Wang",
+        "siteName": "X (formerly Twitter)",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Most people never say what they want. It’s not because we don’t want. We want fiercely and constantly. It happens in the moments before falling asleep or while daydreaming on the car ride home. We want to spend more time with our families, overcome social anxiety, eat healthier food, open a bakery, build an app, or just find a few more moments of calm in a hectic life. But rarely do we get to even express these dreams, and even more rarely do they ever come true."
+          },
+          {
+            "type": "p",
+            "text": "When we can’t name our dreams, we mostly can’t reach them. The world is a maze of forms and gatekeepers and schedules and obstacles, and most dreams die by a thousand paper cuts long before they are said aloud. They die in the not-knowing-where-to-start and in the phone calls never made."
+          },
+          {
+            "type": "p",
+            "text": "Every unrealized want is a quiet tragedy of human potential."
+          },
+          {
+            "type": "p",
+            "text": "Now imagine every person on earth with a second mind beyond their own. A general manager whose whole job is to find out what you want and make sure it happens. Someone that hears the half-sentence, “I feel like there’s something more I could be doing,” and helps fill in the blanks. This might not be a genie in a bottle, but it can be someone that says, “This is the thing you’ve been dreaming of your whole life. Let’s go get it. Here’s how.” And then builds a plan. Sends the email. Makes the phone call. Finds the funding. Keeps you on schedule. Clears the way and solves all the problems it can until the human part, the wanting and the dreaming, is all that’s left."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the best part: we have no idea what people will want. The world until now has been shaped by the small number of fanatics who have somehow found a way to make their wants real. But we’ve never seen humanity with every single person’s agency fully switched on. Eight billion people who just need to write their dream down in order to get started making it happen."
+          },
+          {
+            "type": "p",
+            "text": "So we built Muse to help people build the world they want."
+          },
+          {
+            "type": "p",
+            "text": "Here’s to wanting. Here’s to dreaming. Here’s to everyone."
+          }
+        ],
+        "translations": [
+          "Most people never say what they want. It’s not because we don’t want. We want fiercely and constantly. It happens in the moments before falling asleep or while daydreaming on the car ride home. We want to spend more time with our families, overcome social anxiety, eat healthier food, open a bakery, build an app, or just find a few more moments of calm in a hectic life. But rarely do we get to even express these dreams, and even more rarely do they ever come true.",
+          "When we can’t name our dreams, we mostly can’t reach them. The world is a maze of forms and gatekeepers and schedules and obstacles, and most dreams die by a thousand paper cuts long before they are said aloud. They die in the not-knowing-where-to-start and in the phone calls never made.",
+          "Every unrealized want is a quiet tragedy of human potential.",
+          "Now imagine every person on earth with a second mind beyond their own. A general manager whose whole job is to find out what you want and make sure it happens. Someone that hears the half-sentence, “I feel like there’s something more I could be doing,” and helps fill in the blanks. This might not be a genie in a bottle, but it can be someone that says, “This is the thing you’ve been dreaming of your whole life. Let’s go get it. Here’s how.” And then builds a plan. Sends the email. Makes the phone call. Finds the funding. Keeps you on schedule. Clears the way and solves all the problems it can until the human part, the wanting and the dreaming, is all that’s left.",
+          "Here’s the best part: we have no idea what people will want. The world until now has been shaped by the small number of fanatics who have somehow found a way to make their wants real. But we’ve never seen humanity with every single person’s agency fully switched on. Eight billion people who just need to write their dream down in order to get started making it happen.",
+          "So we built Muse to help people build the world they want.",
+          "Here’s to wanting. Here’s to dreaming. Here’s to everyone."
+        ]
+      }
+    },
+    {
+      "slug": "6730b4e2f10ce74c",
+      "title": "Gig Review: Public Service Broadcasting's Race For Space at Alexandra Palace ★★★★⯪",
+      "titleZh": "Gig Review: Public Service Broadcasting's Race For Space at Alexandra Palace ★★★★⯪",
+      "link": "https://shkspr.mobi/blog/2026/09/gig-review-public-service-broadcastings-race-for-space-at-alexandra-palace/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-09-27T11:34:08.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Gig Review: Public Service Broadcasting's Race For Space at Alexandra Palace ★★★★⯪",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Ahhh! PSB's RFS! A delightfully indulgent soundscape of melodic wonder, performed here on its 10th (ish) anniversary. Is it really nostalgia if an album is only a decade old? It feels like it has been in the air forever."
+          },
+          {
+            "type": "p",
+            "text": "For something which is seemingly made up of samples, it would have been easy for them to half-arse it and basically just play the CD. Instead we got a full band, guest singers, and 360° video projection,"
+          },
+          {
+            "type": "p",
+            "text": "Oh, also a disco Sputnik flying over the crowd!"
+          },
+          {
+            "type": "p",
+            "text": "Simply magical! As were the indoor fireworks."
+          },
+          {
+            "type": "p",
+            "text": "I might quibble a little with their song choices (no Gagarin!) but hearing the crowd repeatedly scream \"GO!\" was magnificent."
+          },
+          {
+            "type": "p",
+            "text": "Ally Pally isn't a raked venue, so the video projection of the band was most welcome. An excellent gig in a splendid location."
+          },
+          {
+            "type": "h2",
+            "text": "Pre-show and Post-show"
+          },
+          {
+            "type": "p",
+            "text": "As I've written about before, the art of the Pre-Show and Post-Show is vital for getting people to pay for events outside of their homes. Right now I can stream all the music in the world for a year for about the same price as a couple of gig tickets.  Why should I freeze my arse off outside, paying stupid money for mass-produced lager, when I could be at home?"
+          },
+          {
+            "type": "p",
+            "text": "PSB kept up a constant stream of emails talking about the gig. Not an overwhelming amount, just letting people peek behind the curtain of organising it, giving helpful information about logistics, and letting us know about merchandise which was available."
+          },
+          {
+            "type": "p",
+            "text": "Crucially, they also gave us stage timings for them and their support act! How many times have you turned up on time to a gig only to spend an hour listening to some crap DJ before the crew even started setting up the stage? PSB treat their fans with respect."
+          },
+          {
+            "type": "p",
+            "text": "Ally Pally isn't a venue I've been to before. It was well laid out with decent toilet provision - including a big block of portaloos at the back of the hall. The beer prices weren't ruinous, but I kind of resented paying £15 for a veggie hotdog and a handful of chips."
+          },
+          {
+            "type": "p",
+            "text": "Some venues seem to think that screaming at punters to open their bags will make for an enjoyable visit. Here the security staff were polite and not overly officious. Water bottles were allowed in with a cheery wave."
+          },
+          {
+            "type": "p",
+            "text": "Post show - although the train stations are downhill, there were several buses waiting to take punters directly back. That's a perfect way of treating guests at your venue - ensuring that they get home safe and sound."
+          }
+        ],
+        "translations": [
+          "Ahhh! PSB's RFS! A delightfully indulgent soundscape of melodic wonder, performed here on its 10th (ish) anniversary. Is it really nostalgia if an album is only a decade old? It feels like it has been in the air forever.",
+          "For something which is seemingly made up of samples, it would have been easy for them to half-arse it and basically just play the CD. Instead we got a full band, guest singers, and 360° video projection,",
+          "Oh, also a disco Sputnik flying over the crowd!",
+          "Simply magical! As were the indoor fireworks.",
+          "I might quibble a little with their song choices (no Gagarin!) but hearing the crowd repeatedly scream \"GO!\" was magnificent.",
+          "Ally Pally isn't a raked venue, so the video projection of the band was most welcome. An excellent gig in a splendid location.",
+          "Pre-show and Post-show",
+          "As I've written about before, the art of the Pre-Show and Post-Show is vital for getting people to pay for events outside of their homes. Right now I can stream all the music in the world for a year for about the same price as a couple of gig tickets.  Why should I freeze my arse off outside, paying stupid money for mass-produced lager, when I could be at home?",
+          "PSB kept up a constant stream of emails talking about the gig. Not an overwhelming amount, just letting people peek behind the curtain of organising it, giving helpful information about logistics, and letting us know about merchandise which was available.",
+          "Crucially, they also gave us stage timings for them and their support act! How many times have you turned up on time to a gig only to spend an hour listening to some crap DJ before the crew even started setting up the stage? PSB treat their fans with respect.",
+          "Ally Pally isn't a venue I've been to before. It was well laid out with decent toilet provision - including a big block of portaloos at the back of the hall. The beer prices weren't ruinous, but I kind of resented paying £15 for a veggie hotdog and a handful of chips.",
+          "Some venues seem to think that screaming at punters to open their bags will make for an enjoyable visit. Here the security staff were polite and not overly officious. Water bottles were allowed in with a cheery wave.",
+          "Post show - although the train stations are downhill, there were several buses waiting to take punters directly back. That's a perfect way of treating guests at your venue - ensuring that they get home safe and sound."
+        ]
+      }
+    },
+    {
+      "slug": "c642305f64969edd",
+      "title": "Combo Platter",
+      "titleZh": "Combo Platter",
+      "link": "https://feed.tedium.co/link/15204/17475461/combos-snack-food-history",
+      "sourceName": "tedium.co",
+      "sourceUrl": "https://tedium.co",
+      "pubDate": "2026-09-27T16:05:10.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Combo Platter",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Tedium: The Dull Side of the Internet.",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Today in Tedium: As snack foods go, Combos I would describe as the perfect B-minus food. It’s a combination of crunchy and cheesy, nothing more, nothing less. They are the closest a road-tripper is going to get to chips and dip without stopping. But it’s not like the best food you’ve ever had. It’s the kind of thing that gets stuck in your teeth, and if you eat too many at once, it’s salty to the point of annoyance. But admit it: You’re in a gas station looking for sustenance, and it’s not like you walked into a Sheetz or a Wawa. Your options are limited, and as a result, you might just grab something you would never otherwise grab. You are the perfect customer for Combos, the snack food that didn’t reshape America, but instead is a reflection on your current circumstances. You are here. You need a bag of salty food. Combos is there, ready for you. Today’s Tedium answers the ever-lingering question about where Combos came from, why you can’t remember any of its commercials, and why that might actually be for the best. — Ernie @ Tedium"
+          },
+          {
+            "type": "h3",
+            "text": "Sponsored By Computer Chronicles Revisited"
+          },
+          {
+            "type": "h2",
+            "text": "A Monthly Tour Through Computer History"
+          },
+          {
+            "type": "p",
+            "text": "From 1983 to 2002, the PBS series \"Computer Chronicles\" covered the people, products, and companies that made up the PC industry. Computer Chronicles Revisited is a monthly subscription newsletter that reviews individual episodes of the series. Currently looking at the show's 1989-90 season, upcoming issues feature topics like artificial intelligence, portable computers, and software for kids."
+          },
+          {
+            "type": "p",
+            "text": "Inspired by the computer industry newsletters of the time period, Computer Chronicles Revisited is a print publication. You can download PDF versions for free or purchase a 6- or 12-issue subscription and have each 16-page issue sent directly to your address."
+          },
+          {
+            "type": "h3",
+            "text": "Drilling holes in pretzels: The forgotten Battle Creek company that eventually nailed Combos"
+          },
+          {
+            "type": "p",
+            "text": "There hasn’t exactly been many dedicated tomes written on the history of Combos, a food that isn’t the main entree on any normal person’s plate. It’s mass-manufactured snack food, and it’s been produced by one of the world’s largest food companies, Mars, since the late 1970s."
+          },
+          {
+            "type": "p",
+            "text": "But there was a time when it was thought to require a literal drill to produce. Yes, the signature hole that makes Combos unlike any food on grocery store shelves was originally produced with a drill. The overworked Dunkin’ guy says “time to make the donuts” as a camera crew catches his every move. The overworked Combos guy says “time to drill the pretzels,” as he takes a pretzel and cores it like a freaking apple."
+          },
+          {
+            "type": "p",
+            "text": "OK, I’m getting ahead of myself here, but I needed you to know about the drill thing, because it really just highlights how strange producing a food like Combos really is."
+          },
+          {
+            "type": "p",
+            "text": "The story of Combos starts with a pair of brothers, Richard and Walter Nelson. The brothers, based in Battle Creek, Michigan, were active entrepreneurs starting in the 1950s, when, with their father Walter Sr., they launched Wal-Rich Enterprises, which made toy guns, at Kellogg Field, a modern-day corporate airport that was used as a training base during World War II."
+          },
+          {
+            "type": "p",
+            "text": "By the 1970s, the brothers had shifted to contract work for various manufacturers, including General Motors and nearby Kellogg’s. But gradually, the brothers, now working under the Nelbros umbrella, started developing the patents for an unusual product: A pretzel filled with cheese. The first such patent filing, 1970s’s “Method of making a filled food item,” describes an attempt to solve the problem of putting a filling inside a fairly solid product, like a cracker:"
+          },
+          {
+            "type": "quote",
+            "text": "It is well-known practice to pierce a food item having a relatively open and porous interior, such as a cream puff or doughnut of pillow shape, and directly inject into such food item through the piercing member, a thick but flowable filling such as whipped cream, custard, fruit preserves, and jelly. The filling of hollow ice cream conetype items by various filling procedures, such as with soft ice creamlike material flowing from a faucet has also been proposed. Such procedures do not lend themselves to the filling of relatively solid items, and especially the solid and relatively brittle, sticklike, hard-crust items, and it was a recognition of the marketing possibilities of such items and a special method and apparatus for producing them, not commercially available, which led to the conception and development of the present invention.Accordingly, among the objects of the present invention is the provision of a new product in the form of an initially solid, relatively brittle, sticklike, crust-covered product which has been subsequently mechanically hollowed and filled with a suitable filler, and the method and apparatus for producing such product."
+          },
+          {
+            "type": "p",
+            "text": "Their solution to this problem they’ve found? Drill baby, drill:"
+          },
+          {
+            "type": "quote",
+            "text": "Another object of this invention is to provide an apparatus which will cut a bread stick to length, drill it substantially from the cut end to the other, fill same from the inside of said drilled opening, starting adjacent the bottom of same, with a suitable thick but extrudable filling material, and deliver same for further processing, using or packaging."
+          },
+          {
+            "type": "p",
+            "text": "If you’re a longtime reader of Tedium, you may know that this is kind of a wasteful process for producing a snack. The best snacks, such as cheese curls, come about because of happy accidents and byproducts. But this drilled-breadstick approach nonetheless was enough for Nelbros to launch this idea into a sellable product, which they, of course, called … shotzels."
+          },
+          {
+            "type": "p",
+            "text": "I’m not saying that it’s a bad name, but it certainly wasn’t good enough to win over the gas stations of the world. I was trying to figure out just how far idea of a cheese-filled pretzel shotzel reached beyond Battle Creek, and I found a lot of newspaper ads that suggest the company saw uptake for the product at a number of small delis around the country."
+          },
+          {
+            "type": "p",
+            "text": "How far did the shotzel get in Battle Creek? One of the few references I could find to shotzels in the city’s newspaper emerged around 1977 when it was promoted as one of the appetizers made available before a concert by the Battle Creek Symphony Orchestra. Combos may be low culture, but shotzels were apparently a hit with the city’s NPR crowd."
+          },
+          {
+            "type": "p",
+            "text": "Around this time, Nelbros was struggling with its factory situation, attempting to move facilities as it navigated a growing business. A 1978 article described a company in flux, along with a few others who were moving into a then-new industrial park."
+          },
+          {
+            "type": "p",
+            "text": "“It will take about six months to complete the building and get equipment in. We’re planning a 60,000-square-foot building that will accommodate a new 300-foot oven we have on order,” Richard Nelson told the newspaper. “We’ve outgrown our plant at Green and Jay streets and must relocate to expand.”"
+          },
+          {
+            "type": "p",
+            "text": "Meanwhile, the brothers were continuing to develop the shotzel idea into something plainly recognizable to any modern snackhound. The strategy, as highlighted by a patent published in 1979: Get rid of the drilling."
+          },
+          {
+            "type": "quote",
+            "text": "The objects of the invention are accomplished by apparatus and a method for making tubular food products wherein dough pieces in tubular shape are extruded onto supporting die members that hold the tubular dough piece during the time that it is raising and is being baked. Thereafter, the baked member is removed from the die member and is moved relative to a filling apparatus so that filler of a relatively softer food material can be deposited within the cavity formed in the baked tubular member. In one embodiment of the invention the supporting die members are transferred from separated conveyors for extruding, proofing, cooking and baking."
+          },
+          {
+            "type": "p",
+            "text": "Eseentially, rather than creating a single pretzel, filling it with cheese and cutting it up, this edition of the shotzel instead extrudes the bread onto tiny loops that already have holes in the middle, ensuring that they can easily be stuffed with cheese or some other kind of filling."
+          },
+          {
+            "type": "p",
+            "text": "Naturally, the candy manufacturing giant Mars got wind of this development, acquired it from Nelbros in 1979, gave it a name better than “shotzel,” and marketed it in gas stations nationwide. The rest is history."
+          },
+          {
+            "type": "h3",
+            "text": "seven"
+          },
+          {
+            "type": "p",
+            "text": "The number of current Combos flavors that the brand promotes on its website, a mixture of different breadings and different fillings. (Pretzel bread was first; the plainer cracker-style bread came half a decade later.) The brand also periodically sells some limited edition flavors, for folks who must eat Combos with sriracha flavoring or a faux-tortilla shell. As taste testing for this issue, I noshed a Garlic Parmesan flavor during a road trip, and, well, it felt like I was eating Combos."
+          },
+          {
+            "type": "p",
+            "text": "It’s so weird to me that there were no non-pretzel flavors of Combos for the first few years of its existence. Also, this ad screams “we don’t understand our target audience yet, so let’s aim super-broad.”"
+          },
+          {
+            "type": "h3",
+            "text": "The 2006 Combos marketing campaign that didn’t age particularly well"
+          },
+          {
+            "type": "p",
+            "text": "Combos are not really a product that needs advertising so much as distribution. They exist in a 7-Eleven. You pick them up instead of a bag of Bugles, and you’re on your way. Road trip commences."
+          },
+          {
+            "type": "p",
+            "text": "But that hasn’t stopped Mars from trying to market these things on television. The first such attempt came in 1982 in a format I’d call “Big Red”-core. It leaned heavily on the pretzel inspiration, rather than its bite-sized nature, which was really the selling point that mattered."
+          },
+          {
+            "type": "p",
+            "text": "But despite their lasting popularity, Combos have never been a favorite of advertisers. There’s not really a “Combos jingle” that people associate with the company. That meant that, when advertisers took steps to attempt to explain the appeal of Combos, they did so with the then-current language of hipness. This 1994 Combos ad, clearly riffing off of Bill Hicks and his close copycat Denis Leary, emphasizes the point. (At least it talks about the product!)"
+          },
+          {
+            "type": "p",
+            "text": "Beyond quirky ad campaigns like the mid-1990s Combo Man comic-book campaign with Marvel, nothing seemed to really stick to the brand culturally."
+          },
+          {
+            "type": "p",
+            "text": "Which meant that in the mid-2000s, when cable channels like Adult Swim and Spike TV were specifically targeting young men, Combos was something of an open canvas upon which big advertising firms could place their imprint."
+          },
+          {
+            "type": "p",
+            "text": "And given our cultural evolution since, it reads as particularly gnarly. The slogan says what they were going for: “What Your Mom Would Feed You If Your Mom Were A Man.”"
+          },
+          {
+            "type": "p",
+            "text": "Basically, they got someone who looks very much like a man (played by E.J. Carroll, best known for a recurring role on the HBO show The Deuce), put him in a dress, and gave him some clearly adult sons. The visual effect comes off somewhat like John Carroll Lynch’s cross-dressing character in The Drew Carey Show, without the ahead-of-its-time progressive elements that eventually (and unfortunately) led that story line to be dropped."
+          },
+          {
+            "type": "p",
+            "text": "The ads were designed for maximum absurdity (giving Combos to a sick son, saying grace over a bag of Combos), and to hit you with that in-your-face slogan right at the end. We’re a long way from handing these things out at the Battle Creek Symphony Orchestra."
+          },
+          {
+            "type": "p",
+            "text": "It was the brainchild of TBWA\\Chiat\\Day, the firm famed for much of Apple’s iconic advertising, most notably its then-recent “Get A Mac” campaign. And the campaign even won awards for its radio advertising."
+          },
+          {
+            "type": "p",
+            "text": "In an era when at least some have questioned whether late character actor Tim Curry’s career-making role in The Rocky Horror Picture Show is transphobic, even considering that film’s lasting relevance with the LGBTQ+ community, the ad hits a lot differently today. Less Tim & Eric fodder, more extremely misguided attempt at making a gender-role joke."
+          },
+          {
+            "type": "p",
+            "text": "I get that some will probably defend this ad campaign, but it just feels like it would have worked just as well without putting E.J. Carroll in a dress. Mr. Mom never had to pull the gender reversal to make effectively the same joke. And other media properties that did lean into cross-dressing, such as Mrs. Doubtfire and Kids in the Hall, at least set up a framework for why the gender reversal was happening. The joke in this specific campaign was crass even then, but now it just feels gratuitous."
+          },
+          {
+            "type": "p",
+            "text": "You might be wondering, did Combos do better later on? Arguably, yes, though still attempting to present these gas station standbys in a way that appealed to the Slim Jims crowd. A 2012-era ad campaign, called “Bad Combos,” instead leaned into absurd “bad combination” situations. (This “witch doctor” variation is also fairly edgy.)"
+          },
+          {
+            "type": "p",
+            "text": "That may be the its sweet spot from a marketing standpoint. It was ground the brand mined in the early ’90s as well."
+          },
+          {
+            "type": "p",
+            "text": "Was this the right approach for Combos’ target audience of people who just got gas at a place they’ll never visit again? Who’s to say. But it’s telling that I can’t seem to find any recent examples of Combos ads that appeared on television. The Instagram account that gets updated a few times a year is probably enough."
+          },
+          {
+            "type": "p",
+            "text": "Honestly, they sell themselves—without the transphobic tropes."
+          },
+          {
+            "type": "p",
+            "text": "If Combos represents anything, it might be the sharp differences between how a creator perceives the product they developed, and how its acquirer approaches it."
+          },
+          {
+            "type": "p",
+            "text": "Currently, Combos are manufactured far from Battle Creek, Michigan, at a factory in Albany, Georgia. That’s right, friends. Combos are made in the U.S.A. The brand even sponsors a marathon in Albany, though admittedly I could not imagine eating Combos after a run. The salty flavor doesn’t exactly scream “runner-friendly food.”"
+          },
+          {
+            "type": "p",
+            "text": "I understand why companies often feel compelled to lean into edgy marketing for the products they sell, but I secretly wonder if Combos would have been better off it it stuck to the marketing it had in the late ’80s and early ’90s. Nobody needed a version of Combos that tried to come off like Carl’s Jr. It is food you buy at a convenience store and don’t think about until the next time you’re on a road trip."
+          },
+          {
+            "type": "p",
+            "text": "(In some cases, you could argue that the marketing goes against how the founders would have perceived it. Fitting their Battle Creek roots, the Nelsons were devout Seventh Day Adventists, and Richard L. Nelson’s obit described him as a “prayer warrior.”)"
+          },
+          {
+            "type": "p",
+            "text": "What if Combos, I don’t know, promoted its brand as the thing that its distribution network has long positioned it as? Nothing more, nothing less. It’s tasty, it’s portable. It sells itself. Nothing wrong with letting some other product have the “edgy” lane."
+          },
+          {
+            "type": "p",
+            "text": "--"
+          },
+          {
+            "type": "p",
+            "text": "Combos did not need edgy marketing to be awesome. I stand by that. Find this one an interesting read? Share it with a pal!"
+          },
+          {
+            "type": "p",
+            "text": "And thanks again to Computer Chronicles Revisited for sponsoring."
+          },
+          {
+            "type": "h3",
+            "text": "Update 09/27/2026"
+          },
+          {
+            "type": "p",
+            "text": "Added a mention of Combo Man, Combos’ short-lived Marvel superhero persona. Thanks Marc Quill for calling it out!"
+          }
+        ],
+        "translations": [
+          "Today in Tedium: As snack foods go, Combos I would describe as the perfect B-minus food. It’s a combination of crunchy and cheesy, nothing more, nothing less. They are the closest a road-tripper is going to get to chips and dip without stopping. But it’s not like the best food you’ve ever had. It’s the kind of thing that gets stuck in your teeth, and if you eat too many at once, it’s salty to the point of annoyance. But admit it: You’re in a gas station looking for sustenance, and it’s not like you walked into a Sheetz or a Wawa. Your options are limited, and as a result, you might just grab something you would never otherwise grab. You are the perfect customer for Combos, the snack food that didn’t reshape America, but instead is a reflection on your current circumstances. You are here. You need a bag of salty food. Combos is there, ready for you. Today’s Tedium answers the ever-lingering question about where Combos came from, why you can’t remember any of its commercials, and why that might actually be for the best. — Ernie @ Tedium",
+          "Sponsored By Computer Chronicles Revisited",
+          "A Monthly Tour Through Computer History",
+          "From 1983 to 2002, the PBS series \"Computer Chronicles\" covered the people, products, and companies that made up the PC industry. Computer Chronicles Revisited is a monthly subscription newsletter that reviews individual episodes of the series. Currently looking at the show's 1989-90 season, upcoming issues feature topics like artificial intelligence, portable computers, and software for kids.",
+          "Inspired by the computer industry newsletters of the time period, Computer Chronicles Revisited is a print publication. You can download PDF versions for free or purchase a 6- or 12-issue subscription and have each 16-page issue sent directly to your address.",
+          "Drilling holes in pretzels: The forgotten Battle Creek company that eventually nailed Combos",
+          "There hasn’t exactly been many dedicated tomes written on the history of Combos, a food that isn’t the main entree on any normal person’s plate. It’s mass-manufactured snack food, and it’s been produced by one of the world’s largest food companies, Mars, since the late 1970s.",
+          "But there was a time when it was thought to require a literal drill to produce. Yes, the signature hole that makes Combos unlike any food on grocery store shelves was originally produced with a drill. The overworked Dunkin’ guy says “time to make the donuts” as a camera crew catches his every move. The overworked Combos guy says “time to drill the pretzels,” as he takes a pretzel and cores it like a freaking apple.",
+          "OK, I’m getting ahead of myself here, but I needed you to know about the drill thing, because it really just highlights how strange producing a food like Combos really is.",
+          "The story of Combos starts with a pair of brothers, Richard and Walter Nelson. The brothers, based in Battle Creek, Michigan, were active entrepreneurs starting in the 1950s, when, with their father Walter Sr., they launched Wal-Rich Enterprises, which made toy guns, at Kellogg Field, a modern-day corporate airport that was used as a training base during World War II.",
+          "By the 1970s, the brothers had shifted to contract work for various manufacturers, including General Motors and nearby Kellogg’s. But gradually, the brothers, now working under the Nelbros umbrella, started developing the patents for an unusual product: A pretzel filled with cheese. The first such patent filing, 1970s’s “Method of making a filled food item,” describes an attempt to solve the problem of putting a filling inside a fairly solid product, like a cracker:",
+          "It is well-known practice to pierce a food item having a relatively open and porous interior, such as a cream puff or doughnut of pillow shape, and directly inject into such food item through the piercing member, a thick but flowable filling such as whipped cream, custard, fruit preserves, and jelly. The filling of hollow ice cream conetype items by various filling procedures, such as with soft ice creamlike material flowing from a faucet has also been proposed. Such procedures do not lend themselves to the filling of relatively solid items, and especially the solid and relatively brittle, sticklike, hard-crust items, and it was a recognition of the marketing possibilities of such items and a special method and apparatus for producing them, not commercially available, which led to the conception and development of the present invention.Accordingly, among the objects of the present invention is the provision of a new product in the form of an initially solid, relatively brittle, sticklike, crust-covered product which has been subsequently mechanically hollowed and filled with a suitable filler, and the method and apparatus for producing such product.",
+          "Their solution to this problem they’ve found? Drill baby, drill:",
+          "Another object of this invention is to provide an apparatus which will cut a bread stick to length, drill it substantially from the cut end to the other, fill same from the inside of said drilled opening, starting adjacent the bottom of same, with a suitable thick but extrudable filling material, and deliver same for further processing, using or packaging.",
+          "If you’re a longtime reader of Tedium, you may know that this is kind of a wasteful process for producing a snack. The best snacks, such as cheese curls, come about because of happy accidents and byproducts. But this drilled-breadstick approach nonetheless was enough for Nelbros to launch this idea into a sellable product, which they, of course, called … shotzels.",
+          "I’m not saying that it’s a bad name, but it certainly wasn’t good enough to win over the gas stations of the world. I was trying to figure out just how far idea of a cheese-filled pretzel shotzel reached beyond Battle Creek, and I found a lot of newspaper ads that suggest the company saw uptake for the product at a number of small delis around the country.",
+          "How far did the shotzel get in Battle Creek? One of the few references I could find to shotzels in the city’s newspaper emerged around 1977 when it was promoted as one of the appetizers made available before a concert by the Battle Creek Symphony Orchestra. Combos may be low culture, but shotzels were apparently a hit with the city’s NPR crowd.",
+          "Around this time, Nelbros was struggling with its factory situation, attempting to move facilities as it navigated a growing business. A 1978 article described a company in flux, along with a few others who were moving into a then-new industrial park.",
+          "“It will take about six months to complete the building and get equipment in. We’re planning a 60,000-square-foot building that will accommodate a new 300-foot oven we have on order,” Richard Nelson told the newspaper. “We’ve outgrown our plant at Green and Jay streets and must relocate to expand.”",
+          "Meanwhile, the brothers were continuing to develop the shotzel idea into something plainly recognizable to any modern snackhound. The strategy, as highlighted by a patent published in 1979: Get rid of the drilling.",
+          "The objects of the invention are accomplished by apparatus and a method for making tubular food products wherein dough pieces in tubular shape are extruded onto supporting die members that hold the tubular dough piece during the time that it is raising and is being baked. Thereafter, the baked member is removed from the die member and is moved relative to a filling apparatus so that filler of a relatively softer food material can be deposited within the cavity formed in the baked tubular member. In one embodiment of the invention the supporting die members are transferred from separated conveyors for extruding, proofing, cooking and baking.",
+          "Eseentially, rather than creating a single pretzel, filling it with cheese and cutting it up, this edition of the shotzel instead extrudes the bread onto tiny loops that already have holes in the middle, ensuring that they can easily be stuffed with cheese or some other kind of filling.",
+          "Naturally, the candy manufacturing giant Mars got wind of this development, acquired it from Nelbros in 1979, gave it a name better than “shotzel,” and marketed it in gas stations nationwide. The rest is history.",
+          "seven",
+          "The number of current Combos flavors that the brand promotes on its website, a mixture of different breadings and different fillings. (Pretzel bread was first; the plainer cracker-style bread came half a decade later.) The brand also periodically sells some limited edition flavors, for folks who must eat Combos with sriracha flavoring or a faux-tortilla shell. As taste testing for this issue, I noshed a Garlic Parmesan flavor during a road trip, and, well, it felt like I was eating Combos.",
+          "It’s so weird to me that there were no non-pretzel flavors of Combos for the first few years of its existence. Also, this ad screams “we don’t understand our target audience yet, so let’s aim super-broad.”",
+          "The 2006 Combos marketing campaign that didn’t age particularly well",
+          "Combos are not really a product that needs advertising so much as distribution. They exist in a 7-Eleven. You pick them up instead of a bag of Bugles, and you’re on your way. Road trip commences.",
+          "But that hasn’t stopped Mars from trying to market these things on television. The first such attempt came in 1982 in a format I’d call “Big Red”-core. It leaned heavily on the pretzel inspiration, rather than its bite-sized nature, which was really the selling point that mattered.",
+          "But despite their lasting popularity, Combos have never been a favorite of advertisers. There’s not really a “Combos jingle” that people associate with the company. That meant that, when advertisers took steps to attempt to explain the appeal of Combos, they did so with the then-current language of hipness. This 1994 Combos ad, clearly riffing off of Bill Hicks and his close copycat Denis Leary, emphasizes the point. (At least it talks about the product!)",
+          "Beyond quirky ad campaigns like the mid-1990s Combo Man comic-book campaign with Marvel, nothing seemed to really stick to the brand culturally.",
+          "Which meant that in the mid-2000s, when cable channels like Adult Swim and Spike TV were specifically targeting young men, Combos was something of an open canvas upon which big advertising firms could place their imprint.",
+          "And given our cultural evolution since, it reads as particularly gnarly. The slogan says what they were going for: “What Your Mom Would Feed You If Your Mom Were A Man.”",
+          "Basically, they got someone who looks very much like a man (played by E.J. Carroll, best known for a recurring role on the HBO show The Deuce), put him in a dress, and gave him some clearly adult sons. The visual effect comes off somewhat like John Carroll Lynch’s cross-dressing character in The Drew Carey Show, without the ahead-of-its-time progressive elements that eventually (and unfortunately) led that story line to be dropped.",
+          "The ads were designed for maximum absurdity (giving Combos to a sick son, saying grace over a bag of Combos), and to hit you with that in-your-face slogan right at the end. We’re a long way from handing these things out at the Battle Creek Symphony Orchestra.",
+          "It was the brainchild of TBWA\\Chiat\\Day, the firm famed for much of Apple’s iconic advertising, most notably its then-recent “Get A Mac” campaign. And the campaign even won awards for its radio advertising.",
+          "In an era when at least some have questioned whether late character actor Tim Curry’s career-making role in The Rocky Horror Picture Show is transphobic, even considering that film’s lasting relevance with the LGBTQ+ community, the ad hits a lot differently today. Less Tim & Eric fodder, more extremely misguided attempt at making a gender-role joke.",
+          "I get that some will probably defend this ad campaign, but it just feels like it would have worked just as well without putting E.J. Carroll in a dress. Mr. Mom never had to pull the gender reversal to make effectively the same joke. And other media properties that did lean into cross-dressing, such as Mrs. Doubtfire and Kids in the Hall, at least set up a framework for why the gender reversal was happening. The joke in this specific campaign was crass even then, but now it just feels gratuitous.",
+          "You might be wondering, did Combos do better later on? Arguably, yes, though still attempting to present these gas station standbys in a way that appealed to the Slim Jims crowd. A 2012-era ad campaign, called “Bad Combos,” instead leaned into absurd “bad combination” situations. (This “witch doctor” variation is also fairly edgy.)",
+          "That may be the its sweet spot from a marketing standpoint. It was ground the brand mined in the early ’90s as well.",
+          "Was this the right approach for Combos’ target audience of people who just got gas at a place they’ll never visit again? Who’s to say. But it’s telling that I can’t seem to find any recent examples of Combos ads that appeared on television. The Instagram account that gets updated a few times a year is probably enough.",
+          "Honestly, they sell themselves—without the transphobic tropes.",
+          "If Combos represents anything, it might be the sharp differences between how a creator perceives the product they developed, and how its acquirer approaches it.",
+          "Currently, Combos are manufactured far from Battle Creek, Michigan, at a factory in Albany, Georgia. That’s right, friends. Combos are made in the U.S.A. The brand even sponsors a marathon in Albany, though admittedly I could not imagine eating Combos after a run. The salty flavor doesn’t exactly scream “runner-friendly food.”",
+          "I understand why companies often feel compelled to lean into edgy marketing for the products they sell, but I secretly wonder if Combos would have been better off it it stuck to the marketing it had in the late ’80s and early ’90s. Nobody needed a version of Combos that tried to come off like Carl’s Jr. It is food you buy at a convenience store and don’t think about until the next time you’re on a road trip.",
+          "(In some cases, you could argue that the marketing goes against how the founders would have perceived it. Fitting their Battle Creek roots, the Nelsons were devout Seventh Day Adventists, and Richard L. Nelson’s obit described him as a “prayer warrior.”)",
+          "What if Combos, I don’t know, promoted its brand as the thing that its distribution network has long positioned it as? Nothing more, nothing less. It’s tasty, it’s portable. It sells itself. Nothing wrong with letting some other product have the “edgy” lane.",
+          "--",
+          "Combos did not need edgy marketing to be awesome. I stand by that. Find this one an interesting read? Share it with a pal!",
+          "And thanks again to Computer Chronicles Revisited for sponsoring.",
+          "Update 09/27/2026",
+          "Added a mention of Combo Man, Combos’ short-lived Marvel superhero persona. Thanks Marc Quill for calling it out!"
+        ]
+      }
+    }
+  ]
+}
