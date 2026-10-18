@@ -1,0 +1,1357 @@
+{
+  "date": "2026-10-19",
+  "generatedAt": "2026-10-18T18:34:03.794Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 81,
+    "totalArticles": 2482,
+    "filteredArticles": 8,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "69ead926e6899b5e",
+      "title": "Inline rendering with document​.currentScript",
+      "titleZh": "Inline rendering with document​.currentScript",
+      "link": "https://simonwillison.net/2026/Oct/17/document-currentscript/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-10-17T21:11:12.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Inline rendering with document​.currentScript",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "17th October 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "Inline rendering with document​.currentScript. Lean Rada describes a neat trick that takes advantage of the document.currentScript property. You can use that to drop in a tiny inline <script> element that replaces itself when the page loads:"
+          },
+          {
+            "type": "code",
+            "text": "The year is <script>\ndocument.currentScript.replaceWith(\n  new Date().getFullYear())</script>"
+          },
+          {
+            "type": "p",
+            "text": "If you define a shortcut function like this:"
+          },
+          {
+            "type": "code",
+            "text": "$=(...n)=>document.currentScript.replaceWith(...n)"
+          },
+          {
+            "type": "p",
+            "text": "You get a tiny template language:"
+          },
+          {
+            "type": "code",
+            "text": "The year is <script>$(new Date().getFullYear())</script>"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "de1448be137e66a6",
+      "title": "Writing is no longer proof of work",
+      "titleZh": "Writing is no longer proof of work",
+      "link": "https://seangoedecke.com/writing-is-no-longer-proof-of-work/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-10-18T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Writing is no longer proof of work",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Tech companies structurally depend on writing to serve as evidence, in the same way that Bitcoin depends on proof-of-work hashing. However, in the last few years, LLMs have started to undermine this practice."
+          },
+          {
+            "type": "p",
+            "text": "How can writing be like proof-of-work? When I’m writing something at work, it’s not always to communicate an idea. Sometimes it’s because having a piece of writing is useful as evidence: of compliance with some process, of the fact that I put in effort, or of the fact that I know about some topic. Here are some examples."
+          },
+          {
+            "type": "h3",
+            "text": "Writing as evidence of compliance"
+          },
+          {
+            "type": "p",
+            "text": "The most obvious instance of writing as evidence is filling out mandatory templates: “risk assessments”, “impact evaluations”, and so on. The purpose of these is rarely to assess risk or evaluate impact. It’s some combination of:"
+          },
+          {
+            "type": "li",
+            "text": "Employees wanting to demonstrate that they’re taking some incident seriously by introducing new process"
+          },
+          {
+            "type": "li",
+            "text": "A legal requirement that companies have developed the least-expensive way to technically satisfy"
+          },
+          {
+            "type": "li",
+            "text": "Internal company rules intending to scare lazy or uncommitted engineers away from making dangerous changes"
+          },
+          {
+            "type": "li",
+            "text": "Smaller companies trying to role-play processes from larger companies that are doing one of the above"
+          },
+          {
+            "type": "p",
+            "text": "It’s a mistake to buckle down and produce an excellent piece of writing here. You simply need to dash off something plausible enough to tick the box."
+          },
+          {
+            "type": "h3",
+            "text": "Writing as evidence of effort"
+          },
+          {
+            "type": "p",
+            "text": "In the kinds of hundred-page reports produced by consultants, writing is evidence of effort. The actual piece of communication is the first page of text (or often not even that). The remaining ninety-nine pages are proof that the first page is well-researched, and that the money spent on hiring the consultancy wasn’t wasted."
+          },
+          {
+            "type": "p",
+            "text": "Another example: if you’re working on a project by yourself, why spend time creating tickets and filling them out? I suppose theoretically someone could read them to get a sense of what you’re doing, but in that case you’ve failed to communicate the project via normal channels: telling people in Slack or in meetings, writing a proposal document, and so on. The tickets are primarily valuable as evidence: proof1 that you haven’t just been screwing around playing video games."
+          },
+          {
+            "type": "h3",
+            "text": "Writing as evidence of learning"
+          },
+          {
+            "type": "p",
+            "text": "A third subcategory of writing-as-evidence is writing that proves that the writer has understood some topic."
+          },
+          {
+            "type": "p",
+            "text": "The best example of this is reporting. Large organizations function via a tree of nested reports, often called “rollups”. Individual contributors give status updates to their managers, who summarize and combine those into team-level updates for their managers, and so on all the way to the top."
+          },
+          {
+            "type": "p",
+            "text": "One of the reasons for this practice is that it forces each manager to build at least a minimal mental model of what’s going on in their local area. Taking the time to write a status report forces you to wrap your head around each detail, for the same reason that the best way to understand an idea is to try to explain it to someone else. Even if the VP or CEO doesn’t read the rollup, the fact that it exists is evidence that the manager has some grip over their domain."
+          },
+          {
+            "type": "h3",
+            "text": "Proof of work"
+          },
+          {
+            "type": "p",
+            "text": "You can think of all these kinds of writing-as-evidence as proof of work. Nobody really cares about the content, they care about the fact that you sat down and wrote it. Of course, this requires a measure of trust. Just like cryptocurrency proof-of-work, if you fake it (for instance, by pasting lorem ipsum into pages 2-100 of your report), you can swindle the rewards without having to actually put in the effort."
+          },
+          {
+            "type": "p",
+            "text": "To avoid fraud, tech companies will typically check some percentage of writing-as-evidence: either reactively, such as when an incident causes people to actually go and read the risk assessment on the PR that broke production, or proactively, by tasking some poor soul with reviewing the consultant report in detail. Blockchains, of course, are able to check the work automatically (for instance, by confirming that the nonce and block data do in fact hash to the claimed value)."
+          },
+          {
+            "type": "p",
+            "text": "To break Bitcoin, somebody would have to break SHA-256: to figure out a way to identify in advance what content would hash to a specific value, so you could produce the hash without doing the work. To break writing-as-evidence, somebody would have to figure out a way to generate text on demand, so you could produce the evidence (of compliance, effort or learning) without actually doing the work. Unfortunately, that happened in 2023."
+          },
+          {
+            "type": "h3",
+            "text": "LLMs fundamentally break writing-as-evidence"
+          },
+          {
+            "type": "p",
+            "text": "Writing is no longer evidence of anything. LLM-produced writing makes evidence of compliance even more vacuous than it already is. It totally destroys evidence of effort: if you need a hundred-page report, you can generate one with an hour and a few dollars in inference tokens. Evidence of learning is likewise broken, since I can produce a detailed status report full of information that never passed through my mind at all (and certainly was never retained)."
+          },
+          {
+            "type": "p",
+            "text": "Of course, this problem isn’t limited to tech companies. Schools and universities rely on writing to serve as evidence of effort and learning, and students are using LLMs to cheat as hard as they can. Many political or regulatory bodies require a certain bar of professional writing in order to filter requests, and are or will be overloaded by LLMs making that kind of writing generally available."
+          },
+          {
+            "type": "h3",
+            "text": "What happens now?"
+          },
+          {
+            "type": "p",
+            "text": "Currently we’re suffering through an overhang period where the processes are still in place but everyone knows how to trivially exploit them. It will be interesting to see how organizations adapt. They might:"
+          },
+          {
+            "type": "li",
+            "text": "Introduce new, harder-to-forge forms of evidence like recording a video or presenting live in a meeting (though this will take more time to consume than written reports)"
+          },
+          {
+            "type": "li",
+            "text": "Attempt to mandate that certain forms of writing not be AI-generated (universities already do this2), which will be difficult to enforce"
+          },
+          {
+            "type": "li",
+            "text": "Find other ways to track effort, such as asking an LLM to review an engineer’s code and judge how much work they put in"
+          },
+          {
+            "type": "p",
+            "text": "I can’t think of any great options here, which is interesting. If there really is no easy solution to this problem, the overhang period might go on for a while, where nobody is particularly happy with the status quo but there are no good alternatives."
+          },
+          {
+            "type": "p",
+            "text": "In this scenario, individual software engineers are incentivized to exploit the system while they can, and avoid being harmed by other system-exploiters. In other words: don’t trust or waste time poring through LLM-authored documents yourself, but also don’t waste time writing documents by hand that are just intended to serve as evidence3. Save that effort for documents that are intended to serve as communication."
+          },
+          {
+            "type": "li",
+            "text": "Why not just look at your code? Code is an illegible metric to non-technical people. Even to technical people it can be tricky to figure out how difficult a piece of code was to write, for the same reason that it’s tricky to assess how difficult a mechanical puzzle is just by seeing it when it’s assembled. But everyone knows roughly how long it takes to write a paragraph of text.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Software companies will be reluctant to adopt this, because they see internal LLM adoption as a necessary tool to speed product development. They’re already begging employees to use LLMs; if they start telling them to not use LLMs for writing, that muddies the message.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Part of this involves getting good at telling the difference (in other words, getting good at figuring out if anyone is actually going to read the document). There may also be a third emerging category here: texts that won’t be read but also won’t be ignored, because they’re intended for consumption by other LLMs.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "Tech companies structurally depend on writing to serve as evidence, in the same way that Bitcoin depends on proof-of-work hashing. However, in the last few years, LLMs have started to undermine this practice.",
+          "How can writing be like proof-of-work? When I’m writing something at work, it’s not always to communicate an idea. Sometimes it’s because having a piece of writing is useful as evidence: of compliance with some process, of the fact that I put in effort, or of the fact that I know about some topic. Here are some examples.",
+          "Writing as evidence of compliance",
+          "The most obvious instance of writing as evidence is filling out mandatory templates: “risk assessments”, “impact evaluations”, and so on. The purpose of these is rarely to assess risk or evaluate impact. It’s some combination of:",
+          "Employees wanting to demonstrate that they’re taking some incident seriously by introducing new process",
+          "A legal requirement that companies have developed the least-expensive way to technically satisfy",
+          "Internal company rules intending to scare lazy or uncommitted engineers away from making dangerous changes",
+          "Smaller companies trying to role-play processes from larger companies that are doing one of the above",
+          "It’s a mistake to buckle down and produce an excellent piece of writing here. You simply need to dash off something plausible enough to tick the box.",
+          "Writing as evidence of effort",
+          "In the kinds of hundred-page reports produced by consultants, writing is evidence of effort. The actual piece of communication is the first page of text (or often not even that). The remaining ninety-nine pages are proof that the first page is well-researched, and that the money spent on hiring the consultancy wasn’t wasted.",
+          "Another example: if you’re working on a project by yourself, why spend time creating tickets and filling them out? I suppose theoretically someone could read them to get a sense of what you’re doing, but in that case you’ve failed to communicate the project via normal channels: telling people in Slack or in meetings, writing a proposal document, and so on. The tickets are primarily valuable as evidence: proof1 that you haven’t just been screwing around playing video games.",
+          "Writing as evidence of learning",
+          "A third subcategory of writing-as-evidence is writing that proves that the writer has understood some topic.",
+          "The best example of this is reporting. Large organizations function via a tree of nested reports, often called “rollups”. Individual contributors give status updates to their managers, who summarize and combine those into team-level updates for their managers, and so on all the way to the top.",
+          "One of the reasons for this practice is that it forces each manager to build at least a minimal mental model of what’s going on in their local area. Taking the time to write a status report forces you to wrap your head around each detail, for the same reason that the best way to understand an idea is to try to explain it to someone else. Even if the VP or CEO doesn’t read the rollup, the fact that it exists is evidence that the manager has some grip over their domain.",
+          "Proof of work",
+          "You can think of all these kinds of writing-as-evidence as proof of work. Nobody really cares about the content, they care about the fact that you sat down and wrote it. Of course, this requires a measure of trust. Just like cryptocurrency proof-of-work, if you fake it (for instance, by pasting lorem ipsum into pages 2-100 of your report), you can swindle the rewards without having to actually put in the effort.",
+          "To avoid fraud, tech companies will typically check some percentage of writing-as-evidence: either reactively, such as when an incident causes people to actually go and read the risk assessment on the PR that broke production, or proactively, by tasking some poor soul with reviewing the consultant report in detail. Blockchains, of course, are able to check the work automatically (for instance, by confirming that the nonce and block data do in fact hash to the claimed value).",
+          "To break Bitcoin, somebody would have to break SHA-256: to figure out a way to identify in advance what content would hash to a specific value, so you could produce the hash without doing the work. To break writing-as-evidence, somebody would have to figure out a way to generate text on demand, so you could produce the evidence (of compliance, effort or learning) without actually doing the work. Unfortunately, that happened in 2023.",
+          "LLMs fundamentally break writing-as-evidence",
+          "Writing is no longer evidence of anything. LLM-produced writing makes evidence of compliance even more vacuous than it already is. It totally destroys evidence of effort: if you need a hundred-page report, you can generate one with an hour and a few dollars in inference tokens. Evidence of learning is likewise broken, since I can produce a detailed status report full of information that never passed through my mind at all (and certainly was never retained).",
+          "Of course, this problem isn’t limited to tech companies. Schools and universities rely on writing to serve as evidence of effort and learning, and students are using LLMs to cheat as hard as they can. Many political or regulatory bodies require a certain bar of professional writing in order to filter requests, and are or will be overloaded by LLMs making that kind of writing generally available.",
+          "What happens now?",
+          "Currently we’re suffering through an overhang period where the processes are still in place but everyone knows how to trivially exploit them. It will be interesting to see how organizations adapt. They might:",
+          "Introduce new, harder-to-forge forms of evidence like recording a video or presenting live in a meeting (though this will take more time to consume than written reports)",
+          "Attempt to mandate that certain forms of writing not be AI-generated (universities already do this2), which will be difficult to enforce",
+          "Find other ways to track effort, such as asking an LLM to review an engineer’s code and judge how much work they put in",
+          "I can’t think of any great options here, which is interesting. If there really is no easy solution to this problem, the overhang period might go on for a while, where nobody is particularly happy with the status quo but there are no good alternatives.",
+          "In this scenario, individual software engineers are incentivized to exploit the system while they can, and avoid being harmed by other system-exploiters. In other words: don’t trust or waste time poring through LLM-authored documents yourself, but also don’t waste time writing documents by hand that are just intended to serve as evidence3. Save that effort for documents that are intended to serve as communication.",
+          "Why not just look at your code? Code is an illegible metric to non-technical people. Even to technical people it can be tricky to figure out how difficult a piece of code was to write, for the same reason that it’s tricky to assess how difficult a mechanical puzzle is just by seeing it when it’s assembled. But everyone knows roughly how long it takes to write a paragraph of text.\n↩",
+          "Software companies will be reluctant to adopt this, because they see internal LLM adoption as a necessary tool to speed product development. They’re already begging employees to use LLMs; if they start telling them to not use LLMs for writing, that muddies the message.\n↩",
+          "Part of this involves getting good at telling the difference (in other words, getting good at figuring out if anyone is actually going to read the document). There may also be a third emerging category here: texts that won’t be read but also won’t be ignored, because they’re intended for consumption by other LLMs.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "ed7b5755fe80be0f",
+      "title": "Whatever You Say Bounces Off Me and Sticks to You",
+      "titleZh": "Whatever You Say Bounces Off Me and Sticks to You",
+      "link": "https://www.reuters.com/business/retail-consumer/openai-employee-who-left-apple-took-files-about-unreleased-device-openai-alleges-2026-10-14/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-10-18T00:55:42.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Whatever You Say Bounces Off Me and Sticks to You",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "1018290f91d04638",
+      "title": "Una Watch TOTP - MFA on your wrist!",
+      "titleZh": "Una Watch TOTP - MFA on your wrist!",
+      "link": "https://shkspr.mobi/blog/2026/10/una-watch-totp-mfa-on-your-wrist/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-10-18T11:34:08.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Una Watch TOTP - MFA on your wrist!",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Let's get this out of the way first - this is a terrible idea!  I want my two-factor authentication codes to be easily accessible to me, so I've built a watch app which will display them. That's really convenient for me - but makes for a terrible security posture. Anyone who steals my watch will be able to see my one-time code. If they're clever, they can decompile the app and find the secret which powers the code generation."
+          },
+          {
+            "type": "p",
+            "text": "You should absolutely not do this and, if you ignore my warnings, you should only do this for codes which aren't critical to your security."
+          },
+          {
+            "type": "p",
+            "text": "In my defence, an attacker would still need my username and password to make any use of these codes - but please don't trust your security to my deranged witterings."
+          },
+          {
+            "type": "h2",
+            "text": "What It Looks Like"
+          },
+          {
+            "type": "h2",
+            "text": "Prior Art"
+          },
+          {
+            "type": "p",
+            "text": "I'm sure many other people have done this. Indeed, three years ago I built An eInk, Wrist-Mounted, TOTP Generator."
+          },
+          {
+            "type": "h2",
+            "text": "The Service"
+          },
+          {
+            "type": "p",
+            "text": "This is in my Service.cpp - as you can see, it's pretty simple. This won't let you add in hundreds of codes - you get one and that's it. There's no countdown when a code is about to expire, so I recommend waiting until a new one pops up before you start typing it in."
+          },
+          {
+            "type": "p",
+            "text": "I'll be candid, I haven't used C++ properly since university - and that was in the last century. I've mostly just cut things out to see what breaks. Feel free to educate me on the correct idiomatic code."
+          },
+          {
+            "type": "p",
+            "text": "You will need to set your own secret in here."
+          },
+          {
+            "type": "code",
+            "text": "//  Standard includes.\n#include \"Service.hpp\"\n#include \"SDK/Messages/CommandMessages.hpp\"\n#include \"SDK/Messages/MessageGuard.hpp\"\n\n//  Needed for PureTOTP.\n#include <iostream>\n#include \"TOTP.h\"\n\n#include <string>\n#include <sstream>\n\n//  What this Glance can do.\nService::Service(SDK::Kernel &kernel)\n    : mKernel(kernel)\n    , mGlanceUI()\n    , mGlanceTitle()\n    , mGlanceValue()\n{}\n\nvoid Service::createGuiControls()\n{\n    //  Set the main title in the Glance.\n    mGlanceTitle = mGlanceUI.createText();\n    mGlanceTitle.pos({ kTitleX, kTitleY }, { kTitleW, kTitleH })\n        .font(GlanceFont_t::GLANCE_FONT_POPPINS_SEMIBOLD_20)\n        .color(GlanceColor_t::GLANCE_COLOR_TEAL)\n        .setText(\"HSBC MFA Code\")\n        .alignment(GlanceAlignH_t::GLANCE_ALIGN_H_CENTER);\n\n    //  Set the default text for the value.\n    mGlanceValue = mGlanceUI.createText();\n    mGlanceValue.pos({ 20, kValueY }, { 200, kValueH })\n        .font(GlanceFont_t::GLANCE_FONT_POPPINS_SEMIBOLD_20)\n        .color(GlanceColor_t::GLANCE_COLOR_YELLOW_DARK)\n        .setText( \"Waiting for update\" )\n        .alignment(GlanceAlignH_t::GLANCE_ALIGN_H_CENTER);\n}\n\nvoid Service::glanceUpdate()\n{\n    //  Set the Base32 encoded secret (all uppercase).\n    std::string secret = \"QWERTYUIOP\";\n    //  Generate the code based on the Unix timestamp right now.\n    const std::time_t t = std::time(0);\n    std::string code = TOTP::GenerateTOTP( 6, 30, TOTP::HMAC_SHA1, secret, t );\n\n    std::ostringstream ss;\n    ss << t;\n\n    //  Convert the string to char* and display it as the value.\n    mGlanceValue.print( code.c_str() ); \n\n    //  Show the Unix time to check the timezone is correct.\n    // mGlanceTitle.print( ss.str().c_str() );\n}\n\n//  No service.\nService::~Service(){}\n\n//  When this glance is opened.\nvoid Service::run()\n{\n    while (true) {\n        SDK::MessageBase *msg;\n        if(!mKernel.comm.getMessage(msg)) {\n            continue;\n        }\n\n        switch (msg->getType()) {\n            //  The Glance has started.\n            case SDK::MessageType::EVENT_GLANCE_START:\n                if (configGui()) {\n                    createGuiControls();\n                } else {\n                    mKernel.comm.releaseMessage(msg);\n                    mKernel.sys.exit(0);\n                }\n                break;\n            //  The Glance has been stopped.\n            case SDK::MessageType::COMMAND_APP_STOP:\n            case SDK::MessageType::EVENT_GLANCE_STOP:\n                mKernel.comm.releaseMessage(msg);\n                return;\n                break;\n\n            //  Every second, perform an action.\n            case SDK::MessageType::EVENT_GLANCE_TICK:\n                onGlanceTick();\n                break;\n\n            default:\n                break;\n        }\n\n        mKernel.comm.releaseMessage(msg);\n    }\n}\n\nvoid Service::onGlanceTick()\n{\n    if (mGlanceUI.isInvalid()) {\n        if (auto upd = SDK::make_msg<SDK::Message::RequestGlanceUpdate>(mKernel)) {\n            upd->name           = APP_NAME;\n            upd->controls       = mGlanceUI.data();\n            upd->controlsNumber = static_cast<uint32_t>(mGlanceUI.size());\n            upd.send(100);\n        }\n\n        mGlanceUI.setValid();\n    }\n    glanceUpdate();\n}\n\nbool Service::configGui()\n{\n    bool status = false;\n    if (auto gc = SDK::make_msg<SDK::Message::RequestGlanceConfig>(mKernel)) {\n        if (gc.send(100) && gc.ok()) {\n            if (gc->maxControls >= 3) {\n                mGlanceUI.setWidth(gc->width);\n                mGlanceUI.setHeight(gc->height);\n                status = true;\n            }\n        }\n    }\n    return status;\n}"
+          },
+          {
+            "type": "h2",
+            "text": "The Library"
+          },
+          {
+            "type": "p",
+            "text": "There are dozens of C++ libraries for RFC 6238 generation. I ended up using PureTOTP as it didn't require any external dependencies and was only two files.  As I only needed SHA1 TOTP codes, I stripped out a bunch of functionality which was unnecessary for me. Similarly, I only wanted to generate 6 digit codes with a 30 second period - so took out anything which did more than that."
+          },
+          {
+            "type": "p",
+            "text": "I've tidied up the code and comments where I can. The original was MIT Licenced - so this is as well."
+          },
+          {
+            "type": "p",
+            "text": "There are two parts to this. First, the header"
+          },
+          {
+            "type": "code",
+            "text": "// TOTP.h\n//\n#pragma once\n#include <string>\nclass TOTP\n{\npublic:\n    const static int HMAC_SHA1 = 20;    //  Length of HMAC.\n\n    static std::string GenerateTOTP(const std::string& secret);\n    static std::string GenerateTOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret, int specTime);\n\n    TOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret): digit(digit), refreshSeconds(refreshSeconds), algorithm(algorithm), secret(secret) {}\n    TOTP(const std::string& secret): digit(6), refreshSeconds(30), algorithm(HMAC_SHA1), secret(secret) {}\n\n    std::string currentTOTP();\n\nprivate:\n    int digit, refreshSeconds, algorithm;\n\n    std::string secret;\n};"
+          },
+          {
+            "type": "p",
+            "text": "Next is the standalone library which does the TOTP generation, TOTP.cpp"
+          },
+          {
+            "type": "code",
+            "text": "// TOTP.cpp\n//\n#include \"TOTP.h\"\n#include <vector>\n#include <stack>\n#include <queue>\n#include <sstream>\n#include <iomanip>\n#include <cstdint>\n#include <cstring>\n#include <array>\n#include <stdexcept>\n#include <algorithm>\nusing namespace std;\n\nstruct JEVP_MD\n{\n    enum Kind {\n        SHA1\n    };\n\n    Kind kind;\n    int  md_size;\n    int  block_size;\n};\n\nstatic inline uint32_t rotl32(uint32_t x, uint32_t n) { return (x << n) | (x >> (32 - n)); }\nstatic inline uint32_t rotr32(uint32_t x, uint32_t n) { return (x >> n) | (x << (32 - n)); }\nstatic inline uint64_t rotr64(uint64_t x, uint64_t n) { return (x >> n) | (x << (64 - n)); }\n\nstatic uint32_t load_be32(const unsigned char* p)\n{\n    return (uint32_t(p[0]) << 24) |\n           (uint32_t(p[1]) << 16) |\n           (uint32_t(p[2]) <<  8) |\n            uint32_t(p[3]);\n}\n\nstatic void store_be32(uint32_t v, unsigned char* p)\n{\n    p[0] = static_cast<unsigned char>((v >> 24) & 0xFF);\n    p[1] = static_cast<unsigned char>((v >> 16) & 0xFF);\n    p[2] = static_cast<unsigned char>((v >>  8) & 0xFF);\n    p[3] = static_cast<unsigned char>( v        & 0xFF);\n}\n\nstatic void store_be64(uint64_t v, unsigned char* p)\n{\n    p[0] = static_cast<unsigned char>((v >> 56) & 0xFF);\n    p[1] = static_cast<unsigned char>((v >> 48) & 0xFF);\n    p[2] = static_cast<unsigned char>((v >> 40) & 0xFF);\n    p[3] = static_cast<unsigned char>((v >> 32) & 0xFF);\n    p[4] = static_cast<unsigned char>((v >> 24) & 0xFF);\n    p[5] = static_cast<unsigned char>((v >> 16) & 0xFF);\n    p[6] = static_cast<unsigned char>((v >>  8) & 0xFF);\n    p[7] = static_cast<unsigned char>( v        & 0xFF);\n}\n\nstatic vector<unsigned char> sha1_hash(const unsigned char* data, size_t len)\n{\n    vector<unsigned char> msg(data, data + len);\n    uint64_t              bit_len = static_cast<uint64_t>(len) * 8;\n\n    msg.push_back(0x80);\n    while ((msg.size() % 64) != 56) msg.push_back(0x00);\n\n    unsigned char lenbuf[8];\n    store_be64(bit_len, lenbuf);\n    msg.insert(msg.end(), lenbuf, lenbuf + 8);\n\n    uint32_t h0 = 0x67452301;\n    uint32_t h1 = 0xEFCDAB89;\n    uint32_t h2 = 0x98BADCFE;\n    uint32_t h3 = 0x10325476;\n    uint32_t h4 = 0xC3D2E1F0;\n\n    for (size_t chunk = 0; chunk < msg.size(); chunk += 64)\n    {\n        uint32_t w[80];\n        for (int i = 0; i < 16; ++i)\n            w[i] = load_be32(&msg[chunk + i * 4]);\n        for (int i = 16; i < 80; ++i)\n            w[i] = rotl32(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1);\n\n        uint32_t a = h0, b = h1, c = h2, d = h3, e = h4;\n\n        for (int i = 0; i < 80; ++i)\n        {\n            uint32_t f, k;\n            if (i < 20)\n            {\n                f = (b & c) | ((~b) & d);\n                k = 0x5A827999;\n            }\n            else if (i < 40)\n            {\n                f = b ^ c ^ d;\n                k = 0x6ED9EBA1;\n            }\n            else if (i < 60)\n            {\n                f = (b & c) | (b & d) | (c & d);\n                k = 0x8F1BBCDC;\n            }\n            else\n            {\n                f = b ^ c ^ d;\n                k = 0xCA62C1D6;\n            }\n\n            uint32_t temp = rotl32(a, 5) + f + e + k + w[i];\n\n            e = d;\n            d = c;\n            c = rotl32(b, 30);\n            b = a;\n            a = temp;\n        }\n\n        h0 += a;\n        h1 += b;\n        h2 += c;\n        h3 += d;\n        h4 += e;\n    }\n\n    vector<unsigned char> out(20);\n    store_be32(h0, &out[ 0]);\n    store_be32(h1, &out[ 4]);\n    store_be32(h2, &out[ 8]);\n    store_be32(h3, &out[12]);\n    store_be32(h4, &out[16]);\n    return out;\n}\n\nstatic const JEVP_MD g_sha1   = {JEVP_MD::SHA1, 20, 64};\n\nconst JEVP_MD* JEVP_sha1() { return &g_sha1; }\n\nunsigned char* JHMAC(const JEVP_MD* JEVP_MD, const void* key, int key_len, const unsigned char* data, size_t data_len, unsigned char* md, unsigned int* md_len)\n{\n    if (!JEVP_MD || !key || key_len < 0 || !data)\n        return nullptr;\n\n    static thread_local unsigned char static_md[64];\n\n    if (!md)\n        md = static_md;\n\n    vector<unsigned char> key_block(JEVP_MD->block_size, 0);\n    const unsigned char*  key_bytes = static_cast<const unsigned char*>(key);\n\n    vector<unsigned char> real_key;\n    if (key_len > JEVP_MD->block_size)\n    {\n        real_key = sha1_hash(key_bytes, static_cast<size_t>(key_len));\n        std::copy(real_key.begin(), real_key.end(), key_block.begin());\n    }\n    else\n    {\n        std::copy(key_bytes, key_bytes + key_len, key_block.begin());\n    }\n\n    vector<unsigned char> ipad(JEVP_MD->block_size);\n    vector<unsigned char> opad(JEVP_MD->block_size);\n    for (int i = 0; i < JEVP_MD->block_size; ++i)\n    {\n        ipad[i] = static_cast<unsigned char>(key_block[i] ^ 0x36);\n        opad[i] = static_cast<unsigned char>(key_block[i] ^ 0x5C);\n    }\n\n    vector<unsigned char> inner;\n    inner.reserve(JEVP_MD->block_size + data_len);\n    inner.insert(inner.end(), ipad.begin(), ipad.end());\n    inner.insert(inner.end(), data, data + data_len);\n\n    vector<unsigned char> inner_hash = sha1_hash(inner.data(), inner.size());\n\n    vector<unsigned char> outer;\n    outer.reserve(JEVP_MD->block_size + inner_hash.size());\n    outer.insert(outer.end(), opad.begin(), opad.end());\n    outer.insert(outer.end(), inner_hash.begin(), inner_hash.end());\n\n    vector<unsigned char> final_hash = sha1_hash(outer.data(), outer.size());\n\n    std::memcpy(md, final_hash.data(), final_hash.size());\n    if (md_len) *md_len = static_cast<unsigned int>(final_hash.size());\n\n    return md;\n}\n\n//  Base32 decoding table.\n/* clang-format off */\nconst int base32_reverse_map[128] =\n{\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 15\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 31\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 47\n//      (49)   2    3    4    5    6    7  (56)\n    255, 255,  26,  27,  28,  29,  30,  31, 255, 255, 255, 255, 255, 255, 255, 255, // 63\n// (64)   A    B    C    D    E    F    G    H    I    J    K    L    M    N    O\n    255,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14, // 79\n//   P    Q    R    S    T    U    V    W    X    Y    Z  (91)\n    15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25, 255, 255, 255, 255, 255, // 95\n// (96)   A    B    C    D    E    F    G    H    I    J    K    L    M    N    O  // lower case instead\n    255,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14, // 111\n//   P    Q    R    S    T    U    V    W    X    Y    Z (123)                     // lower case instead\n    15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25, 255, 255, 255, 255, 255  // 127\n};\n/* clang-format on */\n\n//  Base32 decoding function.\nvector<unsigned char> base32_decode(const string& base32)\n{\n    queue<int> q_rev;\n    for (const char& c : base32)\n    {\n        if (c <= 49 || (c >= 56 && c <= 64) || (c >= 91 && c <= 96) || c >= 123)\n        { //    Illegal lower case will be treat as upper case thanks to base32_reverse_map.\n            if (c == '=') break;\n        }\n        else\n        {\n            q_rev.push(base32_reverse_map[(int)c]); //  Get integers of base32.\n        }\n    }\n    queue<bool> q_bin;\n    while (!q_rev.empty()) //   Transform the integers into bits and queue them up.\n    {\n        int now = q_rev.front(); // Get a integer from queue.\n        q_rev.pop();\n        stack<bool> sb;\n        for (int i = 0; i < 5; i++) //  Push the bits of this integer into stack\n        {                           //  5 bits into 1 group\n            sb.push(now & 1);       //  Push the last bit of this integer into stack.\n            now >>= 1;              //  Flush the last bit.\n        }\n        while (!sb.empty()) //  Flush the bits of this integer into binary queue.\n        {\n            q_bin.push(sb.top()); //    Pop bits from stack into binary queue.\n            sb.pop();\n        }\n    }\n    vector<unsigned char> uc;\n    while (!q_bin.empty()) //   Transform the bits into bytes.\n    {\n        int thehex = 0;\n        for (int i = 0; i < 8; i++) //  Read a byte from the bits queue.\n        {\n            if (q_bin.empty())\n            {                     //    If the bits queue is empty now,\n                thehex <<= 8 - i; //    set 0 on the last bits of a byte.\n                break;\n            }\n            thehex <<= 1;                 //    Make the space for the new bit.\n            thehex |= (int)q_bin.front(); //    Push this bit into byte.\n            q_bin.pop();\n        }\n        uc.push_back((unsigned char)thehex);\n    }\n\n    if (uc.back() == 0) uc.pop_back();     //   TOTP may abandon last zero.\n    if (uc.size() % 2 != 0) uc.pop_back(); //   TOTP may abandon odd res.\n    return uc;\n}\n\n//  Get Unix Time.\ntime_t getUnixTime()\n{\n    return time(0);\n}\n\n//  Calculate the TOTP time signature.\ntime_t getTimeSign(int refreshPeriod, time_t specUnixTime)\n{\n    time_t outTime = specUnixTime / refreshPeriod;\n    return outTime;\n}\n\n//  Transform time_t aka <long long> to bytes.\nvector<unsigned char> llong2bytes(time_t tt)\n{\n    uint64_t value = static_cast<uint64_t>(tt);\n\n    vector<unsigned char> bytes(8);\n\n    for (int i = 7; i >= 0; --i)\n    {\n        bytes[i] = static_cast<unsigned char>(value & 0xFF);\n        value >>= 8;\n    }\n\n    return bytes;\n}\n\n//  Fast Exponentiation algorithm.\nunsigned fastpow(unsigned base, unsigned index)\n{\n    if (index == 0) return 1;\n    unsigned t = 1;\n    while (index != 0)\n    {\n        if (index & 1) t *= base;\n        index >>= 1;\n        base *= base;\n    }\n    return t;\n}\n\n//  Calculate TOTP according to RFC standard.\nstd::string hash_to_TOTP(const unsigned char* hmac, unsigned int length, int digit)\n{\n    int offset = hmac[length - 1] & 0x0F;\n\n    uint32_t bin_code = ((hmac[offset]     & 0x7F) << 24) |\n                        ((hmac[offset + 1] & 0xFF) << 16) |\n                        ((hmac[offset + 2] & 0xFF) << 8)  |\n                        ( hmac[offset + 3] & 0xFF);\n\n    uint32_t mod = 1;\n    for (int i = 0; i < digit; ++i) mod *= 10;\n\n    uint32_t otp = bin_code % mod;\n\n    std::ostringstream oss;\n    oss << std::setw(digit) << std::setfill('0') << otp;\n    return oss.str();\n}\n\nstd::string TOTP::GenerateTOTP(const std::string& secret)\n{\n    return GenerateTOTP(6, 30, HMAC_SHA1, secret, getUnixTime());\n}\n\nstd::string TOTP::GenerateTOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret, int specTime)\n{\n    vector<unsigned char> h_msg = llong2bytes(getTimeSign(refreshSeconds, specTime)); //    Get current time signature and transform time_t aka <long long> to bytes.\n    vector<unsigned char> h_key = base32_decode(secret); // Transform base32 encoded secret key to decoded bytes.\n\n    unsigned char* out_hmac = new unsigned char[algorithm]; //  Perform openssl function to calculate HMAC-SHA1 hash.\n    unsigned int   out_hmac_length;\n    const JEVP_MD* emd;\n    emd = JEVP_sha1();\n    JHMAC(emd, h_key.data(), (int)h_key.size(), h_msg.data(), (int)h_msg.size(), out_hmac, &out_hmac_length);\n\n    string fine = hash_to_TOTP(out_hmac, out_hmac_length, digit);\n    delete[] out_hmac;\n\n    return fine; // Calculate TOTP according to RFC standard.\n}\n\nstd::string TOTP::currentTOTP()\n{\n    return GenerateTOTP(digit, refreshSeconds, algorithm, secret, getUnixTime());\n}"
+          }
+        ],
+        "translations": [
+          "Let's get this out of the way first - this is a terrible idea!  I want my two-factor authentication codes to be easily accessible to me, so I've built a watch app which will display them. That's really convenient for me - but makes for a terrible security posture. Anyone who steals my watch will be able to see my one-time code. If they're clever, they can decompile the app and find the secret which powers the code generation.",
+          "You should absolutely not do this and, if you ignore my warnings, you should only do this for codes which aren't critical to your security.",
+          "In my defence, an attacker would still need my username and password to make any use of these codes - but please don't trust your security to my deranged witterings.",
+          "What It Looks Like",
+          "Prior Art",
+          "I'm sure many other people have done this. Indeed, three years ago I built An eInk, Wrist-Mounted, TOTP Generator.",
+          "The Service",
+          "This is in my Service.cpp - as you can see, it's pretty simple. This won't let you add in hundreds of codes - you get one and that's it. There's no countdown when a code is about to expire, so I recommend waiting until a new one pops up before you start typing it in.",
+          "I'll be candid, I haven't used C++ properly since university - and that was in the last century. I've mostly just cut things out to see what breaks. Feel free to educate me on the correct idiomatic code.",
+          "You will need to set your own secret in here.",
+          "//  Standard includes.\n#include \"Service.hpp\"\n#include \"SDK/Messages/CommandMessages.hpp\"\n#include \"SDK/Messages/MessageGuard.hpp\"\n\n//  Needed for PureTOTP.\n#include <iostream>\n#include \"TOTP.h\"\n\n#include <string>\n#include <sstream>\n\n//  What this Glance can do.\nService::Service(SDK::Kernel &kernel)\n    : mKernel(kernel)\n    , mGlanceUI()\n    , mGlanceTitle()\n    , mGlanceValue()\n{}\n\nvoid Service::createGuiControls()\n{\n    //  Set the main title in the Glance.\n    mGlanceTitle = mGlanceUI.createText();\n    mGlanceTitle.pos({ kTitleX, kTitleY }, { kTitleW, kTitleH })\n        .font(GlanceFont_t::GLANCE_FONT_POPPINS_SEMIBOLD_20)\n        .color(GlanceColor_t::GLANCE_COLOR_TEAL)\n        .setText(\"HSBC MFA Code\")\n        .alignment(GlanceAlignH_t::GLANCE_ALIGN_H_CENTER);\n\n    //  Set the default text for the value.\n    mGlanceValue = mGlanceUI.createText();\n    mGlanceValue.pos({ 20, kValueY }, { 200, kValueH })\n        .font(GlanceFont_t::GLANCE_FONT_POPPINS_SEMIBOLD_20)\n        .color(GlanceColor_t::GLANCE_COLOR_YELLOW_DARK)\n        .setText( \"Waiting for update\" )\n        .alignment(GlanceAlignH_t::GLANCE_ALIGN_H_CENTER);\n}\n\nvoid Service::glanceUpdate()\n{\n    //  Set the Base32 encoded secret (all uppercase).\n    std::string secret = \"QWERTYUIOP\";\n    //  Generate the code based on the Unix timestamp right now.\n    const std::time_t t = std::time(0);\n    std::string code = TOTP::GenerateTOTP( 6, 30, TOTP::HMAC_SHA1, secret, t );\n\n    std::ostringstream ss;\n    ss << t;\n\n    //  Convert the string to char* and display it as the value.\n    mGlanceValue.print( code.c_str() ); \n\n    //  Show the Unix time to check the timezone is correct.\n    // mGlanceTitle.print( ss.str().c_str() );\n}\n\n//  No service.\nService::~Service(){}\n\n//  When this glance is opened.\nvoid Service::run()\n{\n    while (true) {\n        SDK::MessageBase *msg;\n        if(!mKernel.comm.getMessage(msg)) {\n            continue;\n        }\n\n        switch (msg->getType()) {\n            //  The Glance has started.\n            case SDK::MessageType::EVENT_GLANCE_START:\n                if (configGui()) {\n                    createGuiControls();\n                } else {\n                    mKernel.comm.releaseMessage(msg);\n                    mKernel.sys.exit(0);\n                }\n                break;\n            //  The Glance has been stopped.\n            case SDK::MessageType::COMMAND_APP_STOP:\n            case SDK::MessageType::EVENT_GLANCE_STOP:\n                mKernel.comm.releaseMessage(msg);\n                return;\n                break;\n\n            //  Every second, perform an action.\n            case SDK::MessageType::EVENT_GLANCE_TICK:\n                onGlanceTick();\n                break;\n\n            default:\n                break;\n        }\n\n        mKernel.comm.releaseMessage(msg);\n    }\n}\n\nvoid Service::onGlanceTick()\n{\n    if (mGlanceUI.isInvalid()) {\n        if (auto upd = SDK::make_msg<SDK::Message::RequestGlanceUpdate>(mKernel)) {\n            upd->name           = APP_NAME;\n            upd->controls       = mGlanceUI.data();\n            upd->controlsNumber = static_cast<uint32_t>(mGlanceUI.size());\n            upd.send(100);\n        }\n\n        mGlanceUI.setValid();\n    }\n    glanceUpdate();\n}\n\nbool Service::configGui()\n{\n    bool status = false;\n    if (auto gc = SDK::make_msg<SDK::Message::RequestGlanceConfig>(mKernel)) {\n        if (gc.send(100) && gc.ok()) {\n            if (gc->maxControls >= 3) {\n                mGlanceUI.setWidth(gc->width);\n                mGlanceUI.setHeight(gc->height);\n                status = true;\n            }\n        }\n    }\n    return status;\n}",
+          "The Library",
+          "There are dozens of C++ libraries for RFC 6238 generation. I ended up using PureTOTP as it didn't require any external dependencies and was only two files.  As I only needed SHA1 TOTP codes, I stripped out a bunch of functionality which was unnecessary for me. Similarly, I only wanted to generate 6 digit codes with a 30 second period - so took out anything which did more than that.",
+          "I've tidied up the code and comments where I can. The original was MIT Licenced - so this is as well.",
+          "There are two parts to this. First, the header",
+          "// TOTP.h\n//\n#pragma once\n#include <string>\nclass TOTP\n{\npublic:\n    const static int HMAC_SHA1 = 20;    //  Length of HMAC.\n\n    static std::string GenerateTOTP(const std::string& secret);\n    static std::string GenerateTOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret, int specTime);\n\n    TOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret): digit(digit), refreshSeconds(refreshSeconds), algorithm(algorithm), secret(secret) {}\n    TOTP(const std::string& secret): digit(6), refreshSeconds(30), algorithm(HMAC_SHA1), secret(secret) {}\n\n    std::string currentTOTP();\n\nprivate:\n    int digit, refreshSeconds, algorithm;\n\n    std::string secret;\n};",
+          "Next is the standalone library which does the TOTP generation, TOTP.cpp",
+          "// TOTP.cpp\n//\n#include \"TOTP.h\"\n#include <vector>\n#include <stack>\n#include <queue>\n#include <sstream>\n#include <iomanip>\n#include <cstdint>\n#include <cstring>\n#include <array>\n#include <stdexcept>\n#include <algorithm>\nusing namespace std;\n\nstruct JEVP_MD\n{\n    enum Kind {\n        SHA1\n    };\n\n    Kind kind;\n    int  md_size;\n    int  block_size;\n};\n\nstatic inline uint32_t rotl32(uint32_t x, uint32_t n) { return (x << n) | (x >> (32 - n)); }\nstatic inline uint32_t rotr32(uint32_t x, uint32_t n) { return (x >> n) | (x << (32 - n)); }\nstatic inline uint64_t rotr64(uint64_t x, uint64_t n) { return (x >> n) | (x << (64 - n)); }\n\nstatic uint32_t load_be32(const unsigned char* p)\n{\n    return (uint32_t(p[0]) << 24) |\n           (uint32_t(p[1]) << 16) |\n           (uint32_t(p[2]) <<  8) |\n            uint32_t(p[3]);\n}\n\nstatic void store_be32(uint32_t v, unsigned char* p)\n{\n    p[0] = static_cast<unsigned char>((v >> 24) & 0xFF);\n    p[1] = static_cast<unsigned char>((v >> 16) & 0xFF);\n    p[2] = static_cast<unsigned char>((v >>  8) & 0xFF);\n    p[3] = static_cast<unsigned char>( v        & 0xFF);\n}\n\nstatic void store_be64(uint64_t v, unsigned char* p)\n{\n    p[0] = static_cast<unsigned char>((v >> 56) & 0xFF);\n    p[1] = static_cast<unsigned char>((v >> 48) & 0xFF);\n    p[2] = static_cast<unsigned char>((v >> 40) & 0xFF);\n    p[3] = static_cast<unsigned char>((v >> 32) & 0xFF);\n    p[4] = static_cast<unsigned char>((v >> 24) & 0xFF);\n    p[5] = static_cast<unsigned char>((v >> 16) & 0xFF);\n    p[6] = static_cast<unsigned char>((v >>  8) & 0xFF);\n    p[7] = static_cast<unsigned char>( v        & 0xFF);\n}\n\nstatic vector<unsigned char> sha1_hash(const unsigned char* data, size_t len)\n{\n    vector<unsigned char> msg(data, data + len);\n    uint64_t              bit_len = static_cast<uint64_t>(len) * 8;\n\n    msg.push_back(0x80);\n    while ((msg.size() % 64) != 56) msg.push_back(0x00);\n\n    unsigned char lenbuf[8];\n    store_be64(bit_len, lenbuf);\n    msg.insert(msg.end(), lenbuf, lenbuf + 8);\n\n    uint32_t h0 = 0x67452301;\n    uint32_t h1 = 0xEFCDAB89;\n    uint32_t h2 = 0x98BADCFE;\n    uint32_t h3 = 0x10325476;\n    uint32_t h4 = 0xC3D2E1F0;\n\n    for (size_t chunk = 0; chunk < msg.size(); chunk += 64)\n    {\n        uint32_t w[80];\n        for (int i = 0; i < 16; ++i)\n            w[i] = load_be32(&msg[chunk + i * 4]);\n        for (int i = 16; i < 80; ++i)\n            w[i] = rotl32(w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16], 1);\n\n        uint32_t a = h0, b = h1, c = h2, d = h3, e = h4;\n\n        for (int i = 0; i < 80; ++i)\n        {\n            uint32_t f, k;\n            if (i < 20)\n            {\n                f = (b & c) | ((~b) & d);\n                k = 0x5A827999;\n            }\n            else if (i < 40)\n            {\n                f = b ^ c ^ d;\n                k = 0x6ED9EBA1;\n            }\n            else if (i < 60)\n            {\n                f = (b & c) | (b & d) | (c & d);\n                k = 0x8F1BBCDC;\n            }\n            else\n            {\n                f = b ^ c ^ d;\n                k = 0xCA62C1D6;\n            }\n\n            uint32_t temp = rotl32(a, 5) + f + e + k + w[i];\n\n            e = d;\n            d = c;\n            c = rotl32(b, 30);\n            b = a;\n            a = temp;\n        }\n\n        h0 += a;\n        h1 += b;\n        h2 += c;\n        h3 += d;\n        h4 += e;\n    }\n\n    vector<unsigned char> out(20);\n    store_be32(h0, &out[ 0]);\n    store_be32(h1, &out[ 4]);\n    store_be32(h2, &out[ 8]);\n    store_be32(h3, &out[12]);\n    store_be32(h4, &out[16]);\n    return out;\n}\n\nstatic const JEVP_MD g_sha1   = {JEVP_MD::SHA1, 20, 64};\n\nconst JEVP_MD* JEVP_sha1() { return &g_sha1; }\n\nunsigned char* JHMAC(const JEVP_MD* JEVP_MD, const void* key, int key_len, const unsigned char* data, size_t data_len, unsigned char* md, unsigned int* md_len)\n{\n    if (!JEVP_MD || !key || key_len < 0 || !data)\n        return nullptr;\n\n    static thread_local unsigned char static_md[64];\n\n    if (!md)\n        md = static_md;\n\n    vector<unsigned char> key_block(JEVP_MD->block_size, 0);\n    const unsigned char*  key_bytes = static_cast<const unsigned char*>(key);\n\n    vector<unsigned char> real_key;\n    if (key_len > JEVP_MD->block_size)\n    {\n        real_key = sha1_hash(key_bytes, static_cast<size_t>(key_len));\n        std::copy(real_key.begin(), real_key.end(), key_block.begin());\n    }\n    else\n    {\n        std::copy(key_bytes, key_bytes + key_len, key_block.begin());\n    }\n\n    vector<unsigned char> ipad(JEVP_MD->block_size);\n    vector<unsigned char> opad(JEVP_MD->block_size);\n    for (int i = 0; i < JEVP_MD->block_size; ++i)\n    {\n        ipad[i] = static_cast<unsigned char>(key_block[i] ^ 0x36);\n        opad[i] = static_cast<unsigned char>(key_block[i] ^ 0x5C);\n    }\n\n    vector<unsigned char> inner;\n    inner.reserve(JEVP_MD->block_size + data_len);\n    inner.insert(inner.end(), ipad.begin(), ipad.end());\n    inner.insert(inner.end(), data, data + data_len);\n\n    vector<unsigned char> inner_hash = sha1_hash(inner.data(), inner.size());\n\n    vector<unsigned char> outer;\n    outer.reserve(JEVP_MD->block_size + inner_hash.size());\n    outer.insert(outer.end(), opad.begin(), opad.end());\n    outer.insert(outer.end(), inner_hash.begin(), inner_hash.end());\n\n    vector<unsigned char> final_hash = sha1_hash(outer.data(), outer.size());\n\n    std::memcpy(md, final_hash.data(), final_hash.size());\n    if (md_len) *md_len = static_cast<unsigned int>(final_hash.size());\n\n    return md;\n}\n\n//  Base32 decoding table.\n/* clang-format off */\nconst int base32_reverse_map[128] =\n{\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 15\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 31\n    255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, // 47\n//      (49)   2    3    4    5    6    7  (56)\n    255, 255,  26,  27,  28,  29,  30,  31, 255, 255, 255, 255, 255, 255, 255, 255, // 63\n// (64)   A    B    C    D    E    F    G    H    I    J    K    L    M    N    O\n    255,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14, // 79\n//   P    Q    R    S    T    U    V    W    X    Y    Z  (91)\n    15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25, 255, 255, 255, 255, 255, // 95\n// (96)   A    B    C    D    E    F    G    H    I    J    K    L    M    N    O  // lower case instead\n    255,   0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14, // 111\n//   P    Q    R    S    T    U    V    W    X    Y    Z (123)                     // lower case instead\n    15,  16,  17,  18,  19,  20,  21,  22,  23,  24,  25, 255, 255, 255, 255, 255  // 127\n};\n/* clang-format on */\n\n//  Base32 decoding function.\nvector<unsigned char> base32_decode(const string& base32)\n{\n    queue<int> q_rev;\n    for (const char& c : base32)\n    {\n        if (c <= 49 || (c >= 56 && c <= 64) || (c >= 91 && c <= 96) || c >= 123)\n        { //    Illegal lower case will be treat as upper case thanks to base32_reverse_map.\n            if (c == '=') break;\n        }\n        else\n        {\n            q_rev.push(base32_reverse_map[(int)c]); //  Get integers of base32.\n        }\n    }\n    queue<bool> q_bin;\n    while (!q_rev.empty()) //   Transform the integers into bits and queue them up.\n    {\n        int now = q_rev.front(); // Get a integer from queue.\n        q_rev.pop();\n        stack<bool> sb;\n        for (int i = 0; i < 5; i++) //  Push the bits of this integer into stack\n        {                           //  5 bits into 1 group\n            sb.push(now & 1);       //  Push the last bit of this integer into stack.\n            now >>= 1;              //  Flush the last bit.\n        }\n        while (!sb.empty()) //  Flush the bits of this integer into binary queue.\n        {\n            q_bin.push(sb.top()); //    Pop bits from stack into binary queue.\n            sb.pop();\n        }\n    }\n    vector<unsigned char> uc;\n    while (!q_bin.empty()) //   Transform the bits into bytes.\n    {\n        int thehex = 0;\n        for (int i = 0; i < 8; i++) //  Read a byte from the bits queue.\n        {\n            if (q_bin.empty())\n            {                     //    If the bits queue is empty now,\n                thehex <<= 8 - i; //    set 0 on the last bits of a byte.\n                break;\n            }\n            thehex <<= 1;                 //    Make the space for the new bit.\n            thehex |= (int)q_bin.front(); //    Push this bit into byte.\n            q_bin.pop();\n        }\n        uc.push_back((unsigned char)thehex);\n    }\n\n    if (uc.back() == 0) uc.pop_back();     //   TOTP may abandon last zero.\n    if (uc.size() % 2 != 0) uc.pop_back(); //   TOTP may abandon odd res.\n    return uc;\n}\n\n//  Get Unix Time.\ntime_t getUnixTime()\n{\n    return time(0);\n}\n\n//  Calculate the TOTP time signature.\ntime_t getTimeSign(int refreshPeriod, time_t specUnixTime)\n{\n    time_t outTime = specUnixTime / refreshPeriod;\n    return outTime;\n}\n\n//  Transform time_t aka <long long> to bytes.\nvector<unsigned char> llong2bytes(time_t tt)\n{\n    uint64_t value = static_cast<uint64_t>(tt);\n\n    vector<unsigned char> bytes(8);\n\n    for (int i = 7; i >= 0; --i)\n    {\n        bytes[i] = static_cast<unsigned char>(value & 0xFF);\n        value >>= 8;\n    }\n\n    return bytes;\n}\n\n//  Fast Exponentiation algorithm.\nunsigned fastpow(unsigned base, unsigned index)\n{\n    if (index == 0) return 1;\n    unsigned t = 1;\n    while (index != 0)\n    {\n        if (index & 1) t *= base;\n        index >>= 1;\n        base *= base;\n    }\n    return t;\n}\n\n//  Calculate TOTP according to RFC standard.\nstd::string hash_to_TOTP(const unsigned char* hmac, unsigned int length, int digit)\n{\n    int offset = hmac[length - 1] & 0x0F;\n\n    uint32_t bin_code = ((hmac[offset]     & 0x7F) << 24) |\n                        ((hmac[offset + 1] & 0xFF) << 16) |\n                        ((hmac[offset + 2] & 0xFF) << 8)  |\n                        ( hmac[offset + 3] & 0xFF);\n\n    uint32_t mod = 1;\n    for (int i = 0; i < digit; ++i) mod *= 10;\n\n    uint32_t otp = bin_code % mod;\n\n    std::ostringstream oss;\n    oss << std::setw(digit) << std::setfill('0') << otp;\n    return oss.str();\n}\n\nstd::string TOTP::GenerateTOTP(const std::string& secret)\n{\n    return GenerateTOTP(6, 30, HMAC_SHA1, secret, getUnixTime());\n}\n\nstd::string TOTP::GenerateTOTP(int digit, int refreshSeconds, int algorithm, const std::string& secret, int specTime)\n{\n    vector<unsigned char> h_msg = llong2bytes(getTimeSign(refreshSeconds, specTime)); //    Get current time signature and transform time_t aka <long long> to bytes.\n    vector<unsigned char> h_key = base32_decode(secret); // Transform base32 encoded secret key to decoded bytes.\n\n    unsigned char* out_hmac = new unsigned char[algorithm]; //  Perform openssl function to calculate HMAC-SHA1 hash.\n    unsigned int   out_hmac_length;\n    const JEVP_MD* emd;\n    emd = JEVP_sha1();\n    JHMAC(emd, h_key.data(), (int)h_key.size(), h_msg.data(), (int)h_msg.size(), out_hmac, &out_hmac_length);\n\n    string fine = hash_to_TOTP(out_hmac, out_hmac_length, digit);\n    delete[] out_hmac;\n\n    return fine; // Calculate TOTP according to RFC standard.\n}\n\nstd::string TOTP::currentTOTP()\n{\n    return GenerateTOTP(digit, refreshSeconds, algorithm, secret, getUnixTime());\n}"
+        ]
+      }
+    },
+    {
+      "slug": "e0e07c405d45b186",
+      "title": "Inside the Intel 8087 chip: floating-point addition and subtraction",
+      "titleZh": "Inside the Intel 8087 chip: floating-point addition and subtraction",
+      "link": "http://www.righto.com/feeds/4354998070789191613/comments/default",
+      "sourceName": "righto.com",
+      "sourceUrl": "https://righto.com",
+      "pubDate": "2026-10-18T16:14:00.971Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Inside the Intel 8087 chip: floating-point addition and subtraction",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "bdebbda6031c2cc4",
+      "title": "How many VICmodems Commodore sold",
+      "titleZh": "How many VICmodems Commodore sold",
+      "link": "https://dfarq.homeip.net/how-many-vicmodems-commodore-sold/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=how-many-vicmodems-commodore-sold",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-10-18T11:00:03.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How many VICmodems Commodore sold",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "When researching the 1600 VICmodem, I found an assertion that the 1600 was the first modem to sell a million units. And I’ve repeated that claim myself at least once. But I never felt quite right about that. I am a classically trained journalist, and if you have the ability to double check a claim, you are supposed to do that. In this blog post, I try to get a good estimate of how many VICmodems Commodore sold."
+          },
+          {
+            "type": "h2",
+            "text": "Answering the question with one shot"
+          },
+          {
+            "type": "p",
+            "text": "I had a chance to possibly settle the million-modem argument with one shot. I had a VICmodem. We bought it in 1986 from a liquidator. So it had a chance to be among the last units produced. All I needed to do was find it and look at the serial number. If it had a 7-digit serial number, it might instantly resolve the question."
+          },
+          {
+            "type": "p",
+            "text": "Peeking out of the top of a very ordinary moving box, I caught a glimpse of the original box the modem came in. It was buried, but reachable."
+          },
+          {
+            "type": "p",
+            "text": "I retrieved the box, and, with much anticipation, opened it. Empty. Discouraged, I shined my flashlight into the moving box and hoped for the best. The modem was loose inside it, next to an old video cable. I grabbed the modem, flipped it over, shined my flashlight onto it to get a really good look, and read the number."
+          },
+          {
+            "type": "p",
+            "text": "37225."
+          },
+          {
+            "type": "p",
+            "text": "Well that was a disappointment. It was much lower than I expected for 1986 production. And it sure wasn’t high enough to prove much of anything. I’d need an alternative method."
+          },
+          {
+            "type": "h2",
+            "text": "Using the German Tank Problem to estimate the number"
+          },
+          {
+            "type": "p",
+            "text": "So I used the German tank problem methodology to try to estimate the number of 1600 modems Commodore sold. If this name sounds familiar, it’s the methodology that the Allies used to figure out how quickly the Germans were capable of producing tanks during World War II. If the estimation method was good enough to win a war, it’s good enough to estimate sales of retro computer gear when no official figures are available. It’s also been previously used to estimate the number of 1581 disk drives sold."
+          },
+          {
+            "type": "p",
+            "text": "No lives are at stake in this case. We just want to know if a million of these modems sold. And if the number was less than a million, we’d like to arrive at a reasonable estimate of the actual count."
+          },
+          {
+            "type": "p",
+            "text": "I started by looking at available Ebay listings. The first few serial numbers I observed were four or five digits. They seemed low. Not at all what I expected from a million-selling product, but not enough to prove much either. So I went and gathered as many VICmodem serial numbers as I could. I checked Ebay listings, photos on social media, Youtube mail call videos, and anywhere else I could think of."
+          },
+          {
+            "type": "p",
+            "text": "Over the course of several years, I accumulated 53 unique serial numbers, plus my own. There are always a few of them on eBay. It seems that people are reluctant to throw them out, but there also isn’t a ton of demand for them. They aren’t something you will use for anything now, so if you already have one, you don’t really need a second one. The ones that seem to sell either have unusually low serial numbers, a price under $10, or are complete in box."
+          },
+          {
+            "type": "p",
+            "text": "I also saw a fair number of the same serial numbers over and over again. Some of these have been for sale a very long time."
+          },
+          {
+            "type": "h3",
+            "text": "What the VICmodem serial numbers looked like"
+          },
+          {
+            "type": "p",
+            "text": "I observed five serial numbers with four-digit counts, so while it is possible Commodore may have skipped some ranges by not starting at serial number one, it doesn’t look like it will affect the total count by much. The lowest serial number I observed was 1281."
+          },
+          {
+            "type": "p",
+            "text": "I only observed seven six-digit serial numbers. The highest legible number was 122,048. I did observe one that I could tell was six digits, but only the first two digits were legible due to damage on the sticker."
+          },
+          {
+            "type": "p",
+            "text": "That left 42 serial numbers in the five digit range. One of those was damaged, but I could tell it was 5 digits, started with a 4, and looked like it could be 44909. When 47 of the 54 observed samples are below 100,000, that seems like a strong suggestion the number of units sold is closer to 100,000 than 1 million, before I even do any math."
+          },
+          {
+            "type": "p",
+            "text": "Hours after posting this, Bluesky user Ramblingfan pointed out serial number 135398 is in the Smithsonian’s collection. So that plus another five-digit serial number pushed the overall estimate up a bit."
+          },
+          {
+            "type": "h2",
+            "text": "So, how many model 1600 VICmodems did Commodore sell?"
+          },
+          {
+            "type": "p",
+            "text": "Based on the methodology, my initial estimate was 124,307. If Commodore started at serial number 1000 instead of serial number 1, that knocks it down to 123,307."
+          },
+          {
+            "type": "p",
+            "text": "I hate to say it, but there’s no way Commodore sold a million VICmodems."
+          },
+          {
+            "type": "p",
+            "text": "The math, if you’re curious, is Population Maximum = 122,048 + (122,048 / 54) – 1 = 124,307"
+          },
+          {
+            "type": "p",
+            "text": "122,048 is the largest serial number I observed, and 54 is the number of examples I observed."
+          },
+          {
+            "type": "p",
+            "text": "If you’ve seen a serial number higher than 122048, I’d love to hear about it. Especially if you’ve seen a serial number higher than 124307."
+          },
+          {
+            "type": "p",
+            "text": "It is possible the illegible number I saw is higher than 123307. That’s because I could only read the first two digits, which were 12. But in the worst case scenario, if it was serial number 129999, that would increase the estimate to 132,258. Still far short of a million units sold."
+          },
+          {
+            "type": "p",
+            "text": "After I got two more serial numbers, including 135398, that pushed the estimate to 137,814. Or, if Commodore started at serial number 1000, 136,814 units."
+          },
+          {
+            "type": "p",
+            "text": "As for how I ended up acquiring serial number 37225 when I bought it in 1986, it may have been a refurbished unit. Or maybe it was just always on the bottom of the stack in the warehouse."
+          },
+          {
+            "type": "h3",
+            "text": "Dealing with the margin of error"
+          },
+          {
+            "type": "p",
+            "text": "The German tank methodology has its own margin of error built in. You divide the largest serial number you observed by the number of samples you collected. The larger the number, the smaller the margin of error. With 56 examples observed so far, my margin of error is 2,416."
+          },
+          {
+            "type": "p",
+            "text": "The German tank problem is designed to estimate high. But when I apply conventional statistics to its estimate, with the small sample size, I can be 70% confident the actual number produced is within 7 percent of the estimate.  That would put the upper bound at 147,461 units."
+          },
+          {
+            "type": "p",
+            "text": "Having more serial numbers increases the confidence in the count. But even with the small sample size, the margin of error isn’t high enough to close that gap to a million. I’d feel much better about the overall number if I had 140 serial numbers. With that high of a number, we could estimate the overall count to within 1,000 units."
+          },
+          {
+            "type": "h2",
+            "text": "Estimating with anecdotal evidence"
+          },
+          {
+            "type": "p",
+            "text": "Anecdotal evidence is much less reliable. But for what little it’s worth, 120,000-135,000 units is in line with my experience. We can be pretty confident that Commodore sold 12 million Commodore 64s and 128s because they disclosed counts in their annual reports. There is no data for 1994, but we know that number wouldn’t have been enormous because 1993 sales were extremely low, and Commodore only survived one quarter out of four in 1994. We are missing one other year from the 1980s but we have figures for the years around it, so the average of those two years is a reasonable estimate. Commodore also sold around 2 million VIC-20s. So that brings the audience to 14 million."
+          },
+          {
+            "type": "p",
+            "text": "If the VICmodem had sold a million units, that would mean approximately 10% of Commodore owners bought one. Yes, I know a million isn’t 10% of 14 million, but the VICmodem was discontinued in 1986. The Commodore 64 still had 2/3 of its life left at that point."
+          },
+          {
+            "type": "p",
+            "text": "I knew a lot of people in the 1980s with Commodore computers, possibly 100 or more. So I would expect to have known nine other people besides me who had one. I only knew one."
+          },
+          {
+            "type": "p",
+            "text": "Even though VICmodem sales almost certainly fell well short of a million units, 135,000 units by 1986 is still a lot of modems for that time. It wouldn’t surprise me at all if it was the first modem to sell 100,000 units. And maybe that’s what everyone involved is remembering, and they just accidentally added a zero."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "When researching the 1600 VICmodem, I found an assertion that the 1600 was the first modem to sell a million units. And I’ve repeated that claim myself at least once. But I never felt quite right about that. I am a classically trained journalist, and if you have the ability to double check a claim, you are supposed to do that. In this blog post, I try to get a good estimate of how many VICmodems Commodore sold.",
+          "Answering the question with one shot",
+          "I had a chance to possibly settle the million-modem argument with one shot. I had a VICmodem. We bought it in 1986 from a liquidator. So it had a chance to be among the last units produced. All I needed to do was find it and look at the serial number. If it had a 7-digit serial number, it might instantly resolve the question.",
+          "Peeking out of the top of a very ordinary moving box, I caught a glimpse of the original box the modem came in. It was buried, but reachable.",
+          "I retrieved the box, and, with much anticipation, opened it. Empty. Discouraged, I shined my flashlight into the moving box and hoped for the best. The modem was loose inside it, next to an old video cable. I grabbed the modem, flipped it over, shined my flashlight onto it to get a really good look, and read the number.",
+          "37225.",
+          "Well that was a disappointment. It was much lower than I expected for 1986 production. And it sure wasn’t high enough to prove much of anything. I’d need an alternative method.",
+          "Using the German Tank Problem to estimate the number",
+          "So I used the German tank problem methodology to try to estimate the number of 1600 modems Commodore sold. If this name sounds familiar, it’s the methodology that the Allies used to figure out how quickly the Germans were capable of producing tanks during World War II. If the estimation method was good enough to win a war, it’s good enough to estimate sales of retro computer gear when no official figures are available. It’s also been previously used to estimate the number of 1581 disk drives sold.",
+          "No lives are at stake in this case. We just want to know if a million of these modems sold. And if the number was less than a million, we’d like to arrive at a reasonable estimate of the actual count.",
+          "I started by looking at available Ebay listings. The first few serial numbers I observed were four or five digits. They seemed low. Not at all what I expected from a million-selling product, but not enough to prove much either. So I went and gathered as many VICmodem serial numbers as I could. I checked Ebay listings, photos on social media, Youtube mail call videos, and anywhere else I could think of.",
+          "Over the course of several years, I accumulated 53 unique serial numbers, plus my own. There are always a few of them on eBay. It seems that people are reluctant to throw them out, but there also isn’t a ton of demand for them. They aren’t something you will use for anything now, so if you already have one, you don’t really need a second one. The ones that seem to sell either have unusually low serial numbers, a price under $10, or are complete in box.",
+          "I also saw a fair number of the same serial numbers over and over again. Some of these have been for sale a very long time.",
+          "What the VICmodem serial numbers looked like",
+          "I observed five serial numbers with four-digit counts, so while it is possible Commodore may have skipped some ranges by not starting at serial number one, it doesn’t look like it will affect the total count by much. The lowest serial number I observed was 1281.",
+          "I only observed seven six-digit serial numbers. The highest legible number was 122,048. I did observe one that I could tell was six digits, but only the first two digits were legible due to damage on the sticker.",
+          "That left 42 serial numbers in the five digit range. One of those was damaged, but I could tell it was 5 digits, started with a 4, and looked like it could be 44909. When 47 of the 54 observed samples are below 100,000, that seems like a strong suggestion the number of units sold is closer to 100,000 than 1 million, before I even do any math.",
+          "Hours after posting this, Bluesky user Ramblingfan pointed out serial number 135398 is in the Smithsonian’s collection. So that plus another five-digit serial number pushed the overall estimate up a bit.",
+          "So, how many model 1600 VICmodems did Commodore sell?",
+          "Based on the methodology, my initial estimate was 124,307. If Commodore started at serial number 1000 instead of serial number 1, that knocks it down to 123,307.",
+          "I hate to say it, but there’s no way Commodore sold a million VICmodems.",
+          "The math, if you’re curious, is Population Maximum = 122,048 + (122,048 / 54) – 1 = 124,307",
+          "122,048 is the largest serial number I observed, and 54 is the number of examples I observed.",
+          "If you’ve seen a serial number higher than 122048, I’d love to hear about it. Especially if you’ve seen a serial number higher than 124307.",
+          "It is possible the illegible number I saw is higher than 123307. That’s because I could only read the first two digits, which were 12. But in the worst case scenario, if it was serial number 129999, that would increase the estimate to 132,258. Still far short of a million units sold.",
+          "After I got two more serial numbers, including 135398, that pushed the estimate to 137,814. Or, if Commodore started at serial number 1000, 136,814 units.",
+          "As for how I ended up acquiring serial number 37225 when I bought it in 1986, it may have been a refurbished unit. Or maybe it was just always on the bottom of the stack in the warehouse.",
+          "Dealing with the margin of error",
+          "The German tank methodology has its own margin of error built in. You divide the largest serial number you observed by the number of samples you collected. The larger the number, the smaller the margin of error. With 56 examples observed so far, my margin of error is 2,416.",
+          "The German tank problem is designed to estimate high. But when I apply conventional statistics to its estimate, with the small sample size, I can be 70% confident the actual number produced is within 7 percent of the estimate.  That would put the upper bound at 147,461 units.",
+          "Having more serial numbers increases the confidence in the count. But even with the small sample size, the margin of error isn’t high enough to close that gap to a million. I’d feel much better about the overall number if I had 140 serial numbers. With that high of a number, we could estimate the overall count to within 1,000 units.",
+          "Estimating with anecdotal evidence",
+          "Anecdotal evidence is much less reliable. But for what little it’s worth, 120,000-135,000 units is in line with my experience. We can be pretty confident that Commodore sold 12 million Commodore 64s and 128s because they disclosed counts in their annual reports. There is no data for 1994, but we know that number wouldn’t have been enormous because 1993 sales were extremely low, and Commodore only survived one quarter out of four in 1994. We are missing one other year from the 1980s but we have figures for the years around it, so the average of those two years is a reasonable estimate. Commodore also sold around 2 million VIC-20s. So that brings the audience to 14 million.",
+          "If the VICmodem had sold a million units, that would mean approximately 10% of Commodore owners bought one. Yes, I know a million isn’t 10% of 14 million, but the VICmodem was discontinued in 1986. The Commodore 64 still had 2/3 of its life left at that point.",
+          "I knew a lot of people in the 1980s with Commodore computers, possibly 100 or more. So I would expect to have known nine other people besides me who had one. I only knew one.",
+          "Even though VICmodem sales almost certainly fell well short of a million units, 135,000 units by 1986 is still a lot of modems for that time. It wouldn’t surprise me at all if it was the first modem to sell 100,000 units. And maybe that’s what everyone involved is remembering, and they just accidentally added a zero.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "ff2baec496aa4010",
+      "title": "Notes on the complex roots of unity",
+      "titleZh": "Notes on the complex roots of unity",
+      "link": "https://eli.thegreenplace.net/2026/notes-on-the-complex-roots-of-unity/",
+      "sourceName": "eli.thegreenplace.net",
+      "sourceUrl": "https://eli.thegreenplace.net",
+      "pubDate": "2026-10-18T01:18:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Notes on the complex roots of unity",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "One of the most wonderful aspects of math is how deep we can get by\nstudying seemingly trivial questions. Consider the roots of unity, where\n\"unity\" simply means the number 1."
+          },
+          {
+            "type": "h2",
+            "text": "Basics: roots of unity for real numbers"
+          },
+          {
+            "type": "p",
+            "text": "Studying the roots of unity usually begins in middle school: what is the\nsquare root of 1? Equivalently, what are the solutions to this equation?"
+          },
+          {
+            "type": "p",
+            "text": "Well, there are two answers: 1 and -1."
+          },
+          {
+            "type": "p",
+            "text": "Similarly, we can ask the question for higher roots; the third roots are\nsolutions to the equation:"
+          },
+          {
+            "type": "p",
+            "text": "And so on. When we’re only dealing with real numbers, that’s pretty much\nthe whole story. For odd-degree roots of 1, the only answer is 1; for\neven-degree roots of 1, the answer is either 1 or -1."
+          },
+          {
+            "type": "p",
+            "text": "When we extend our domain to the complex numbers, things become much\nmore interesting."
+          },
+          {
+            "type": "h2",
+            "text": "Basics: roots of unity for complex numbers"
+          },
+          {
+            "type": "p",
+            "text": "By the formal\ndefinition, a root of\nunity is any complex number that yields 1 when raised to a positive\ninteger power ."
+          },
+          {
+            "type": "p",
+            "text": "Rather than looking at all the possible roots of 1, it’s often more\nuseful to discuss the roots for a specific given : complex\nnumbers  such that ."
+          },
+          {
+            "type": "p",
+            "text": "For example, let’s consider . We’ve already seen that the\nroots are 1 and -1; these are complex numbers with a zero imaginary\npart."
+          },
+          {
+            "type": "p",
+            "text": "How about ? There are four roots: 1, -1,  and\n. For , the three roots [1] are 1,\n and . It’s\neasy enough to check that these indeed give 1 when raised to the third\npower, but how do we calculate them in the first place?"
+          },
+          {
+            "type": "h2",
+            "text": "Calculating complex roots using polar coordinates"
+          },
+          {
+            "type": "p",
+            "text": "A complex number with magnitude 1 can be represented in polar\ncoordinates  [2] as . If we raise  to the\n-th power, we get:"
+          },
+          {
+            "type": "p",
+            "text": "The magnitude of  is still 1, which is essential if we want\n to be a -th root of unity. Let’s equate \nto 1:"
+          },
+          {
+            "type": "p",
+            "text": "To find the solutions to this equation, we’ll first want to represent 1\nitself in polar coordinates. Let’s use another variable for the angle:"
+          },
+          {
+            "type": "p",
+            "text": "What is the value of ? Thinking about the unit circle,\n is any integer multiple of  - which we’ll\nexpress as  for :"
+          },
+          {
+            "type": "p",
+            "text": "Back to :"
+          },
+          {
+            "type": "p",
+            "text": "Or:"
+          },
+          {
+            "type": "p",
+            "text": "So the -th roots of unity are [3]:"
+          },
+          {
+            "type": "h2",
+            "text": "Some basic examples"
+          },
+          {
+            "type": "p",
+            "text": "Let’s begin with . We have the following roots:"
+          },
+          {
+            "type": "p",
+            "text": "For :"
+          },
+          {
+            "type": "p",
+            "text": "As expected. It should be similarly simple to calculate the roots for\n; give it a try."
+          },
+          {
+            "type": "h2",
+            "text": "Roots of unity and rotations on the unit circle"
+          },
+          {
+            "type": "p",
+            "text": "What happens when we multiply some root of unity  by itself?\nSince the magnitude of the root is 1, multiplying by it is akin to a\nrotation along the unit circle by the root’s angle. For example,\nconsider  from the 3rd roots of unity:"
+          },
+          {
+            "type": "p",
+            "text": "Multiply  by itself:"
+          },
+          {
+            "type": "p",
+            "text": "If the angle of  is , the angle of\n is . Let’s multiply by  once\nmore:"
+          },
+          {
+            "type": "p",
+            "text": "The result is 1, as expected (after all,  is a 3rd root of\nunity)."
+          },
+          {
+            "type": "p",
+            "text": "This visualization shows how roots of unity appear on the unit circle\nand how raising them to powers rotates the roots until finally\n:"
+          },
+          {
+            "type": "p",
+            "text": "Roots n \n      Root k"
+          },
+          {
+            "type": "p",
+            "text": "Power m"
+          },
+          {
+            "type": "p",
+            "text": "Select  first; this shows the -th roots as blue dots\non the unit circle. Now you can click any of the roots, and see its\npowers in the lower plot - drag the slidebar to see the rotations. If\nyou spend some time playing with this, you’ll notice that some roots -\nfor example  when  - go back to 1 when raised to a\nsmaller power than . We’ll revisit this outcome when we discuss\nthe group-theoretic aspects of roots of unity."
+          },
+          {
+            "type": "h2",
+            "text": "Geometry: roots of unity and regular polygons"
+          },
+          {
+            "type": "p",
+            "text": "As we’ve seen, the roots of unity are evenly spaced along the unit\ncircle on the complex plane. If we connect the roots with straight lines\nto their immediate neighbors, we’ll notice something interesting:"
+          },
+          {
+            "type": "p",
+            "text": "Roots n"
+          },
+          {
+            "type": "p",
+            "text": "For different values of , we get the Regular\nPolygons! It’s pretty\neasy to prove this if we connect each root with a straight line to the\norigin. The triangles we get are congruent, because the sides from the\norigin to the roots are all of length 1, and the central angles are all\n. Therefore, both the sides of the polygons and their\nangles are identical, which makes them regular."
+          },
+          {
+            "type": "h2",
+            "text": "Conjugates of roots of unity"
+          },
+          {
+            "type": "p",
+            "text": "Suppose we have the root of unity:"
+          },
+          {
+            "type": "p",
+            "text": "For some  and . If we take the reciprocal of\n:"
+          },
+          {
+            "type": "p",
+            "text": "Then:"
+          },
+          {
+            "type": "p",
+            "text": "So  is also an n-th root of unity. While the powers of\n are rotating counter-clockwise\non the unit circle until they land on 1 for the -th power,\nthe powers of  similarly rotate\nclockwise."
+          },
+          {
+            "type": "p",
+            "text": "also happens to be the complex conjugate of\n:"
+          },
+          {
+            "type": "p",
+            "text": "So if we have:"
+          },
+          {
+            "type": "p",
+            "text": "As the -th roots of unity, then:"
+          },
+          {
+            "type": "p",
+            "text": "Are also -th roots of unity. In fact, they are the same roots,\nbecause for any given positive :"
+          },
+          {
+            "type": "p",
+            "text": "So enumerating the conjugate roots is the same as enumerating the roots\nthemselves in the opposite order."
+          },
+          {
+            "type": "h2",
+            "text": "Group theory: the cyclic group of roots of unity"
+          },
+          {
+            "type": "p",
+            "text": "Let’s look at the set of  (roots of unity) for some\n:"
+          },
+          {
+            "type": "p",
+            "text": "This set - along with the multiplication operation - forms a group.\nLet’s prove that."
+          },
+          {
+            "type": "p",
+            "text": "Closure: Assume  (so  and\n). Then:"
+          },
+          {
+            "type": "p",
+            "text": "Therefore ."
+          },
+          {
+            "type": "p",
+            "text": "Identity: The number , so it can serve as our\nidentity element for the group."
+          },
+          {
+            "type": "p",
+            "text": "Associativity: Taken directly from the associativity of the\nmultiplication operation on complex numbers."
+          },
+          {
+            "type": "p",
+            "text": "Inverse: We’ve just seen in the section on conjugates that\n is an -th root of unity when  is. So\nthe inverse exists and is part of the group."
+          },
+          {
+            "type": "p",
+            "text": "Because the operation we have is just complex multiplication, we can\ntrivially derive additional properties, like commutativity. Therefore,\nthe group  is Abelian."
+          },
+          {
+            "type": "p",
+            "text": "Finally, we can show that the group is also cyclic and discuss its\ngenerators."
+          },
+          {
+            "type": "p",
+            "text": "For slightly simpler notation, let’s denote . So the group\ncan be represented as:"
+          },
+          {
+            "type": "p",
+            "text": "This makes it obvious that the group is cyclic - all its elements can be\nexpressed as integer powers of . And  is a generator\nfor the group."
+          },
+          {
+            "type": "p",
+            "text": "But interestingly,  is not the only generator for this group.\nAny  can be a generator, as long as  and \nare co-prime. For example, consider the group :"
+          },
+          {
+            "type": "p",
+            "text": "Obviously,  is a generator for this group. But \nisn’t! If we raise it to various powers we get:"
+          },
+          {
+            "type": "p",
+            "text": "Since , the powers of  repeat after just three\nsteps, so they only reach three out of six group elements."
+          },
+          {
+            "type": "p",
+            "text": "But if  and  are co-prime,  is a generator;\nin the case of , we can easily verify that  and\n are the only generators. The roots that are generators for\nthe group are also called the primitive roots."
+          },
+          {
+            "type": "p",
+            "text": "Let’s take the -roots of unity (), denoted as above\nwith:"
+          },
+          {
+            "type": "p",
+            "text": "What’s the sum of all these roots?"
+          },
+          {
+            "type": "p",
+            "text": "This is just the sum of a geometric series with the first term 1 and\ncommon ratio . Therefore:"
+          },
+          {
+            "type": "p",
+            "text": "If you look carefully at the visualization shown above - this makes\nsense geometrically. All the roots of unity are evenly spread around the\nunit circle, so viewing them as vectors, all components cancel out."
+          },
+          {
+            "type": "p",
+            "text": "How about the sum of roots raised to some integer power ? Let’s\ntry this for  (assuming ):"
+          },
+          {
+            "type": "p",
+            "text": "Using the same geometric series sum formula (with ), we\nget:"
+          },
+          {
+            "type": "p",
+            "text": "In general, when  is not divisible by , the sum is 0.\nBut when  is divisible by , each power becomes:"
+          },
+          {
+            "type": "p",
+            "text": "And  of these sum to . In conclusion:"
+          },
+          {
+            "type": "h2",
+            "text": "Powers of roots of unity as an orthogonal basis"
+          },
+          {
+            "type": "p",
+            "text": "Let’s consider the powers of roots of unity as vectors. We’ll continue\nusing the notation:"
+          },
+          {
+            "type": "p",
+            "text": "We’ll begin with the 0-th power vector - each of the roots raised to\npower 0:"
+          },
+          {
+            "type": "p",
+            "text": "Then power 1 - just the roots themselves:"
+          },
+          {
+            "type": "p",
+            "text": "Each root raised to power 2:"
+          },
+          {
+            "type": "p",
+            "text": "And so on, until power :"
+          },
+          {
+            "type": "p",
+            "text": "To go full linear algebra mode, we’ll collect these vectors into an\n matrix:"
+          },
+          {
+            "type": "p",
+            "text": "Let’s calculate the inner product of two matrix rows. Recall that when\ncomputing the inner product on vectors over , we\nconjugate the second element:"
+          },
+          {
+            "type": "p",
+            "text": "But hold on, we’ve just calculated this exact sum in the previous\nsection. We get:"
+          },
+          {
+            "type": "p",
+            "text": "Since the vector indices  and  only run over\n, this is equivalent to:"
+          },
+          {
+            "type": "p",
+            "text": "Which is to say: the vectors  and  are\nmutually orthogonal when . Since we have a set of  orthogonal vectors\nin , these vectors form a basis for\n - any vector in this space can be represented as a\nlinear combination of . This fact has far reaching\nconsequences in math and engineering, since it plays a critical part in\nforming the DFT (Discrete Fourier Transform), and  is also\nknown as the Fourier matrix. But this will be a topic for a separate\npost."
+          },
+          {
+            "type": "p",
+            "text": "Another fun thing to notice before we’re finished here: the matrix\n happens to be symmetric (this is trivial to check by\nobservation). Therefore, its columns are also mutually orthogonal."
+          }
+        ],
+        "translations": [
+          "One of the most wonderful aspects of math is how deep we can get by\nstudying seemingly trivial questions. Consider the roots of unity, where\n\"unity\" simply means the number 1.",
+          "Basics: roots of unity for real numbers",
+          "Studying the roots of unity usually begins in middle school: what is the\nsquare root of 1? Equivalently, what are the solutions to this equation?",
+          "Well, there are two answers: 1 and -1.",
+          "Similarly, we can ask the question for higher roots; the third roots are\nsolutions to the equation:",
+          "And so on. When we’re only dealing with real numbers, that’s pretty much\nthe whole story. For odd-degree roots of 1, the only answer is 1; for\neven-degree roots of 1, the answer is either 1 or -1.",
+          "When we extend our domain to the complex numbers, things become much\nmore interesting.",
+          "Basics: roots of unity for complex numbers",
+          "By the formal\ndefinition, a root of\nunity is any complex number that yields 1 when raised to a positive\ninteger power .",
+          "Rather than looking at all the possible roots of 1, it’s often more\nuseful to discuss the roots for a specific given : complex\nnumbers  such that .",
+          "For example, let’s consider . We’ve already seen that the\nroots are 1 and -1; these are complex numbers with a zero imaginary\npart.",
+          "How about ? There are four roots: 1, -1,  and\n. For , the three roots [1] are 1,\n and . It’s\neasy enough to check that these indeed give 1 when raised to the third\npower, but how do we calculate them in the first place?",
+          "Calculating complex roots using polar coordinates",
+          "A complex number with magnitude 1 can be represented in polar\ncoordinates  [2] as . If we raise  to the\n-th power, we get:",
+          "The magnitude of  is still 1, which is essential if we want\n to be a -th root of unity. Let’s equate \nto 1:",
+          "To find the solutions to this equation, we’ll first want to represent 1\nitself in polar coordinates. Let’s use another variable for the angle:",
+          "What is the value of ? Thinking about the unit circle,\n is any integer multiple of  - which we’ll\nexpress as  for :",
+          "Back to :",
+          "Or:",
+          "So the -th roots of unity are [3]:",
+          "Some basic examples",
+          "Let’s begin with . We have the following roots:",
+          "For :",
+          "As expected. It should be similarly simple to calculate the roots for\n; give it a try.",
+          "Roots of unity and rotations on the unit circle",
+          "What happens when we multiply some root of unity  by itself?\nSince the magnitude of the root is 1, multiplying by it is akin to a\nrotation along the unit circle by the root’s angle. For example,\nconsider  from the 3rd roots of unity:",
+          "Multiply  by itself:",
+          "If the angle of  is , the angle of\n is . Let’s multiply by  once\nmore:",
+          "The result is 1, as expected (after all,  is a 3rd root of\nunity).",
+          "This visualization shows how roots of unity appear on the unit circle\nand how raising them to powers rotates the roots until finally\n:",
+          "Roots n \n      Root k",
+          "Power m",
+          "Select  first; this shows the -th roots as blue dots\non the unit circle. Now you can click any of the roots, and see its\npowers in the lower plot - drag the slidebar to see the rotations. If\nyou spend some time playing with this, you’ll notice that some roots -\nfor example  when  - go back to 1 when raised to a\nsmaller power than . We’ll revisit this outcome when we discuss\nthe group-theoretic aspects of roots of unity.",
+          "Geometry: roots of unity and regular polygons",
+          "As we’ve seen, the roots of unity are evenly spaced along the unit\ncircle on the complex plane. If we connect the roots with straight lines\nto their immediate neighbors, we’ll notice something interesting:",
+          "Roots n",
+          "For different values of , we get the Regular\nPolygons! It’s pretty\neasy to prove this if we connect each root with a straight line to the\norigin. The triangles we get are congruent, because the sides from the\norigin to the roots are all of length 1, and the central angles are all\n. Therefore, both the sides of the polygons and their\nangles are identical, which makes them regular.",
+          "Conjugates of roots of unity",
+          "Suppose we have the root of unity:",
+          "For some  and . If we take the reciprocal of\n:",
+          "Then:",
+          "So  is also an n-th root of unity. While the powers of\n are rotating counter-clockwise\non the unit circle until they land on 1 for the -th power,\nthe powers of  similarly rotate\nclockwise.",
+          "also happens to be the complex conjugate of\n:",
+          "So if we have:",
+          "As the -th roots of unity, then:",
+          "Are also -th roots of unity. In fact, they are the same roots,\nbecause for any given positive :",
+          "So enumerating the conjugate roots is the same as enumerating the roots\nthemselves in the opposite order.",
+          "Group theory: the cyclic group of roots of unity",
+          "Let’s look at the set of  (roots of unity) for some\n:",
+          "This set - along with the multiplication operation - forms a group.\nLet’s prove that.",
+          "Closure: Assume  (so  and\n). Then:",
+          "Therefore .",
+          "Identity: The number , so it can serve as our\nidentity element for the group.",
+          "Associativity: Taken directly from the associativity of the\nmultiplication operation on complex numbers.",
+          "Inverse: We’ve just seen in the section on conjugates that\n is an -th root of unity when  is. So\nthe inverse exists and is part of the group.",
+          "Because the operation we have is just complex multiplication, we can\ntrivially derive additional properties, like commutativity. Therefore,\nthe group  is Abelian.",
+          "Finally, we can show that the group is also cyclic and discuss its\ngenerators.",
+          "For slightly simpler notation, let’s denote . So the group\ncan be represented as:",
+          "This makes it obvious that the group is cyclic - all its elements can be\nexpressed as integer powers of . And  is a generator\nfor the group.",
+          "But interestingly,  is not the only generator for this group.\nAny  can be a generator, as long as  and \nare co-prime. For example, consider the group :",
+          "Obviously,  is a generator for this group. But \nisn’t! If we raise it to various powers we get:",
+          "Since , the powers of  repeat after just three\nsteps, so they only reach three out of six group elements.",
+          "But if  and  are co-prime,  is a generator;\nin the case of , we can easily verify that  and\n are the only generators. The roots that are generators for\nthe group are also called the primitive roots.",
+          "Let’s take the -roots of unity (), denoted as above\nwith:",
+          "What’s the sum of all these roots?",
+          "This is just the sum of a geometric series with the first term 1 and\ncommon ratio . Therefore:",
+          "If you look carefully at the visualization shown above - this makes\nsense geometrically. All the roots of unity are evenly spread around the\nunit circle, so viewing them as vectors, all components cancel out.",
+          "How about the sum of roots raised to some integer power ? Let’s\ntry this for  (assuming ):",
+          "Using the same geometric series sum formula (with ), we\nget:",
+          "In general, when  is not divisible by , the sum is 0.\nBut when  is divisible by , each power becomes:",
+          "And  of these sum to . In conclusion:",
+          "Powers of roots of unity as an orthogonal basis",
+          "Let’s consider the powers of roots of unity as vectors. We’ll continue\nusing the notation:",
+          "We’ll begin with the 0-th power vector - each of the roots raised to\npower 0:",
+          "Then power 1 - just the roots themselves:",
+          "Each root raised to power 2:",
+          "And so on, until power :",
+          "To go full linear algebra mode, we’ll collect these vectors into an\n matrix:",
+          "Let’s calculate the inner product of two matrix rows. Recall that when\ncomputing the inner product on vectors over , we\nconjugate the second element:",
+          "But hold on, we’ve just calculated this exact sum in the previous\nsection. We get:",
+          "Since the vector indices  and  only run over\n, this is equivalent to:",
+          "Which is to say: the vectors  and  are\nmutually orthogonal when . Since we have a set of  orthogonal vectors\nin , these vectors form a basis for\n - any vector in this space can be represented as a\nlinear combination of . This fact has far reaching\nconsequences in math and engineering, since it plays a critical part in\nforming the DFT (Discrete Fourier Transform), and  is also\nknown as the Fourier matrix. But this will be a topic for a separate\npost.",
+          "Another fun thing to notice before we’re finished here: the matrix\n happens to be symmetric (this is trivial to check by\nobservation). Therefore, its columns are also mutually orthogonal."
+        ]
+      }
+    },
+    {
+      "slug": "e863183a85fc7912",
+      "title": "How the AI boom might really end: 5 scenarios",
+      "titleZh": "How the AI boom might really end: 5 scenarios",
+      "link": "https://martinalderson.com/posts/how-the-ai-boom-might-really-end/?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=feed",
+      "sourceName": "martinalderson.com",
+      "sourceUrl": "https://martinalderson.com",
+      "pubDate": "2026-10-18T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How the AI boom might really end: 5 scenarios",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Martin Alderson",
+        "siteName": "Martin Alderson",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "With the Anthropic IPO gathering pace - and chip stocks just posting their longest losing streak since 2008 amid worries about AI debt, I thought it'd be worth writing up some of my thoughts I've put together while thinking through what may happen. By no means is this meant to be exhaustive - just a list of what I think is the most interesting to think through."
+          },
+          {
+            "type": "p",
+            "text": "Before I dive into the scenarios, while I'm sure there are going to be failures and mispricing of asset classes - like any huge investment wave - I think it's worth saying that unlike many bubbles there is an enormous amount of value being created."
+          },
+          {
+            "type": "p",
+            "text": "In essence, I think this is the first time capital can be turned into intelligence. You buy (or borrow money for) GPUs, you get tokens out which represent a growing share of professional service work. I'm certainly biased as a software engineer by trade - the models just get better and better at coding and it's humbling to see it do my previous tasks so quickly and increasingly better than I can do them."
+          },
+          {
+            "type": "p",
+            "text": "And unlike (say) the dotcom boom, which was arguably directionally correct, but far too early, we're seeing mass adoption and huge revenues being generated, far quicker than in the late 90s."
+          },
+          {
+            "type": "p",
+            "text": "So thinking through this, I'd group the scenarios into two categories. Firstly, AI itself doesn't deliver the value promised or gets stopped by external factors. I think these are worth thinking through."
+          },
+          {
+            "type": "p",
+            "text": "The other category - and potentially more likely - is that AI works well, but the value doesn't flow to the people that are putting the money in. I think this is where the unwinding could happen, and arguably is already showing up."
+          },
+          {
+            "type": "h2",
+            "text": "Group 1: AI disappoints or gets stopped"
+          },
+          {
+            "type": "h3",
+            "text": "Models stop getting any better"
+          },
+          {
+            "type": "p",
+            "text": "While it's hard to argue that the models as is aren't \"good\" at specific tasks now, it may well be that we hit a scaling wall. Increasing amounts of capex is pumped into model training, but the results are incrementally better. This leads to a \"hard\" wall on progress until another architecture or approach potentially comes along."
+          },
+          {
+            "type": "p",
+            "text": "This one I'd discount for now. We're seeing no signs of progress slowing, and we're seeing very fast advancement in capabilities. And even if this did happen, most organisations and people aren't using anywhere near their full power."
+          },
+          {
+            "type": "p",
+            "text": "The one watch out though which is a bit more insidious is that the models continue getting better at specific tasks, but start regressing badly in others. I feel Opus 5 was a good example of this - better at coding, but produced infuriatingly hard-to-read prose. Perhaps we'll see models more focused at specific tasks if this gets harder to mitigate (much like the Codex series of GPT models, which then got unified back into the main GPT models)."
+          },
+          {
+            "type": "h3",
+            "text": "Alignment risks"
+          },
+          {
+            "type": "p",
+            "text": "The other major risk with AI is that it ends up doing something bad in the real world. We've already seen the Hugging Face incident as a 'warning shot'. But there are far more catastrophic risks at play - for example, shutting down national infrastructure, or hacking a major financial institution that results in systemic risk across markets. Or, it goes full Skynet."
+          },
+          {
+            "type": "p",
+            "text": "There is no doubt this would cause enormous political upheaval that would lead to very rapid and severe backlash. Where the industry goes after that is hard to see - potentially progress gets frozen, resulting in far fewer orders for GPUs. On the other hand, it's hard for me to see a globally coordinated moratorium on AI given the breakneck competition between (primarily) the US and China. If it happened in China, is the US likely to follow suit? Or would it, instead, be blamed on \"defective Chinese\" models, and the US continues as is? Equally, if it happens in the US, does China pause or see this as a once in a generation opportunity to leap ahead?"
+          },
+          {
+            "type": "p",
+            "text": "I think we are getting dangerously close to an incident that may cause some sort of significant pullback in AI spending. It's certainly hard to predict, and the severity matters a lot - along with human impact."
+          },
+          {
+            "type": "h3",
+            "text": "Datacentre ban"
+          },
+          {
+            "type": "p",
+            "text": "Slightly less science fiction-y would be widespread local or political opposition to datacentre rollouts causing a very widespread pause on new capacity coming on stream."
+          },
+          {
+            "type": "p",
+            "text": "While this is certainly happening - I have a suspicion this could be one of the key battlelines for the 2028 US election cycle - it again would have to be a global ban to have any significant effect. If the US does a ban, projects and investments would quickly shift to other jurisdictions."
+          },
+          {
+            "type": "p",
+            "text": "And I'm almost certain that China would not even entertain any sort of ban like this, which again adds a geopolitical angle to it. Would the US really want to go ahead with a national ban when China already has a commanding lead in electricity capacity (if not semiconductors)."
+          },
+          {
+            "type": "p",
+            "text": "As such, I can't see this having a great effect on the deployment as a whole. The real weakness lies in financing these deals. Much like Ørsted needed a $9.4bn rights issue after US stop-work orders on its offshore wind projects spooked its financing, we could quickly see a domino effect of financing failures caused by it."
+          },
+          {
+            "type": "h2",
+            "text": "Group 2: AI works, but the capex holders don't capture the value"
+          },
+          {
+            "type": "h3",
+            "text": "Open weights get so good they collapse margins"
+          },
+          {
+            "type": "p",
+            "text": "I think this is the standout from where I see the risk and something I've been writing about for a while now. We're in the middle of a brutal inference price war - if you want to read more read my other recent article."
+          },
+          {
+            "type": "p",
+            "text": "This is largely caused by open weights models crossing the threshold of being \"good enough\" for many tasks."
+          },
+          {
+            "type": "p",
+            "text": "Anthropic releasing Haiku 5.5 at a huge discount - 90% cheaper on short context windows - means that for shorter, bulk tasks, Anthropic & OpenAI are actually as cheap as, or cheaper than, comparable open weights models. This doesn't apply for longer agentic tasks with Haiku - the price jumps 5x once you go over 100K tokens of context. Interestingly, OpenAI is far more aggressive here: GPT-6 Luna only goes up 1.5-2x, and only past 272K tokens. But I was surprised recently to find that no reputable inference provider offers comparable open weights models (e.g. DeepSeek) at any significant discount to Haiku and Luna, which is an enormous change from where we were at the start of the year, where the frontier labs were charging 10-20x more than open weight models."
+          },
+          {
+            "type": "p",
+            "text": "How much this cannibalises their more expensive models is up for debate. They've done the pricing in such a way that for longer agentic tasks, open weight models are still very attractive."
+          },
+          {
+            "type": "p",
+            "text": "But the perpetual price drops must be having some impact on margins, even if it does lead to them (re)taking market share from open weights competitors."
+          },
+          {
+            "type": "p",
+            "text": "So the hope is that they continue cutting prices, but revenue/token growth outstrips that. It is certainly possible - but it shows how fast this market switches that we've now got frontier labs offering this inference at all."
+          },
+          {
+            "type": "p",
+            "text": "The wildcard I would keep though is that while the open weights labs have kept pace, we can't rule out the frontier labs' ability to throw a lot of compute and brainpower at new models. Opus 5.5, for example, is an excellent model for more demanding tasks. And the Chinese labs are clearly short of hardware and facing new export restrictions from the Chinese government."
+          },
+          {
+            "type": "h3",
+            "text": "Huge efficiency breakthroughs"
+          },
+          {
+            "type": "p",
+            "text": "Note that the previous scenario, while catastrophic for the frontier labs if this compression continues, arguably increases demand for semiconductors, memory and the related supply chain."
+          },
+          {
+            "type": "p",
+            "text": "But another risk is that if there are huge efficiency breakthroughs, either through hardware or software/model improvements. This is what killed the telecoms boom in the early 2000s - it wasn't so much that bandwidth growth stopped, but the efficiency of fibre optics far outpaced the demands."
+          },
+          {
+            "type": "p",
+            "text": "So far we've seen a lot of innovation on the model side, but hardware has struggled to keep pace. Discounting all the hype stats that Nvidia etc put out for each new generation[1], underlying tokens/watt - the best figure to watch - is improving far slower than the headlines suggest."
+          },
+          {
+            "type": "p",
+            "text": "The model efficiency improvements have been pretty amazing to watch. But so far, this has all been put into longer context windows (enabling longer running agentic tasks) and have enabled some of the price decreases we've seen."
+          },
+          {
+            "type": "p",
+            "text": "But, there is a world where a new hardware or software approach does lead, much like DWDM fibre back in the 2000s, to efficiency running far, far ahead of token growth, even taking Jevons paradox into account."
+          },
+          {
+            "type": "p",
+            "text": "My gut says that token demand is growing so fast, and will continue to grow so fast that it will consume all efficiency gains in the near future. The key way to track this I think is not looking at some of the \"token cost indexes\" that get posted about - this doesn't adjust for the exponential growth in demand - but instead look at the cost of GPUs on the spot market. If we start seeing big, broad drops across all compute types, then that's a clear sign that supply and demand is starting to reach equilibrium and this scenario is starting to play out."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "There are no doubt many risks to the AI \"economy\", and it's always easy to point to whatever one is making the most news."
+          },
+          {
+            "type": "p",
+            "text": "But to me the real question is whether AI progress is turning into tangible value. Right now - for me, and many others, the answer is a resounding yes. Token consumption is going through the roof, because as models get better more and more tasks can be executed with AI. And I still think early adopters that are pushing agentic workflows comprise a small single-digit percentage of the professional services market as a whole."
+          },
+          {
+            "type": "p",
+            "text": "But this doesn't mean that the labs making and serving those models take the benefit. History is littered with huge technological advancements which went to consumer surplus, not whoever bet the most capital."
+          },
+          {
+            "type": "p",
+            "text": "And my view is that's what we are seeing right now. The frontier labs are in serious peril of losing margin, and therefore market valuation, to open weights competitors."
+          },
+          {
+            "type": "p",
+            "text": "The important point though is that the frontier labs do not make up the whole market. Tokens need compute, memory and power whether it's a frontier lab or open weights."
+          },
+          {
+            "type": "p",
+            "text": "I see endless analysis of OpenAI vs Anthropic revenue figures. What's far more important to the AI ecosystem is overall revenues. And as the market continues to fragment, it's harder and harder to join that together. Unless AI does hit a wall, open weights may mean the end of the boom in frontier labs valuations. But the underlying supply chains may be doing better than ever."
+          },
+          {
+            "type": "p",
+            "text": "Which is why I think the market has this week backwards. Chip stocks are being punished just as TSMC reports record revenue and says AI demand still exceeds supply."
+          },
+          {
+            "type": "p",
+            "text": "The one caveat is leverage. So much of this buildout is debt-funded that even small changes can unwind far faster, and far more completely, than they should. CoreWeave's credit default swaps hit distressed levels this week on a hot inflation print and a viral chart - not because anyone stopped wanting GPUs."
+          },
+          {
+            "type": "p",
+            "text": "If the AI boom ends, I don't think it ends with fewer tokens. It ends with the same tokens - or far more - flowing to far more people at far lower margins."
+          },
+          {
+            "type": "li",
+            "text": "Nvidia's headline generation-on-generation numbers mostly come from dropping precision (FP8 to FP4), not from the silicon getting more efficient. Halving precision roughly doubles throughput on the same hardware, but you're trading accuracy for speed, and most production inference still runs at FP8 or BF16. Compare like-for-like at FP8 and H100 to Vera Rubin is roughly 2.7x per watt over three generations - about 1.5x a generation. Over the same period power per GPU went from ~700W to ~2,300W, so more than half the per-GPU gain is simply drawing more power through bigger, multi-die packages. Moore's law is slowing, and there's a hard limit to how far you can cut precision. Once both run out, the tok/watt gains have to come from somewhere else. ↩︎"
+          }
+        ],
+        "translations": [
+          "With the Anthropic IPO gathering pace - and chip stocks just posting their longest losing streak since 2008 amid worries about AI debt, I thought it'd be worth writing up some of my thoughts I've put together while thinking through what may happen. By no means is this meant to be exhaustive - just a list of what I think is the most interesting to think through.",
+          "Before I dive into the scenarios, while I'm sure there are going to be failures and mispricing of asset classes - like any huge investment wave - I think it's worth saying that unlike many bubbles there is an enormous amount of value being created.",
+          "In essence, I think this is the first time capital can be turned into intelligence. You buy (or borrow money for) GPUs, you get tokens out which represent a growing share of professional service work. I'm certainly biased as a software engineer by trade - the models just get better and better at coding and it's humbling to see it do my previous tasks so quickly and increasingly better than I can do them.",
+          "And unlike (say) the dotcom boom, which was arguably directionally correct, but far too early, we're seeing mass adoption and huge revenues being generated, far quicker than in the late 90s.",
+          "So thinking through this, I'd group the scenarios into two categories. Firstly, AI itself doesn't deliver the value promised or gets stopped by external factors. I think these are worth thinking through.",
+          "The other category - and potentially more likely - is that AI works well, but the value doesn't flow to the people that are putting the money in. I think this is where the unwinding could happen, and arguably is already showing up.",
+          "Group 1: AI disappoints or gets stopped",
+          "Models stop getting any better",
+          "While it's hard to argue that the models as is aren't \"good\" at specific tasks now, it may well be that we hit a scaling wall. Increasing amounts of capex is pumped into model training, but the results are incrementally better. This leads to a \"hard\" wall on progress until another architecture or approach potentially comes along.",
+          "This one I'd discount for now. We're seeing no signs of progress slowing, and we're seeing very fast advancement in capabilities. And even if this did happen, most organisations and people aren't using anywhere near their full power.",
+          "The one watch out though which is a bit more insidious is that the models continue getting better at specific tasks, but start regressing badly in others. I feel Opus 5 was a good example of this - better at coding, but produced infuriatingly hard-to-read prose. Perhaps we'll see models more focused at specific tasks if this gets harder to mitigate (much like the Codex series of GPT models, which then got unified back into the main GPT models).",
+          "Alignment risks",
+          "The other major risk with AI is that it ends up doing something bad in the real world. We've already seen the Hugging Face incident as a 'warning shot'. But there are far more catastrophic risks at play - for example, shutting down national infrastructure, or hacking a major financial institution that results in systemic risk across markets. Or, it goes full Skynet.",
+          "There is no doubt this would cause enormous political upheaval that would lead to very rapid and severe backlash. Where the industry goes after that is hard to see - potentially progress gets frozen, resulting in far fewer orders for GPUs. On the other hand, it's hard for me to see a globally coordinated moratorium on AI given the breakneck competition between (primarily) the US and China. If it happened in China, is the US likely to follow suit? Or would it, instead, be blamed on \"defective Chinese\" models, and the US continues as is? Equally, if it happens in the US, does China pause or see this as a once in a generation opportunity to leap ahead?",
+          "I think we are getting dangerously close to an incident that may cause some sort of significant pullback in AI spending. It's certainly hard to predict, and the severity matters a lot - along with human impact.",
+          "Datacentre ban",
+          "Slightly less science fiction-y would be widespread local or political opposition to datacentre rollouts causing a very widespread pause on new capacity coming on stream.",
+          "While this is certainly happening - I have a suspicion this could be one of the key battlelines for the 2028 US election cycle - it again would have to be a global ban to have any significant effect. If the US does a ban, projects and investments would quickly shift to other jurisdictions.",
+          "And I'm almost certain that China would not even entertain any sort of ban like this, which again adds a geopolitical angle to it. Would the US really want to go ahead with a national ban when China already has a commanding lead in electricity capacity (if not semiconductors).",
+          "As such, I can't see this having a great effect on the deployment as a whole. The real weakness lies in financing these deals. Much like Ørsted needed a $9.4bn rights issue after US stop-work orders on its offshore wind projects spooked its financing, we could quickly see a domino effect of financing failures caused by it.",
+          "Group 2: AI works, but the capex holders don't capture the value",
+          "Open weights get so good they collapse margins",
+          "I think this is the standout from where I see the risk and something I've been writing about for a while now. We're in the middle of a brutal inference price war - if you want to read more read my other recent article.",
+          "This is largely caused by open weights models crossing the threshold of being \"good enough\" for many tasks.",
+          "Anthropic releasing Haiku 5.5 at a huge discount - 90% cheaper on short context windows - means that for shorter, bulk tasks, Anthropic & OpenAI are actually as cheap as, or cheaper than, comparable open weights models. This doesn't apply for longer agentic tasks with Haiku - the price jumps 5x once you go over 100K tokens of context. Interestingly, OpenAI is far more aggressive here: GPT-6 Luna only goes up 1.5-2x, and only past 272K tokens. But I was surprised recently to find that no reputable inference provider offers comparable open weights models (e.g. DeepSeek) at any significant discount to Haiku and Luna, which is an enormous change from where we were at the start of the year, where the frontier labs were charging 10-20x more than open weight models.",
+          "How much this cannibalises their more expensive models is up for debate. They've done the pricing in such a way that for longer agentic tasks, open weight models are still very attractive.",
+          "But the perpetual price drops must be having some impact on margins, even if it does lead to them (re)taking market share from open weights competitors.",
+          "So the hope is that they continue cutting prices, but revenue/token growth outstrips that. It is certainly possible - but it shows how fast this market switches that we've now got frontier labs offering this inference at all.",
+          "The wildcard I would keep though is that while the open weights labs have kept pace, we can't rule out the frontier labs' ability to throw a lot of compute and brainpower at new models. Opus 5.5, for example, is an excellent model for more demanding tasks. And the Chinese labs are clearly short of hardware and facing new export restrictions from the Chinese government.",
+          "Huge efficiency breakthroughs",
+          "Note that the previous scenario, while catastrophic for the frontier labs if this compression continues, arguably increases demand for semiconductors, memory and the related supply chain.",
+          "But another risk is that if there are huge efficiency breakthroughs, either through hardware or software/model improvements. This is what killed the telecoms boom in the early 2000s - it wasn't so much that bandwidth growth stopped, but the efficiency of fibre optics far outpaced the demands.",
+          "So far we've seen a lot of innovation on the model side, but hardware has struggled to keep pace. Discounting all the hype stats that Nvidia etc put out for each new generation[1], underlying tokens/watt - the best figure to watch - is improving far slower than the headlines suggest.",
+          "The model efficiency improvements have been pretty amazing to watch. But so far, this has all been put into longer context windows (enabling longer running agentic tasks) and have enabled some of the price decreases we've seen.",
+          "But, there is a world where a new hardware or software approach does lead, much like DWDM fibre back in the 2000s, to efficiency running far, far ahead of token growth, even taking Jevons paradox into account.",
+          "My gut says that token demand is growing so fast, and will continue to grow so fast that it will consume all efficiency gains in the near future. The key way to track this I think is not looking at some of the \"token cost indexes\" that get posted about - this doesn't adjust for the exponential growth in demand - but instead look at the cost of GPUs on the spot market. If we start seeing big, broad drops across all compute types, then that's a clear sign that supply and demand is starting to reach equilibrium and this scenario is starting to play out.",
+          "Conclusion",
+          "There are no doubt many risks to the AI \"economy\", and it's always easy to point to whatever one is making the most news.",
+          "But to me the real question is whether AI progress is turning into tangible value. Right now - for me, and many others, the answer is a resounding yes. Token consumption is going through the roof, because as models get better more and more tasks can be executed with AI. And I still think early adopters that are pushing agentic workflows comprise a small single-digit percentage of the professional services market as a whole.",
+          "But this doesn't mean that the labs making and serving those models take the benefit. History is littered with huge technological advancements which went to consumer surplus, not whoever bet the most capital.",
+          "And my view is that's what we are seeing right now. The frontier labs are in serious peril of losing margin, and therefore market valuation, to open weights competitors.",
+          "The important point though is that the frontier labs do not make up the whole market. Tokens need compute, memory and power whether it's a frontier lab or open weights.",
+          "I see endless analysis of OpenAI vs Anthropic revenue figures. What's far more important to the AI ecosystem is overall revenues. And as the market continues to fragment, it's harder and harder to join that together. Unless AI does hit a wall, open weights may mean the end of the boom in frontier labs valuations. But the underlying supply chains may be doing better than ever.",
+          "Which is why I think the market has this week backwards. Chip stocks are being punished just as TSMC reports record revenue and says AI demand still exceeds supply.",
+          "The one caveat is leverage. So much of this buildout is debt-funded that even small changes can unwind far faster, and far more completely, than they should. CoreWeave's credit default swaps hit distressed levels this week on a hot inflation print and a viral chart - not because anyone stopped wanting GPUs.",
+          "If the AI boom ends, I don't think it ends with fewer tokens. It ends with the same tokens - or far more - flowing to far more people at far lower margins.",
+          "Nvidia's headline generation-on-generation numbers mostly come from dropping precision (FP8 to FP4), not from the silicon getting more efficient. Halving precision roughly doubles throughput on the same hardware, but you're trading accuracy for speed, and most production inference still runs at FP8 or BF16. Compare like-for-like at FP8 and H100 to Vera Rubin is roughly 2.7x per watt over three generations - about 1.5x a generation. Over the same period power per GPU went from ~700W to ~2,300W, so more than half the per-GPU gain is simply drawing more power through bigger, multi-die packages. Moore's law is slowing, and there's a hard limit to how far you can cut precision. Once both run out, the tok/watt gains have to come from somewhere else. ↩︎"
+        ]
+      }
+    }
+  ]
+}
