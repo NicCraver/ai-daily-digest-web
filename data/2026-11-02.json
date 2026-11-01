@@ -1,0 +1,956 @@
+{
+  "date": "2026-11-02",
+  "generatedAt": "2026-11-01T20:25:20.907Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 84,
+    "totalArticles": 2576,
+    "filteredArticles": 9,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "835fd1406315e6b3",
+      "title": "Quoting Kyle Kingsbury",
+      "titleZh": "Quoting Kyle Kingsbury",
+      "link": "https://simonwillison.net/2026/Nov/1/kyle-kingsbury/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-01T16:49:04.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Quoting Kyle Kingsbury",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "1st November 2026"
+          },
+          {
+            "type": "quote",
+            "text": "More broadly, the use of LLMs erodes trust in documentation, in software, and in the organizations which produce them. Perhaps engineers will begin to treat any new software project with suspicion—the signals we used to rely on as markers of a mature system are now easier to counterfeit. [...]\nIn the age of LLMs, what can maintainers do to ensure correct software and accurate documentation? Having done that work, how can they demonstrate its quality to users?"
+          },
+          {
+            "type": "p",
+            "text": "— Kyle Kingsbury, Jepsen results for ParticleDB 1.1.4"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "0def4a2fca6b3a20",
+      "title": "How We Took Over ChatGPT Accounts",
+      "titleZh": "How We Took Over ChatGPT Accounts",
+      "link": "https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-10-31T23:15:22.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How We Took Over ChatGPT Accounts",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "31st October 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "How We Took Over ChatGPT Accounts (via) Parameter Labs describe an exploit they found against ChatGPT's implementation of the artifacts pattern (OpenAI used to call this \"Canvas\" but it looks like the latest revision is called HTML previews), where interactive custom HTML apps are displayed in a sandboxed iframe."
+          },
+          {
+            "type": "p",
+            "text": "It's important that HTML in these stays tightly sandboxed to avoid untrusted code interacting with OpenAI APIs and accessing private data."
+          },
+          {
+            "type": "p",
+            "text": "Parameter found quite a complex attack chain. OpenAI use the MathLive JavaScript library as part of their graph support, and that library includes its own virtual keyboard, which can be triggered in the parent page via postMessage() from the sandboxed iframe."
+          },
+          {
+            "type": "p",
+            "text": "That message receiving code uses innerHTML, so anything that sends a message can add custom HTML to the parent - and there was no mechanism to prevent other sandboxed frames, including HTML preview frames, from calling that method."
+          },
+          {
+            "type": "p",
+            "text": "This meant untrusted code in an iframe could insert HTML, and while innerHTML doesn't directly execute script elements it could be used to inject a new iframe without sandbox restrictions."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI’s CSP rules blocked inline scripts entirely, and only allowed script loading from a handful of domains, but one of those was YouTube - and the YouTube oEmbed endpoint could be used to reflect JavaScript back in a way that executed it."
+          },
+          {
+            "type": "p",
+            "text": "Once the attack had JavaScript execution on ChatGPT, it was trivial to fetch private user data from APIs and exfiltrate it via an image reference."
+          },
+          {
+            "type": "p",
+            "text": "The end result: you could create a ChatGPT share URL which, when visited by another signed-in user, could exfiltrate their private data or take actions on their behalf."
+          },
+          {
+            "type": "p",
+            "text": "OpenAI closed the hole and paid out a $5,000 bug bounty, which I think was a bit cheap for a vulnerability this serious."
+          }
+        ],
+        "translations": [
+          "31st October 2026 - Link Blog",
+          "How We Took Over ChatGPT Accounts (via) Parameter Labs describe an exploit they found against ChatGPT's implementation of the artifacts pattern (OpenAI used to call this \"Canvas\" but it looks like the latest revision is called HTML previews), where interactive custom HTML apps are displayed in a sandboxed iframe.",
+          "It's important that HTML in these stays tightly sandboxed to avoid untrusted code interacting with OpenAI APIs and accessing private data.",
+          "Parameter found quite a complex attack chain. OpenAI use the MathLive JavaScript library as part of their graph support, and that library includes its own virtual keyboard, which can be triggered in the parent page via postMessage() from the sandboxed iframe.",
+          "That message receiving code uses innerHTML, so anything that sends a message can add custom HTML to the parent - and there was no mechanism to prevent other sandboxed frames, including HTML preview frames, from calling that method.",
+          "This meant untrusted code in an iframe could insert HTML, and while innerHTML doesn't directly execute script elements it could be used to inject a new iframe without sandbox restrictions.",
+          "OpenAI’s CSP rules blocked inline scripts entirely, and only allowed script loading from a handful of domains, but one of those was YouTube - and the YouTube oEmbed endpoint could be used to reflect JavaScript back in a way that executed it.",
+          "Once the attack had JavaScript execution on ChatGPT, it was trivial to fetch private user data from APIs and exfiltrate it via an image reference.",
+          "The end result: you could create a ChatGPT share URL which, when visited by another signed-in user, could exfiltrate their private data or take actions on their behalf.",
+          "OpenAI closed the hole and paid out a $5,000 bug bounty, which I think was a bit cheap for a vulnerability this serious."
+        ]
+      }
+    },
+    {
+      "slug": "bc9463905bbd6e7a",
+      "title": "datasette-llm 0.1a9",
+      "titleZh": "datasette-llm 0.1a9",
+      "link": "https://simonwillison.net/2026/Oct/31/datasette-llm/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-10-31T22:10:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "datasette-llm 0.1a9",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I have some big upgrades to Datasette Agent in the pipeline, but in the meantime here's a tiny user experience improvement to the underlying datasette-llm plugin."
+          },
+          {
+            "type": "p",
+            "text": "It now picks up the default model used by LLM, which means you can start using Datasette Agent without needing to explicitly configure a default model:"
+          },
+          {
+            "type": "code",
+            "text": "uvx --with datasette-agent datasette content.db --internal internal.db"
+          },
+          {
+            "type": "p",
+            "text": "Previously you would also need to specify a model with -s plugins.datasette-agent.default_model gpt-6-astra."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f5f47b2c89d942f4",
+      "title": "Fast and slow ways to improve your reputation",
+      "titleZh": "Fast and slow ways to improve your reputation",
+      "link": "https://seangoedecke.com/how-to-get-assigned-interesting-work/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-01T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Fast and slow ways to improve your reputation",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "To get a good reputation in tech companies, you need to work on important projects. However, you need a good reputation first in order to get assigned important projects. Doesn’t that make it impossible to get started? I get a lot of emails from engineers who are struggling with this problem. They go like this:"
+          },
+          {
+            "type": "quote",
+            "text": "I work with a strong senior engineer. I feel like my manager structures work so that strong engineer always gets the visible work, and the more they do, the more opportunities they get, while I sit on the sidelines. My manager agrees with me that it’s time for me to start leading work myself, but every time a new project appears it always goes to the strong engineer. What do I do?"
+          },
+          {
+            "type": "p",
+            "text": "This is a good case study for what I think of as “tech company theory of mind”: understanding the actual incentives that motivate decisions in tech companies, instead of the formal process. According to the formal process, projects should probably be assigned round-robin to whoever has capacity and isn’t currently working on one. But (as my emails complain) this is almost never how it works in practice."
+          },
+          {
+            "type": "h3",
+            "text": "A vicious cycle"
+          },
+          {
+            "type": "p",
+            "text": "Managers care about giving their employees chances to build a reputation, but they care more about developing their own reputation as someone who can deliver. High-profile projects  are the best opportunity for new people to step forward and get known, but blowing up a project1 like that is the easiest way for a manager to tank their own reputation. They will thus typically hand these projects to someone they know can deliver, while simultaneously promising (including to themselves) that next time they’ll take the risk of letting another person lead it."
+          },
+          {
+            "type": "p",
+            "text": "Of course it’s a vicious cycle. The more you rely on one person, the more reliable they become and the less reliable their colleagues become, since they aren’t getting the relevant experience. It’s not very sustainable. However, the average manager tenure in big tech is only a couple of years2. Given that, it’s rational for individual managers to take the long-term risk in exchange for mitigating the short-term risks of project failure."
+          },
+          {
+            "type": "h3",
+            "text": "The slow way to improve your reputation"
+          },
+          {
+            "type": "p",
+            "text": "So what can you do about it? I wrote about the classic approach years ago in Ratchet effects determine engineer reputation at large companies:"
+          },
+          {
+            "type": "li",
+            "text": "Focus on reliably shipping small, low-risk pieces of work"
+          },
+          {
+            "type": "li",
+            "text": "Communicate to your manager and team that you’ve done that"
+          },
+          {
+            "type": "li",
+            "text": "Use that reputation to get slightly higher-risk pieces of work"
+          },
+          {
+            "type": "li",
+            "text": "Avoid any mistakes that will ratchet up the perception of you as unreliable"
+          },
+          {
+            "type": "li",
+            "text": "Eventually you will be considered a safe prospect to handle important work"
+          },
+          {
+            "type": "p",
+            "text": "Note that this plan does not involve convincing3 your manager that you need projects for your career development, or that it’s unfair for you to be overlooked, or that the formal process would mean you should get to lead projects. You are not going to be able to change your manager’s incentives, but you may be able to position yourself so that your manager believes their incentives line up with yours."
+          },
+          {
+            "type": "p",
+            "text": "The problem with this plan is that it’s slow. It takes months or even years to piece together a reputation like this. That’s slow enough for bad luck to intervene by handing you a failure you can’t avoid, or having your manager leave, or for the fundamental nature of software engineering to change. What can you do that’s faster?"
+          },
+          {
+            "type": "h3",
+            "text": "Fast ways to improve your reputation"
+          },
+          {
+            "type": "p",
+            "text": "The fast path to getting assigned interesting work involves taking risks. This is all dangerous advice. Follow it at your own peril."
+          },
+          {
+            "type": "p",
+            "text": "One way is to build a relationship with your skip-level. If your manager’s manager thinks you’re a stone-cold killer, you are basically guaranteed to get assigned interesting projects. They will straight-up tell your manager “why not put X on this?”, and your manager will rationally decide (a) that it’s in their best interests to do it, and (b) that if you screw it up, it won’t be their responsibility."
+          },
+          {
+            "type": "p",
+            "text": "But it’s not so easy to build a relationship like this. Very senior managers are skilled political operators4 who are good at identifying when people are trying to persuade them. If they think you’re coming on too strong, that will hurt you far more than it helps. Unfortunately, the most reliable technique for building a relationship with your skip-level is to just be reliably useful to them over a long period of time, which puts us back to the slow way."
+          },
+          {
+            "type": "p",
+            "text": "Another fast way is to make side bets. I wrote about that here, but the idea is simple: figure out and implement your own projects. Work that you decide to do is work that doesn’t have to be assigned to you, so if you independently identify something important that needs doing, then do it, you’ve manufactured your own project out of thin air. I think every senior engineer should be trying to do this all the time."
+          },
+          {
+            "type": "p",
+            "text": "The risk of making side bets is that if they don’t work, or turn out to be less important than you think, you’ve entirely wasted your time. Worse, many managers will get annoyed at engineers who try this, because it can make managers look in meetings like they don’t know what their team is working on."
+          },
+          {
+            "type": "p",
+            "text": "Finally, the best fast way is to impress your engineer colleagues. This only really works on a team with a healthy culture, but when it works it’s very smooth. Managers are slow to form opinions because they’re not close enough to the engineering coalface to know who’s doing quality work5. Engineers are informed enough to form opinions quickly. At least I am: it only takes a few “oh, you saw something I didn’t” moments for me to decide someone’s good."
+          },
+          {
+            "type": "p",
+            "text": "On a healthy team those engineers will tell their manager that, who will decide that you must be good, and will give you important work far earlier than if you’d had to prove yourself from scratch. On a kind of crappy team, engineers might not be good enough to recognize strong engineers, or they might not communicate freely enough to tell your manager about it. On a really unhealthy team, engineers will actively trash-talk competent colleagues because they (correctly) see them as the biggest threats."
+          },
+          {
+            "type": "h3",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "If you’re on a team where all the interesting work is going to someone else, you have a reputation problem. It’s probably not personal: your manager is simply incentivized to give new work to known reliable engineers, which is a vicious cycle that leaves you out in the cold. Fixing that can be a safe slow process or a risky fast process."
+          },
+          {
+            "type": "p",
+            "text": "Either way, I don’t recommend simply trying to convince your manager in 1:1s that it’s unfair to leave you out of projects. Tech companies are not supposed to be fair, they are supposed to make money. You’re better off finding a way to make it look like it’s in your manager’s best interests to assign you that work: either by appealing to your skip-level, finding projects of your own, or building a reputation with engineers your manager already trusts."
+          },
+          {
+            "type": "li",
+            "text": "One reason some people find this point tricky to grasp is that they underrate just how hard it is to ship anything. Projects fail all the time. No manager can afford to be sanguine about the risks.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I linked the first crappy source I could find, but my main source for this is just noticing how long the managers in my workplaces stick around.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "You don’t even necessarily have to tell your manager you’re looking for bigger projects, though I think you probably should.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Almost certainly more skilled than you, due to selection effects and the fact that they get way more practice.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "They typically have to rely on results, which is a slow proxy for technical ability.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "To get a good reputation in tech companies, you need to work on important projects. However, you need a good reputation first in order to get assigned important projects. Doesn’t that make it impossible to get started? I get a lot of emails from engineers who are struggling with this problem. They go like this:",
+          "I work with a strong senior engineer. I feel like my manager structures work so that strong engineer always gets the visible work, and the more they do, the more opportunities they get, while I sit on the sidelines. My manager agrees with me that it’s time for me to start leading work myself, but every time a new project appears it always goes to the strong engineer. What do I do?",
+          "This is a good case study for what I think of as “tech company theory of mind”: understanding the actual incentives that motivate decisions in tech companies, instead of the formal process. According to the formal process, projects should probably be assigned round-robin to whoever has capacity and isn’t currently working on one. But (as my emails complain) this is almost never how it works in practice.",
+          "A vicious cycle",
+          "Managers care about giving their employees chances to build a reputation, but they care more about developing their own reputation as someone who can deliver. High-profile projects  are the best opportunity for new people to step forward and get known, but blowing up a project1 like that is the easiest way for a manager to tank their own reputation. They will thus typically hand these projects to someone they know can deliver, while simultaneously promising (including to themselves) that next time they’ll take the risk of letting another person lead it.",
+          "Of course it’s a vicious cycle. The more you rely on one person, the more reliable they become and the less reliable their colleagues become, since they aren’t getting the relevant experience. It’s not very sustainable. However, the average manager tenure in big tech is only a couple of years2. Given that, it’s rational for individual managers to take the long-term risk in exchange for mitigating the short-term risks of project failure.",
+          "The slow way to improve your reputation",
+          "So what can you do about it? I wrote about the classic approach years ago in Ratchet effects determine engineer reputation at large companies:",
+          "Focus on reliably shipping small, low-risk pieces of work",
+          "Communicate to your manager and team that you’ve done that",
+          "Use that reputation to get slightly higher-risk pieces of work",
+          "Avoid any mistakes that will ratchet up the perception of you as unreliable",
+          "Eventually you will be considered a safe prospect to handle important work",
+          "Note that this plan does not involve convincing3 your manager that you need projects for your career development, or that it’s unfair for you to be overlooked, or that the formal process would mean you should get to lead projects. You are not going to be able to change your manager’s incentives, but you may be able to position yourself so that your manager believes their incentives line up with yours.",
+          "The problem with this plan is that it’s slow. It takes months or even years to piece together a reputation like this. That’s slow enough for bad luck to intervene by handing you a failure you can’t avoid, or having your manager leave, or for the fundamental nature of software engineering to change. What can you do that’s faster?",
+          "Fast ways to improve your reputation",
+          "The fast path to getting assigned interesting work involves taking risks. This is all dangerous advice. Follow it at your own peril.",
+          "One way is to build a relationship with your skip-level. If your manager’s manager thinks you’re a stone-cold killer, you are basically guaranteed to get assigned interesting projects. They will straight-up tell your manager “why not put X on this?”, and your manager will rationally decide (a) that it’s in their best interests to do it, and (b) that if you screw it up, it won’t be their responsibility.",
+          "But it’s not so easy to build a relationship like this. Very senior managers are skilled political operators4 who are good at identifying when people are trying to persuade them. If they think you’re coming on too strong, that will hurt you far more than it helps. Unfortunately, the most reliable technique for building a relationship with your skip-level is to just be reliably useful to them over a long period of time, which puts us back to the slow way.",
+          "Another fast way is to make side bets. I wrote about that here, but the idea is simple: figure out and implement your own projects. Work that you decide to do is work that doesn’t have to be assigned to you, so if you independently identify something important that needs doing, then do it, you’ve manufactured your own project out of thin air. I think every senior engineer should be trying to do this all the time.",
+          "The risk of making side bets is that if they don’t work, or turn out to be less important than you think, you’ve entirely wasted your time. Worse, many managers will get annoyed at engineers who try this, because it can make managers look in meetings like they don’t know what their team is working on.",
+          "Finally, the best fast way is to impress your engineer colleagues. This only really works on a team with a healthy culture, but when it works it’s very smooth. Managers are slow to form opinions because they’re not close enough to the engineering coalface to know who’s doing quality work5. Engineers are informed enough to form opinions quickly. At least I am: it only takes a few “oh, you saw something I didn’t” moments for me to decide someone’s good.",
+          "On a healthy team those engineers will tell their manager that, who will decide that you must be good, and will give you important work far earlier than if you’d had to prove yourself from scratch. On a kind of crappy team, engineers might not be good enough to recognize strong engineers, or they might not communicate freely enough to tell your manager about it. On a really unhealthy team, engineers will actively trash-talk competent colleagues because they (correctly) see them as the biggest threats.",
+          "Conclusion",
+          "If you’re on a team where all the interesting work is going to someone else, you have a reputation problem. It’s probably not personal: your manager is simply incentivized to give new work to known reliable engineers, which is a vicious cycle that leaves you out in the cold. Fixing that can be a safe slow process or a risky fast process.",
+          "Either way, I don’t recommend simply trying to convince your manager in 1:1s that it’s unfair to leave you out of projects. Tech companies are not supposed to be fair, they are supposed to make money. You’re better off finding a way to make it look like it’s in your manager’s best interests to assign you that work: either by appealing to your skip-level, finding projects of your own, or building a reputation with engineers your manager already trusts.",
+          "One reason some people find this point tricky to grasp is that they underrate just how hard it is to ship anything. Projects fail all the time. No manager can afford to be sanguine about the risks.\n↩",
+          "I linked the first crappy source I could find, but my main source for this is just noticing how long the managers in my workplaces stick around.\n↩",
+          "You don’t even necessarily have to tell your manager you’re looking for bigger projects, though I think you probably should.\n↩",
+          "Almost certainly more skilled than you, due to selection effects and the fact that they get way more practice.\n↩",
+          "They typically have to rely on results, which is a slow proxy for technical ability.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "461743aa0a56a93b",
+      "title": "WorkOS: Let Agents Sign Up for Your App Without a Browser",
+      "titleZh": "WorkOS: Let Agents Sign Up for Your App Without a Browser",
+      "link": "https://workos.com/auth-md?utm_source=daringfireball&amp;utm_medium=newsletter&amp;utm_campaign=q42026",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-01T20:22:56.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "WorkOS: Let Agents Sign Up for Your App Without a Browser",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "auth.md",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Enable agents to register users without the sign-up form. Auth.md provides secure agent registration that any app can implement."
+          },
+          {
+            "type": "p",
+            "text": "Looks like your app is almost finished. What would you like to do today?"
+          },
+          {
+            "type": "p",
+            "text": "Tap an option↑↓ to navigate · ↵ to select"
+          },
+          {
+            "type": "h2",
+            "text": "Get started"
+          },
+          {
+            "type": "p",
+            "text": "Make your app agent-ready"
+          },
+          {
+            "type": "p",
+            "text": "For services that want agents to register users on behalf of their customers."
+          },
+          {
+            "type": "p",
+            "text": "Become an identity provider"
+          },
+          {
+            "type": "p",
+            "text": "For platforms whose agents act on behalf of users."
+          },
+          {
+            "type": "p",
+            "text": "One-click enable with AuthKit"
+          },
+          {
+            "type": "p",
+            "text": "Turn on Agent Registration in the WorkOS Dashboard to enable auth.md."
+          },
+          {
+            "type": "p",
+            "text": "Read the docs"
+          },
+          {
+            "type": "h2",
+            "text": "FAQs"
+          },
+          {
+            "type": "li",
+            "text": "A Markdown file an application hosts at its domain — typically https://yourapp.com/auth.md— that tells agents how to register on behalf of a user. It includes which flows are supported, which scopes exist, and how to register for the service. See the file format."
+          },
+          {
+            "type": "li",
+            "text": "The agent fetches your auth.md, picks a supported flow, and either presents a verified identity assertion (agent verified flow) or walks the user through a code-confirmation claim (user claimed flow). You stay in control of which flows you accept and what credentials get issued. Read the apps guide."
+          },
+          {
+            "type": "li",
+            "text": "Agent verified is agent-attested — the agent's identity provider vouches for the user, no human in the loop. User claimed needs no provider — the agent shows the user a code, they sign in and confirm it. Most apps support both and let the agent pick the right one. Agent verified· User claimed."
+          },
+          {
+            "type": "li",
+            "text": "A scoped access token tied to the user — short-lived and revocable. It's issued over standard OAuth, so you reuse the API auth you already have."
+          },
+          {
+            "type": "li",
+            "text": "It's open. WorkOS authors the protocol, but auth.mdisn't tied to WorkOS infrastructure — it composes existing OAuth standards (Protected Resource Metadata, ID-JAG identity assertions) and any app can publish or any agent can read one with no WorkOS account required. See the protocol on GitHub."
+          }
+        ],
+        "translations": [
+          "Enable agents to register users without the sign-up form. Auth.md provides secure agent registration that any app can implement.",
+          "Looks like your app is almost finished. What would you like to do today?",
+          "Tap an option↑↓ to navigate · ↵ to select",
+          "Get started",
+          "Make your app agent-ready",
+          "For services that want agents to register users on behalf of their customers.",
+          "Become an identity provider",
+          "For platforms whose agents act on behalf of users.",
+          "One-click enable with AuthKit",
+          "Turn on Agent Registration in the WorkOS Dashboard to enable auth.md.",
+          "Read the docs",
+          "FAQs",
+          "A Markdown file an application hosts at its domain — typically https://yourapp.com/auth.md— that tells agents how to register on behalf of a user. It includes which flows are supported, which scopes exist, and how to register for the service. See the file format.",
+          "The agent fetches your auth.md, picks a supported flow, and either presents a verified identity assertion (agent verified flow) or walks the user through a code-confirmation claim (user claimed flow). You stay in control of which flows you accept and what credentials get issued. Read the apps guide.",
+          "Agent verified is agent-attested — the agent's identity provider vouches for the user, no human in the loop. User claimed needs no provider — the agent shows the user a code, they sign in and confirm it. Most apps support both and let the agent pick the right one. Agent verified· User claimed.",
+          "A scoped access token tied to the user — short-lived and revocable. It's issued over standard OAuth, so you reuse the API auth you already have.",
+          "It's open. WorkOS authors the protocol, but auth.mdisn't tied to WorkOS infrastructure — it composes existing OAuth standards (Protected Resource Metadata, ID-JAG identity assertions) and any app can publish or any agent can read one with no WorkOS account required. See the protocol on GitHub."
+        ]
+      }
+    },
+    {
+      "slug": "f9019abc25eb1ae7",
+      "title": "10 Years on Mastodon",
+      "titleZh": "10 Years on Mastodon",
+      "link": "https://shkspr.mobi/blog/2026/11/10-years-on-mastodon/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-11-01T12:34:18.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "10 Years on Mastodon",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "As of today, I've been on the Mastodon social network for 10 years. I think that deserves a little reflection and celebration."
+          },
+          {
+            "type": "quote",
+            "text": "Post by @Edent@mastodon.social\n\t\t\t\t\t\t\t \n\t\t\t\t\t\t\tView on Mastodon"
+          },
+          {
+            "type": "p",
+            "text": "Social networks often launch in a blaze of glory but limp out of existence within a year or so0. How many services have you signed up to, only to gradually drift away from? If you're anything like me1, your password manager is a graveyard of unloved services and your MFA app is filled with icons of websites you barely remember."
+          },
+          {
+            "type": "p",
+            "text": "It could easily have been that way with Mastodon. I gradually drifted away from Slashdot. Despite a promising start, AppDotNet died an untimely death. Slack works as a meta-social-network - but there are half-a-dozen communities which I know I'll never check in on. Once in a blue moon I'll think about uploading a photo to Flickr. I tried quitting Twitter several times - only to walk away cold turkey to prevent my soul being polluted by its filth."
+          },
+          {
+            "type": "p",
+            "text": "I lurk on LinkedIn mainly to gawp at the brainworms. Threads just pushed too much crap into my feed. I think I have a tumblr and a dozen other social media accounts which fell into disrepair."
+          },
+          {
+            "type": "p",
+            "text": "So what made Mastodon so sticky for me?"
+          },
+          {
+            "type": "h2",
+            "text": "Silence Brand"
+          },
+          {
+            "type": "p",
+            "text": "Brands on social networks is an anti-pattern. You cannot be friends with a company."
+          },
+          {
+            "type": "p",
+            "text": "In the early days of Twitter, brands were desperate to join the global conversation. They saw people complaining about them and wanted to intercede. Sadly that just promoted maladaptive behaviour as people (especially those with large followings) found they could bully brands into submission."
+          },
+          {
+            "type": "p",
+            "text": "So brands retreated into the only thing they know how to do; advertise."
+          },
+          {
+            "type": "p",
+            "text": "Mastodon has been remarkably resistant to corporations coming along to plant their flags. The few that are on there are either genuinely interested in the technology or are broadcast only."
+          },
+          {
+            "type": "h2",
+            "text": "Algorithms and Filters"
+          },
+          {
+            "type": "p",
+            "text": "It's wrong to say that Mastodon doesn't have an algorithm. It displays posts in chronological order - that's an algorithm. It has decent enough spam filtering - again, an algorithm. But it never tries to promote far-right hate posts to me."
+          },
+          {
+            "type": "p",
+            "text": "Even better, it has proper support for a user's personalised filters. I can easily block discussion of politics2 and sport. I can turn off reposts from individual accounts that I follow - you know the guy who reposts every puppy video he finds."
+          },
+          {
+            "type": "p",
+            "text": "That makes for a relaxing and stress-free experience."
+          },
+          {
+            "type": "h2",
+            "text": "Fun Technology"
+          },
+          {
+            "type": "p",
+            "text": "I wasted years on the Twitter API. While I got some lovely swag from Twitter for faffing about with their tech, it was always clear that certain sections of Twitter's leadership hated that 3rd parties could use their APIs. Similarly, Facebook's API started as fun but quickly descended into a locked-down corporate hellscape."
+          },
+          {
+            "type": "p",
+            "text": "Mastodon's API is mostly a delight to use. There aren't weird and arbitrary restrictions. Even better, because of the inherent open nature of the Fediverse, I can write my own ActivityPub software to interact with it."
+          },
+          {
+            "type": "p",
+            "text": "I'm even getting paid to develop ActivityBot!"
+          },
+          {
+            "type": "h2",
+            "text": "Nice People"
+          },
+          {
+            "type": "p",
+            "text": "Most of the people who join Mastodon3 feel rejected from more corporate social media. They've either made an active choice to try something different or they've been thrown off the mainstream apps. That's (mostly) good - and means that they're invested in making work something that's different."
+          },
+          {
+            "type": "p",
+            "text": "I'd be lying if I said I didn't miss some of the people from Twitter. I think most of them are on BlueSky now - so I'm on there as well. Think of it like quitting smoking by taking up vaping. Sure, not ideal, but better than the alternative."
+          },
+          {
+            "type": "h2",
+            "text": "What it is missing"
+          },
+          {
+            "type": "p",
+            "text": "I can't pretend everything is brilliant. In no particular order, here are some of the papercuts which annoy me daily."
+          },
+          {
+            "type": "h3",
+            "text": "Reply Controls"
+          },
+          {
+            "type": "p",
+            "text": "BlueSky allows me to set a limit on who can reply to my posts. It is bliss. Sometimes I don't want the world chatting back to me. Yes, there's the ability to restrict who can see my posts in the first place, or who can quote my posts, but it isn't the same."
+          },
+          {
+            "type": "h3",
+            "text": "Super Block"
+          },
+          {
+            "type": "p",
+            "text": "Similarly, I want to be able to remove replies to me. If someone is being abusive or annoying, I don't want my friends to see that. If I block them, I want their replies to vanish from view in my threads."
+          },
+          {
+            "type": "p",
+            "text": "I can moderate replies to my blog posts - why can't I moderate replies to my microblog posts?"
+          },
+          {
+            "type": "h3",
+            "text": "Reply Guys"
+          },
+          {
+            "type": "p",
+            "text": "The two issues above are caused by the same strain of reply-guy. There's something about Mastodon which attracts a certain class of person. I get so many replies from people who either have never heard of this Earth concept called humour, or think that their inexpert Googling is helpful, or want to argue about something I haven't said."
+          },
+          {
+            "type": "p",
+            "text": "It can be infuriating and I understand why it drives people away."
+          },
+          {
+            "type": "h3",
+            "text": "Geolocation"
+          },
+          {
+            "type": "p",
+            "text": "I just think social geolocation would be nifty!"
+          },
+          {
+            "type": "h3",
+            "text": "More People"
+          },
+          {
+            "type": "p",
+            "text": "I'm in two minds about this. Services like Brid.gy allow me to follow my BSky friends on Masto, and vice-versa. Having more people on the Fediverse and away from corporate-owned social media would (hopefully) make it more viable in the long-term."
+          },
+          {
+            "type": "p",
+            "text": "But more people means more spammers, grifters, and agents provocateur. There's a delicate balance to be found - not enough people and the network fails, too many people and it collapses."
+          },
+          {
+            "type": "p",
+            "text": "I don't know what the right number is."
+          },
+          {
+            "type": "p",
+            "text": "The nice thing about the Fediverse is that it literally cannot fail completely. Much like IRC survives despite \"everyone\" moving to Discord and WhatsApp, it chugs along in the background. ActivityPub servers will be around for the foreseeable future. So I'll be available on Mastodon (or its successor) until the bitter end."
+          },
+          {
+            "type": "h2",
+            "text": "Here's to the next ten years!"
+          },
+          {
+            "type": "p",
+            "text": "I'm looking forward to seeing what happens to Mastodon (and the Fediverse as a whole) by 2036. I am sure it'll have some wobbles, I hope it will see a renaissance, I look forward to shitposting far into the future."
+          },
+          {
+            "type": "p",
+            "text": "You can follow me on Mastodon - @edent@mastodon.social."
+          },
+          {
+            "type": "li",
+            "text": "I'm pulling these numbers out of my arse. But, come on, that feels about right, doesn't it? ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "Poor you! ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "I am grateful that so many politicians have reasonably unique names! ↩︎"
+          },
+          {
+            "type": "li",
+            "text": "Yes, I know it is the Fediverse and they're not all on one platform. Cut me some slack. ↩︎"
+          }
+        ],
+        "translations": [
+          "As of today, I've been on the Mastodon social network for 10 years. I think that deserves a little reflection and celebration.",
+          "Post by @Edent@mastodon.social\n\t\t\t\t\t\t\t \n\t\t\t\t\t\t\tView on Mastodon",
+          "Social networks often launch in a blaze of glory but limp out of existence within a year or so0. How many services have you signed up to, only to gradually drift away from? If you're anything like me1, your password manager is a graveyard of unloved services and your MFA app is filled with icons of websites you barely remember.",
+          "It could easily have been that way with Mastodon. I gradually drifted away from Slashdot. Despite a promising start, AppDotNet died an untimely death. Slack works as a meta-social-network - but there are half-a-dozen communities which I know I'll never check in on. Once in a blue moon I'll think about uploading a photo to Flickr. I tried quitting Twitter several times - only to walk away cold turkey to prevent my soul being polluted by its filth.",
+          "I lurk on LinkedIn mainly to gawp at the brainworms. Threads just pushed too much crap into my feed. I think I have a tumblr and a dozen other social media accounts which fell into disrepair.",
+          "So what made Mastodon so sticky for me?",
+          "Silence Brand",
+          "Brands on social networks is an anti-pattern. You cannot be friends with a company.",
+          "In the early days of Twitter, brands were desperate to join the global conversation. They saw people complaining about them and wanted to intercede. Sadly that just promoted maladaptive behaviour as people (especially those with large followings) found they could bully brands into submission.",
+          "So brands retreated into the only thing they know how to do; advertise.",
+          "Mastodon has been remarkably resistant to corporations coming along to plant their flags. The few that are on there are either genuinely interested in the technology or are broadcast only.",
+          "Algorithms and Filters",
+          "It's wrong to say that Mastodon doesn't have an algorithm. It displays posts in chronological order - that's an algorithm. It has decent enough spam filtering - again, an algorithm. But it never tries to promote far-right hate posts to me.",
+          "Even better, it has proper support for a user's personalised filters. I can easily block discussion of politics2 and sport. I can turn off reposts from individual accounts that I follow - you know the guy who reposts every puppy video he finds.",
+          "That makes for a relaxing and stress-free experience.",
+          "Fun Technology",
+          "I wasted years on the Twitter API. While I got some lovely swag from Twitter for faffing about with their tech, it was always clear that certain sections of Twitter's leadership hated that 3rd parties could use their APIs. Similarly, Facebook's API started as fun but quickly descended into a locked-down corporate hellscape.",
+          "Mastodon's API is mostly a delight to use. There aren't weird and arbitrary restrictions. Even better, because of the inherent open nature of the Fediverse, I can write my own ActivityPub software to interact with it.",
+          "I'm even getting paid to develop ActivityBot!",
+          "Nice People",
+          "Most of the people who join Mastodon3 feel rejected from more corporate social media. They've either made an active choice to try something different or they've been thrown off the mainstream apps. That's (mostly) good - and means that they're invested in making work something that's different.",
+          "I'd be lying if I said I didn't miss some of the people from Twitter. I think most of them are on BlueSky now - so I'm on there as well. Think of it like quitting smoking by taking up vaping. Sure, not ideal, but better than the alternative.",
+          "What it is missing",
+          "I can't pretend everything is brilliant. In no particular order, here are some of the papercuts which annoy me daily.",
+          "Reply Controls",
+          "BlueSky allows me to set a limit on who can reply to my posts. It is bliss. Sometimes I don't want the world chatting back to me. Yes, there's the ability to restrict who can see my posts in the first place, or who can quote my posts, but it isn't the same.",
+          "Super Block",
+          "Similarly, I want to be able to remove replies to me. If someone is being abusive or annoying, I don't want my friends to see that. If I block them, I want their replies to vanish from view in my threads.",
+          "I can moderate replies to my blog posts - why can't I moderate replies to my microblog posts?",
+          "Reply Guys",
+          "The two issues above are caused by the same strain of reply-guy. There's something about Mastodon which attracts a certain class of person. I get so many replies from people who either have never heard of this Earth concept called humour, or think that their inexpert Googling is helpful, or want to argue about something I haven't said.",
+          "It can be infuriating and I understand why it drives people away.",
+          "Geolocation",
+          "I just think social geolocation would be nifty!",
+          "More People",
+          "I'm in two minds about this. Services like Brid.gy allow me to follow my BSky friends on Masto, and vice-versa. Having more people on the Fediverse and away from corporate-owned social media would (hopefully) make it more viable in the long-term.",
+          "But more people means more spammers, grifters, and agents provocateur. There's a delicate balance to be found - not enough people and the network fails, too many people and it collapses.",
+          "I don't know what the right number is.",
+          "The nice thing about the Fediverse is that it literally cannot fail completely. Much like IRC survives despite \"everyone\" moving to Discord and WhatsApp, it chugs along in the background. ActivityPub servers will be around for the foreseeable future. So I'll be available on Mastodon (or its successor) until the bitter end.",
+          "Here's to the next ten years!",
+          "I'm looking forward to seeing what happens to Mastodon (and the Fediverse as a whole) by 2036. I am sure it'll have some wobbles, I hope it will see a renaissance, I look forward to shitposting far into the future.",
+          "You can follow me on Mastodon - @edent@mastodon.social.",
+          "I'm pulling these numbers out of my arse. But, come on, that feels about right, doesn't it? ↩︎",
+          "Poor you! ↩︎",
+          "I am grateful that so many politicians have reasonably unique names! ↩︎",
+          "Yes, I know it is the Fediverse and they're not all on one platform. Cut me some slack. ↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "5d403c09828696a2",
+      "title": "A Mastodon bot powered by iOS Shortcuts",
+      "titleZh": "A Mastodon bot powered by iOS Shortcuts",
+      "link": "https://evanhahn.com/mastodon-bot-with-ios-shortcuts/",
+      "sourceName": "evanhahn.com",
+      "sourceUrl": "https://evanhahn.com",
+      "pubDate": "2026-11-01T11:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "A Mastodon bot powered by iOS Shortcuts",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "by Evan Hahn,\nposted\nNov 1, 2026, tagged\n#ios\n#decentralization\n#video-games",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In short: I use iOS Shortcuts to run a Mastodon bot."
+          },
+          {
+            "type": "p",
+            "text": "I run a Mastodon bot that posts random quotes from The Legend of Zelda: Link’s Awakening. (The writing in that game is so charming!) I used to run it off a server, but for the past few days, it’s used an iOS Shortcut on my phone."
+          },
+          {
+            "type": "h2",
+            "text": "How it works"
+          },
+          {
+            "type": "p",
+            "text": "The bot is called Ulrira, named after a beloved Link’s Awakening character. Ulrira (the bot, not the character) samples a line from the text dump, then makes an HTTP request to post it. Here’s a screenshot of the full thing:"
+          },
+          {
+            "type": "p",
+            "text": "As you can see, everything here is hard-coded, from the server credentials to the file name. (It probably wouldn’t be hard to make this more generic, but I didn’t bother.)"
+          },
+          {
+            "type": "p",
+            "text": "This used to be a short, hand-written Bash script. I used the new AI-powered Shortcut creator and prompted this into existence. I said something like, “Here’s a Bash script. Turn this into a Shortcut.” Like a lot of LLM output, it wasn’t quite right, but it was useful for getting started."
+          },
+          {
+            "type": "p",
+            "text": "Shortcuts doesn’t seem to have an elegant way to express something like “run this every 6 hours”, so I created four additional scheduler Shortcuts that call the main one. They run at 12am, 6am, 12pm, and 6pm."
+          },
+          {
+            "type": "p",
+            "text": "That means there are five shortcuts in total: one to actually make the post, and four to schedule the main Shortcut at different times."
+          },
+          {
+            "type": "h2",
+            "text": "Why do it this way?"
+          },
+          {
+            "type": "p",
+            "text": "I didn’t want to pay for my server anymore, nor did I want to maintain it. When I went looking for alternatives, they either (1) cost money (2) had some significant limitation (for example, GitHub Actions requires me to update the repo every 60 days). This solution runs on a device with high uptime and is effectively free."
+          },
+          {
+            "type": "p",
+            "text": "If you’re a pro software genius, you might complain that this is not reliable! It doesn’t work if my phone is offline, for example. Or what if I change timezones? But in the words of Link’s Awakening:"
+          },
+          {
+            "type": "quote",
+            "text": "You’re good! You’re a pro, aren’t you? ………… Well, beat it! Pros aren’t allowed in here!"
+          },
+          {
+            "type": "p",
+            "text": "Follow the bot here."
+          }
+        ],
+        "translations": [
+          "In short: I use iOS Shortcuts to run a Mastodon bot.",
+          "I run a Mastodon bot that posts random quotes from The Legend of Zelda: Link’s Awakening. (The writing in that game is so charming!) I used to run it off a server, but for the past few days, it’s used an iOS Shortcut on my phone.",
+          "How it works",
+          "The bot is called Ulrira, named after a beloved Link’s Awakening character. Ulrira (the bot, not the character) samples a line from the text dump, then makes an HTTP request to post it. Here’s a screenshot of the full thing:",
+          "As you can see, everything here is hard-coded, from the server credentials to the file name. (It probably wouldn’t be hard to make this more generic, but I didn’t bother.)",
+          "This used to be a short, hand-written Bash script. I used the new AI-powered Shortcut creator and prompted this into existence. I said something like, “Here’s a Bash script. Turn this into a Shortcut.” Like a lot of LLM output, it wasn’t quite right, but it was useful for getting started.",
+          "Shortcuts doesn’t seem to have an elegant way to express something like “run this every 6 hours”, so I created four additional scheduler Shortcuts that call the main one. They run at 12am, 6am, 12pm, and 6pm.",
+          "That means there are five shortcuts in total: one to actually make the post, and four to schedule the main Shortcut at different times.",
+          "Why do it this way?",
+          "I didn’t want to pay for my server anymore, nor did I want to maintain it. When I went looking for alternatives, they either (1) cost money (2) had some significant limitation (for example, GitHub Actions requires me to update the repo every 60 days). This solution runs on a device with high uptime and is effectively free.",
+          "If you’re a pro software genius, you might complain that this is not reliable! It doesn’t work if my phone is offline, for example. Or what if I change timezones? But in the words of Link’s Awakening:",
+          "You’re good! You’re a pro, aren’t you? ………… Well, beat it! Pros aren’t allowed in here!",
+          "Follow the bot here."
+        ]
+      }
+    },
+    {
+      "slug": "ea3feea956965d8c",
+      "title": "IBM PC/XT drives stuck in the bay? How to free them",
+      "titleZh": "IBM PC/XT drives stuck in the bay? How to free them",
+      "link": "https://dfarq.homeip.net/ibm-pc-xt-drives-stuck-in-the-bay-how-to-free-them/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=ibm-pc-xt-drives-stuck-in-the-bay-how-to-free-them",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-01T12:00:51.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "IBM PC/XT drives stuck in the bay? How to free them",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "If you are working on an IBM PC/XT model 5160 and need to remove a floppy drive, you may find it difficult to remove after removing the two visible screws that hold them in. If your IBM disk drive is stuck, I have a top secret tip that will help."
+          },
+          {
+            "type": "h2",
+            "text": "Two hidden screws in IBM PC/XT drive bays"
+          },
+          {
+            "type": "p",
+            "text": "I had the problem with stuck drives in an IBM PC/XT the first time I worked on a model 5160 IBM PC/XT. I removed the two screws on the side of the drive, and when the drive still wouldn’t come out, I assumed there must be some kind of screw on the other side holding it in. But when I fished around with a thin piece of plastic, I could determine there weren’t any screws on the other side. Not that there would have been any way to reach them anyway, so that was a good thing."
+          },
+          {
+            "type": "p",
+            "text": "Fishing around under the drives with the same piece of plastic tipped me off that there was one screw underneath still holding each the drive in, but no way to access it from the top. So that made me think to flip the case up on the side and see what was going on underneath. And sure enough, I found a recessed area underneath the two drive bays, and they had two screws in them. When I removed the two screws from the recessed area, that freed the drives."
+          },
+          {
+            "type": "h2",
+            "text": "Reinstalling the IBM PC/XT drive bay screws"
+          },
+          {
+            "type": "p",
+            "text": "Reinstalling those screws is a hassle, so some people didn’t bother, and they just let the two screws on the side be enough to hold the drives in place. If you are a purist, either using a magnetic screwdriver or getting a bit of tacky wax, sold in craft stores in the candle making section, helps tremendously when replacing the screws. It has enough grip to keep the screw from falling off the screwdriver while you are finding its place and threading it, but once you finish driving the screw home, the driver lifts away without any problem."
+          },
+          {
+            "type": "p",
+            "text": "If you don’t expect to have to take your PC or XT apart very often, and if you are a purist, I understand wanting to put those screws back. But if you do take your machine apart fairly frequently, I don’t blame you if you leave the two screws out. They don’t affect the operation of the machine and they make removing the drives much more time-consuming."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "If you are working on an IBM PC/XT model 5160 and need to remove a floppy drive, you may find it difficult to remove after removing the two visible screws that hold them in. If your IBM disk drive is stuck, I have a top secret tip that will help.",
+          "Two hidden screws in IBM PC/XT drive bays",
+          "I had the problem with stuck drives in an IBM PC/XT the first time I worked on a model 5160 IBM PC/XT. I removed the two screws on the side of the drive, and when the drive still wouldn’t come out, I assumed there must be some kind of screw on the other side holding it in. But when I fished around with a thin piece of plastic, I could determine there weren’t any screws on the other side. Not that there would have been any way to reach them anyway, so that was a good thing.",
+          "Fishing around under the drives with the same piece of plastic tipped me off that there was one screw underneath still holding each the drive in, but no way to access it from the top. So that made me think to flip the case up on the side and see what was going on underneath. And sure enough, I found a recessed area underneath the two drive bays, and they had two screws in them. When I removed the two screws from the recessed area, that freed the drives.",
+          "Reinstalling the IBM PC/XT drive bay screws",
+          "Reinstalling those screws is a hassle, so some people didn’t bother, and they just let the two screws on the side be enough to hold the drives in place. If you are a purist, either using a magnetic screwdriver or getting a bit of tacky wax, sold in craft stores in the candle making section, helps tremendously when replacing the screws. It has enough grip to keep the screw from falling off the screwdriver while you are finding its place and threading it, but once you finish driving the screw home, the driver lifts away without any problem.",
+          "If you don’t expect to have to take your PC or XT apart very often, and if you are a purist, I understand wanting to put those screws back. But if you do take your machine apart fairly frequently, I don’t blame you if you leave the two screws out. They don’t affect the operation of the machine and they make removing the drives much more time-consuming.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "78371aadf257e6dd",
+      "title": "Weekly Update 528: Reading AI-generated Code & the Economics of Solar",
+      "titleZh": "Weekly Update 528: Reading AI-generated Code & the Economics of Solar",
+      "link": "https://www.troyhunt.com/weekly-update-528/",
+      "sourceName": "troyhunt.com",
+      "sourceUrl": "https://troyhunt.com",
+      "pubDate": "2026-11-01T07:35:23.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Weekly Update 528: Reading AI-generated Code & the Economics of Solar",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Troy Hunt",
+        "siteName": "Troy Hunt",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "By pure timing coincidence, the Proton CEO's AI @ Proton, Engineering Manifesto made headlines around the same time as this week's video. The guy's management style and choice of language have really rubbed a lot of people up the wrong way, and deservedly so, IMHO. However... this section of his screed really resonated with me:"
+          },
+          {
+            "type": "quote",
+            "text": "Your job has fundamentally changed. It is no longer to write code, and LLMs are not here to help you write better code faster. Your job is to help the LLM write better code faster."
+          },
+          {
+            "type": "p",
+            "text": "Dev jobs as we know them are gone. Dead. And if you disagree, you're in for a shock in the very near future. But at the same time:"
+          },
+          {
+            "type": "quote",
+            "text": "I don't remember the last time tech has been this exciting. It's white hot right now. Anyone who loves technology and computers is probably having a great time right now.— Jack Rhysider 🏴‍☠️ (@JackRhysider) October 30, 2026"
+          },
+          {
+            "type": "p",
+            "text": "Yes! This! Not handwriting code \"old school\" isn't something to lament; rather, our unprecedented ability to innovate, create and build things that are meaningful to us is something to be enormously excited about. Anyway, on that topic:"
+          }
+        ],
+        "translations": []
+      }
+    }
+  ]
+}
