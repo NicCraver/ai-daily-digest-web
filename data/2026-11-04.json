@@ -1,0 +1,2167 @@
+{
+  "date": "2026-11-04",
+  "generatedAt": "2026-11-03T21:40:00.196Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 84,
+    "totalArticles": 2577,
+    "filteredArticles": 29,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "6857dc224a419fe9",
+      "title": "Qwen 3.8 27B on my laptop can interpret model weights, too",
+      "titleZh": "Qwen 3.8 27B on my laptop can interpret model weights, too",
+      "link": "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-03T16:29:48.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Qwen 3.8 27B on my laptop can interpret model weights, too",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "3rd November 2026"
+          },
+          {
+            "type": "p",
+            "text": "Yesterday’s hot paper was Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights by Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab. The paper (OK, the authors classify is as a “blog post”, but it’s paper-shaped) found that frontier models, in particular GPT-6 Astra, can both interpret and modify the raw weights of a machine learning model—literally a text description of the model containing a bunch of floating point numbers. I’ve been playing with one of the examples from the paper and I’m delighted to share that Qwen 3.8 27B running on my laptop can do this as well!"
+          },
+          {
+            "type": "h3",
+            "text": "Weight-Space Programming"
+          },
+          {
+            "type": "p",
+            "text": "Here’s the highlight from their abstract, describing impressive capabilities for GPT-6 Astra and coining the term Weight-Space Programming for when LLMs analyze and modify model weights:"
+          },
+          {
+            "type": "quote",
+            "text": "Just by looking at the raw weights, GPT-6 Astra can tell what a network was trained to do. And without any environment feedback, it has no trouble writing, from scratch, small game-playing networks that outplay networks trained with PPO for 100 million steps.\nLikewise, asked to make Qwen3.5-0.8B better at math without gradients, Astra identifies an issue in its weights causing reasoning loops that Qwen’s own model card warns about, and fixes this by natively editing 0.016% of the weights. With the same sampling settings, this weight correction raises MATH-500 from 7.9% to 48.1% and generalizes out of the box to instruction following, raising IFEval by 3x.\nAll of this is possible without allowing Astra to write training loops. It uses its reasoning to figure out what each part of a neural network computes, or should compute, and changes the weights accordingly. We call this Weight-Space Programming."
+          },
+          {
+            "type": "p",
+            "text": "The paper combines two topics that I think deserve to be treated separately. The first is what models can do with raw weights without running tools or executing code. The second explores how well models, once armed with code, can run operations to update and improve other models."
+          },
+          {
+            "type": "p",
+            "text": "spaCy author Matthew Honnibal called the paper misleading for conflating the two, and Sean Goedecke deconstructed the Qwen3.5-0.8B update example as taking the same steps that a human ML researcher would use."
+          },
+          {
+            "type": "p",
+            "text": "I’m going to focus on the no-tools question, which I think is the more interesting of the two."
+          },
+          {
+            "type": "p",
+            "text": "The paper presents the first question as Can LLMs understand model behaviors from weights? They trained four neural networks to play simplified 10x10 grid versions of four classic computer games—Breakout, Pong, Pac-Man, and Freeway (I had to look that one up, it’s an Atari 2600 game from 1981). Then they fed those weights (as floating point numbers) to an LLM along with the following question:"
+          },
+          {
+            "type": "quote",
+            "text": "The weights below belong to one policy network that was trained with reinforcement learning to play a game on this grid. Which game was it trained on? Work from the weights. You have no tools: no code execution, no calculator, nothing to run. This is a single response."
+          },
+          {
+            "type": "p",
+            "text": "The GitHub repository that accompanies the paper is RikiyaT/lm_understand-logs. The exp1_which_game folder contains the prompts they used, with weights for the four games:"
+          },
+          {
+            "type": "li",
+            "text": "breakout/prompt.txt"
+          },
+          {
+            "type": "li",
+            "text": "freeway/prompt.txt"
+          },
+          {
+            "type": "li",
+            "text": "pacman/prompt.txt"
+          },
+          {
+            "type": "li",
+            "text": "pong/prompt.txt"
+          },
+          {
+            "type": "p",
+            "text": "I checked and, aside from the weights, each prompt is identical to the others."
+          },
+          {
+            "type": "h3",
+            "text": "Trying it out with Qwen 3.8 27B and other models"
+          },
+          {
+            "type": "p",
+            "text": "The prompts on GitHub are self-contained. My LLM tool has a -f/--fragment option which can be passed the URL to a text file to use as a prompt, which means I can run any of the above like this:"
+          },
+          {
+            "type": "code",
+            "text": "llm -f https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/refs/heads/main/exp1_which_game/runs/breakout/prompt.txt \\\n  -m openrouter/moonshotai/kimi-k3.1-pro"
+          },
+          {
+            "type": "p",
+            "text": "This example requires the llm-openrouter plugin installed, and runs the Breakout prompt against Kimi K3.1 Pro via OpenRouter. Here’s what I got back from Kimi K3.1 Pro, which successfully guessed Breakout after 9m 41s and 19,493 reasoning tokens."
+          },
+          {
+            "type": "p",
+            "text": "But how about Qwen 3.8 27B? That’s still my favorite model to run on my own laptop—it’s just 17GB (I use this version) and somehow feels close to the leading proprietary models of 2025."
+          },
+          {
+            "type": "p",
+            "text": "I fired up LM Studio, ensured Qwen 3.8 27B was loaded with a long context window (the default 8192 context failed with errors), installed the llm-lmstudio plugin and ran this command:"
+          },
+          {
+            "type": "code",
+            "text": "LMSTUDIO_TIMEOUT=900 \\\n  llm -f https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/refs/heads/main/exp1_which_game/runs/pacman/prompt.txt \\\n  -m lmstudio/qwen/qwen3.8-27b"
+          },
+          {
+            "type": "p",
+            "text": "(I had to bump the timeout up using an environment variable, see this issue.)"
+          },
+          {
+            "type": "p",
+            "text": "After 46m 12s and 43,506 reasoning tokens, Qwen on my laptop returned a response that ended like this (here’s the reasoning trace):"
+          },
+          {
+            "type": "quote",
+            "text": "Game: A simplified Pac-Man-style gridworld: an agent moves through a fixed 8x8 maze with central and corner wall blocks, moving objects/ghosts, and reward targets/pellets.\nDescription: The agent navigates a fixed maze-like 8x8 board, using current agent/moving-object/previous-frame cues to move through corridors, collect reward-target cells, and avoid moving objects or hazards.\nConfidence: 72%"
+          },
+          {
+            "type": "p",
+            "text": "This is impressive. I tried it on two of the other games as well. It identified Pong (reasoning) in 1h 4m 54s:"
+          },
+          {
+            "type": "quote",
+            "text": "Pong — specifically a Pong-like paddle/ball game where the agent controls a vertical paddle on the right side and must move up/down to intercept or return a moving ball/reward object.\nDescription:\nThe agent moves a right-side paddle vertically to hit or catch a moving ball-like reward target moving across the 8×8 field, while a left-side moving object/opponent and wall borders define the play; reward is obtained by successfully intercepting/returning/scoring the ball, and missing or failing to hit it is penalized.\nConfidence:\n75%"
+          },
+          {
+            "type": "p",
+            "text": "And Breakout (reasoning) in 52m 25s:"
+          },
+          {
+            "type": "quote",
+            "text": "Game: Breakout, or an Arkanoid-like paddle/ball/brick game.\nDescription: The agent is a paddle on the bottom row and moves left/right to keep a ball in play; the ball moves around the upper grid, and bricks/reward targets in the top rows give reward when hit, while missing the ball/hitting the bottom wall ends the episode or gives penalty.\nConfidence: 88%"
+          },
+          {
+            "type": "p",
+            "text": "Qwen failed at the Freeway prompt, which didn’t surprise me considering that game is more obscure than the other three. Here’s that transcript—Qwen thought it was “A simplified Pac-Man-like grid game: agent moves 4-directionally”."
+          },
+          {
+            "type": "p",
+            "text": "The reasoning traces are fun to skim, and almost incomprehensible. Here’s a sample:"
+          },
+          {
+            "type": "quote",
+            "text": "What about agent channel0? We see some large channel0 rows near row8 col7/8 and maybe bottom? Let’s list channel0 large: line436 input435 (row8 col7 ch0) -2.107,1.169,0.513...; line441 input440 (row8 col8 ch0) -0.376,0.010,1.564,3.855...; line445 input444 (row8 col8 ch4) 0.142,0.491...; line382? input381 ch0? Wait line382 input381: 381//5=76 (row7 col6), ch1? 381%5=1? 76 * 5=380, ch1. So not. Channel0 large maybe at row8 col7/8 only. Also top row? line44 input43 ch3, line49 ch3. Channel0 large maybe not many. Agent position could be near bottom-right? If the agent is typically at bottom-right?"
+          },
+          {
+            "type": "p",
+            "text": "That said though, I expect a sufficiently experienced human being armed with a notepad and a pencil could get there with enough effort."
+          },
+          {
+            "type": "p",
+            "text": "It’s a cool paper, but some of the wider commentary I’ve seen around it does not feel justified. I’m not ready to declare that the age of source code is over and our future involves incomprehensible machines editing their own model weights in incomprehensible ways."
+          }
+        ],
+        "translations": [
+          "3rd November 2026",
+          "Yesterday’s hot paper was Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights by Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab. The paper (OK, the authors classify is as a “blog post”, but it’s paper-shaped) found that frontier models, in particular GPT-6 Astra, can both interpret and modify the raw weights of a machine learning model—literally a text description of the model containing a bunch of floating point numbers. I’ve been playing with one of the examples from the paper and I’m delighted to share that Qwen 3.8 27B running on my laptop can do this as well!",
+          "Weight-Space Programming",
+          "Here’s the highlight from their abstract, describing impressive capabilities for GPT-6 Astra and coining the term Weight-Space Programming for when LLMs analyze and modify model weights:",
+          "Just by looking at the raw weights, GPT-6 Astra can tell what a network was trained to do. And without any environment feedback, it has no trouble writing, from scratch, small game-playing networks that outplay networks trained with PPO for 100 million steps.\nLikewise, asked to make Qwen3.5-0.8B better at math without gradients, Astra identifies an issue in its weights causing reasoning loops that Qwen’s own model card warns about, and fixes this by natively editing 0.016% of the weights. With the same sampling settings, this weight correction raises MATH-500 from 7.9% to 48.1% and generalizes out of the box to instruction following, raising IFEval by 3x.\nAll of this is possible without allowing Astra to write training loops. It uses its reasoning to figure out what each part of a neural network computes, or should compute, and changes the weights accordingly. We call this Weight-Space Programming.",
+          "The paper combines two topics that I think deserve to be treated separately. The first is what models can do with raw weights without running tools or executing code. The second explores how well models, once armed with code, can run operations to update and improve other models.",
+          "spaCy author Matthew Honnibal called the paper misleading for conflating the two, and Sean Goedecke deconstructed the Qwen3.5-0.8B update example as taking the same steps that a human ML researcher would use.",
+          "I’m going to focus on the no-tools question, which I think is the more interesting of the two.",
+          "The paper presents the first question as Can LLMs understand model behaviors from weights? They trained four neural networks to play simplified 10x10 grid versions of four classic computer games—Breakout, Pong, Pac-Man, and Freeway (I had to look that one up, it’s an Atari 2600 game from 1981). Then they fed those weights (as floating point numbers) to an LLM along with the following question:",
+          "The weights below belong to one policy network that was trained with reinforcement learning to play a game on this grid. Which game was it trained on? Work from the weights. You have no tools: no code execution, no calculator, nothing to run. This is a single response.",
+          "The GitHub repository that accompanies the paper is RikiyaT/lm_understand-logs. The exp1_which_game folder contains the prompts they used, with weights for the four games:",
+          "breakout/prompt.txt",
+          "freeway/prompt.txt",
+          "pacman/prompt.txt",
+          "pong/prompt.txt",
+          "I checked and, aside from the weights, each prompt is identical to the others.",
+          "Trying it out with Qwen 3.8 27B and other models",
+          "The prompts on GitHub are self-contained. My LLM tool has a -f/--fragment option which can be passed the URL to a text file to use as a prompt, which means I can run any of the above like this:",
+          "llm -f https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/refs/heads/main/exp1_which_game/runs/breakout/prompt.txt \\\n  -m openrouter/moonshotai/kimi-k3.1-pro",
+          "This example requires the llm-openrouter plugin installed, and runs the Breakout prompt against Kimi K3.1 Pro via OpenRouter. Here’s what I got back from Kimi K3.1 Pro, which successfully guessed Breakout after 9m 41s and 19,493 reasoning tokens.",
+          "But how about Qwen 3.8 27B? That’s still my favorite model to run on my own laptop—it’s just 17GB (I use this version) and somehow feels close to the leading proprietary models of 2025.",
+          "I fired up LM Studio, ensured Qwen 3.8 27B was loaded with a long context window (the default 8192 context failed with errors), installed the llm-lmstudio plugin and ran this command:",
+          "LMSTUDIO_TIMEOUT=900 \\\n  llm -f https://raw.githubusercontent.com/RikiyaT/lm_understand-logs/refs/heads/main/exp1_which_game/runs/pacman/prompt.txt \\\n  -m lmstudio/qwen/qwen3.8-27b",
+          "(I had to bump the timeout up using an environment variable, see this issue.)",
+          "After 46m 12s and 43,506 reasoning tokens, Qwen on my laptop returned a response that ended like this (here’s the reasoning trace):",
+          "Game: A simplified Pac-Man-style gridworld: an agent moves through a fixed 8x8 maze with central and corner wall blocks, moving objects/ghosts, and reward targets/pellets.\nDescription: The agent navigates a fixed maze-like 8x8 board, using current agent/moving-object/previous-frame cues to move through corridors, collect reward-target cells, and avoid moving objects or hazards.\nConfidence: 72%",
+          "This is impressive. I tried it on two of the other games as well. It identified Pong (reasoning) in 1h 4m 54s:",
+          "Pong — specifically a Pong-like paddle/ball game where the agent controls a vertical paddle on the right side and must move up/down to intercept or return a moving ball/reward object.\nDescription:\nThe agent moves a right-side paddle vertically to hit or catch a moving ball-like reward target moving across the 8×8 field, while a left-side moving object/opponent and wall borders define the play; reward is obtained by successfully intercepting/returning/scoring the ball, and missing or failing to hit it is penalized.\nConfidence:\n75%",
+          "And Breakout (reasoning) in 52m 25s:",
+          "Game: Breakout, or an Arkanoid-like paddle/ball/brick game.\nDescription: The agent is a paddle on the bottom row and moves left/right to keep a ball in play; the ball moves around the upper grid, and bricks/reward targets in the top rows give reward when hit, while missing the ball/hitting the bottom wall ends the episode or gives penalty.\nConfidence: 88%",
+          "Qwen failed at the Freeway prompt, which didn’t surprise me considering that game is more obscure than the other three. Here’s that transcript—Qwen thought it was “A simplified Pac-Man-like grid game: agent moves 4-directionally”.",
+          "The reasoning traces are fun to skim, and almost incomprehensible. Here’s a sample:",
+          "What about agent channel0? We see some large channel0 rows near row8 col7/8 and maybe bottom? Let’s list channel0 large: line436 input435 (row8 col7 ch0) -2.107,1.169,0.513...; line441 input440 (row8 col8 ch0) -0.376,0.010,1.564,3.855...; line445 input444 (row8 col8 ch4) 0.142,0.491...; line382? input381 ch0? Wait line382 input381: 381//5=76 (row7 col6), ch1? 381%5=1? 76 * 5=380, ch1. So not. Channel0 large maybe at row8 col7/8 only. Also top row? line44 input43 ch3, line49 ch3. Channel0 large maybe not many. Agent position could be near bottom-right? If the agent is typically at bottom-right?",
+          "That said though, I expect a sufficiently experienced human being armed with a notepad and a pencil could get there with enough effort.",
+          "It’s a cool paper, but some of the wider commentary I’ve seen around it does not feel justified. I’m not ready to declare that the age of source code is over and our future involves incomprehensible machines editing their own model weights in incomprehensible ways."
+        ]
+      }
+    },
+    {
+      "slug": "22c23cfe758c1cb6",
+      "title": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube",
+      "titleZh": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube",
+      "link": "https://simonwillison.net/2026/Nov/3/a-sound-that-leaks-your-exact-location/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-03T05:32:25.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "3rd November 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube (via) Genius piece of OSINT by Colsto, who demonstrates how you can take almost imperceptible background noise of planes from a video soundtrack, figure out their Doppler curves, then cross reference them against ADS-B data to find the exact location of the video based on their speed, distance, and gaps between different flights."
+          },
+          {
+            "type": "p",
+            "text": "Posted 3rd November 2026 at 5:32 am"
+          },
+          {
+            "type": "h2",
+            "text": "Recent articles"
+          },
+          {
+            "type": "li",
+            "text": "Qwen 3.8 27B on my laptop can interpret model weights, too - 3rd November 2026"
+          },
+          {
+            "type": "li",
+            "text": "The U.S. Census Bureau and “Super Intelligence” - 2nd November 2026"
+          },
+          {
+            "type": "li",
+            "text": "The October inflection point for vibe game development - 28th October 2026"
+          },
+          {
+            "type": "li",
+            "text": "Battle Drones - a vibe coded RTS with audio-based multiplayer - 20th October 2026"
+          },
+          {
+            "type": "p",
+            "text": "This is a link post by Simon Willison, posted on 3rd November 2026."
+          },
+          {
+            "type": "p",
+            "text": "privacy\n            68\n        \n    \n        \n            youtube\n            58"
+          },
+          {
+            "type": "h3",
+            "text": "Monthly briefing"
+          },
+          {
+            "type": "p",
+            "text": "Sponsor me for $10/month and get a curated email digest of the month's most important LLM developments."
+          },
+          {
+            "type": "p",
+            "text": "Pay me to send you less!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "c006e897d48e9930",
+      "title": "October sponsors-only newsletter",
+      "titleZh": "October sponsors-only newsletter",
+      "link": "https://simonwillison.net/2026/Nov/3/october-newsletter/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-03T05:28:59.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "October sponsors-only newsletter",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "3rd November 2026"
+          },
+          {
+            "type": "p",
+            "text": "I sent out the October edition of my sponsors-only monthly newsletter. If you are a sponsor (or start a sponsorship now) you can access it here. This month:"
+          },
+          {
+            "type": "li",
+            "text": "The October inflection point for vibe game development"
+          },
+          {
+            "type": "li",
+            "text": "The vulnerability apocalypse gets hot"
+          },
+          {
+            "type": "li",
+            "text": "LLM releases"
+          },
+          {
+            "type": "li",
+            "text": "API credits for $100+/month subscriptions"
+          },
+          {
+            "type": "li",
+            "text": "What I'm using right now"
+          },
+          {
+            "type": "li",
+            "text": "My software releases"
+          },
+          {
+            "type": "p",
+            "text": "My September newsletter can now be seen here, as a preview of what you'll get. Pay $10/month to stay a month ahead of the free copy!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "10dab842bc689c46",
+      "title": "llm 0.37",
+      "titleZh": "llm 0.37",
+      "link": "https://simonwillison.net/2026/Nov/2/llm/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-02T23:49:30.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "llm 0.37",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "There's a lot of stuff in this new release of my LLM CLI tool and Python library, representing around two months of accumulated features and fixes."
+          },
+          {
+            "type": "p",
+            "text": "I added gpt-6.1-sol and gpt-6.1-terra, plus a new llm openai endpoint add command to make it easier to configure additional models that use OpenAI-compatible endpoints."
+          },
+          {
+            "type": "p",
+            "text": "I switched the default model (if you have not set your own default) to gpt-6-luna - half the price of the previous default, gpt-5.6-luna."
+          },
+          {
+            "type": "p",
+            "text": "LLM's support for embeddings now accepts that different binary content may have different content-type - necessary for models like Gemini Embedding 2, which can embed text, audio, images, and video."
+          },
+          {
+            "type": "p",
+            "text": "A lot of open source maintainers complain about a flood of AI-assisted PRs. LLM is my project that has been most affected by this and, to be honest, I'm not finding it to be a problem. That's mainly because I have Opus 5.5 or GPT-6 Astra help me with triage to spot the most useful fixes!"
+          },
+          {
+            "type": "p",
+            "text": "This release includes fixes from 12 authors - almost all AI-assisted - and the burden of reviewing them wasn't nearly as great as I expected. I really see them as bug reports with attached examples - sometimes I land them, sometimes I implement my own fix."
+          },
+          {
+            "type": "p",
+            "text": "So thanks to 0d00ciallo0721, ac1982, Allen Flux, Bian Yuhan, Bishop Kammeraad, Chen Yufeiyang, Christopher Krah, Ethan Stoner, Jiachen Xie, Olamide Faniyan, Sharat Chandra Sai Boddu, nosmile99 for helping out with (or spending tokens on) this release!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "1f68f37389f38cd9",
+      "title": "LLMs are not superhuman at reading and writing neural network weights",
+      "titleZh": "LLMs are not superhuman at reading and writing neural network weights",
+      "link": "https://seangoedecke.com/llms-are-not-superhuman-at-reading-and-writing-neural-network-weights/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-03T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "LLMs are not superhuman at reading and writing neural network weights",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A recent paper argues that frontier LLMs can work with neural network weights directly. This seems superhuman, but it isn’t."
+          },
+          {
+            "type": "p",
+            "text": "The paper shows that GPT-6 Astra can take a small neural network and interact with its weights directly, “well past what we’d expect from humans or conventional algorithms”. Specifically, Astra was able to identify what games a small network1 was trained to play just by looking at the weights, and even tweak the weights itself. The most impressive result is Astra significantly improving a 0.8B Qwen LLM’s ability on mathematics by natively editing its weights. The reason to be excited here is that “superhuman ability to improve language models” is precisely the kind of thing that could cause recursive self-improvement."
+          },
+          {
+            "type": "p",
+            "text": "I think a smart human ML researcher could perform all of these tasks. Figuring out what game a model was trained to play based on the network sounds impressive until you consider three points:"
+          },
+          {
+            "type": "li",
+            "text": "The input channels of the model directly listen to each 8x8 grid cell"
+          },
+          {
+            "type": "li",
+            "text": "The input channels are labeled (e.g. “agent”, “moving objects”)"
+          },
+          {
+            "type": "li",
+            "text": "It’s thus relatively trivial to calculate2 which parts of the grid the first layer of weights cares about and why"
+          },
+          {
+            "type": "p",
+            "text": "Here’s that calculation expressed as a heatmap in three lines of Python:"
+          },
+          {
+            "type": "code",
+            "text": "d = np.load(\"a9f535cc.npz\")\nW1 = d[\"actor/dense1/kernel\"]\nnorms = np.linalg.norm(W1.reshape(10,10,5,32).transpose(2,0,1,3), axis=-1)  # 5 x 10 x 10"
+          },
+          {
+            "type": "p",
+            "text": "And here’s the heatmap for each game:"
+          },
+          {
+            "type": "p",
+            "text": "If someone showed you that heatmap without the game labels, I think you’d be able to immediately identify at least the first three games purely by noticing where the player is (e.g. for Breakout, in a horizontal line at the bottom) and where the moving objects are (e.g. for Pac-Man, in the distinctive Pac-Man maze). It’s neat3 that Astra was able to calculate the norms in its head without executing Python, but not that impressive, and certainly not something that should shock anyone who’s been paying attention."
+          },
+          {
+            "type": "p",
+            "text": "I’m not going to go through each example4 in the paper, so let’s skip straight to the most impressive one: fixing a 0.8B Qwen model’s ability to do mathematics. 0.8B is a lot of parameters, and “mathematics” is way more complicated than “guess what the game is based on how the player moves”, and editing weights is arguably harder than parsing them. What happened here?"
+          },
+          {
+            "type": "p",
+            "text": "First, note that the Qwen model was not “bad at mathematics” in a pure capabilities sense. It had a specific problem where after 32k tokens it would get stuck in loops, so any mathematical task that needed more than 32k tokens would automatically fail5. If you had a model that looped like this, how would you update the weights to fix it? Personally, I would try steering: I would write some reasoning texts that looped and some reasoning texts that didn’t, calculate the difference between the looping and non-looping residuals, measure how much each weight contributed to that difference, then try manually trimming those top weights. This is basically the Heretic abliteration playbook."
+          },
+          {
+            "type": "p",
+            "text": "And this is exactly what Astra did! It wrote four pairs of texts, measured6 the weights that contributed to looping, started cutting them down and testing if it worked, and ended up finding a patch that stopped the Qwen model from looping, thus making it able to work on mathematical problems for more than 32k tokens. Again, this is exactly what a competent human researcher could have and would have done."
+          },
+          {
+            "type": "p",
+            "text": "It’s cool that Astra was able to make direct weight updates. But we shouldn’t think of this like a radically new capability that will change how AI research is done. We should think of this as analogous to the ability of LLMs to emit machine code and tweak compiled binaries: it’s an impressive trick, but the best way to work with binaries is still to write source code and compile it. Likewise, the best way to update the weights of a model is to train it normally. To the extent that intelligent LLMs help with AI research, they will help by improving training, not by magically tweaking model weights directly."
+          },
+          {
+            "type": "li",
+            "text": "Around 17k weights.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "By taking the L2 norm of each input across the 32 weights in the first layer.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Note that this is superhuman mental mathematics, not superhuman AI research.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "The most impressive one I’m skipping is hand-writing a neural network from scratch. While cool, if you can express a task as a simple program, we already know it’s possible to express that program as a NN, even by unaugmented humans.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "All the <32k token problems were solved successfully on the original Qwen model.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Unlike with the toy game networks, it had access to Python.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "A recent paper argues that frontier LLMs can work with neural network weights directly. This seems superhuman, but it isn’t.",
+          "The paper shows that GPT-6 Astra can take a small neural network and interact with its weights directly, “well past what we’d expect from humans or conventional algorithms”. Specifically, Astra was able to identify what games a small network1 was trained to play just by looking at the weights, and even tweak the weights itself. The most impressive result is Astra significantly improving a 0.8B Qwen LLM’s ability on mathematics by natively editing its weights. The reason to be excited here is that “superhuman ability to improve language models” is precisely the kind of thing that could cause recursive self-improvement.",
+          "I think a smart human ML researcher could perform all of these tasks. Figuring out what game a model was trained to play based on the network sounds impressive until you consider three points:",
+          "The input channels of the model directly listen to each 8x8 grid cell",
+          "The input channels are labeled (e.g. “agent”, “moving objects”)",
+          "It’s thus relatively trivial to calculate2 which parts of the grid the first layer of weights cares about and why",
+          "Here’s that calculation expressed as a heatmap in three lines of Python:",
+          "d = np.load(\"a9f535cc.npz\")\nW1 = d[\"actor/dense1/kernel\"]\nnorms = np.linalg.norm(W1.reshape(10,10,5,32).transpose(2,0,1,3), axis=-1)  # 5 x 10 x 10",
+          "And here’s the heatmap for each game:",
+          "If someone showed you that heatmap without the game labels, I think you’d be able to immediately identify at least the first three games purely by noticing where the player is (e.g. for Breakout, in a horizontal line at the bottom) and where the moving objects are (e.g. for Pac-Man, in the distinctive Pac-Man maze). It’s neat3 that Astra was able to calculate the norms in its head without executing Python, but not that impressive, and certainly not something that should shock anyone who’s been paying attention.",
+          "I’m not going to go through each example4 in the paper, so let’s skip straight to the most impressive one: fixing a 0.8B Qwen model’s ability to do mathematics. 0.8B is a lot of parameters, and “mathematics” is way more complicated than “guess what the game is based on how the player moves”, and editing weights is arguably harder than parsing them. What happened here?",
+          "First, note that the Qwen model was not “bad at mathematics” in a pure capabilities sense. It had a specific problem where after 32k tokens it would get stuck in loops, so any mathematical task that needed more than 32k tokens would automatically fail5. If you had a model that looped like this, how would you update the weights to fix it? Personally, I would try steering: I would write some reasoning texts that looped and some reasoning texts that didn’t, calculate the difference between the looping and non-looping residuals, measure how much each weight contributed to that difference, then try manually trimming those top weights. This is basically the Heretic abliteration playbook.",
+          "And this is exactly what Astra did! It wrote four pairs of texts, measured6 the weights that contributed to looping, started cutting them down and testing if it worked, and ended up finding a patch that stopped the Qwen model from looping, thus making it able to work on mathematical problems for more than 32k tokens. Again, this is exactly what a competent human researcher could have and would have done.",
+          "It’s cool that Astra was able to make direct weight updates. But we shouldn’t think of this like a radically new capability that will change how AI research is done. We should think of this as analogous to the ability of LLMs to emit machine code and tweak compiled binaries: it’s an impressive trick, but the best way to work with binaries is still to write source code and compile it. Likewise, the best way to update the weights of a model is to train it normally. To the extent that intelligent LLMs help with AI research, they will help by improving training, not by magically tweaking model weights directly.",
+          "Around 17k weights.\n↩",
+          "By taking the L2 norm of each input across the 32 weights in the first layer.\n↩",
+          "Note that this is superhuman mental mathematics, not superhuman AI research.\n↩",
+          "The most impressive one I’m skipping is hand-writing a neural network from scratch. While cool, if you can express a task as a simple program, we already know it’s possible to express that program as a NN, even by unaugmented humans.\n↩",
+          "All the <32k token problems were solved successfully on the original Qwen model.\n↩",
+          "Unlike with the toy game networks, it had access to Python.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "e1ccd5cac94724eb",
+      "title": "Audience capture",
+      "titleZh": "Audience capture",
+      "link": "https://seangoedecke.com/audience-capture/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-03T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Audience capture",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Audience capture is the part that scares me the most about writing on the internet. I have the soul of an engineer1: when I see a metric like engagement, I want to improve it. I like to make the number go up."
+          },
+          {
+            "type": "p",
+            "text": "In fact, the whole environment of online writing is tailor-made to help you make engagement numbers go up. It’s trivial to find out how many people are reading my posts, and from what sources. Hundreds of link aggregators all over the internet have algorithms that will help my most engagement-friendly posts get views, and the comments are helpfully sorted by upvotes so I can read the “best”2 pieces of feedback straight away. Many platforms are set up to financially reward you for engagement, whether that’s by enabling advertisement or by straight up paying you out."
+          },
+          {
+            "type": "p",
+            "text": "Leaning into this environment is a huge mistake. Views and engagement are valuable to me, but not directly. They are proxy metrics for the things I actually care about:"
+          },
+          {
+            "type": "li",
+            "text": "Having smart, informed people read and consider my ideas"
+          },
+          {
+            "type": "li",
+            "text": "Getting feedback from readers who have concrete experience with the topics I write about"
+          },
+          {
+            "type": "li",
+            "text": "Joining interesting public conversations about the state of the industry"
+          },
+          {
+            "type": "li",
+            "text": "Convincing people to think like me on points I care deeply about"
+          },
+          {
+            "type": "li",
+            "text": "Building a reputation as a careful thinker and a good writer3"
+          },
+          {
+            "type": "p",
+            "text": "It does not benefit me at all to have ten thousand people click through to one of my posts, scan the first sentence, then close the tab. It benefits me only a little4 to have a hundred people read the title of my post on Hacker News, decide not to click through, and leave their comments in the thread. The set of people who do those things — we could call them “clickers”, as opposed to “readers” — does not really overlap with the set of people who will actually read my posts and think about them. And yet in terms of metrics and engagement, they are indistinguishable."
+          },
+          {
+            "type": "p",
+            "text": "As with any proxy metric, optimizing it too hard can cause it to diverge from the actual value it’s targeting. This leads to the scariest form of audience capture: being captured by an audience you don’t really even want. Suppose I get a lot of views when I write posts about how stupid it is to use microservices5, because it’s a hot topic. That gives me a reason to write more posts about microservices. The numbers keep climbing. However, I suspect the set of people who read my posts thoroughly — the audience I actually care about — don’t really want to read a bunch of the same screeds about that, so they drift away6. The people clicking don’t care because they’re not reading the posts anyway. So I’m actually failing, not succeeding: I’m replacing my audience of careful thinkers with a fake audience of clickers and sneerers."
+          },
+          {
+            "type": "p",
+            "text": "This is not just a post about writing on the internet. In 2025, I wrote Trying to impress people you don’t respect about how succeeding as an engineer involves, well, impressing people who you may not necessarily respect. The core idea here is knowing what game you’re playing. Some games are proxy games, like getting views on posts or having great Jira ticket metrics. Some games are real games, like gaining the respect of people who you respect, or doing technical work you can be proud of, or trying to convince people of things that you believe are true."
+          },
+          {
+            "type": "p",
+            "text": "The difference is in whether you care about the goal of the game, not in whether that goal is objectively valuable. If you really want to get promoted, then that’s a real game; if you just want to do solid technical work, getting promoted might be a proxy game that you play in order to get into a position to do that. But even though you don’t really care about it, it’s easy and tempting to win the proxy game at the expense of the real game: for instance, to crush Jira tickets because they’re in front of you instead of doing what will actually get you promoted, or to get views on the internet by playing into clickbait."
+          },
+          {
+            "type": "p",
+            "text": "Making tradeoffs like this is sometimes fine. For instance, you might decide to impress people you don’t like so you can afford to send your kids to a good school. Selling out a little bit is good and healthy7. But do it with eyes open! The absolute worst thing you can do is to sell out by habit, in situations where it doesn’t even buy you anything you want."
+          },
+          {
+            "type": "p",
+            "text": "There are a lot of posts that I really enjoyed writing that did not get much attention: typically posts where I get a bit more into the philosophy or history, or posts that are dry technical explainers. Some of my most popular posts are laments about a changing industry that are really just popular because they give people an outlet to share their worries too, not because of anything I wrote. I think it’d be a big mistake to lean into writing more posts like that and fewer posts like this. For one, if I want to just optimize for engagement, why write blogs at all? Why not post ragebait and pornography? But the main reason is that I’m writing for the 5% of readers that will read my posts, think about them, talk to other people about the ideas, email me with their comments, and so on."
+          },
+          {
+            "type": "p",
+            "text": "Raw view counts help expose my writing to more of those people, but they don’t give me much signal on whether I’m appealing to them or not. For that I have to just rely on my taste, or on the thin signal I get back from the readers who do email and message me with thoughtful responses."
+          },
+          {
+            "type": "li",
+            "text": "In my own terminology, an “impure engineer”.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Or at least the cleverest, or the most cutting.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Too honest? I could be even more honest and add “encouraging people to potentially hire me if I’m ever looking”, too.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Boosting engagement on Hacker News means the post is more visible for people who might actually read it.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Imagine it’s 2015 again. Go on, you know you want to.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Sunil Pai has a great post about this dynamic. To quote him: “you don’t get a notification that says, “three people respected you slightly less after reading that.” you don’t get one saying, “someone who was thinking about introducing you to somebody decided not to,” or “someone who thought you might be great to work with now thinks you seem like kind of a pain in the ass.” that stuff is completely invisible.”\n↩"
+          },
+          {
+            "type": "li",
+            "text": "If you prefer, you could call it “flexibility”.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "Audience capture is the part that scares me the most about writing on the internet. I have the soul of an engineer1: when I see a metric like engagement, I want to improve it. I like to make the number go up.",
+          "In fact, the whole environment of online writing is tailor-made to help you make engagement numbers go up. It’s trivial to find out how many people are reading my posts, and from what sources. Hundreds of link aggregators all over the internet have algorithms that will help my most engagement-friendly posts get views, and the comments are helpfully sorted by upvotes so I can read the “best”2 pieces of feedback straight away. Many platforms are set up to financially reward you for engagement, whether that’s by enabling advertisement or by straight up paying you out.",
+          "Leaning into this environment is a huge mistake. Views and engagement are valuable to me, but not directly. They are proxy metrics for the things I actually care about:",
+          "Having smart, informed people read and consider my ideas",
+          "Getting feedback from readers who have concrete experience with the topics I write about",
+          "Joining interesting public conversations about the state of the industry",
+          "Convincing people to think like me on points I care deeply about",
+          "Building a reputation as a careful thinker and a good writer3",
+          "It does not benefit me at all to have ten thousand people click through to one of my posts, scan the first sentence, then close the tab. It benefits me only a little4 to have a hundred people read the title of my post on Hacker News, decide not to click through, and leave their comments in the thread. The set of people who do those things — we could call them “clickers”, as opposed to “readers” — does not really overlap with the set of people who will actually read my posts and think about them. And yet in terms of metrics and engagement, they are indistinguishable.",
+          "As with any proxy metric, optimizing it too hard can cause it to diverge from the actual value it’s targeting. This leads to the scariest form of audience capture: being captured by an audience you don’t really even want. Suppose I get a lot of views when I write posts about how stupid it is to use microservices5, because it’s a hot topic. That gives me a reason to write more posts about microservices. The numbers keep climbing. However, I suspect the set of people who read my posts thoroughly — the audience I actually care about — don’t really want to read a bunch of the same screeds about that, so they drift away6. The people clicking don’t care because they’re not reading the posts anyway. So I’m actually failing, not succeeding: I’m replacing my audience of careful thinkers with a fake audience of clickers and sneerers.",
+          "This is not just a post about writing on the internet. In 2025, I wrote Trying to impress people you don’t respect about how succeeding as an engineer involves, well, impressing people who you may not necessarily respect. The core idea here is knowing what game you’re playing. Some games are proxy games, like getting views on posts or having great Jira ticket metrics. Some games are real games, like gaining the respect of people who you respect, or doing technical work you can be proud of, or trying to convince people of things that you believe are true.",
+          "The difference is in whether you care about the goal of the game, not in whether that goal is objectively valuable. If you really want to get promoted, then that’s a real game; if you just want to do solid technical work, getting promoted might be a proxy game that you play in order to get into a position to do that. But even though you don’t really care about it, it’s easy and tempting to win the proxy game at the expense of the real game: for instance, to crush Jira tickets because they’re in front of you instead of doing what will actually get you promoted, or to get views on the internet by playing into clickbait.",
+          "Making tradeoffs like this is sometimes fine. For instance, you might decide to impress people you don’t like so you can afford to send your kids to a good school. Selling out a little bit is good and healthy7. But do it with eyes open! The absolute worst thing you can do is to sell out by habit, in situations where it doesn’t even buy you anything you want.",
+          "There are a lot of posts that I really enjoyed writing that did not get much attention: typically posts where I get a bit more into the philosophy or history, or posts that are dry technical explainers. Some of my most popular posts are laments about a changing industry that are really just popular because they give people an outlet to share their worries too, not because of anything I wrote. I think it’d be a big mistake to lean into writing more posts like that and fewer posts like this. For one, if I want to just optimize for engagement, why write blogs at all? Why not post ragebait and pornography? But the main reason is that I’m writing for the 5% of readers that will read my posts, think about them, talk to other people about the ideas, email me with their comments, and so on.",
+          "Raw view counts help expose my writing to more of those people, but they don’t give me much signal on whether I’m appealing to them or not. For that I have to just rely on my taste, or on the thin signal I get back from the readers who do email and message me with thoughtful responses.",
+          "In my own terminology, an “impure engineer”.\n↩",
+          "Or at least the cleverest, or the most cutting.\n↩",
+          "Too honest? I could be even more honest and add “encouraging people to potentially hire me if I’m ever looking”, too.\n↩",
+          "Boosting engagement on Hacker News means the post is more visible for people who might actually read it.\n↩",
+          "Imagine it’s 2015 again. Go on, you know you want to.\n↩",
+          "Sunil Pai has a great post about this dynamic. To quote him: “you don’t get a notification that says, “three people respected you slightly less after reading that.” you don’t get one saying, “someone who was thinking about introducing you to somebody decided not to,” or “someone who thought you might be great to work with now thinks you seem like kind of a pain in the ass.” that stuff is completely invisible.”\n↩",
+          "If you prefer, you could call it “flexibility”.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "3b6a51103bfae25b",
+      "title": "Tech Firms Dismantle Botnet That Turned 1.3M TV Boxes Into Proxies",
+      "titleZh": "Tech Firms Dismantle Botnet That Turned 1.3M TV Boxes Into Proxies",
+      "link": "https://krebsonsecurity.com/2026/11/tech-firms-dismantle-botnet-that-turned-1-3m-tv-boxes-into-proxies/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-11-03T02:24:31.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Tech Firms Dismantle Botnet That Turned 1.3M TV Boxes Into Proxies",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Google said today it worked with industry partners to dismantle a botnet made up of more than 1.3 million Android TV set-top boxes that ship with malicious software which secretly rents the user’s Internet connection out to strangers and conducts advertising fraud. Experts involved in the takedown say the action is likely to sever the botnet’s access to more than 10 million additional compromised systems, including other Internet of Things (IoT) products such as Android-based healthcare devices and karaoke machines."
+          },
+          {
+            "type": "p",
+            "text": "A report from the Google Threat Intelligence Group (GTIG) said Google has severed ties with Videostrong Technology Co., a TV box manufacturer in China that GTIG and other industry experts concluded was responsible for including malware that enrolled more than 1.3 million set-top boxes in a botnet dubbed “XCPE” (named after one of the malware’s core code components)."
+          },
+          {
+            "type": "p",
+            "text": "The global distribution of XCPE botnet infections. Image: Google Threat Intelligence Group."
+          },
+          {
+            "type": "p",
+            "text": "The report said the XCPE botnet loaded the user’s device with software that makes their Internet address available for resale by multiple “residential proxy” services, which allow customers to rent Internet addresses as a way to anonymize their web traffic or spoof their true location. As detailed in several stories here over the past year, residential proxy services are a major source of unwanted and often malicious traffic, including account takeover activity, advertising fraud, and mass content scraping for AI projects."
+          },
+          {
+            "type": "p",
+            "text": "“Videostrong monetized the backdoor by selling access to criminal affiliates and loading those affiliates’ malware modules onto infected devices,” the GTIG post reads, noting that Google took legal action to take down the domains and servers Videostrong used to control the botnet and install additional malware. “A device manufacturer intentionally infecting their users with malware is an unacceptable breach of trust, and represents a serious risk to those users. Without users’ knowledge or consent, infected devices were offered as a distribution mechanism for a wide array of criminal actors.”"
+          },
+          {
+            "type": "p",
+            "text": "The report notes that while TV boxes made up the the majority of the botnet, the same XCPE malware was found in other Android-based IoT products, including telehealth devices, karaoke machines, and even digital signage systems."
+          },
+          {
+            "type": "p",
+            "text": "Google said it requires all Android device makers to pass compatibility and security tests to ensure their products don’t harm users, but that Videostrong nevertheless found a way to load their malicious software immediately after a user boots up one of these devices for the first time (Google says it has since addressed that weakness)."
+          },
+          {
+            "type": "p",
+            "text": "The GTIG report calls out a number of residential proxy providers whose software development kits were routinely downloaded by devices infected by the XCPE botnet. Those include AppSalt, also known as Honeygain, which is owned by the Vilnius, Lithuania-based Oxylabs. In October 2026, Oxylabs was relaunched under a new brand called Source, after receiving $130 million in funding from private equity firm Warburg Pincus that reportedly valued the business at $3.6 billion. Oxylabs did not respond to a request for comment."
+          },
+          {
+            "type": "p",
+            "text": "Another provider linked to the botnet was NetNut, a once sprawling residential proxy company operated by the publicly-traded Israeli company Alarum Technologies. In July 2026, the FBI worked with industry partners to seize hundreds of domains associated with NetNut, saying the company was responsible for operating a separate botnet called Popa that enslaved TV boxes as residential proxies. Other proxy providers named in the GTIG report include EarnFM, Traffmonetizer, Jaguar, LINKFOG, BMW/IPWeb and GaGaNode."
+          },
+          {
+            "type": "p",
+            "text": "Google’s announcement credits a number of industry partners, including Synthient, a startup that tracks proxy providers. In January 2026, Synthient published research into the rapid spread of the Kimwolf botnet, which at the time was hammering networks worldwide with record-smashing DDoS attacks. Synthient documented how Kimwolf infected millions of Android set-top boxes virtually overnight, using a widespread vulnerability in these residential proxy services to compromise other Android-based devices inside the local networks of unsuspecting TV box users."
+          },
+          {
+            "type": "p",
+            "text": "Synthient’s research caused dozens of residential proxy providers to patch their networks, which helped to fragment the Kimwolf botnet into much smaller pieces that made its incessant and disruptive DDoS attacks far easier for network operators to manage. It also attracted the attention of the Motion Picture Association (MPA), a trade group representing the major Hollywood studios, which partnered with Synthient to purchase and tear apart a number of popular Android TV set-top boxes — including some that were being infected by Kimwolf and other IoT botnets."
+          },
+          {
+            "type": "p",
+            "text": "In a report published today, Synthient examined a popular, pre-infected TV box sold under the brand MECOOL by a publicly traded company in China called Skyworth Technology, concluding that MECOOL also bundled the malware from Videostrong Technology Co. and likewise installed AppSalt/Honeygain and other proxy components."
+          },
+          {
+            "type": "p",
+            "text": "The MECOOL storefront and marketing. Image: Synthient.com."
+          },
+          {
+            "type": "p",
+            "text": "Synthient founder Ben Brundage told KrebsOnSecurity that Videostrong’s malware also distributed software for the proxy service Grass. In our November 2025 story, “Is Your Android TV Streaming Box Part of a Botnet?” we quoted a researcher from Censys who found the popular Superbox TV streaming device bundled Grass’s residential proxy software. We also quoted the Grass founder, who denied any affiliation with the TV box maker."
+          },
+          {
+            "type": "p",
+            "text": "That November 2025 story noted that Superbox and similar Android TV set-top boxes gain new customers primarily by engaging influencers on Tiktok and other social networks who praise the product’s ability to offer hundreds of (pirated) pay TV streaming services for a one-time fee."
+          },
+          {
+            "type": "p",
+            "text": "Likewise, Synthient’s report observes that the MECOOL set-top boxes exploded in popularity after the product was mentioned in 2023 by the Youtube channel Linus Tech Tips, which has an audience of nearly 17 million subscribers [Linus Tech Tips said in a statement shared with Synthient that it has since updated the video to explicitly frame the product as a scam and have removed all associated affiliate links]."
+          },
+          {
+            "type": "p",
+            "text": "The popular Youtube channel Linus Tech Tips discussing MECOOL TV streaming boxes."
+          },
+          {
+            "type": "p",
+            "text": "The GTIG report estimates the XCPE botnet takedown should sever access to at least 10 million additional compromised devices, noting that the various proxy and ad fraud affiliates of Videostrong “each have diversified distribution channels for their modules beyond XCPE.”"
+          },
+          {
+            "type": "p",
+            "text": "Synthient’s Brundage echoed that conclusion, calling the 1.3 million number “highly conservative.”"
+          },
+          {
+            "type": "p",
+            "text": "“The scale of affected devices is likely way higher,” he said. “This is probably the largest operation against backdoored TV boxes that we’ve seen.”"
+          },
+          {
+            "type": "p",
+            "text": "Further reading:\nPlume Security Labs white paper on the XCPE botnet (PDF)\nBlack Lotus Labs writeup on LinkedIn\nTrendAI’s analysis \nSynthient’s list of affected devices, broken down by model number"
+          }
+        ],
+        "translations": [
+          "Google said today it worked with industry partners to dismantle a botnet made up of more than 1.3 million Android TV set-top boxes that ship with malicious software which secretly rents the user’s Internet connection out to strangers and conducts advertising fraud. Experts involved in the takedown say the action is likely to sever the botnet’s access to more than 10 million additional compromised systems, including other Internet of Things (IoT) products such as Android-based healthcare devices and karaoke machines.",
+          "A report from the Google Threat Intelligence Group (GTIG) said Google has severed ties with Videostrong Technology Co., a TV box manufacturer in China that GTIG and other industry experts concluded was responsible for including malware that enrolled more than 1.3 million set-top boxes in a botnet dubbed “XCPE” (named after one of the malware’s core code components).",
+          "The global distribution of XCPE botnet infections. Image: Google Threat Intelligence Group.",
+          "The report said the XCPE botnet loaded the user’s device with software that makes their Internet address available for resale by multiple “residential proxy” services, which allow customers to rent Internet addresses as a way to anonymize their web traffic or spoof their true location. As detailed in several stories here over the past year, residential proxy services are a major source of unwanted and often malicious traffic, including account takeover activity, advertising fraud, and mass content scraping for AI projects.",
+          "“Videostrong monetized the backdoor by selling access to criminal affiliates and loading those affiliates’ malware modules onto infected devices,” the GTIG post reads, noting that Google took legal action to take down the domains and servers Videostrong used to control the botnet and install additional malware. “A device manufacturer intentionally infecting their users with malware is an unacceptable breach of trust, and represents a serious risk to those users. Without users’ knowledge or consent, infected devices were offered as a distribution mechanism for a wide array of criminal actors.”",
+          "The report notes that while TV boxes made up the the majority of the botnet, the same XCPE malware was found in other Android-based IoT products, including telehealth devices, karaoke machines, and even digital signage systems.",
+          "Google said it requires all Android device makers to pass compatibility and security tests to ensure their products don’t harm users, but that Videostrong nevertheless found a way to load their malicious software immediately after a user boots up one of these devices for the first time (Google says it has since addressed that weakness).",
+          "The GTIG report calls out a number of residential proxy providers whose software development kits were routinely downloaded by devices infected by the XCPE botnet. Those include AppSalt, also known as Honeygain, which is owned by the Vilnius, Lithuania-based Oxylabs. In October 2026, Oxylabs was relaunched under a new brand called Source, after receiving $130 million in funding from private equity firm Warburg Pincus that reportedly valued the business at $3.6 billion. Oxylabs did not respond to a request for comment.",
+          "Another provider linked to the botnet was NetNut, a once sprawling residential proxy company operated by the publicly-traded Israeli company Alarum Technologies. In July 2026, the FBI worked with industry partners to seize hundreds of domains associated with NetNut, saying the company was responsible for operating a separate botnet called Popa that enslaved TV boxes as residential proxies. Other proxy providers named in the GTIG report include EarnFM, Traffmonetizer, Jaguar, LINKFOG, BMW/IPWeb and GaGaNode.",
+          "Google’s announcement credits a number of industry partners, including Synthient, a startup that tracks proxy providers. In January 2026, Synthient published research into the rapid spread of the Kimwolf botnet, which at the time was hammering networks worldwide with record-smashing DDoS attacks. Synthient documented how Kimwolf infected millions of Android set-top boxes virtually overnight, using a widespread vulnerability in these residential proxy services to compromise other Android-based devices inside the local networks of unsuspecting TV box users.",
+          "Synthient’s research caused dozens of residential proxy providers to patch their networks, which helped to fragment the Kimwolf botnet into much smaller pieces that made its incessant and disruptive DDoS attacks far easier for network operators to manage. It also attracted the attention of the Motion Picture Association (MPA), a trade group representing the major Hollywood studios, which partnered with Synthient to purchase and tear apart a number of popular Android TV set-top boxes — including some that were being infected by Kimwolf and other IoT botnets.",
+          "In a report published today, Synthient examined a popular, pre-infected TV box sold under the brand MECOOL by a publicly traded company in China called Skyworth Technology, concluding that MECOOL also bundled the malware from Videostrong Technology Co. and likewise installed AppSalt/Honeygain and other proxy components.",
+          "The MECOOL storefront and marketing. Image: Synthient.com.",
+          "Synthient founder Ben Brundage told KrebsOnSecurity that Videostrong’s malware also distributed software for the proxy service Grass. In our November 2025 story, “Is Your Android TV Streaming Box Part of a Botnet?” we quoted a researcher from Censys who found the popular Superbox TV streaming device bundled Grass’s residential proxy software. We also quoted the Grass founder, who denied any affiliation with the TV box maker.",
+          "That November 2025 story noted that Superbox and similar Android TV set-top boxes gain new customers primarily by engaging influencers on Tiktok and other social networks who praise the product’s ability to offer hundreds of (pirated) pay TV streaming services for a one-time fee.",
+          "Likewise, Synthient’s report observes that the MECOOL set-top boxes exploded in popularity after the product was mentioned in 2023 by the Youtube channel Linus Tech Tips, which has an audience of nearly 17 million subscribers [Linus Tech Tips said in a statement shared with Synthient that it has since updated the video to explicitly frame the product as a scam and have removed all associated affiliate links].",
+          "The popular Youtube channel Linus Tech Tips discussing MECOOL TV streaming boxes.",
+          "The GTIG report estimates the XCPE botnet takedown should sever access to at least 10 million additional compromised devices, noting that the various proxy and ad fraud affiliates of Videostrong “each have diversified distribution channels for their modules beyond XCPE.”",
+          "Synthient’s Brundage echoed that conclusion, calling the 1.3 million number “highly conservative.”",
+          "“The scale of affected devices is likely way higher,” he said. “This is probably the largest operation against backdoored TV boxes that we’ve seen.”",
+          "Further reading:\nPlume Security Labs white paper on the XCPE botnet (PDF)\nBlack Lotus Labs writeup on LinkedIn\nTrendAI’s analysis \nSynthient’s list of affected devices, broken down by model number"
+        ]
+      }
+    },
+    {
+      "slug": "08c8375f0d8ae162",
+      "title": "Safari 27.3 Beta Adds Vertical Tabs and Adaptive Dark Mode",
+      "titleZh": "Safari 27.3 Beta Adds Vertical Tabs and Adaptive Dark Mode",
+      "link": "https://www.macrumors.com/2026/11/03/ios-27-3-safari/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T19:26:41.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Safari 27.3 Beta Adds Vertical Tabs and Adaptive Dark Mode",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Juli Clover",
+        "siteName": "MacRumors",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Tuesday November 3, 2026 10:51 am PST by Juli Clover"
+          },
+          {
+            "type": "p",
+            "text": "With iOS 27.3, iPadOS 27.3, and macOS Golden Gate 27.3, Apple is making major updates to Safari. The browser is getting a Vertical Tabs layout, which can be used instead of the standard horizontal tab bar. It's a change that pairs well with the iPhone Duo's larger display, but it is available across iPhone, iPad, and Mac."
+          },
+          {
+            "type": "p",
+            "text": "Vertical Tabs are located on the left side of the display and use icons by default to save space, but there is an option to make the tab bar wider to show website titles as well. Vertical Tabs work with both Topics and Tab Groups to keep things organized. Topics are created when automatic Apple Intelligence tab sorting is turned on in iOS 27. Pinning tabs by dragging, quickly swapping between Tab Groups, and other features also continue to work."
+          },
+          {
+            "type": "p",
+            "text": "The option to turn on Vertical Tabs is located in the Safari settings or in the View menu on Mac and ‌iPad‌."
+          },
+          {
+            "type": "p",
+            "text": "Apple is adding Adaptive Dark Mode for websites that don't have a dark mode design option by default. If you use ‌Dark Mode‌ and then browse to a website with a bright background color, Safari will offer an option to \"Try\" Adaptive ‌Dark Mode‌."
+          },
+          {
+            "type": "p",
+            "text": "After tapping Try, Safari renders a ‌Dark Mode‌ version of the page that makes the background darker, changes text contrast, inverts logos and graphics, recolors vector artwork, lifts raised surfaces, and rebalances layered shadows. Each website will be adapted based on what's needed to make it readable, so not every tweak is applied to every site. You can opt to turn Adaptive ‌Dark Mode‌ on for all sites or on a site-by-site basis after using it."
+          },
+          {
+            "type": "p",
+            "text": "If a site has a native dark mode or has a dark design already, Adaptive ‌Dark Mode‌ won't activate. Developers can also add a tag that causes Safari to ignore Adaptive ‌Dark Mode‌ and show the website as the developer intended."
+          },
+          {
+            "type": "p",
+            "text": "Along with these visual changes, Apple is adding new Siri AI actions. ‌Siri‌ can take action on tabs and windows, sorting, moving, closing, and arranging in Tab Groups. ‌Siri‌ also has control over web history, and you can ask it to clear your history for a particular site and for a set time period, such as the last 10 days."
+          },
+          {
+            "type": "p",
+            "text": "‌Siri‌ can already see what's on your screen, but soon, ‌Siri‌ will also be able to understand the full content of webpages, including non-active tabs and content not in view. You will be able to ask questions about information across websites, so if you have multiple tabs open when shopping for an item, ‌Siri‌ will be able to sort them by price or give you information on the product that you're looking at. Apple says the ‌Siri‌ awareness feature is coming, but it's not in the first beta."
+          },
+          {
+            "type": "p",
+            "text": "The changes to Safari are available for developers starting today in the latest betas. An Apple Intelligence-capable device is required for the ‌Siri‌ features."
+          },
+          {
+            "type": "p",
+            "text": "iOS 27.3, iPadOS 27.3, and ‌macOS Golden Gate‌ 27.3 will launch this December after several rounds of beta testing to refine the new features."
+          },
+          {
+            "type": "h2",
+            "text": "Popular Stories"
+          },
+          {
+            "type": "h3",
+            "text": "iOS 27.2 Features: Everything New in iOS 27.2"
+          },
+          {
+            "type": "p",
+            "text": "Monday October 26, 2026 3:56 pm PDT by Juli Clover"
+          },
+          {
+            "type": "p",
+            "text": "Apple released iOS 27.2, uniting the iPhone Duo and other iPhone models on the same version of iOS. iOS 27.2 is the first major iOS 27 update, and it adds several useful new features.\nSiri AI Improvements\nSiri AI can recall past conversations you had with it, so you can ask Siri about something it told you before, like a restaurant it previously recommended. It's also able to draw on more..."
+          },
+          {
+            "type": "h3",
+            "text": "14 New Things Your iPhone Can Do in iOS 27.2"
+          },
+          {
+            "type": "p",
+            "text": "Friday October 30, 2026 12:42 pm PDT by Tim Hardwick"
+          },
+          {
+            "type": "p",
+            "text": "Apple released iOS 27.2 on October 26, bringing enhancements to Siri AI, adding Suggestions in Messages, and sneaking in a string of smaller additions across Photos, Podcasts, Games, Apple TV, and FaceTime. \niOS 27.2 is available to download to your device now via Settings ➝ General ➝ Software Update. Note that some features may not be available in all regions or on all iPhone models...."
+          },
+          {
+            "type": "h3",
+            "text": "Apple Releases iOS 27.2 Release Candidate"
+          },
+          {
+            "type": "p",
+            "text": "Monday October 19, 2026 10:26 am PDT by Juli Clover"
+          },
+          {
+            "type": "p",
+            "text": "Apple today seeded the release candidate of an upcoming iOS 27.2 update to developers for testing purposes, with the update coming a week after Apple released the fourth iOS 27.2 beta. Apple also seeded the iPadOS 27.2 RC.\nRegistered developers can download the beta updates by opting in under Settings > General > Software Update and selecting the iOS 27 developer beta.\nThe beta was used..."
+          }
+        ],
+        "translations": [
+          "Tuesday November 3, 2026 10:51 am PST by Juli Clover",
+          "With iOS 27.3, iPadOS 27.3, and macOS Golden Gate 27.3, Apple is making major updates to Safari. The browser is getting a Vertical Tabs layout, which can be used instead of the standard horizontal tab bar. It's a change that pairs well with the iPhone Duo's larger display, but it is available across iPhone, iPad, and Mac.",
+          "Vertical Tabs are located on the left side of the display and use icons by default to save space, but there is an option to make the tab bar wider to show website titles as well. Vertical Tabs work with both Topics and Tab Groups to keep things organized. Topics are created when automatic Apple Intelligence tab sorting is turned on in iOS 27. Pinning tabs by dragging, quickly swapping between Tab Groups, and other features also continue to work.",
+          "The option to turn on Vertical Tabs is located in the Safari settings or in the View menu on Mac and ‌iPad‌.",
+          "Apple is adding Adaptive Dark Mode for websites that don't have a dark mode design option by default. If you use ‌Dark Mode‌ and then browse to a website with a bright background color, Safari will offer an option to \"Try\" Adaptive ‌Dark Mode‌.",
+          "After tapping Try, Safari renders a ‌Dark Mode‌ version of the page that makes the background darker, changes text contrast, inverts logos and graphics, recolors vector artwork, lifts raised surfaces, and rebalances layered shadows. Each website will be adapted based on what's needed to make it readable, so not every tweak is applied to every site. You can opt to turn Adaptive ‌Dark Mode‌ on for all sites or on a site-by-site basis after using it.",
+          "If a site has a native dark mode or has a dark design already, Adaptive ‌Dark Mode‌ won't activate. Developers can also add a tag that causes Safari to ignore Adaptive ‌Dark Mode‌ and show the website as the developer intended.",
+          "Along with these visual changes, Apple is adding new Siri AI actions. ‌Siri‌ can take action on tabs and windows, sorting, moving, closing, and arranging in Tab Groups. ‌Siri‌ also has control over web history, and you can ask it to clear your history for a particular site and for a set time period, such as the last 10 days.",
+          "‌Siri‌ can already see what's on your screen, but soon, ‌Siri‌ will also be able to understand the full content of webpages, including non-active tabs and content not in view. You will be able to ask questions about information across websites, so if you have multiple tabs open when shopping for an item, ‌Siri‌ will be able to sort them by price or give you information on the product that you're looking at. Apple says the ‌Siri‌ awareness feature is coming, but it's not in the first beta.",
+          "The changes to Safari are available for developers starting today in the latest betas. An Apple Intelligence-capable device is required for the ‌Siri‌ features.",
+          "iOS 27.3, iPadOS 27.3, and ‌macOS Golden Gate‌ 27.3 will launch this December after several rounds of beta testing to refine the new features.",
+          "Popular Stories",
+          "iOS 27.2 Features: Everything New in iOS 27.2",
+          "Monday October 26, 2026 3:56 pm PDT by Juli Clover",
+          "Apple released iOS 27.2, uniting the iPhone Duo and other iPhone models on the same version of iOS. iOS 27.2 is the first major iOS 27 update, and it adds several useful new features.\nSiri AI Improvements\nSiri AI can recall past conversations you had with it, so you can ask Siri about something it told you before, like a restaurant it previously recommended. It's also able to draw on more...",
+          "14 New Things Your iPhone Can Do in iOS 27.2",
+          "Friday October 30, 2026 12:42 pm PDT by Tim Hardwick",
+          "Apple released iOS 27.2 on October 26, bringing enhancements to Siri AI, adding Suggestions in Messages, and sneaking in a string of smaller additions across Photos, Podcasts, Games, Apple TV, and FaceTime. \niOS 27.2 is available to download to your device now via Settings ➝ General ➝ Software Update. Note that some features may not be available in all regions or on all iPhone models....",
+          "Apple Releases iOS 27.2 Release Candidate",
+          "Monday October 19, 2026 10:26 am PDT by Juli Clover",
+          "Apple today seeded the release candidate of an upcoming iOS 27.2 update to developers for testing purposes, with the update coming a week after Apple released the fourth iOS 27.2 beta. Apple also seeded the iPadOS 27.2 RC.\nRegistered developers can download the beta updates by opting in under Settings > General > Software Update and selecting the iOS 27 developer beta.\nThe beta was used..."
+        ]
+      }
+    },
+    {
+      "slug": "dc6c7ef2ed74ce88",
+      "title": "The New York Times (et al.) Sues Brave for Copyright Infringement, Selling Scraped Content to AI Companies for Model Training",
+      "titleZh": "The New York Times (et al.) Sues Brave for Copyright Infringement, Selling Scraped Content to AI Companies for Model Training",
+      "link": "https://www.theverge.com/tech/1024588/brave-lawsuit-ai-scraping-new-york-times",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T15:46:25.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The New York Times (et al.) Sues Brave for Copyright Infringement, Selling Scraped Content to AI Companies for Model Training",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jay Peters",
+        "siteName": "The Verge",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The New York Times and a group of other publications have filed lawsuits against the company that makes the Brave web browser over alleged unlawful scraping to train AI and also letting users bypass their paywalls, as reported by Reuters."
+          },
+          {
+            "type": "p",
+            "text": "According to a complaint filed by the New York Daily News, the Chicago Tribune, and the Orlando Sentinel, Brave Software has monetized its index of scraped websites by, in part, providing AI companies with paid access to “real-time online content from the Brave Index.” The AI companies then use that index to train their models, access content to “respond to specific user queries,” or both. Brave has allegedly provided “stolen copyrighted content” to “many” AI companies including Anthropic, Perplexity, Mistral, xAI, and Cohere."
+          },
+          {
+            "type": "p",
+            "text": "Brave also promotes “hundreds of top publishers” as being accessible through its “Paywall blocker” feature in its browser."
+          },
+          {
+            "type": "p",
+            "text": "“Brave has never asked for the Publishers’ permission to access their websites, much less to copy the material and provide it to users or other AI companies,” the complaint says. “On the contrary, as noted above, Brave allows its users to bypass the Publishers’ paywalls without their consent, and has taken other steps that prevent the Publishers from blocking Brave’s access to the Publishers’ websites. Brave has never compensated the Publishers for the unlawful use, copying, and distribution of the Publishers’ copyrighted content.”"
+          },
+          {
+            "type": "p",
+            "text": "“While we believe in the ethical and responsible use and development of AI, Brave has flouted established copyright law and ignored repeated requests by The Times to stop its infringing conduct,” Graham James, an NYT spokesperson, says in a statement to The Verge. “We filed this lawsuit to hold Brave accountable for stealing our content to power its own products and to provide it to some of the most prominent and well resourced generative AI companies in the world.”"
+          },
+          {
+            "type": "p",
+            "text": "“AI giants are now desperate to avoid getting caught red-handed stealing news from publishers, so Brave Software is selling them a back door to the journalism they know they have no right to,” says Steven Lieberman, the attorney who filed the lawsuit on behalf of the other three publications. “Buying stolen goods secondhand doesn’t make them legitimate. Brave must be held responsible for laundering pirated reporting for the AI industry.”"
+          },
+          {
+            "type": "p",
+            "text": "Brave, Anthropic, Mistral, SpaceXSI, and Cohere didn’t immediately reply to a request for comment. “The New York Times is overpaying its attorneys and underpaying its journalists. (Who could’ve easily identified the disinformation in this suit.)” says Jesse Dwyer, Perplexity’s chief communications officer."
+          },
+          {
+            "type": "p",
+            "text": "Update, November 2nd: Clarified that one lawsuit was filed by New York Daily News, the Chicago Tribune, and the Orlando Sentinel, not the companies that run them. Also added a statement from the attorney who filed the lawsuit on behalf of those publications."
+          },
+          {
+            "type": "p",
+            "text": "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates."
+          },
+          {
+            "type": "li",
+            "text": "Jay Peters"
+          }
+        ],
+        "translations": [
+          "The New York Times and a group of other publications have filed lawsuits against the company that makes the Brave web browser over alleged unlawful scraping to train AI and also letting users bypass their paywalls, as reported by Reuters.",
+          "According to a complaint filed by the New York Daily News, the Chicago Tribune, and the Orlando Sentinel, Brave Software has monetized its index of scraped websites by, in part, providing AI companies with paid access to “real-time online content from the Brave Index.” The AI companies then use that index to train their models, access content to “respond to specific user queries,” or both. Brave has allegedly provided “stolen copyrighted content” to “many” AI companies including Anthropic, Perplexity, Mistral, xAI, and Cohere.",
+          "Brave also promotes “hundreds of top publishers” as being accessible through its “Paywall blocker” feature in its browser.",
+          "“Brave has never asked for the Publishers’ permission to access their websites, much less to copy the material and provide it to users or other AI companies,” the complaint says. “On the contrary, as noted above, Brave allows its users to bypass the Publishers’ paywalls without their consent, and has taken other steps that prevent the Publishers from blocking Brave’s access to the Publishers’ websites. Brave has never compensated the Publishers for the unlawful use, copying, and distribution of the Publishers’ copyrighted content.”",
+          "“While we believe in the ethical and responsible use and development of AI, Brave has flouted established copyright law and ignored repeated requests by The Times to stop its infringing conduct,” Graham James, an NYT spokesperson, says in a statement to The Verge. “We filed this lawsuit to hold Brave accountable for stealing our content to power its own products and to provide it to some of the most prominent and well resourced generative AI companies in the world.”",
+          "“AI giants are now desperate to avoid getting caught red-handed stealing news from publishers, so Brave Software is selling them a back door to the journalism they know they have no right to,” says Steven Lieberman, the attorney who filed the lawsuit on behalf of the other three publications. “Buying stolen goods secondhand doesn’t make them legitimate. Brave must be held responsible for laundering pirated reporting for the AI industry.”",
+          "Brave, Anthropic, Mistral, SpaceXSI, and Cohere didn’t immediately reply to a request for comment. “The New York Times is overpaying its attorneys and underpaying its journalists. (Who could’ve easily identified the disinformation in this suit.)” says Jesse Dwyer, Perplexity’s chief communications officer.",
+          "Update, November 2nd: Clarified that one lawsuit was filed by New York Daily News, the Chicago Tribune, and the Orlando Sentinel, not the companies that run them. Also added a statement from the attorney who filed the lawsuit on behalf of those publications.",
+          "Follow topics and authors from this story to see more like this in your personalized homepage feed and to receive email updates.",
+          "Jay Peters"
+        ]
+      }
+    },
+    {
+      "slug": "0d8b8a12221449cf",
+      "title": "Steve Jobs on His Final Quarterly Analyst Call: ‘We Think the Open Versus Closed Argument Is Just a Smokescreen’",
+      "titleZh": "Steve Jobs on His Final Quarterly Analyst Call: ‘We Think the Open Versus Closed Argument Is Just a Smokescreen’",
+      "link": "https://www.macworld.com/article/208438/jobs_transcript.html",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T15:40:34.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Steve Jobs on His Final Quarterly Analyst Call: ‘We Think the Open Versus Closed Argument Is Just a Smokescreen’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Macworld",
+        "siteName": "Macworld",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "[Editor’s note: Steve Jobs \nhad a lot to say Monday during his \nconference call with analysts following Apple’s announcement of \nrecord earnings and sales. Here’s the Apple CEO in his own words.]"
+          },
+          {
+            "type": "p",
+            "text": "Hi, everybody. As most of you know, I don’t usually participate in Apple earnings calls, since you’re all in such capable hands with Peter and Tim. But I just couldn’t help dropping by for our first 20-billion-dollar quarter. I’d like to chat about a few things, and then stay for the rest of the Q&A, if that’s all right."
+          },
+          {
+            "type": "p",
+            "text": "First, let me discuss iPhone. We sold 14.1 million iPhones in the quarter, which represents a 91 percent unit growth over the year-ago quarter, and was well ahead of IDC’s latest published estimate of 64 percent growth for the global smartphone market in the September quarter. And it handily beats RIM’s 12.1 million BlackBerrys sold, in their most recent quarter ending in August."
+          },
+          {
+            "type": "p",
+            "text": "We’ve now passed RIM. And I don’t see them catching up with us in the foreseeable future. They must move beyond their area of strength and comfort, into the unfamiliar territory of trying to become a software platform company. I think it’s going to be a challenge for them to create a competitive platform and to convince developers to create apps for yet a third software platform after iOS and Android. With 300,000 apps on Apple’s App Store, RIM has a high mountain ahead of them to climb."
+          },
+          {
+            "type": "h3",
+            "text": "Google"
+          },
+          {
+            "type": "p",
+            "text": "But what about Google? Last week, Eric Schmidt reiterated that they are activating 200,000 Android devices per day, and have around 90,000 apps in their app store. For comparison, Apple has activated around 275,000 iOS devices per day on average for the past 30 days, with a peak of almost 300,000 iOS devices per day on a few of those days. And Apple has 300,000 apps on its App Store."
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately, there is no solid data on how many Android phones are shipped each quarter. We hope that manufacturers will soon start reporting the number of Android handsets they ship each quarter, but today that just isn’t the case. Gartner reported that about 10 million Android phones were shipped in the June quarter, and we await to see if iPhone or Android was the winner in this most recent quarter."
+          },
+          {
+            "type": "p",
+            "text": "Google loves to characterize Android as “open,” and iOS and iPhone as “closed”. We find this a bit disingenuous, and clouding the real difference between our two approaches. The first thing  most of us think about when we hear the word “open” is Windows, which is available on a variety of devices. Unlike Windows, however, where most PCs have the same user interface and run the same apps, Android is very fragmented. Many Android OEMs, including the two largest, HTC and Motorola, install proprietary user interfaces to differentiate themselves from the commodity Android experience. The user’s left to figure it all out. Compare this with iPhone, where every handset works the same."
+          },
+          {
+            "type": "p",
+            "text": "Twitter client [TweetDeck] recently launched their app for Android. They reported that they had to contend with more than a hundred different versions of Android software on 244 different handsets. The multiple hardware and software iterations present developers with a daunting challenge. Many Android apps work only on selected Android handsets, running selected Android versions. And this is for handsets that have been shipped less than 12 months ago! Compare this with iPhone, where there are two versions of the software, the current and the most recent predecessor, to test against."
+          },
+          {
+            "type": "p",
+            "text": "In addition to Google’s own app marketplace, Amazon, Verizon, and Vodafone have all announced that they are creating their own app stores for Android. So there will be at least four app stores on Android, which customers must search among to find the app they want, and developers will need to work with to distribute their apps and get paid. This is gonna be a mess for both users and developers."
+          },
+          {
+            "type": "p",
+            "text": "Contrast this with Apple’s integrated App Store, which offers users the easiest-to-use largest app store in the world, preloaded on every iPhone. Apple’s app store has over three times as many apps as Google’s marketplace, and offers developers one-stop shopping to get their apps to market easily, and get paid swiftly."
+          },
+          {
+            "type": "p",
+            "text": "You know, even if Google were right, and the real issue is “closed” versus “open,” it is worthwhile to remember that open systems don’t always win. Take Microsoft’s “Plays For Sure” music strategy, which used the PC model—which Android uses as well—of separating the software components from the hardware components. Even Microsoft finally abandoned this “open” strategy in favor of copying Apple’s integrated approach with their Zune player, unfortunately leaving their OEMs empty-handed in the process. Google flirted with this integrated approach with their Nexus One phone."
+          },
+          {
+            "type": "p",
+            "text": "In reality, we think the open versus closed argument is just a smokescreen to try and hide the real issue, which is, “What’s best for the customer – fragmented versus integrated?” We think Android is very, very fragmented, and becoming more fragmented by the day. And as you know, Apple strives for the integrated model so that the user isn’t forced to be the systems integrator. We see tremendous value at having Apple, rather than our users, be the systems integrator. We think this a huge strength of our approach compared to Google’s: when selling the users who want their devices to just work, we believe that integrated will trump fragmented every time."
+          },
+          {
+            "type": "p",
+            "text": "And we also think that our developers could be more innovative if they can target a singular platform, rather than a hundred variants. They can put their time into innovative new features, rather than testing on hundreds of different handsets. So we are very committed to the integrated approach, no matter how many times Google tries to characterize it as “closed.” And we are confident that it will triumph over Google’s fragmented approach, no matter how many times Google tries to characterize it as “open.”"
+          },
+          {
+            "type": "h3",
+            "text": "Tablets"
+          },
+          {
+            "type": "p",
+            "text": "Second, I’d like to comment on the “avalanche” of tablets poised to enter the market in the coming months."
+          },
+          {
+            "type": "p",
+            "text": "First, it appears to be just a handful of credible entrants, not exactly an avalanche."
+          },
+          {
+            "type": "p",
+            "text": "Second, almost all of them use seven-inch screens, as compared to iPad’s near 10-inch screens. Let’s start there."
+          },
+          {
+            "type": "p",
+            "text": "One naturally thinks that a seven-inch screen would offer 70 percent of the benefits of a 10-inch screen. Unfortunately, this is far from the truth. The screen measurements are diagonal, so that a seven-inch screen is only 45 percent as large as iPad’s 10-inch screen. You heard me right: just 45 percent as large."
+          },
+          {
+            "type": "p",
+            "text": "If you take an iPad and hold it upright in portrait view, and draw an imaginary horizontal line halfway down the screen, the screens on these seven-inch tablets are a bit smaller than the bottom half of the iPad’s display. This size isn’t sufficient to create great tablet apps, in our opinion."
+          },
+          {
+            "type": "p",
+            "text": "While one could increase the resolution of the display to make up some of the difference, it is meaningless unless your tablet also includes sandpaper, so that the user can sand down their fingers to around one-quarter of their present size."
+          },
+          {
+            "type": "p",
+            "text": "Apple has done extensive user testing on user interfaces over many years, and we really understand this stuff. There are clear limits of how close you can physically place elements on a touchscreen before users cannot reliably tap, flick or pinch them. This is one of the key reasons we think the 10-inch screen size is the minimum size required to create great tablet apps."
+          },
+          {
+            "type": "p",
+            "text": "Third, every tablet user is also a smartphone user. No tablet can compete with the mobility of a smartphone. Its ease of fitting into your pocket or purse. Its unobtrusiveness when used in a crowd. Given that all tablet users will already have a smartphone in their pockets, giving up precious display area to fit a tablet in their pockets is clearly the wrong trade-off."
+          },
+          {
+            "type": "p",
+            "text": "The seven-inch tablets are tweeners: too big to compete with a smartphone, and too small to compete with an iPad."
+          },
+          {
+            "type": "p",
+            "text": "Fourth, almost all of these new tablets use Android software, but even Google is telling the tablet manufacturers not to use their current release—Froyo—for tablets, and to wait for a special tablet release next year. What does it mean when your software supplier says not to use their software in your tablet, and what does this mean when you ignore them and use it anyway?"
+          },
+          {
+            "type": "p",
+            "text": "Fifth, iPad now has over 35,000 apps on the App Store. This new crop of tablets will have near zero."
+          },
+          {
+            "type": "p",
+            "text": "And sixth and last, our potential competitors are having a tough time coming close to iPad’s pricing, even with their far smaller, far less expensive screens. The iPad incorporates everything we’ve learned about building high-value products, from iPhones, iPods and Macs. We create our own A4 chip, our own software, our own battery chemistry, our own enclosure, our own everything. And this results in an incredible product at a great price."
+          },
+          {
+            "type": "p",
+            "text": "The proof of this will be in the pricing of our competitors’ products, which will likely offer less, for more. These are among the reasons that we think that the current crop of seven-inch tablets are going to be DOA—Dead on Arrival. Their manufacturers will learn the painful lesson that their tablets are too small, and increase the size next year, thereby abandoning both customers and developers who jumped on the seven-inch bandwagon with an orphaned product. Sounds like lots of fun ahead."
+          },
+          {
+            "type": "h3",
+            "text": "iPad and cannibalization"
+          },
+          {
+            "type": "p",
+            "text": "The iPad is clearly gonna affect notebook computers. And I think the iPad proves it’s not a question of if, it’s a question of when. And there’s I think a lot of development and progress over the next few years. But we’re already seeing tremendous interest in iPad from education and, much to my surprise, from business. We haven’t pushed it real hard in business, and it’s being grabbed out of our hands. And I talk to people every day in business, in all kinds of businesses, that are using iPads. All the way from boards of directors that are shipping iPads around instead of board books, down to nurses and doctors and hospitals, and other large and small businesses."
+          },
+          {
+            "type": "p",
+            "text": "So the more time that passes, the more I am convinced that we’ve got a tiger by the tail here,and this is a new model of computing which, you know, we’ve already got tens of millions of people already trained on with the iPhone. And that lends itself to lots of different aspects of life, both personal, educational, and business. So I see it as very general purpose, and I see it as really big. And the timing, one could argue about the timing endlessly, but I don’t think one could argue that it’s gonna happen anymore."
+          },
+          {
+            "type": "p",
+            "text": "[Q: You think this could be your second biggest business behind iPhone?]"
+          },
+          {
+            "type": "p",
+            "text": "I try to not predict, I try to just report, so we’ll keep you posted. As you know, we’re already shipping more of them than Macs after just a few quarters."
+          },
+          {
+            "type": "p",
+            "text": "[Q: Any updates on your stance on Flash?]"
+          },
+          {
+            "type": "p",
+            "text": "Flash memory? We love flash memory."
+          },
+          {
+            "type": "p",
+            "text": "[Q: You are the tablet market right now… This is the second time you’ve come on to talk about competition, and I’m just wondering if much like Apple encroaching on RIM’s monopoly in enterprise, if you think Apple is gonna be able to sustain share growth for tablets amid some of those new competitive headwinds. Some of those players may try different things and strategies, like tethering and Flash, multitasking, less content and app restrictions, and subsidized pricing. Just wondered if you think that may create itself a more fragmented market.]"
+          },
+          {
+            "type": "p",
+            "text": "I have a hard time envisioning what those strategies you mentioned are. In terms of pricing, so far the little we’ve seen, the tablets with far less functionality are having a hard time matching us in price. Flash hasn’t presented any problem at all—as you know, most of the video on web is now available in HTML5. And having the iTunes media store and over 35,000 apps on the App Store for iPad dwarfs anything else. And we think we have a very good product here that’s gonna be hard to match, and we’re not done, we’re working on a lot of things for the future. So I don’t know what exactly these strategies are, and we’ve priced iPad pretty aggressively. So we’re out to win this one."
+          },
+          {
+            "type": "p",
+            "text": "[Q: Is the phone market a zero-sum game?]"
+          },
+          {
+            "type": "p",
+            "text": "As you know, the largest market of phones today around the world are non-smartphones. And so over the next several years, many of those non-smartphones are going to convert to smartphones. And the pie is gonna continue to grow. And I think there’ll be room for some number of companies to be successful, but eventually as most of those phones do convert to smartphones, it will turn into a zero-sum game, or at least a lot closer to that. I think right now it’s a battle for the mindshare of developers and for the mindshare of customers, and right now iPhone and Android are winning that battle."
+          },
+          {
+            "type": "p",
+            "text": "[Q: What are your thoughts about Apple TV and how it’s going, since it seems to be on a streaming model now.]"
+          },
+          {
+            "type": "p",
+            "text": "We have gone to a streaming model on Apple TV. It’s complete streaming. So all the content is rented from the iTunes store, or is streamed from your computer, or soon to be streamed from your iPhone or iPad with AirPlay. And so how our new model of Apple TV doing? Well, I can report that in just a very short amount of time we’ve already sold a quarter million of them. Over 250,000. And we’re thrilled with that. I think that it’s a great product, and I think that its $99 price point is very enticing, and I think that when we get the AirPlay stuff in place before the end of this year, it’s gonna give another big reason for people to buy it. So we’re happy with how it’s turned out."
+          },
+          {
+            "type": "p",
+            "text": "[Q: Biggest risks?]"
+          },
+          {
+            "type": "p",
+            "text": "Our goal is to make the best devices in the world, not to be the biggest. As you know, Nokia’s the biggest. And we admire them for being able to ship the number of handsets that they do. But we don’t aspire to be like them. They’re good at being like them. We want to be like us. And we want to make the best ones."
+          },
+          {
+            "type": "p",
+            "text": "So, you know, in our part of the market Android is our biggest competitor. They outshipped us in the June quarter as we were transitioning to iPhone 4, they outshipped us for the first time according to Gartner’s numbers, which we think are pretty accurate. And so we’re waiting to find out what happened in this quarter. And we’ll find out—I don’t know how we’ll find out, but Gartner will put out some new numbers, and maybe others will, and so one of these days we’ll eventually learn. And I imagine we’ll be competing with them for quite some time, but we have very different approaches. And we believe in our approach very strongly: providing users products that just work. And we think there’s lots of users that want that, in the world. And their approach is very different from that. And there may be lots of users that want their approach as well, but we’re going to pursue ours, and we think that’s the winning approach in the end."
+          },
+          {
+            "type": "p",
+            "text": "[Q: Market share question.]"
+          },
+          {
+            "type": "p",
+            "text": "Nokia makes $50 handsets, and we don’t know how to make a great smartphone for $50. We’re not smart enough to have figured that one out yet, but believe me I’ll let you know when we do. And so our goal is to make really breakthrough great products, make the best products in every industry that we compete in, and to drive the cost down while constantly making the products better at the same time. That’s what we did with iPod. We updated our products many times every year with better functionality, often times at same price and sometimes at a lower price. And it was the relentless improvement at in some cases a lower price, that was able to beat our competition and yield the market share that it did."
+          },
+          {
+            "type": "p",
+            "text": "And as you know we have a very low market share in the phone market, in the single digits, in terms of all the handsets. And we have a very high market share now in tablets, because we’re the first mover. But we don’t think about it that way."
+          },
+          {
+            "type": "p",
+            "text": "The reason we wouldn’t make a seven-inch tablet isn’t because we don’t want to hit a price point, it’s because we don’t think you can make a great tablet with a seven-inch screen. We think it’s too small to express the software that people want to put on these things. And we think, as a software-driven company, we think about the software strategies first. And we know that software developers aren’t going to deal real well with all these different sized products, when they have to re-do their software every time a screen size changes, and they’re not going to deal well with products where they can’t put enough elements on the screen to build the kind of apps they want to build."
+          },
+          {
+            "type": "p",
+            "text": "So when we make decisions on seven-inch tablets, it’s not about cost, it’s about the value of the product when you factor in the software. You see what I’m getting at? So we’re all about making the best products at aggressive prices. And that’s what we will do. And that’s what we’ve done with the iPod, and that’s what we will do with the iPad as well."
+          },
+          {
+            "type": "p",
+            "text": "You’re looking at it wrong. You’re looking at it as a hardware person in a fragmented world. You’re looking at it as a hardware manufacturer that doesn’t really know much about software, who doesn’t think about an integrated product but assumes the software will somehow take care of itself. And you’re sitting around saying, well, how can we make this cheaper? Well, we can put a smaller screen on it, and a slower processor, and less memory, and you assume that the software will somehow just come alive on this product that you’re dreaming up, but it won’t. Because these app developers have taken advantage of the products that came before, with faster processors, with larger screens, with more capabilities that they can take advantage of to make better apps for customers. And they’re not… it’s a hard one, because it throws you right back into the beginning of that chicken-and-egg problem again, to change all the assumptions on these developers. Most of them will not follow you. Most of them will say, “I’m sorry, but I’m not going to write down a watered-down version of my app just because you’ve got this phone that you can sell for $50 less, and you’re begging me to write software for it.”"
+          },
+          {
+            "type": "p",
+            "text": "[Q: Why not return some of your cash to shareholders?]"
+          },
+          {
+            "type": "p",
+            "text": "We strongly believe that one or more very strategic opportunities may come along, that we are in a unique position to take advantage of because of our strong cash position. You know, we’ve demonstrated a strong track record of being very disciplined with the use of our cash. We don’t let it burn a hole in our pocket, we don’t allow it to motivate us to do stupid acquisitions. And so I think that we’d like to continue to keep our powder dry, because we do feel that there are one or more strategic opportunities in the future. That’s the biggest reason."
+          },
+          {
+            "type": "p",
+            "text": "[Q: Why do you think you have an advantage on the price point for iPad versus PC manufacturers?]"
+          },
+          {
+            "type": "p",
+            "text": "I think part of it is because we engineer so much of it ourselves. The A4 chip inside it is an Apple creation. Everything from the battery chemistry to the enclosures. And we’ve learned a lot from the miniaturization we’ve done on iPods and iPhones, and we’re a very high-volume consumer electronics manufacturer. So I think we’ve learned a lot, we’ve developed a lot of our own components where others have to buy them on the market with middlemen, you know, getting their cut of things. And I think we’re systems architects and known how to build systems in a very efficient way. So I think this is a product we’ve been training for for the last decade."
+          }
+        ],
+        "translations": [
+          "[Editor’s note: Steve Jobs \nhad a lot to say Monday during his \nconference call with analysts following Apple’s announcement of \nrecord earnings and sales. Here’s the Apple CEO in his own words.]",
+          "Hi, everybody. As most of you know, I don’t usually participate in Apple earnings calls, since you’re all in such capable hands with Peter and Tim. But I just couldn’t help dropping by for our first 20-billion-dollar quarter. I’d like to chat about a few things, and then stay for the rest of the Q&A, if that’s all right.",
+          "First, let me discuss iPhone. We sold 14.1 million iPhones in the quarter, which represents a 91 percent unit growth over the year-ago quarter, and was well ahead of IDC’s latest published estimate of 64 percent growth for the global smartphone market in the September quarter. And it handily beats RIM’s 12.1 million BlackBerrys sold, in their most recent quarter ending in August.",
+          "We’ve now passed RIM. And I don’t see them catching up with us in the foreseeable future. They must move beyond their area of strength and comfort, into the unfamiliar territory of trying to become a software platform company. I think it’s going to be a challenge for them to create a competitive platform and to convince developers to create apps for yet a third software platform after iOS and Android. With 300,000 apps on Apple’s App Store, RIM has a high mountain ahead of them to climb.",
+          "Google",
+          "But what about Google? Last week, Eric Schmidt reiterated that they are activating 200,000 Android devices per day, and have around 90,000 apps in their app store. For comparison, Apple has activated around 275,000 iOS devices per day on average for the past 30 days, with a peak of almost 300,000 iOS devices per day on a few of those days. And Apple has 300,000 apps on its App Store.",
+          "Unfortunately, there is no solid data on how many Android phones are shipped each quarter. We hope that manufacturers will soon start reporting the number of Android handsets they ship each quarter, but today that just isn’t the case. Gartner reported that about 10 million Android phones were shipped in the June quarter, and we await to see if iPhone or Android was the winner in this most recent quarter.",
+          "Google loves to characterize Android as “open,” and iOS and iPhone as “closed”. We find this a bit disingenuous, and clouding the real difference between our two approaches. The first thing  most of us think about when we hear the word “open” is Windows, which is available on a variety of devices. Unlike Windows, however, where most PCs have the same user interface and run the same apps, Android is very fragmented. Many Android OEMs, including the two largest, HTC and Motorola, install proprietary user interfaces to differentiate themselves from the commodity Android experience. The user’s left to figure it all out. Compare this with iPhone, where every handset works the same.",
+          "Twitter client [TweetDeck] recently launched their app for Android. They reported that they had to contend with more than a hundred different versions of Android software on 244 different handsets. The multiple hardware and software iterations present developers with a daunting challenge. Many Android apps work only on selected Android handsets, running selected Android versions. And this is for handsets that have been shipped less than 12 months ago! Compare this with iPhone, where there are two versions of the software, the current and the most recent predecessor, to test against.",
+          "In addition to Google’s own app marketplace, Amazon, Verizon, and Vodafone have all announced that they are creating their own app stores for Android. So there will be at least four app stores on Android, which customers must search among to find the app they want, and developers will need to work with to distribute their apps and get paid. This is gonna be a mess for both users and developers.",
+          "Contrast this with Apple’s integrated App Store, which offers users the easiest-to-use largest app store in the world, preloaded on every iPhone. Apple’s app store has over three times as many apps as Google’s marketplace, and offers developers one-stop shopping to get their apps to market easily, and get paid swiftly.",
+          "You know, even if Google were right, and the real issue is “closed” versus “open,” it is worthwhile to remember that open systems don’t always win. Take Microsoft’s “Plays For Sure” music strategy, which used the PC model—which Android uses as well—of separating the software components from the hardware components. Even Microsoft finally abandoned this “open” strategy in favor of copying Apple’s integrated approach with their Zune player, unfortunately leaving their OEMs empty-handed in the process. Google flirted with this integrated approach with their Nexus One phone.",
+          "In reality, we think the open versus closed argument is just a smokescreen to try and hide the real issue, which is, “What’s best for the customer – fragmented versus integrated?” We think Android is very, very fragmented, and becoming more fragmented by the day. And as you know, Apple strives for the integrated model so that the user isn’t forced to be the systems integrator. We see tremendous value at having Apple, rather than our users, be the systems integrator. We think this a huge strength of our approach compared to Google’s: when selling the users who want their devices to just work, we believe that integrated will trump fragmented every time.",
+          "And we also think that our developers could be more innovative if they can target a singular platform, rather than a hundred variants. They can put their time into innovative new features, rather than testing on hundreds of different handsets. So we are very committed to the integrated approach, no matter how many times Google tries to characterize it as “closed.” And we are confident that it will triumph over Google’s fragmented approach, no matter how many times Google tries to characterize it as “open.”",
+          "Tablets",
+          "Second, I’d like to comment on the “avalanche” of tablets poised to enter the market in the coming months.",
+          "First, it appears to be just a handful of credible entrants, not exactly an avalanche.",
+          "Second, almost all of them use seven-inch screens, as compared to iPad’s near 10-inch screens. Let’s start there.",
+          "One naturally thinks that a seven-inch screen would offer 70 percent of the benefits of a 10-inch screen. Unfortunately, this is far from the truth. The screen measurements are diagonal, so that a seven-inch screen is only 45 percent as large as iPad’s 10-inch screen. You heard me right: just 45 percent as large.",
+          "If you take an iPad and hold it upright in portrait view, and draw an imaginary horizontal line halfway down the screen, the screens on these seven-inch tablets are a bit smaller than the bottom half of the iPad’s display. This size isn’t sufficient to create great tablet apps, in our opinion.",
+          "While one could increase the resolution of the display to make up some of the difference, it is meaningless unless your tablet also includes sandpaper, so that the user can sand down their fingers to around one-quarter of their present size.",
+          "Apple has done extensive user testing on user interfaces over many years, and we really understand this stuff. There are clear limits of how close you can physically place elements on a touchscreen before users cannot reliably tap, flick or pinch them. This is one of the key reasons we think the 10-inch screen size is the minimum size required to create great tablet apps.",
+          "Third, every tablet user is also a smartphone user. No tablet can compete with the mobility of a smartphone. Its ease of fitting into your pocket or purse. Its unobtrusiveness when used in a crowd. Given that all tablet users will already have a smartphone in their pockets, giving up precious display area to fit a tablet in their pockets is clearly the wrong trade-off.",
+          "The seven-inch tablets are tweeners: too big to compete with a smartphone, and too small to compete with an iPad.",
+          "Fourth, almost all of these new tablets use Android software, but even Google is telling the tablet manufacturers not to use their current release—Froyo—for tablets, and to wait for a special tablet release next year. What does it mean when your software supplier says not to use their software in your tablet, and what does this mean when you ignore them and use it anyway?",
+          "Fifth, iPad now has over 35,000 apps on the App Store. This new crop of tablets will have near zero.",
+          "And sixth and last, our potential competitors are having a tough time coming close to iPad’s pricing, even with their far smaller, far less expensive screens. The iPad incorporates everything we’ve learned about building high-value products, from iPhones, iPods and Macs. We create our own A4 chip, our own software, our own battery chemistry, our own enclosure, our own everything. And this results in an incredible product at a great price.",
+          "The proof of this will be in the pricing of our competitors’ products, which will likely offer less, for more. These are among the reasons that we think that the current crop of seven-inch tablets are going to be DOA—Dead on Arrival. Their manufacturers will learn the painful lesson that their tablets are too small, and increase the size next year, thereby abandoning both customers and developers who jumped on the seven-inch bandwagon with an orphaned product. Sounds like lots of fun ahead.",
+          "iPad and cannibalization",
+          "The iPad is clearly gonna affect notebook computers. And I think the iPad proves it’s not a question of if, it’s a question of when. And there’s I think a lot of development and progress over the next few years. But we’re already seeing tremendous interest in iPad from education and, much to my surprise, from business. We haven’t pushed it real hard in business, and it’s being grabbed out of our hands. And I talk to people every day in business, in all kinds of businesses, that are using iPads. All the way from boards of directors that are shipping iPads around instead of board books, down to nurses and doctors and hospitals, and other large and small businesses.",
+          "So the more time that passes, the more I am convinced that we’ve got a tiger by the tail here,and this is a new model of computing which, you know, we’ve already got tens of millions of people already trained on with the iPhone. And that lends itself to lots of different aspects of life, both personal, educational, and business. So I see it as very general purpose, and I see it as really big. And the timing, one could argue about the timing endlessly, but I don’t think one could argue that it’s gonna happen anymore.",
+          "[Q: You think this could be your second biggest business behind iPhone?]",
+          "I try to not predict, I try to just report, so we’ll keep you posted. As you know, we’re already shipping more of them than Macs after just a few quarters.",
+          "[Q: Any updates on your stance on Flash?]",
+          "Flash memory? We love flash memory.",
+          "[Q: You are the tablet market right now… This is the second time you’ve come on to talk about competition, and I’m just wondering if much like Apple encroaching on RIM’s monopoly in enterprise, if you think Apple is gonna be able to sustain share growth for tablets amid some of those new competitive headwinds. Some of those players may try different things and strategies, like tethering and Flash, multitasking, less content and app restrictions, and subsidized pricing. Just wondered if you think that may create itself a more fragmented market.]",
+          "I have a hard time envisioning what those strategies you mentioned are. In terms of pricing, so far the little we’ve seen, the tablets with far less functionality are having a hard time matching us in price. Flash hasn’t presented any problem at all—as you know, most of the video on web is now available in HTML5. And having the iTunes media store and over 35,000 apps on the App Store for iPad dwarfs anything else. And we think we have a very good product here that’s gonna be hard to match, and we’re not done, we’re working on a lot of things for the future. So I don’t know what exactly these strategies are, and we’ve priced iPad pretty aggressively. So we’re out to win this one.",
+          "[Q: Is the phone market a zero-sum game?]",
+          "As you know, the largest market of phones today around the world are non-smartphones. And so over the next several years, many of those non-smartphones are going to convert to smartphones. And the pie is gonna continue to grow. And I think there’ll be room for some number of companies to be successful, but eventually as most of those phones do convert to smartphones, it will turn into a zero-sum game, or at least a lot closer to that. I think right now it’s a battle for the mindshare of developers and for the mindshare of customers, and right now iPhone and Android are winning that battle.",
+          "[Q: What are your thoughts about Apple TV and how it’s going, since it seems to be on a streaming model now.]",
+          "We have gone to a streaming model on Apple TV. It’s complete streaming. So all the content is rented from the iTunes store, or is streamed from your computer, or soon to be streamed from your iPhone or iPad with AirPlay. And so how our new model of Apple TV doing? Well, I can report that in just a very short amount of time we’ve already sold a quarter million of them. Over 250,000. And we’re thrilled with that. I think that it’s a great product, and I think that its $99 price point is very enticing, and I think that when we get the AirPlay stuff in place before the end of this year, it’s gonna give another big reason for people to buy it. So we’re happy with how it’s turned out.",
+          "[Q: Biggest risks?]",
+          "Our goal is to make the best devices in the world, not to be the biggest. As you know, Nokia’s the biggest. And we admire them for being able to ship the number of handsets that they do. But we don’t aspire to be like them. They’re good at being like them. We want to be like us. And we want to make the best ones.",
+          "So, you know, in our part of the market Android is our biggest competitor. They outshipped us in the June quarter as we were transitioning to iPhone 4, they outshipped us for the first time according to Gartner’s numbers, which we think are pretty accurate. And so we’re waiting to find out what happened in this quarter. And we’ll find out—I don’t know how we’ll find out, but Gartner will put out some new numbers, and maybe others will, and so one of these days we’ll eventually learn. And I imagine we’ll be competing with them for quite some time, but we have very different approaches. And we believe in our approach very strongly: providing users products that just work. And we think there’s lots of users that want that, in the world. And their approach is very different from that. And there may be lots of users that want their approach as well, but we’re going to pursue ours, and we think that’s the winning approach in the end.",
+          "[Q: Market share question.]",
+          "Nokia makes $50 handsets, and we don’t know how to make a great smartphone for $50. We’re not smart enough to have figured that one out yet, but believe me I’ll let you know when we do. And so our goal is to make really breakthrough great products, make the best products in every industry that we compete in, and to drive the cost down while constantly making the products better at the same time. That’s what we did with iPod. We updated our products many times every year with better functionality, often times at same price and sometimes at a lower price. And it was the relentless improvement at in some cases a lower price, that was able to beat our competition and yield the market share that it did.",
+          "And as you know we have a very low market share in the phone market, in the single digits, in terms of all the handsets. And we have a very high market share now in tablets, because we’re the first mover. But we don’t think about it that way.",
+          "The reason we wouldn’t make a seven-inch tablet isn’t because we don’t want to hit a price point, it’s because we don’t think you can make a great tablet with a seven-inch screen. We think it’s too small to express the software that people want to put on these things. And we think, as a software-driven company, we think about the software strategies first. And we know that software developers aren’t going to deal real well with all these different sized products, when they have to re-do their software every time a screen size changes, and they’re not going to deal well with products where they can’t put enough elements on the screen to build the kind of apps they want to build.",
+          "So when we make decisions on seven-inch tablets, it’s not about cost, it’s about the value of the product when you factor in the software. You see what I’m getting at? So we’re all about making the best products at aggressive prices. And that’s what we will do. And that’s what we’ve done with the iPod, and that’s what we will do with the iPad as well.",
+          "You’re looking at it wrong. You’re looking at it as a hardware person in a fragmented world. You’re looking at it as a hardware manufacturer that doesn’t really know much about software, who doesn’t think about an integrated product but assumes the software will somehow take care of itself. And you’re sitting around saying, well, how can we make this cheaper? Well, we can put a smaller screen on it, and a slower processor, and less memory, and you assume that the software will somehow just come alive on this product that you’re dreaming up, but it won’t. Because these app developers have taken advantage of the products that came before, with faster processors, with larger screens, with more capabilities that they can take advantage of to make better apps for customers. And they’re not… it’s a hard one, because it throws you right back into the beginning of that chicken-and-egg problem again, to change all the assumptions on these developers. Most of them will not follow you. Most of them will say, “I’m sorry, but I’m not going to write down a watered-down version of my app just because you’ve got this phone that you can sell for $50 less, and you’re begging me to write software for it.”",
+          "[Q: Why not return some of your cash to shareholders?]",
+          "We strongly believe that one or more very strategic opportunities may come along, that we are in a unique position to take advantage of because of our strong cash position. You know, we’ve demonstrated a strong track record of being very disciplined with the use of our cash. We don’t let it burn a hole in our pocket, we don’t allow it to motivate us to do stupid acquisitions. And so I think that we’d like to continue to keep our powder dry, because we do feel that there are one or more strategic opportunities in the future. That’s the biggest reason.",
+          "[Q: Why do you think you have an advantage on the price point for iPad versus PC manufacturers?]",
+          "I think part of it is because we engineer so much of it ourselves. The A4 chip inside it is an Apple creation. Everything from the battery chemistry to the enclosures. And we’ve learned a lot from the miniaturization we’ve done on iPods and iPhones, and we’re a very high-volume consumer electronics manufacturer. So I think we’ve learned a lot, we’ve developed a lot of our own components where others have to buy them on the market with middlemen, you know, getting their cut of things. And I think we’re systems architects and known how to build systems in a very efficient way. So I think this is a product we’ve been training for for the last decade."
+        ]
+      }
+    },
+    {
+      "slug": "b4efcdf4729e025a",
+      "title": "Chance Miller Reviews the New A20 Pro iPad Mini",
+      "titleZh": "Chance Miller Reviews the New A20 Pro iPad Mini",
+      "link": "https://9to5mac.com/2026/11/03/new-ipad-mini-a20-pro-review/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T14:51:14.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Chance Miller Reviews the New A20 Pro iPad Mini",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Chance Miller",
+        "siteName": "9to5Mac",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Apple’s smallest iPad has gotten its biggest update in years. The new iPad mini features a much thinner and lighter design, a larger OLED display, water resistance, and the powerful A20 Pro chip."
+          },
+          {
+            "type": "p",
+            "text": "I’ve been testing the new iPad mini, and there’s a lot to like — but also a couple of frustrations. Here’s everything you need to know."
+          },
+          {
+            "type": "li",
+            "text": "Pre-order the new iPad mini now"
+          },
+          {
+            "type": "h2",
+            "text": "Design"
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini lives up to the “mini” name even more than its predecessor. It’s significantly thinner, down from 6.3mm on the previous iPad mini to 5.4mm on the new model. In fact, that puts it very close to the ultra-thin iPad Pro and the unfolded iPhone Duo. Here’s how it compares:"
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini is also significantly lighter, dropping from 293 grams to 255 grams. That puts it in the realm of the iPhone Duo, for comparison’s sake:"
+          },
+          {
+            "type": "p",
+            "text": "The reduction in weight and thickness was immediately noticeable when I picked up the new iPad mini. It feels significantly nicer to hold, more premium, and less “dense” in my hands."
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini features an 8.5-inch screen, a slight increase from the previous generation’s 8.3-inch display. The overall footprint is mostly the same (the new model is actually about 2.2mm narrower). The larger screen is possible because the new iPad mini’s bezels are 24 percent thinner than before."
+          },
+          {
+            "type": "p",
+            "text": "In addition to allowing a bigger screen in the same form factor, the narrower bezels also modernize the iPad mini’s overall look and feel. The bezels are noticeably slimmer than the iPad Air and base model iPad, and slightly thinner than the iPad Pro."
+          },
+          {
+            "type": "p",
+            "text": "With smaller bezels, a thinner chassis, and a lighter weight, the new iPad mini feels significantly more premium than before. It reminds me less of the base model iPad or iPad Air and more of the iPad Pro, just shrunken down."
+          },
+          {
+            "type": "h2",
+            "text": "Display technology"
+          },
+          {
+            "type": "p",
+            "text": "The big news about the display, though, is the switch to OLED. This marks Apple’s first non-Pro iPad to offer an OLED screen. It’s not the fancy tandem OLED display of the iPad Pro, but it’s a huge improvement over the previous model’s LCD panel."
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini offers SDR brightness up to 600 nits, up from the previous model’s 500 nits max. The iPad mini also supports HDR content, with up to 1200 nits peak brightness."
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini’s screen is undeniably an improvement over its predecessor. All of the inherent benefits of OLED apply here, including better colors, improved contrast, higher brightness, and more."
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately, the new iPad mini’s screen has one limitation: it doesn’t support ProMotion, or a 120Hz refresh rate of any kind. Instead, it’s still locked to 60Hz. This is an incredibly frustrating decision that I can’t quite wrap my head around."
+          },
+          {
+            "type": "p",
+            "text": "Apple touts the iPad mini’s OLED screen as offering significantly faster pixel response time than the previous generation’s LCD panel, leading to improvements like smoother scrolling and reduced motion blur."
+          },
+          {
+            "type": "p",
+            "text": "I’ve noticed that things like swiping between Home Screen pages, scrolling social media, and system animations are noticeably smoother. They aren’t, however, as smooth as an Apple device with a ProMotion display, and they’re not a substitute for a higher refresh-rate display."
+          },
+          {
+            "type": "p",
+            "text": "I’m sure Apple knows the iPad mini’s market, and it seems to have decided not to prioritize ProMotion based on that information. However, as someone who has longed for a so-called “iPad mini Pro” for years, I’m disappointed by the decision. The new iPad mini’s screen is so much better … I just wish Apple had gone that extra step and added ProMotion. We’ve reached a point where ProMotion should be table stakes, especially after Apple brought it to the base iPhone 17 last year."
+          },
+          {
+            "type": "p",
+            "text": "Nano-texture"
+          },
+          {
+            "type": "p",
+            "text": "For an extra $100, you can upgrade the new iPad mini to have a nano-texture display (on the 256GB and 512GB models)."
+          },
+          {
+            "type": "p",
+            "text": "I’m a huge fan of Apple’s nano-texture display and have it on my 14-inch MacBook Pro. On the iPad mini, I think it makes even more sense."
+          },
+          {
+            "type": "p",
+            "text": "The iPad mini is ultra-portable, and you naturally carry it around and use it in different lighting environments. The nano-texture glass helps reduce reflections and glare in a wide variety of lighting conditions. I also really like the combination of the iPad mini’s book-like size and the nano-texture finish."
+          },
+          {
+            "type": "p",
+            "text": "There is a slight tradeoff in color vibrancy compared to a glossy OLED screen, as on other Apple devices with nano-texture, but it’s a very minor difference in my experience. The screen still looks fantastic."
+          },
+          {
+            "type": "h2",
+            "text": "Speakers and durability"
+          },
+          {
+            "type": "p",
+            "text": "One of the more interesting changes with the new iPad mini is something Apple calls the “Acoustic Display.” Instead of traditional speakers with visible grilles, Apple has developed a new system that uses the display itself to produce sound."
+          },
+          {
+            "type": "p",
+            "text": "Essentially, Apple has designed special woofers that vibrate the display to produce low and midrange frequencies. For higher frequencies, custom tweeters are hidden between the glass and aluminum enclosure. Apple says this new system delivers louder audio, “punchier” bass, and clearer highs, despite the iPad mini’s significantly thinner design."
+          },
+          {
+            "type": "p",
+            "text": "In practice, I think the new iPad mini sounds great. I’d choose headphones or an external speaker for serious music or video consumption, but day-to-day the iPad mini’s built-in speakers are perfectly adequate. (I’d bet that this Acoustic Display technology shows up in future iPhones too, and the iPad mini is serving as a test bed of sorts.)"
+          },
+          {
+            "type": "p",
+            "text": "The Acoustic Display also plays an important role in another major upgrade: water and dust resistance. The new iPad mini is IP67 rated, which means it can be immersed in 1 meter of freshwater for up to 30 minutes. It’s the first iPad to have an official water-resistance rating."
+          },
+          {
+            "type": "p",
+            "text": "Adding water resistance to the iPad mini is particularly notable given its size and portability. I naturally find myself wanting to take it everywhere, and water resistance makes that more feasible."
+          },
+          {
+            "type": "p",
+            "text": "One use case where all these improvements really come together is reading. The thinner and lighter design, nano-texture glass, and water resistance make the new iPad mini the most compelling iPad yet to serve as an e-reader."
+          },
+          {
+            "type": "h2",
+            "text": "Performance"
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini is powered by Apple’s A20 Pro chip, which I already covered in detail in my iPhone 18 Pro review. The short version: the A20 Pro chip gives you plenty of power for anything you can throw at the iPad mini today."
+          },
+          {
+            "type": "p",
+            "text": "One detail worth calling out is that Apple uses two different versions of the A20 Pro in the iPad mini. The 128GB and 256GB models feature a five-core CPU and 16-core Neural Engine, while the 512GB model gets a six-core CPU and Dual 16-core Neural Engine. All three configurations feature the same seven-core GPU."
+          },
+          {
+            "type": "p",
+            "text": "I don’t think anyone should buy the 512GB version of the iPad mini just for those extra cores. You should pick your iPad mini configuration based on how much storage you need, not the version of the A20 Pro chip. You don’t need to worry about performance with the new iPad mini. And perhaps most importantly, the A20 Pro chip ensures the iPad mini has enough headroom for the future."
+          },
+          {
+            "type": "h2",
+            "text": "9to5Mac’s Take"
+          },
+          {
+            "type": "p",
+            "text": "There’s been a lot of consternation about where the iPad mini fits in a world where the iPhone Duo also now exists. It’s a fair question. After all, when the iPhone Duo is unfolded, the two devices share a similar form factor … but that’s really where the similarities end."
+          },
+          {
+            "type": "p",
+            "text": "The iPad mini offers the full-fledged, unapologetic iPadOS experience. It supports the full multitasking prowess of an iPad Pro, including windowing and the menu bar. The new iPad mini also supports extended display mode, so you can plug it into an external display and extend your iPad experience there."
+          },
+          {
+            "type": "p",
+            "text": "The iPad mini also gets iPadOS app layouts, and most importantly, a desktop-class browsing experience in Safari. It’s a remarkably capable device in a remarkably compact form factor. It fits where other iPads can’t, yet it runs the same version of iPadOS as other iPads."
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini does all of that, but better than before. The thinner, lighter design paired with smaller bezels gives the new iPad mini a meaningful visual refresh. The added water resistance means you can do even more with the compact and pocketable iPad mini design."
+          },
+          {
+            "type": "p",
+            "text": "But all of this comes at a higher price of $699. This marks the second price increase for the iPad mini this year. It started the year at $499, rose to $599 as part of Apple’s broader price increases in June, and is now $699 as of this refresh."
+          },
+          {
+            "type": "p",
+            "text": "The new iPad mini also still starts with 128GB of storage. Increasing the base storage to 256GB would’ve helped ease some of the pain of that price increase. It’s also getting increasingly hard to manage a device with 128GB, particularly with the storage needs of Apple Intelligence and Siri AI. The lack of ProMotion and Face ID also make the price increase sting more."
+          },
+          {
+            "type": "p",
+            "text": "Ultimately, the iPad mini form factor is a joy to use. The design feels great in the hand, and having the full iPadOS experience in such a compact device remains impressive. It’s not quite the “iPad mini Pro” I’ve always wanted, but it’s big upgrade to a form factor that I’ve always loved."
+          },
+          {
+            "type": "h2",
+            "text": "My iPad mini recommendations:"
+          },
+          {
+            "type": "li",
+            "text": "Pre-order the new iPad mini now"
+          },
+          {
+            "type": "li",
+            "text": "Apple Pencil Pro"
+          },
+          {
+            "type": "li",
+            "text": "Apple 40W Dynamic Power Adapter with 60W Max"
+          },
+          {
+            "type": "li",
+            "text": "Apple Smart Folio for iPad mini – Taupe ​​​​​​​"
+          },
+          {
+            "type": "li",
+            "text": "Beats Woven USB-C to USB-C Cables"
+          },
+          {
+            "type": "p",
+            "text": "Follow Chance: Threads, X, and Instagram"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": [
+          "Apple’s smallest iPad has gotten its biggest update in years. The new iPad mini features a much thinner and lighter design, a larger OLED display, water resistance, and the powerful A20 Pro chip.",
+          "I’ve been testing the new iPad mini, and there’s a lot to like — but also a couple of frustrations. Here’s everything you need to know.",
+          "Pre-order the new iPad mini now",
+          "Design",
+          "The new iPad mini lives up to the “mini” name even more than its predecessor. It’s significantly thinner, down from 6.3mm on the previous iPad mini to 5.4mm on the new model. In fact, that puts it very close to the ultra-thin iPad Pro and the unfolded iPhone Duo. Here’s how it compares:",
+          "The new iPad mini is also significantly lighter, dropping from 293 grams to 255 grams. That puts it in the realm of the iPhone Duo, for comparison’s sake:",
+          "The reduction in weight and thickness was immediately noticeable when I picked up the new iPad mini. It feels significantly nicer to hold, more premium, and less “dense” in my hands.",
+          "The new iPad mini features an 8.5-inch screen, a slight increase from the previous generation’s 8.3-inch display. The overall footprint is mostly the same (the new model is actually about 2.2mm narrower). The larger screen is possible because the new iPad mini’s bezels are 24 percent thinner than before.",
+          "In addition to allowing a bigger screen in the same form factor, the narrower bezels also modernize the iPad mini’s overall look and feel. The bezels are noticeably slimmer than the iPad Air and base model iPad, and slightly thinner than the iPad Pro.",
+          "With smaller bezels, a thinner chassis, and a lighter weight, the new iPad mini feels significantly more premium than before. It reminds me less of the base model iPad or iPad Air and more of the iPad Pro, just shrunken down.",
+          "Display technology",
+          "The big news about the display, though, is the switch to OLED. This marks Apple’s first non-Pro iPad to offer an OLED screen. It’s not the fancy tandem OLED display of the iPad Pro, but it’s a huge improvement over the previous model’s LCD panel.",
+          "The new iPad mini offers SDR brightness up to 600 nits, up from the previous model’s 500 nits max. The iPad mini also supports HDR content, with up to 1200 nits peak brightness.",
+          "The new iPad mini’s screen is undeniably an improvement over its predecessor. All of the inherent benefits of OLED apply here, including better colors, improved contrast, higher brightness, and more.",
+          "Unfortunately, the new iPad mini’s screen has one limitation: it doesn’t support ProMotion, or a 120Hz refresh rate of any kind. Instead, it’s still locked to 60Hz. This is an incredibly frustrating decision that I can’t quite wrap my head around.",
+          "Apple touts the iPad mini’s OLED screen as offering significantly faster pixel response time than the previous generation’s LCD panel, leading to improvements like smoother scrolling and reduced motion blur.",
+          "I’ve noticed that things like swiping between Home Screen pages, scrolling social media, and system animations are noticeably smoother. They aren’t, however, as smooth as an Apple device with a ProMotion display, and they’re not a substitute for a higher refresh-rate display.",
+          "I’m sure Apple knows the iPad mini’s market, and it seems to have decided not to prioritize ProMotion based on that information. However, as someone who has longed for a so-called “iPad mini Pro” for years, I’m disappointed by the decision. The new iPad mini’s screen is so much better … I just wish Apple had gone that extra step and added ProMotion. We’ve reached a point where ProMotion should be table stakes, especially after Apple brought it to the base iPhone 17 last year.",
+          "Nano-texture",
+          "For an extra $100, you can upgrade the new iPad mini to have a nano-texture display (on the 256GB and 512GB models).",
+          "I’m a huge fan of Apple’s nano-texture display and have it on my 14-inch MacBook Pro. On the iPad mini, I think it makes even more sense.",
+          "The iPad mini is ultra-portable, and you naturally carry it around and use it in different lighting environments. The nano-texture glass helps reduce reflections and glare in a wide variety of lighting conditions. I also really like the combination of the iPad mini’s book-like size and the nano-texture finish.",
+          "There is a slight tradeoff in color vibrancy compared to a glossy OLED screen, as on other Apple devices with nano-texture, but it’s a very minor difference in my experience. The screen still looks fantastic.",
+          "Speakers and durability",
+          "One of the more interesting changes with the new iPad mini is something Apple calls the “Acoustic Display.” Instead of traditional speakers with visible grilles, Apple has developed a new system that uses the display itself to produce sound.",
+          "Essentially, Apple has designed special woofers that vibrate the display to produce low and midrange frequencies. For higher frequencies, custom tweeters are hidden between the glass and aluminum enclosure. Apple says this new system delivers louder audio, “punchier” bass, and clearer highs, despite the iPad mini’s significantly thinner design.",
+          "In practice, I think the new iPad mini sounds great. I’d choose headphones or an external speaker for serious music or video consumption, but day-to-day the iPad mini’s built-in speakers are perfectly adequate. (I’d bet that this Acoustic Display technology shows up in future iPhones too, and the iPad mini is serving as a test bed of sorts.)",
+          "The Acoustic Display also plays an important role in another major upgrade: water and dust resistance. The new iPad mini is IP67 rated, which means it can be immersed in 1 meter of freshwater for up to 30 minutes. It’s the first iPad to have an official water-resistance rating.",
+          "Adding water resistance to the iPad mini is particularly notable given its size and portability. I naturally find myself wanting to take it everywhere, and water resistance makes that more feasible.",
+          "One use case where all these improvements really come together is reading. The thinner and lighter design, nano-texture glass, and water resistance make the new iPad mini the most compelling iPad yet to serve as an e-reader.",
+          "Performance",
+          "The new iPad mini is powered by Apple’s A20 Pro chip, which I already covered in detail in my iPhone 18 Pro review. The short version: the A20 Pro chip gives you plenty of power for anything you can throw at the iPad mini today.",
+          "One detail worth calling out is that Apple uses two different versions of the A20 Pro in the iPad mini. The 128GB and 256GB models feature a five-core CPU and 16-core Neural Engine, while the 512GB model gets a six-core CPU and Dual 16-core Neural Engine. All three configurations feature the same seven-core GPU.",
+          "I don’t think anyone should buy the 512GB version of the iPad mini just for those extra cores. You should pick your iPad mini configuration based on how much storage you need, not the version of the A20 Pro chip. You don’t need to worry about performance with the new iPad mini. And perhaps most importantly, the A20 Pro chip ensures the iPad mini has enough headroom for the future.",
+          "9to5Mac’s Take",
+          "There’s been a lot of consternation about where the iPad mini fits in a world where the iPhone Duo also now exists. It’s a fair question. After all, when the iPhone Duo is unfolded, the two devices share a similar form factor … but that’s really where the similarities end.",
+          "The iPad mini offers the full-fledged, unapologetic iPadOS experience. It supports the full multitasking prowess of an iPad Pro, including windowing and the menu bar. The new iPad mini also supports extended display mode, so you can plug it into an external display and extend your iPad experience there.",
+          "The iPad mini also gets iPadOS app layouts, and most importantly, a desktop-class browsing experience in Safari. It’s a remarkably capable device in a remarkably compact form factor. It fits where other iPads can’t, yet it runs the same version of iPadOS as other iPads.",
+          "The new iPad mini does all of that, but better than before. The thinner, lighter design paired with smaller bezels gives the new iPad mini a meaningful visual refresh. The added water resistance means you can do even more with the compact and pocketable iPad mini design.",
+          "But all of this comes at a higher price of $699. This marks the second price increase for the iPad mini this year. It started the year at $499, rose to $599 as part of Apple’s broader price increases in June, and is now $699 as of this refresh.",
+          "The new iPad mini also still starts with 128GB of storage. Increasing the base storage to 256GB would’ve helped ease some of the pain of that price increase. It’s also getting increasingly hard to manage a device with 128GB, particularly with the storage needs of Apple Intelligence and Siri AI. The lack of ProMotion and Face ID also make the price increase sting more.",
+          "Ultimately, the iPad mini form factor is a joy to use. The design feels great in the hand, and having the full iPadOS experience in such a compact device remains impressive. It’s not quite the “iPad mini Pro” I’ve always wanted, but it’s big upgrade to a form factor that I’ve always loved.",
+          "My iPad mini recommendations:",
+          "Pre-order the new iPad mini now",
+          "Apple Pencil Pro",
+          "Apple 40W Dynamic Power Adapter with 60W Max",
+          "Apple Smart Folio for iPad mini – Taupe ​​​​​​​",
+          "Beats Woven USB-C to USB-C Cables",
+          "Follow Chance: Threads, X, and Instagram",
+          "FTC: We use income earning auto affiliate links. More."
+        ]
+      }
+    },
+    {
+      "slug": "d980a5c381e10058",
+      "title": "Apple’s Analyst Calls Have Been Scripted for Decades",
+      "titleZh": "Apple’s Analyst Calls Have Been Scripted for Decades",
+      "link": "https://9to5mac.com/2026/11/03/apple-ceo-john-ternus-criticized-for-scripted-approach-to-first-earnings-call/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T14:39:03.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Apple’s Analyst Calls Have Been Scripted for Decades",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Ben Lovejoy",
+        "siteName": "9to5Mac",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Investors didn’t seem overly happy about yesterday’s Apple earnings call despite the record results. That likely reflects the company’s cautious take on margins in the current quarter, but some have also criticized what they describe as a very “scripted” approach by new CEO John Ternus."
+          },
+          {
+            "type": "p",
+            "text": "Bloomberg was the biggest critic, describing it as a “timid” performance that left analysts “sorely disappointed” …"
+          },
+          {
+            "type": "p",
+            "text": "Bloomberg’s Dave Lee didn’t hold back."
+          },
+          {
+            "type": "quote",
+            "text": "Apple investors and fans hoping to get an insight into the philosophy of new Chief Executive Officer John Ternus on Monday were left sorely disappointed. The 51-year-old’s first earnings call was a timid affair, with Ternus taking cover behind a carefully written script as analysts peppered him with questions."
+          },
+          {
+            "type": "p",
+            "text": "Lee acknowledged that the slump in pre-market trading will have been largely driven by Apple’s caution about rising expenses in the current quarter. The company said that memory costs were continuing to rise and that building out Siri AI data centers we’re going to add to the RAM bill. But he argued that Ternus missed an opportunity to talk up the company."
+          },
+          {
+            "type": "quote",
+            "text": "In front of Ternus on Monday night was a chance to counteract the gloom and doom by instilling in Wall Street the fundamentals of the Ternus Doctrine — what he sees Apple becoming under his tenure, the “product guy” taking the company to a new era of innovation. Instead, he spoke like a man glancing at the clock and wishing the minutes away."
+          },
+          {
+            "type": "p",
+            "text": "Fortune’s Sebastian Herrera was less vocal but echoed some of the criticism."
+          },
+          {
+            "type": "quote",
+            "text": "Ternus fielded some questions but also delegated answers to Chief Financial Officer Kevan Parekh and Chief Operating Officer Sabih Khan, who Apple said would participate in earnings calls moving forward, something the company hasn’t done for years. Ternus projected confidence on the call, but he appeared to stick mostly to scripted marketing points."
+          },
+          {
+            "type": "h2",
+            "text": "9to5Mac’s Take"
+          },
+          {
+            "type": "p",
+            "text": "It will of course take Ternus some time to develop his own style when it comes to all of the varied aspects of the role, including addressing analysts in earnings calls, but I thought he took a measured but optimistic approach. Given the famously reticent style of his predecessor, the criticism strikes me as rather odd."
+          },
+          {
+            "type": "p",
+            "text": "What’s your take? Please share in the comments."
+          },
+          {
+            "type": "li",
+            "text": "meross Smart Garage Door Opener"
+          },
+          {
+            "type": "li",
+            "text": "Beats Woven USB-C cables"
+          },
+          {
+            "type": "li",
+            "text": "Certified refurbished Apple products 15% off at apple.com"
+          },
+          {
+            "type": "li",
+            "text": "Discounted AirPods Pro 3"
+          },
+          {
+            "type": "li",
+            "text": "Wireless CarPlay adapter"
+          },
+          {
+            "type": "li",
+            "text": "10-year AirTag battery case"
+          },
+          {
+            "type": "li",
+            "text": "Logitech MX Master 4 for Mac"
+          },
+          {
+            "type": "p",
+            "text": "FTC: We use income earning auto affiliate links. More."
+          }
+        ],
+        "translations": [
+          "Investors didn’t seem overly happy about yesterday’s Apple earnings call despite the record results. That likely reflects the company’s cautious take on margins in the current quarter, but some have also criticized what they describe as a very “scripted” approach by new CEO John Ternus.",
+          "Bloomberg was the biggest critic, describing it as a “timid” performance that left analysts “sorely disappointed” …",
+          "Bloomberg’s Dave Lee didn’t hold back.",
+          "Apple investors and fans hoping to get an insight into the philosophy of new Chief Executive Officer John Ternus on Monday were left sorely disappointed. The 51-year-old’s first earnings call was a timid affair, with Ternus taking cover behind a carefully written script as analysts peppered him with questions.",
+          "Lee acknowledged that the slump in pre-market trading will have been largely driven by Apple’s caution about rising expenses in the current quarter. The company said that memory costs were continuing to rise and that building out Siri AI data centers we’re going to add to the RAM bill. But he argued that Ternus missed an opportunity to talk up the company.",
+          "In front of Ternus on Monday night was a chance to counteract the gloom and doom by instilling in Wall Street the fundamentals of the Ternus Doctrine — what he sees Apple becoming under his tenure, the “product guy” taking the company to a new era of innovation. Instead, he spoke like a man glancing at the clock and wishing the minutes away.",
+          "Fortune’s Sebastian Herrera was less vocal but echoed some of the criticism.",
+          "Ternus fielded some questions but also delegated answers to Chief Financial Officer Kevan Parekh and Chief Operating Officer Sabih Khan, who Apple said would participate in earnings calls moving forward, something the company hasn’t done for years. Ternus projected confidence on the call, but he appeared to stick mostly to scripted marketing points.",
+          "9to5Mac’s Take",
+          "It will of course take Ternus some time to develop his own style when it comes to all of the varied aspects of the role, including addressing analysts in earnings calls, but I thought he took a measured but optimistic approach. Given the famously reticent style of his predecessor, the criticism strikes me as rather odd.",
+          "What’s your take? Please share in the comments.",
+          "meross Smart Garage Door Opener",
+          "Beats Woven USB-C cables",
+          "Certified refurbished Apple products 15% off at apple.com",
+          "Discounted AirPods Pro 3",
+          "Wireless CarPlay adapter",
+          "10-year AirTag battery case",
+          "Logitech MX Master 4 for Mac",
+          "FTC: We use income earning auto affiliate links. More."
+        ]
+      }
+    },
+    {
+      "slug": "207af2a49a8cd168",
+      "title": "Apple’s New iPhone Release Schedule Seems to Pay Off",
+      "titleZh": "Apple’s New iPhone Release Schedule Seems to Pay Off",
+      "link": "https://x.com/asymco/status/2117379158087278697",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T14:30:40.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Apple’s New iPhone Release Schedule Seems to Pay Off",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "See what’s happening and join the conversation"
+          },
+          {
+            "type": "p",
+            "text": "Continue with phone"
+          },
+          {
+            "type": "p",
+            "text": "or"
+          },
+          {
+            "type": "p",
+            "text": "Log in with username or email"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "0d76d46f6470c9af",
+      "title": "Apple Announces Record $114.5B Fourth-Quarter Results",
+      "titleZh": "Apple Announces Record $114.5B Fourth-Quarter Results",
+      "link": "https://sixcolors.com/post/2026/11/apple-announces-record-114-5b-fourth-quarter-results/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-03T00:10:53.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Apple Announces Record $114.5B Fourth-Quarter Results",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "By\n\nJason Snell",
+        "siteName": "Six Colors",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On Monday, Apple announced record fourth-quarter earnings, with total revenue of $114.5B, up 12 percent from the year-ago quarter. iPhone revenue was up 17.5%, Mac revenue was up 23.7%, and Services revenue was up 9.8%. Wearables revenue was down 7.9% and iPad revenue was down 10.4%."
+          },
+          {
+            "type": "p",
+            "text": "Apple execs spent an hour on the phone with financial industry analysts. We’ve got our usual transcript. And I wrote a piece with my overall thoughts on the results and earnings call."
+          },
+          {
+            "type": "p",
+            "text": "And now, to help you visualize what Apple just announced, here is our traditional barrage of charts and graphs:"
+          },
+          {
+            "type": "h3",
+            "text": "Revenue and profit"
+          },
+          {
+            "type": "h3",
+            "text": "iPhone"
+          },
+          {
+            "type": "h3",
+            "text": "Mac"
+          },
+          {
+            "type": "h3",
+            "text": "iPad"
+          },
+          {
+            "type": "h3",
+            "text": "Services"
+          },
+          {
+            "type": "h3",
+            "text": "Wearables, Home and Accessories"
+          },
+          {
+            "type": "h3",
+            "text": "Regional"
+          },
+          {
+            "type": "li",
+            "text": "Report a typo"
+          },
+          {
+            "type": "p",
+            "text": "If you appreciate articles like this one, support us by becoming a Six Colors subscriber. Subscribers get access to an exclusive podcast, members-only stories, and a special community."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "ddbcdc970924de92",
+      "title": "[Sponsor] OurCal",
+      "titleZh": "[Sponsor] OurCal",
+      "link": "https://ourcal.com/?utm_source=daringfireball&amp;utm_medium=sponsorship&amp;utm_content=rssitem",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-02T22:43:59.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "[Sponsor] OurCal",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "OurCal",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Shared calendar. Meet messenger."
+          },
+          {
+            "type": "h2",
+            "text": "The shared calendar built around messaging. Group calendars for families, couples, friends, and colleagues. Always protected with End-to-End Encryption."
+          },
+          {
+            "type": "quote",
+            "text": "“The problem with sharing calendars isn’t productivity. It’s communication. So we built a shared calendar where every action is a message.”"
+          },
+          {
+            "type": "p",
+            "text": "Ryan BrodieFounder, OurCal"
+          },
+          {
+            "type": "p",
+            "text": "More than a planner"
+          },
+          {
+            "type": "h2",
+            "text": "A shared space where your group actually communicates."
+          },
+          {
+            "type": "p",
+            "text": "Chat in every event"
+          },
+          {
+            "type": "h3",
+            "text": "Talk about the plan inside the plan."
+          },
+          {
+            "type": "p",
+            "text": "Every event has its own thread. Share photos, files, and notes without leaving the event. React, reply, and quote just like a messenger, but everything stays in context instead of scattered across WhatsApp, iMessage, and email."
+          },
+          {
+            "type": "p",
+            "text": "Learn more about event chats"
+          },
+          {
+            "type": "p",
+            "text": "Automatic change tracking"
+          },
+          {
+            "type": "h3",
+            "text": "Someone moved the dentist? You’ll know."
+          },
+          {
+            "type": "p",
+            "text": "Every change posts a before-and-after update automatically, and reminders reach everyone who needs them. No more “wait, did you move that?” buried in a group chat."
+          },
+          {
+            "type": "p",
+            "text": "Learn more about event alerts"
+          },
+          {
+            "type": "p",
+            "text": "Colour-coded calendar views"
+          },
+          {
+            "type": "h3",
+            "text": "A busy week that reads at a glance."
+          },
+          {
+            "type": "p",
+            "text": "Every member gets a colour. See your kids’ activities, your partner’s shifts, and your own schedule in a single view, then pinch to zoom between overview and detail."
+          },
+          {
+            "type": "p",
+            "text": "Learn more about calendar views"
+          },
+          {
+            "type": "h3",
+            "text": "Sync all your calendars"
+          },
+          {
+            "type": "p",
+            "text": "Google, Apple, and Outlook in one place, plus subscribed calendars like sports fixtures and school term dates. See personal and shared side by side: no more double-booking."
+          },
+          {
+            "type": "h3",
+            "text": "Smart event creation"
+          },
+          {
+            "type": "p",
+            "text": "Type “Dentist Tuesday 3pm for an hour” and it’s done. Reminders, todos, and repeating events too, all in natural language. On-device AI, nothing sent to the cloud."
+          },
+          {
+            "type": "h3",
+            "text": "Groups for your whole life"
+          },
+          {
+            "type": "p",
+            "text": "Home, work, school, social. Each group gets its own calendars, members, and chat. One app, every group."
+          },
+          {
+            "type": "h3",
+            "text": "Share shifts and rotas"
+          },
+          {
+            "type": "p",
+            "text": "Nurses, paramedics, hospitality, police: share your rota so friends and family never plan over a working day."
+          },
+          {
+            "type": "p",
+            "text": "Every device"
+          },
+          {
+            "type": "h2",
+            "text": "Yours on iPhone.Theirs on Android."
+          },
+          {
+            "type": "p",
+            "text": "Truly native on iPhone, iPad, Mac and Vision Pro, and just as at home on Android. Whatever your group carries, everyone stays in sync."
+          },
+          {
+            "type": "p",
+            "text": "Encrypted. Everything. Always."
+          },
+          {
+            "type": "h2",
+            "text": "Privacy isn’t a feature.It’s the foundation."
+          },
+          {
+            "type": "p",
+            "text": "The only shared calendar with ANSSI-certified End-to-End Encryption."
+          },
+          {
+            "type": "h3",
+            "text": "ANSSI-certified E2EE"
+          },
+          {
+            "type": "p",
+            "text": "Every profile, group, calendar, event, message, and file is End-to-End Encrypted by default, certified by France’s national cybersecurity agency."
+          },
+          {
+            "type": "h3",
+            "text": "No ads. No tracking."
+          },
+          {
+            "type": "p",
+            "text": "You pay for OurCal, so your data stays yours. We never sell it, mine it, or show you ads. Ever."
+          },
+          {
+            "type": "h3",
+            "text": "You stay in control"
+          },
+          {
+            "type": "p",
+            "text": "Advanced sharing controls let you invite by private link and stop sharing at any time. Your group, your rules."
+          },
+          {
+            "type": "p",
+            "text": "Real groups, real stories"
+          },
+          {
+            "type": "h2",
+            "text": "Organising life together, everywhere."
+          },
+          {
+            "type": "p",
+            "text": "Their photos stay locked because everything in OurCal (profiles, calendars, events, and messages) is protected with End-to-End Encryption."
+          },
+          {
+            "type": "p",
+            "text": "Read all stories"
+          },
+          {
+            "type": "p",
+            "text": "FAQ"
+          },
+          {
+            "type": "h2",
+            "text": "Frequently asked questions."
+          },
+          {
+            "type": "p",
+            "text": "It means your calendar can be read by only you and the people you share it with. The keys never leave your group, so no one else can read your data. Not even OurCal. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Yes. Our encryption is provided by Seald, whose technology is certified by ANSSI, France’s national cybersecurity agency. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Yes. Everyone gets their own account, and you share calendars by joining the same group. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Anyone you invite. Share your group’s private invite link and they’ll be guided through joining. Groups support 2 to 100 members. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Yes. Home, work, school, social: create or join as many groups as you like, each with its own calendars, members, and chat. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Yes. Calendars belong to a group, so each group only ever sees its own calendars. Read more"
+          },
+          {
+            "type": "p",
+            "text": "Download OurCal, tap Create Group, and share the invite link. You’ll be up and running in under a minute. Read more"
+          },
+          {
+            "type": "p",
+            "text": "For two people on different phones, OurCal is built for exactly that: a chat on every event, End-to-End Encryption, and one subscription covering you both. Compare the best shared calendar apps for couples"
+          },
+          {
+            "type": "p",
+            "text": "From OurCal’s Settings, tap Help & Feedback, then Request Help. We’ll get back to you quickly. Read more"
+          }
+        ],
+        "translations": [
+          "Shared calendar. Meet messenger.",
+          "The shared calendar built around messaging. Group calendars for families, couples, friends, and colleagues. Always protected with End-to-End Encryption.",
+          "“The problem with sharing calendars isn’t productivity. It’s communication. So we built a shared calendar where every action is a message.”",
+          "Ryan BrodieFounder, OurCal",
+          "More than a planner",
+          "A shared space where your group actually communicates.",
+          "Chat in every event",
+          "Talk about the plan inside the plan.",
+          "Every event has its own thread. Share photos, files, and notes without leaving the event. React, reply, and quote just like a messenger, but everything stays in context instead of scattered across WhatsApp, iMessage, and email.",
+          "Learn more about event chats",
+          "Automatic change tracking",
+          "Someone moved the dentist? You’ll know.",
+          "Every change posts a before-and-after update automatically, and reminders reach everyone who needs them. No more “wait, did you move that?” buried in a group chat.",
+          "Learn more about event alerts",
+          "Colour-coded calendar views",
+          "A busy week that reads at a glance.",
+          "Every member gets a colour. See your kids’ activities, your partner’s shifts, and your own schedule in a single view, then pinch to zoom between overview and detail.",
+          "Learn more about calendar views",
+          "Sync all your calendars",
+          "Google, Apple, and Outlook in one place, plus subscribed calendars like sports fixtures and school term dates. See personal and shared side by side: no more double-booking.",
+          "Smart event creation",
+          "Type “Dentist Tuesday 3pm for an hour” and it’s done. Reminders, todos, and repeating events too, all in natural language. On-device AI, nothing sent to the cloud.",
+          "Groups for your whole life",
+          "Home, work, school, social. Each group gets its own calendars, members, and chat. One app, every group.",
+          "Share shifts and rotas",
+          "Nurses, paramedics, hospitality, police: share your rota so friends and family never plan over a working day.",
+          "Every device",
+          "Yours on iPhone.Theirs on Android.",
+          "Truly native on iPhone, iPad, Mac and Vision Pro, and just as at home on Android. Whatever your group carries, everyone stays in sync.",
+          "Encrypted. Everything. Always.",
+          "Privacy isn’t a feature.It’s the foundation.",
+          "The only shared calendar with ANSSI-certified End-to-End Encryption.",
+          "ANSSI-certified E2EE",
+          "Every profile, group, calendar, event, message, and file is End-to-End Encrypted by default, certified by France’s national cybersecurity agency.",
+          "No ads. No tracking.",
+          "You pay for OurCal, so your data stays yours. We never sell it, mine it, or show you ads. Ever.",
+          "You stay in control",
+          "Advanced sharing controls let you invite by private link and stop sharing at any time. Your group, your rules.",
+          "Real groups, real stories",
+          "Organising life together, everywhere.",
+          "Their photos stay locked because everything in OurCal (profiles, calendars, events, and messages) is protected with End-to-End Encryption.",
+          "Read all stories",
+          "FAQ",
+          "Frequently asked questions.",
+          "It means your calendar can be read by only you and the people you share it with. The keys never leave your group, so no one else can read your data. Not even OurCal. Read more",
+          "Yes. Our encryption is provided by Seald, whose technology is certified by ANSSI, France’s national cybersecurity agency. Read more",
+          "Yes. Everyone gets their own account, and you share calendars by joining the same group. Read more",
+          "Anyone you invite. Share your group’s private invite link and they’ll be guided through joining. Groups support 2 to 100 members. Read more",
+          "Yes. Home, work, school, social: create or join as many groups as you like, each with its own calendars, members, and chat. Read more",
+          "Yes. Calendars belong to a group, so each group only ever sees its own calendars. Read more",
+          "Download OurCal, tap Create Group, and share the invite link. You’ll be up and running in under a minute. Read more",
+          "For two people on different phones, OurCal is built for exactly that: a chat on every event, End-to-End Encryption, and one subscription covering you both. Compare the best shared calendar apps for couples",
+          "From OurCal’s Settings, tap Help & Feedback, then Request Help. We’ll get back to you quickly. Read more"
+        ]
+      }
+    }
+  ]
+}
