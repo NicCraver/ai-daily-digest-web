@@ -1,0 +1,634 @@
+{
+  "date": "2026-11-09",
+  "generatedAt": "2026-11-08T20:21:25.018Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2545,
+    "filteredArticles": 7,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "3880bf849bb943e9",
+      "title": "datasette #3046: Don't serve link: rel=next HTTP headers to Firefox for HTML pages",
+      "titleZh": "datasette #3046: Don't serve link: rel=next HTTP headers to Firefox for HTML pages",
+      "link": "https://simonwillison.net/2026/Nov/7/link-rel-next/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-07T23:57:46.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "datasette #3046: Don't serve link: rel=next HTTP headers to Firefox for HTML pages",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "7th November 2026 - Link Blog"
+          },
+          {
+            "type": "p",
+            "text": "datasette #3046: Don't serve link: rel=next HTTP headers to Firefox for HTML pages. I was looking at the Firefox network panel today when I noticed that requests to a Datasette table page were triggering an HTTP prefetch to the next page of rows in that table."
+          },
+          {
+            "type": "p",
+            "text": "This was happening because Datasette pages serve an HTTP link header like this:"
+          },
+          {
+            "type": "p",
+            "text": "link: <https://latest.datasette.io/fixtures/compound_three_primary_keys?_next=a%2Cd%2Cv>; rel=\"next\""
+          },
+          {
+            "type": "p",
+            "text": "This is bad. A tiny fraction of the visitors to one of those pages will click the \"next\" link, which means their browser is fetching unnecessary data and the Datasette server is having to render an entire page that then gets thrown away."
+          },
+          {
+            "type": "p",
+            "text": "I dug in and learned that Firefox has an issue that has been open for 24 years about this behavior..."
+          },
+          {
+            "type": "p",
+            "text": "And one of the early comments on that issue links to my blog post from 2002 complaining about this feature. I hadn't just forgotten that I had written about it, I had forgotten the feature entirely!"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "5701814d8147ab05",
+      "title": "LLMs are terrible at designing AI systems",
+      "titleZh": "LLMs are terrible at designing AI systems",
+      "link": "https://seangoedecke.com/llms-are-terrible-at-designing-ai-systems/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-08T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "LLMs are terrible at designing AI systems",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "LLMs don’t know how to design software that uses LLMs. They’re comfortable writing normal programs, but if you throw an AI-shaped problem at them, they will usually screw it up. Why is that?"
+          },
+          {
+            "type": "h3",
+            "text": "Going down the symbolic rabbit hole"
+          },
+          {
+            "type": "p",
+            "text": "For example, this post describes an attempt to vibe-code a memory tool that would flag when one memory contradicted another1. This is a great instance of a task that was virtually impossible five years ago but is now relatively trivial due to LLMs. You can simply task a LLM with scanning for contradictions, either in a big batch or pairwise2."
+          },
+          {
+            "type": "p",
+            "text": "However, when asked for the “state of the art” approach3, the AI agent in this case did not recommend LLMs. It started building a bewilderingly complex symbolic system to convert the memory items into structured logical atoms, then mechanically compare them with a solver. This, of course, did not and could not work, because there is no analytic way of determining whether any two natural-language sentences express the same proposition."
+          },
+          {
+            "type": "p",
+            "text": "The LLM knew this was impossible! When the user eventually lost patience and said “hey, why isn’t this working”, Claude immediately explained that this was a known 130-year-old problem with no solution. And yet it happily went around and around for weeks iterating on a dead end."
+          },
+          {
+            "type": "p",
+            "text": "I’ve run into this myself. When I was building Autodeck (AI-generated spaced repetition cards) my agents would routinely try to categorize cards by regex or keyword search instead of just making another LLM call."
+          },
+          {
+            "type": "h3",
+            "text": "Why can’t LLMs use LLMs correctly?"
+          },
+          {
+            "type": "p",
+            "text": "Why would this be happening? I have two obvious explanations and one deeper one."
+          },
+          {
+            "type": "p",
+            "text": "The first obvious explanation is that most training code is pre-LLMs. Assuming the labs aren’t feeding the current avalance of slop repositories directly into the models4, the vast majority of the code that models learn from was written before LLMs were an option. So it would make sense that they’d reach for non-LLM approaches, in the same way that they’d reach for jQuery over modern vanilla JS, or Backbone.js over React, right? Wrong, actually! LLMs don’t choose jQuery and Backbone. Whatever part of the training process pushes them towards up-to-date knowledge in other areas isn’t successfully pushing them towards LLMs, so this can’t be the whole story."
+          },
+          {
+            "type": "p",
+            "text": "The second obvious explanation is that RLVR is not a good environment to write code that calls LLMs. Much of the time LLMs spend training is spent in reinforcement learning environments where an automatic grader determines their performance (for instance, by running some code they wrote and checking the outputs). I don’t know this for a fact, but I would be surprised if these environments contained the credentials and API access for a LLM to call other LLMs5. So even if the pretrained LLM was comfortable writing that kind of code, the reinforcement learning process might discourage6 it from doing so."
+          },
+          {
+            "type": "p",
+            "text": "The third explanation, which I like the most, is that current AI agents are just not very good at software design. On this explanation, picking a doomed symbolic approach instead of simply calling a LLM is not a weird aberration but a normal instance of AI agents picking the wrong tool for the job. I’ve seen this behavior from LLMs in other contexts too: trying to build complex (and doomed) consensus algorithms instead of tolerating stale data, introducing synchronous checks in event-driven systems, and so on. In the past I’ve chalked these up to alignment, but I’m open to the idea that they’re just ordinary errors of software design."
+          },
+          {
+            "type": "h3",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "One lesson I learn over and over again is that I can’t judge a LLM by the standards of a human. Any human programmer who was capable of implementing a sophisticated symbolic solver would know that it wouldn’t work, and so if they suggested that approach I’d assume7 they had a good reason. Only a LLM could be both smart enough and dumb enough to make this mistake."
+          },
+          {
+            "type": "p",
+            "text": "I write a lot about the skills that are involved in working effectively with LLMs. I still stand by what I wrote in February 2025:"
+          },
+          {
+            "type": "quote",
+            "text": "Using LLMs well involves extracting value from what they’re good at and avoiding wasting time at what they’re bad at."
+          },
+          {
+            "type": "p",
+            "text": "This is surprisingly hard, because of the point above. LLMs are good and bad seemingly at random: they will work hard for hours but sometimes be shockingly low-effort, they will draw on inhumanly broad expertise but fail to apply the most basic common-sense, they can successfully rewrite enormously complex programs but will often make very silly errors in design."
+          },
+          {
+            "type": "p",
+            "text": "If you can predict where they will do well or badly ahead of time, you can get enormous value from LLMs; if you can’t, you will likely waste a lot of time and tokens going down hopeless approaches."
+          },
+          {
+            "type": "li",
+            "text": "Here’s another example where the user “implied” that Opus 5.5 should use a judge model and it instead constructed a series of regex checks.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Here I’d probably reach for a decision model.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "In hindsight, this was probably the key mistake, though I don’t know how you’d turn that into advice for non-technical vibe-coders. Never asking the agent about the state of the field is a mistake too. Put one more notch on the LLMs reward expertise belt.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "A fair assumption, I think: even though training on low-quality synthetic data clearly isn’t catastrophic for LLMs, it can’t be great.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "It would be expensive, slow, and risky.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "This theory also explains why LLMs are great at prompting other LLMs as subagents, or on training LLMs from scratch: they’re likely directly RL-ed and evaluated on that, unlike on writing code that calls LLMs.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Well, okay, I wouldn’t — I’m arrogant enough to ask anyway — but I’d at least expect a good reason.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "LLMs don’t know how to design software that uses LLMs. They’re comfortable writing normal programs, but if you throw an AI-shaped problem at them, they will usually screw it up. Why is that?",
+          "Going down the symbolic rabbit hole",
+          "For example, this post describes an attempt to vibe-code a memory tool that would flag when one memory contradicted another1. This is a great instance of a task that was virtually impossible five years ago but is now relatively trivial due to LLMs. You can simply task a LLM with scanning for contradictions, either in a big batch or pairwise2.",
+          "However, when asked for the “state of the art” approach3, the AI agent in this case did not recommend LLMs. It started building a bewilderingly complex symbolic system to convert the memory items into structured logical atoms, then mechanically compare them with a solver. This, of course, did not and could not work, because there is no analytic way of determining whether any two natural-language sentences express the same proposition.",
+          "The LLM knew this was impossible! When the user eventually lost patience and said “hey, why isn’t this working”, Claude immediately explained that this was a known 130-year-old problem with no solution. And yet it happily went around and around for weeks iterating on a dead end.",
+          "I’ve run into this myself. When I was building Autodeck (AI-generated spaced repetition cards) my agents would routinely try to categorize cards by regex or keyword search instead of just making another LLM call.",
+          "Why can’t LLMs use LLMs correctly?",
+          "Why would this be happening? I have two obvious explanations and one deeper one.",
+          "The first obvious explanation is that most training code is pre-LLMs. Assuming the labs aren’t feeding the current avalance of slop repositories directly into the models4, the vast majority of the code that models learn from was written before LLMs were an option. So it would make sense that they’d reach for non-LLM approaches, in the same way that they’d reach for jQuery over modern vanilla JS, or Backbone.js over React, right? Wrong, actually! LLMs don’t choose jQuery and Backbone. Whatever part of the training process pushes them towards up-to-date knowledge in other areas isn’t successfully pushing them towards LLMs, so this can’t be the whole story.",
+          "The second obvious explanation is that RLVR is not a good environment to write code that calls LLMs. Much of the time LLMs spend training is spent in reinforcement learning environments where an automatic grader determines their performance (for instance, by running some code they wrote and checking the outputs). I don’t know this for a fact, but I would be surprised if these environments contained the credentials and API access for a LLM to call other LLMs5. So even if the pretrained LLM was comfortable writing that kind of code, the reinforcement learning process might discourage6 it from doing so.",
+          "The third explanation, which I like the most, is that current AI agents are just not very good at software design. On this explanation, picking a doomed symbolic approach instead of simply calling a LLM is not a weird aberration but a normal instance of AI agents picking the wrong tool for the job. I’ve seen this behavior from LLMs in other contexts too: trying to build complex (and doomed) consensus algorithms instead of tolerating stale data, introducing synchronous checks in event-driven systems, and so on. In the past I’ve chalked these up to alignment, but I’m open to the idea that they’re just ordinary errors of software design.",
+          "Conclusion",
+          "One lesson I learn over and over again is that I can’t judge a LLM by the standards of a human. Any human programmer who was capable of implementing a sophisticated symbolic solver would know that it wouldn’t work, and so if they suggested that approach I’d assume7 they had a good reason. Only a LLM could be both smart enough and dumb enough to make this mistake.",
+          "I write a lot about the skills that are involved in working effectively with LLMs. I still stand by what I wrote in February 2025:",
+          "Using LLMs well involves extracting value from what they’re good at and avoiding wasting time at what they’re bad at.",
+          "This is surprisingly hard, because of the point above. LLMs are good and bad seemingly at random: they will work hard for hours but sometimes be shockingly low-effort, they will draw on inhumanly broad expertise but fail to apply the most basic common-sense, they can successfully rewrite enormously complex programs but will often make very silly errors in design.",
+          "If you can predict where they will do well or badly ahead of time, you can get enormous value from LLMs; if you can’t, you will likely waste a lot of time and tokens going down hopeless approaches.",
+          "Here’s another example where the user “implied” that Opus 5.5 should use a judge model and it instead constructed a series of regex checks.\n↩",
+          "Here I’d probably reach for a decision model.\n↩",
+          "In hindsight, this was probably the key mistake, though I don’t know how you’d turn that into advice for non-technical vibe-coders. Never asking the agent about the state of the field is a mistake too. Put one more notch on the LLMs reward expertise belt.\n↩",
+          "A fair assumption, I think: even though training on low-quality synthetic data clearly isn’t catastrophic for LLMs, it can’t be great.\n↩",
+          "It would be expensive, slow, and risky.\n↩",
+          "This theory also explains why LLMs are great at prompting other LLMs as subagents, or on training LLMs from scratch: they’re likely directly RL-ed and evaluated on that, unlike on writing code that calls LLMs.\n↩",
+          "Well, okay, I wouldn’t — I’m arrogant enough to ask anyway — but I’d at least expect a good reason.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "e001fe66bca9b4b1",
+      "title": "Yours Truly on Full Stack Creator, Talking About the New MacBook Pros With PROLED XDR Displays",
+      "titleZh": "Yours Truly on Full Stack Creator, Talking About the New MacBook Pros With PROLED XDR Displays",
+      "link": "https://www.youtube.com/watch?v=f2GZtWuUPl0",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-07T21:14:09.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Yours Truly on Full Stack Creator, Talking About the New MacBook Pros With PROLED XDR Displays",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "165643524e9c5c5f",
+      "title": "Some thoughts on restaurant menu QR codes",
+      "titleZh": "Some thoughts on restaurant menu QR codes",
+      "link": "https://shkspr.mobi/blog/2026/11/some-thoughts-on-restaurant-menu-qr-codes/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-11-08T12:34:01.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Some thoughts on restaurant menu QR codes",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "quote",
+            "text": "Is anyone else SICK AND TIRED of the way hotels now foist plastic \"keycards\" on guests?\n\t\t\t\t\t\tNo! I don't want tap to open my door!\n\t\t\t\t\t\tNo! I don't want to keep the card in my wallet!\n\t\t\t\t\t\tNo! I don't want electronics in control of my life!\n\t\t\t\t\t\tWhat if I need to stab an attacker? Keys are great for that by flimsy plastic cards are useless\n\t\t\t\t\t\tGives us PROPER keys with big keyrings that we have to hand in to reception when we go out and then ask for when we come back."
+          },
+          {
+            "type": "p",
+            "text": "That is exactly what you sound like when you complain about restaurant menus now being available by QR code."
+          },
+          {
+            "type": "p",
+            "text": "My wife and I took a 7 week Interrail through Europe. While most places still had boring paper menu, a decent number had QR codes which allowed us to see the menu and order food. And they were brilliant!"
+          },
+          {
+            "type": "p",
+            "text": "An electronic menu offers so many advantages. Being able to instantly translate any terms by selecting the text is much easier than pointing a camera and trying to focus on a laminated bit of card."
+          },
+          {
+            "type": "p",
+            "text": "That said, most of the online menus were already fully translated. They had all the legally mandated allergen information. Many of them showed when something was out of stock. We had much the same experience visiting Japan - getting to see a photo or video about the dish you're going to order is surprisingly useful."
+          },
+          {
+            "type": "p",
+            "text": "The ones which allowed you to order were even better. So easy to select the right thing - no hoping that the waiter didn't mishear \"no cheese\" as \"extra cheese\". Notes to the kitchen about allergies were often supported. Oh, and no trying to catch the waiter's eye to let them know you're ready to order."
+          },
+          {
+            "type": "p",
+            "text": "Speaking of which, no trying to catch the waiter's eye when you want to pay! Several of online platforms allowed for payment through the Web. Most supported splitting the bill between a group - so no more trying to work out who ate what."
+          },
+          {
+            "type": "p",
+            "text": "So let's talk about the down-sides."
+          },
+          {
+            "type": "p",
+            "text": "\"What if there's no signal?!?!?\" Get a roaming SIM, chief. But, as it happens, every restaurant had fast and free WiFi. Because, you know, they understand the service they're providing."
+          },
+          {
+            "type": "p",
+            "text": "\"I don't want a bloody app!!!!\" Me neither. I didn't encounter any which required me to install a one-time app."
+          },
+          {
+            "type": "p",
+            "text": "\"Online ordering tries to upsell to me and I have no self control....\" Sure. But waiters often recommend the most expensive wine to go with their cheapest dish."
+          },
+          {
+            "type": "p",
+            "text": "\"How can I flirt with a waitress if everything is mediated through a screen?????\" Please reconsider your life choices."
+          },
+          {
+            "type": "p",
+            "text": "\"But I hate progress and love paper!\" OK. In just about every restaurant I saw people being handed paper menus. Or wait staff explained what each dish was."
+          },
+          {
+            "type": "p",
+            "text": "\"Yes, but in the worst case scenario I've constructed in my head I have no signal, no phone, and no alternatives - and now I'm irrationally angry about that!\" So walk out. Seriously, you'd leave a restaurant if the waiter was rude, or you saw a rat, or the food didn't come for an hour. Do the same if you're forced to use a service that you hate."
+          },
+          {
+            "type": "p",
+            "text": "As I've said before, I love living in the future. I can't be bothered with fully grown adults throwing a tantrum over every bit of progress."
+          }
+        ],
+        "translations": [
+          "Is anyone else SICK AND TIRED of the way hotels now foist plastic \"keycards\" on guests?\n\t\t\t\t\t\tNo! I don't want tap to open my door!\n\t\t\t\t\t\tNo! I don't want to keep the card in my wallet!\n\t\t\t\t\t\tNo! I don't want electronics in control of my life!\n\t\t\t\t\t\tWhat if I need to stab an attacker? Keys are great for that by flimsy plastic cards are useless\n\t\t\t\t\t\tGives us PROPER keys with big keyrings that we have to hand in to reception when we go out and then ask for when we come back.",
+          "That is exactly what you sound like when you complain about restaurant menus now being available by QR code.",
+          "My wife and I took a 7 week Interrail through Europe. While most places still had boring paper menu, a decent number had QR codes which allowed us to see the menu and order food. And they were brilliant!",
+          "An electronic menu offers so many advantages. Being able to instantly translate any terms by selecting the text is much easier than pointing a camera and trying to focus on a laminated bit of card.",
+          "That said, most of the online menus were already fully translated. They had all the legally mandated allergen information. Many of them showed when something was out of stock. We had much the same experience visiting Japan - getting to see a photo or video about the dish you're going to order is surprisingly useful.",
+          "The ones which allowed you to order were even better. So easy to select the right thing - no hoping that the waiter didn't mishear \"no cheese\" as \"extra cheese\". Notes to the kitchen about allergies were often supported. Oh, and no trying to catch the waiter's eye to let them know you're ready to order.",
+          "Speaking of which, no trying to catch the waiter's eye when you want to pay! Several of online platforms allowed for payment through the Web. Most supported splitting the bill between a group - so no more trying to work out who ate what.",
+          "So let's talk about the down-sides.",
+          "\"What if there's no signal?!?!?\" Get a roaming SIM, chief. But, as it happens, every restaurant had fast and free WiFi. Because, you know, they understand the service they're providing.",
+          "\"I don't want a bloody app!!!!\" Me neither. I didn't encounter any which required me to install a one-time app.",
+          "\"Online ordering tries to upsell to me and I have no self control....\" Sure. But waiters often recommend the most expensive wine to go with their cheapest dish.",
+          "\"How can I flirt with a waitress if everything is mediated through a screen?????\" Please reconsider your life choices.",
+          "\"But I hate progress and love paper!\" OK. In just about every restaurant I saw people being handed paper menus. Or wait staff explained what each dish was.",
+          "\"Yes, but in the worst case scenario I've constructed in my head I have no signal, no phone, and no alternatives - and now I'm irrationally angry about that!\" So walk out. Seriously, you'd leave a restaurant if the waiter was rude, or you saw a rat, or the food didn't come for an hour. Do the same if you're forced to use a service that you hate.",
+          "As I've said before, I love living in the future. I can't be bothered with fully grown adults throwing a tantrum over every bit of progress."
+        ]
+      }
+    },
+    {
+      "slug": "243dcd01a1c5e204",
+      "title": "Reverse engineering a vintage diode-transistor logic chip",
+      "titleZh": "Reverse engineering a vintage diode-transistor logic chip",
+      "link": "http://www.righto.com/feeds/7533579802505281921/comments/default",
+      "sourceName": "righto.com",
+      "sourceUrl": "https://righto.com",
+      "pubDate": "2026-11-08T16:12:25.557Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Reverse engineering a vintage diode-transistor logic chip",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "afdee0716bcd35d7",
+      "title": "The problem with Micron MT 4264 RAM",
+      "titleZh": "The problem with Micron MT 4264 RAM",
+      "link": "https://dfarq.homeip.net/the-problem-with-micron-mt-4264-ram/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-problem-with-micron-mt-4264-ram",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-08T12:00:03.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The problem with Micron MT 4264 RAM",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Watch a Youtube video about repairing a 1980s 8-bit computer, and you can flip a coin about whether the problem will be the presence of MT (Micron) 4264 RAM chips inside. MT RAM chips of mid 1980s vintage are notoriously unreliable. Apple, Atari, and Commodore all used them, and those chips didn’t age well."
+          },
+          {
+            "type": "p",
+            "text": "I’ve seen them in Commodore 64s, Apple IIcs, Atari 800XLs, and Atari 65 and 130XEs."
+          },
+          {
+            "type": "h2",
+            "text": "Micron and the memory chip industry"
+          },
+          {
+            "type": "p",
+            "text": "In the 1980s, US chip manufacturers had a problem. Japanese memory chips were better than their equivalents made in the USA. One by one, old-line US chip makers decided to exit the market, deciding it was futile to try to compete with Japanese companies like Hitachi, Mitsubishi, and NEC. AMD, Fairchild, Intel, Motorola, and Texas Instruments all came to the same conclusion. They didn’t leave the computer chip business entirely, but they chose to focus on other chips."
+          },
+          {
+            "type": "p",
+            "text": "Idaho-based Micron Technology was the lone holdout. I don’t remember their chips having a particularly bad reputation in the 1980s. If anything, word that any type of computer memory chip was better than any other was a closely guarded secret until sometime in the 1990s. But we know now that the MT 4264 memory chip, Micron’s version of the standard 4164 chip, wasn’t as good as everyone else’s."
+          },
+          {
+            "type": "p",
+            "text": "Ironically, of the US-based chip makers, Micron was the only one who stayed in the memory business. Part of this may have been due to memory shortages in the 1980s. There wasn’t enough computer memory to go around, so Micron, being the last to decide not to leave, probably couldn’t afford to leave the memory market. But besides that, all of the other US-based chip makers made other kinds of chips like glue logic and CPUs. But Micron didn’t. Micron’s choice was to either make memory chips or go under."
+          },
+          {
+            "type": "h2",
+            "text": "What’s wrong with MT RAM"
+          },
+          {
+            "type": "p",
+            "text": "I don’t have the equipment or skills to break apart a bad MT RAM chip and do an autopsy on it. But the problems with most other problematic 1980s chips like MOS 74-series logic or Commodore PLAs usually come down to the chemicals used in the manufacturing process. Not everyone had their manufacturing process down pat in those days. And maybe they didn’t care, as long as the chips lasted 3-5 years. If a chip failed after five years, it was well out of warranty anyway."
+          },
+          {
+            "type": "p",
+            "text": "I remember starting to see Commodore 64s with bad RAM in the late 1980s. I didn’t pay attention to brands then, I just learned enough to be able to remove a bad chip and drop in a new one. My repairs looked terrible, but I didn’t care. I was just buying dead C-64s and fixing them fast to flip for extra money. But chances are it was MT RAM more often than not."
+          },
+          {
+            "type": "p",
+            "text": "When you see a decades-old machine with 8 or 16 MT 4264 RAM chips in it, they probably aren’t all bad. Sometimes it’s just one or two of them. But frequently more than one is bad. Some people remove all of them, install sockets, and install working 4164 chips of a different brand. Others will test the MT 4256s and just replace the bad ones. But it’s generally a good practice to replace all of them, or at the very least, socket all of them while you’re in there. Because most of us believe MT 4256s are all running on borrowed time these days. We’ve just seen too many of them fail."
+          },
+          {
+            "type": "p",
+            "text": "Don’t throw out the chips you replace though. Sell them to Sam Altman, I hear he needs RAM for his datacenters."
+          },
+          {
+            "type": "h2",
+            "text": "What about other Micron or MT RAM?"
+          },
+          {
+            "type": "p",
+            "text": "All that said, the higher capacity MT chips from that era seem to be OK. I have MT 41256 chips in mid-80s PCs that work just fine, even though they’re exactly the same age as the 4256s we find in 8-bit machines. It seems likely the higher capacity chips came from a different manufacturing process, and Micron had figured out the problem."
+          },
+          {
+            "type": "p",
+            "text": "And in the 486 and later eras, I actually went out of my way to look for Micron RAM. I never, ever had a problem with Micron memory made in the 1990s and later that I can recall. Micron SSDs were always really good, and for the short time Micron made computers, those were also really good. So good you could throw one out a car window at 45 mph and it would survive."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "Watch a Youtube video about repairing a 1980s 8-bit computer, and you can flip a coin about whether the problem will be the presence of MT (Micron) 4264 RAM chips inside. MT RAM chips of mid 1980s vintage are notoriously unreliable. Apple, Atari, and Commodore all used them, and those chips didn’t age well.",
+          "I’ve seen them in Commodore 64s, Apple IIcs, Atari 800XLs, and Atari 65 and 130XEs.",
+          "Micron and the memory chip industry",
+          "In the 1980s, US chip manufacturers had a problem. Japanese memory chips were better than their equivalents made in the USA. One by one, old-line US chip makers decided to exit the market, deciding it was futile to try to compete with Japanese companies like Hitachi, Mitsubishi, and NEC. AMD, Fairchild, Intel, Motorola, and Texas Instruments all came to the same conclusion. They didn’t leave the computer chip business entirely, but they chose to focus on other chips.",
+          "Idaho-based Micron Technology was the lone holdout. I don’t remember their chips having a particularly bad reputation in the 1980s. If anything, word that any type of computer memory chip was better than any other was a closely guarded secret until sometime in the 1990s. But we know now that the MT 4264 memory chip, Micron’s version of the standard 4164 chip, wasn’t as good as everyone else’s.",
+          "Ironically, of the US-based chip makers, Micron was the only one who stayed in the memory business. Part of this may have been due to memory shortages in the 1980s. There wasn’t enough computer memory to go around, so Micron, being the last to decide not to leave, probably couldn’t afford to leave the memory market. But besides that, all of the other US-based chip makers made other kinds of chips like glue logic and CPUs. But Micron didn’t. Micron’s choice was to either make memory chips or go under.",
+          "What’s wrong with MT RAM",
+          "I don’t have the equipment or skills to break apart a bad MT RAM chip and do an autopsy on it. But the problems with most other problematic 1980s chips like MOS 74-series logic or Commodore PLAs usually come down to the chemicals used in the manufacturing process. Not everyone had their manufacturing process down pat in those days. And maybe they didn’t care, as long as the chips lasted 3-5 years. If a chip failed after five years, it was well out of warranty anyway.",
+          "I remember starting to see Commodore 64s with bad RAM in the late 1980s. I didn’t pay attention to brands then, I just learned enough to be able to remove a bad chip and drop in a new one. My repairs looked terrible, but I didn’t care. I was just buying dead C-64s and fixing them fast to flip for extra money. But chances are it was MT RAM more often than not.",
+          "When you see a decades-old machine with 8 or 16 MT 4264 RAM chips in it, they probably aren’t all bad. Sometimes it’s just one or two of them. But frequently more than one is bad. Some people remove all of them, install sockets, and install working 4164 chips of a different brand. Others will test the MT 4256s and just replace the bad ones. But it’s generally a good practice to replace all of them, or at the very least, socket all of them while you’re in there. Because most of us believe MT 4256s are all running on borrowed time these days. We’ve just seen too many of them fail.",
+          "Don’t throw out the chips you replace though. Sell them to Sam Altman, I hear he needs RAM for his datacenters.",
+          "What about other Micron or MT RAM?",
+          "All that said, the higher capacity MT chips from that era seem to be OK. I have MT 41256 chips in mid-80s PCs that work just fine, even though they’re exactly the same age as the 4256s we find in 8-bit machines. It seems likely the higher capacity chips came from a different manufacturing process, and Micron had figured out the problem.",
+          "And in the 486 and later eras, I actually went out of my way to look for Micron RAM. I never, ever had a problem with Micron memory made in the 1990s and later that I can recall. Micron SSDs were always really good, and for the short time Micron made computers, those were also really good. So good you could throw one out a car window at 45 mph and it would survive.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "5bd7e1901e827181",
+      "title": "Is AI crashing?",
+      "titleZh": "Is AI crashing?",
+      "link": "https://dfarq.homeip.net/is-ai-crashing/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=is-ai-crashing",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-08T12:00:02.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Is AI crashing?",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It’s November 8, 2027. I don’t know if AI is crashing. I don’t know if the AI bubble has burst. Not yet. Some people say it is. I remember the dotcom crash but didn’t blog about it, regrettably. Writing down my thoughts now will look foolish if nothing happens. But if something does happen, I’ll wish I had written something down to look back on."
+          },
+          {
+            "type": "h2",
+            "text": "What past stock market crashes felt like"
+          },
+          {
+            "type": "p",
+            "text": "I think stock market crashes are like thunderstorms in the midwest."
+          },
+          {
+            "type": "p",
+            "text": "Sometimes stock market crashes sneak up on you. The 1987 crash seems that way. I was pretty young when it happened, but it seemed it surprised my dad. It was like that storm that comes in in a hurry. One minute it’s sunny and peaceful, then the sky darkens very suddenly, day turns to night, and violent thunder shakes the building."
+          },
+          {
+            "type": "p",
+            "text": "That felt like 1987. The dotcom crash didn’t feel like that."
+          },
+          {
+            "type": "p",
+            "text": "In retrospect, the dotcom crash was something we could have seen coming. Companies that had no profitability and no plan to get profitable were trading at valuations comparable to Microsoft circa 1986. Eventually a reckoning was inevitable. But it didn’t happen all at once. That crash was like a gloomy day where it’s overcast and windy and it looks like it could rain at any minute. But when it finally did start to rain there wasn’t much indication from the ground that looked any different from an hour before."
+          },
+          {
+            "type": "p",
+            "text": "Today we blame a banking crisis in Japan for starting the dotcom crash. There was nothing special about Japan, the dotcom crash was just waiting for a catalyst. It could have been any sufficiently large economy."
+          },
+          {
+            "type": "p",
+            "text": "And I’ve said before I see parallels today with the dotcom era."
+          },
+          {
+            "type": "p",
+            "text": "By definition, a crash is a decline of over 10% in a stock market index over a period of a few days."
+          },
+          {
+            "type": "h2",
+            "text": "The AI crash in China"
+          },
+          {
+            "type": "p",
+            "text": "Arguably, the AI bubble burst in China on October 26, 2027. That day, China’s STAR50 index did experience a crash, and it lost $480 billion in value. We can think of STAR50 as China’s equivalent to NASDAQ. It’s not all AI companies, but it’s very tech heavy, and problems with AI companies will spill over into other tech companies. The scary thing about China’s wipeout is that even after that, Chinese stocks still looked overpriced compared to NASDAQ. So there’s still a lot of money left to lose in the STAR50 index."
+          },
+          {
+            "type": "p",
+            "text": "If things do get worse and we do get a bona fide stock market crash on the NASDAQ, I think it’s very possible October 26, 2027 will go down in history as the day the AI bubble started to burst."
+          },
+          {
+            "type": "h2",
+            "text": "US Tech stocks"
+          },
+          {
+            "type": "p",
+            "text": "In late October, the money supply for AI companies tightened, raising the cost of borrowing. This caused some unease, especially because the timing coincided so closely with what was happening in China."
+          },
+          {
+            "type": "p",
+            "text": "During the first week of November, US tech stocks had a generally bad week. On November 7, 2026, Yahoo Finance reported that tech stocks were cheaper than the S&P 500 for the first time since 2017. And I will tell you that a friend asked me on November 5 if the AI crash was happening. I said it depends what happens on the 6th."
+          },
+          {
+            "type": "p",
+            "text": "Markets were up on the 6th. There was better-than-expected news about the US jobs market that day, and I think that caused enough investors to decide to buy the dip to push the market slightly up that day."
+          },
+          {
+            "type": "p",
+            "text": "Several other things happened around the same time. A very highly publicized security vulnerability, PHP2Shell, was disclosed October 21, 2026. The scare around that pushed up the value of computer security stocks. I’m not sure if that was enough to affect the broader market or not, but it seems plausible."
+          },
+          {
+            "type": "p",
+            "text": "Also, a lot of companies announced earnings on or around October 31. Good earnings pushed some stocks higher. But also, publicly traded companies often have trading windows for their employees, to reduce the possibility of insider trading. The trading window opens soon after the earnings calls. Tech employees selling their stock likely pushed down values somewhat."
+          },
+          {
+            "type": "p",
+            "text": "Last, the United States had an election November 3. The markets rallied a bit after those results came in."
+          },
+          {
+            "type": "p",
+            "text": "It was a volatile week with a lot of back-and-forth. It’s very possible a couple of bad days in the coming week could send the NASDAQ into crash territory. Since the NASDAQ 100 lost around 6.6% of its value that week, it fell short of a crash. But a couple more rocky days could send it into crash territory."
+          },
+          {
+            "type": "h2",
+            "text": "Stormy weather ahead"
+          },
+          {
+            "type": "p",
+            "text": "The weather looked stormy where I live much of that week. It didn’t rain as much as it could have. But it looked like it was just a matter of time. And the stock market was giving off a lot of the same kind of vibes."
+          },
+          {
+            "type": "p",
+            "text": "I avoid investing directly in the tech sector. Because I work in the field, I have a hard time remaining completely objective about it, especially in the heat of the moment. I invest in broader index funds because they’re less volatile."
+          },
+          {
+            "type": "p",
+            "text": "A few months ago, I moved a good chunk of money into XLP, a mutual fund that invests in companies that sell or produce consumer staples. It’s not at all glamorous, but it’s a generally safe place to park money during a crisis. Even when they can’t buy anything else, people continue to buy bread and toothpaste and soap. It pays dividends, so you’ll at least get dividend income, and recovers faster than glitzier growth stocks do. That fund is now trading near its 52-month high, so I think that means I’m not the only one who thinks things are looking stormy."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "It’s November 8, 2027. I don’t know if AI is crashing. I don’t know if the AI bubble has burst. Not yet. Some people say it is. I remember the dotcom crash but didn’t blog about it, regrettably. Writing down my thoughts now will look foolish if nothing happens. But if something does happen, I’ll wish I had written something down to look back on.",
+          "What past stock market crashes felt like",
+          "I think stock market crashes are like thunderstorms in the midwest.",
+          "Sometimes stock market crashes sneak up on you. The 1987 crash seems that way. I was pretty young when it happened, but it seemed it surprised my dad. It was like that storm that comes in in a hurry. One minute it’s sunny and peaceful, then the sky darkens very suddenly, day turns to night, and violent thunder shakes the building.",
+          "That felt like 1987. The dotcom crash didn’t feel like that.",
+          "In retrospect, the dotcom crash was something we could have seen coming. Companies that had no profitability and no plan to get profitable were trading at valuations comparable to Microsoft circa 1986. Eventually a reckoning was inevitable. But it didn’t happen all at once. That crash was like a gloomy day where it’s overcast and windy and it looks like it could rain at any minute. But when it finally did start to rain there wasn’t much indication from the ground that looked any different from an hour before.",
+          "Today we blame a banking crisis in Japan for starting the dotcom crash. There was nothing special about Japan, the dotcom crash was just waiting for a catalyst. It could have been any sufficiently large economy.",
+          "And I’ve said before I see parallels today with the dotcom era.",
+          "By definition, a crash is a decline of over 10% in a stock market index over a period of a few days.",
+          "The AI crash in China",
+          "Arguably, the AI bubble burst in China on October 26, 2027. That day, China’s STAR50 index did experience a crash, and it lost $480 billion in value. We can think of STAR50 as China’s equivalent to NASDAQ. It’s not all AI companies, but it’s very tech heavy, and problems with AI companies will spill over into other tech companies. The scary thing about China’s wipeout is that even after that, Chinese stocks still looked overpriced compared to NASDAQ. So there’s still a lot of money left to lose in the STAR50 index.",
+          "If things do get worse and we do get a bona fide stock market crash on the NASDAQ, I think it’s very possible October 26, 2027 will go down in history as the day the AI bubble started to burst.",
+          "US Tech stocks",
+          "In late October, the money supply for AI companies tightened, raising the cost of borrowing. This caused some unease, especially because the timing coincided so closely with what was happening in China.",
+          "During the first week of November, US tech stocks had a generally bad week. On November 7, 2026, Yahoo Finance reported that tech stocks were cheaper than the S&P 500 for the first time since 2017. And I will tell you that a friend asked me on November 5 if the AI crash was happening. I said it depends what happens on the 6th.",
+          "Markets were up on the 6th. There was better-than-expected news about the US jobs market that day, and I think that caused enough investors to decide to buy the dip to push the market slightly up that day.",
+          "Several other things happened around the same time. A very highly publicized security vulnerability, PHP2Shell, was disclosed October 21, 2026. The scare around that pushed up the value of computer security stocks. I’m not sure if that was enough to affect the broader market or not, but it seems plausible.",
+          "Also, a lot of companies announced earnings on or around October 31. Good earnings pushed some stocks higher. But also, publicly traded companies often have trading windows for their employees, to reduce the possibility of insider trading. The trading window opens soon after the earnings calls. Tech employees selling their stock likely pushed down values somewhat.",
+          "Last, the United States had an election November 3. The markets rallied a bit after those results came in.",
+          "It was a volatile week with a lot of back-and-forth. It’s very possible a couple of bad days in the coming week could send the NASDAQ into crash territory. Since the NASDAQ 100 lost around 6.6% of its value that week, it fell short of a crash. But a couple more rocky days could send it into crash territory.",
+          "Stormy weather ahead",
+          "The weather looked stormy where I live much of that week. It didn’t rain as much as it could have. But it looked like it was just a matter of time. And the stock market was giving off a lot of the same kind of vibes.",
+          "I avoid investing directly in the tech sector. Because I work in the field, I have a hard time remaining completely objective about it, especially in the heat of the moment. I invest in broader index funds because they’re less volatile.",
+          "A few months ago, I moved a good chunk of money into XLP, a mutual fund that invests in companies that sell or produce consumer staples. It’s not at all glamorous, but it’s a generally safe place to park money during a crisis. Even when they can’t buy anything else, people continue to buy bread and toothpaste and soap. It pays dividends, so you’ll at least get dividend income, and recovers faster than glitzier growth stocks do. That fund is now trading near its 52-month high, so I think that means I’m not the only one who thinks things are looking stormy.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    }
+  ]
+}
