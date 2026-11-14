@@ -1,0 +1,1596 @@
+{
+  "date": "2026-11-15",
+  "generatedAt": "2026-11-14T20:33:47.547Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 83,
+    "totalArticles": 2572,
+    "filteredArticles": 15,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "a41cf41c3f013527",
+      "title": "datasette-cluster-map 0.19",
+      "titleZh": "datasette-cluster-map 0.19",
+      "link": "https://simonwillison.net/2026/Nov/13/datasette-cluster-map/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-13T23:02:45.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "datasette-cluster-map 0.19",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "One of the oldest Datasette plugins, and still one of my favorites. It now works with Datasette 1.0a42, and depends on the new datasette-leaflet to ensure OpenStreetMap tiles are requested with a referrer header."
+          },
+          {
+            "type": "p",
+            "text": "Here's a map of power plants owned by California's PG&E, also demonstrating Datasette's recently redesigned facets:"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "2ff8c47f48f01f5c",
+      "title": "datasette-leaflet 0.3",
+      "titleZh": "datasette-leaflet 0.3",
+      "link": "https://simonwillison.net/2026/Nov/13/datasette-leaflet/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-13T22:30:54.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "datasette-leaflet 0.3",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "OpenStreetMap have a very reasonable policy that hits to their hosted tile server should send a referrer header. Datasette table pages used the Referrer-Policy: no-referrer HTTP header, causing plugins that loaded tiles from OpenStreetMap to violate that policy."
+          },
+          {
+            "type": "p",
+            "text": "datasette-leaflet is the plugin that loads a bundled Leaflet so other Datasette plugins can depend on it. It now sets the referrer policy on the tile requests themselves to strict-origin-when-cross-origin, passing the host but not the full path to the page."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "2426be5561d3c52d",
+      "title": "Ops needs friction",
+      "titleZh": "Ops needs friction",
+      "link": "https://www.jeffgeerling.com/blog/2026/ops-needs-friction/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-11-14T16:30:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Ops needs friction",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Between Microsoft's two-day outage and the FAA ground stop yesterday, there's plenty of ink spilled about who's responsible, why these things happened, etc."
+          },
+          {
+            "type": "p",
+            "text": "But it made me think back to some of the infrastructure and ops teams I've worked on, and similar (though much smaller scale) outages we encountered."
+          },
+          {
+            "type": "p",
+            "text": "Having an ops mindset is fundamentally different from a development or project management mindset. And it took me over a decade of software development to understand why."
+          },
+          {
+            "type": "p",
+            "text": "Ops is about staying collected when systems fail. Usually debugging code written by other people, in conditions they were never prepared for."
+          },
+          {
+            "type": "p",
+            "text": "There's a lot of creativity and exploration in debugging critical failures, and IMO sysadmins are usually an undervalued part of any team."
+          },
+          {
+            "type": "p",
+            "text": "I always found it helpful to have a curmudgeonly person on the team who got annoyed when some of my code generated an extra 10,000 log lines a day, or caused a small but measurable slowdown in a database backend."
+          },
+          {
+            "type": "p",
+            "text": "I became that curmudgeon, in fact: I distinctly remember pushing back on a dev team enabling debug-level logs permanently in production. We were filling up packet buffers with mostly useless data, to help them 'debug in prod' with live data."
+          },
+          {
+            "type": "p",
+            "text": "My argument was that if this were a well-defined short-term plan, with specific goals, it could be useful. But they were pushing a lot of new features and didn't want to go through their normal QA cycle in the staging environment."
+          },
+          {
+            "type": "p",
+            "text": "Ultimately, we compromised on the logging: I added functionality to the cluster that lowered log verbosity in new containers when they scaled in response to traffic spikes. That led to more useful infrastructure for development, without giving up (too much) resilience."
+          },
+          {
+            "type": "p",
+            "text": "Calling things out early is sometimes a nuisance, but sometimes prevents a small problem from manifesting as a much larger disaster when some other part of the system breaks down."
+          },
+          {
+            "type": "p",
+            "text": "These are the types of people who see the risk in merging an old and new system and have the persistence—despite others on the team pushing back—to effect change, or buy more time for upgrades and maintenance."
+          },
+          {
+            "type": "p",
+            "text": "We need that friction in our system, because without it, the wheels fly off instead of making a wear pattern that can be measured and mitigated."
+          }
+        ],
+        "translations": [
+          "Between Microsoft's two-day outage and the FAA ground stop yesterday, there's plenty of ink spilled about who's responsible, why these things happened, etc.",
+          "But it made me think back to some of the infrastructure and ops teams I've worked on, and similar (though much smaller scale) outages we encountered.",
+          "Having an ops mindset is fundamentally different from a development or project management mindset. And it took me over a decade of software development to understand why.",
+          "Ops is about staying collected when systems fail. Usually debugging code written by other people, in conditions they were never prepared for.",
+          "There's a lot of creativity and exploration in debugging critical failures, and IMO sysadmins are usually an undervalued part of any team.",
+          "I always found it helpful to have a curmudgeonly person on the team who got annoyed when some of my code generated an extra 10,000 log lines a day, or caused a small but measurable slowdown in a database backend.",
+          "I became that curmudgeon, in fact: I distinctly remember pushing back on a dev team enabling debug-level logs permanently in production. We were filling up packet buffers with mostly useless data, to help them 'debug in prod' with live data.",
+          "My argument was that if this were a well-defined short-term plan, with specific goals, it could be useful. But they were pushing a lot of new features and didn't want to go through their normal QA cycle in the staging environment.",
+          "Ultimately, we compromised on the logging: I added functionality to the cluster that lowered log verbosity in new containers when they scaled in response to traffic spikes. That led to more useful infrastructure for development, without giving up (too much) resilience.",
+          "Calling things out early is sometimes a nuisance, but sometimes prevents a small problem from manifesting as a much larger disaster when some other part of the system breaks down.",
+          "These are the types of people who see the risk in merging an old and new system and have the persistence—despite others on the team pushing back—to effect change, or buy more time for upgrades and maintenance.",
+          "We need that friction in our system, because without it, the wheels fly off instead of making a wear pattern that can be measured and mitigated."
+        ]
+      }
+    },
+    {
+      "slug": "e2234e9e96edae8b",
+      "title": "How to find meaning in large tech companies",
+      "titleZh": "How to find meaning in large tech companies",
+      "link": "https://seangoedecke.com/how-to-find-meaning-in-large-tech-companies/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-14T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How to find meaning in large tech companies",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Why do many people hate working in large tech companies?"
+          },
+          {
+            "type": "p",
+            "text": "The obvious answer is “because organizational dysfunction stops them from doing the things they want to do”. Engineers like to write code and ship things, and if their company’s dysfunction is preventing that, it’ll make them unhappy. Right?"
+          },
+          {
+            "type": "h3",
+            "text": "Some people just hate messiness"
+          },
+          {
+            "type": "p",
+            "text": "I don’t think so, actually. If that were the case, those people would be interested in understanding the dysfunction and learning how to work around it, so they can do more of the things they want to do1. However, many people seem to actively avoid that. They find even contemplating the dysfunction to be as unpleasant as actually dealing with it."
+          },
+          {
+            "type": "p",
+            "text": "I think the reason for that is similar to why most people don’t like working in a messy room. People — particularly engineers — have a compulsion towards neatness. As I’ve written about before, it’s often our weird internal compulsions that drive our professional selves. If you feel a visceral disgust towards organizational dysfunction, spending any time thinking about it probably feels like being tainted."
+          },
+          {
+            "type": "p",
+            "text": "In Anathem, Neal Stephenson writes about a strange punishment where initiate scholars are forced to study “The Book”: a text written to be both complex and entirely meaningless. It takes a lot of intellectual effort to master The Book, but there’s absolutely zero useful content there. Studying it is thus a kind of self-damage. In Stephenson’s words, “the punishment lay in knowing that you were putting all that effort into letting a kind of intellectual poison infiltrate your brain”."
+          },
+          {
+            "type": "h3",
+            "text": "Role-playing and alienation"
+          },
+          {
+            "type": "p",
+            "text": "Even if you’re not instinctively repulsed by inefficient organizations, working in one can take its toll. There are many, many things that a large tech company treats as important that are hard to take seriously: OKRs, some deadlines, internal training, attempts to build “hype” among employees, and so on. Acting emotionally invested in all of this can be alienating2. Getting good at persuading yourself to act like unimportant things are important is a lucrative but dangerous skill. If you do it long enough, it can feel like importance itself is an illusion."
+          },
+          {
+            "type": "p",
+            "text": "Before I became a software engineer, I did a master’s degree in philosophy3. When you tell people you’re studying philosophy, many people will ask if philosophy can solve their existential angst: they feel that the universe is very big and uncaring, and that humans make up only a tiny pin-prick of it, and that therefore nothing matters. Philosophers must have written about that, right? What’s the solution?"
+          },
+          {
+            "type": "p",
+            "text": "The solution is to stop doing philosophy. If working in a dysfunctional organization has convinced you that nothing matters, you should refute that by coming into direct contact with things that matter. Go hang out with your kids, or take a walk in the park, or read a good book, or take your medication4. In other words, spend less time thinking about work5. I think this is good advice. But I also think there is quite a lot of real value and meaning you can get from working in a large tech company. Where is it?"
+          },
+          {
+            "type": "h3",
+            "text": "Doing things right at scale matters"
+          },
+          {
+            "type": "p",
+            "text": "At large tech companies, millions of people will benefit from the work you do. If you make an amazing video conferencing app that a handful of people use, you will have to derive your satisfaction from the quality of your work. But if you can make Teams a tiny bit better, you’re making a tiny improvement in the lives of millions of people who use it."
+          },
+          {
+            "type": "p",
+            "text": "It isn’t easy to make enterprise pieces of software better, for lots of reasons. It sometimes requires jumping through awkward hoops or playing demeaning political games. However, it’s such a valuable thing to do. Every bug you fix or feature you add saves cumulative months or years of users’ time. This is still true if the software you’re working on is steadily getting worse, as most pieces of enterprise software do. Slowing that process down is important!"
+          },
+          {
+            "type": "p",
+            "text": "Software engineering is really hard. Getting anything done in large organizations is also really hard. The intersection of these two hard problems is a nightmare morass of difficulty. It is not for the faint of heart6. Engineers from smaller organizations will mock you and invent fantasy stories about what your work is like. But if you can handle it — if you’re tolerant of mess, and if you have a rich enough personal life to be able to treat work politics with a healthy detachment — it is as rich a source of meaning as you could ask for."
+          },
+          {
+            "type": "li",
+            "text": "More or less the mission statement for this blog.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I wrote about this in much more detail in Selling out.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "My specific subfield was “moral epistemology”: how we can know what’s right and wrong. If you think it’s a bit anachronistic for philosophers to believe in right or wrong at all, I suggest reading this Reddit post I wrote a long time ago: moral realism is surprisingly popular among academic philosophers.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I mean this seriously. There are probably 1% of people who are so philosophy-brained that their existential angst does in fact derive from how seriously they take the arguments. These people might benefit from doing more philosophy. Everyone else is just depressed.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "At the risk of cultural stereotype, I think it is kind of distinctively American to try and derive your primary meaning in life from your workplace. On the other hand, you do spend a huge chunk of your life working, so it had better not be completely meaningless.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I’m being hyperbolic here: in fact it is a relatively chill, well-paid job.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "Why do many people hate working in large tech companies?",
+          "The obvious answer is “because organizational dysfunction stops them from doing the things they want to do”. Engineers like to write code and ship things, and if their company’s dysfunction is preventing that, it’ll make them unhappy. Right?",
+          "Some people just hate messiness",
+          "I don’t think so, actually. If that were the case, those people would be interested in understanding the dysfunction and learning how to work around it, so they can do more of the things they want to do1. However, many people seem to actively avoid that. They find even contemplating the dysfunction to be as unpleasant as actually dealing with it.",
+          "I think the reason for that is similar to why most people don’t like working in a messy room. People — particularly engineers — have a compulsion towards neatness. As I’ve written about before, it’s often our weird internal compulsions that drive our professional selves. If you feel a visceral disgust towards organizational dysfunction, spending any time thinking about it probably feels like being tainted.",
+          "In Anathem, Neal Stephenson writes about a strange punishment where initiate scholars are forced to study “The Book”: a text written to be both complex and entirely meaningless. It takes a lot of intellectual effort to master The Book, but there’s absolutely zero useful content there. Studying it is thus a kind of self-damage. In Stephenson’s words, “the punishment lay in knowing that you were putting all that effort into letting a kind of intellectual poison infiltrate your brain”.",
+          "Role-playing and alienation",
+          "Even if you’re not instinctively repulsed by inefficient organizations, working in one can take its toll. There are many, many things that a large tech company treats as important that are hard to take seriously: OKRs, some deadlines, internal training, attempts to build “hype” among employees, and so on. Acting emotionally invested in all of this can be alienating2. Getting good at persuading yourself to act like unimportant things are important is a lucrative but dangerous skill. If you do it long enough, it can feel like importance itself is an illusion.",
+          "Before I became a software engineer, I did a master’s degree in philosophy3. When you tell people you’re studying philosophy, many people will ask if philosophy can solve their existential angst: they feel that the universe is very big and uncaring, and that humans make up only a tiny pin-prick of it, and that therefore nothing matters. Philosophers must have written about that, right? What’s the solution?",
+          "The solution is to stop doing philosophy. If working in a dysfunctional organization has convinced you that nothing matters, you should refute that by coming into direct contact with things that matter. Go hang out with your kids, or take a walk in the park, or read a good book, or take your medication4. In other words, spend less time thinking about work5. I think this is good advice. But I also think there is quite a lot of real value and meaning you can get from working in a large tech company. Where is it?",
+          "Doing things right at scale matters",
+          "At large tech companies, millions of people will benefit from the work you do. If you make an amazing video conferencing app that a handful of people use, you will have to derive your satisfaction from the quality of your work. But if you can make Teams a tiny bit better, you’re making a tiny improvement in the lives of millions of people who use it.",
+          "It isn’t easy to make enterprise pieces of software better, for lots of reasons. It sometimes requires jumping through awkward hoops or playing demeaning political games. However, it’s such a valuable thing to do. Every bug you fix or feature you add saves cumulative months or years of users’ time. This is still true if the software you’re working on is steadily getting worse, as most pieces of enterprise software do. Slowing that process down is important!",
+          "Software engineering is really hard. Getting anything done in large organizations is also really hard. The intersection of these two hard problems is a nightmare morass of difficulty. It is not for the faint of heart6. Engineers from smaller organizations will mock you and invent fantasy stories about what your work is like. But if you can handle it — if you’re tolerant of mess, and if you have a rich enough personal life to be able to treat work politics with a healthy detachment — it is as rich a source of meaning as you could ask for.",
+          "More or less the mission statement for this blog.\n↩",
+          "I wrote about this in much more detail in Selling out.\n↩",
+          "My specific subfield was “moral epistemology”: how we can know what’s right and wrong. If you think it’s a bit anachronistic for philosophers to believe in right or wrong at all, I suggest reading this Reddit post I wrote a long time ago: moral realism is surprisingly popular among academic philosophers.\n↩",
+          "I mean this seriously. There are probably 1% of people who are so philosophy-brained that their existential angst does in fact derive from how seriously they take the arguments. These people might benefit from doing more philosophy. Everyone else is just depressed.\n↩",
+          "At the risk of cultural stereotype, I think it is kind of distinctively American to try and derive your primary meaning in life from your workplace. On the other hand, you do spend a huge chunk of your life working, so it had better not be completely meaningless.\n↩",
+          "I’m being hyperbolic here: in fact it is a relatively chill, well-paid job.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "124dafc8c15152ef",
+      "title": "Joanna Stern Reviews the HomeView",
+      "titleZh": "Joanna Stern Reviews the HomeView",
+      "link": "https://www.youtube.com/watch?v=yVTcVtLn2o4",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-14T17:50:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Joanna Stern Reviews the HomeView",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "194354d076e035aa",
+      "title": "Jason Snell’s HomeView Review",
+      "titleZh": "Jason Snell’s HomeView Review",
+      "link": "https://sixcolors.com/post/2026/11/homeview-review-a-late-arrival-with-promise-but-still-showing-some-seams/",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-14T17:45:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Jason Snell’s HomeView Review",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "By\n\nJason Snell",
+        "siteName": "Six Colors",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’ve wanted a product like the Apple HomeView for years now. After spending a lot of time with various personal assistant “smart speakers” in my kitchen—some with screens—I’ve never been more certain about the potential of the product category or more disappointed in the reality."
+          },
+          {
+            "type": "p",
+            "text": "I’ve spent years with Google and Amazon displays in my kitchen, and was never really satisfied. They were slow, their screens weren’t very good, they didn’t integrate well with my home, and Amazon would not stop opting me into new forms of distracting marketing messages."
+          },
+          {
+            "type": "p",
+            "text": "The HomeView, which has been standing like a tiny, cute sentinel atop the bar in my kitchen for the last week, improves on those other devices in innumerable ways. It’s got a great 5-inch square screen, it’s fast and responsive, and it fits into my home ecosystem."
+          },
+          {
+            "type": "p",
+            "text": "While it is far from perfect, the HomeView is great at some jobs, and pretty good at others. Where it falls short, it does so while hinting at some great potential that could be addressed with software updates."
+          },
+          {
+            "type": "p",
+            "text": "The Echo Show was sent back long ago. The Google Nest Home is unplugged and relocated to the tech recycling pile. The HomeView? It’s here to stay, at least in my kitchen."
+          },
+          {
+            "type": "h2",
+            "text": "An Apple device mash-up"
+          },
+          {
+            "type": "p",
+            "text": "The $299 HomeView is a slab-like device that’s 5.73 inches square and 0.39 inches thick, kind of like a tiny, square iPad. It comes mounted either on a perforated cylindrical aluminum base or (optionally) sans base, ready for wall mounting via a series of optional, extra-cost mounts. I tested one with the aluminum base, which makes it look like an extremely tiny iMac."
+          },
+          {
+            "type": "p",
+            "text": "The hardware is solid and coherent, the screen a pleasure to touch and tilt. In terms of software, though, the HomeView feels like a peculiar amalgam of numerous other Apple products. Its main interface makes it look a bit like an overgrown Apple Watch, complete with customizable “faces” that sometimes resemble actual Apple Watch faces and other times resemble the iPhone’s StandBy mode. Its apps sometimes feel like they’ve escaped from the iPhone or iPad, but at other times they feel more like they’re right off of an Apple TV. And still other “apps” resemble what you might see in your car, since Apple is also using CarPlay to project interfaces from apps running on your iPhone."
+          },
+          {
+            "type": "p",
+            "text": "Given the fact that this product’s tech stack feels like it was created in a blender, it’s remarkable that it holds together as well as it does—but there are still places where the seams show."
+          },
+          {
+            "type": "p",
+            "text": "Let’s start with the HomeView’s default “faces”, which are what the device defaults to when it’s not actively being used. Faces are a series of individual pages arranged in a strip that you can swipe through from side to side, very much reminiscent of how Apple Watch faces used to work. Tap and hold on a face and you’ll enter editing mode, where you can customize a face using an interface that is right out of watchOS or the new editable StandBy mode on the iPhone Duo."
+          },
+          {
+            "type": "p",
+            "text": "Some faces feel very much like they’re from the Apple Watch—simple clocks with the occasional widget that’s a single line of text very much in the style of a watch complication or a simple iPhone lock screen widget. There’s also a pretty animated clock and a lighthearted clock face featuring Snoopy animations. My favorite is undoubtedly the Photos face, which lets you choose a set of items, albums, or collections from your iCloud Photos library, all of which will be shuffled through, very much like an iPhone lock screen or the Apple Watch’s widget face. It is delightful to walk into my kitchen and see a picture of my family."
+          },
+          {
+            "type": "p",
+            "text": "Other HomeView faces are much more complex, offering dashboards to control Apple Home items, a live view of a HomeKit-compatible security camera, or even a custom Modular face you can populate with widgets from the device or from your iPhone."
+          },
+          {
+            "type": "p",
+            "text": "In many ways, these faces are the core of the product. They are the images you want to look at, yes, but they’re also the dashboards you can use to quickly interact with items in your home. And this is where HomeView’s software comes up a bit short."
+          },
+          {
+            "type": "p",
+            "text": "The layouts aren’t flexible enough, for starters. Simple faces like photos work a charm, but more complex faces are kind of a mess. I’d like more options about what items to place on a face, and where to place them. The HomeView seems like the perfect device to use as a control panel for my smart-home devices, but the Home Modular face is strangely limited. For example, I can only use it to turn dimmable lights on to full brightness. To dim a light, I have to open the Home app, select the item in there, and then swipe up or down on the dimming interface."
+          },
+          {
+            "type": "p",
+            "text": "It’s great that you can view iPhone widgets on the HomeView just as you can on the Mac, but it’s a bit frustrating that it will only display the small square widget style. Presumably because of the Apple Watch roots of some of these faces, there’s a surprising lack of digital clocks. In fact, in some face views you can create a face featuring a clock, but if you delete it, you can’t add it back. I admit to being frequently baffled about what I was able to add and customize, and what I wasn’t, when trying to build faces."
+          },
+          {
+            "type": "p",
+            "text": "All of this is really unsurprising when you consider that this is an interface welded together from disparate parts of other Apple products, but it feels like it needs some more tweaking and attention for it to fully come together."
+          },
+          {
+            "type": "h2",
+            "text": "Apps, but no App Store"
+          },
+          {
+            "type": "p",
+            "text": "Swipe up from the bottom of any face and you’ll find yourself in the HomeView’s app view, its equivalent of an iOS home screen. You can customize this view to drag icons around and even add widgets. This screen is designed to be personalized to you—it shows your picture and welcomes you by name, all because you train the HomeView on your appearance (via its included webcam) as well as voice, and link it to your iPhone, which needs to be on the same Wi-Fi network and have been unlocked relatively recently. HomeView uses all of those hints to decide if it’s you who’s swiping up. If it doesn’t recognize you, it’ll put up a more generic interface without any linked iPhone apps."
+          },
+          {
+            "type": "p",
+            "text": "There are some “real” Apple apps on the HomeView: Music, Safari, Home, FaceTime, Weather, Find My, Calendar, Messages, Timers/Alarms/World Clock (all escapees from the Clock app), Reminders, and Settings all offer functionality that’s not far from what you’d get on an iPhone."
+          },
+          {
+            "type": "p",
+            "text": "Also appearing in the same app view are things that look like apps but are not the same as the onboard apps that every person can see. These are items pushed from your paired iPhone, and they’re actually the CarPlay extensions of iPhone apps (running on the paired iPhone of the person HomeView has determined is using the device, via face/voice/device recognition) in CarPlay’s audio and video categories. So, for example, Instapaper appears on my HomeView—but only its CarPlay interface, which offers to read stories out loud. The New York Times app is there, but just to play its podcasts. Libby will offer me audiobooks. Overcast and Apple Podcasts will play my podcasts, and the Apple TV app will play TV shows (in an extreme letterbox on this square screen)."
+          },
+          {
+            "type": "p",
+            "text": "Using CarPlay to let iPhone apps run (in a way) on HomeView was a stroke of genius. The feature works pretty well and it allows Apple not to clutter the device with an App Store or force developers to write new versions of their apps for yet another platform. That said, I do wonder if there might be a better path forward for HomeView that does allow developers to write more full-featured apps if they wish, either via CarPlay (outside of the audio and video categories) or by allowing iPhone apps to install a HomeView version of themselves, which is how most Apple Watch apps are installed. (There are already reports that Apple may be adding support for AI voice assistants via CarPlay in the future.)"
+          },
+          {
+            "type": "p",
+            "text": "Or consider recipe apps as a category. They don’t really make sense in CarPlay, but they sure do on this device. Apple has built a clever recipe view into Safari on the HomeView that displays recipes with clear ingredients lists, cooking steps, and even hyperlinks to quickly create timers. Unfortunately, I keep all my recipes in Mela, a very nice app that seemingly is unavailable on HomeView. Maybe recipe app developers will find a way to get their content on the HomeView, perhaps via the web, but it would be nice if they had the option to somehow bring their users’ data to this device directly. The clever CarPlay hack only goes so far."
+          },
+          {
+            "type": "h2",
+            "text": "Siri speaker with a screen"
+          },
+          {
+            "type": "p",
+            "text": "If Mark Gurman’s reports are to be believed, Apple has had the HomeView hardware ready for quite a while, but felt it was unable to release it because of the 2024 failure to launch of numerous Apple Intelligence features. Now that Siri AI has arrived, HomeView is finally ready to blast into stores."
+          },
+          {
+            "type": "p",
+            "text": "Powered by an A18 processor, the HomeView supports Apple Intelligence and Siri AI, and when paired with an Apple Intelligence-capable iPhone or iPad, it’s capable of using that device to search through your personal context to answer your questions. Just as is true everywhere else, when Siri AI works on the HomeView it can be spectacular. I have asked targeted questions about items in long-ago Messages threads or on my Calendar and it has managed to unearth the answer without me having to do a lick of work. It’s vastly better at general world-knowledge questions than the old Siri. That said, Siri AI isn’t as reliable as it should be, both in general and on the HomeView. Sometimes it just seems to go off in its own world and not respond, or respond accurately. Other times, it works just as advertised. Apple’s challenge (and this goes way beyond the HomePod) is to make Siri AI work more reliably."
+          },
+          {
+            "type": "p",
+            "text": "I also had some bizarre, HomeView-specific issues with Siri AI. After I paired my iPhone with the HomeView, every command I gave it to play music was instead routed to Broadcasts, a third-party app on my iPhone (with a CarPlay connector, to be fair) that I use to stream live podcasts. I had to delete Broadcasts entirely in order to get Music playback to work properly. Once I did that, everything settled down, but I still have no idea why Siri got so hung up on an app that couldn’t offer albums or playlists or anything else I was looking for."
+          },
+          {
+            "type": "p",
+            "text": "But again, when it works, it’s great. I was able to ask the HomeView what that painting is “where the guy from the French Revolution is dead in a bathtub,” and not only did it answer correctly that it’s Jacques-Louis David’s “Death of Marat,” it pulled up the painting for me to look at on the HomeView screen. My HomePod could never."
+          },
+          {
+            "type": "p",
+            "text": "Beyond Siri, the HomeView is pretty versatile as a media device. It will play audio itself, via its speakers and (on the model with the cylindrical base) an extra downward-pointing woofer. It sounds… fine? It sounds like a kitchen speaker. The HomeView’s speaker is not going to win any awards from audiophiles, but it’s absolutely good enough to do the job when you’re making pizza, drinking some wine, and rocking out to the hits of the ’80s. (Ask me how I know.)"
+          },
+          {
+            "type": "p",
+            "text": "HomeView also integrates well with AirPlay, so if you do have other speakers, HomeView can play to them, too. And it’s an AirPlay receiver, so if you want to play audio or video on the HomeView that originated on another Apple device, it’s up to the challenge. (This is useful if you want to, for example, watch a college football game on YouTube TV, which does not have a video CarPlay app. Of course, you’ll be watching it extremely letterboxed, but it does work!)"
+          },
+          {
+            "type": "p",
+            "text": "The star of HomeView’s playback versatility may be its support for Handoff, which is extremely present on this device, perhaps even to a fault. Get an iPhone close to a HomeView and both devices will show a ripple on screen, and your phone will ask you to either throw whatever you’re consuming over to the HomeView, or suck back whatever is playing on the HomeView onto your iPhone. I used this feature to toss music, podcasts, AirPlay from random apps, and even web pages (via Safari) from my iPhone to the HomeView, and pulled music I was listening to on the HomeView back to my iPhone. My only real complaint is that it kept triggering when I came even vaguely close to the HomeView with my phone, though it was easy to just opt not to transfer anything either way."
+          },
+          {
+            "type": "p",
+            "text": "There were some other quirks. The HomeView does FaceTime, and does a pretty nice job thanks to its 12-megapixel Center Stage camera. But it struggled to connect to a multi-person FaceTime call when I handed it off from an iPhone, and after a brief two-person interlude, the call failed completely. Occasionally attempts to play audio via a CarPlay-based app (Overcast) would claim to succeed, but no audio would be audible until I switched to playing audio from a different app (Music) and then moved back to Overcast."
+          },
+          {
+            "type": "p",
+            "text": "I’m willing to chalk all this up to this essentially being the 1.0 version of the HomeView software experience, as well as a side effect of Apple’s ambition in fusing together so many disparate aspects of its ecosystem in this product. It’s all a little bit messy."
+          },
+          {
+            "type": "h2",
+            "text": "A view into Apple’s home"
+          },
+          {
+            "type": "p",
+            "text": "So after years of waiting for Apple’s take on the smart speaker, was it worth it? To be clear, I would rather have not waited this long—and I’m pretty sure that’s true of Apple, as well. But here we are, and at $299 for the self-standing model, it strikes me as being a pretty great deal if you’re someone who is immersed in the Apple ecosystem and wants a little helper to answer questions, show pictures, play music, control devices, and otherwise just be a nice companion in the kitchen (or wherever else you might want one in your home)."
+          },
+          {
+            "type": "p",
+            "text": "The wall-mounted model, while also priced at $299, is a worse deal—in that it lacks a woofer and requires an additional purchase of a mounting assembly, meaning it’s got fewer features and ultimately costs more. I’m a little baffled why Apple didn’t offer a basic wall mount for that price, but it didn’t, and it makes that product a worse deal. (That said, I’m still interested in buying one, as I’d really like to put a panel on my wall that allows anyone in my home to control my smart-home stuff even when I’m not around.)"
+          },
+          {
+            "type": "p",
+            "text": "My real issues with the HomeView aren’t with its hardware, which is solid and functional and kind of adorable when spotted from any angle other than screen-on. It’s with the software, which has an impressive array of features welded on from various other Apple products—but can really show the seams. Apple’s use of CarPlay to support media apps on the device is clever, but it’s a little buggy and the device still feels limited. The recipe browser is cute, but I have all my recipes in an app that’s entirely walled off from the HomeView, and that’s a bummer."
+          },
+          {
+            "type": "p",
+            "text": "The product also really lives or dies by its “faces,” and the current ones are either pretty-but-not-useful or useful-but-not-pretty. (I can’t believe you can’t dim a light from a face screen.)"
+          },
+          {
+            "type": "p",
+            "text": "Still, solid hardware and a decent array of services are a start. HomeView (and its successors) has a real chance to fill the homes of avid iPhone users everywhere, so long as Apple works to improve the flexibility and polish of its software."
+          },
+          {
+            "type": "li",
+            "text": "Report a typo"
+          },
+          {
+            "type": "p",
+            "text": "If you appreciate articles like this one, support us by becoming a Six Colors subscriber. Subscribers get access to an exclusive podcast, members-only stories, and a special community."
+          }
+        ],
+        "translations": [
+          "I’ve wanted a product like the Apple HomeView for years now. After spending a lot of time with various personal assistant “smart speakers” in my kitchen—some with screens—I’ve never been more certain about the potential of the product category or more disappointed in the reality.",
+          "I’ve spent years with Google and Amazon displays in my kitchen, and was never really satisfied. They were slow, their screens weren’t very good, they didn’t integrate well with my home, and Amazon would not stop opting me into new forms of distracting marketing messages.",
+          "The HomeView, which has been standing like a tiny, cute sentinel atop the bar in my kitchen for the last week, improves on those other devices in innumerable ways. It’s got a great 5-inch square screen, it’s fast and responsive, and it fits into my home ecosystem.",
+          "While it is far from perfect, the HomeView is great at some jobs, and pretty good at others. Where it falls short, it does so while hinting at some great potential that could be addressed with software updates.",
+          "The Echo Show was sent back long ago. The Google Nest Home is unplugged and relocated to the tech recycling pile. The HomeView? It’s here to stay, at least in my kitchen.",
+          "An Apple device mash-up",
+          "The $299 HomeView is a slab-like device that’s 5.73 inches square and 0.39 inches thick, kind of like a tiny, square iPad. It comes mounted either on a perforated cylindrical aluminum base or (optionally) sans base, ready for wall mounting via a series of optional, extra-cost mounts. I tested one with the aluminum base, which makes it look like an extremely tiny iMac.",
+          "The hardware is solid and coherent, the screen a pleasure to touch and tilt. In terms of software, though, the HomeView feels like a peculiar amalgam of numerous other Apple products. Its main interface makes it look a bit like an overgrown Apple Watch, complete with customizable “faces” that sometimes resemble actual Apple Watch faces and other times resemble the iPhone’s StandBy mode. Its apps sometimes feel like they’ve escaped from the iPhone or iPad, but at other times they feel more like they’re right off of an Apple TV. And still other “apps” resemble what you might see in your car, since Apple is also using CarPlay to project interfaces from apps running on your iPhone.",
+          "Given the fact that this product’s tech stack feels like it was created in a blender, it’s remarkable that it holds together as well as it does—but there are still places where the seams show.",
+          "Let’s start with the HomeView’s default “faces”, which are what the device defaults to when it’s not actively being used. Faces are a series of individual pages arranged in a strip that you can swipe through from side to side, very much reminiscent of how Apple Watch faces used to work. Tap and hold on a face and you’ll enter editing mode, where you can customize a face using an interface that is right out of watchOS or the new editable StandBy mode on the iPhone Duo.",
+          "Some faces feel very much like they’re from the Apple Watch—simple clocks with the occasional widget that’s a single line of text very much in the style of a watch complication or a simple iPhone lock screen widget. There’s also a pretty animated clock and a lighthearted clock face featuring Snoopy animations. My favorite is undoubtedly the Photos face, which lets you choose a set of items, albums, or collections from your iCloud Photos library, all of which will be shuffled through, very much like an iPhone lock screen or the Apple Watch’s widget face. It is delightful to walk into my kitchen and see a picture of my family.",
+          "Other HomeView faces are much more complex, offering dashboards to control Apple Home items, a live view of a HomeKit-compatible security camera, or even a custom Modular face you can populate with widgets from the device or from your iPhone.",
+          "In many ways, these faces are the core of the product. They are the images you want to look at, yes, but they’re also the dashboards you can use to quickly interact with items in your home. And this is where HomeView’s software comes up a bit short.",
+          "The layouts aren’t flexible enough, for starters. Simple faces like photos work a charm, but more complex faces are kind of a mess. I’d like more options about what items to place on a face, and where to place them. The HomeView seems like the perfect device to use as a control panel for my smart-home devices, but the Home Modular face is strangely limited. For example, I can only use it to turn dimmable lights on to full brightness. To dim a light, I have to open the Home app, select the item in there, and then swipe up or down on the dimming interface.",
+          "It’s great that you can view iPhone widgets on the HomeView just as you can on the Mac, but it’s a bit frustrating that it will only display the small square widget style. Presumably because of the Apple Watch roots of some of these faces, there’s a surprising lack of digital clocks. In fact, in some face views you can create a face featuring a clock, but if you delete it, you can’t add it back. I admit to being frequently baffled about what I was able to add and customize, and what I wasn’t, when trying to build faces.",
+          "All of this is really unsurprising when you consider that this is an interface welded together from disparate parts of other Apple products, but it feels like it needs some more tweaking and attention for it to fully come together.",
+          "Apps, but no App Store",
+          "Swipe up from the bottom of any face and you’ll find yourself in the HomeView’s app view, its equivalent of an iOS home screen. You can customize this view to drag icons around and even add widgets. This screen is designed to be personalized to you—it shows your picture and welcomes you by name, all because you train the HomeView on your appearance (via its included webcam) as well as voice, and link it to your iPhone, which needs to be on the same Wi-Fi network and have been unlocked relatively recently. HomeView uses all of those hints to decide if it’s you who’s swiping up. If it doesn’t recognize you, it’ll put up a more generic interface without any linked iPhone apps.",
+          "There are some “real” Apple apps on the HomeView: Music, Safari, Home, FaceTime, Weather, Find My, Calendar, Messages, Timers/Alarms/World Clock (all escapees from the Clock app), Reminders, and Settings all offer functionality that’s not far from what you’d get on an iPhone.",
+          "Also appearing in the same app view are things that look like apps but are not the same as the onboard apps that every person can see. These are items pushed from your paired iPhone, and they’re actually the CarPlay extensions of iPhone apps (running on the paired iPhone of the person HomeView has determined is using the device, via face/voice/device recognition) in CarPlay’s audio and video categories. So, for example, Instapaper appears on my HomeView—but only its CarPlay interface, which offers to read stories out loud. The New York Times app is there, but just to play its podcasts. Libby will offer me audiobooks. Overcast and Apple Podcasts will play my podcasts, and the Apple TV app will play TV shows (in an extreme letterbox on this square screen).",
+          "Using CarPlay to let iPhone apps run (in a way) on HomeView was a stroke of genius. The feature works pretty well and it allows Apple not to clutter the device with an App Store or force developers to write new versions of their apps for yet another platform. That said, I do wonder if there might be a better path forward for HomeView that does allow developers to write more full-featured apps if they wish, either via CarPlay (outside of the audio and video categories) or by allowing iPhone apps to install a HomeView version of themselves, which is how most Apple Watch apps are installed. (There are already reports that Apple may be adding support for AI voice assistants via CarPlay in the future.)",
+          "Or consider recipe apps as a category. They don’t really make sense in CarPlay, but they sure do on this device. Apple has built a clever recipe view into Safari on the HomeView that displays recipes with clear ingredients lists, cooking steps, and even hyperlinks to quickly create timers. Unfortunately, I keep all my recipes in Mela, a very nice app that seemingly is unavailable on HomeView. Maybe recipe app developers will find a way to get their content on the HomeView, perhaps via the web, but it would be nice if they had the option to somehow bring their users’ data to this device directly. The clever CarPlay hack only goes so far.",
+          "Siri speaker with a screen",
+          "If Mark Gurman’s reports are to be believed, Apple has had the HomeView hardware ready for quite a while, but felt it was unable to release it because of the 2024 failure to launch of numerous Apple Intelligence features. Now that Siri AI has arrived, HomeView is finally ready to blast into stores.",
+          "Powered by an A18 processor, the HomeView supports Apple Intelligence and Siri AI, and when paired with an Apple Intelligence-capable iPhone or iPad, it’s capable of using that device to search through your personal context to answer your questions. Just as is true everywhere else, when Siri AI works on the HomeView it can be spectacular. I have asked targeted questions about items in long-ago Messages threads or on my Calendar and it has managed to unearth the answer without me having to do a lick of work. It’s vastly better at general world-knowledge questions than the old Siri. That said, Siri AI isn’t as reliable as it should be, both in general and on the HomeView. Sometimes it just seems to go off in its own world and not respond, or respond accurately. Other times, it works just as advertised. Apple’s challenge (and this goes way beyond the HomePod) is to make Siri AI work more reliably.",
+          "I also had some bizarre, HomeView-specific issues with Siri AI. After I paired my iPhone with the HomeView, every command I gave it to play music was instead routed to Broadcasts, a third-party app on my iPhone (with a CarPlay connector, to be fair) that I use to stream live podcasts. I had to delete Broadcasts entirely in order to get Music playback to work properly. Once I did that, everything settled down, but I still have no idea why Siri got so hung up on an app that couldn’t offer albums or playlists or anything else I was looking for.",
+          "But again, when it works, it’s great. I was able to ask the HomeView what that painting is “where the guy from the French Revolution is dead in a bathtub,” and not only did it answer correctly that it’s Jacques-Louis David’s “Death of Marat,” it pulled up the painting for me to look at on the HomeView screen. My HomePod could never.",
+          "Beyond Siri, the HomeView is pretty versatile as a media device. It will play audio itself, via its speakers and (on the model with the cylindrical base) an extra downward-pointing woofer. It sounds… fine? It sounds like a kitchen speaker. The HomeView’s speaker is not going to win any awards from audiophiles, but it’s absolutely good enough to do the job when you’re making pizza, drinking some wine, and rocking out to the hits of the ’80s. (Ask me how I know.)",
+          "HomeView also integrates well with AirPlay, so if you do have other speakers, HomeView can play to them, too. And it’s an AirPlay receiver, so if you want to play audio or video on the HomeView that originated on another Apple device, it’s up to the challenge. (This is useful if you want to, for example, watch a college football game on YouTube TV, which does not have a video CarPlay app. Of course, you’ll be watching it extremely letterboxed, but it does work!)",
+          "The star of HomeView’s playback versatility may be its support for Handoff, which is extremely present on this device, perhaps even to a fault. Get an iPhone close to a HomeView and both devices will show a ripple on screen, and your phone will ask you to either throw whatever you’re consuming over to the HomeView, or suck back whatever is playing on the HomeView onto your iPhone. I used this feature to toss music, podcasts, AirPlay from random apps, and even web pages (via Safari) from my iPhone to the HomeView, and pulled music I was listening to on the HomeView back to my iPhone. My only real complaint is that it kept triggering when I came even vaguely close to the HomeView with my phone, though it was easy to just opt not to transfer anything either way.",
+          "There were some other quirks. The HomeView does FaceTime, and does a pretty nice job thanks to its 12-megapixel Center Stage camera. But it struggled to connect to a multi-person FaceTime call when I handed it off from an iPhone, and after a brief two-person interlude, the call failed completely. Occasionally attempts to play audio via a CarPlay-based app (Overcast) would claim to succeed, but no audio would be audible until I switched to playing audio from a different app (Music) and then moved back to Overcast.",
+          "I’m willing to chalk all this up to this essentially being the 1.0 version of the HomeView software experience, as well as a side effect of Apple’s ambition in fusing together so many disparate aspects of its ecosystem in this product. It’s all a little bit messy.",
+          "A view into Apple’s home",
+          "So after years of waiting for Apple’s take on the smart speaker, was it worth it? To be clear, I would rather have not waited this long—and I’m pretty sure that’s true of Apple, as well. But here we are, and at $299 for the self-standing model, it strikes me as being a pretty great deal if you’re someone who is immersed in the Apple ecosystem and wants a little helper to answer questions, show pictures, play music, control devices, and otherwise just be a nice companion in the kitchen (or wherever else you might want one in your home).",
+          "The wall-mounted model, while also priced at $299, is a worse deal—in that it lacks a woofer and requires an additional purchase of a mounting assembly, meaning it’s got fewer features and ultimately costs more. I’m a little baffled why Apple didn’t offer a basic wall mount for that price, but it didn’t, and it makes that product a worse deal. (That said, I’m still interested in buying one, as I’d really like to put a panel on my wall that allows anyone in my home to control my smart-home stuff even when I’m not around.)",
+          "My real issues with the HomeView aren’t with its hardware, which is solid and functional and kind of adorable when spotted from any angle other than screen-on. It’s with the software, which has an impressive array of features welded on from various other Apple products—but can really show the seams. Apple’s use of CarPlay to support media apps on the device is clever, but it’s a little buggy and the device still feels limited. The recipe browser is cute, but I have all my recipes in an app that’s entirely walled off from the HomeView, and that’s a bummer.",
+          "The product also really lives or dies by its “faces,” and the current ones are either pretty-but-not-useful or useful-but-not-pretty. (I can’t believe you can’t dim a light from a face screen.)",
+          "Still, solid hardware and a decent array of services are a start. HomeView (and its successors) has a real chance to fill the homes of avid iPhone users everywhere, so long as Apple works to improve the flexibility and polish of its software.",
+          "Report a typo",
+          "If you appreciate articles like this one, support us by becoming a Six Colors subscriber. Subscribers get access to an exclusive podcast, members-only stories, and a special community."
+        ]
+      }
+    },
+    {
+      "slug": "ab5f80811871f4f7",
+      "title": "Patrick McGee on Johny Srouji and Nvidia",
+      "titleZh": "Patrick McGee on Johny Srouji and Nvidia",
+      "link": "https://x.com/patrickmcgee_/status/2120799867140550999",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-14T17:40:39.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Patrick McGee on Johny Srouji and Nvidia",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Post"
+          },
+          {
+            "type": "h2",
+            "text": "Post"
+          },
+          {
+            "type": "h2",
+            "text": "Patrick McGee on X: \"Apple hardware chief Johny Srouji would be an incredible choice to lead @nvidia -- and I believe he'd accept it. \n\nHe's hit the ceiling at Apple and won't ever be CEO ; obviously competent; ambitious as hell; has long wanted chip designs to dictate Apple product launches/timelines.\""
+          },
+          {
+            "type": "h2",
+            "text": "Conversation"
+          },
+          {
+            "type": "p",
+            "text": "Apple hardware chief Johny Srouji would be an incredible choice to lead @nvidia -- and I believe he'd accept it. \n\nHe's hit the ceiling at Apple and won't ever be CEO ; obviously competent; ambitious as hell; has long wanted chip designs to dictate Apple product launches/timelines."
+          },
+          {
+            "type": "p",
+            "text": "One person being considered for the top job (NVDA CEO) is Apple hardware chief Johny Srouji, who was among the executives considered for Intel CEO in 2019, according to another person familiar with the matter. - Semafor"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "e005b252195a9e28",
+      "title": "Microsoft Says Cloud Outage Was ‘Not Related to Cyber or AI / Agents’",
+      "titleZh": "Microsoft Says Cloud Outage Was ‘Not Related to Cyber or AI / Agents’",
+      "link": "https://x.com/microsoft/status/2121282013600907325",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-14T16:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Microsoft Says Cloud Outage Was ‘Not Related to Cyber or AI / Agents’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "X (formerly Twitter)",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "We are deeply sorry for the disruption this incident has caused our customers and partners. We know the trust they place in our services and take that responsibility extremely seriously. We are seeing broad recovery and stability across our services.\n\nThis was a technical issue not related to cyber or AI / agents. The incident was introduced by an issue during an earlier network capacity upgrade that surfaced following a recent network change. We have addressed the underlying issue and continue to restore service to remaining customers and regions.\n\nGiven the scale of demand, we restored services gradually, validating stability at each stage. While this took longer, it helped ensure a stable restoration.\n\nWe will provide a full post-incident report once our review is complete."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "7feabf197bbb5bbd",
+      "title": "Theatre Review: FrankenTacit ★★☆☆☆",
+      "titleZh": "Theatre Review: FrankenTacit ★★☆☆☆",
+      "link": "https://shkspr.mobi/blog/2026/11/theatre-review-frankentacit/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-11-14T12:34:35.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Theatre Review: FrankenTacit ★★☆☆☆",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Is Frankenstein the first cautionary tale about AI? If so, what does it mean to re-imagine it through the lens of Korean algorave music? The Seoul-based Tacit Group have crafted a new version of an ancient tale. Against a projected backdrop of procedurally generated imagery, a single human performer is joined by two AIs - together they create an unusual sonic experience built live on stage. The work is a triptych, split into three interlocking parts, each one building up the tension as the sole human performer battles for the soul of a very new machine."
+          },
+          {
+            "type": "p",
+            "text": "The show describes itself as presenting a form of multimedia synaesthesia - which led me to think it would be a mind-bending and eye-melting fusion of colour and sound. Instead, the visuals are close to monochrome which, when combined with the discordant and harsh music, makes for a challenging experience."
+          },
+          {
+            "type": "p",
+            "text": "Gazaebal, both the director and the performer, has a grand vision. While Mary Shelley's original Frankenstein asks us to consider whether the real monster is the creature or the creator, Gazaebal presents us with a different argument. Do you have a right to control your creations if all they are are mere warped reflections of your personality? Can you meaningfully play games against opponents who are your digital twins?"
+          },
+          {
+            "type": "p",
+            "text": "Sadly, I don't think that comes across in the performance. He sits almost motionless on stage, tapping at a Macbook, illuminated only dimly by its screen. There is very little apparent interaction between man and machines. The visuals are augmented by harsh flashing lights, but it isn't quite enough to liven up the stage."
+          },
+          {
+            "type": "p",
+            "text": "If you're familiar with the works of London-based Lu Wilson and todepond's pastagang meet ups, you will understand the complexities involved in producing live and experimental music via occasionally taciturn computers. It is fascinating to see code being rewritten and executed in the baroque surroundings of The Coronet Theatre. For those approaching it for the first time, there is very little in the way of explanation or hand-holding."
+          },
+          {
+            "type": "p",
+            "text": "There is a stark beauty about FrankenTacit. It is a short but concentrated performance which is uncompromising in its vision. The highlight is undoubtedly a music sequencer built out of multiplayer Tetris. As the pieces fall, the loops builds in unusual ways. Each performer struggles to produce a coherent tune to a staccato rhythm. Sadly it is let down by the bland visual and the repetitive electronic squelches."
+          },
+          {
+            "type": "p",
+            "text": "The performance is preceded by a short presentation about WeSA (We Are Sound Artists) - a Korean incubator for new and innovative artistic practices. It was fascinating to see how well they support the development of artists, new forms of art, and build an audience for both."
+          },
+          {
+            "type": "p",
+            "text": "After the main show, the audience are invited to watch two different Korean audiovisual works. Up first is The Image of Happiness: The First Scene, which is an eerie and hypnotic piece, full of distorted photos and tortured sound samples. It forms a chilling counterpoint to Frankentacit. The other is the delightful NullPointerException by WYXX. It takes the viewer on a playful and fractal journey through sound and absolutely deserves to have its geometric weirdness seen on the big screen. Both are complex works and complement the live-action piece."
+          },
+          {
+            "type": "p",
+            "text": "If you're in the mood for a performance which is unusual and occasionally baffling, Frankentacit could satisfy that craving. I think people already familiar with algorithmically generated sound will find it a little pedestrian whereas those unaccustomed to it will find it merely confusing."
+          },
+          {
+            "type": "p",
+            "text": "Many thanks to The Spy In The Stalls for the ticket."
+          },
+          {
+            "type": "h2",
+            "text": "Pre- and Post-Show"
+          },
+          {
+            "type": "p",
+            "text": "I've never been to The Coronet before. It is a ridiculously gorgeous space. It feels like a an explosion in a Steampunk antique shop. Madly twisting staircases peppered with faded art and perfectly dilapidated technology."
+          },
+          {
+            "type": "p",
+            "text": "The faded glory of the stage feels fitting, almost like we're back in time witnessing the future being born. Is the peeling paint part of the charm? Perhaps. There's an uncomfortably exhilarating feeling that the whole building could collapse at any moment."
+          },
+          {
+            "type": "p",
+            "text": "The bar is spacious with plenty of seats. Staff are friendly and you'll be endlessly fascinated by the tchotchkae littering the rooms and corridors."
+          },
+          {
+            "type": "p",
+            "text": "A perfect spot to unwind and discuss the show you've just seen."
+          }
+        ],
+        "translations": [
+          "Is Frankenstein the first cautionary tale about AI? If so, what does it mean to re-imagine it through the lens of Korean algorave music? The Seoul-based Tacit Group have crafted a new version of an ancient tale. Against a projected backdrop of procedurally generated imagery, a single human performer is joined by two AIs - together they create an unusual sonic experience built live on stage. The work is a triptych, split into three interlocking parts, each one building up the tension as the sole human performer battles for the soul of a very new machine.",
+          "The show describes itself as presenting a form of multimedia synaesthesia - which led me to think it would be a mind-bending and eye-melting fusion of colour and sound. Instead, the visuals are close to monochrome which, when combined with the discordant and harsh music, makes for a challenging experience.",
+          "Gazaebal, both the director and the performer, has a grand vision. While Mary Shelley's original Frankenstein asks us to consider whether the real monster is the creature or the creator, Gazaebal presents us with a different argument. Do you have a right to control your creations if all they are are mere warped reflections of your personality? Can you meaningfully play games against opponents who are your digital twins?",
+          "Sadly, I don't think that comes across in the performance. He sits almost motionless on stage, tapping at a Macbook, illuminated only dimly by its screen. There is very little apparent interaction between man and machines. The visuals are augmented by harsh flashing lights, but it isn't quite enough to liven up the stage.",
+          "If you're familiar with the works of London-based Lu Wilson and todepond's pastagang meet ups, you will understand the complexities involved in producing live and experimental music via occasionally taciturn computers. It is fascinating to see code being rewritten and executed in the baroque surroundings of The Coronet Theatre. For those approaching it for the first time, there is very little in the way of explanation or hand-holding.",
+          "There is a stark beauty about FrankenTacit. It is a short but concentrated performance which is uncompromising in its vision. The highlight is undoubtedly a music sequencer built out of multiplayer Tetris. As the pieces fall, the loops builds in unusual ways. Each performer struggles to produce a coherent tune to a staccato rhythm. Sadly it is let down by the bland visual and the repetitive electronic squelches.",
+          "The performance is preceded by a short presentation about WeSA (We Are Sound Artists) - a Korean incubator for new and innovative artistic practices. It was fascinating to see how well they support the development of artists, new forms of art, and build an audience for both.",
+          "After the main show, the audience are invited to watch two different Korean audiovisual works. Up first is The Image of Happiness: The First Scene, which is an eerie and hypnotic piece, full of distorted photos and tortured sound samples. It forms a chilling counterpoint to Frankentacit. The other is the delightful NullPointerException by WYXX. It takes the viewer on a playful and fractal journey through sound and absolutely deserves to have its geometric weirdness seen on the big screen. Both are complex works and complement the live-action piece.",
+          "If you're in the mood for a performance which is unusual and occasionally baffling, Frankentacit could satisfy that craving. I think people already familiar with algorithmically generated sound will find it a little pedestrian whereas those unaccustomed to it will find it merely confusing.",
+          "Many thanks to The Spy In The Stalls for the ticket.",
+          "Pre- and Post-Show",
+          "I've never been to The Coronet before. It is a ridiculously gorgeous space. It feels like a an explosion in a Steampunk antique shop. Madly twisting staircases peppered with faded art and perfectly dilapidated technology.",
+          "The faded glory of the stage feels fitting, almost like we're back in time witnessing the future being born. Is the peeling paint part of the charm? Perhaps. There's an uncomfortably exhilarating feeling that the whole building could collapse at any moment.",
+          "The bar is spacious with plenty of seats. Staff are friendly and you'll be endlessly fascinated by the tchotchkae littering the rooms and corridors.",
+          "A perfect spot to unwind and discuss the show you've just seen."
+        ]
+      }
+    },
+    {
+      "slug": "5e4c9c917238c585",
+      "title": "The longest polynomial level set",
+      "titleZh": "The longest polynomial level set",
+      "link": "https://www.johndcook.com/blog/2026/11/14/erdos-lemniscate/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-11-14T15:54:10.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The longest polynomial level set",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Let p(z) be a polynomial with leading coefficient 1, i.e. a monic polynomial. What is the maximum length of the curve"
+          },
+          {
+            "type": "p",
+            "text": "{z : |p(z)| = 1}"
+          },
+          {
+            "type": "p",
+            "text": "for each degree n?"
+          },
+          {
+            "type": "p",
+            "text": "Erdős conjectured that the maximum length was obtained by the polynomial p(z) = zn − 1. He was right, as Teng Zhang proved recently."
+          },
+          {
+            "type": "h2",
+            "text": "Examples"
+          },
+          {
+            "type": "p",
+            "text": "Here’s an example for degree five. The maximum length is obtained by p(z) = z5 − 1."
+          },
+          {
+            "type": "p",
+            "text": "This curve has length 15.02."
+          },
+          {
+            "type": "p",
+            "text": "Here’s the corresponding curve for p(z) = z5 − z"
+          },
+          {
+            "type": "p",
+            "text": "which has length 6.909."
+          },
+          {
+            "type": "p",
+            "text": "In general the level set {z : |p(z)| = 1} need not be connected, in which case the length is the sum of the lengths of the components."
+          },
+          {
+            "type": "p",
+            "text": "Here’s an example that tweaks the constant parameter of the optimal curve p(z) = z5 − 1.1."
+          },
+          {
+            "type": "p",
+            "text": "This curve has (total) length 14.59."
+          },
+          {
+            "type": "h2",
+            "text": "Details"
+          },
+          {
+            "type": "p",
+            "text": "The length of the maximum curve for given n is the length for the polynomial p(z) = zn − 1. The only curves obtaining the maximum length are translations and rotations of this curve."
+          },
+          {
+            "type": "p",
+            "text": "Note that for n = 1 the maximum curve is a circle and for n = 2 the curve is the lemniscate of Bernoulli. The general curve is called the Erdős lemniscate of order n, generalizing Bernoulli’s lemniscate."
+          },
+          {
+            "type": "p",
+            "text": "The maximum length for given n is"
+          },
+          {
+            "type": "p",
+            "text": "21/n B(1/n, 1/2n)"
+          },
+          {
+            "type": "p",
+            "text": "where B is the beta function."
+          },
+          {
+            "type": "p",
+            "text": "The Erdős lemniscates look similar to the “rose” curves r = cos(nθ), but these curves are not polynomial level sets."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Lemniscate functions"
+          },
+          {
+            "type": "li",
+            "text": "Cassini ovals"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "8b5003ca8ecf5d0a",
+      "title": "Peeking inside the bash rabbit hole",
+      "titleZh": "Peeking inside the bash rabbit hole",
+      "link": "https://www.johndcook.com/blog/2026/11/14/bash-rabbit-hole/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-11-14T13:09:57.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Peeking inside the bash rabbit hole",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I have much bigger issues to be concerned with than saving a few seconds of typing with obscure bash features. But precisely because I have bigger issues on my plate, it’s fun to take a moment and solve some little tangible problem."
+          },
+          {
+            "type": "p",
+            "text": "The shell !$ saves the last part of the latest command. (Mnemonic: bang often refers to commands, such as !! to redo the previous command, and cash often refers to the last of something, such as the end of a line in a regular expression.)"
+          },
+          {
+            "type": "p",
+            "text": "This comes in handy, for example, when you copy a file to a directory and then want to cd into that directory."
+          },
+          {
+            "type": "code",
+            "text": "cp myfile /big/long/path\ncd !$"
+          },
+          {
+            "type": "p",
+            "text": "The !$ variable is fragile, however. The sequence of commands"
+          },
+          {
+            "type": "code",
+            "text": "cp myfile /big/long/path\nls\ncd !$"
+          },
+          {
+            "type": "p",
+            "text": "won’t work because after running ls the variable !$ now contains “ls” rather than “/big/long/path”."
+          },
+          {
+            "type": "p",
+            "text": "There are two ways to fix this. In the previous example you could change the last command to"
+          },
+          {
+            "type": "code",
+            "text": "cd !-2:$"
+          },
+          {
+            "type": "p",
+            "text": "This says go back two commands (!-2) and extract (:) the last argument ($)."
+          },
+          {
+            "type": "p",
+            "text": "Another possibility is"
+          },
+          {
+            "type": "code",
+            "text": "cd !cp:$"
+          },
+          {
+            "type": "p",
+            "text": "This says to pull up the most recent command that started with “cp” (!cp) and extract the last argument."
+          },
+          {
+            "type": "p",
+            "text": "This only scratches the surface of conveniences bash offers. To learn about similar features, search on “history expansion” or “event designators.”"
+          },
+          {
+            "type": "p",
+            "text": "Because bash offers so many shortcuts, it’s hard to learn any of them from reading the manual: nothing will stick. It reminds me of when I was in Paris and had one hour to see the Louvre. I should have meandered around a room or two and been content with that. Instead, I blitzed through the museum. I wanted to “see the Louvre” but I didn’t really see anything."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "48eb5db9d84869d6",
+      "title": "This Week in Package Management: 14 November 2026",
+      "titleZh": "This Week in Package Management: 14 November 2026",
+      "link": "https://nesbitt.io/2026/11/14/this-week-in-package-management.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-11-14T10:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "This Week in Package Management: 14 November 2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This week’s package management news, gathered from the package manager OPML feed collection, my posts and boosts on Mastodon, and anything people sent me. Version control and forge news is in the Wednesday This Week in Source Control roundup."
+          },
+          {
+            "type": "h2",
+            "text": "Security"
+          },
+          {
+            "type": "p",
+            "text": "Composer 2.11.2 fixes seven security bugs, two of them reachable through a crafted composer.lock or vendor/composer/installed.json. Those are arbitrary command execution through the prevent_url_access_callable transport option (GHSA-jhfp-4ppm-crmm) and inline repository HTTP credentials sent to dist mirrors on other hosts (GHSA-x82q-x274-r6pq)."
+          },
+          {
+            "type": "p",
+            "text": "A malicious zip could also write outside the package directory through symlinked entries when extraction fell back from unzip to ZipArchive (GHSA-w6hj-6587-3jh5). Composer 2.2.32 backports the zip and credential fixes to the LTS branch. 2.11.2 also adds an exclude-branches option for VCS repositories and aborts downloads that stall for 30 seconds."
+          },
+          {
+            "type": "p",
+            "text": "Podman 6.2.0 and 5.8.10 fix three CVEs, one of which let untrusted image labels make podman auto-update restart the wrong systemd units (GHSA-55rm-rwr7-q2wr). The other two are a digest and signature validation bypass for malicious images (GHSA-pggw-qqjf-6cxw) and a bypass of the socket deny rule in the default seccomp profile. 6.2.0 also adds podman push --platform, which pushes one platform’s manifest instead of the whole list."
+          },
+          {
+            "type": "p",
+            "text": "pnpm 11.28.12 makes a ${VAR} placeholder in a registry URL in pnpm-workspace.yaml or the project .npmrc fail the command. pnpm does not expand environment variables in those files, and earlier versions skipped such a URL and resolved packages from another registry, such as npmjs.org."
+          },
+          {
+            "type": "p",
+            "text": "From 8 December, GitHub will turn off Dependabot alerts on most repositories whose last activity is more than a year old. Activity means a push to any branch or tag, creating the repository, or turning alerts on. Existing alerts are archived, and any push restores them and restarts the one-year period. Repositories under an enforced security configuration that enables Dependabot alerts are exempt."
+          },
+          {
+            "type": "h2",
+            "text": "Releases"
+          },
+          {
+            "type": "p",
+            "text": "Rust 1.100.0 stabilises Cargo’s min-publish-age: setting global-min-publish-age = \"3 days\" under [registry] in .cargo/config.toml makes the resolver skip versions published more recently than that, and cargo update lists what it held back. Versions missing a pubtime in the index are always eligible, and cargo install resolves without the setting."
+          },
+          {
+            "type": "p",
+            "text": "Cargo also now warns about unused dependencies, as part of a new linting system configured through the [lints.cargo] table. The warning appears only when every build target that could use the dependency is built, and it skips dev-dependencies."
+          },
+          {
+            "type": "p",
+            "text": "pnpm 12.19.0 adds pnpm fund and an experimental lockfile.format: v13 setting. The new format writes pnpm-lock.yaml in a JSON-like syntax that is still valid YAML, with one entry per package version, so updating a peer dependency changes only the lines that record its version. 12.21.0 lets pnpm store add prepare tarball and git dependencies for offline installs."
+          },
+          {
+            "type": "p",
+            "text": "vlt 1.7.0 adds vlt deploy and vlt update <pkg> and locks git dependencies to a commit, and 1.8.0 installs from vlt’s public npm mirror with no setup and resolves unprefixed dependencies from the project’s own registry configuration."
+          },
+          {
+            "type": "p",
+            "text": "mise 2026.11.4 (now 2026.11.8) accepts zip:: archives over HTTP or HTTPS for config and task includes. The contents behind the URL can change between fetches, and paranoid mode rejects zip config includes. From 2026.11.6, [bootstrap.packages] keys without a manager: prefix install through the first available system package manager, and the npm backend can install from an HTTPS tarball URL."
+          },
+          {
+            "type": "p",
+            "text": "uv 0.13.8 extends the wheel variants preview to local paths, direct URLs and Git repositories, and detects x86-64 microarchitecture levels when selecting a variant. Plaintext credential files on Unix are now restricted to owner-only permissions."
+          },
+          {
+            "type": "p",
+            "text": "Homebrew 7.0.13 adds a pin: true Brewfile option and prefetches bottle attestations in bulk. All official casks now require a zap stanza."
+          },
+          {
+            "type": "p",
+            "text": "Harbor 2.16.0 replaces Redis with Valkey as the cache backend and ships images for arm64 as well as amd64. Proxy cache projects can now pass OCI referrers API requests to the upstream registry and merge the results with local ones."
+          },
+          {
+            "type": "p",
+            "text": "Renovate 44.228.0 to 44.239.1 adds a gemspec manager that updates dependency constraints in *.gemspec files, and the swift manager now updates .package(id:) dependencies from Swift package registries. With the experimental minimumReleaseAgePackageManagerSync option, Renovate reads the release age configured for pnpm, Yarn, Cargo and Poetry and runs each tool with the longer of that and its own minimumReleaseAge, and npm’s min-release-age in .npmrc is read too. renovate-config-validator --migrate now writes out a migrated config file for configs that use old option names."
+          },
+          {
+            "type": "p",
+            "text": "Also out:"
+          },
+          {
+            "type": "li",
+            "text": "Gradle 9.9.1"
+          },
+          {
+            "type": "li",
+            "text": "Gradle 8.14.7"
+          },
+          {
+            "type": "li",
+            "text": "Maven 3.10.1"
+          },
+          {
+            "type": "li",
+            "text": "pixi 0.84.2"
+          },
+          {
+            "type": "li",
+            "text": "pnpr 0.1.0-alpha.20"
+          },
+          {
+            "type": "li",
+            "text": "Pkg.jl 1.13.4"
+          },
+          {
+            "type": "li",
+            "text": "Nix 2.35.6"
+          },
+          {
+            "type": "li",
+            "text": "DNF5 5.4.8.0"
+          },
+          {
+            "type": "li",
+            "text": "Go 1.27.4"
+          },
+          {
+            "type": "li",
+            "text": "Go 1.26.11"
+          },
+          {
+            "type": "li",
+            "text": "Helm 4.3.2"
+          },
+          {
+            "type": "li",
+            "text": "Terraform 1.17.2"
+          },
+          {
+            "type": "li",
+            "text": "Dependabot Core 0.404.0"
+          },
+          {
+            "type": "li",
+            "text": "NuGet Client 8.2.0.11"
+          },
+          {
+            "type": "li",
+            "text": "PSResourceGet 1.3.1"
+          },
+          {
+            "type": "li",
+            "text": "Harbor 2.15.5"
+          },
+          {
+            "type": "li",
+            "text": "Docker Engine 29.10.0-rc.2"
+          },
+          {
+            "type": "h2",
+            "text": "Articles"
+          },
+          {
+            "type": "p",
+            "text": "Artifact integrity for Packagist and Composer (Packagist blog) announces Alpha-Omega funding for Packagist.org to store package artifacts itself. Today it hosts only metadata, and more than 99% of versions point at a zip that GitHub generates on demand from the git repository. Those archives differ between GitHub servers and can change over time, so most packages have an empty checksum field. The funded work has five phases:"
+          },
+          {
+            "type": "li",
+            "text": "Permanent artifact storage, with checksums in the package metadata and the transparency log"
+          },
+          {
+            "type": "li",
+            "text": "A Sigstore signature and build provenance attestation for every stored artifact, verified by Composer"
+          },
+          {
+            "type": "li",
+            "text": "API tokens limited to specific packages and permissions, with expiry and automatic revocation when leaked"
+          },
+          {
+            "type": "li",
+            "text": "Trusted Publishing from CI workflows through OIDC"
+          },
+          {
+            "type": "li",
+            "text": "Artifact uploads and a composer publish command, with staged releases approved by hardware key"
+          },
+          {
+            "type": "p",
+            "text": "Uploads and Trusted Publishing will ship only together with mandatory signing and attestations. Stored artifacts also make it possible to publish several packages from one repository, which today requires splitting a monorepo into read-only mirrors."
+          },
+          {
+            "type": "p",
+            "text": "Lock your GitHub Actions (Hugo van Kemenade) shows how to adopt GitHub’s workflow lockfiles. The gh actions-lock extension rewrites SHA-pinned uses: lines back to version tags and records each tag’s commit, owner ID and repository ID in .github/workflows/actions.lock. Renovate and Dependabot both update the lockfile, and a CI job running gh actions-lock --verify fails when the lockfile is out of sync with the workflows."
+          },
+          {
+            "type": "p",
+            "text": "Farid Zakaria has two posts on running builds inside Rewind, the deterministic virtual machine he is building. Making profile-guided optimization reproducible starts from Nixpkgs disabling profile-guided builds of Python and GCC because the training run varies between builds. What if every Nix build were bit-reproducible? wraps derivations in the VM so that content-addressed builds produce the same store path on every machine, with the VM version as a build input."
+          },
+          {
+            "type": "p",
+            "text": "Bringing v1 recipes to conda-build (conda blog) explains how conda-build now builds recipe.yaml recipes by dispatching to the Python bindings for the rattler-build crates. The existing build, render and debug subcommands handle both formats, and options unsupported on the v1 path raise an error. Maintainers with large collections of meta.yaml recipes can move them to the v1 format and keep their existing conda-build pipelines."
+          },
+          {
+            "type": "p",
+            "text": "Swift’s November news digest opens with a reminder from Dave Verwer that CocoaPods stops accepting new pods and pod versions on 2 December 2026. Current pods and versions will still be served, read-only, so the change does not immediately break builds. Verwer also writes that he is now part of a team at Apple working on a public, cross-platform package registry for Swift."
+          },
+          {
+            "type": "p",
+            "text": "python-sbom (Bernát Gábor) is a build plugin that writes a CycloneDX 1.6 SBOM into every wheel under .dist-info/sboms/, the directory defined for SBOMs in the installed packages specification. It has plugins for hatchling, pdm-backend and setuptools and a wrapper backend for other build backends. The SBOM records the source commit, the interpreter, the build tools and any wheels the project bundles as data files."
+          },
+          {
+            "type": "p",
+            "text": "Alpha-Omega published a case study of the PHP2Shell response. Volker Dusch, the PHP Foundation’s Security Engineer in Residence, coordinated with researchers, Linux distributions and WAF vendors while the core engineers wrote the fixes. PHP’s security team received more than 200 reports in the week after disclosure, many of them duplicates, and built TAMIS, which compares incoming reports against existing ones several times a day."
+          },
+          {
+            "type": "p",
+            "text": "Reproducible Builds in October 2026 reports that GNU tar embeds its process ID in the member path when it writes a sparse file to a PAX archive, so identical inputs produce a different archive on each run. Robin Candau and Bernhard M. Wiedemann have also revived a shared repository of reproducibility patches, which currently holds patches from openSUSE and Arch Linux."
+          },
+          {
+            "type": "h2",
+            "text": "Elsewhere"
+          },
+          {
+            "type": "p",
+            "text": "I am tired (Kushal Das) describes finding more than 90 vulnerabilities since July in open source projects, many of them written or used by Sunet, with LLM help and 16-hour days. Das writes that most maintainers and defenders of that infrastructure have neither the model access nor the hardware to do the same."
+          },
+          {
+            "type": "p",
+            "text": "Dawn Foster published the video and slides of her Community Over Code talk, Good Governance for Sustainable Open Source Projects, with links to her five-part series on the same topics."
+          },
+          {
+            "type": "p",
+            "text": "Anil Madhavapeddy is using brief, which I wrote, to detect the languages and toolchains in a repository for automatic CI in his Tangled spindle."
+          },
+          {
+            "type": "p",
+            "text": "An Empirical Study of Observability Limits in Advanced Software Supply Chain Attacks (Zhuoran Tan et al., CCS) introduces SynthChain, a runtime telemetry dataset built from seven attack scenarios across PyPI, npm and C++ supply chains. The best single telemetry source recovers fewer than 40% of the expected attack steps. Combining two complementary sources improves reconstruction by roughly 1.6 times."
+          },
+          {
+            "type": "h2",
+            "text": "git-pkgs"
+          },
+          {
+            "type": "p",
+            "text": "I tagged 7 repos this week:"
+          },
+          {
+            "type": "li",
+            "text": "git-pkgs v0.22.0"
+          },
+          {
+            "type": "li",
+            "text": "attestation v0.2.0"
+          },
+          {
+            "type": "li",
+            "text": "brief v0.16.0"
+          },
+          {
+            "type": "li",
+            "text": "manifests v0.14.0"
+          },
+          {
+            "type": "li",
+            "text": "pin v0.2.2"
+          },
+          {
+            "type": "li",
+            "text": "registries v0.13.2"
+          },
+          {
+            "type": "li",
+            "text": "signals v0.2.0"
+          },
+          {
+            "type": "p",
+            "text": "Send links for next week to @[email protected]."
+          }
+        ],
+        "translations": [
+          "This week’s package management news, gathered from the package manager OPML feed collection, my posts and boosts on Mastodon, and anything people sent me. Version control and forge news is in the Wednesday This Week in Source Control roundup.",
+          "Security",
+          "Composer 2.11.2 fixes seven security bugs, two of them reachable through a crafted composer.lock or vendor/composer/installed.json. Those are arbitrary command execution through the prevent_url_access_callable transport option (GHSA-jhfp-4ppm-crmm) and inline repository HTTP credentials sent to dist mirrors on other hosts (GHSA-x82q-x274-r6pq).",
+          "A malicious zip could also write outside the package directory through symlinked entries when extraction fell back from unzip to ZipArchive (GHSA-w6hj-6587-3jh5). Composer 2.2.32 backports the zip and credential fixes to the LTS branch. 2.11.2 also adds an exclude-branches option for VCS repositories and aborts downloads that stall for 30 seconds.",
+          "Podman 6.2.0 and 5.8.10 fix three CVEs, one of which let untrusted image labels make podman auto-update restart the wrong systemd units (GHSA-55rm-rwr7-q2wr). The other two are a digest and signature validation bypass for malicious images (GHSA-pggw-qqjf-6cxw) and a bypass of the socket deny rule in the default seccomp profile. 6.2.0 also adds podman push --platform, which pushes one platform’s manifest instead of the whole list.",
+          "pnpm 11.28.12 makes a ${VAR} placeholder in a registry URL in pnpm-workspace.yaml or the project .npmrc fail the command. pnpm does not expand environment variables in those files, and earlier versions skipped such a URL and resolved packages from another registry, such as npmjs.org.",
+          "From 8 December, GitHub will turn off Dependabot alerts on most repositories whose last activity is more than a year old. Activity means a push to any branch or tag, creating the repository, or turning alerts on. Existing alerts are archived, and any push restores them and restarts the one-year period. Repositories under an enforced security configuration that enables Dependabot alerts are exempt.",
+          "Releases",
+          "Rust 1.100.0 stabilises Cargo’s min-publish-age: setting global-min-publish-age = \"3 days\" under [registry] in .cargo/config.toml makes the resolver skip versions published more recently than that, and cargo update lists what it held back. Versions missing a pubtime in the index are always eligible, and cargo install resolves without the setting.",
+          "Cargo also now warns about unused dependencies, as part of a new linting system configured through the [lints.cargo] table. The warning appears only when every build target that could use the dependency is built, and it skips dev-dependencies.",
+          "pnpm 12.19.0 adds pnpm fund and an experimental lockfile.format: v13 setting. The new format writes pnpm-lock.yaml in a JSON-like syntax that is still valid YAML, with one entry per package version, so updating a peer dependency changes only the lines that record its version. 12.21.0 lets pnpm store add prepare tarball and git dependencies for offline installs.",
+          "vlt 1.7.0 adds vlt deploy and vlt update <pkg> and locks git dependencies to a commit, and 1.8.0 installs from vlt’s public npm mirror with no setup and resolves unprefixed dependencies from the project’s own registry configuration.",
+          "mise 2026.11.4 (now 2026.11.8) accepts zip:: archives over HTTP or HTTPS for config and task includes. The contents behind the URL can change between fetches, and paranoid mode rejects zip config includes. From 2026.11.6, [bootstrap.packages] keys without a manager: prefix install through the first available system package manager, and the npm backend can install from an HTTPS tarball URL.",
+          "uv 0.13.8 extends the wheel variants preview to local paths, direct URLs and Git repositories, and detects x86-64 microarchitecture levels when selecting a variant. Plaintext credential files on Unix are now restricted to owner-only permissions.",
+          "Homebrew 7.0.13 adds a pin: true Brewfile option and prefetches bottle attestations in bulk. All official casks now require a zap stanza.",
+          "Harbor 2.16.0 replaces Redis with Valkey as the cache backend and ships images for arm64 as well as amd64. Proxy cache projects can now pass OCI referrers API requests to the upstream registry and merge the results with local ones.",
+          "Renovate 44.228.0 to 44.239.1 adds a gemspec manager that updates dependency constraints in *.gemspec files, and the swift manager now updates .package(id:) dependencies from Swift package registries. With the experimental minimumReleaseAgePackageManagerSync option, Renovate reads the release age configured for pnpm, Yarn, Cargo and Poetry and runs each tool with the longer of that and its own minimumReleaseAge, and npm’s min-release-age in .npmrc is read too. renovate-config-validator --migrate now writes out a migrated config file for configs that use old option names.",
+          "Also out:",
+          "Gradle 9.9.1",
+          "Gradle 8.14.7",
+          "Maven 3.10.1",
+          "pixi 0.84.2",
+          "pnpr 0.1.0-alpha.20",
+          "Pkg.jl 1.13.4",
+          "Nix 2.35.6",
+          "DNF5 5.4.8.0",
+          "Go 1.27.4",
+          "Go 1.26.11",
+          "Helm 4.3.2",
+          "Terraform 1.17.2",
+          "Dependabot Core 0.404.0",
+          "NuGet Client 8.2.0.11",
+          "PSResourceGet 1.3.1",
+          "Harbor 2.15.5",
+          "Docker Engine 29.10.0-rc.2",
+          "Articles",
+          "Artifact integrity for Packagist and Composer (Packagist blog) announces Alpha-Omega funding for Packagist.org to store package artifacts itself. Today it hosts only metadata, and more than 99% of versions point at a zip that GitHub generates on demand from the git repository. Those archives differ between GitHub servers and can change over time, so most packages have an empty checksum field. The funded work has five phases:",
+          "Permanent artifact storage, with checksums in the package metadata and the transparency log",
+          "A Sigstore signature and build provenance attestation for every stored artifact, verified by Composer",
+          "API tokens limited to specific packages and permissions, with expiry and automatic revocation when leaked",
+          "Trusted Publishing from CI workflows through OIDC",
+          "Artifact uploads and a composer publish command, with staged releases approved by hardware key",
+          "Uploads and Trusted Publishing will ship only together with mandatory signing and attestations. Stored artifacts also make it possible to publish several packages from one repository, which today requires splitting a monorepo into read-only mirrors.",
+          "Lock your GitHub Actions (Hugo van Kemenade) shows how to adopt GitHub’s workflow lockfiles. The gh actions-lock extension rewrites SHA-pinned uses: lines back to version tags and records each tag’s commit, owner ID and repository ID in .github/workflows/actions.lock. Renovate and Dependabot both update the lockfile, and a CI job running gh actions-lock --verify fails when the lockfile is out of sync with the workflows.",
+          "Farid Zakaria has two posts on running builds inside Rewind, the deterministic virtual machine he is building. Making profile-guided optimization reproducible starts from Nixpkgs disabling profile-guided builds of Python and GCC because the training run varies between builds. What if every Nix build were bit-reproducible? wraps derivations in the VM so that content-addressed builds produce the same store path on every machine, with the VM version as a build input.",
+          "Bringing v1 recipes to conda-build (conda blog) explains how conda-build now builds recipe.yaml recipes by dispatching to the Python bindings for the rattler-build crates. The existing build, render and debug subcommands handle both formats, and options unsupported on the v1 path raise an error. Maintainers with large collections of meta.yaml recipes can move them to the v1 format and keep their existing conda-build pipelines.",
+          "Swift’s November news digest opens with a reminder from Dave Verwer that CocoaPods stops accepting new pods and pod versions on 2 December 2026. Current pods and versions will still be served, read-only, so the change does not immediately break builds. Verwer also writes that he is now part of a team at Apple working on a public, cross-platform package registry for Swift.",
+          "python-sbom (Bernát Gábor) is a build plugin that writes a CycloneDX 1.6 SBOM into every wheel under .dist-info/sboms/, the directory defined for SBOMs in the installed packages specification. It has plugins for hatchling, pdm-backend and setuptools and a wrapper backend for other build backends. The SBOM records the source commit, the interpreter, the build tools and any wheels the project bundles as data files.",
+          "Alpha-Omega published a case study of the PHP2Shell response. Volker Dusch, the PHP Foundation’s Security Engineer in Residence, coordinated with researchers, Linux distributions and WAF vendors while the core engineers wrote the fixes. PHP’s security team received more than 200 reports in the week after disclosure, many of them duplicates, and built TAMIS, which compares incoming reports against existing ones several times a day.",
+          "Reproducible Builds in October 2026 reports that GNU tar embeds its process ID in the member path when it writes a sparse file to a PAX archive, so identical inputs produce a different archive on each run. Robin Candau and Bernhard M. Wiedemann have also revived a shared repository of reproducibility patches, which currently holds patches from openSUSE and Arch Linux.",
+          "Elsewhere",
+          "I am tired (Kushal Das) describes finding more than 90 vulnerabilities since July in open source projects, many of them written or used by Sunet, with LLM help and 16-hour days. Das writes that most maintainers and defenders of that infrastructure have neither the model access nor the hardware to do the same.",
+          "Dawn Foster published the video and slides of her Community Over Code talk, Good Governance for Sustainable Open Source Projects, with links to her five-part series on the same topics.",
+          "Anil Madhavapeddy is using brief, which I wrote, to detect the languages and toolchains in a repository for automatic CI in his Tangled spindle.",
+          "An Empirical Study of Observability Limits in Advanced Software Supply Chain Attacks (Zhuoran Tan et al., CCS) introduces SynthChain, a runtime telemetry dataset built from seven attack scenarios across PyPI, npm and C++ supply chains. The best single telemetry source recovers fewer than 40% of the expected attack steps. Combining two complementary sources improves reconstruction by roughly 1.6 times.",
+          "git-pkgs",
+          "I tagged 7 repos this week:",
+          "git-pkgs v0.22.0",
+          "attestation v0.2.0",
+          "brief v0.16.0",
+          "manifests v0.14.0",
+          "pin v0.2.2",
+          "registries v0.13.2",
+          "signals v0.2.0",
+          "Send links for next week to @[email protected]."
+        ]
+      }
+    },
+    {
+      "slug": "08edc77e33fec22b",
+      "title": "Reading List 11/14/2026",
+      "titleZh": "Reading List 11/14/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-11142026",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-11-14T16:09:38.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Reading List 11/14/2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure, and industrial technology. This week we look at a Brooklyn building collapse, BAAJA’s odds of passing, reusing old memory in new phones, a nationwide aircraft ground stop, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "A 3 story building in New York partially collapsed into an adjacent construction site that was being excavated, killing 8 people and injuring 18. Good reminder that for as burdensome as various building regulations can sometimes be (particularly in New York, with its ubiquitous sidewalk sheds), they don’t exist for no reason. [Construction Dive]"
+          },
+          {
+            "type": "p",
+            "text": "On the other hand, that doesn’t mean that we shouldn’t evaluate code requirements to see if the benefits they bring are worth the cost. An article in the Washington Post argues that many requirements to upgrade electrical panels for higher load devices are often unnecessary. “Outdated industry practices and in some places outdated electrical codes are regularly resulting in the recommendation that people need to upgrade their electrical panels if they want to add appliances such as induction stoves, heat pumps and electric-vehicle chargers. The expense — at a median of $3,500, and triple or quadruple that in some settings — is deterring some energy-efficient upgrades and making the projects far more costly for those who proceed. But some researchers say panel upgrades are almost always unnecessary. One report this year found that 98 percent of homes with 100-ampere panels, the smallest common size, have room to add popular electronic devices.” [Washington Post]"
+          },
+          {
+            "type": "p",
+            "text": "The US now has over 1500 mass timber buildings, up from fewer than 100 a decade ago. [The Real Deal]"
+          },
+          {
+            "type": "p",
+            "text": "The current probability of permitting reform bill BAAJA becoming law is little over 50% on Kalshi. [Kalshi]"
+          },
+          {
+            "type": "p",
+            "text": "A Houthi missile hit Saudi state oil company Aramco’s skyscraper in Riyadh. [X]"
+          },
+          {
+            "type": "p",
+            "text": "A new Nicholas Bagley paper on the cost of federal permitting, arguing that the real costs of things like NEPA is the huge amount of effort agencies put in to try and make things “litigation proof”. “The evidence does suggest, however, that the bulk of the costs of the federal permitting regime stem from the defensive measures agencies and developers take to guard against the risk  of a bad outcome in court. That insight allows for a rough evaluation of the likely effects of popular permitting reform ideas. Some—including popular ones like time limits and statutes of limitations—are unlikely to accomplish much. Only those reforms that change the incentives created by the risk of judicial review will meaningfully move the needle.” [Nicholas Bagley]"
+          },
+          {
+            "type": "p",
+            "text": "A progress report from the Center for Land Economics, which advocates for land value taxes to make more efficient use of urban land. ”Three states passed laws enabling land value taxes in some form: Kentucky, Virginia and New York. In each of them we’re now helping cities work out how to put them into practice. Five more states and DC considered similar bills. This is the most legislative momentum the movement has seen in decades…” [Land Economics]"
+          }
+        ],
+        "translations": [
+          "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure, and industrial technology. This week we look at a Brooklyn building collapse, BAAJA’s odds of passing, reusing old memory in new phones, a nationwide aircraft ground stop, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber.",
+          "A 3 story building in New York partially collapsed into an adjacent construction site that was being excavated, killing 8 people and injuring 18. Good reminder that for as burdensome as various building regulations can sometimes be (particularly in New York, with its ubiquitous sidewalk sheds), they don’t exist for no reason. [Construction Dive]",
+          "On the other hand, that doesn’t mean that we shouldn’t evaluate code requirements to see if the benefits they bring are worth the cost. An article in the Washington Post argues that many requirements to upgrade electrical panels for higher load devices are often unnecessary. “Outdated industry practices and in some places outdated electrical codes are regularly resulting in the recommendation that people need to upgrade their electrical panels if they want to add appliances such as induction stoves, heat pumps and electric-vehicle chargers. The expense — at a median of $3,500, and triple or quadruple that in some settings — is deterring some energy-efficient upgrades and making the projects far more costly for those who proceed. But some researchers say panel upgrades are almost always unnecessary. One report this year found that 98 percent of homes with 100-ampere panels, the smallest common size, have room to add popular electronic devices.” [Washington Post]",
+          "The US now has over 1500 mass timber buildings, up from fewer than 100 a decade ago. [The Real Deal]",
+          "The current probability of permitting reform bill BAAJA becoming law is little over 50% on Kalshi. [Kalshi]",
+          "A Houthi missile hit Saudi state oil company Aramco’s skyscraper in Riyadh. [X]",
+          "A new Nicholas Bagley paper on the cost of federal permitting, arguing that the real costs of things like NEPA is the huge amount of effort agencies put in to try and make things “litigation proof”. “The evidence does suggest, however, that the bulk of the costs of the federal permitting regime stem from the defensive measures agencies and developers take to guard against the risk  of a bad outcome in court. That insight allows for a rough evaluation of the likely effects of popular permitting reform ideas. Some—including popular ones like time limits and statutes of limitations—are unlikely to accomplish much. Only those reforms that change the incentives created by the risk of judicial review will meaningfully move the needle.” [Nicholas Bagley]",
+          "A progress report from the Center for Land Economics, which advocates for land value taxes to make more efficient use of urban land. ”Three states passed laws enabling land value taxes in some form: Kentucky, Virginia and New York. In each of them we’re now helping cities work out how to put them into practice. Five more states and DC considered similar bills. This is the most legislative momentum the movement has seen in decades…” [Land Economics]"
+        ]
+      }
+    },
+    {
+      "slug": "7c686b4864e2f9c4",
+      "title": "Vintage computer power centers",
+      "titleZh": "Vintage computer power centers",
+      "link": "https://dfarq.homeip.net/vintage-computer-power-centers/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=vintage-computer-power-centers",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-14T12:03:39.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Vintage computer power centers",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Power centers were and unassuming computer accessory from bygone decades, but they helped to solve a real problem. And they are one of the very few vintage computer items you can still find routinely at a thrift store or estate sale at a thrift store price rather than a boutique price."
+          },
+          {
+            "type": "p",
+            "text": "Power centers were billed as exactly that. One place where you could centrally power your computer peripherals on or off as needed, without having to remember where each individual power button was. Sometimes the power button was on the side of the device. Sometimes it was on the back. So having one place you could plug everything in and then toggle the power individually was convenient."
+          },
+          {
+            "type": "p",
+            "text": "The centers also provided rudimentary surge protection, and late model units also had an indicator to tell you if your outlet was properly grounded."
+          },
+          {
+            "type": "h2",
+            "text": "The problems they solved"
+          },
+          {
+            "type": "p",
+            "text": "The external power bricks on many systems, including Commodore and Atari, drew power regardless of whether you powered the system on or not. This caused phantom power draw, but it could also cause the power brick itself to overheat and fail prematurely. Plugging the power brick into a power center alleviated that problem. If you toggled the switch off, the power brick didn’t receive any power."
+          },
+          {
+            "type": "p",
+            "text": "The second problem they solved was saving was wear and tear on the system power switches. The push button power switches on monitors manufactured by Phillips, such as a Commodore 1084, were notorious for getting stuck in one position. This was an especially big problem when they got stuck in the off position. Phillips did not have a monopoly on this problem, but it did seem more common with theirs."
+          },
+          {
+            "type": "p",
+            "text": "And while the rocker type switches on the computers and disk drives seem more robust, a misbehaving power switch on a Commodore 64 is a very underrated problem. If you are ever troubleshooting a Commodore 64, checking the voltages coming out of the power switch is a quick test that can save you a lot of unnecessary and fruitless troubleshooting."
+          },
+          {
+            "type": "p",
+            "text": "The power switches on the power centers weren’t necessarily any more robust, but if they wear out, it tends to be a bit more obvious, and it was definitely easier for the average consumer to replace a power center than it was to open up a piece of equipment and replace the power switch. And if they couldn’t replace it themselves, we’re talking a $50 repair versus $25 to buy a new power center."
+          },
+          {
+            "type": "h3",
+            "text": "Why they don’t make power centers anymore"
+          },
+          {
+            "type": "p",
+            "text": "Computer power centers fell out of favor in the early 2000s as soft power switches became the norm. The modern equivalent today is a smart power strip. This device delivers power to one outlet all the time, and cuts power to the others. When you power on the device plugged into that mean outlet, it then delivers power to the rust of the outlets. This addresses the phantom power draw problem and has the advantage of working with a remote control."
+          },
+          {
+            "type": "h2",
+            "text": "Troubleshooting a vintage computer power center"
+          },
+          {
+            "type": "p",
+            "text": "These devices are rather old, so when you get them, they don’t necessarily always work completely. If you hear something rattling around inside, you definitely don’t want to put it to you so without giving it and inspection first."
+          },
+          {
+            "type": "p",
+            "text": "The designs vary, but generally they are held together by four screws on the underside. Removing those four screws usually loosens the top enough that you can figure out how to remove the top cover. Sometimes I find a broken standoffs inside, and sometimes I find loose wires inside."
+          },
+          {
+            "type": "p",
+            "text": "When I find loose wires, I can usually tell from looking at the other switches or outlets where the wire should go. If you are not familiar with working with AC power, find a knowledgeable friend to help you."
+          },
+          {
+            "type": "h3",
+            "text": "Testing"
+          },
+          {
+            "type": "p",
+            "text": "Before unplug anything important into one, I plug it into a GFCI protected outlet. Then I test the power outputs with a multimeter. AC current in the United States can vary, with a voltage between 115 and 120 being normal. If the outlets aren’t in that range, chapter wiring again. It’s also possible you have a faulty switch or outlet."
+          },
+          {
+            "type": "p",
+            "text": "So far I haven’t found a power center that I wasn’t able to fix. But even though the brands varied, many of them appeared to have used the same OEM. Even dissimilar units had a lot of parts in common. If I had one I couldn’t make fully operational, it’s only a matter of time before I find another one. I’d be able to use parts from both to make one fully operational unit."
+          },
+          {
+            "type": "p",
+            "text": "These power centers are a very unheralded accessory, and nobody ever wrote much about them when they were new. They were just something computer stores sold until they went obsolete. I like having them because they save me other, more difficult repairs, and they complete the look of a retro setup."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "Power centers were and unassuming computer accessory from bygone decades, but they helped to solve a real problem. And they are one of the very few vintage computer items you can still find routinely at a thrift store or estate sale at a thrift store price rather than a boutique price.",
+          "Power centers were billed as exactly that. One place where you could centrally power your computer peripherals on or off as needed, without having to remember where each individual power button was. Sometimes the power button was on the side of the device. Sometimes it was on the back. So having one place you could plug everything in and then toggle the power individually was convenient.",
+          "The centers also provided rudimentary surge protection, and late model units also had an indicator to tell you if your outlet was properly grounded.",
+          "The problems they solved",
+          "The external power bricks on many systems, including Commodore and Atari, drew power regardless of whether you powered the system on or not. This caused phantom power draw, but it could also cause the power brick itself to overheat and fail prematurely. Plugging the power brick into a power center alleviated that problem. If you toggled the switch off, the power brick didn’t receive any power.",
+          "The second problem they solved was saving was wear and tear on the system power switches. The push button power switches on monitors manufactured by Phillips, such as a Commodore 1084, were notorious for getting stuck in one position. This was an especially big problem when they got stuck in the off position. Phillips did not have a monopoly on this problem, but it did seem more common with theirs.",
+          "And while the rocker type switches on the computers and disk drives seem more robust, a misbehaving power switch on a Commodore 64 is a very underrated problem. If you are ever troubleshooting a Commodore 64, checking the voltages coming out of the power switch is a quick test that can save you a lot of unnecessary and fruitless troubleshooting.",
+          "The power switches on the power centers weren’t necessarily any more robust, but if they wear out, it tends to be a bit more obvious, and it was definitely easier for the average consumer to replace a power center than it was to open up a piece of equipment and replace the power switch. And if they couldn’t replace it themselves, we’re talking a $50 repair versus $25 to buy a new power center.",
+          "Why they don’t make power centers anymore",
+          "Computer power centers fell out of favor in the early 2000s as soft power switches became the norm. The modern equivalent today is a smart power strip. This device delivers power to one outlet all the time, and cuts power to the others. When you power on the device plugged into that mean outlet, it then delivers power to the rust of the outlets. This addresses the phantom power draw problem and has the advantage of working with a remote control.",
+          "Troubleshooting a vintage computer power center",
+          "These devices are rather old, so when you get them, they don’t necessarily always work completely. If you hear something rattling around inside, you definitely don’t want to put it to you so without giving it and inspection first.",
+          "The designs vary, but generally they are held together by four screws on the underside. Removing those four screws usually loosens the top enough that you can figure out how to remove the top cover. Sometimes I find a broken standoffs inside, and sometimes I find loose wires inside.",
+          "When I find loose wires, I can usually tell from looking at the other switches or outlets where the wire should go. If you are not familiar with working with AC power, find a knowledgeable friend to help you.",
+          "Testing",
+          "Before unplug anything important into one, I plug it into a GFCI protected outlet. Then I test the power outputs with a multimeter. AC current in the United States can vary, with a voltage between 115 and 120 being normal. If the outlets aren’t in that range, chapter wiring again. It’s also possible you have a faulty switch or outlet.",
+          "So far I haven’t found a power center that I wasn’t able to fix. But even though the brands varied, many of them appeared to have used the same OEM. Even dissimilar units had a lot of parts in common. If I had one I couldn’t make fully operational, it’s only a matter of time before I find another one. I’d be able to use parts from both to make one fully operational unit.",
+          "These power centers are a very unheralded accessory, and nobody ever wrote much about them when they were new. They were just something computer stores sold until they went obsolete. I like having them because they save me other, more difficult repairs, and they complete the look of a retro setup.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "fa7499a5c8432550",
+      "title": "Of Course People Hate Data Centres",
+      "titleZh": "Of Course People Hate Data Centres",
+      "link": "https://hugotunius.se/2026/11/14/of-course-people-hate-data-centres.html",
+      "sourceName": "hugotunius.se",
+      "sourceUrl": "https://hugotunius.se",
+      "pubDate": "2026-11-14T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Of Course People Hate Data Centres",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The breakout issue of 2026 has undoubtedly been data centres, more precisely opposition to data centres. People despise them. In the US midterms, only a single ballot measure (out of 44) on data centres resulted in a favourable outcome for the developers. In exit polls conducted by CBS News, 76% of respondents oppose construction of data centres in their community – and it’s not just Democrats (87% oppose): opposition among Republicans (62% oppose) and independents (78% oppose) is high too. Simultaneously, views on AI are bleak, with 57% of respondents saying it will do more to hurt humanity than to help; only 24% say it will help more. In Europe, 92 protests against data centres are being organised in November alone. Those in tech have been caught off guard, and many don’t seem to understand this strong opposition. I think it’s obvious."
+          },
+          {
+            "type": "p",
+            "text": "I’m sure there’s always been opposition to heavy industry. No one wants to live next to a chemical plant. However, this feels different. We’ve been building data centres without major issues for nearly a century. What’s different this time?"
+          },
+          {
+            "type": "p",
+            "text": "Perhaps it’s scale. Cleanview, a market intelligence company, puts the total number of data centres operating or being constructed in the US at 1,835. Ten years ago the figure was a fifth of that (352). In 2026 alone, the number has increased by ~60%, from 1,134 the year before. The data centres being built are also bigger than ever, both when measured in square metres and power consumption."
+          },
+          {
+            "type": "p",
+            "text": "However, more than anything, I think people hate AI and its proponents. It doesn’t help that the companies and people who are central to the development of AI spent the 2010s cultivating a bad reputation as “big tech”. Neither do their public statements of impending doom due to runaway RSI (Recursive Self-Improvement) or massive white-collar job displacement causing a permanent underclass. These proponents will counter that AI will usher in an era of unprecedented civilisational progress. It will solve our biggest problems: disease, climate change, and poverty, with only a slight risk of total extinction."
+          },
+          {
+            "type": "p",
+            "text": "In his book Life 3.0, Max Tegmark explores potential scenarios if we achieve AGI (Artificial General Intelligence). One of these, Egalitarian Utopia, describes a world in which machines have made work redundant, private property has been abolished, and everything is free because the cost of production has collapsed. Humans spend their time on leisure, art, or whatever else they fancy, all their needs taken care of. By contrast, the 2013 film Elysium describes a world in which the rich and powerful live a life in orbit similar to Tegmark’s scenario, but on Earth the majority eke out a meagre, gruesome existence."
+          },
+          {
+            "type": "p",
+            "text": "Tegmark’s scenario certainly sounds appealing, and if your p(doom) is 0%, then full speed ahead at nearly any cost seems a sound conclusion. Of course, most people don’t put p(doom) at 0% – Tegmark, for example, puts it at 90%. Regardless, with wealth inequality on the rise and the richest few controlling more resources (including the frontier AI labs) than ever, most people probably view the Elysium outcome, or something like it, as far more probable."
+          },
+          {
+            "type": "p",
+            "text": "Even among tech enthusiasts, some of whom are making significant use of AI, there’s a great deal of animosity towards the frontier labs and their executives. Sam Altman’s recent comment about it being “quite terrible” for some of the world’s limited supply of RAM to be in the hands of private individuals was not appreciated in those circles. If I were in charge of marketing at OpenAI, I would push for a ban on Altman making public statements. The data centre build-out has pushed the price and availability of RAM and GPUs out of reach for enthusiasts. In recent months, many old games have been resurrected on modern hardware thanks to Opus 5.5’s reverse-engineering capabilities; however, Anthropic, to the dismay of the community, has since restricted this. Many, I suspect, find it a little rich for the AI labs to lecture people on intellectual property rights, when they themselves trained their models on data with dubious provenance."
+          },
+          {
+            "type": "p",
+            "text": "Of people’s concerns about data centres, power consumption is perhaps most salient. This is partly a worry about grid stability and energy prices, but also, due to the actions of developers, about climate change. Some data centres are side-stepping the question of grid connectivity by running gas turbines on-site, exacerbating not just climate change but local air pollution. If AI solves climate change, this is but a speed bump; however, this is likely not a view held by most people. Pew found in August 2026 that 54% of Americans believe AI will be mostly bad for the environment; this number is up from 39% in January of the same year."
+          },
+          {
+            "type": "p",
+            "text": "At least everyone’s stock portfolios are up? Well, consider that only 62% of US households own any stocks in the first place, and then that most of the stock market is owned by the top 10%. In fact, many might see no upside in AI-driven stock market growth, but if the bubble were to pop, the resulting reverberations are a clear downside."
+          },
+          {
+            "type": "p",
+            "text": "When these data centres are proposed, the democratic process is often subverted, or at least undermined. Local politicians bound by non-disclosure agreements face the community’s ire over shadowy developers and obscured end-clients. It’s a bad look with parallels to another high-salience issue of 2026: Flock cameras. This further fuels antagonism against data centres and AI."
+          },
+          {
+            "type": "p",
+            "text": "Thus, for the median Western person, a data centre in their local community is a glaring, loud, visual reminder of AI. AI, which in the best case will free us from disease, labour, and suffering, but is more likely to further wealth inequality and rob them of their livelihood. AI, which according to its makers has a non-zero chance of killing us all. AI, which might increase their energy prices, hasten climate change, and pollute their air and water, while reducing their property value."
+          },
+          {
+            "type": "p",
+            "text": "Neither the positive outcomes nor, obviously, the negative ones are seen as benefiting people. This at the cost of the climate, the democratic process, and a potential recession. Of course people hate data centres."
+          }
+        ],
+        "translations": [
+          "The breakout issue of 2026 has undoubtedly been data centres, more precisely opposition to data centres. People despise them. In the US midterms, only a single ballot measure (out of 44) on data centres resulted in a favourable outcome for the developers. In exit polls conducted by CBS News, 76% of respondents oppose construction of data centres in their community – and it’s not just Democrats (87% oppose): opposition among Republicans (62% oppose) and independents (78% oppose) is high too. Simultaneously, views on AI are bleak, with 57% of respondents saying it will do more to hurt humanity than to help; only 24% say it will help more. In Europe, 92 protests against data centres are being organised in November alone. Those in tech have been caught off guard, and many don’t seem to understand this strong opposition. I think it’s obvious.",
+          "I’m sure there’s always been opposition to heavy industry. No one wants to live next to a chemical plant. However, this feels different. We’ve been building data centres without major issues for nearly a century. What’s different this time?",
+          "Perhaps it’s scale. Cleanview, a market intelligence company, puts the total number of data centres operating or being constructed in the US at 1,835. Ten years ago the figure was a fifth of that (352). In 2026 alone, the number has increased by ~60%, from 1,134 the year before. The data centres being built are also bigger than ever, both when measured in square metres and power consumption.",
+          "However, more than anything, I think people hate AI and its proponents. It doesn’t help that the companies and people who are central to the development of AI spent the 2010s cultivating a bad reputation as “big tech”. Neither do their public statements of impending doom due to runaway RSI (Recursive Self-Improvement) or massive white-collar job displacement causing a permanent underclass. These proponents will counter that AI will usher in an era of unprecedented civilisational progress. It will solve our biggest problems: disease, climate change, and poverty, with only a slight risk of total extinction.",
+          "In his book Life 3.0, Max Tegmark explores potential scenarios if we achieve AGI (Artificial General Intelligence). One of these, Egalitarian Utopia, describes a world in which machines have made work redundant, private property has been abolished, and everything is free because the cost of production has collapsed. Humans spend their time on leisure, art, or whatever else they fancy, all their needs taken care of. By contrast, the 2013 film Elysium describes a world in which the rich and powerful live a life in orbit similar to Tegmark’s scenario, but on Earth the majority eke out a meagre, gruesome existence.",
+          "Tegmark’s scenario certainly sounds appealing, and if your p(doom) is 0%, then full speed ahead at nearly any cost seems a sound conclusion. Of course, most people don’t put p(doom) at 0% – Tegmark, for example, puts it at 90%. Regardless, with wealth inequality on the rise and the richest few controlling more resources (including the frontier AI labs) than ever, most people probably view the Elysium outcome, or something like it, as far more probable.",
+          "Even among tech enthusiasts, some of whom are making significant use of AI, there’s a great deal of animosity towards the frontier labs and their executives. Sam Altman’s recent comment about it being “quite terrible” for some of the world’s limited supply of RAM to be in the hands of private individuals was not appreciated in those circles. If I were in charge of marketing at OpenAI, I would push for a ban on Altman making public statements. The data centre build-out has pushed the price and availability of RAM and GPUs out of reach for enthusiasts. In recent months, many old games have been resurrected on modern hardware thanks to Opus 5.5’s reverse-engineering capabilities; however, Anthropic, to the dismay of the community, has since restricted this. Many, I suspect, find it a little rich for the AI labs to lecture people on intellectual property rights, when they themselves trained their models on data with dubious provenance.",
+          "Of people’s concerns about data centres, power consumption is perhaps most salient. This is partly a worry about grid stability and energy prices, but also, due to the actions of developers, about climate change. Some data centres are side-stepping the question of grid connectivity by running gas turbines on-site, exacerbating not just climate change but local air pollution. If AI solves climate change, this is but a speed bump; however, this is likely not a view held by most people. Pew found in August 2026 that 54% of Americans believe AI will be mostly bad for the environment; this number is up from 39% in January of the same year.",
+          "At least everyone’s stock portfolios are up? Well, consider that only 62% of US households own any stocks in the first place, and then that most of the stock market is owned by the top 10%. In fact, many might see no upside in AI-driven stock market growth, but if the bubble were to pop, the resulting reverberations are a clear downside.",
+          "When these data centres are proposed, the democratic process is often subverted, or at least undermined. Local politicians bound by non-disclosure agreements face the community’s ire over shadowy developers and obscured end-clients. It’s a bad look with parallels to another high-salience issue of 2026: Flock cameras. This further fuels antagonism against data centres and AI.",
+          "Thus, for the median Western person, a data centre in their local community is a glaring, loud, visual reminder of AI. AI, which in the best case will free us from disease, labour, and suffering, but is more likely to further wealth inequality and rob them of their livelihood. AI, which according to its makers has a non-zero chance of killing us all. AI, which might increase their energy prices, hasten climate change, and pollute their air and water, while reducing their property value.",
+          "Neither the positive outcomes nor, obviously, the negative ones are seen as benefiting people. This at the cost of the climate, the democratic process, and a potential recession. Of course people hate data centres."
+        ]
+      }
+    }
+  ]
+}
