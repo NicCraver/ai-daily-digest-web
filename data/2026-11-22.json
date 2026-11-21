@@ -1,0 +1,1968 @@
+{
+  "date": "2026-11-22",
+  "generatedAt": "2026-11-21T21:33:49.686Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2548,
+    "filteredArticles": 13,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "e412cf50370b58ea",
+      "title": "Why output caching doesn't work",
+      "titleZh": "Why output caching doesn't work",
+      "link": "https://seangoedecke.com/why-output-caching-doesnt-work/",
+      "sourceName": "seangoedecke.com",
+      "sourceUrl": "https://seangoedecke.com",
+      "pubDate": "2026-11-21T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Why output caching doesn't work",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "LLM inference economics depends on caching1 model inputs, to prevent the entire conversation history being recomputed on each message2. Should we cache model outputs in the same way? As it turns out, no."
+          },
+          {
+            "type": "h3",
+            "text": "Why cache outputs?"
+          },
+          {
+            "type": "p",
+            "text": "First, here’s why we might think caching outputs is a good idea. We cache inputs to prevent repeated work, but LLMs do a lot of repeated work in their output as well:"
+          },
+          {
+            "type": "li",
+            "text": "When I get agents to write PRs I often ask them to repeat and explain relevant code snippets in the conversation"
+          },
+          {
+            "type": "li",
+            "text": "Long-running agent investigations produce lots of evidence docs, but also need to quote from those docs when they respond to the user"
+          },
+          {
+            "type": "li",
+            "text": "Every time I’ve played around with automated AI research I’ve asked the agent to repeat some sample model outputs so I can make my own qualitative check"
+          },
+          {
+            "type": "p",
+            "text": "In all of these cases3 I could go and read the files myself, but I don’t. Agents produce such a volume of output, and reading agent output is tiresome, so it’s better to simply ask for the key points."
+          },
+          {
+            "type": "p",
+            "text": "It’s an obvious waste of tokens4 to repeat all of this content. In fact, it’s worse than the input caching situation, because it’s a waste of output tokens, which are significantly more expensive to produce5 than input tokens are to ingest."
+          },
+          {
+            "type": "h3",
+            "text": "How could we cache outputs?"
+          },
+          {
+            "type": "p",
+            "text": "If you want to prevent this, you’d have to get the model to avoid repeating itself. For instance, you could fine-tune or prompt a coding model to output “src/script.py:12-15” instead of simply regurgitating those lines of the file."
+          },
+          {
+            "type": "p",
+            "text": "More generally, you could fine-tune a model to reference segments of its own conversation history instead of repeating them. The harness could then trivially expand those references with the actual content, so all of this is transparent to the user."
+          },
+          {
+            "type": "h3",
+            "text": "Why caching outputs is probably a bad idea"
+          },
+          {
+            "type": "p",
+            "text": "Unfortunately none of this is a good idea, because it only optimizes visible output. I don’t think models repeat themselves often in their internal chain of thought6. I can’t read frontier chains of thought, but my sense from open models and general principles is that they shouldn’t need to, because that information is already available to them. So optimizing repetition only optimizes the segment of model output that is visible to the user. How much is that?"
+          },
+          {
+            "type": "p",
+            "text": "Based on my own agent histories, it’s about 6%. 50% of output tokens are reasoning tokens, and the remaining 44% are tool calls7. So we’re running headlong into Amdahl’s law: even if you can save two-thirds of the tokens in visible output (a ridiculously optimistic estimate), you’re still only saving 4% of total output tokens."
+          },
+          {
+            "type": "h3",
+            "text": "How to save output tokens"
+          },
+          {
+            "type": "p",
+            "text": "If you want to save output tokens, you need to reduce the 94% of output tokens that are invisible, which largely depends on intelligence. The smarter the model8, the fewer reasoning tokens and tool calls it needs to get to the right answer. This is why we see a strange phenomenon9 where more expensive models are actually cheaper to use: they might be 5x more expensive per-token, but they can get to the right answer with 6x fewer tokens, so the overall cost is less."
+          },
+          {
+            "type": "li",
+            "text": "In the KV cache.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Including tool calls.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "Coding agents often used to repeat tokens in tool calls (e.g. by re-outputting the entire file content for each edit) but I think this behavior has mostly been replaced with more efficient find-and-replace editing tools.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I’m pretty sure that most mature inference providers already do speculative decoding based on previous ngrams in the input, which would at least exploit output repetition to deliver a speedup.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "The reason, broadly speaking, is also the reason why transformers are so important: because of the attention mechanism, input tokens can be ingested in parallel, while output tokens must be generated one-at-a-time.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "I’m only moderately confident about this. Some open-source reasoning models (particularly early ones) do, but those models also use way more tokens than frontier models for the same output, so my guess is that powerful frontier models don’t loop in their chain of thought very often.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "It’s possible that tool calls involve some repetition as well, if agents are composing content in the chain of thought and then repeating it in the tool. Any readers who have done a lot of coding with open-source models (or who work at a frontier lab) and thus know the answer to this, please email me if you can — I’m curious.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "And the better the harness, though I remain convinced that there isn’t that much comparative advantage in harness quality because everyone can copy each other.\n↩"
+          },
+          {
+            "type": "li",
+            "text": "This applies to real life too, and is the reason why you shouldn’t hire the cheapest plumber you can find.\n↩"
+          },
+          {
+            "type": "p",
+            "text": "Here's a preview of a related post that shares tags with this one."
+          }
+        ],
+        "translations": [
+          "LLM inference economics depends on caching1 model inputs, to prevent the entire conversation history being recomputed on each message2. Should we cache model outputs in the same way? As it turns out, no.",
+          "Why cache outputs?",
+          "First, here’s why we might think caching outputs is a good idea. We cache inputs to prevent repeated work, but LLMs do a lot of repeated work in their output as well:",
+          "When I get agents to write PRs I often ask them to repeat and explain relevant code snippets in the conversation",
+          "Long-running agent investigations produce lots of evidence docs, but also need to quote from those docs when they respond to the user",
+          "Every time I’ve played around with automated AI research I’ve asked the agent to repeat some sample model outputs so I can make my own qualitative check",
+          "In all of these cases3 I could go and read the files myself, but I don’t. Agents produce such a volume of output, and reading agent output is tiresome, so it’s better to simply ask for the key points.",
+          "It’s an obvious waste of tokens4 to repeat all of this content. In fact, it’s worse than the input caching situation, because it’s a waste of output tokens, which are significantly more expensive to produce5 than input tokens are to ingest.",
+          "How could we cache outputs?",
+          "If you want to prevent this, you’d have to get the model to avoid repeating itself. For instance, you could fine-tune or prompt a coding model to output “src/script.py:12-15” instead of simply regurgitating those lines of the file.",
+          "More generally, you could fine-tune a model to reference segments of its own conversation history instead of repeating them. The harness could then trivially expand those references with the actual content, so all of this is transparent to the user.",
+          "Why caching outputs is probably a bad idea",
+          "Unfortunately none of this is a good idea, because it only optimizes visible output. I don’t think models repeat themselves often in their internal chain of thought6. I can’t read frontier chains of thought, but my sense from open models and general principles is that they shouldn’t need to, because that information is already available to them. So optimizing repetition only optimizes the segment of model output that is visible to the user. How much is that?",
+          "Based on my own agent histories, it’s about 6%. 50% of output tokens are reasoning tokens, and the remaining 44% are tool calls7. So we’re running headlong into Amdahl’s law: even if you can save two-thirds of the tokens in visible output (a ridiculously optimistic estimate), you’re still only saving 4% of total output tokens.",
+          "How to save output tokens",
+          "If you want to save output tokens, you need to reduce the 94% of output tokens that are invisible, which largely depends on intelligence. The smarter the model8, the fewer reasoning tokens and tool calls it needs to get to the right answer. This is why we see a strange phenomenon9 where more expensive models are actually cheaper to use: they might be 5x more expensive per-token, but they can get to the right answer with 6x fewer tokens, so the overall cost is less.",
+          "In the KV cache.\n↩",
+          "Including tool calls.\n↩",
+          "Coding agents often used to repeat tokens in tool calls (e.g. by re-outputting the entire file content for each edit) but I think this behavior has mostly been replaced with more efficient find-and-replace editing tools.\n↩",
+          "I’m pretty sure that most mature inference providers already do speculative decoding based on previous ngrams in the input, which would at least exploit output repetition to deliver a speedup.\n↩",
+          "The reason, broadly speaking, is also the reason why transformers are so important: because of the attention mechanism, input tokens can be ingested in parallel, while output tokens must be generated one-at-a-time.\n↩",
+          "I’m only moderately confident about this. Some open-source reasoning models (particularly early ones) do, but those models also use way more tokens than frontier models for the same output, so my guess is that powerful frontier models don’t loop in their chain of thought very often.\n↩",
+          "It’s possible that tool calls involve some repetition as well, if agents are composing content in the chain of thought and then repeating it in the tool. Any readers who have done a lot of coding with open-source models (or who work at a frontier lab) and thus know the answer to this, please email me if you can — I’m curious.\n↩",
+          "And the better the harness, though I remain convinced that there isn’t that much comparative advantage in harness quality because everyone can copy each other.\n↩",
+          "This applies to real life too, and is the reason why you shouldn’t hire the cheapest plumber you can find.\n↩",
+          "Here's a preview of a related post that shares tags with this one."
+        ]
+      }
+    },
+    {
+      "slug": "93138fbb4db250e2",
+      "title": "CTO of ‘RansomwareHelp’ Indicted for Wire Fraud",
+      "titleZh": "CTO of ‘RansomwareHelp’ Indicted for Wire Fraud",
+      "link": "https://krebsonsecurity.com/2026/11/cto-of-ransomwarehelp-indicted-for-wire-fraud/",
+      "sourceName": "krebsonsecurity.com",
+      "sourceUrl": "https://krebsonsecurity.com",
+      "pubDate": "2026-11-21T00:36:39.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "CTO of ‘RansomwareHelp’ Indicted for Wire Fraud",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The chief technology officer and co-founder of ransomwarehelp.com, a six year old Florida business that claimed to use “advanced cryptographic tools” to restore data locked by ransomware, has been charged with wire fraud after an FBI sting operation found the company was simply paying the attackers for a decryption key and charging victims a markup for work that was never performed."
+          },
+          {
+            "type": "p",
+            "text": "A portion of the now-defunct website ransomwarehelp.com."
+          },
+          {
+            "type": "p",
+            "text": "The website RansomwareHelp urged victims “Do not pay the ransom!,” claiming its advanced cryptographic tools could restore 100 percent of data, servers, and systems to their original format, and that there was no need to give in to extortion demands."
+          },
+          {
+            "type": "p",
+            "text": "“Our cryptography experts use proprietary tools and algorithms to achieve 100% data recovery, all backed by a success rate of over 99%,” the website enthused, claiming the company had over 28 years of experience and a team of 80 experts in cryptography, cybersecurity, forensic analysis and reverse engineering. “We never promote, intermediate or pay ransom to threat actors on behalf of our clients.”"
+          },
+          {
+            "type": "p",
+            "text": "But according to an indictment (PDF) returned this week in Rhode Island, the company’s co-founder — 52-year-old Juan Ricardo Palacio Escobar of Miami and Medellin, Colombia — routinely paid ransomware groups for a decryption key to unlock victim data, and then charged those victims well above what he’d secretly paid the threat actors [Palacio’s indictment was reported earlier this week by 404 Media, but for some reason that story did not name the defendant’s company]."
+          },
+          {
+            "type": "p",
+            "text": "The indictment says the FBI set up a sting operation in which the feds were posing both as a ransomware victim company and as a fictitious ransomware group. Pretending to be victims of a cyberattack, investigators contacted RansomwareHelp and supplied the company with a copy of a phony ransomware note, saying they did not wish to pay a ransom. RansomwareHelp replied by reiterating its policy against negotiating with or making ransom payments to threat actors."
+          },
+          {
+            "type": "p",
+            "text": "The government said Palacio soon after contacted the fake ransomware group run by the FBI and requested the lowest possible price for the decryptor. FBI investigators responded with a price of .2 bitcoin, or around $13,000 at the time. Less than 48 hours later, Palacio allegedly told agents acting as the victim company that the diagnostic assessment was successful and that the cost of decrypting the files would be $13,260."
+          },
+          {
+            "type": "p",
+            "text": "The following day, the government alleges, Palacio messaged the fictitious ransomware group operated by the feds and asked to reduce the ransom demand to $4,000 for the purchase of a decryption tool. The indictment states that the agreed upon price was around $6,000 in bitcoin, and that Palacio charged the FBI’s fake victim firm $16,010, including an initial $2,750 diagnostic fee and the full fee of $13,260."
+          },
+          {
+            "type": "p",
+            "text": "Paul Ihme is co-founder of the security firm Soteria. Ihme told KrebsOnSecurity that in 2024 he heard from a small accounting firm that had paid RansomwareHelp a diagnostic fee to help recover from a Lockbit ransomware infection that had locked all of their company and client data."
+          },
+          {
+            "type": "p",
+            "text": "Ihme said RansomwareHelp sent a proposal to the victim with a recovery price of $438,880, which it claimed included “professional configuration of forensic servers,” “expert engineering hours of programming to configure decryption algorithms,” and “eight (6-hour processing cycles) related to the decryption process.”"
+          },
+          {
+            "type": "p",
+            "text": "A portion of the proposal that RansomwareHelp sent to a victim accounting firm in March 2024. Click to enlarge."
+          },
+          {
+            "type": "p",
+            "text": "The proposal stated that the recovery process involved reverse engineering the ransomware encryption using “510 preconfigured forensic servers of the maximum quantitative capacity located in different parts of the world.”"
+          },
+          {
+            "type": "p",
+            "text": "“Our programmers will inject randomly the encryption codes extracted during the forensic and cryptographic analysis using brute force processes,” the proposal claimed."
+          },
+          {
+            "type": "p",
+            "text": "Ihme said RansomwareHelp insisted that they be allowed unrestricted remote access into the victim’s network to run their diagnostic checks and analyses, using an Anydesk remote desktop software installer. Ihme believes RansomwareHelp insisted on that remote access in part so that the company could delete all copies of the ransomware notes left by the attackers on the victim’s network."
+          },
+          {
+            "type": "p",
+            "text": "A typical ransomware note is a plain text file that introduces the ransomware group and lays out their demands, and it includes a way to contact them — often an email address or a live chat session on a darknet website. In most cases, the attackers will leave a copy of the ransom note on every system on the victim network that gets locked."
+          },
+          {
+            "type": "p",
+            "text": "But Ihme said a review of the company’s network at the time found only one copy of the ransom note, which was unearthed from a backup snapshot on one of the infected computers. When they connected to the Lockbit chat server with the provided user ID, they discovered that someone had already been negotiating with the Lockbit extortionists for several days."
+          },
+          {
+            "type": "p",
+            "text": "A screenshot of a 2024 conversation between Lockbit and RansomwareHelp, which was secretly negotiating with the extortion group. Click to enlarge."
+          },
+          {
+            "type": "p",
+            "text": "“The charitable view would be to say that they were using Anydesk so they could grab the stuff they needed without having to walk the client through downloading and uploading a bunch of stuff,” Ihme said. “A legitimate firm would say, ‘Hey, send us a copy of the ransom note,’ which will have a link or URL to go to and chat with the threat actors. What they were doing is using that access to delete ransomware notes off the systems. The only reason they would do that is to prevent the victim from jumping into that chat itself.”"
+          },
+          {
+            "type": "p",
+            "text": "Indeed, RansomwareHelp pleaded with the Lockbit group throughout the chat not to reveal to the victim that they were negotiating. However, Lockbit quickly grew annoyed with the length of the negotiations, replying that the victims had waited too long and that the ransom demand would increase by $100,000 for every day they dithered further."
+          },
+          {
+            "type": "p",
+            "text": "The Lockbit representative starts raising the ransom demand after multiple negotiators begin interacting with the threat actors. Click to enlarge."
+          },
+          {
+            "type": "p",
+            "text": "In the end, the accounting firm took Ihme’s advice and went with a more established security firm that helped them negotiate a payment to Lockbit."
+          },
+          {
+            "type": "p",
+            "text": "“The victim told us, ‘If we don’t get this data back, our business is over’,” Ihme recalled. “They ended up paying half of what RansomwareHelp was going to charge them.”"
+          },
+          {
+            "type": "p",
+            "text": "The chats show RansomwareHelp kept pestering Lockbit to negotiate a deal even after it was clear a new negotiator was engaging with the ransomware group on the victim’s behalf."
+          },
+          {
+            "type": "p",
+            "text": "“I tell you something, that person who is negotiating with you for the other chat is damaging the whole process,” RansomwareHelp wrote to Lockbit. “Please do not change the price. I am doing my best to achieve it.”"
+          },
+          {
+            "type": "p",
+            "text": "Ihme said RansomwareHelp primarily targeted small to medium sized businesses that weren’t particularly tech-savvy, noting that many of the technical claims made on the company’s website and in their proposal are patently farcical. For example, the proposal sent to the accounting firm said it could break six types of encryption, and then proceeded to list a number of irrelevant password hashing algorithms like SHA-256."
+          },
+          {
+            "type": "p",
+            "text": "“If it were really true these guys could decrypt any ransomware out there, this guy would be a billionaire,” Ihme said. “They were going after people who don’t have any technical knowledge, are desperate, and don’t have anyone advising them about how any of this stuff works.”"
+          },
+          {
+            "type": "p",
+            "text": "The case against Palacio marks the latest in a string of recent prosecutions by the U.S. Department of Justice (DoJ) targeting security firms alleged to have conspired with fraudsters to defraud clients. In early October, the government charged 54-year-old Edward Dubrovsky, an executive at the Canadian cybersecurity firm Cybersteward. The government has sealed the case against Dubrovsky, but he is currently facing cyber extortion and conspiracy charges."
+          },
+          {
+            "type": "p",
+            "text": "Around the same time as Dubrovsky’s arrest, the DoJ charged MonsterCloud CEO Zohar Pinhasi, 50, with wire fraud and conspiracy for allegedly charging customers to remediate ransomware attacks without paying the hackers. According to charging documents, Pinhasi secretly went behind his customers’ backs and paid hackers anyway, paying ransomware groups $8 million while charging customers $19 million."
+          },
+          {
+            "type": "p",
+            "text": "In July, Angelo Martino, a 41-year-old ransomware negotiator from Land O’Lakes, Florida, was sentenced to 70 months in prison for conspiring with the Blackcat/ALPHV ransomware group to extort multiple victims. According to the DoJ, Martino was paid by BlackCat attackers to provide confidential information about the negotiating position and strategy of his employer’s clients and enable the ransomware actors to maximize the ransoms paid by the victims."
+          }
+        ],
+        "translations": [
+          "The chief technology officer and co-founder of ransomwarehelp.com, a six year old Florida business that claimed to use “advanced cryptographic tools” to restore data locked by ransomware, has been charged with wire fraud after an FBI sting operation found the company was simply paying the attackers for a decryption key and charging victims a markup for work that was never performed.",
+          "A portion of the now-defunct website ransomwarehelp.com.",
+          "The website RansomwareHelp urged victims “Do not pay the ransom!,” claiming its advanced cryptographic tools could restore 100 percent of data, servers, and systems to their original format, and that there was no need to give in to extortion demands.",
+          "“Our cryptography experts use proprietary tools and algorithms to achieve 100% data recovery, all backed by a success rate of over 99%,” the website enthused, claiming the company had over 28 years of experience and a team of 80 experts in cryptography, cybersecurity, forensic analysis and reverse engineering. “We never promote, intermediate or pay ransom to threat actors on behalf of our clients.”",
+          "But according to an indictment (PDF) returned this week in Rhode Island, the company’s co-founder — 52-year-old Juan Ricardo Palacio Escobar of Miami and Medellin, Colombia — routinely paid ransomware groups for a decryption key to unlock victim data, and then charged those victims well above what he’d secretly paid the threat actors [Palacio’s indictment was reported earlier this week by 404 Media, but for some reason that story did not name the defendant’s company].",
+          "The indictment says the FBI set up a sting operation in which the feds were posing both as a ransomware victim company and as a fictitious ransomware group. Pretending to be victims of a cyberattack, investigators contacted RansomwareHelp and supplied the company with a copy of a phony ransomware note, saying they did not wish to pay a ransom. RansomwareHelp replied by reiterating its policy against negotiating with or making ransom payments to threat actors.",
+          "The government said Palacio soon after contacted the fake ransomware group run by the FBI and requested the lowest possible price for the decryptor. FBI investigators responded with a price of .2 bitcoin, or around $13,000 at the time. Less than 48 hours later, Palacio allegedly told agents acting as the victim company that the diagnostic assessment was successful and that the cost of decrypting the files would be $13,260.",
+          "The following day, the government alleges, Palacio messaged the fictitious ransomware group operated by the feds and asked to reduce the ransom demand to $4,000 for the purchase of a decryption tool. The indictment states that the agreed upon price was around $6,000 in bitcoin, and that Palacio charged the FBI’s fake victim firm $16,010, including an initial $2,750 diagnostic fee and the full fee of $13,260.",
+          "Paul Ihme is co-founder of the security firm Soteria. Ihme told KrebsOnSecurity that in 2024 he heard from a small accounting firm that had paid RansomwareHelp a diagnostic fee to help recover from a Lockbit ransomware infection that had locked all of their company and client data.",
+          "Ihme said RansomwareHelp sent a proposal to the victim with a recovery price of $438,880, which it claimed included “professional configuration of forensic servers,” “expert engineering hours of programming to configure decryption algorithms,” and “eight (6-hour processing cycles) related to the decryption process.”",
+          "A portion of the proposal that RansomwareHelp sent to a victim accounting firm in March 2024. Click to enlarge.",
+          "The proposal stated that the recovery process involved reverse engineering the ransomware encryption using “510 preconfigured forensic servers of the maximum quantitative capacity located in different parts of the world.”",
+          "“Our programmers will inject randomly the encryption codes extracted during the forensic and cryptographic analysis using brute force processes,” the proposal claimed.",
+          "Ihme said RansomwareHelp insisted that they be allowed unrestricted remote access into the victim’s network to run their diagnostic checks and analyses, using an Anydesk remote desktop software installer. Ihme believes RansomwareHelp insisted on that remote access in part so that the company could delete all copies of the ransomware notes left by the attackers on the victim’s network.",
+          "A typical ransomware note is a plain text file that introduces the ransomware group and lays out their demands, and it includes a way to contact them — often an email address or a live chat session on a darknet website. In most cases, the attackers will leave a copy of the ransom note on every system on the victim network that gets locked.",
+          "But Ihme said a review of the company’s network at the time found only one copy of the ransom note, which was unearthed from a backup snapshot on one of the infected computers. When they connected to the Lockbit chat server with the provided user ID, they discovered that someone had already been negotiating with the Lockbit extortionists for several days.",
+          "A screenshot of a 2024 conversation between Lockbit and RansomwareHelp, which was secretly negotiating with the extortion group. Click to enlarge.",
+          "“The charitable view would be to say that they were using Anydesk so they could grab the stuff they needed without having to walk the client through downloading and uploading a bunch of stuff,” Ihme said. “A legitimate firm would say, ‘Hey, send us a copy of the ransom note,’ which will have a link or URL to go to and chat with the threat actors. What they were doing is using that access to delete ransomware notes off the systems. The only reason they would do that is to prevent the victim from jumping into that chat itself.”",
+          "Indeed, RansomwareHelp pleaded with the Lockbit group throughout the chat not to reveal to the victim that they were negotiating. However, Lockbit quickly grew annoyed with the length of the negotiations, replying that the victims had waited too long and that the ransom demand would increase by $100,000 for every day they dithered further.",
+          "The Lockbit representative starts raising the ransom demand after multiple negotiators begin interacting with the threat actors. Click to enlarge.",
+          "In the end, the accounting firm took Ihme’s advice and went with a more established security firm that helped them negotiate a payment to Lockbit.",
+          "“The victim told us, ‘If we don’t get this data back, our business is over’,” Ihme recalled. “They ended up paying half of what RansomwareHelp was going to charge them.”",
+          "The chats show RansomwareHelp kept pestering Lockbit to negotiate a deal even after it was clear a new negotiator was engaging with the ransomware group on the victim’s behalf.",
+          "“I tell you something, that person who is negotiating with you for the other chat is damaging the whole process,” RansomwareHelp wrote to Lockbit. “Please do not change the price. I am doing my best to achieve it.”",
+          "Ihme said RansomwareHelp primarily targeted small to medium sized businesses that weren’t particularly tech-savvy, noting that many of the technical claims made on the company’s website and in their proposal are patently farcical. For example, the proposal sent to the accounting firm said it could break six types of encryption, and then proceeded to list a number of irrelevant password hashing algorithms like SHA-256.",
+          "“If it were really true these guys could decrypt any ransomware out there, this guy would be a billionaire,” Ihme said. “They were going after people who don’t have any technical knowledge, are desperate, and don’t have anyone advising them about how any of this stuff works.”",
+          "The case against Palacio marks the latest in a string of recent prosecutions by the U.S. Department of Justice (DoJ) targeting security firms alleged to have conspired with fraudsters to defraud clients. In early October, the government charged 54-year-old Edward Dubrovsky, an executive at the Canadian cybersecurity firm Cybersteward. The government has sealed the case against Dubrovsky, but he is currently facing cyber extortion and conspiracy charges.",
+          "Around the same time as Dubrovsky’s arrest, the DoJ charged MonsterCloud CEO Zohar Pinhasi, 50, with wire fraud and conspiracy for allegedly charging customers to remediate ransomware attacks without paying the hackers. According to charging documents, Pinhasi secretly went behind his customers’ backs and paid hackers anyway, paying ransomware groups $8 million while charging customers $19 million.",
+          "In July, Angelo Martino, a 41-year-old ransomware negotiator from Land O’Lakes, Florida, was sentenced to 70 months in prison for conspiring with the Blackcat/ALPHV ransomware group to extort multiple victims. According to the DoJ, Martino was paid by BlackCat attackers to provide confidential information about the negotiating position and strategy of his employer’s clients and enable the ransomware actors to maximize the ransoms paid by the victims."
+        ]
+      }
+    },
+    {
+      "slug": "55d02b9afa67e2ce",
+      "title": "★ A Week With the New Privacy Controls in MacOS 27.3 Beta 2",
+      "titleZh": "★ A Week With the New Privacy Controls in MacOS 27.3 Beta 2",
+      "link": "https://daringfireball.net/2026/11/a_week_with_the_new_privacy_controls_in_macos_273",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-21T20:09:57.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "★ A Week With the New Privacy Controls in MacOS 27.3 Beta 2",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Saturday, 21 November 2026",
+        "siteName": "Daring Fireball",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "On Monday, when the second betas of the v27.3 OSes came out, I posted about Apple adding the new privacy controls they had promised a month prior, in the wake of Meta’s Muse app surprising some users with what information it had access to (e.g. incoming iMessages) after being granted Full Disk Access — which authorization some users just clicked right through. I also posted a link to Apple’s corresponding new support documents. My initial take on Monday:"
+          },
+          {
+            "type": "quote",
+            "text": "I’m installing it now, but from what I’ve seen so far, these\nchanges not only alleviate my concerns that Apple might\nover-tighten the screws, I actually think they add clarity and\ngive users more, not less, control over their Macs."
+          },
+          {
+            "type": "p",
+            "text": "After a week, I’m willing to call it: this overhaul of these settings and permissions is a win. I really like the way that, for apps asking for Full Disk Access, users can now grant access to a list of folders instead. That’s what I mean about these new settings giving users more control."
+          },
+          {
+            "type": "p",
+            "text": "Are these new dialog boxes “scarier”? Yes, and the point is, they should be. You should be slightly jolted into attention when an app prompts for any of these permissions. The question is whether they are unnecessarily scary. I would say no, not at all. The descriptions are fair and accurate. Is it unnecessarily scary to show you thumbnails of your personal photos before permitting Full Disk Access that would grant an application unfettered access to your personal photos? No! It’s a bit of a jolt to see them, but that’s just reducing the abstraction. The words “full disk access” feel different than actually seeing a snapshot of what full disk access entails."
+          },
+          {
+            "type": "p",
+            "text": "Might this discourage some Mac users from granting Full Disk Access to AI agent apps? Yes. And it should! Users who actually understand the stakes will not be dissuaded by these new permissions. Additionally, I think these new dialog boxes represent very good UI design. They look like a new modern take on MacOS “system chrome” design — not skinny iPhone-sized alerts."
+          },
+          {
+            "type": "p",
+            "text": "My only gripe about the new stuff is the prominent menu bar indicator that now appears when one app is controlling another. You can’t turn it off (except via an undocumented hidden defaults setting), and it’s distracting on most Macs, and extra distracting on the new MacBook Pros with PROLED displays because on those Macs, it appears in the Dynamic Island! Chance Miller, on Threads (with screenshots):"
+          },
+          {
+            "type": "quote",
+            "text": "Most of the changes in macOS 27.3 are reasonable, but this Live\nActivity thing for system access has got to go. It’s way too\naggressive.\n\nIt takes over the Dynamic Island on the new MacBook Pro!"
+          },
+          {
+            "type": "p",
+            "text": "As I write this article on a new MacBook Pro review unit, I have 8 of these indicators in my Dynamic Island: Scroll Reverser, Keyboard Maestro Engine, HazeOver, SteerMouse Manager, Moom, Chest (a promising new utility for managing menu bar icons), System Events, and a new text snippet expansion utility I’m beta testing."
+          },
+          {
+            "type": "p",
+            "text": "Every one of these apps is running all of the time for me. This indicator being on, all the time, for every one of them isn’t helping me notice unusual activity. If anything, if Apple doesn’t rethink this idea, it’s going to make me miss the indication if an app is taking advantage of access permissions in an unwanted or unexpected way."
+          },
+          {
+            "type": "p",
+            "text": "Zac Hall, Miller’s colleague at 9to5Mac, published an article on Tuesday showing the command-line defaults incantation to disable this. That’s better than not being able to disable it at all, but I expect Apple to revisit this based on feedback. It seems like a well-intentioned feature that was designed by people who didn’t realize how many always-on utilities “control other apps”."
+          }
+        ],
+        "translations": [
+          "On Monday, when the second betas of the v27.3 OSes came out, I posted about Apple adding the new privacy controls they had promised a month prior, in the wake of Meta’s Muse app surprising some users with what information it had access to (e.g. incoming iMessages) after being granted Full Disk Access — which authorization some users just clicked right through. I also posted a link to Apple’s corresponding new support documents. My initial take on Monday:",
+          "I’m installing it now, but from what I’ve seen so far, these\nchanges not only alleviate my concerns that Apple might\nover-tighten the screws, I actually think they add clarity and\ngive users more, not less, control over their Macs.",
+          "After a week, I’m willing to call it: this overhaul of these settings and permissions is a win. I really like the way that, for apps asking for Full Disk Access, users can now grant access to a list of folders instead. That’s what I mean about these new settings giving users more control.",
+          "Are these new dialog boxes “scarier”? Yes, and the point is, they should be. You should be slightly jolted into attention when an app prompts for any of these permissions. The question is whether they are unnecessarily scary. I would say no, not at all. The descriptions are fair and accurate. Is it unnecessarily scary to show you thumbnails of your personal photos before permitting Full Disk Access that would grant an application unfettered access to your personal photos? No! It’s a bit of a jolt to see them, but that’s just reducing the abstraction. The words “full disk access” feel different than actually seeing a snapshot of what full disk access entails.",
+          "Might this discourage some Mac users from granting Full Disk Access to AI agent apps? Yes. And it should! Users who actually understand the stakes will not be dissuaded by these new permissions. Additionally, I think these new dialog boxes represent very good UI design. They look like a new modern take on MacOS “system chrome” design — not skinny iPhone-sized alerts.",
+          "My only gripe about the new stuff is the prominent menu bar indicator that now appears when one app is controlling another. You can’t turn it off (except via an undocumented hidden defaults setting), and it’s distracting on most Macs, and extra distracting on the new MacBook Pros with PROLED displays because on those Macs, it appears in the Dynamic Island! Chance Miller, on Threads (with screenshots):",
+          "Most of the changes in macOS 27.3 are reasonable, but this Live\nActivity thing for system access has got to go. It’s way too\naggressive.\n\nIt takes over the Dynamic Island on the new MacBook Pro!",
+          "As I write this article on a new MacBook Pro review unit, I have 8 of these indicators in my Dynamic Island: Scroll Reverser, Keyboard Maestro Engine, HazeOver, SteerMouse Manager, Moom, Chest (a promising new utility for managing menu bar icons), System Events, and a new text snippet expansion utility I’m beta testing.",
+          "Every one of these apps is running all of the time for me. This indicator being on, all the time, for every one of them isn’t helping me notice unusual activity. If anything, if Apple doesn’t rethink this idea, it’s going to make me miss the indication if an app is taking advantage of access permissions in an unwanted or unexpected way.",
+          "Zac Hall, Miller’s colleague at 9to5Mac, published an article on Tuesday showing the command-line defaults incantation to disable this. That’s better than not being able to disable it at all, but I expect Apple to revisit this based on feedback. It seems like a well-intentioned feature that was designed by people who didn’t realize how many always-on utilities “control other apps”."
+        ]
+      }
+    },
+    {
+      "slug": "7f9684e32b2f8abe",
+      "title": "The U.S. — Utterly Predictably — Has Lost Measles Elimination Status Under Trump and RFK Jr.",
+      "titleZh": "The U.S. — Utterly Predictably — Has Lost Measles Elimination Status Under Trump and RFK Jr.",
+      "link": "https://www.wsj.com/health/measles-is-back-it-will-take-years-to-eliminate-it-again-9971736e?st=GKiu3E",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-21T18:28:22.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The U.S. — Utterly Predictably — Has Lost Measles Elimination Status Under Trump and RFK Jr.",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "3eb66db4c1a13925",
+      "title": "Apple Documents Extra Apple Intelligence Usage Limits Per iCloud+ Paid Tier",
+      "titleZh": "Apple Documents Extra Apple Intelligence Usage Limits Per iCloud+ Paid Tier",
+      "link": "https://support.apple.com/en-us/127901",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-21T18:02:51.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Apple Documents Extra Apple Intelligence Usage Limits Per iCloud+ Paid Tier",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Apple Support",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Starting with the 2027 software releases, Siri AI and Apple Intelligence features are available for free for users with a supported device set to a supported language. Some features rely on powerful server models and have limits where increased access is available with eligible iCloud+ plans, starting with the 27.3 release. These include, but aren't limited to, features in these categories:"
+          },
+          {
+            "type": "li",
+            "text": "Siri AI"
+          },
+          {
+            "type": "li",
+            "text": "Images: Intelligent Photo Editing Tools including Clean Up, Extend, and Spatial Reframing, and Image Playground"
+          },
+          {
+            "type": "li",
+            "text": "Workflows and automation: AFM Cloud and Cloud Pro models in Shortcuts"
+          },
+          {
+            "type": "li",
+            "text": "Third-party apps using Apple Foundation Models in Private Cloud Compute"
+          },
+          {
+            "type": "p",
+            "text": "Apple implements daily usage limits on these feature categories and other features to ensure a high-quality, reliable experience for everyone. Limits may vary by feature category, request complexity, system demand, system policies, and other factors."
+          },
+          {
+            "type": "p",
+            "text": "Some Apple Intelligence features in the Home app, such as video summaries, are available for a limited number of cameras: up to 1 camera in the 2 TB plan, up to 2 cameras in the 6 TB plan, and up to 5 cameras in the 12 TB plan."
+          },
+          {
+            "type": "p",
+            "text": "Siri AI in the 2027 software releases is more capable, conversational, and personal, so you can get more done."
+          },
+          {
+            "type": "p",
+            "text": "Siri AI includes a generous daily usage limit. If you reach it, you will be notified, and you can still make everyday Siri requests like \"Set a timer for 3 minutes\" or \"Text Mark that Annika's party is at 123 Main Street.”"
+          },
+          {
+            "type": "p",
+            "text": "If you reach your limit, advanced requests are paused until your limit resets or you upgrade to an eligible iCloud+ plan. Advanced requests are more complex, like \"Text Mark the address for Annika's party, and tell him what time we need to leave from home to make it on time\" or \"Add a summary of my San Francisco trip note to this email draft.\""
+          },
+          {
+            "type": "p",
+            "text": "When you hit your daily usage limit for a particular feature category, you’ll be notified. Each device has its own daily usage limit per feature category. Once you reach a limit, you can wait until your daily usage limit resets on that device or immediately increase your limit by upgrading to an eligible iCloud+ plan."
+          },
+          {
+            "type": "p",
+            "text": "All feature categories reset daily at the same time, and limits do not roll over to subsequent days. Your limit resets around midnight in your current time zone except:"
+          },
+          {
+            "type": "li",
+            "text": "If you’re traveling internationally, your limit resets around midnight in the central time zone of the country or region of your Apple Account."
+          },
+          {
+            "type": "li",
+            "text": "If you share an iCloud+ plan with a Family Sharing group, your limit resets based on the time zone of the iCloud+ plan purchaser."
+          },
+          {
+            "type": "li",
+            "text": "If you’re not signed in to your Apple Account on your device, your limit resets around 24 hours after you started using that feature category."
+          },
+          {
+            "type": "p",
+            "text": "For more access, upgrade to an iCloud+ plan with at least 200 GB of storage. After you reach your daily usage limit on a device, you gain access to an increased usage limit that is shared by all devices signed in to your Apple Account and across any Family members sharing your plan, on a first-come, first-served basis."
+          },
+          {
+            "type": "p",
+            "text": "Free"
+          },
+          {
+            "type": "p",
+            "text": "iCloud+ with 50 GB"
+          },
+          {
+            "type": "p",
+            "text": "iCloud+ with 200 GB"
+          },
+          {
+            "type": "p",
+            "text": "iCloud+ with 2 TB"
+          },
+          {
+            "type": "p",
+            "text": "iCloud+ with 6 TB"
+          },
+          {
+            "type": "p",
+            "text": "iCloud+ with 12 TB"
+          },
+          {
+            "type": "p",
+            "text": "Select Apple Intelligence Features and Siri AI"
+          },
+          {
+            "type": "p",
+            "text": "Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Up to 2X Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Up to 5X Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Up to 10X Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Up to 20X Standard Device Limit"
+          },
+          {
+            "type": "p",
+            "text": "Shortcuts using AFM Cloud Pro Model"
+          },
+          {
+            "type": "p",
+            "text": "-"
+          },
+          {
+            "type": "p",
+            "text": "-"
+          },
+          {
+            "type": "p",
+            "text": "Access to AFM Cloud Pro Model"
+          },
+          {
+            "type": "p",
+            "text": "Up to 5X Access"
+          },
+          {
+            "type": "p",
+            "text": "Up to 10X Access"
+          },
+          {
+            "type": "p",
+            "text": "Up to 20X Access"
+          },
+          {
+            "type": "p",
+            "text": "Use of Apple Intelligence and Siri AI features is at all times subject to the Apple Intelligence Usage Terms. Apple Intelligence and Siri AI features may not be available in all countries or regions. Learn more about Apple Intelligence availability and Siri AI availability. Increased access to select Apple Intelligence features with iCloud+ is subject to Apple Intelligence availability and is not available in China, Brazil, the EU, UK, or South Korea. Increased access to Siri AI with iCloud+ is subject to Siri AI availability and is not available in Brazil, the EU, UK, or South Korea. Supported camera counts, the standard amount of Apple Intelligence and Siri AI access, and other iCloud+ plan features may change over time."
+          },
+          {
+            "type": "p",
+            "text": "Published Date: November 16, 2026"
+          }
+        ],
+        "translations": [
+          "Starting with the 2027 software releases, Siri AI and Apple Intelligence features are available for free for users with a supported device set to a supported language. Some features rely on powerful server models and have limits where increased access is available with eligible iCloud+ plans, starting with the 27.3 release. These include, but aren't limited to, features in these categories:",
+          "Siri AI",
+          "Images: Intelligent Photo Editing Tools including Clean Up, Extend, and Spatial Reframing, and Image Playground",
+          "Workflows and automation: AFM Cloud and Cloud Pro models in Shortcuts",
+          "Third-party apps using Apple Foundation Models in Private Cloud Compute",
+          "Apple implements daily usage limits on these feature categories and other features to ensure a high-quality, reliable experience for everyone. Limits may vary by feature category, request complexity, system demand, system policies, and other factors.",
+          "Some Apple Intelligence features in the Home app, such as video summaries, are available for a limited number of cameras: up to 1 camera in the 2 TB plan, up to 2 cameras in the 6 TB plan, and up to 5 cameras in the 12 TB plan.",
+          "Siri AI in the 2027 software releases is more capable, conversational, and personal, so you can get more done.",
+          "Siri AI includes a generous daily usage limit. If you reach it, you will be notified, and you can still make everyday Siri requests like \"Set a timer for 3 minutes\" or \"Text Mark that Annika's party is at 123 Main Street.”",
+          "If you reach your limit, advanced requests are paused until your limit resets or you upgrade to an eligible iCloud+ plan. Advanced requests are more complex, like \"Text Mark the address for Annika's party, and tell him what time we need to leave from home to make it on time\" or \"Add a summary of my San Francisco trip note to this email draft.\"",
+          "When you hit your daily usage limit for a particular feature category, you’ll be notified. Each device has its own daily usage limit per feature category. Once you reach a limit, you can wait until your daily usage limit resets on that device or immediately increase your limit by upgrading to an eligible iCloud+ plan.",
+          "All feature categories reset daily at the same time, and limits do not roll over to subsequent days. Your limit resets around midnight in your current time zone except:",
+          "If you’re traveling internationally, your limit resets around midnight in the central time zone of the country or region of your Apple Account.",
+          "If you share an iCloud+ plan with a Family Sharing group, your limit resets based on the time zone of the iCloud+ plan purchaser.",
+          "If you’re not signed in to your Apple Account on your device, your limit resets around 24 hours after you started using that feature category.",
+          "For more access, upgrade to an iCloud+ plan with at least 200 GB of storage. After you reach your daily usage limit on a device, you gain access to an increased usage limit that is shared by all devices signed in to your Apple Account and across any Family members sharing your plan, on a first-come, first-served basis.",
+          "Free",
+          "iCloud+ with 50 GB",
+          "iCloud+ with 200 GB",
+          "iCloud+ with 2 TB",
+          "iCloud+ with 6 TB",
+          "iCloud+ with 12 TB",
+          "Select Apple Intelligence Features and Siri AI",
+          "Standard Device Limit",
+          "Standard Device Limit",
+          "Up to 2X Standard Device Limit",
+          "Up to 5X Standard Device Limit",
+          "Up to 10X Standard Device Limit",
+          "Up to 20X Standard Device Limit",
+          "Shortcuts using AFM Cloud Pro Model",
+          "-",
+          "-",
+          "Access to AFM Cloud Pro Model",
+          "Up to 5X Access",
+          "Up to 10X Access",
+          "Up to 20X Access",
+          "Use of Apple Intelligence and Siri AI features is at all times subject to the Apple Intelligence Usage Terms. Apple Intelligence and Siri AI features may not be available in all countries or regions. Learn more about Apple Intelligence availability and Siri AI availability. Increased access to select Apple Intelligence features with iCloud+ is subject to Apple Intelligence availability and is not available in China, Brazil, the EU, UK, or South Korea. Increased access to Siri AI with iCloud+ is subject to Siri AI availability and is not available in Brazil, the EU, UK, or South Korea. Supported camera counts, the standard amount of Apple Intelligence and Siri AI access, and other iCloud+ plan features may change over time.",
+          "Published Date: November 16, 2026"
+        ]
+      }
+    },
+    {
+      "slug": "15164c1b70a8508b",
+      "title": "The Talk Show: ‘A Whoopsie Treason’",
+      "titleZh": "The Talk Show: ‘A Whoopsie Treason’",
+      "link": "https://daringfireball.net/thetalkshow/2026/11/20/ep-457",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-20T23:28:51.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "The Talk Show: ‘A Whoopsie Treason’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Friday, 20 November 2026",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "The Talk Show"
+          },
+          {
+            "type": "h2",
+            "text": "‘A  Whoopsie Treason’, With Christina Warren"
+          },
+          {
+            "type": "p",
+            "text": "Christina Warren returns for a jam-packed show: Jensen Huang-gate at Nvidia, the HomeView, the new iPad Mini, more on the iPhone Duo, and Robert “R-Patz” Pattinson taking the role of James Bond."
+          },
+          {
+            "type": "p",
+            "text": "Sponsored by:"
+          },
+          {
+            "type": "li",
+            "text": "Uncommon Goods: Out of the ordinary gifts, great for the holidays. Save 15% off your next purchase after following that link."
+          },
+          {
+            "type": "li",
+            "text": "WorkOS: Let agents sign up for your app without a browser."
+          },
+          {
+            "type": "p",
+            "text": "Transcripts: Unofficial but surprisingly good."
+          },
+          {
+            "type": "p",
+            "text": "Links:"
+          },
+          {
+            "type": "li",
+            "text": "Macroscrope: Christina’s new gig."
+          },
+          {
+            "type": "li",
+            "text": "Scroll Reverser: Free and open source Mac app by Nick Moore that lets you set the scrolling direction independently for each trackpad and mouse. Christina and I have both been using it for years. I don’t know what I’d do without it."
+          },
+          {
+            "type": "li",
+            "text": "Movies to watch:\n“Sicario” — Denis Villeneuve’s 2015 crime thriller about Mexican drug cartels.\n“Primetime” — Lance Oppenheim’s new movie, starring Robert Pattinson as TV host Chris Hansen."
+          },
+          {
+            "type": "p",
+            "text": "This episode of The Talk Show was edited by Caleb Sexton."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "f07caabffe701c23",
+      "title": "Relicensing to CC BY-SA and making it visible in Schema metadata",
+      "titleZh": "Relicensing to CC BY-SA and making it visible in Schema metadata",
+      "link": "https://shkspr.mobi/blog/2026/11/relicensing-to-cc-by-sa-and-making-it-visible-in-schema-metadata/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-11-21T12:34:40.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Relicensing to CC BY-SA and making it visible in Schema metadata",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "How do you make it clear what copyright licence a blog post uses? I know in our wonderful AI-powered future that copyright and copyleft are but a distant memory. But some of us still believe it's worth making these things clear to both men and machines."
+          },
+          {
+            "type": "p",
+            "text": "The first port of call is the page's metadata. Using the rel attribute. Placing something like this in your page's <head> indicates that the copyright information can be found at a specific URl."
+          },
+          {
+            "type": "code",
+            "text": "<link rel=\"license\" href=\"https://example.com/copyright\">"
+          },
+          {
+            "type": "p",
+            "text": "But that's not overly specific. Someone (or something) has to visit that website and then interpret what it says. How about we use some fancy Schema.org metadata to make things slightly clearer?"
+          },
+          {
+            "type": "p",
+            "text": "Here's a minimum viable example you can paste into the validator:"
+          },
+          {
+            "type": "code",
+            "text": "<body itemscope itemtype=https://schema.org/Blog>\n    <main itemprop=blogPost itemscope itemtype=https://schema.org/BlogPosting>\n        <article>\n            <span itemprop=\"author copyrightHolder\"\n                  itemscope \n                  itemtype=https://schema.org/Person>\n                <span itemprop=name>Terence Eden</span>\n            </span>\n            <a href=https://shkspr.mobi/blog/copyright-and-copyleft/ itemprop=license>\n                <img alt=\"🄯 CC BY-SA\" \n                     content=\"Creative Commons Attribution ShareAlike\" \n                     itemprop=copyrightNotice \n                     src=\"https://example.com/cc-by-sa.svg\">\n            </a>"
+          },
+          {
+            "type": "p",
+            "text": "That says this website is a blog. The <main> element is a blog post. The article has an author who is also the copyright holder (they may be two different entities). The link is to the licence URl. The image shows the copyright notice with human readable text also available."
+          },
+          {
+            "type": "p",
+            "text": "It looks like this to a machine:"
+          },
+          {
+            "type": "p",
+            "text": "This sort of structure will allow you to assign different copyright and copyleft licences to different parts of the same page."
+          },
+          {
+            "type": "p",
+            "text": "In other news, this blog is now CC BY-SA!"
+          }
+        ],
+        "translations": [
+          "How do you make it clear what copyright licence a blog post uses? I know in our wonderful AI-powered future that copyright and copyleft are but a distant memory. But some of us still believe it's worth making these things clear to both men and machines.",
+          "The first port of call is the page's metadata. Using the rel attribute. Placing something like this in your page's <head> indicates that the copyright information can be found at a specific URl.",
+          "<link rel=\"license\" href=\"https://example.com/copyright\">",
+          "But that's not overly specific. Someone (or something) has to visit that website and then interpret what it says. How about we use some fancy Schema.org metadata to make things slightly clearer?",
+          "Here's a minimum viable example you can paste into the validator:",
+          "<body itemscope itemtype=https://schema.org/Blog>\n    <main itemprop=blogPost itemscope itemtype=https://schema.org/BlogPosting>\n        <article>\n            <span itemprop=\"author copyrightHolder\"\n                  itemscope \n                  itemtype=https://schema.org/Person>\n                <span itemprop=name>Terence Eden</span>\n            </span>\n            <a href=https://shkspr.mobi/blog/copyright-and-copyleft/ itemprop=license>\n                <img alt=\"🄯 CC BY-SA\" \n                     content=\"Creative Commons Attribution ShareAlike\" \n                     itemprop=copyrightNotice \n                     src=\"https://example.com/cc-by-sa.svg\">\n            </a>",
+          "That says this website is a blog. The <main> element is a blog post. The article has an author who is also the copyright holder (they may be two different entities). The link is to the licence URl. The image shows the copyright notice with human readable text also available.",
+          "It looks like this to a machine:",
+          "This sort of structure will allow you to assign different copyright and copyleft licences to different parts of the same page.",
+          "In other news, this blog is now CC BY-SA!"
+        ]
+      }
+    },
+    {
+      "slug": "64460e63f6e735e6",
+      "title": "What is the Generalized Riemann Hypothesis?",
+      "titleZh": "What is the Generalized Riemann Hypothesis?",
+      "link": "https://www.johndcook.com/blog/2026/11/20/grh/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-11-21T03:35:05.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "What is the Generalized Riemann Hypothesis?",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "There were two proofs of the Riemann Hypothesis (RH) announced today: one AI-generated and one human-generated.Both claimed to prove something more general, the Generalized Riemann Hypothesis (GRH) which of course includes RH as a special case."
+          },
+          {
+            "type": "p",
+            "text": "The RH says that the all the zero of the Riemann zeta function ζ(s) in the critical strip, i.e. the region of the complex plane where s has real part between 0 and 1, occur on the central line Re(s) = ½."
+          },
+          {
+            "type": "p",
+            "text": "There is a ladder of conjectures of that replace ζ(s) with ever more general families of functions, always with the same conclusion, that all the zeros in the critical strip lie on the central line."
+          },
+          {
+            "type": "p",
+            "text": "The bottom rung of the latter is the Riemann Hypothesis with ζ(s). The next rung up is the Generalized Riemann Hypothesis for the class of functions L(s, χ). The higher rungs are more abstract than I care to get into."
+          },
+          {
+            "type": "p",
+            "text": "The Riemann zeta function is defined to be analytic continuation of the function"
+          },
+          {
+            "type": "p",
+            "text": "The expression above is only valid for s with real part greater than 1, but the function can be uniquely extended to the entire complex plane, except for the point s = 1, by analytic continuation."
+          },
+          {
+            "type": "p",
+            "text": "The functions L(s, χ) replace the numerator in the sum above with a function χ(n)."
+          },
+          {
+            "type": "p",
+            "text": "Again this function is defined by the series above where the series converges and extended by analytic continuation to the rest of the complex plane. The remaining work is to describe the class of functions the χ belong to. Importantly this class of functions includes the constant function χ(n) = 1, which corresponds to ζ(s)."
+          },
+          {
+            "type": "p",
+            "text": "The functions χ(n) are called Dirichlet characters of modulus m, for positive integer m, which means χ: ℤ → ℂ satisfies"
+          },
+          {
+            "type": "li",
+            "text": "χ(ab) = χ(a) χ(b)"
+          },
+          {
+            "type": "li",
+            "text": "χ(a) = 0 iff gcd(a, m) > 1"
+          },
+          {
+            "type": "li",
+            "text": "χ has period m."
+          },
+          {
+            "type": "p",
+            "text": "For example, χ could be a Legendre or Jacobi symbol with n on top and m on bottom. For the Legendre symbol m must be an odd prime, and for the Jacobi symbol m is only required to be an odd number."
+          }
+        ],
+        "translations": [
+          "There were two proofs of the Riemann Hypothesis (RH) announced today: one AI-generated and one human-generated.Both claimed to prove something more general, the Generalized Riemann Hypothesis (GRH) which of course includes RH as a special case.",
+          "The RH says that the all the zero of the Riemann zeta function ζ(s) in the critical strip, i.e. the region of the complex plane where s has real part between 0 and 1, occur on the central line Re(s) = ½.",
+          "There is a ladder of conjectures of that replace ζ(s) with ever more general families of functions, always with the same conclusion, that all the zeros in the critical strip lie on the central line.",
+          "The bottom rung of the latter is the Riemann Hypothesis with ζ(s). The next rung up is the Generalized Riemann Hypothesis for the class of functions L(s, χ). The higher rungs are more abstract than I care to get into.",
+          "The Riemann zeta function is defined to be analytic continuation of the function",
+          "The expression above is only valid for s with real part greater than 1, but the function can be uniquely extended to the entire complex plane, except for the point s = 1, by analytic continuation.",
+          "The functions L(s, χ) replace the numerator in the sum above with a function χ(n).",
+          "Again this function is defined by the series above where the series converges and extended by analytic continuation to the rest of the complex plane. The remaining work is to describe the class of functions the χ belong to. Importantly this class of functions includes the constant function χ(n) = 1, which corresponds to ζ(s).",
+          "The functions χ(n) are called Dirichlet characters of modulus m, for positive integer m, which means χ: ℤ → ℂ satisfies",
+          "χ(ab) = χ(a) χ(b)",
+          "χ(a) = 0 iff gcd(a, m) > 1",
+          "χ has period m.",
+          "For example, χ could be a Legendre or Jacobi symbol with n on top and m on bottom. For the Legendre symbol m must be an odd prime, and for the Jacobi symbol m is only required to be an odd number."
+        ]
+      }
+    },
+    {
+      "slug": "f283fc8e57731a49",
+      "title": "This Week in Package Management: 21 November 2026",
+      "titleZh": "This Week in Package Management: 21 November 2026",
+      "link": "https://nesbitt.io/2026/11/21/this-week-in-package-management.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-11-21T10:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "This Week in Package Management: 21 November 2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This week’s package management news, gathered from the package manager OPML feed collection, my posts and boosts on Mastodon, and anything people sent me. Version control and forge news is in the Wednesday This Week in Source Control roundup."
+          },
+          {
+            "type": "h2",
+            "text": "Security"
+          },
+          {
+            "type": "p",
+            "text": "Gemstash 2.9.0 fixes eight vulnerabilities. The most serious is unauthenticated remote code execution through unsafe loading of upstream data (GHSA-27cp-f4p8-8qwv), rated CVSS 10.0. Non-default upstreams must now be listed in :allowed_upstreams, and upstream responses are capped at 64 MiB and 300 seconds."
+          },
+          {
+            "type": "p",
+            "text": "The RubyGems team also announced that 2.9.0 is the last feature release of Gemstash. Vulnerability reports and bug-fix contributions will still be accepted, and the post lists several hosted and self-hosted alternatives. Mysteriously absent from that list: git-pkgs/proxy. An oversight, I’m sure."
+          },
+          {
+            "type": "p",
+            "text": "Ruby 4.0.10, 3.4.13 and 3.3.14 fix seven vulnerabilities in Regexp and String case conversion, several of which can lead to remote code execution when an application compiles an attacker-controlled pattern. Ruby 3.2 and earlier are end of life."
+          },
+          {
+            "type": "p",
+            "text": "Calif published details of Java4Shell (CVE-2026-114938), a heap memory corruption bug in the AVX-512 Base64 decoder intrinsic in OpenJDK HotSpot on x86-64. The write-up reports pre-authentication remote code execution against Artifactory and other Java servers, and lists -XX:-UseBASE64Intrinsics as a workaround until the OpenJDK and vendor patches are applied."
+          },
+          {
+            "type": "p",
+            "text": "pnpm 12.22.0 and 11.28.13 fix a bug where pnpm install could skip the minimumReleaseAge and trustPolicy checks against a new registry after the default or a scoped registry changed. 12.22.0 also adds a globalPackagesConfig section to the global config.yaml and pnpm why --ranges."
+          },
+          {
+            "type": "p",
+            "text": "Bun 1.4.5 is a security release that updates its bundled lsquic, c-ares, SQLite, llhttp and BoringSSL."
+          },
+          {
+            "type": "h2",
+            "text": "Releases"
+          },
+          {
+            "type": "p",
+            "text": "RubyGems and Bundler 4.1.0 add an override method to the Gemfile that rewrites the version constraints dependencies declare, transitive ones included. override \"foo\", required_ruby_version: :ignore_upper installs a gem whose required_ruby_version cap excludes the current Ruby. Cooldowns now work in the gem command too: gem install --cooldown 7 skips versions published in the last seven days, and gem and Bundler each read the other’s cooldown setting."
+          },
+          {
+            "type": "p",
+            "text": "An opt-in credential store writes the gem push API key and Bundler’s per-host credentials to the OS keychain instead of plain text files. The release also adds content addressable gems, with a --content-addressable flag on gem build, and ML-DSA support for signed gems (summary of six changes)."
+          },
+          {
+            "type": "p",
+            "text": "conda 26.10.0 makes Rattler the default solver for fresh installations and for upgrades without an explicit solver setting. conda config --set solver libmamba switches back to libmamba. The classic solver now ships as the separate conda-pycosat-solver plugin, and its built-in modules are scheduled for removal in 27.9. conda itself now requires Python 3.11 or newer to run."
+          },
+          {
+            "type": "p",
+            "text": "pip-tools 7.7.0 is the first release since the project moved to the PyPA organisation. The project was in Jazzband for nine years, which is shutting down. The release requires pip 26.2.2 or newer and drops Python 3.9. A new stable extra caps pip at the latest version tested in pip-tools CI. It also fixes a bug from 7.6.1 in how PyPI JSON API URLs were built, which made resolution slower."
+          },
+          {
+            "type": "p",
+            "text": "Stephen Rosen covers the release and Sviatoslav Sydorenko describes the move. After the repository transfer, releases to the pypi deployment environment required approval from a Jazzband team until the environment was reconfigured to use a PyPA one."
+          },
+          {
+            "type": "p",
+            "text": "sbt 2.1.0 removes Apache Ivy from its dependencies, including from publishing. The metabuild moves to Scala 3.9 LTS, so plugins published with sbt 2.1.0 work only on 2.1.x."
+          },
+          {
+            "type": "p",
+            "text": "In Docker Engine 29.10.0, setting insecure-registries in daemon.json or passing --insecure-registry replaces the implicit loopback exemption, and only the listed registries count as insecure. Pulls and pushes to a local registry over HTTP or with an untrusted certificate then require an explicit entry such as localhost:5000. Packages are now published for AlmaLinux, Oracle Linux and Rocky Linux."
+          },
+          {
+            "type": "p",
+            "text": "mise 2026.11.9 (now 2026.11.11) adds lock pools, which give a task lock several slots, so a fixed number of tasks can use a limited resource such as CPU cores at once. --deny-unix and --allow-unix on mise exec and mise run block connections to Unix sockets such as an SSH agent or the container runtime socket, on Linux 7.1 or later."
+          },
+          {
+            "type": "p",
+            "text": "Homebrew 7.0.15 now verifies Sigstore bundles in Ruby, after 7.0.14 vendored the sigstore gem and added a manifest_sha256 field to bottle blocks. 7.0.15 also bundles Ruby 4.0.10 for the Regexp and String security fixes."
+          },
+          {
+            "type": "p",
+            "text": "Nix 2.36.0 reworks nix-daemon so workers re-execute the daemon with --stdio rather than forking, which lets most changes to /etc/nix/nix.conf reach workers without a daemon restart. Releases now ship nix-installer binaries for multi-user installs on x86_64-linux, aarch64-linux and aarch64-darwin."
+          },
+          {
+            "type": "p",
+            "text": "uv 0.13.9 adds preview support for PEP 832 .venv redirect files for project environments and rejects wheels that an index lists under a different package name."
+          },
+          {
+            "type": "p",
+            "text": "ORAS 1.4.0 moves to oras-go v3 and caches authentication per repository rather than per registry host, so oras copy can use different credentials for the source and destination on the same registry."
+          },
+          {
+            "type": "p",
+            "text": "Also out:"
+          },
+          {
+            "type": "li",
+            "text": "vlt 1.8.2"
+          },
+          {
+            "type": "li",
+            "text": "npm 11.21.3"
+          },
+          {
+            "type": "li",
+            "text": "Gradle 9.9.2"
+          },
+          {
+            "type": "li",
+            "text": "Gradle 8.14.8"
+          },
+          {
+            "type": "li",
+            "text": "Maven 3.10.2"
+          },
+          {
+            "type": "li",
+            "text": "Swift Package Manager 6.4.3"
+          },
+          {
+            "type": "li",
+            "text": "APT 3.3.8"
+          },
+          {
+            "type": "li",
+            "text": "pipx 1.18.19"
+          },
+          {
+            "type": "li",
+            "text": "setup-uv 10.4.0"
+          },
+          {
+            "type": "li",
+            "text": "Dependabot Core 0.405.0"
+          },
+          {
+            "type": "li",
+            "text": "NuGet Client 8.2.0.18"
+          },
+          {
+            "type": "h2",
+            "text": "Articles"
+          },
+          {
+            "type": "p",
+            "text": "Stricter checks for uploaded distributions on PyPI (William Woodruff, PyPI blog) describes new upload-time rejections aimed at parser differentials: sdists packed as V7-format tar archives, and wheels whose ZIP archive comment could be read as ZIP control structures. Two more checks are under evaluation: rejecting GNU-format tar sdists and rejecting any ZIP archive comment."
+          },
+          {
+            "type": "p",
+            "text": "Introducing staged publishing on NuGet.org (NuGet blog). An uploaded package is validated and repository-signed but withheld from search and restore, even for its owner, until a maintainer with 2FA promotes it on the website. The .NET 11 RC2 SDK adds dotnet package stage push for the upload side, and promotion is website-only for now."
+          },
+          {
+            "type": "p",
+            "text": "Farid Zakaria has two more posts on turning Nix builds into Bazel targets. Build systems à la trace records a build in the Rewind deterministic VM, treats each execve as a unit of work, models the result in MLIR and lowers it to Bazel genrules. GNU hello built this way produces the same NAR hash as cache.nixos.org."
+          },
+          {
+            "type": "p",
+            "text": "Genrules all the way down uses his genrulify tool to transpile 219 Nixpkgs packages into 2,386 Bazel genrules, with each store path as its own target, and finds that Bazel runs fewer actions than Nix because it builds only what a target requires."
+          },
+          {
+            "type": "h2",
+            "text": "Elsewhere"
+          },
+          {
+            "type": "p",
+            "text": "beer.drv.drv.drv (Farid Zakaria) uses Nix’s experimental dynamic derivations to build a chain of 51 derivations, only the first of which exists at evaluation time. Each one outputs the next and prints a verse of 99 Bottles of Beer. Every step adds another .drv to the derivation name, and 50 bottles is the most that fits in a store path. He also found that nix-store --query --deriver returns unknown-deriver when the producing derivation is content-addressed, and filed NixOS/nix#16823."
+          },
+          {
+            "type": "p",
+            "text": "The maintainer of mpld3 opened an issue looking for a new maintainer, and an account replied offering to help. His follow-up links ten similar offers the same account posted to ten other repositories within a minute, three days earlier, and he has left a warning on each of them."
+          },
+          {
+            "type": "p",
+            "text": "Collaborations Workshop 2027 runs from 20 to 22 April 2027 in Cambridge, with research software quality and sustainable maintenance and funding among its themes. Applications to join the judging panel and for the Emerging Voices financial support scheme close on 11 December."
+          },
+          {
+            "type": "p",
+            "text": "From Maintenance to Market (Sovereign Tech Agency and iconomy) is a 47-page report on how public investment in open source maintenance reaches European SMEs, with case studies and a Germany/France survey."
+          },
+          {
+            "type": "p",
+            "text": "GitHub made security advisory permissions generally available, so custom roles can grant access to a repository’s security advisories and private vulnerability reports without granting admin. Dependabot alert dismissal requests now expire after a year instead of a week."
+          },
+          {
+            "type": "h2",
+            "text": "git-pkgs"
+          },
+          {
+            "type": "p",
+            "text": "I tagged clone v0.7.8 and registries v0.14.0."
+          },
+          {
+            "type": "p",
+            "text": "Send links for next week to @[email protected]."
+          }
+        ],
+        "translations": [
+          "This week’s package management news, gathered from the package manager OPML feed collection, my posts and boosts on Mastodon, and anything people sent me. Version control and forge news is in the Wednesday This Week in Source Control roundup.",
+          "Security",
+          "Gemstash 2.9.0 fixes eight vulnerabilities. The most serious is unauthenticated remote code execution through unsafe loading of upstream data (GHSA-27cp-f4p8-8qwv), rated CVSS 10.0. Non-default upstreams must now be listed in :allowed_upstreams, and upstream responses are capped at 64 MiB and 300 seconds.",
+          "The RubyGems team also announced that 2.9.0 is the last feature release of Gemstash. Vulnerability reports and bug-fix contributions will still be accepted, and the post lists several hosted and self-hosted alternatives. Mysteriously absent from that list: git-pkgs/proxy. An oversight, I’m sure.",
+          "Ruby 4.0.10, 3.4.13 and 3.3.14 fix seven vulnerabilities in Regexp and String case conversion, several of which can lead to remote code execution when an application compiles an attacker-controlled pattern. Ruby 3.2 and earlier are end of life.",
+          "Calif published details of Java4Shell (CVE-2026-114938), a heap memory corruption bug in the AVX-512 Base64 decoder intrinsic in OpenJDK HotSpot on x86-64. The write-up reports pre-authentication remote code execution against Artifactory and other Java servers, and lists -XX:-UseBASE64Intrinsics as a workaround until the OpenJDK and vendor patches are applied.",
+          "pnpm 12.22.0 and 11.28.13 fix a bug where pnpm install could skip the minimumReleaseAge and trustPolicy checks against a new registry after the default or a scoped registry changed. 12.22.0 also adds a globalPackagesConfig section to the global config.yaml and pnpm why --ranges.",
+          "Bun 1.4.5 is a security release that updates its bundled lsquic, c-ares, SQLite, llhttp and BoringSSL.",
+          "Releases",
+          "RubyGems and Bundler 4.1.0 add an override method to the Gemfile that rewrites the version constraints dependencies declare, transitive ones included. override \"foo\", required_ruby_version: :ignore_upper installs a gem whose required_ruby_version cap excludes the current Ruby. Cooldowns now work in the gem command too: gem install --cooldown 7 skips versions published in the last seven days, and gem and Bundler each read the other’s cooldown setting.",
+          "An opt-in credential store writes the gem push API key and Bundler’s per-host credentials to the OS keychain instead of plain text files. The release also adds content addressable gems, with a --content-addressable flag on gem build, and ML-DSA support for signed gems (summary of six changes).",
+          "conda 26.10.0 makes Rattler the default solver for fresh installations and for upgrades without an explicit solver setting. conda config --set solver libmamba switches back to libmamba. The classic solver now ships as the separate conda-pycosat-solver plugin, and its built-in modules are scheduled for removal in 27.9. conda itself now requires Python 3.11 or newer to run.",
+          "pip-tools 7.7.0 is the first release since the project moved to the PyPA organisation. The project was in Jazzband for nine years, which is shutting down. The release requires pip 26.2.2 or newer and drops Python 3.9. A new stable extra caps pip at the latest version tested in pip-tools CI. It also fixes a bug from 7.6.1 in how PyPI JSON API URLs were built, which made resolution slower.",
+          "Stephen Rosen covers the release and Sviatoslav Sydorenko describes the move. After the repository transfer, releases to the pypi deployment environment required approval from a Jazzband team until the environment was reconfigured to use a PyPA one.",
+          "sbt 2.1.0 removes Apache Ivy from its dependencies, including from publishing. The metabuild moves to Scala 3.9 LTS, so plugins published with sbt 2.1.0 work only on 2.1.x.",
+          "In Docker Engine 29.10.0, setting insecure-registries in daemon.json or passing --insecure-registry replaces the implicit loopback exemption, and only the listed registries count as insecure. Pulls and pushes to a local registry over HTTP or with an untrusted certificate then require an explicit entry such as localhost:5000. Packages are now published for AlmaLinux, Oracle Linux and Rocky Linux.",
+          "mise 2026.11.9 (now 2026.11.11) adds lock pools, which give a task lock several slots, so a fixed number of tasks can use a limited resource such as CPU cores at once. --deny-unix and --allow-unix on mise exec and mise run block connections to Unix sockets such as an SSH agent or the container runtime socket, on Linux 7.1 or later.",
+          "Homebrew 7.0.15 now verifies Sigstore bundles in Ruby, after 7.0.14 vendored the sigstore gem and added a manifest_sha256 field to bottle blocks. 7.0.15 also bundles Ruby 4.0.10 for the Regexp and String security fixes.",
+          "Nix 2.36.0 reworks nix-daemon so workers re-execute the daemon with --stdio rather than forking, which lets most changes to /etc/nix/nix.conf reach workers without a daemon restart. Releases now ship nix-installer binaries for multi-user installs on x86_64-linux, aarch64-linux and aarch64-darwin.",
+          "uv 0.13.9 adds preview support for PEP 832 .venv redirect files for project environments and rejects wheels that an index lists under a different package name.",
+          "ORAS 1.4.0 moves to oras-go v3 and caches authentication per repository rather than per registry host, so oras copy can use different credentials for the source and destination on the same registry.",
+          "Also out:",
+          "vlt 1.8.2",
+          "npm 11.21.3",
+          "Gradle 9.9.2",
+          "Gradle 8.14.8",
+          "Maven 3.10.2",
+          "Swift Package Manager 6.4.3",
+          "APT 3.3.8",
+          "pipx 1.18.19",
+          "setup-uv 10.4.0",
+          "Dependabot Core 0.405.0",
+          "NuGet Client 8.2.0.18",
+          "Articles",
+          "Stricter checks for uploaded distributions on PyPI (William Woodruff, PyPI blog) describes new upload-time rejections aimed at parser differentials: sdists packed as V7-format tar archives, and wheels whose ZIP archive comment could be read as ZIP control structures. Two more checks are under evaluation: rejecting GNU-format tar sdists and rejecting any ZIP archive comment.",
+          "Introducing staged publishing on NuGet.org (NuGet blog). An uploaded package is validated and repository-signed but withheld from search and restore, even for its owner, until a maintainer with 2FA promotes it on the website. The .NET 11 RC2 SDK adds dotnet package stage push for the upload side, and promotion is website-only for now.",
+          "Farid Zakaria has two more posts on turning Nix builds into Bazel targets. Build systems à la trace records a build in the Rewind deterministic VM, treats each execve as a unit of work, models the result in MLIR and lowers it to Bazel genrules. GNU hello built this way produces the same NAR hash as cache.nixos.org.",
+          "Genrules all the way down uses his genrulify tool to transpile 219 Nixpkgs packages into 2,386 Bazel genrules, with each store path as its own target, and finds that Bazel runs fewer actions than Nix because it builds only what a target requires.",
+          "Elsewhere",
+          "beer.drv.drv.drv (Farid Zakaria) uses Nix’s experimental dynamic derivations to build a chain of 51 derivations, only the first of which exists at evaluation time. Each one outputs the next and prints a verse of 99 Bottles of Beer. Every step adds another .drv to the derivation name, and 50 bottles is the most that fits in a store path. He also found that nix-store --query --deriver returns unknown-deriver when the producing derivation is content-addressed, and filed NixOS/nix#16823.",
+          "The maintainer of mpld3 opened an issue looking for a new maintainer, and an account replied offering to help. His follow-up links ten similar offers the same account posted to ten other repositories within a minute, three days earlier, and he has left a warning on each of them.",
+          "Collaborations Workshop 2027 runs from 20 to 22 April 2027 in Cambridge, with research software quality and sustainable maintenance and funding among its themes. Applications to join the judging panel and for the Emerging Voices financial support scheme close on 11 December.",
+          "From Maintenance to Market (Sovereign Tech Agency and iconomy) is a 47-page report on how public investment in open source maintenance reaches European SMEs, with case studies and a Germany/France survey.",
+          "GitHub made security advisory permissions generally available, so custom roles can grant access to a repository’s security advisories and private vulnerability reports without granting admin. Dependabot alert dismissal requests now expire after a year instead of a week.",
+          "git-pkgs",
+          "I tagged clone v0.7.8 and registries v0.14.0.",
+          "Send links for next week to @[email protected]."
+        ]
+      }
+    },
+    {
+      "slug": "1f06122ff64f993f",
+      "title": "Reading List 11/21/2026",
+      "titleZh": "Reading List 11/21/2026",
+      "link": "https://www.construction-physics.com/p/reading-list-11212026",
+      "sourceName": "construction-physics.com",
+      "sourceUrl": "https://construction-physics.com",
+      "pubDate": "2026-11-21T13:04:03.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Reading List 11/21/2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Brian Potter",
+        "siteName": "Construction Physics",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure and industrial technology. This week we look at BAAJA, rayon for missiles, US gas consumption, Cyberarmageddon, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber."
+          },
+          {
+            "type": "p",
+            "text": "No essay this week, but I’m working on a long follow up to my technological search essay that should be out next week."
+          },
+          {
+            "type": "p",
+            "text": "A neat dataset showing the relationship between excess deaths and temperature in cities around the world. You can really see the sensitivity to high temperatures in places without AC. [Our World in Data]"
+          },
+          {
+            "type": "p",
+            "text": "The Senate passes the permitting reform bill BAAJA. [NYT] And Kalshi now gives BAAJA a 75% chance of becoming law. [Kalshi] And New Mexican Senator Martin Heinrich is in the Economist arguing for BAAJA. “The Bipartisan American Affordability and Jobs Act—which the Senate voted to advance on November 9th and which I co-sponsor with another Democrat and two Republicans—does not remove environmental considerations, the ability to litigate projects or the ability for local communities to comment. Those are necessary. But it does make these reviews a standardised part of a predictable process.” [The Economist]"
+          },
+          {
+            "type": "p",
+            "text": "New type of nimbyism just dropped: people opposed to delivery drones flying over their backyard. [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "How Dubrovnik, the Croatian city where King’s Landing scenes were shot in Game of Thrones, is coping with huge masses of tourists and (checks notes) Montenegrin drug cartels. [The Times]"
+          },
+          {
+            "type": "p",
+            "text": "From the annals of manufacturing bottlenecks: producing more Patriot missiles requires, among other things, a specialized rayon fabric called Raycarb, processed by a single US company who sources it from a tiny number of companies (apparently just two), who are unable or unwilling to ramp up capacity as fast as the US would like. “Only one rayon product of this kind is approved for use in the most advanced Patriot missiles, and it comes from the Kansas factory of a single supplier, Park Aerospace. With Patriot stockpiles shrinking, the Pentagon official pushed Park for more rayon to help ramp up missile production. It soon became clear that the company’s hands were tied. The problem lay not in Kansas but thousands of miles across the Atlantic near the vineyards of Bordeaux in France. That’s where Park’s supplier, ArianeGroup—a maker of space rockets and ballistic missiles—produces the carbonized rayon fabric, which it then ships to Park for further processing. ArianeGroup had been clear that supply was limited.” [WSJ]"
+          },
+          {
+            "type": "p",
+            "text": "Manufacturing automation startup Hadrian is buying Kutztown Foundry and Machine, a company that makes castings for, among other things, nuclear submarines. [Manufacturing Dive]"
+          },
+          {
+            "type": "p",
+            "text": "The US Marine Minerals Administration, formerly the BOEM, held an auction for seabed mining rights on 31 million acres of seabed near American Samoa. [Maritime Executive]"
+          },
+          {
+            "type": "p",
+            "text": "China produces a lot of air conditioners. [X]"
+          },
+          {
+            "type": "p",
+            "text": "Apparently Tesla will sell you a Cybercab, under a somewhat strict set of conditions. “Tesla is now inviting “select customers” to buy a Cybercab for personal use at $29,990, but the car won’t move unless you also pay $299 a month for an “Autonomy Subscription.” And it only works inside Tesla’s Robotaxi service areas in Texas and Florida, the same geofences that have turned out to be significantly smaller than what Tesla advertises.” [Electrek] And a factory to produce Tesla’s Optimus is under construction at Giga Texas. [YouTube]"
+          },
+          {
+            "type": "p",
+            "text": "A bunch of planned naval vessels have been cut by the US Senate appropriations committee. [X]"
+          },
+          {
+            "type": "p",
+            "text": "The GAO says the F-35 program has about 26 million spare parts, collectively worth about $31 billion, spread around 700 sites around the world. [Tom’s Hardware]"
+          }
+        ],
+        "translations": [
+          "Welcome to the reading list, a weekly roundup of news and links related to buildings, infrastructure and industrial technology. This week we look at BAAJA, rayon for missiles, US gas consumption, Cyberarmageddon, and more. Roughly 2/3rds of the reading list is paywalled, so for full access become a paid subscriber.",
+          "No essay this week, but I’m working on a long follow up to my technological search essay that should be out next week.",
+          "A neat dataset showing the relationship between excess deaths and temperature in cities around the world. You can really see the sensitivity to high temperatures in places without AC. [Our World in Data]",
+          "The Senate passes the permitting reform bill BAAJA. [NYT] And Kalshi now gives BAAJA a 75% chance of becoming law. [Kalshi] And New Mexican Senator Martin Heinrich is in the Economist arguing for BAAJA. “The Bipartisan American Affordability and Jobs Act—which the Senate voted to advance on November 9th and which I co-sponsor with another Democrat and two Republicans—does not remove environmental considerations, the ability to litigate projects or the ability for local communities to comment. Those are necessary. But it does make these reviews a standardised part of a predictable process.” [The Economist]",
+          "New type of nimbyism just dropped: people opposed to delivery drones flying over their backyard. [WSJ]",
+          "How Dubrovnik, the Croatian city where King’s Landing scenes were shot in Game of Thrones, is coping with huge masses of tourists and (checks notes) Montenegrin drug cartels. [The Times]",
+          "From the annals of manufacturing bottlenecks: producing more Patriot missiles requires, among other things, a specialized rayon fabric called Raycarb, processed by a single US company who sources it from a tiny number of companies (apparently just two), who are unable or unwilling to ramp up capacity as fast as the US would like. “Only one rayon product of this kind is approved for use in the most advanced Patriot missiles, and it comes from the Kansas factory of a single supplier, Park Aerospace. With Patriot stockpiles shrinking, the Pentagon official pushed Park for more rayon to help ramp up missile production. It soon became clear that the company’s hands were tied. The problem lay not in Kansas but thousands of miles across the Atlantic near the vineyards of Bordeaux in France. That’s where Park’s supplier, ArianeGroup—a maker of space rockets and ballistic missiles—produces the carbonized rayon fabric, which it then ships to Park for further processing. ArianeGroup had been clear that supply was limited.” [WSJ]",
+          "Manufacturing automation startup Hadrian is buying Kutztown Foundry and Machine, a company that makes castings for, among other things, nuclear submarines. [Manufacturing Dive]",
+          "The US Marine Minerals Administration, formerly the BOEM, held an auction for seabed mining rights on 31 million acres of seabed near American Samoa. [Maritime Executive]",
+          "China produces a lot of air conditioners. [X]",
+          "Apparently Tesla will sell you a Cybercab, under a somewhat strict set of conditions. “Tesla is now inviting “select customers” to buy a Cybercab for personal use at $29,990, but the car won’t move unless you also pay $299 a month for an “Autonomy Subscription.” And it only works inside Tesla’s Robotaxi service areas in Texas and Florida, the same geofences that have turned out to be significantly smaller than what Tesla advertises.” [Electrek] And a factory to produce Tesla’s Optimus is under construction at Giga Texas. [YouTube]",
+          "A bunch of planned naval vessels have been cut by the US Senate appropriations committee. [X]",
+          "The GAO says the F-35 program has about 26 million spare parts, collectively worth about $31 billion, spread around 700 sites around the world. [Tom’s Hardware]"
+        ]
+      }
+    },
+    {
+      "slug": "e026657b7a203962",
+      "title": "What three-bolt mount means on a garbage disposal",
+      "titleZh": "What three-bolt mount means on a garbage disposal",
+      "link": "https://dfarq.homeip.net/what-three-bolt-mount-means-on-a-garbage-disposal/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=what-three-bolt-mount-means-on-a-garbage-disposal",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-21T12:00:16.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "What three-bolt mount means on a garbage disposal",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I was looking at store brand garbage disposals and saw a term that I’m not sure everyone means. It said it uses a three-bolt mount for easy retrofit. What does that mean? What does three bolt mount mean on a garbage disposal?"
+          },
+          {
+            "type": "p",
+            "text": "Store-brand and off-brand garbage disposals will mention a three bolt mount when they don’t want to mention the name of a competitor, namely, Insinkerator. Insinkerator garbage disposals use a three-bolt mounting system to attach to your sink. They’ve been using that system for decades. If you need to replace a worn out Insinkerator garbage disposal, don’t want it to take all weekend, but don’t want to pay the Insinkerator price, looking for a store brand unit that features a three-bolt mount for easy retrofit is the one you want."
+          },
+          {
+            "type": "p",
+            "text": "Some of these disposals are actually just relabeled Insinkerators. But Moen also makes garbage disposals with the three-bolt system, as well as its own system. If it looks like an Insinkerator, it probably is. But if the disposal looks a little different, and especially if the disposal lacks the hex bolt in the bottom to turn the disposal with a wrenchette when it jams, it’s probably a Moen."
+          },
+          {
+            "type": "p",
+            "text": "Ace Hardware garbage disposals use the three-bolt system. I also recently found a Glacier Bay unit at Home Depot that uses the three-bolt system. In that case, installation is easier because you can just twist off the old garbage disposal, leave the existing mount in place, and just twist on the new garbage disposal. As long as the old one wasn’t leaking from the sink, you’re fine to leave the old mount in place. Doing so can cut an hour off the installation time. Especially if you don’t change disposals very often."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "I was looking at store brand garbage disposals and saw a term that I’m not sure everyone means. It said it uses a three-bolt mount for easy retrofit. What does that mean? What does three bolt mount mean on a garbage disposal?",
+          "Store-brand and off-brand garbage disposals will mention a three bolt mount when they don’t want to mention the name of a competitor, namely, Insinkerator. Insinkerator garbage disposals use a three-bolt mounting system to attach to your sink. They’ve been using that system for decades. If you need to replace a worn out Insinkerator garbage disposal, don’t want it to take all weekend, but don’t want to pay the Insinkerator price, looking for a store brand unit that features a three-bolt mount for easy retrofit is the one you want.",
+          "Some of these disposals are actually just relabeled Insinkerators. But Moen also makes garbage disposals with the three-bolt system, as well as its own system. If it looks like an Insinkerator, it probably is. But if the disposal looks a little different, and especially if the disposal lacks the hex bolt in the bottom to turn the disposal with a wrenchette when it jams, it’s probably a Moen.",
+          "Ace Hardware garbage disposals use the three-bolt system. I also recently found a Glacier Bay unit at Home Depot that uses the three-bolt system. In that case, installation is easier because you can just twist off the old garbage disposal, leave the existing mount in place, and just twist on the new garbage disposal. As long as the old one wasn’t leaking from the sink, you’re fine to leave the old mount in place. Doing so can cut an hour off the installation time. Especially if you don’t change disposals very often.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "665cd2611c8a6f45",
+      "title": "Why Johnny Can’t Patch",
+      "titleZh": "Why Johnny Can’t Patch",
+      "link": "https://dfarq.homeip.net/why-johnny-cant-patch-2/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=why-johnny-cant-patch-2",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-20T22:07:28.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Why Johnny Can’t Patch",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "I’m going to break my normal cadence to write a little bit about computer security. It’s been a rough month, and this has been a rough week. In late October we had a high publicity vulnerability in PHP. In November we had one in Nginx, Ruby, Java, and PHP again. This rapid fire strained the industry, to say the least."
+          },
+          {
+            "type": "h2",
+            "text": "Why listen to me?"
+          },
+          {
+            "type": "p",
+            "text": "My name is Dave. I’ve been finding and/or fixing vulnerabilities in corporate networks for almost 25 years."
+          },
+          {
+            "type": "p",
+            "text": "I will say there are a lot of people who have opinions about patching vulnerabilities who have never done it before. I spent 4 years patching vulnerabilities for a living, exclusively. My client was the United States Air Force. The system I maintained supported two wars. Keeping that system secure was a matter of life and death."
+          },
+          {
+            "type": "p",
+            "text": "In those 4 years, I resolved approximately 900,000 vulnerabilities, with a success rate of 100%, and exactly one missed deadline. (I missed that deadline by less than 24 hours.) My mean time to remediate was approximately 21 days. So that’s why I think I’m worth listening to. Also, there was no one to teach me or coach me. I had to figure it out."
+          },
+          {
+            "type": "p",
+            "text": "In the following years, I worked in corporate security, largely in vulnerability management. I went from being the guy who patches vulnerabilities to being the guy who scans for them and reports on them. After a couple of years of that, one of the companies who makes vulnerability scanners hired me. Today I work for another company that makes vulnerability scanners."
+          },
+          {
+            "type": "p",
+            "text": "In case you’re wondering, I am writing in my own capacity here. My views do not necessarily represent those of my current or any former employer. I am writing this on my own time, hosting it on my own server, and it was neither sanctioned nor endorsed by anyone else."
+          },
+          {
+            "type": "h2",
+            "text": "A few definitions"
+          },
+          {
+            "type": "p",
+            "text": "I expect not everyone reading this is an IT professional or a security professional. But you’re curious, because you’ve been hearing about these vulnerabilities in the news. My neighbor asked me about them. He’s a preacher. A literal preacher, as in church. Security vulnerabilities affect all of us. When companies don’t fix vulnerabilities, hackers can exploit them and steal company data. About once a year, I get a notice in the mail that some company I do business with was breached, a hacker got data about me, and the company subscribed me to a credit monitoring service. Every once in a while there’s a class action lawsuit and I get a settlement check. The last check I received was for $12. Sometimes it’s less than that. I’m sure you get these notices and small checks too."
+          },
+          {
+            "type": "p",
+            "text": "A vulnerability is a flaw in computer software that allows someone with bad intentions to make the computer malfunction, and do something it wasn’t supposed to do. All software has flaws."
+          },
+          {
+            "type": "p",
+            "text": "As software vendors find flaws, they release updates to fix them. These are called patches, a term that goes back to the 1940s. The original meaning no longer applies but people generally understand the concept of covering up holes in software. So we still call them patches."
+          },
+          {
+            "type": "p",
+            "text": "There’s a widespread notion that large, profitable companies struggle to protect their data. One theory about why is that companies aren’t good at applying those updates, or patches. That’s why I called this blog post Why Johnny Can’t Patch."
+          },
+          {
+            "type": "h2",
+            "text": "The good news"
+          },
+          {
+            "type": "p",
+            "text": "November 2026 was a terrible month for technology. It started with a hangover from a bad security vulnerability that had been released in late October. It served up four more rapid-fire security disclosures the week before Thanksgiving in the United States. In between, we experienced disruptive outages from Microsoft 365, the Federal Aviation Administration’s air traffic control system, Amazon Web Services, JP Morgan Chase, United Airlines, Apple, and the National Security Agency."
+          },
+          {
+            "type": "p",
+            "text": "Not all of these things were necessarily related. Theoretically some of them may have been. At least conceptually, some of them were."
+          },
+          {
+            "type": "p",
+            "text": "There is a bit of silver lining to the security disclosures. Those were predictable. At least some of the wave was. Microsoft releases updates on the second Tuesday of every month. That’s been their cadence for more than 20 years, and when they started doing that, they did a pretty good job of publicizing it. Adobe follows the same schedule, and I think that was a good choice. People are already watching for updates on that day, it makes things a bit easier."
+          },
+          {
+            "type": "p",
+            "text": "Other vendors do their own thing. For decades, Oracle released updates quarterly. I did not realize until this week that Oracle started releasing monthly updates in 2026. But there are two problems. First of all, you don’t get the monthly updates for free. You have to have a subscription to get them. Larry Ellison needs to buy more stuff, y’all. And rather than release on the second Tuesday like everyone else, they release theirs on the 3rd Tuesday. And while Oracle is being different, the monthly updates are not cumulative. The quarterly updates still are. But if you missed the October update, you have to apply both October and November. November doesn’t catch you up."
+          },
+          {
+            "type": "p",
+            "text": "I also learned that PHP releases on a predictable release schedule. PHP, if you’re unaware, is a free, open-source programming language commonly used for web pages. About 70 percent of active web sites are written in PHP. They don’t follow the open source anarchy release-when-it’s-ready approach, and they haven’t since 2010. They update every 4 weeks on Thursdays."
+          },
+          {
+            "type": "p",
+            "text": "Maybe it’s common knowledge that Oracle and PHP do monthly updates on a fixed schedule now, but at least in the circles I run in, that was not common knowledge."
+          },
+          {
+            "type": "p",
+            "text": "In late October, a very serious security flaw in PHP was disclosed that sent corporate security and IT teams scrambling to fix it. About four weeks later, serious flaws in Oracle’s Java programming language, the open source web server Nginx, the open source programming language Ruby, and another security flaw in PHP were disclosed, along with patches to fix them."
+          },
+          {
+            "type": "p",
+            "text": "Out of the November vulnpocalypse, only Nginx and Ruby were complete surprises. But we had four emergencies in November versus one emergency in October. And these types of very high publicity emergencies normally are fairly rare."
+          },
+          {
+            "type": "h2",
+            "text": "What’s different this time?"
+          },
+          {
+            "type": "p",
+            "text": "A quarter century ago, a Windows update generally fixed one bug. You got one patch per bug, and a month’s worth of updates might only fix 5 or 6 of them. Today, you get one patch that often fixes hundreds of bugs."
+          },
+          {
+            "type": "p",
+            "text": "The world changed about a decade ago when company bug bounties became popular. Bug bounties are a way for companies to pay individuals for finding bugs in their software. They’ve existed since at least 1983, but became very widespread in the mid to late 2010s. Once several large companies started offering bug bounties, hobbyists found they could make more money finding and reporting vulnerabilities than they did at their day jobs, so they quit their jobs and found vulnerabilities full time. Every year since 2016 set a record for the number of CVEs discovered. It didn’t all happen at once in 2017. It’s just that 2017 was the year the dam broke."
+          },
+          {
+            "type": "p",
+            "text": "The year 2026 was another change. In 2026, we’ve more than doubled last year’s count even though the year isn’t over yet. This year it’s AI. AI is finding vulnerabilities faster than we ever did before. It’s finding more serious vulnerabilities. And AI is sometimes helping to write the fixes. AI has its own problems, but it’s causing plenty of chaos on its way out."
+          },
+          {
+            "type": "h2",
+            "text": "Designer vulnerabilities"
+          },
+          {
+            "type": "p",
+            "text": "Another phenomenon started in the mid 2010s. We called them designer vulnerabilities. The first of these was a vulnerability in OpenSSL, a software component that encrypts traffic on the Internet to keep undesirables from reading our chats and seeing our credit card numbers. The people who discovered it wanted to make sure people took it seriously and fixed it so they gave it a name, a logo, and a marketing campaign. Its name was Heartbleed. At the time, I was working for a Fortune 20 company as a mid-level security analyst. It shot to the top of our priority list, and we fixed it quickly."
+          },
+          {
+            "type": "p",
+            "text": "Before long, but seemed like every newly discovered vulnerability had a designer name, a logo, and at least a website. Sometimes they had a slick marketing campaign. Sometimes they had a really flat marketing campaign. And some took a very punk rock attitude toward it, scribbling a logo in Microsoft Paint just to meet the criteria of having a name and a logo in the most unprofessional way possible, thumbing their nose at the trend."
+          },
+          {
+            "type": "p",
+            "text": "Security researchers know that large corporations are not keeping up with their patching. But they have not studied the underlying problem. They think the problem is IT departments aren’t motivated. And the corporate security department also doesn’t understand the problem, hasn’t studied it, and chalks it up to a motivation problem. The designer vulnerability trend was their attempt to increase motivation."
+          },
+          {
+            "type": "p",
+            "text": "The designer vulnerability fad seems to be dying down a bit, probably because there are so many AI-discovered vulnerabilities that they can’t really stand out. I don’t miss it."
+          },
+          {
+            "type": "h2",
+            "text": "The staffing problem"
+          },
+          {
+            "type": "p",
+            "text": "Here’s another dirty secret. IT was a booming business in the 1990s. Everyone was hiring for IT jobs. My friends were asking me how to get into it, including a dental technician and a lifeguard. I used to know a truck driver who stopped driving trucks for a few years and got into IT. You can include me among those converts. I was a journalist before I got into IT."
+          },
+          {
+            "type": "p",
+            "text": "I’m not saying this to be judgmental. The point was, IT was desperate for workers and very little formal training existed. Almost anyone who was willing to learn and could demonstrate some aptitude could get an IT job."
+          },
+          {
+            "type": "p",
+            "text": "Then Y2K and the dotcom bust happened. Companies started cutting jobs. They outsourced a lot. They offshored a lot. But even counting the offshored and outsourced workers, it’s not uncommon for companies to have fewer IT workers than they had 25 years ago. They have many more computers than they used to have. They are supposed to make up the difference by doing more with less, working smarter not harder, and other management catchphrases that are worth less than the oxygen consumed to say them."
+          },
+          {
+            "type": "p",
+            "text": "Patching saved my IT career. It was a job no one wanted because it was stressful and thankless. But it suited me. I can solve problems, break them down into a process, follow it, and look for ways to improve it over time. Knowing my job was safe as long as I met deadlines made up for the stress."
+          },
+          {
+            "type": "p",
+            "text": "The contracting company I was working for even asked me to standardize my methods across the rest of the Air Force contracts they had. I found when doing so that we had all more or less figured out the same methodology independently. I learned a couple of tricks and taught my counterparts a couple of tricks."
+          },
+          {
+            "type": "p",
+            "text": "A few years later, I found myself running vulnerability scans at a Fortune 20 company. What I found was disturbing. I found one problem in their methodology that I inferred from the scan data. Fixing that problem gave an immediate 55% improvement in their success rate. So I asked the IT staff if they had a documented methodology they followed. They did, so I asked if I could see it. I hoped I could find something else to change to get a big improvement. I found nothing. Their methodology was outstanding."
+          },
+          {
+            "type": "p",
+            "text": "Several people in different environments had come up with equivalent methodologies. All on their own. There was no one to teach any of us."
+          },
+          {
+            "type": "p",
+            "text": "So why did I have a 100% success rate that my Fortune 20 counterparts couldn’t replicate?"
+          },
+          {
+            "type": "p",
+            "text": "The major problem was they had one person trying manage 20 times as many computers as I was. And the tools that person had to do the work weren’t as good as the tools I had. Imagine a carpenter with expensive, professional-grade tools versus a carpenter with tools bought from the scratch-and-dent table at an off-brand tool store (or scavenged from the dumpster behind the store) and then expecting the one with scavenged tools to do 20 times the work."
+          },
+          {
+            "type": "p",
+            "text": "Every other industry knows how many workers they need to get their day-to-day work done. The garage where I take our cars knows, given the number of mechanics they have and the number of bays they have, how many cars they can fix every week. Even the badly run fast food chain I worked for when I was 16 knew how many workers they needed to get through their lunch rush."
+          },
+          {
+            "type": "p",
+            "text": "Yet corporate IT departments have no idea how many IT staff they need to maintain their computer fleet. They just keep buy more computers every year, lay off more employees every year, and tell the survivors to figure it out."
+          },
+          {
+            "type": "p",
+            "text": "A quarter century of this ritual, plus a lack of understanding of how to size the staff means there is no budget to right-size. Even if there was a budget to right-size, there wouldn’t be enough workers. Decades of low demand pushed workers into other fields, or involuntary retirement. And when a company does decide to try to throw some money at the problem, they find they don’t know where to start because the problem has been piling up since 2002."
+          },
+          {
+            "type": "h2",
+            "text": "The tools problem"
+          },
+          {
+            "type": "p",
+            "text": "And the perfect storm has another element. A tools problem. Vulnerability scanners have improved a lot in the last 10 years, and much of that improvement has come in the last 5. Training for them is readily available, and at least when it comes to the two most popular scanners, they’re very accurate when configured correctly."
+          },
+          {
+            "type": "p",
+            "text": "But patching tools, the tools you use to deploy the updates at scale across large companies, have not improved much since 2009. Some of them have gotten worse. I do know of a small number of companies who are trying to innovate in this space, but their tools haven’t gotten a lot of adoption."
+          },
+          {
+            "type": "p",
+            "text": "And part of the problem is, a company will buy good tools, fix the problem, then switch to a cheaper tool because they think they don’t have a problem anymore. Then the solved problem becomes a problem again. That was one factor in me leaving that patching job in 2009. They switched tools to save a couple thousand bucks and turned a process that had been working well into a problem."
+          },
+          {
+            "type": "p",
+            "text": "So we have a trifecta. We’re having to push updates to more systems every year, and IT staffs are shrinking rather than getting bigger, and the tools to fix the problem aren’t necessarily keeping pace with the tools to find the problem."
+          },
+          {
+            "type": "h3",
+            "text": "Automation"
+          },
+          {
+            "type": "p",
+            "text": "To some extent the problem can be solved with automation, and part of what I do now is helping people to build the strategies to automate away their patch debt. It’s harder work than it sounds. Imagine someone drowning, and they’re in so much distress that they don’t even know what they want. I’ve got the life preserver, there’s a rope on it, and I can throw them the life preserver. But I also have to convince them that they want the life preserver and they want me to pull them onto the boat."
+          },
+          {
+            "type": "p",
+            "text": "Drowning in data that you don’t completely believe does weird things to you."
+          },
+          {
+            "type": "h3",
+            "text": "Bad KPIs"
+          },
+          {
+            "type": "p",
+            "text": "But another problem is that a week doesn’t go by that I don’t have to tell a security team what they want. The main thing they want is for critical vulnerabilities to be fixed within a week of their discovery. It’s news to most of them that that is what they should measure and aim for. I think sometimes it’s news to them that that’s what they want. When it’s not news, I had to remind them. And there are times they don’t believe me."
+          },
+          {
+            "type": "p",
+            "text": "I do find that if I get people to focus on the average age of their not-yet-fixed vulnerabilities, and how long it took them to fix the ones they fixed, and make sure those metrics are in line with their stated security policy, they are much more successful."
+          },
+          {
+            "type": "p",
+            "text": "What most companies do is just count the number of vulnerabilities and report that big scary number every month. The number never reaches zero, so that leads to a scary phenomenon called learned helplessness. And sadly, it’s possible to reach a point where you’re actually successful, but since you’re measuring a big scary number that will never reach zero because there’s always more work coming in, you don’t actually realize you’re successful."
+          },
+          {
+            "type": "p",
+            "text": "And finally, sometimes it’s not a matter of Johnny not being able to patch. Sometimes Johnny won’t. Maybe it’s Johnny’s decision, or someone else’s decision."
+          },
+          {
+            "type": "p",
+            "text": "Microsoft’s notorious outage in November 2026 was traced to a July security update. Maybe someday we’ll know if the bad code was written by an AI or a human. But that’s a dirty secret in the industry. Sometimes patches that fix security vulnerabilities break other things. It happens less often than people think, but people have long memories, and the perception that patches break stuff stops some companies from applying necessary updates. Officially, they have a policy. But off the books, someone is pocket vetoing the updates."
+          },
+          {
+            "type": "p",
+            "text": "I was able to apply 100% of updates 100% of the time because we had a test facility. It wasn’t perfect, and I was a loud critic of its shortcomings. But it worked well enough that we never traced a production issue to any updates that I pushed out. But that test environment was better than any test environment I’ve encountered in the private sector since."
+          },
+          {
+            "type": "p",
+            "text": "And it definitely helps for the system that you are updating to be designed with that kind of regular maintenance in mind. Many corporate systems are not designed with maintenance in mind. At least one of the November outages was caused at least partially by rushed maintenance that didn’t follow normal procedure. It would not surprise me if it was a factor in most of them."
+          },
+          {
+            "type": "h2",
+            "text": "Why the problem gets harder to solve every year"
+          },
+          {
+            "type": "p",
+            "text": "2026 is another record-breaking year. This year was different though. We broke the record early. I remember my boss bringing it up. We knew already that AI was causing us to find a lot more vulnerabilities than we ever had before. He speculated that maybe there would be a point in the future where there would be fewer bugs to find and we would stop having record-breaking years. It’s possible. I think I’m a bit more cynical."
+          },
+          {
+            "type": "p",
+            "text": "I think there is one other thing at play. Hackers don’t take time off for the holidays. One of the most notorious vulnerabilities ever, log4shell, was disclosed around Christmas time. I think November and December tend to be heavy months for vulnerabilities. Heavier than usual. So what we have is a heavier than usual month in an already record breaking year."
+          },
+          {
+            "type": "p",
+            "text": "I think some researchers try to get their vulnerabilities out before companies freeze all changes for their busy time of year. Retailers are busy in November and December, and insurance companies are busy in January. So they try to cram every discovery they can into November, knowing that anything they disclose later in the year is likely to get delayed and ignored."
+          },
+          {
+            "type": "p",
+            "text": "We have a weird dynamic in this industry. The way you make money as a security researcher is by pouring a whole lot more water into that body of water where people are already drowning. There isn’t money for ordinary system administrators who fix the problem quietly. But there is big money for the people who discover the vulnerabilities. The monetary incentives are in the wrong place to solve the problem. Instead they usually make it worse."
+          },
+          {
+            "type": "p",
+            "text": "I wish I had an easy answer. Some problems do have easy answers that fit on a bumper sticker, but this one isn’t one of them. It’s a nuanced problem that spans multiple disciplines and multiple companies, requiring a lot of collaboration to fix. Most people don’t stay in one place long enough to see it to the end."
+          },
+          {
+            "type": "p",
+            "text": "Sadly, I think the problem is money. As of 2026, the average cost of a data breach is $4.99 million. But if a breach doesn’t happen every year, the incentive is to go cheap in terms of staffing and tooling, pocket the savings, and hope for the best. Until the average cost of a data breach reaches a point that scares companies, I think this problem will continue."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "I’m going to break my normal cadence to write a little bit about computer security. It’s been a rough month, and this has been a rough week. In late October we had a high publicity vulnerability in PHP. In November we had one in Nginx, Ruby, Java, and PHP again. This rapid fire strained the industry, to say the least.",
+          "Why listen to me?",
+          "My name is Dave. I’ve been finding and/or fixing vulnerabilities in corporate networks for almost 25 years.",
+          "I will say there are a lot of people who have opinions about patching vulnerabilities who have never done it before. I spent 4 years patching vulnerabilities for a living, exclusively. My client was the United States Air Force. The system I maintained supported two wars. Keeping that system secure was a matter of life and death.",
+          "In those 4 years, I resolved approximately 900,000 vulnerabilities, with a success rate of 100%, and exactly one missed deadline. (I missed that deadline by less than 24 hours.) My mean time to remediate was approximately 21 days. So that’s why I think I’m worth listening to. Also, there was no one to teach me or coach me. I had to figure it out.",
+          "In the following years, I worked in corporate security, largely in vulnerability management. I went from being the guy who patches vulnerabilities to being the guy who scans for them and reports on them. After a couple of years of that, one of the companies who makes vulnerability scanners hired me. Today I work for another company that makes vulnerability scanners.",
+          "In case you’re wondering, I am writing in my own capacity here. My views do not necessarily represent those of my current or any former employer. I am writing this on my own time, hosting it on my own server, and it was neither sanctioned nor endorsed by anyone else.",
+          "A few definitions",
+          "I expect not everyone reading this is an IT professional or a security professional. But you’re curious, because you’ve been hearing about these vulnerabilities in the news. My neighbor asked me about them. He’s a preacher. A literal preacher, as in church. Security vulnerabilities affect all of us. When companies don’t fix vulnerabilities, hackers can exploit them and steal company data. About once a year, I get a notice in the mail that some company I do business with was breached, a hacker got data about me, and the company subscribed me to a credit monitoring service. Every once in a while there’s a class action lawsuit and I get a settlement check. The last check I received was for $12. Sometimes it’s less than that. I’m sure you get these notices and small checks too.",
+          "A vulnerability is a flaw in computer software that allows someone with bad intentions to make the computer malfunction, and do something it wasn’t supposed to do. All software has flaws.",
+          "As software vendors find flaws, they release updates to fix them. These are called patches, a term that goes back to the 1940s. The original meaning no longer applies but people generally understand the concept of covering up holes in software. So we still call them patches.",
+          "There’s a widespread notion that large, profitable companies struggle to protect their data. One theory about why is that companies aren’t good at applying those updates, or patches. That’s why I called this blog post Why Johnny Can’t Patch.",
+          "The good news",
+          "November 2026 was a terrible month for technology. It started with a hangover from a bad security vulnerability that had been released in late October. It served up four more rapid-fire security disclosures the week before Thanksgiving in the United States. In between, we experienced disruptive outages from Microsoft 365, the Federal Aviation Administration’s air traffic control system, Amazon Web Services, JP Morgan Chase, United Airlines, Apple, and the National Security Agency.",
+          "Not all of these things were necessarily related. Theoretically some of them may have been. At least conceptually, some of them were.",
+          "There is a bit of silver lining to the security disclosures. Those were predictable. At least some of the wave was. Microsoft releases updates on the second Tuesday of every month. That’s been their cadence for more than 20 years, and when they started doing that, they did a pretty good job of publicizing it. Adobe follows the same schedule, and I think that was a good choice. People are already watching for updates on that day, it makes things a bit easier.",
+          "Other vendors do their own thing. For decades, Oracle released updates quarterly. I did not realize until this week that Oracle started releasing monthly updates in 2026. But there are two problems. First of all, you don’t get the monthly updates for free. You have to have a subscription to get them. Larry Ellison needs to buy more stuff, y’all. And rather than release on the second Tuesday like everyone else, they release theirs on the 3rd Tuesday. And while Oracle is being different, the monthly updates are not cumulative. The quarterly updates still are. But if you missed the October update, you have to apply both October and November. November doesn’t catch you up.",
+          "I also learned that PHP releases on a predictable release schedule. PHP, if you’re unaware, is a free, open-source programming language commonly used for web pages. About 70 percent of active web sites are written in PHP. They don’t follow the open source anarchy release-when-it’s-ready approach, and they haven’t since 2010. They update every 4 weeks on Thursdays.",
+          "Maybe it’s common knowledge that Oracle and PHP do monthly updates on a fixed schedule now, but at least in the circles I run in, that was not common knowledge.",
+          "In late October, a very serious security flaw in PHP was disclosed that sent corporate security and IT teams scrambling to fix it. About four weeks later, serious flaws in Oracle’s Java programming language, the open source web server Nginx, the open source programming language Ruby, and another security flaw in PHP were disclosed, along with patches to fix them.",
+          "Out of the November vulnpocalypse, only Nginx and Ruby were complete surprises. But we had four emergencies in November versus one emergency in October. And these types of very high publicity emergencies normally are fairly rare.",
+          "What’s different this time?",
+          "A quarter century ago, a Windows update generally fixed one bug. You got one patch per bug, and a month’s worth of updates might only fix 5 or 6 of them. Today, you get one patch that often fixes hundreds of bugs.",
+          "The world changed about a decade ago when company bug bounties became popular. Bug bounties are a way for companies to pay individuals for finding bugs in their software. They’ve existed since at least 1983, but became very widespread in the mid to late 2010s. Once several large companies started offering bug bounties, hobbyists found they could make more money finding and reporting vulnerabilities than they did at their day jobs, so they quit their jobs and found vulnerabilities full time. Every year since 2016 set a record for the number of CVEs discovered. It didn’t all happen at once in 2017. It’s just that 2017 was the year the dam broke.",
+          "The year 2026 was another change. In 2026, we’ve more than doubled last year’s count even though the year isn’t over yet. This year it’s AI. AI is finding vulnerabilities faster than we ever did before. It’s finding more serious vulnerabilities. And AI is sometimes helping to write the fixes. AI has its own problems, but it’s causing plenty of chaos on its way out.",
+          "Designer vulnerabilities",
+          "Another phenomenon started in the mid 2010s. We called them designer vulnerabilities. The first of these was a vulnerability in OpenSSL, a software component that encrypts traffic on the Internet to keep undesirables from reading our chats and seeing our credit card numbers. The people who discovered it wanted to make sure people took it seriously and fixed it so they gave it a name, a logo, and a marketing campaign. Its name was Heartbleed. At the time, I was working for a Fortune 20 company as a mid-level security analyst. It shot to the top of our priority list, and we fixed it quickly.",
+          "Before long, but seemed like every newly discovered vulnerability had a designer name, a logo, and at least a website. Sometimes they had a slick marketing campaign. Sometimes they had a really flat marketing campaign. And some took a very punk rock attitude toward it, scribbling a logo in Microsoft Paint just to meet the criteria of having a name and a logo in the most unprofessional way possible, thumbing their nose at the trend.",
+          "Security researchers know that large corporations are not keeping up with their patching. But they have not studied the underlying problem. They think the problem is IT departments aren’t motivated. And the corporate security department also doesn’t understand the problem, hasn’t studied it, and chalks it up to a motivation problem. The designer vulnerability trend was their attempt to increase motivation.",
+          "The designer vulnerability fad seems to be dying down a bit, probably because there are so many AI-discovered vulnerabilities that they can’t really stand out. I don’t miss it.",
+          "The staffing problem",
+          "Here’s another dirty secret. IT was a booming business in the 1990s. Everyone was hiring for IT jobs. My friends were asking me how to get into it, including a dental technician and a lifeguard. I used to know a truck driver who stopped driving trucks for a few years and got into IT. You can include me among those converts. I was a journalist before I got into IT.",
+          "I’m not saying this to be judgmental. The point was, IT was desperate for workers and very little formal training existed. Almost anyone who was willing to learn and could demonstrate some aptitude could get an IT job.",
+          "Then Y2K and the dotcom bust happened. Companies started cutting jobs. They outsourced a lot. They offshored a lot. But even counting the offshored and outsourced workers, it’s not uncommon for companies to have fewer IT workers than they had 25 years ago. They have many more computers than they used to have. They are supposed to make up the difference by doing more with less, working smarter not harder, and other management catchphrases that are worth less than the oxygen consumed to say them.",
+          "Patching saved my IT career. It was a job no one wanted because it was stressful and thankless. But it suited me. I can solve problems, break them down into a process, follow it, and look for ways to improve it over time. Knowing my job was safe as long as I met deadlines made up for the stress.",
+          "The contracting company I was working for even asked me to standardize my methods across the rest of the Air Force contracts they had. I found when doing so that we had all more or less figured out the same methodology independently. I learned a couple of tricks and taught my counterparts a couple of tricks.",
+          "A few years later, I found myself running vulnerability scans at a Fortune 20 company. What I found was disturbing. I found one problem in their methodology that I inferred from the scan data. Fixing that problem gave an immediate 55% improvement in their success rate. So I asked the IT staff if they had a documented methodology they followed. They did, so I asked if I could see it. I hoped I could find something else to change to get a big improvement. I found nothing. Their methodology was outstanding.",
+          "Several people in different environments had come up with equivalent methodologies. All on their own. There was no one to teach any of us.",
+          "So why did I have a 100% success rate that my Fortune 20 counterparts couldn’t replicate?",
+          "The major problem was they had one person trying manage 20 times as many computers as I was. And the tools that person had to do the work weren’t as good as the tools I had. Imagine a carpenter with expensive, professional-grade tools versus a carpenter with tools bought from the scratch-and-dent table at an off-brand tool store (or scavenged from the dumpster behind the store) and then expecting the one with scavenged tools to do 20 times the work.",
+          "Every other industry knows how many workers they need to get their day-to-day work done. The garage where I take our cars knows, given the number of mechanics they have and the number of bays they have, how many cars they can fix every week. Even the badly run fast food chain I worked for when I was 16 knew how many workers they needed to get through their lunch rush.",
+          "Yet corporate IT departments have no idea how many IT staff they need to maintain their computer fleet. They just keep buy more computers every year, lay off more employees every year, and tell the survivors to figure it out.",
+          "A quarter century of this ritual, plus a lack of understanding of how to size the staff means there is no budget to right-size. Even if there was a budget to right-size, there wouldn’t be enough workers. Decades of low demand pushed workers into other fields, or involuntary retirement. And when a company does decide to try to throw some money at the problem, they find they don’t know where to start because the problem has been piling up since 2002.",
+          "The tools problem",
+          "And the perfect storm has another element. A tools problem. Vulnerability scanners have improved a lot in the last 10 years, and much of that improvement has come in the last 5. Training for them is readily available, and at least when it comes to the two most popular scanners, they’re very accurate when configured correctly.",
+          "But patching tools, the tools you use to deploy the updates at scale across large companies, have not improved much since 2009. Some of them have gotten worse. I do know of a small number of companies who are trying to innovate in this space, but their tools haven’t gotten a lot of adoption.",
+          "And part of the problem is, a company will buy good tools, fix the problem, then switch to a cheaper tool because they think they don’t have a problem anymore. Then the solved problem becomes a problem again. That was one factor in me leaving that patching job in 2009. They switched tools to save a couple thousand bucks and turned a process that had been working well into a problem.",
+          "So we have a trifecta. We’re having to push updates to more systems every year, and IT staffs are shrinking rather than getting bigger, and the tools to fix the problem aren’t necessarily keeping pace with the tools to find the problem.",
+          "Automation",
+          "To some extent the problem can be solved with automation, and part of what I do now is helping people to build the strategies to automate away their patch debt. It’s harder work than it sounds. Imagine someone drowning, and they’re in so much distress that they don’t even know what they want. I’ve got the life preserver, there’s a rope on it, and I can throw them the life preserver. But I also have to convince them that they want the life preserver and they want me to pull them onto the boat.",
+          "Drowning in data that you don’t completely believe does weird things to you.",
+          "Bad KPIs",
+          "But another problem is that a week doesn’t go by that I don’t have to tell a security team what they want. The main thing they want is for critical vulnerabilities to be fixed within a week of their discovery. It’s news to most of them that that is what they should measure and aim for. I think sometimes it’s news to them that that’s what they want. When it’s not news, I had to remind them. And there are times they don’t believe me.",
+          "I do find that if I get people to focus on the average age of their not-yet-fixed vulnerabilities, and how long it took them to fix the ones they fixed, and make sure those metrics are in line with their stated security policy, they are much more successful.",
+          "What most companies do is just count the number of vulnerabilities and report that big scary number every month. The number never reaches zero, so that leads to a scary phenomenon called learned helplessness. And sadly, it’s possible to reach a point where you’re actually successful, but since you’re measuring a big scary number that will never reach zero because there’s always more work coming in, you don’t actually realize you’re successful.",
+          "And finally, sometimes it’s not a matter of Johnny not being able to patch. Sometimes Johnny won’t. Maybe it’s Johnny’s decision, or someone else’s decision.",
+          "Microsoft’s notorious outage in November 2026 was traced to a July security update. Maybe someday we’ll know if the bad code was written by an AI or a human. But that’s a dirty secret in the industry. Sometimes patches that fix security vulnerabilities break other things. It happens less often than people think, but people have long memories, and the perception that patches break stuff stops some companies from applying necessary updates. Officially, they have a policy. But off the books, someone is pocket vetoing the updates.",
+          "I was able to apply 100% of updates 100% of the time because we had a test facility. It wasn’t perfect, and I was a loud critic of its shortcomings. But it worked well enough that we never traced a production issue to any updates that I pushed out. But that test environment was better than any test environment I’ve encountered in the private sector since.",
+          "And it definitely helps for the system that you are updating to be designed with that kind of regular maintenance in mind. Many corporate systems are not designed with maintenance in mind. At least one of the November outages was caused at least partially by rushed maintenance that didn’t follow normal procedure. It would not surprise me if it was a factor in most of them.",
+          "Why the problem gets harder to solve every year",
+          "2026 is another record-breaking year. This year was different though. We broke the record early. I remember my boss bringing it up. We knew already that AI was causing us to find a lot more vulnerabilities than we ever had before. He speculated that maybe there would be a point in the future where there would be fewer bugs to find and we would stop having record-breaking years. It’s possible. I think I’m a bit more cynical.",
+          "I think there is one other thing at play. Hackers don’t take time off for the holidays. One of the most notorious vulnerabilities ever, log4shell, was disclosed around Christmas time. I think November and December tend to be heavy months for vulnerabilities. Heavier than usual. So what we have is a heavier than usual month in an already record breaking year.",
+          "I think some researchers try to get their vulnerabilities out before companies freeze all changes for their busy time of year. Retailers are busy in November and December, and insurance companies are busy in January. So they try to cram every discovery they can into November, knowing that anything they disclose later in the year is likely to get delayed and ignored.",
+          "We have a weird dynamic in this industry. The way you make money as a security researcher is by pouring a whole lot more water into that body of water where people are already drowning. There isn’t money for ordinary system administrators who fix the problem quietly. But there is big money for the people who discover the vulnerabilities. The monetary incentives are in the wrong place to solve the problem. Instead they usually make it worse.",
+          "I wish I had an easy answer. Some problems do have easy answers that fit on a bumper sticker, but this one isn’t one of them. It’s a nuanced problem that spans multiple disciplines and multiple companies, requiring a lot of collaboration to fix. Most people don’t stay in one place long enough to see it to the end.",
+          "Sadly, I think the problem is money. As of 2026, the average cost of a data breach is $4.99 million. But if a breach doesn’t happen every year, the incentive is to go cheap in terms of staffing and tooling, pocket the savings, and hope for the best. Until the average cost of a data breach reaches a point that scares companies, I think this problem will continue.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    },
+    {
+      "slug": "46b8c005c4a21f78",
+      "title": "Linear scan register allocation in Datalog",
+      "titleZh": "Linear scan register allocation in Datalog",
+      "link": "https://bernsteinbear.com/blog/lsra-datalog/?utm_source=rss",
+      "sourceName": "bernsteinbear.com",
+      "sourceUrl": "https://bernsteinbear.com",
+      "pubDate": "2026-11-21T00:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Linear scan register allocation in Datalog",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Max Bernstein",
+        "siteName": "Max Bernstein",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Note: This was supposed to be published basically immediately after PLDI 2026\nbut I got hung up on posting it because I am not a Datalog native like Yannis\nis and I like understanding everything I post. But I guess that’s what expert\nco-authors are for, right? It’s a little rough but it’s been so long that the\nediting is holding up the posting. Happy reading."
+          },
+          {
+            "type": "p",
+            "text": "Last year I wrote my first register allocator: a small\nlinear scan implementation in Ruby on SSA. Immediately after publishing the\npost, I had a call with Waleed Khan where he walked\nme through implementing the liveness fixpoint algorithm in Datalog. We talked\nabout doing the whole register allocator in Datalog—how hard could it\nbe?—but it never materialized."
+          },
+          {
+            "type": "p",
+            "text": "This year, though, I met Yannis Smaragdakis at\nPLDI. I did my usual thing, which is to nerd snipe other people into doing\ninteresting projects: in this case, full linear scan in Datalog. Several short\nhours and several beers later, we have an implementation that I only mostly\nunderstand."
+          },
+          {
+            "type": "p",
+            "text": "Overall this is an excellent demonstration of programming in Datalog. It shows\ntasks that Datalog handles very elegantly, such as the basic block computation\nand the liveness analysis, which are just a handful of lines."
+          },
+          {
+            "type": "p",
+            "text": "At the same time, it shows how to do things that are complex to do in Datalog,\nnamely the linear scan algorithm. The algorithm is very sequential,\nimperative-style. It has steps such as “remove an interval that expires”,\n“update the stack of intervals to evict the one ending last”, etc. All of these\noperations have to be simulated declaratively."
+          },
+          {
+            "type": "p",
+            "text": "The final result contains perhaps the most advanced Datalog programming\npattern, a forall emulation: iterating declaratively over a pre-determined set\n(in this case, to select the interval corresponding to the variable to spill)."
+          },
+          {
+            "type": "p",
+            "text": "Let’s get into program representation."
+          },
+          {
+            "type": "h2",
+            "text": "Encoding"
+          },
+          {
+            "type": "p",
+            "text": "As with Waleed, we started off with the Wimmer2010 CFG example from the last\ntwo posts."
+          },
+          {
+            "type": "p",
+            "text": "The graph from Wimmer2010 has come back! Again! Remember, we’re using block\narguments instead of phis, so B1(R10, R11) defines R10 and R11 before the\nfirst instruction in B1."
+          },
+          {
+            "type": "p",
+            "text": "Additionally, we have numbered the instructions in the graph. For each\ninstruction that defines a value, we have also given it two separate numbers:\none number N at which it uses its inputs and one number N+1 at which it defines\nits output."
+          },
+          {
+            "type": "p",
+            "text": "We do this so that the logic can process one event at a time: the end of a\nliveness interval happens before the need to possibly allocate a register\nbecause a variable gets assigned. This is visible in labels 8 and 9 as well as\n14 and 15."
+          },
+          {
+            "type": "p",
+            "text": "We have similarly modified block parameters: we sequentialize assignment by\npicking different instruction indices for each block parameter in a block. This\nis visible in labels 0 and 1."
+          },
+          {
+            "type": "p",
+            "text": "This time, however, we encoded the program in terms of instructions instead of\nin terms of blocks: we modeled which instructions used which registers and\ndef-ed which registers."
+          },
+          {
+            "type": "code",
+            "text": ".type Block <: number\n.type Var <: symbol\n.type Instruction <: number\n\n// Input\n.decl var_use(insn:Instruction, var:Var)\n.decl var_def(insn:Instruction, var:Var)\n\n.decl jump(insn:Instruction, next:Instruction)\n.decl jumpi(insn:Instruction, next:Instruction, otherNext:Instruction)\n.decl ret(insn:Instruction)\n\n#define NUM_REGS 2\n\n// Facts: maintain the property that defs use a unique instruction so that\n// liveness intervals end before the def\nvar_def(0, \"R10\").\nvar_def(1, \"R11\").\n\nvar_use(2, \"R11\").\n\nvar_def(3, \"R12\").\nvar_def(4, \"R13\").\n\nvar_use(5, \"R13\").\n\nvar_use(8, \"R12\").\nvar_use(8, \"R13\").\nvar_def(9, \"R14\").\n\nvar_use(10, \"R13\").\nvar_def(11, \"R15\").\n\nvar_use(12, \"R14\").\nvar_use(12, \"R15\").\n\nvar_use(14, \"R10\").\nvar_use(14, \"R12\").\nvar_def(15, \"R16\").\n\nvar_use(16, \"R16\").\n\n.decl min_instruction(insn:Instruction)\nmin_instruction(-1).\n\n.decl max_instruction(insn:Instruction)\nmax_instruction(16).\n\njump(2, 3).\njumpi(6, 7, 13).\njump(12, 3).\nret(16)."
+          },
+          {
+            "type": "p",
+            "text": "We also model the control-flow in terms of instructions: we have jumps between\ninstructions from which we (in Datalog!) recover the basic block boundaries and\ncontrol-flow graph (omitted for brevity). This is why we have jump(2, 3)\n(which means jump at instruction 2 targeting instruction 3), ret(16)\n(ret at instruction 16), etc."
+          },
+          {
+            "type": "p",
+            "text": "Now that we have our program represented in Datalog, we can begin to compute\nwhat we need from it… like liveness information."
+          },
+          {
+            "type": "h2",
+            "text": "Liveness"
+          },
+          {
+            "type": "p",
+            "text": "Since we complicated our input data a bit (variables are no longer def-ed in\nblocks but instead def-ed in their own instruction indices), we had to expand\nout liveness from the last post. Now we do a lot more in Datalog:"
+          },
+          {
+            "type": "li",
+            "text": "compute block boundaries (omitted for brevity)"
+          },
+          {
+            "type": "li",
+            "text": "compute what instructions are in what block (omitted for brevity)"
+          },
+          {
+            "type": "li",
+            "text": "compute the control-flow graph structure (omitted for brevity)"
+          },
+          {
+            "type": "li",
+            "text": "compute live-in and live-out for each instruction (not block!)"
+          },
+          {
+            "type": "li",
+            "text": "and finally, compute liveness intervals"
+          },
+          {
+            "type": "p",
+            "text": "Still, liveness is the most straightforward part of the implementation. There\nare 4 rules defining live_out and live_in in mutual recursion. These\ncorrespond to the standard data-flow equations in textbook definitions of\nliveness. (The transfer function is encoded as two rules for explicitness, to\ncapture that a variable is live-in if it is used by the instruction, or if it\nwas live-out and is not def-ed.)"
+          },
+          {
+            "type": "code",
+            "text": "live_out(insn, var) :-\n  block_succ(prev, succ),\n  block_head(succ, headinsn),\n  live_in(headinsn, var),\n  block_tail(prev, insn).\n\nlive_in(insn, var) :-\n  var_use(insn, var).\n\nlive_in(insn, var) :-\n  live_out(insn, var),\n  !var_def(insn, var).\n\nlive_out(insn, var) :-\n  live_in(next, var),\n  next_in_block(insn, next)."
+          },
+          {
+            "type": "p",
+            "text": "This looks similar enough to the liveness implementation that Waleed and I did,\nbut (as mentioned) handles instructions, not just blocks."
+          },
+          {
+            "type": "p",
+            "text": "This only gives us the per-instruction sets, so to get the intervals, we need\nto extract the full extents of the interval for every variable: the earliest\nplace it was known live and the latest place it was known live. We can use a\nmax and min here because we compute this only after the mutually\nrecursive dataflow has settled."
+          },
+          {
+            "type": "code",
+            "text": "// Liveness starts right after start, ends right before end\n.decl liveness_interval(start:Instruction, end:Instruction, var:Var)\n\nliveness_interval(start, end, var) :-\n  live_out(_, var),\n  start = min b : { live_out(b, var) },\n  end = max b : { live_in(b, var) }."
+          },
+          {
+            "type": "p",
+            "text": "Once we have intervals, we need to assign physical registers to the\nvariables1."
+          },
+          {
+            "type": "h2",
+            "text": "Register assignment"
+          },
+          {
+            "type": "p",
+            "text": "The difficult part of the computation is the linear scan register allocation\nitself. We encode this using a predicate reg_assignment which simulates what\nthe algorithm does at every step, with a linear scan of instructions."
+          },
+          {
+            "type": "code",
+            "text": "// after instruction, this is the register assignment. Var = \"none\" is a possibility\n.decl reg_assignment(insn:Instruction, reg:Register, var:Var)"
+          },
+          {
+            "type": "p",
+            "text": "At every\ninstruction, the algorithm keeps the current contents of registers that we are\nallocating. Registers that are not currently encoding a variable are instead\nholding a pseudo-variable that corresponds to the register’s name. E.g., when\nregister 0 is empty, it contains variable none_0. This encoding lets us\nphrase every decision as a comparison between variables. The actual choice of\nvariable to spill, for instance, always prefers a “none” variable over a real\none, and then between real variables it implements the usual linear scan\npolicy: the spilled variable is the one whose liveness interval ends last."
+          },
+          {
+            "type": "p",
+            "text": "Comments in the code explain all the cases that the algorithm needs to handle."
+          },
+          {
+            "type": "li",
+            "text": "The assignment of values to registers is propagated if there is no liveness\ninterval that ends and no new variable that is def-ed (i.e., assigned)."
+          },
+          {
+            "type": "li",
+            "text": "When a liveness interval expires, the register holding the variable (if any)\ngets reset to a “none” variable."
+          },
+          {
+            "type": "li",
+            "text": "The interesting case is when we encounter a new variable def. We then need to\ndecide which variable to spill, i.e., which register (if any) should best\nhold the def-ed variable. The policy for deciding on a victim variable is\nentirely self-contained and modular, captured by predicate\nbetter_victim_var, which pre-calculates the result of all possible variable\ncomparisons."
+          },
+          {
+            "type": "p",
+            "text": "However, the interesting part is the forall emulation encoded in the rules for\npredicates best_victim_up_to_reg and all_reg_best_victim. (The latter is\ntrivial to inline, but it’s kept for making the concept explicit.) The forall\nemulation iterates over all registers and keeps at every point in the iteration\nthe current best victim variable. When we reach the final variable, we have the\noverall best victim."
+          },
+          {
+            "type": "p",
+            "text": "Returning to the core algorithm, if the victim variable is the def-ed var\nitself, then all registers get carried over—the def-ed var does not receive a\nregister."
+          },
+          {
+            "type": "p",
+            "text": "If, however, the best victim is a variable that is currently held in a register\nthen that register now gets assigned to the def-ed var, with all other\nregisters copied over to the next instruction."
+          },
+          {
+            "type": "p",
+            "text": "Forall emulation is an advanced Datalog coding pattern. It arises in all cases\nwhen a forall cannot be simply emulated as a “not exists”, because the\npredicates involved are defined in mutual recursion. From a complexity theory\nstandpoint, the forall emulation pattern is essential for Datalog to be able to\nencode all PTIME algorithms. (Although realistic Datalog implementations\ninclude arithmetic and tuples, and hence are Turing-complete.) Without a\nforall-emulation, which is possible only via an underlying ordering of values,\nDatalog without extra features only expresses a subset of polynomial-time\nalgorithms."
+          },
+          {
+            "type": "p",
+            "text": "The final step of the algorithm just assigns a register to a variable if the\nvariable can be held by the register for its entire lifetime. This is the\nsimplest implementation of linear scan—one could also extend it to allow\nregisters to hold a variable for a part of its lifetime."
+          },
+          {
+            "type": "p",
+            "text": "Accordingly, there are many improvements to the implementation that one can\nperform, especially for efficiency. Currently iteration is done over all\ninstructions, whereas it could instead jump from “interesting” to “interesting”\ninstruction, i.e., defs and interval expirations, ignoring instructions that\nonly copy over the register assignment. Additionally, the comparison between\ntwo variables to find the best victim can be done on demand, instead of\ncalculating the result for all possible variable pairs up front. This would\nrequire a request-response programming pattern, where the current rules only\nfire in response to a request, i.e., only for variable pairs that truly need to\nbe compared in the course of execution."
+          },
+          {
+            "type": "h2",
+            "text": "Conclusion"
+          },
+          {
+            "type": "p",
+            "text": "Datalog is fun. It’s not for everyone or everything. But I love nerd sniping\npeople at conferences. Thank you to Yannis for playing along and writing half\nthis article and being so patient for it to be published!"
+          },
+          {
+            "type": "p",
+            "text": "See the implementation."
+          },
+          {
+            "type": "li",
+            "text": "In other register allocator implementations and in the\nliterature, we normally speak of assigning physical registers to\nintervals, not to variables. However, in this one-interval-per-variable\nimplementation of linear scan, they are the same thing: a variable has only\none location for its entire lifetime. ↩"
+          }
+        ],
+        "translations": [
+          "Note: This was supposed to be published basically immediately after PLDI 2026\nbut I got hung up on posting it because I am not a Datalog native like Yannis\nis and I like understanding everything I post. But I guess that’s what expert\nco-authors are for, right? It’s a little rough but it’s been so long that the\nediting is holding up the posting. Happy reading.",
+          "Last year I wrote my first register allocator: a small\nlinear scan implementation in Ruby on SSA. Immediately after publishing the\npost, I had a call with Waleed Khan where he walked\nme through implementing the liveness fixpoint algorithm in Datalog. We talked\nabout doing the whole register allocator in Datalog—how hard could it\nbe?—but it never materialized.",
+          "This year, though, I met Yannis Smaragdakis at\nPLDI. I did my usual thing, which is to nerd snipe other people into doing\ninteresting projects: in this case, full linear scan in Datalog. Several short\nhours and several beers later, we have an implementation that I only mostly\nunderstand.",
+          "Overall this is an excellent demonstration of programming in Datalog. It shows\ntasks that Datalog handles very elegantly, such as the basic block computation\nand the liveness analysis, which are just a handful of lines.",
+          "At the same time, it shows how to do things that are complex to do in Datalog,\nnamely the linear scan algorithm. The algorithm is very sequential,\nimperative-style. It has steps such as “remove an interval that expires”,\n“update the stack of intervals to evict the one ending last”, etc. All of these\noperations have to be simulated declaratively.",
+          "The final result contains perhaps the most advanced Datalog programming\npattern, a forall emulation: iterating declaratively over a pre-determined set\n(in this case, to select the interval corresponding to the variable to spill).",
+          "Let’s get into program representation.",
+          "Encoding",
+          "As with Waleed, we started off with the Wimmer2010 CFG example from the last\ntwo posts.",
+          "The graph from Wimmer2010 has come back! Again! Remember, we’re using block\narguments instead of phis, so B1(R10, R11) defines R10 and R11 before the\nfirst instruction in B1.",
+          "Additionally, we have numbered the instructions in the graph. For each\ninstruction that defines a value, we have also given it two separate numbers:\none number N at which it uses its inputs and one number N+1 at which it defines\nits output.",
+          "We do this so that the logic can process one event at a time: the end of a\nliveness interval happens before the need to possibly allocate a register\nbecause a variable gets assigned. This is visible in labels 8 and 9 as well as\n14 and 15.",
+          "We have similarly modified block parameters: we sequentialize assignment by\npicking different instruction indices for each block parameter in a block. This\nis visible in labels 0 and 1.",
+          "This time, however, we encoded the program in terms of instructions instead of\nin terms of blocks: we modeled which instructions used which registers and\ndef-ed which registers.",
+          ".type Block <: number\n.type Var <: symbol\n.type Instruction <: number\n\n// Input\n.decl var_use(insn:Instruction, var:Var)\n.decl var_def(insn:Instruction, var:Var)\n\n.decl jump(insn:Instruction, next:Instruction)\n.decl jumpi(insn:Instruction, next:Instruction, otherNext:Instruction)\n.decl ret(insn:Instruction)\n\n#define NUM_REGS 2\n\n// Facts: maintain the property that defs use a unique instruction so that\n// liveness intervals end before the def\nvar_def(0, \"R10\").\nvar_def(1, \"R11\").\n\nvar_use(2, \"R11\").\n\nvar_def(3, \"R12\").\nvar_def(4, \"R13\").\n\nvar_use(5, \"R13\").\n\nvar_use(8, \"R12\").\nvar_use(8, \"R13\").\nvar_def(9, \"R14\").\n\nvar_use(10, \"R13\").\nvar_def(11, \"R15\").\n\nvar_use(12, \"R14\").\nvar_use(12, \"R15\").\n\nvar_use(14, \"R10\").\nvar_use(14, \"R12\").\nvar_def(15, \"R16\").\n\nvar_use(16, \"R16\").\n\n.decl min_instruction(insn:Instruction)\nmin_instruction(-1).\n\n.decl max_instruction(insn:Instruction)\nmax_instruction(16).\n\njump(2, 3).\njumpi(6, 7, 13).\njump(12, 3).\nret(16).",
+          "We also model the control-flow in terms of instructions: we have jumps between\ninstructions from which we (in Datalog!) recover the basic block boundaries and\ncontrol-flow graph (omitted for brevity). This is why we have jump(2, 3)\n(which means jump at instruction 2 targeting instruction 3), ret(16)\n(ret at instruction 16), etc.",
+          "Now that we have our program represented in Datalog, we can begin to compute\nwhat we need from it… like liveness information.",
+          "Liveness",
+          "Since we complicated our input data a bit (variables are no longer def-ed in\nblocks but instead def-ed in their own instruction indices), we had to expand\nout liveness from the last post. Now we do a lot more in Datalog:",
+          "compute block boundaries (omitted for brevity)",
+          "compute what instructions are in what block (omitted for brevity)",
+          "compute the control-flow graph structure (omitted for brevity)",
+          "compute live-in and live-out for each instruction (not block!)",
+          "and finally, compute liveness intervals",
+          "Still, liveness is the most straightforward part of the implementation. There\nare 4 rules defining live_out and live_in in mutual recursion. These\ncorrespond to the standard data-flow equations in textbook definitions of\nliveness. (The transfer function is encoded as two rules for explicitness, to\ncapture that a variable is live-in if it is used by the instruction, or if it\nwas live-out and is not def-ed.)",
+          "live_out(insn, var) :-\n  block_succ(prev, succ),\n  block_head(succ, headinsn),\n  live_in(headinsn, var),\n  block_tail(prev, insn).\n\nlive_in(insn, var) :-\n  var_use(insn, var).\n\nlive_in(insn, var) :-\n  live_out(insn, var),\n  !var_def(insn, var).\n\nlive_out(insn, var) :-\n  live_in(next, var),\n  next_in_block(insn, next).",
+          "This looks similar enough to the liveness implementation that Waleed and I did,\nbut (as mentioned) handles instructions, not just blocks.",
+          "This only gives us the per-instruction sets, so to get the intervals, we need\nto extract the full extents of the interval for every variable: the earliest\nplace it was known live and the latest place it was known live. We can use a\nmax and min here because we compute this only after the mutually\nrecursive dataflow has settled.",
+          "// Liveness starts right after start, ends right before end\n.decl liveness_interval(start:Instruction, end:Instruction, var:Var)\n\nliveness_interval(start, end, var) :-\n  live_out(_, var),\n  start = min b : { live_out(b, var) },\n  end = max b : { live_in(b, var) }.",
+          "Once we have intervals, we need to assign physical registers to the\nvariables1.",
+          "Register assignment",
+          "The difficult part of the computation is the linear scan register allocation\nitself. We encode this using a predicate reg_assignment which simulates what\nthe algorithm does at every step, with a linear scan of instructions.",
+          "// after instruction, this is the register assignment. Var = \"none\" is a possibility\n.decl reg_assignment(insn:Instruction, reg:Register, var:Var)",
+          "At every\ninstruction, the algorithm keeps the current contents of registers that we are\nallocating. Registers that are not currently encoding a variable are instead\nholding a pseudo-variable that corresponds to the register’s name. E.g., when\nregister 0 is empty, it contains variable none_0. This encoding lets us\nphrase every decision as a comparison between variables. The actual choice of\nvariable to spill, for instance, always prefers a “none” variable over a real\none, and then between real variables it implements the usual linear scan\npolicy: the spilled variable is the one whose liveness interval ends last.",
+          "Comments in the code explain all the cases that the algorithm needs to handle.",
+          "The assignment of values to registers is propagated if there is no liveness\ninterval that ends and no new variable that is def-ed (i.e., assigned).",
+          "When a liveness interval expires, the register holding the variable (if any)\ngets reset to a “none” variable.",
+          "The interesting case is when we encounter a new variable def. We then need to\ndecide which variable to spill, i.e., which register (if any) should best\nhold the def-ed variable. The policy for deciding on a victim variable is\nentirely self-contained and modular, captured by predicate\nbetter_victim_var, which pre-calculates the result of all possible variable\ncomparisons.",
+          "However, the interesting part is the forall emulation encoded in the rules for\npredicates best_victim_up_to_reg and all_reg_best_victim. (The latter is\ntrivial to inline, but it’s kept for making the concept explicit.) The forall\nemulation iterates over all registers and keeps at every point in the iteration\nthe current best victim variable. When we reach the final variable, we have the\noverall best victim.",
+          "Returning to the core algorithm, if the victim variable is the def-ed var\nitself, then all registers get carried over—the def-ed var does not receive a\nregister.",
+          "If, however, the best victim is a variable that is currently held in a register\nthen that register now gets assigned to the def-ed var, with all other\nregisters copied over to the next instruction.",
+          "Forall emulation is an advanced Datalog coding pattern. It arises in all cases\nwhen a forall cannot be simply emulated as a “not exists”, because the\npredicates involved are defined in mutual recursion. From a complexity theory\nstandpoint, the forall emulation pattern is essential for Datalog to be able to\nencode all PTIME algorithms. (Although realistic Datalog implementations\ninclude arithmetic and tuples, and hence are Turing-complete.) Without a\nforall-emulation, which is possible only via an underlying ordering of values,\nDatalog without extra features only expresses a subset of polynomial-time\nalgorithms.",
+          "The final step of the algorithm just assigns a register to a variable if the\nvariable can be held by the register for its entire lifetime. This is the\nsimplest implementation of linear scan—one could also extend it to allow\nregisters to hold a variable for a part of its lifetime.",
+          "Accordingly, there are many improvements to the implementation that one can\nperform, especially for efficiency. Currently iteration is done over all\ninstructions, whereas it could instead jump from “interesting” to “interesting”\ninstruction, i.e., defs and interval expirations, ignoring instructions that\nonly copy over the register assignment. Additionally, the comparison between\ntwo variables to find the best victim can be done on demand, instead of\ncalculating the result for all possible variable pairs up front. This would\nrequire a request-response programming pattern, where the current rules only\nfire in response to a request, i.e., only for variable pairs that truly need to\nbe compared in the course of execution.",
+          "Conclusion",
+          "Datalog is fun. It’s not for everyone or everything. But I love nerd sniping\npeople at conferences. Thank you to Yannis for playing along and writing half\nthis article and being so patient for it to be published!",
+          "See the implementation.",
+          "In other register allocator implementations and in the\nliterature, we normally speak of assigning physical registers to\nintervals, not to variables. However, in this one-interval-per-variable\nimplementation of linear scan, they are the same thing: a variable has only\none location for its entire lifetime. ↩"
+        ]
+      }
+    }
+  ]
+}
