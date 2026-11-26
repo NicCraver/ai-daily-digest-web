@@ -1,0 +1,1833 @@
+{
+  "date": "2026-11-26",
+  "generatedAt": "2026-11-26T00:08:18.606Z",
+  "stats": {
+    "totalFeeds": 92,
+    "successFeeds": 82,
+    "totalArticles": 2502,
+    "filteredArticles": 13,
+    "hours": 24,
+    "lang": "zh"
+  },
+  "highlights": "",
+  "articles": [
+    {
+      "slug": "2c33c3cedb6545ec",
+      "title": "Quoting Scott Aaronson",
+      "titleZh": "Quoting Scott Aaronson",
+      "link": "https://simonwillison.net/2026/Nov/25/scott-aaronson/",
+      "sourceName": "simonwillison.net",
+      "sourceUrl": "https://simonwillison.net",
+      "pubDate": "2026-11-25T23:26:32.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Quoting Scott Aaronson",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Simon Willison",
+        "siteName": "Simon Willison’s Weblog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "25th November 2026"
+          },
+          {
+            "type": "quote",
+            "text": "It’s now obvious that we’ll be getting, not one-off solutions to this or that complexity question, but a whole new continent of mathematical truth, one that we’d previously only glimpsed through fog. Picture van Leeuwenhoek first training a microscope on pondwater, or Galileo first training his telescope on the stars. That might give you some idea of how our resolution into the complexity-theoretic universe, and the whole universe of mathematical truth beyond it, has now improved."
+          },
+          {
+            "type": "p",
+            "text": "— Scott Aaronson"
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4bba67edbe4e9240",
+      "title": "Ansible Fails waiting for privilege escalation on Ubuntu 26",
+      "titleZh": "Ansible Fails waiting for privilege escalation on Ubuntu 26",
+      "link": "https://www.jeffgeerling.com/blog/2026/ansible-fails-become-ubuntu2604/",
+      "sourceName": "jeffgeerling.com",
+      "sourceUrl": "https://jeffgeerling.com",
+      "pubDate": "2026-11-25T21:43:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Ansible Fails waiting for privilege escalation on Ubuntu 26",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "siteName": "Jeff Geerling",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Nov 25, 2026"
+          },
+          {
+            "type": "p",
+            "text": "I've slowly been moving my servers from Ubuntu 22 and 24 to 26 this year, and noticed my Ansible automation starts failing if I have password protection for sudo use:"
+          },
+          {
+            "type": "code",
+            "text": "$ ansible-playbook main.yml -K\nBECOME password: \n\nPLAY [Security] *******************************************************\n\nTASK [Gathering Facts] ***********************************************************************\nfatal: [my-server.local]: FAILED! => \n    msg: 'Timeout (12s) waiting for privilege escalation prompt: '"
+          },
+          {
+            "type": "p",
+            "text": "Apparently Ubuntu's been rewriting system utilities in Rust, and the sudo-rs version that ships on Ubuntu 26.04 has some incompatiblities with the sudo I've used on servers for 20+ years."
+          },
+          {
+            "type": "p",
+            "text": "It prints an extra string before the password prompt, which sudo doesn't do, and that can confuse automation tools like Ansible that wait for a specific prompt."
+          },
+          {
+            "type": "p",
+            "text": "There's a thread in the Ansible project covering the issue: validate sudo become plugin against sudo-rs\n. The fix landed in Ansible Core 2.22.0, and is being backported into updates in 2.16, 2.18, 2.19, 2.20, and maybe also 2.21 (it's quite disruptive!). It looks like it also broke pyinfra, and their fix is in the latest release of 3.11."
+          },
+          {
+            "type": "p",
+            "text": "I updated Ansible (pip install -U ansible) and now -K (--ask-become-pass) works again."
+          },
+          {
+            "type": "p",
+            "text": "Another alternative is to use the traditional version of sudo that still ships with Ubuntu 26. For that, the easiest way is to set the become_exe inside your hosts file:"
+          },
+          {
+            "type": "code",
+            "text": "dell-precision.local ansible_become_exe=sudo.ws"
+          },
+          {
+            "type": "p",
+            "text": "Or you could even revert sudo systemwide on your Ubuntu host:"
+          },
+          {
+            "type": "code",
+            "text": "update-alternatives --config sudo"
+          },
+          {
+            "type": "p",
+            "text": "I'm not sure why Ubuntu sees the need to rewrite common Linux utils in Rust. I don't mind Rust, but these are foundational tools every Linux system relies on. This isn't a window manager, where experimentation is more acceptable1."
+          },
+          {
+            "type": "p",
+            "text": "If other distros plan on moving to sudo-rs that's one thing, but if it's just Ubuntu, maybe I should hop back to Debian for everything, and not just my cloud servers."
+          },
+          {
+            "type": "li",
+            "text": "Yes, I know this makes me sound like \"old man yells at [rust],\" but major changes to structural components of Linux should take longer, IMO. At least on the Red Hat side, we have Fedora, which is more bleeding edge, then at least a few years' gap before it hits 'production' systems. With Ubuntu, there is no cutting edge upstream where things like this can be fixed or worked around before hitting prod! (And no, I don't consider non-LTS Ubuntu releases the same thing.) ↩︎"
+          }
+        ],
+        "translations": [
+          "Nov 25, 2026",
+          "I've slowly been moving my servers from Ubuntu 22 and 24 to 26 this year, and noticed my Ansible automation starts failing if I have password protection for sudo use:",
+          "$ ansible-playbook main.yml -K\nBECOME password: \n\nPLAY [Security] *******************************************************\n\nTASK [Gathering Facts] ***********************************************************************\nfatal: [my-server.local]: FAILED! => \n    msg: 'Timeout (12s) waiting for privilege escalation prompt: '",
+          "Apparently Ubuntu's been rewriting system utilities in Rust, and the sudo-rs version that ships on Ubuntu 26.04 has some incompatiblities with the sudo I've used on servers for 20+ years.",
+          "It prints an extra string before the password prompt, which sudo doesn't do, and that can confuse automation tools like Ansible that wait for a specific prompt.",
+          "There's a thread in the Ansible project covering the issue: validate sudo become plugin against sudo-rs\n. The fix landed in Ansible Core 2.22.0, and is being backported into updates in 2.16, 2.18, 2.19, 2.20, and maybe also 2.21 (it's quite disruptive!). It looks like it also broke pyinfra, and their fix is in the latest release of 3.11.",
+          "I updated Ansible (pip install -U ansible) and now -K (--ask-become-pass) works again.",
+          "Another alternative is to use the traditional version of sudo that still ships with Ubuntu 26. For that, the easiest way is to set the become_exe inside your hosts file:",
+          "dell-precision.local ansible_become_exe=sudo.ws",
+          "Or you could even revert sudo systemwide on your Ubuntu host:",
+          "update-alternatives --config sudo",
+          "I'm not sure why Ubuntu sees the need to rewrite common Linux utils in Rust. I don't mind Rust, but these are foundational tools every Linux system relies on. This isn't a window manager, where experimentation is more acceptable1.",
+          "If other distros plan on moving to sudo-rs that's one thing, but if it's just Ubuntu, maybe I should hop back to Debian for everything, and not just my cloud servers.",
+          "Yes, I know this makes me sound like \"old man yells at [rust],\" but major changes to structural components of Linux should take longer, IMO. At least on the Red Hat side, we have Fedora, which is more bleeding edge, then at least a few years' gap before it hits 'production' systems. With Ubuntu, there is no cutting edge upstream where things like this can be fixed or worked around before hitting prod! (And no, I don't consider non-LTS Ubuntu releases the same thing.) ↩︎"
+        ]
+      }
+    },
+    {
+      "slug": "2da10ebf7215a41b",
+      "title": "1Password’s Backend Systems Were Compromised, Revealing Only Customer Account Metadata",
+      "titleZh": "1Password’s Backend Systems Were Compromised, Revealing Only Customer Account Metadata",
+      "link": "https://1password.com/blog/update-on-nov-2026-security-incident",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-25T22:52:37.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "1Password’s Backend Systems Were Compromised, Revealing Only Customer Account Metadata",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "What happened"
+          },
+          {
+            "type": "p",
+            "text": "On November 19, 2026, 1Password began investigating indications that an attacker gained access to an employee’s corporate GitHub account. The actor used the account to access source code and push malicious code to backend services, which downloaded administrative data pertaining to our customers. This data included customer names and email addresses, in addition to non-secret internal metadata about the account. At no time were customer vault contents accessed by, or available to, the attacker."
+          },
+          {
+            "type": "h2",
+            "text": "What information was affected"
+          },
+          {
+            "type": "p",
+            "text": "The attacker downloaded account records for a subset of our users. These records include:"
+          },
+          {
+            "type": "li",
+            "text": "Names and email addresses"
+          },
+          {
+            "type": "li",
+            "text": "Account and user identifiers, and account creation and last sign-in times"
+          },
+          {
+            "type": "li",
+            "text": "Public keys (which are public by design, this has no impact to user security)"
+          },
+          {
+            "type": "li",
+            "text": "Secure Remote Password protocol parameters (which cannot be used to access your account)"
+          },
+          {
+            "type": "li",
+            "text": "Tokens present in certain emailed links for invitations, provisioning and account recovery"
+          },
+          {
+            "type": "li",
+            "text": "Other non-secret account metadata relative to our internal architecture (e.g. version numeric identifiers, file numeric identifiers)"
+          },
+          {
+            "type": "p",
+            "text": "The attacker also copied source code from private repositories and gained access to our CI/CD system. Our source code is not customer data, and contains no user secrets. CI/CD contains infrastructure related secrets in order for our product to work. We have triggered a rotation of all credentials which may have been exposed, and there is no impact to 1Password’s services, availability, or product security."
+          },
+          {
+            "type": "p",
+            "text": "When we send an email to a customer to accept a provisioning invite to an account, or to accept recovery of their account, it contains a token. A provisioning invite is specifically used for our SCIM Bridge or Hosted Provisioning. During this incident there were a small number of users in this state, who have been specifically notified. This token is used to complete the invitation or recovery process, but only when combined with an SSO sign-in or a six digit code sent to the user's registered email address. The token is not able to get access to the account by itself. In order to reduce the ability for a malicious third party to successfully guess the code, we’ve expanded the code from six numeric digits to ten alphanumeric digits. This makes brute force guessing practically impossible."
+          },
+          {
+            "type": "h2",
+            "text": "What was not affected"
+          },
+          {
+            "type": "li",
+            "text": "Your vaults and the items in them"
+          },
+          {
+            "type": "li",
+            "text": "The keys that protect your vaults 1Password does not store your account password or secret key"
+          },
+          {
+            "type": "li",
+            "text": "Account recovery keys"
+          },
+          {
+            "type": "li",
+            "text": "1Password apps and browser extensions"
+          },
+          {
+            "type": "h2",
+            "text": "What we’ve done"
+          },
+          {
+            "type": "li",
+            "text": "Disabled the affected GitHub account, revoked the stolen token, and removed the access the attacker created."
+          },
+          {
+            "type": "li",
+            "text": "Rotated or revoked all internal credentials which may have been exposed."
+          },
+          {
+            "type": "li",
+            "text": "Lengthened the codes used in invitation and recovery emails from six digits to ten characters as a precautionary measure."
+          },
+          {
+            "type": "li",
+            "text": "Tightened internal GitHub, CI/CD, and endpoint controls, and added new detections for this kind of attack."
+          },
+          {
+            "type": "li",
+            "text": "Validated no internal evidence of user account takeovers or compromise using any exposed account provisioning tokens."
+          },
+          {
+            "type": "li",
+            "text": "Brought in independent cybersecurity experts to validate our containment approaches and remediation efforts."
+          },
+          {
+            "type": "h2",
+            "text": "What you can do"
+          },
+          {
+            "type": "li",
+            "text": "Be cautious about phishing attempts in the form of unexpected emails, texts or calls that mention 1Password, invitations, or account recovery attempts."
+          },
+          {
+            "type": "li",
+            "text": "1Password will never contact you to ask for your account password or Secret Key. Only enter them in the official 1Password app, or on our official website, and only when you’ve opened the app or typed the address yourself. Your Secret Key is only needed the first time you sign in on a new device or browser."
+          },
+          {
+            "type": "li",
+            "text": "Keep your Secret Key and account password safe."
+          },
+          {
+            "type": "li",
+            "text": "If you see something suspicious, tell us at support@1password.com."
+          },
+          {
+            "type": "h2",
+            "text": "Our commitment to you"
+          },
+          {
+            "type": "p",
+            "text": "You trust us with some of the most sensitive information you have. 1Password is designed so that a breach of our systems can’t expose your vault contents. Your vault secrets are encrypted with keys that only you hold, so we can’t access them, and neither can an attacker who gets into our servers."
+          },
+          {
+            "type": "p",
+            "text": "We are committed to transparency in the interests of our customers' security and the security of the broader industry, which is why we have published and maintained our Security Whitepaper since 2015.  We’ll keep this blog post current, and we’ll update it if we find anything that changes what we’ve said here."
+          }
+        ],
+        "translations": [
+          "What happened",
+          "On November 19, 2026, 1Password began investigating indications that an attacker gained access to an employee’s corporate GitHub account. The actor used the account to access source code and push malicious code to backend services, which downloaded administrative data pertaining to our customers. This data included customer names and email addresses, in addition to non-secret internal metadata about the account. At no time were customer vault contents accessed by, or available to, the attacker.",
+          "What information was affected",
+          "The attacker downloaded account records for a subset of our users. These records include:",
+          "Names and email addresses",
+          "Account and user identifiers, and account creation and last sign-in times",
+          "Public keys (which are public by design, this has no impact to user security)",
+          "Secure Remote Password protocol parameters (which cannot be used to access your account)",
+          "Tokens present in certain emailed links for invitations, provisioning and account recovery",
+          "Other non-secret account metadata relative to our internal architecture (e.g. version numeric identifiers, file numeric identifiers)",
+          "The attacker also copied source code from private repositories and gained access to our CI/CD system. Our source code is not customer data, and contains no user secrets. CI/CD contains infrastructure related secrets in order for our product to work. We have triggered a rotation of all credentials which may have been exposed, and there is no impact to 1Password’s services, availability, or product security.",
+          "When we send an email to a customer to accept a provisioning invite to an account, or to accept recovery of their account, it contains a token. A provisioning invite is specifically used for our SCIM Bridge or Hosted Provisioning. During this incident there were a small number of users in this state, who have been specifically notified. This token is used to complete the invitation or recovery process, but only when combined with an SSO sign-in or a six digit code sent to the user's registered email address. The token is not able to get access to the account by itself. In order to reduce the ability for a malicious third party to successfully guess the code, we’ve expanded the code from six numeric digits to ten alphanumeric digits. This makes brute force guessing practically impossible.",
+          "What was not affected",
+          "Your vaults and the items in them",
+          "The keys that protect your vaults 1Password does not store your account password or secret key",
+          "Account recovery keys",
+          "1Password apps and browser extensions",
+          "What we’ve done",
+          "Disabled the affected GitHub account, revoked the stolen token, and removed the access the attacker created.",
+          "Rotated or revoked all internal credentials which may have been exposed.",
+          "Lengthened the codes used in invitation and recovery emails from six digits to ten characters as a precautionary measure.",
+          "Tightened internal GitHub, CI/CD, and endpoint controls, and added new detections for this kind of attack.",
+          "Validated no internal evidence of user account takeovers or compromise using any exposed account provisioning tokens.",
+          "Brought in independent cybersecurity experts to validate our containment approaches and remediation efforts.",
+          "What you can do",
+          "Be cautious about phishing attempts in the form of unexpected emails, texts or calls that mention 1Password, invitations, or account recovery attempts.",
+          "1Password will never contact you to ask for your account password or Secret Key. Only enter them in the official 1Password app, or on our official website, and only when you’ve opened the app or typed the address yourself. Your Secret Key is only needed the first time you sign in on a new device or browser.",
+          "Keep your Secret Key and account password safe.",
+          "If you see something suspicious, tell us at support@1password.com.",
+          "Our commitment to you",
+          "You trust us with some of the most sensitive information you have. 1Password is designed so that a breach of our systems can’t expose your vault contents. Your vault secrets are encrypted with keys that only you hold, so we can’t access them, and neither can an attacker who gets into our servers.",
+          "We are committed to transparency in the interests of our customers' security and the security of the broader industry, which is why we have published and maintained our Security Whitepaper since 2015.  We’ll keep this blog post current, and we’ll update it if we find anything that changes what we’ve said here."
+        ]
+      }
+    },
+    {
+      "slug": "fd9d6acc316c899b",
+      "title": "‘Trump Wanted Jensen Huang Back. Now, the President Is Alone in Washington’",
+      "titleZh": "‘Trump Wanted Jensen Huang Back. Now, the President Is Alone in Washington’",
+      "link": "https://www.cnbc.com/2026/11/24/trump-jensen-huang-nvidia.html",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-25T22:31:10.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "‘Trump Wanted Jensen Huang Back. Now, the President Is Alone in Washington’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "483b66299c3fe8e5",
+      "title": "‘The Life of a Composer’",
+      "titleZh": "‘The Life of a Composer’",
+      "link": "https://composer.pablostanley.com/#1",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-25T17:04:06.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "‘The Life of a Composer’",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "2e9f7988cd9adcc5",
+      "title": "20 Percent He Has Other Problems, Which This Margin Is Too Narrow to Contain",
+      "titleZh": "20 Percent He Has Other Problems, Which This Margin Is Too Narrow to Contain",
+      "link": "https://www.wsj.com/politics/policy/trump-says-he-protects-brilliant-ceos-like-elon-musk-and-jensen-huang-b977cfda?st=7ctVgP",
+      "sourceName": "daringfireball.net",
+      "sourceUrl": "https://daringfireball.net",
+      "pubDate": "2026-11-25T16:22:27.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "20 Percent He Has Other Problems, Which This Margin Is Too Narrow to Contain",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "failed",
+      "fullText": null
+    },
+    {
+      "slug": "090c2677fd3ae418",
+      "title": "Pluralistic: New York vs auto-enshittification (25 Nov 2026)",
+      "titleZh": "Pluralistic: New York vs auto-enshittification (25 Nov 2026)",
+      "link": "https://pluralistic.net/2026/11/25/empire-state-strikes-back/",
+      "sourceName": "pluralistic.net",
+      "sourceUrl": "https://pluralistic.net",
+      "pubDate": "2026-11-25T13:42:12.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Pluralistic: New York vs auto-enshittification (25 Nov 2026)",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "partial": false,
+        "blocks": [
+          {
+            "type": "h2",
+            "text": "Today's links"
+          },
+          {
+            "type": "li",
+            "text": "New York vs auto-enshittification: A blueprint for states to fix Congress's mistake."
+          },
+          {
+            "type": "li",
+            "text": "Hey look at this: Delights to delectate."
+          },
+          {
+            "type": "li",
+            "text": "Object permanence: Homebrew DRM; HTML v regexp; Tesla-financial complex; Spain v Wall St landlords; \"Cooking in Maximum Security.\""
+          },
+          {
+            "type": "li",
+            "text": "Upcoming appearances: Virtual, Oxford, Santa Barbara, Montreal, Sheffield."
+          },
+          {
+            "type": "li",
+            "text": "Recent appearances: Where I've been."
+          },
+          {
+            "type": "li",
+            "text": "Latest books: You keep readin' em, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Upcoming books: Like I said, I'll keep writin' 'em."
+          },
+          {
+            "type": "li",
+            "text": "Colophon: All the rest."
+          },
+          {
+            "type": "h2",
+            "text": "New York vs auto-enshittification (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "As of February 27, 2027, it will be illegal for companies in New York to charge car-owners a subscription fee or an upcharge for any software feature that runs on hardware already installed in their car. It's a bold – if imperfect – disenshittification gambit aimed at the extremely (and increasingly) enshittified automotive industry:"
+          },
+          {
+            "type": "p",
+            "text": "https://wgna.com/car-bill-extra-fees/"
+          },
+          {
+            "type": "p",
+            "text": "In a state of nature, there'd be no reason to pass a law like this. Say BMW decided to sell you a car that charged you a monthly subscription for the \"feature\" that auto-dipped your high-beams when there was an oncoming car (a thing BMW actually does):"
+          },
+          {
+            "type": "p",
+            "text": "https://www.autoevolution.com/news/netizens-up-in-arms-over-bmw-adaptive-headlight-subscription-237335.html"
+          },
+          {
+            "type": "p",
+            "text": "In a state of nature, BMW's sleazy scam would conjure forth competitors who would offer mechanics and drivers a one-click way to unlock the feature forever. Drivers would curse BMW and pay a one-time fee to get permanent access to the feature, and that would be the end of the matter. Indeed, the fact that this third-party fix could exist at all might well convince BMW not to bother with the high-beam scam in the first place (and if it didn't, well, then tinkerers, hackers, and entrepreneurs would swiftly obviate it)."
+          },
+          {
+            "type": "p",
+            "text": "But we don't live in a state of nature. We live in a world with a federal \"anticircumvention\" law: Section 1201 of the Digital Millennium Copyright Act (DMCA 1201), which imposes a 5-year sentence and a $500k fine for this kind of reverse engineering, even if it does not result in a copyright infringement."
+          },
+          {
+            "type": "p",
+            "text": "There's no copyright law that says you can't change the software in your car to activate your high-beams' automatic controller, but that doesn't matter, because activating the controller without BMW's permission requires a reverse-engineering step and that's a felony."
+          },
+          {
+            "type": "p",
+            "text": "Jay Freeman rightly calls this \"felony contempt of business-model\" because it lets companies send you to literal prison for doing otherwise legal things, just because it makes them unhappy."
+          },
+          {
+            "type": "p",
+            "text": "What's more, copyright is a firmly federal matter: copyright law \"pre-empts\" the states, meaning that states can't pass laws that modify federal copyright policy. That means that states can't override DMCA 1201 by legalizing reverse-engineering for otherwise lawful purposes (such as independent repair, performing software upgrades, or allowing generic consumables and parts)."
+          },
+          {
+            "type": "p",
+            "text": "Anticircumvention is an attractive nuisance: it invites manufacturers to dream up as many scams as they can think of and then bury them in their products, secure in the knowledge that it is a literal felony to thwart their commercial plans. It's especially bad for cars, where anticircumvention is used:"
+          },
+          {
+            "type": "li",
+            "text": "to block third-party parts and independent repair;"
+          },
+          {
+            "type": "li",
+            "text": "to prevent drivers from preventing manufacturers, lenders and dealerships from spying on their driving habits, car informatics, and locations;"
+          },
+          {
+            "type": "li",
+            "text": "to enable lenders (and hackers who break into dealerships' computers) to immobilize your car without any notice, appeal or due process:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/07/24/rent-to-pwn/#kitt-is-a-demon"
+          },
+          {
+            "type": "p",
+            "text": "The New York State bill (S.9348A/A.10411A) partially addresses some of these unfair and deceptive practices:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.nysenate.gov/legislation/bills/2025/S9348/amendment/A"
+          },
+          {
+            "type": "p",
+            "text": "Before I get into what this law does (and doesn't) do, I want to get into how it does anything at all. Remember: anticircumvention was shoehorned into copyright law, and copyright is a federal matter. Copyright enjoys pre-emption, a ban on states' modifying it."
+          },
+          {
+            "type": "p",
+            "text": "At first blush, it seems like the states shouldn't be able to do anything about the enshittification that anticircumvention law enables. But the Right to Repair movement came up with a clever hack around pre-emption. States can't override federal copyright law, but state legislatures can regulate goods and services that are sold within their states. That means that states can simply ban the sale of goods that use anticircumvention to rip off or spy on the people who live within state limits."
+          },
+          {
+            "type": "p",
+            "text": "This is the basis for several successful Right to Repair laws, starting in 2022 with Colorado's powered wheelchair repair law (HB22-1031, cosponsored by the very excellent Brianna Titone):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2022/06/08/chair-ish/#r2r"
+          },
+          {
+            "type": "p",
+            "text": "This law does not purport to limit which copyrights the private-equity-backed powered wheelchair duopoly can exercise. It just orders anyone selling powered wheelchairs in Colorado to take steps to enable independent repair such that these copyright issues (including anticircumvention) never arise."
+          },
+          {
+            "type": "p",
+            "text": "This became the template for a slew of state repair bills, including Oregon's electronics repair law, which was later copy/pasted into Washington state law:"
+          },
+          {
+            "type": "p",
+            "text": "https://pirg.org/oregon/updates/governor-kotek-signs-the-right-to-repair-act-into-law/"
+          },
+          {
+            "type": "p",
+            "text": "A very similar law was passed in New York state, only to be gutted by Governor Kathy Hochul:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.techdirt.com/2024/02/07/nys-right-to-repair-law-was-neutered-by-lobbyists-and-governor-hochul-after-passage-now-some-lawmakers-are-trying-to-fix-it/"
+          },
+          {
+            "type": "p",
+            "text": "Hochul will shortly get a chance to redeem herself, when A8405, a law that re-inserts all the provisions she stripped out of the original repair law, comes to her desk:"
+          },
+          {
+            "type": "p",
+            "text": "https://www.nysenate.gov/legislation/bills/2025/A8405"
+          },
+          {
+            "type": "p",
+            "text": "Perhaps Hochul will sign that law. After all, her press release about the new automotive bill sure makes it sound like she's anti-enshittification:"
+          },
+          {
+            "type": "quote",
+            "text": "My message to car companies is clear: this kind of deceptive business model isn’t going to fly in New York State. Keep your hands out of New Yorkers’ wallets."
+          },
+          {
+            "type": "p",
+            "text": "https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-signs-bill-restricting-exploitative-vehicle-subscription"
+          },
+          {
+            "type": "p",
+            "text": "But the specifics of this new NY automotive bill matter, and they're a decidedly mixed bag. Let's start with the penalty for noncompliance: a dealer, automotive manufacturer or lender who violates the new law faces a whopping $250 fine per violation. That means that if your dealer charges you $1,000 for a software upgrade and you later realize you've been ripped off, they'll only pay a penalty of $250."
+          },
+          {
+            "type": "p",
+            "text": "In this case, a dealer who manages to fleece one driver for every three who know their rights and can figure out how to enforce them will still come out ahead – and that's only if you can get the dealer to refund your $1000, which might involve going to small claims court."
+          },
+          {
+            "type": "p",
+            "text": "Then there's the carve-outs: this law does not cover subscription fees and software upsells for \"navigation system updates, infotainment features, satellite radio, in-vehicle wi-fi, telematics services, roadside assistance, software-dependent driver assistance or driver automation features, or vehicle-connected services that rely on cellular or other data networks for continued operation.\""
+          },
+          {
+            "type": "p",
+            "text": "This is a huge loophole. Take that last clause, \"services that rely on cellular or other data networks for continued operation.\" This clause allows manufacturers to bypass the entire statute, merely by redesigning their subscription and software upsells to \"rely on cellular or other data networks for continued operation.\" For example, the BMW feature that automatically dips your high-beams could \"require\" a daily check for new versions and then the company can claim that the feature relies \"on cellular or other data networks for continued operation.\""
+          },
+          {
+            "type": "p",
+            "text": "Sure, a judge might eventually find that \"continued operation\" doesn't mean a daily check for software updates, but only after the state AG or a class action lawyer forces the question, which could take years. Also: don't hold your breath waiting for the class action lawyer, because the car manufacturers can also make you click through a binding arbitration waiver when you first turn on your car and thus take away your right to join a class action:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2025/10/27/shit-shack/#binding-arbitration"
+          },
+          {
+            "type": "p",
+            "text": "Beyond this, there's the breadth of vague phrases like \"driver automation features\" (is automatically dipping your high-beams a \"driver automation feature?\" I could sure see a lawyer making that argument). Likewise \"telematics\" (a buzzword that might mean anything, nothing or everything)."
+          },
+          {
+            "type": "p",
+            "text": "On the other hand, there are some interesting ambiguities in this bill that I quite like. For example: if you live in New Jersey, but you happen to be in New York on the day Tesla bills you for subscribing to your whole battery (some Tesla models only let you use half your battery's charge unless you pay a monthly fee). Does that mean Tesla violated the law by charging a fee for a subscription feature for a car that is in the state of New York? That would be a fun one to see!"
+          },
+          {
+            "type": "p",
+            "text": "Like I said, this is only a partial fix for auto-enshittification. It won't stop your car from spying on you and ratting you out to your insurer:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/03/12/market-failure/#car-wars"
+          },
+          {
+            "type": "p",
+            "text": "It won't help you if the manufacturer goes bust and bricks your car:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2024/10/10/software-based-car/#based"
+          },
+          {
+            "type": "p",
+            "text": "It won't help you if Tesla hacks your odometer to sell a lie about the range you can expect from your charge:"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/2023/07/28/edison-not-tesla/#demon-haunted-world"
+          },
+          {
+            "type": "p",
+            "text": "This law would have had much more effect if it was better-drafted; on the other hand, maybe if it was drafted to capture a more meaningful slice of enshittificatory gambits, Hochul would have gutted it the way she did with the state's 2022 electronics repair bill."
+          },
+          {
+            "type": "p",
+            "text": "Above all, though, we must remember: the only reason this bill exists at all is that Congress created DMCA 1201, the \"felony contempt of business-model\" law that lets companies conjure new crimes out of thin air and send you to prison for making their shareholders sad."
+          },
+          {
+            "type": "p",
+            "text": "It's fantastic that the Repair Coalition came up with a loophole that lets states protect the American public from some of the worst effects of anticircumvention law, and it's cool that this tactic is being used to fight other kinds of enshittification."
+          },
+          {
+            "type": "p",
+            "text": "But none of this should be necessary at all, and the real fix is for Congress to repeal Section 1201 of the Digital Millennium Copyright Act."
+          },
+          {
+            "type": "h2",
+            "text": "Hey look at this (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "The Influentials 2026 https://torontolife.com/deep-dives/the-50-most-influential-torontonians-of-2026/"
+          },
+          {
+            "type": "li",
+            "text": "Spotted on the D.C. Metro: Trump Staffer Accidentally Reveals Plan for Smithsonian Overhaul https://www.propublica.org/article/dc-metro-smithsonian-american-history-plan"
+          },
+          {
+            "type": "li",
+            "text": "Toward a political revolution at the United Nations https://thomaspiketty.wordpress.com/2026/11/24/toward-a-political-revolution-at-the-united-nations/"
+          },
+          {
+            "type": "li",
+            "text": "Mater Catalogue https://materusa.com/pages/catalogues"
+          },
+          {
+            "type": "li",
+            "text": "The ‘Slop Tank’ Pipeline: How The British Press Keeps Regurgitating This Lie About Foreign Workers https://bylinetimes.com/2026/11/25/the-slop-tank-pipeline-how-the-british-press-keeps-regurgitating-this-lie-about-foreign-workers/"
+          },
+          {
+            "type": "h2",
+            "text": "Object permanence (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago Copyright Office creates 6 DMCA exemptions https://web.archive.org/web/20061125140940/http://www.eff.org/deeplinks/archives/005021.php"
+          },
+          {
+            "type": "p",
+            "text": "#20yrsago PSP homebrewers develop DRM https://web.archive.org/web/20061211005619/https://pspupdates.qj.net/Protect-your-homebrew-applications-with-DAS/pg/49/aid/73867"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Why you shouldn’t parse HTML with regexp stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago European Court of Justice: spying with national copyright censorwalls is illegal https://torrentfreak.com/european-court-isps-cant-spy-on-pirating-customers-111124/"
+          },
+          {
+            "type": "p",
+            "text": "#15yrsago Canadian indigenous band declares state of emergency due to horrific conditions, government takes no notice https://www.huffpost.com/archive/ca/entry/what-if-they-declared-an-emergency-and-no-one-came_b_1104370#undefined"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Russian social media erupts as Putin apparat tries to suppress video of booing crowd https://www.bbc.co.uk/news/world-europe-15869047"
+          },
+          {
+            "type": "p",
+            "text": "#10yrsago Conservative Alberta politician changes sides over Trumpism, gets gendered death threats and slurs from the Tory base https://calgaryherald.com/news/politics/braid-jansen-stuns-legislature-by-reading-out-explicit-anti-female-slurs"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago The Tesla-financial complex https://pluralistic.net/2021/11/24/no-puedo-pagar-no-pagara/#Rat"
+          },
+          {
+            "type": "p",
+            "text": "#5yrsago Spaniards fight Wall Street landlords https://pluralistic.net/2021/11/24/no-puedo-pagar-no-pagara/#fuckin-aardvarks"
+          },
+          {
+            "type": "p",
+            "text": "#1yrago Cooking in Maximum Security https://pluralistic.net/2025/11/24/moca-moka/#culinary-apollo-13"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Sheffield: Reverse Centaur at Juno Books, Nov 25\nhttps://www.outsavvy.com/event/40274/cory-doctorow-in-conversation"
+          },
+          {
+            "type": "li",
+            "text": "Virtual: Enshittification, AI, and the Future of Technology (UBC Master of Educational Technology), Nov 28\nhttps://met.ubc.ca/2026/09/met-speaker-series-cory-doctorow-enshittification-ai-and-the-future-of-technology/"
+          },
+          {
+            "type": "li",
+            "text": "Oxford: Bennett Oxford Symposium on Open Code in Science, Dec 8\nhttps://www.bennett.ox.ac.uk/events/2026-bennett-institute-symposium/"
+          },
+          {
+            "type": "li",
+            "text": "Santa Barbara: UCSB Reads, Apr 29\nhttps://www.library.ucsb.edu/events-exhibitions/ucsb-reads-2027-presents-author-cory-doctorow"
+          },
+          {
+            "type": "li",
+            "text": "Montreal: World Science Fiction Convention, Sep 2-6\nhttps://montreal2027.ca/en"
+          },
+          {
+            "type": "h2",
+            "text": "Recent appearances (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "Beyond the robot apocalypse – who really wins in a world of AI? (ABC Conversations)\nhttps://www.abc.net.au/listen/programs/conversations/cory-doctorow-artificial-intelligence/107388236"
+          },
+          {
+            "type": "li",
+            "text": "How AI is Breaking the Internet (and Everything Else) (Blood in the Machine)\nhttps://www.youtube.com/watch?v=mXRaPjFRyT0"
+          },
+          {
+            "type": "li",
+            "text": "Clint Eastwood (No Gods No Mayors)\nhttps://www.patreon.com/NoGodsNoMayors/posts/clint-eastwood-173008088"
+          },
+          {
+            "type": "li",
+            "text": "Life After AI (Brain Bar)\nhttps://www.youtube.com/watch?v=IPPa43-n0vI"
+          },
+          {
+            "type": "li",
+            "text": "Terms of Service with Clare Duffy (CNN)\nhttps://www.cnn.com/audio/podcasts/terms-of-service-with-clare-duffy/episodes/458ce968-af5d-11f0-b539-13ed2afe25f8"
+          },
+          {
+            "type": "h2",
+            "text": "Latest books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/"
+          },
+          {
+            "type": "li",
+            "text": "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/"
+          },
+          {
+            "type": "li",
+            "text": "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org)."
+          },
+          {
+            "type": "li",
+            "text": "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245)."
+          },
+          {
+            "type": "li",
+            "text": "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com."
+          },
+          {
+            "type": "li",
+            "text": "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com"
+          },
+          {
+            "type": "h2",
+            "text": "Upcoming books (permalink)"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027"
+          },
+          {
+            "type": "li",
+            "text": "\"The Memex Method,\" Farrar, Straus, Giroux, 2027"
+          },
+          {
+            "type": "h2",
+            "text": "Colophon (permalink)"
+          },
+          {
+            "type": "p",
+            "text": "Today's top sources:"
+          },
+          {
+            "type": "p",
+            "text": "Currently writing:"
+          },
+          {
+            "type": "li",
+            "text": "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor."
+          },
+          {
+            "type": "li",
+            "text": "A Little Brother short story about DIY insulin PLANNING"
+          },
+          {
+            "type": "p",
+            "text": "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net."
+          },
+          {
+            "type": "p",
+            "text": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          {
+            "type": "p",
+            "text": "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution."
+          },
+          {
+            "type": "h2",
+            "text": "How to get Pluralistic:"
+          },
+          {
+            "type": "p",
+            "text": "Blog (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "Pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Newsletter (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://pluralistic.net/plura-list"
+          },
+          {
+            "type": "p",
+            "text": "Mastodon (no ads, tracking, or data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://mamot.fr/@pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "Bluesky (no ads, possible tracking and data-collection):"
+          },
+          {
+            "type": "p",
+            "text": "https://bsky.app/profile/doctorow.pluralistic.net"
+          },
+          {
+            "type": "p",
+            "text": "Medium (no ads, paywalled):"
+          },
+          {
+            "type": "p",
+            "text": "https://doctorow.medium.com/"
+          },
+          {
+            "type": "p",
+            "text": "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):"
+          },
+          {
+            "type": "p",
+            "text": "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic"
+          },
+          {
+            "type": "p",
+            "text": "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla"
+          },
+          {
+            "type": "p",
+            "text": "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer."
+          },
+          {
+            "type": "p",
+            "text": "ISSN: 3066-764X"
+          }
+        ],
+        "translations": [
+          "Today's links",
+          "New York vs auto-enshittification: A blueprint for states to fix Congress's mistake.",
+          "Hey look at this: Delights to delectate.",
+          "Object permanence: Homebrew DRM; HTML v regexp; Tesla-financial complex; Spain v Wall St landlords; \"Cooking in Maximum Security.\"",
+          "Upcoming appearances: Virtual, Oxford, Santa Barbara, Montreal, Sheffield.",
+          "Recent appearances: Where I've been.",
+          "Latest books: You keep readin' em, I'll keep writin' 'em.",
+          "Upcoming books: Like I said, I'll keep writin' 'em.",
+          "Colophon: All the rest.",
+          "New York vs auto-enshittification (permalink)",
+          "As of February 27, 2027, it will be illegal for companies in New York to charge car-owners a subscription fee or an upcharge for any software feature that runs on hardware already installed in their car. It's a bold – if imperfect – disenshittification gambit aimed at the extremely (and increasingly) enshittified automotive industry:",
+          "https://wgna.com/car-bill-extra-fees/",
+          "In a state of nature, there'd be no reason to pass a law like this. Say BMW decided to sell you a car that charged you a monthly subscription for the \"feature\" that auto-dipped your high-beams when there was an oncoming car (a thing BMW actually does):",
+          "https://www.autoevolution.com/news/netizens-up-in-arms-over-bmw-adaptive-headlight-subscription-237335.html",
+          "In a state of nature, BMW's sleazy scam would conjure forth competitors who would offer mechanics and drivers a one-click way to unlock the feature forever. Drivers would curse BMW and pay a one-time fee to get permanent access to the feature, and that would be the end of the matter. Indeed, the fact that this third-party fix could exist at all might well convince BMW not to bother with the high-beam scam in the first place (and if it didn't, well, then tinkerers, hackers, and entrepreneurs would swiftly obviate it).",
+          "But we don't live in a state of nature. We live in a world with a federal \"anticircumvention\" law: Section 1201 of the Digital Millennium Copyright Act (DMCA 1201), which imposes a 5-year sentence and a $500k fine for this kind of reverse engineering, even if it does not result in a copyright infringement.",
+          "There's no copyright law that says you can't change the software in your car to activate your high-beams' automatic controller, but that doesn't matter, because activating the controller without BMW's permission requires a reverse-engineering step and that's a felony.",
+          "Jay Freeman rightly calls this \"felony contempt of business-model\" because it lets companies send you to literal prison for doing otherwise legal things, just because it makes them unhappy.",
+          "What's more, copyright is a firmly federal matter: copyright law \"pre-empts\" the states, meaning that states can't pass laws that modify federal copyright policy. That means that states can't override DMCA 1201 by legalizing reverse-engineering for otherwise lawful purposes (such as independent repair, performing software upgrades, or allowing generic consumables and parts).",
+          "Anticircumvention is an attractive nuisance: it invites manufacturers to dream up as many scams as they can think of and then bury them in their products, secure in the knowledge that it is a literal felony to thwart their commercial plans. It's especially bad for cars, where anticircumvention is used:",
+          "to block third-party parts and independent repair;",
+          "to prevent drivers from preventing manufacturers, lenders and dealerships from spying on their driving habits, car informatics, and locations;",
+          "to enable lenders (and hackers who break into dealerships' computers) to immobilize your car without any notice, appeal or due process:",
+          "https://pluralistic.net/2023/07/24/rent-to-pwn/#kitt-is-a-demon",
+          "The New York State bill (S.9348A/A.10411A) partially addresses some of these unfair and deceptive practices:",
+          "https://www.nysenate.gov/legislation/bills/2025/S9348/amendment/A",
+          "Before I get into what this law does (and doesn't) do, I want to get into how it does anything at all. Remember: anticircumvention was shoehorned into copyright law, and copyright is a federal matter. Copyright enjoys pre-emption, a ban on states' modifying it.",
+          "At first blush, it seems like the states shouldn't be able to do anything about the enshittification that anticircumvention law enables. But the Right to Repair movement came up with a clever hack around pre-emption. States can't override federal copyright law, but state legislatures can regulate goods and services that are sold within their states. That means that states can simply ban the sale of goods that use anticircumvention to rip off or spy on the people who live within state limits.",
+          "This is the basis for several successful Right to Repair laws, starting in 2022 with Colorado's powered wheelchair repair law (HB22-1031, cosponsored by the very excellent Brianna Titone):",
+          "https://pluralistic.net/2022/06/08/chair-ish/#r2r",
+          "This law does not purport to limit which copyrights the private-equity-backed powered wheelchair duopoly can exercise. It just orders anyone selling powered wheelchairs in Colorado to take steps to enable independent repair such that these copyright issues (including anticircumvention) never arise.",
+          "This became the template for a slew of state repair bills, including Oregon's electronics repair law, which was later copy/pasted into Washington state law:",
+          "https://pirg.org/oregon/updates/governor-kotek-signs-the-right-to-repair-act-into-law/",
+          "A very similar law was passed in New York state, only to be gutted by Governor Kathy Hochul:",
+          "https://www.techdirt.com/2024/02/07/nys-right-to-repair-law-was-neutered-by-lobbyists-and-governor-hochul-after-passage-now-some-lawmakers-are-trying-to-fix-it/",
+          "Hochul will shortly get a chance to redeem herself, when A8405, a law that re-inserts all the provisions she stripped out of the original repair law, comes to her desk:",
+          "https://www.nysenate.gov/legislation/bills/2025/A8405",
+          "Perhaps Hochul will sign that law. After all, her press release about the new automotive bill sure makes it sound like she's anti-enshittification:",
+          "My message to car companies is clear: this kind of deceptive business model isn’t going to fly in New York State. Keep your hands out of New Yorkers’ wallets.",
+          "https://www.governor.ny.gov/news/money-your-pockets-governor-hochul-signs-bill-restricting-exploitative-vehicle-subscription",
+          "But the specifics of this new NY automotive bill matter, and they're a decidedly mixed bag. Let's start with the penalty for noncompliance: a dealer, automotive manufacturer or lender who violates the new law faces a whopping $250 fine per violation. That means that if your dealer charges you $1,000 for a software upgrade and you later realize you've been ripped off, they'll only pay a penalty of $250.",
+          "In this case, a dealer who manages to fleece one driver for every three who know their rights and can figure out how to enforce them will still come out ahead – and that's only if you can get the dealer to refund your $1000, which might involve going to small claims court.",
+          "Then there's the carve-outs: this law does not cover subscription fees and software upsells for \"navigation system updates, infotainment features, satellite radio, in-vehicle wi-fi, telematics services, roadside assistance, software-dependent driver assistance or driver automation features, or vehicle-connected services that rely on cellular or other data networks for continued operation.\"",
+          "This is a huge loophole. Take that last clause, \"services that rely on cellular or other data networks for continued operation.\" This clause allows manufacturers to bypass the entire statute, merely by redesigning their subscription and software upsells to \"rely on cellular or other data networks for continued operation.\" For example, the BMW feature that automatically dips your high-beams could \"require\" a daily check for new versions and then the company can claim that the feature relies \"on cellular or other data networks for continued operation.\"",
+          "Sure, a judge might eventually find that \"continued operation\" doesn't mean a daily check for software updates, but only after the state AG or a class action lawyer forces the question, which could take years. Also: don't hold your breath waiting for the class action lawyer, because the car manufacturers can also make you click through a binding arbitration waiver when you first turn on your car and thus take away your right to join a class action:",
+          "https://pluralistic.net/2025/10/27/shit-shack/#binding-arbitration",
+          "Beyond this, there's the breadth of vague phrases like \"driver automation features\" (is automatically dipping your high-beams a \"driver automation feature?\" I could sure see a lawyer making that argument). Likewise \"telematics\" (a buzzword that might mean anything, nothing or everything).",
+          "On the other hand, there are some interesting ambiguities in this bill that I quite like. For example: if you live in New Jersey, but you happen to be in New York on the day Tesla bills you for subscribing to your whole battery (some Tesla models only let you use half your battery's charge unless you pay a monthly fee). Does that mean Tesla violated the law by charging a fee for a subscription feature for a car that is in the state of New York? That would be a fun one to see!",
+          "Like I said, this is only a partial fix for auto-enshittification. It won't stop your car from spying on you and ratting you out to your insurer:",
+          "https://pluralistic.net/2024/03/12/market-failure/#car-wars",
+          "It won't help you if the manufacturer goes bust and bricks your car:",
+          "https://pluralistic.net/2024/10/10/software-based-car/#based",
+          "It won't help you if Tesla hacks your odometer to sell a lie about the range you can expect from your charge:",
+          "https://pluralistic.net/2023/07/28/edison-not-tesla/#demon-haunted-world",
+          "This law would have had much more effect if it was better-drafted; on the other hand, maybe if it was drafted to capture a more meaningful slice of enshittificatory gambits, Hochul would have gutted it the way she did with the state's 2022 electronics repair bill.",
+          "Above all, though, we must remember: the only reason this bill exists at all is that Congress created DMCA 1201, the \"felony contempt of business-model\" law that lets companies conjure new crimes out of thin air and send you to prison for making their shareholders sad.",
+          "It's fantastic that the Repair Coalition came up with a loophole that lets states protect the American public from some of the worst effects of anticircumvention law, and it's cool that this tactic is being used to fight other kinds of enshittification.",
+          "But none of this should be necessary at all, and the real fix is for Congress to repeal Section 1201 of the Digital Millennium Copyright Act.",
+          "Hey look at this (permalink)",
+          "The Influentials 2026 https://torontolife.com/deep-dives/the-50-most-influential-torontonians-of-2026/",
+          "Spotted on the D.C. Metro: Trump Staffer Accidentally Reveals Plan for Smithsonian Overhaul https://www.propublica.org/article/dc-metro-smithsonian-american-history-plan",
+          "Toward a political revolution at the United Nations https://thomaspiketty.wordpress.com/2026/11/24/toward-a-political-revolution-at-the-united-nations/",
+          "Mater Catalogue https://materusa.com/pages/catalogues",
+          "The ‘Slop Tank’ Pipeline: How The British Press Keeps Regurgitating This Lie About Foreign Workers https://bylinetimes.com/2026/11/25/the-slop-tank-pipeline-how-the-british-press-keeps-regurgitating-this-lie-about-foreign-workers/",
+          "Object permanence (permalink)",
+          "#20yrsago Copyright Office creates 6 DMCA exemptions https://web.archive.org/web/20061125140940/http://www.eff.org/deeplinks/archives/005021.php",
+          "#20yrsago PSP homebrewers develop DRM https://web.archive.org/web/20061211005619/https://pspupdates.qj.net/Protect-your-homebrew-applications-with-DAS/pg/49/aid/73867",
+          "#15yrsago Why you shouldn’t parse HTML with regexp stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags/1732454#1732454",
+          "#15yrsago European Court of Justice: spying with national copyright censorwalls is illegal https://torrentfreak.com/european-court-isps-cant-spy-on-pirating-customers-111124/",
+          "#15yrsago Canadian indigenous band declares state of emergency due to horrific conditions, government takes no notice https://www.huffpost.com/archive/ca/entry/what-if-they-declared-an-emergency-and-no-one-came_b_1104370#undefined",
+          "#10yrsago Russian social media erupts as Putin apparat tries to suppress video of booing crowd https://www.bbc.co.uk/news/world-europe-15869047",
+          "#10yrsago Conservative Alberta politician changes sides over Trumpism, gets gendered death threats and slurs from the Tory base https://calgaryherald.com/news/politics/braid-jansen-stuns-legislature-by-reading-out-explicit-anti-female-slurs",
+          "#5yrsago The Tesla-financial complex https://pluralistic.net/2021/11/24/no-puedo-pagar-no-pagara/#Rat",
+          "#5yrsago Spaniards fight Wall Street landlords https://pluralistic.net/2021/11/24/no-puedo-pagar-no-pagara/#fuckin-aardvarks",
+          "#1yrago Cooking in Maximum Security https://pluralistic.net/2025/11/24/moca-moka/#culinary-apollo-13",
+          "Upcoming appearances (permalink)",
+          "Sheffield: Reverse Centaur at Juno Books, Nov 25\nhttps://www.outsavvy.com/event/40274/cory-doctorow-in-conversation",
+          "Virtual: Enshittification, AI, and the Future of Technology (UBC Master of Educational Technology), Nov 28\nhttps://met.ubc.ca/2026/09/met-speaker-series-cory-doctorow-enshittification-ai-and-the-future-of-technology/",
+          "Oxford: Bennett Oxford Symposium on Open Code in Science, Dec 8\nhttps://www.bennett.ox.ac.uk/events/2026-bennett-institute-symposium/",
+          "Santa Barbara: UCSB Reads, Apr 29\nhttps://www.library.ucsb.edu/events-exhibitions/ucsb-reads-2027-presents-author-cory-doctorow",
+          "Montreal: World Science Fiction Convention, Sep 2-6\nhttps://montreal2027.ca/en",
+          "Recent appearances (permalink)",
+          "Beyond the robot apocalypse – who really wins in a world of AI? (ABC Conversations)\nhttps://www.abc.net.au/listen/programs/conversations/cory-doctorow-artificial-intelligence/107388236",
+          "How AI is Breaking the Internet (and Everything Else) (Blood in the Machine)\nhttps://www.youtube.com/watch?v=mXRaPjFRyT0",
+          "Clint Eastwood (No Gods No Mayors)\nhttps://www.patreon.com/NoGodsNoMayors/posts/clint-eastwood-173008088",
+          "Life After AI (Brain Bar)\nhttps://www.youtube.com/watch?v=IPPa43-n0vI",
+          "Terms of Service with Clare Duffy (CNN)\nhttps://www.cnn.com/audio/podcasts/terms-of-service-with-clare-duffy/episodes/458ce968-af5d-11f0-b539-13ed2afe25f8",
+          "Latest books (permalink)",
+          "\"The Reverse-Centaur's Guide to AI,\" a short book about being a better AI critic, Farrar, Straus and Giroux, June 2026\nhttps://us.macmillan.com/books/9780374621568/thereversecentaursguidetolifeafterai/",
+          "\"Canny Valley\": A limited edition collection of the collages I create for Pluralistic, self-published, September 2025 https://pluralistic.net/2025/09/04/illustrious/#chairman-bruce",
+          "\"Enshittification: Why Everything Suddenly Got Worse and What to Do About It,\" Farrar, Straus, Giroux, October 7 2025\nhttps://us.macmillan.com/books/9780374619329/enshittification/",
+          "\"Picks and Shovels\": a sequel to \"Red Team Blues,\" about the heroic era of the PC, Tor Books (US), Head of Zeus (UK), February 2025 (https://us.macmillan.com/books/9781250865908/picksandshovels).",
+          "\"The Bezzle\": a sequel to \"Red Team Blues,\" about prison-tech and other grifts, Tor Books (US), Head of Zeus (UK), February 2024 (thebezzle.org).",
+          "\"The Lost Cause:\" a solarpunk novel of hope in the climate emergency, Tor Books (US), Head of Zeus (UK), November 2023 (http://lost-cause.org).",
+          "\"The Internet Con\": A nonfiction book about interoperability and Big Tech (Verso) September 2023 (http://seizethemeansofcomputation.org). Signed copies at Book Soup (https://www.booksoup.com/book/9781804291245).",
+          "\"Red Team Blues\": \"A grabby, compulsive thriller that will leave you knowing more about how the world works than you did before.\" Tor Books http://redteamblues.com.",
+          "\"Chokepoint Capitalism: How to Beat Big Tech, Tame Big Content, and Get Artists Paid, with Rebecca Giblin\", on how to unrig the markets for creative labor, Beacon Press/Scribe 2022 https://chokepointcapitalism.com",
+          "Upcoming books (permalink)",
+          "\"The Post-American Internet,\" a geopolitical sequel of sorts to Enshittification, Farrar, Straus and Giroux, 2027",
+          "\"Unauthorized Bread\": a middle-grades graphic novel adapted from my novella about refugees, toasters and DRM, FirstSecond, April 20, 2027",
+          "\"Enshittification, Why Everything Suddenly Got Worse and What to Do About It\" (the graphic novel), Firstsecond, 2027",
+          "\"The Memex Method,\" Farrar, Straus, Giroux, 2027",
+          "Colophon (permalink)",
+          "Today's top sources:",
+          "Currently writing:",
+          "\"The Post-American Internet,\" a sequel to \"Enshittification,\" about the better world the rest of us get to have now that Trump has torched America. Fourth draft completed. Submitted to editor.",
+          "A Little Brother short story about DIY insulin PLANNING",
+          "This work – excluding any serialized fiction – is licensed under a Creative Commons Attribution 4.0 license. That means you can use it any way you like, including commercially, provided that you attribute it to me, Cory Doctorow, and include a link to pluralistic.net.",
+          "https://creativecommons.org/licenses/by/4.0/",
+          "Quotations and images are not included in this license; they are included either under a limitation or exception to copyright, or on the basis of a separate license. Please exercise caution.",
+          "How to get Pluralistic:",
+          "Blog (no ads, tracking, or data-collection):",
+          "Pluralistic.net",
+          "Newsletter (no ads, tracking, or data-collection):",
+          "https://pluralistic.net/plura-list",
+          "Mastodon (no ads, tracking, or data-collection):",
+          "https://mamot.fr/@pluralistic",
+          "Bluesky (no ads, possible tracking and data-collection):",
+          "https://bsky.app/profile/doctorow.pluralistic.net",
+          "Medium (no ads, paywalled):",
+          "https://doctorow.medium.com/",
+          "Tumblr (mass-scale, unrestricted, third-party surveillance and advertising):",
+          "https://mostlysignssomeportents.tumblr.com/tagged/pluralistic",
+          "\"When life gives you SARS, you make sarsaparilla\" -Joey \"Accordion Guy\" DeVilla",
+          "READ CAREFULLY: By reading this, you agree, on behalf of your employer, to release me from all obligations and waivers arising from any and all NON-NEGOTIATED agreements, licenses, terms-of-service, shrinkwrap, clickwrap, browsewrap, confidentiality, non-disclosure, non-compete and acceptable use policies (\"BOGUS AGREEMENTS\") that I have entered into with your employer, its partners, licensors, agents and assigns, in perpetuity, without prejudice to my ongoing rights and privileges. You further represent that you have the authority to release me from any BOGUS AGREEMENTS on behalf of your employer.",
+          "ISSN: 3066-764X"
+        ]
+      }
+    },
+    {
+      "slug": "ea4ebb35e2264c01",
+      "title": "Book Review: Slow Gods by Claire North ★★★★⯪",
+      "titleZh": "Book Review: Slow Gods by Claire North ★★★★⯪",
+      "link": "https://shkspr.mobi/blog/2026/11/book-review-slow-gods-by-claire-north/",
+      "sourceName": "shkspr.mobi",
+      "sourceUrl": "https://shkspr.mobi",
+      "pubDate": "2026-11-25T12:34:34.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Book Review: Slow Gods by Claire North ★★★★⯪",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Terence Eden",
+        "siteName": "Terence Eden’s Blog",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "Cor! This is a great big doorstop of a space opera. It perfectly co-opts the language of pulp sci-fi without becoming pulpy. If you've read plenty of sci-fi, you'll be familiar with some of the tropes and how the author has reinvented them. There are shades of Murderbot's autistic meltdowns, the living ships from Of Monsters and Mainframes, and a million other stories."
+          },
+          {
+            "type": "p",
+            "text": "The book flips between genres effortlessly. You're reading a space-diplomacy novel, then you're in a battle, then there's this-Earth-emotion-you-call-love, then galactic politics, then you realise you're in a ghost story. It is episodic with plenty of great cliff-hangers. The cultures are sufficiently otherworldly and the plot feels sufficiently plausible."
+          },
+          {
+            "type": "p",
+            "text": "One of the supposed \"rules\" of sci-fi is that no-one cares about your world building. You don't need to explain that the economy of Rigel Ⅶ is based on gibzits, nor should you go on an extended diversion about how FTL travel works in this universe. Claire North happily and wisely doesn't give a shit about these conventions and dedicates several blissful chapters to the intricacies of the universe. At times it feels like a pop-science history book for an alternate reality."
+          },
+          {
+            "type": "p",
+            "text": "One particularly impressive chapter is about the plethora of pronouns scattered throughout the book. Perhaps it is a little bit satirical? Either way, it's an excellent look at how languages and cultures evolve. Similarly, Russia's war of aggression against Ukraine and the tepid response of some nations is given short shrift here."
+          },
+          {
+            "type": "p",
+            "text": "A fun and fearsome read."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "a77cf9386d752427",
+      "title": "Covering a body with eight smaller copies of itself",
+      "titleZh": "Covering a body with eight smaller copies of itself",
+      "link": "https://www.johndcook.com/blog/2026/11/25/hadwiger-covering/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-11-25T14:51:58.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Covering a body with eight smaller copies of itself",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": true,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "It’s obvious that you could cover a cube with smaller cubes. You could, for example, take a cube with side 1 and cover it a cube of side ½ centered on each corner."
+          },
+          {
+            "type": "p",
+            "text": "It’s not as obvious how you would cover a ball with smaller balls, but you could cover the unit ball with balls of radius ½√3 centered at the points (±½, ±½, ±½)."
+          },
+          {
+            "type": "p",
+            "text": "In fact, you could cover a ball with four smaller balls [1]."
+          },
+          {
+            "type": "p",
+            "text": "Now consider an arbitrary convex shape K in three dimensions with non-empty interior. Is it possible to cover K by copies of itself? Since K has non-empty interior, you could cover K by putting a smaller version of K around every point. And if K is compact, then this cover has a finite subcover. But there might be a lot of elements in this finite cover. What’s the minimum number possible in general? It takes eight cubes to cover a cube, so the minimum is at least 8. But could some odd shape take more?"
+          },
+          {
+            "type": "p",
+            "text": "Hadwiger’s covering conjecture says that K can be covered by eight copies of itself. That is, there exists a scaling constant 0 < λ < 1 and shift vectors vi such that"
+          },
+          {
+            "type": "p",
+            "text": "Dror Aiger, Sariel Har-Peled, and Goran Žužić posted a proof of Hadwiger’s conjecture on arXiv yesterday. The abstract to their paper says “The proof was discovered using an experimental harness on top of Gemini 4 Carbon and formally verified in Lean 4.”"
+          },
+          {
+            "type": "p",
+            "text": "I’ve heard good things about the Google’s new Carbon model. This is the first announcement of a major theorem proved with the assistance of a Google model that I’ve noticed."
+          },
+          {
+            "type": "h2",
+            "text": "Related posts"
+          },
+          {
+            "type": "li",
+            "text": "Splitting a convex set through its center"
+          },
+          {
+            "type": "li",
+            "text": "Convex hull of zeros"
+          },
+          {
+            "type": "li",
+            "text": "Separation of Convex Sets in Linear Topological Spaces"
+          },
+          {
+            "type": "p",
+            "text": "[1] Inscribe the vertices of regular tetrahedron on the unit sphere, then multiply the vectors representing the vertices by ⅓. Center spheres of radius ⅔√2 at each vertex."
+          }
+        ],
+        "translations": []
+      }
+    },
+    {
+      "slug": "4cd1b62cb8204c88",
+      "title": "Polynomials and Planets",
+      "titleZh": "Polynomials and Planets",
+      "link": "https://www.johndcook.com/blog/2026/11/25/polynomials-and-planets/",
+      "sourceName": "johndcook.com",
+      "sourceUrl": "https://johndcook.com",
+      "pubDate": "2026-11-25T13:44:21.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Polynomials and Planets",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "John",
+        "siteName": "John D. Cook | Applied Mathematics Consulting",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "A couple days ago I wrote about how the force of gravity varies over the surface of an oblate planet. Earth is slightly oblate, i.e., it has an equatorial bulge, and this oblateness has a significant effect on satellite orbits. More on that here."
+          },
+          {
+            "type": "p",
+            "text": "The fictional planet Mesklin in Hal Clement’s novel Mission of Gravity is extremely oblate due to its rapid rotation, and apparent gravity varies by two orders of magnitude between the equator and the poles. As science fiction authors often do, Clement took some aspect of familiar experience and exaggerated it to make it easier to appreciate."
+          },
+          {
+            "type": "p",
+            "text": "The gravitational potential of an oblate spheroid as a function of the polar angle θ is proportional to"
+          },
+          {
+            "type": "p",
+            "text": "1 − J2 P2(cos θ)"
+          },
+          {
+            "type": "p",
+            "text": "where P2 is the second Legendre polynomial. There are more terms of the form"
+          },
+          {
+            "type": "p",
+            "text": "J2n P2n(cos θ)"
+          },
+          {
+            "type": "p",
+            "text": "but the most significant term is the one with coefficient J2, hence the J2 effect."
+          },
+          {
+            "type": "p",
+            "text": "I learned about Legendre polynomials long before I learned about gravity calculations, and so my first reaction when seeing the result above would be that gravitational calculations are another example of places where Legendre polynomials pop up. While this is true, it’s historically backward. Legendre discovered the polynomials that now bear his name because they came up in his gravitational calculations."
+          },
+          {
+            "type": "p",
+            "text": "It would be more historically informed to say that the polynomials falling out of Legendre’s exploration of gravity have found applications elsewhere, and often for the same reasons: because they fall out of calculations involving radial symmetry. That’s why they appear in E&M, acoustics, and quantum mechanics."
+          },
+          {
+            "type": "p",
+            "text": "Legendre polynomials also appear in applications that have nothing to do with radial symmetry. For example, the most common form of Gaussian quadrature is based on Legendre polynomials. More on that here."
+          }
+        ],
+        "translations": [
+          "A couple days ago I wrote about how the force of gravity varies over the surface of an oblate planet. Earth is slightly oblate, i.e., it has an equatorial bulge, and this oblateness has a significant effect on satellite orbits. More on that here.",
+          "The fictional planet Mesklin in Hal Clement’s novel Mission of Gravity is extremely oblate due to its rapid rotation, and apparent gravity varies by two orders of magnitude between the equator and the poles. As science fiction authors often do, Clement took some aspect of familiar experience and exaggerated it to make it easier to appreciate.",
+          "The gravitational potential of an oblate spheroid as a function of the polar angle θ is proportional to",
+          "1 − J2 P2(cos θ)",
+          "where P2 is the second Legendre polynomial. There are more terms of the form",
+          "J2n P2n(cos θ)",
+          "but the most significant term is the one with coefficient J2, hence the J2 effect.",
+          "I learned about Legendre polynomials long before I learned about gravity calculations, and so my first reaction when seeing the result above would be that gravitational calculations are another example of places where Legendre polynomials pop up. While this is true, it’s historically backward. Legendre discovered the polynomials that now bear his name because they came up in his gravitational calculations.",
+          "It would be more historically informed to say that the polynomials falling out of Legendre’s exploration of gravity have found applications elsewhere, and often for the same reasons: because they fall out of calculations involving radial symmetry. That’s why they appear in E&M, acoustics, and quantum mechanics.",
+          "Legendre polynomials also appear in applications that have nothing to do with radial symmetry. For example, the most common form of Gaussian quadrature is based on Legendre polynomials. More on that here."
+        ]
+      }
+    },
+    {
+      "slug": "8de977e2f9d81ed6",
+      "title": "This Week in Source Control: 25 November 2026",
+      "titleZh": "This Week in Source Control: 25 November 2026",
+      "link": "https://nesbitt.io/2026/11/25/this-week-in-source-control.html",
+      "sourceName": "nesbitt.io",
+      "sourceUrl": "https://nesbitt.io",
+      "pubDate": "2026-11-25T10:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "This Week in Source Control: 25 November 2026",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Andrew Nesbitt",
+        "siteName": "Andrew Nesbitt",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "This week’s version control and forge news, gathered from release feeds for source control clients and forges, the Lobsters vcs tag, Hacker News, and my boosts on Mastodon. Package management news is in the Saturday This Week in Package Management roundup."
+          },
+          {
+            "type": "h2",
+            "text": "Scaling"
+          },
+          {
+            "type": "p",
+            "text": "Scaling horizontally: how we moved beyond Multi-Raft (Enroute) covers the 0.4.0 release of Enroute, a Git server that stores object data in S3 and one replicated log of refs and layers per repository. Under Multi-Raft every repository had its own Raft group with its own heartbeats and elections. At 2,048 concurrent writers across 100,000 repositories, late heartbeats set off thousands of elections and the 99th percentile push time reached 83 seconds."
+          },
+          {
+            "type": "p",
+            "text": "The new design uses failover from Vertical Paxos: a single root log runs Raft and assigns a sequencer to each repository’s log, so timers and elections run only in the root log. The root log leader also places each repository’s three replicas in distinct zones. The protocol is checked with Stateright against the real implementation and with a Jepsen suite. At 300,000 repositories the team measured up to 24,000 pushes per second."
+          },
+          {
+            "type": "p",
+            "text": "Accelerating development for massive Git repositories (The Android ABFS Team, Google Developers Blog) announces the open-sourcing of ABFS, the system Android uses for checkouts and builds. Android 17’s open source release has 1,084 Git repositories and 1.62 million files. A repo sync took around 36 minutes and a full build around 80."
+          },
+          {
+            "type": "p",
+            "text": "ABFS replaces the checkout with CASFS, a Linux kernel filesystem that exposes Git object hashes as extended attributes and fetches file contents on first read. Server-side processes ingest Git objects from Gerrit into a content-addressable store. Ninja-go records which files each build step read and reuses cached results only when those files still match. Checkouts now take under 8 seconds and full builds just over 2 minutes, and a Bazel integration exists as a proof of concept."
+          },
+          {
+            "type": "h2",
+            "text": "Releases"
+          },
+          {
+            "type": "p",
+            "text": "delta 0.21.1 adds a TUI based on a fork of gitu. It can browse git diff, git show and git log output, stage directly from delta-rendered diffs including side-by-side view, fold diffs, and reorder and fixup commits from the log. A new min-width option switches side-by-side mode on or off depending on terminal width. 0.21.2 lets the TUI open terminal editors such as vim and emacs -nw, and shows when a submodule is dirty."
+          },
+          {
+            "type": "p",
+            "text": "GitButler 0.23.5 is now on Flathub as an official, verified package. Pushing the rest of a stack after several of its branches have merged now succeeds, and loading a large project far behind its upstream no longer uses gigabytes of memory. The CLI adds but worktree recycle, which reuses a clean archived worktree, including its build output and dependencies, for a new branch."
+          },
+          {
+            "type": "p",
+            "text": "gt 2.0.0 (bircni, Gitea Blog), the Gitea command-line client, comes just over two weeks after 1.0.0. Its flags now match gh’s, so gt pr merge accepts --squash, --subject and --body. --json now requires a field list, and absent values are always null. Logs of a failed Actions run dropped from about 46,800 tokens to about 11,600, because the output drops timestamps and --failed prints only the failed steps."
+          },
+          {
+            "type": "p",
+            "text": "Commands now run with a GITEA_TOKEN that lacks the read:user scope, so a token limited to read:repository can clone through gt’s credential helper in CI. Keyring entries are stored under gitea-cli:HOST. Local extensions now run only if the executable is owned by the user or root and is not world-writable."
+          },
+          {
+            "type": "p",
+            "text": "GitLab 19.6 makes Rapid Diffs generally available as the replacement for the classic merge request diff view. Diffs are rendered on the server and streamed to the browser, which cuts the time to the first file from about 4.5 seconds to 1.5. Fine-grained personal access tokens can now read more through the GraphQL API, including blame, CODEOWNERS validation and deploy keys. Every action taken through the GitLab MCP server now creates an audit event."
+          },
+          {
+            "type": "p",
+            "text": "Also out: forges v0.4.0."
+          },
+          {
+            "type": "h2",
+            "text": "Security"
+          },
+          {
+            "type": "p",
+            "text": "Forgejo 17.0.2 and 15.0.12 are security releases. The fixes:"
+          },
+          {
+            "type": "li",
+            "text": "With the internal SSH server on SQLite, public keys were matched with a case-insensitive SQL LIKE. A crafted key matching a target user’s key case-insensitively could authenticate as that user through a custom client. Matching is now by exact fingerprint and key content."
+          },
+          {
+            "type": "li",
+            "text": "The endpoint that sets a primary email address accepted unverified addresses. An external service using Forgejo for sign-in could be tricked into granting access to the wrong account."
+          },
+          {
+            "type": "li",
+            "text": "Commit headers were accepted in any order, so a crafted commit could display an incorrect diff."
+          },
+          {
+            "type": "li",
+            "text": "The /tree-list and /find endpoints listed a repository’s files to users who lacked code read access."
+          },
+          {
+            "type": "li",
+            "text": "The /activities/feeds and /heatmap APIs returned data outside the limits of repository-scoped and public-only access tokens."
+          },
+          {
+            "type": "p",
+            "text": "On 16 November malicious JavaScript was served through Optimizely Web to visitors of 178 organisations, Report URI found (Scott Helme). The attacker added code to the customer-written Project JavaScript field of each snippet, and the modified snippets were served from cdn.optimizely.com. The payload swapped cryptocurrency wallet addresses and skimmed payment cards. It also stole cookies and screenshots. Report URI lists gitlab.com and about.gitlab.com among the affected sites."
+          },
+          {
+            "type": "h2",
+            "text": "GitHub"
+          },
+          {
+            "type": "p",
+            "text": "GitHub Desktop 3.7.0 supports more than one signed-in account on the same host. Each repository is associated with one account, which is used for clone, publish and other Git operations. Existing repositories are migrated to the account previously associated with them. On the web, the new dashboard has a Favorite repositories section that syncs with pinned repositories in GitHub Mobile, up to 25 across both."
+          },
+          {
+            "type": "p",
+            "text": "gh v2.105.0 adds gh event listen, which subscribes to a pull request through Event Streams, covered last week, and prints each event as a line of JSON. By default it exits after the first event, and --count, --follow and --timeout change that. gh pr view, gh run watch and gh api now print a hint pointing to it in place of polling. It requires access to the Event Streams preview."
+          },
+          {
+            "type": "p",
+            "text": "In the latest changes to the pull request Overview preview, a mergeable pull request with failed optional checks now shows as mergeable. Force-push entries in the activity link to the old and new commits, commit entries show timestamps, and resolved review threads collapse."
+          },
+          {
+            "type": "p",
+            "text": "The GitHub Enterprise Server 3.23 release candidate adds OAuth app access tokens that expire after eight hours, with refresh tokens. Expiry is the default for new OAuth apps and opt-in for existing ones. Enterprise Live Migrations from Azure DevOps is generally available for GitHub Enterprise Cloud with data residency. It syncs Git history, branches, tags and pull requests continuously until cutover, and converts branch policies to rulesets."
+          },
+          {
+            "type": "p",
+            "text": "Security advisory permissions, in Saturday’s roundup, let custom repository roles manage and publish advisories, which previously required admin access. Seth Larson writes that the Python Security Response Team tested it in a private beta, and that several more PSRT members now take part in triage, work that had fallen to repository admins."
+          },
+          {
+            "type": "p",
+            "text": "The microsoft/onnxruntime repository disappeared on 17 November, first noticed on Hacker News when CI pipelines started failing, and returns a 404 at the time of writing. The StableBuild blog reports that it was removed with no prior announcement. The PyPI packages were still available, but builds that fetched source or release files from GitHub failed."
+          },
+          {
+            "type": "h2",
+            "text": "Elsewhere"
+          },
+          {
+            "type": "p",
+            "text": "Codeberg posted a post-mortem of the 18 November domain suspension covered last week. NameSilo had placed codeberg.org on client hold over two abuse cases without contacting Codeberg. One was a 2022 report that Codeberg disputes, about a repository archived since 2023. The other was malware in an account created on 16 November, reported only to the registrar, not to Codeberg’s abuse address."
+          },
+          {
+            "type": "p",
+            "text": "Codeberg removed both repositories and is evaluating offers from other registrars. It moved its nameservers from NameSilo to deSEC in July. A switch to its spare codeberg.eu domain would affect two-factor authentication and every existing Git remote, and Codeberg is working with Forgejo on multi-domain support."
+          },
+          {
+            "type": "p",
+            "text": "Announcing jj-musubi (Bryan O’Sullivan) introduces jj-musubi, which syncs copies of a Jujutsu repository across machines each time jj snapshots the working copy. One machine runs a hub and the others exchange history with it over SSH. Each machine’s workspaces appear prefixed with its name, so jj diff -r devbox/agent-1@ shows another machine’s work. Temporary VMs can lease membership, and a repository whose lease is not renewed is forgotten."
+          },
+          {
+            "type": "p",
+            "text": "Syncs leave the files in each working copy alone, so new history can arrive while a build runs. O’Sullivan started the project that became Sapling and Mononoke at Meta, and cites Sapling’s Commit Cloud as the model. Key properties of the sync protocol are proved in Lean, and tests compare the Rust code against the Lean model."
+          },
+          {
+            "type": "p",
+            "text": "Jujutsu Primer (Ethan Lowman) introduces jj to Git users in a colocated repository. It covers changes and commits, revsets, automatic rebasing, conflicts, the op log, the squash workflow, bookmarks, and stacked pull requests."
+          },
+          {
+            "type": "p",
+            "text": "TODOs JJ Style (Ben C) describes keeping a to-do list as empty jj changes with descriptions, rebased onto real work when started. A git.private-commits setting of description('private:*') excludes them from pushes."
+          },
+          {
+            "type": "p",
+            "text": "Send links for next week to @[email protected]."
+          }
+        ],
+        "translations": [
+          "This week’s version control and forge news, gathered from release feeds for source control clients and forges, the Lobsters vcs tag, Hacker News, and my boosts on Mastodon. Package management news is in the Saturday This Week in Package Management roundup.",
+          "Scaling",
+          "Scaling horizontally: how we moved beyond Multi-Raft (Enroute) covers the 0.4.0 release of Enroute, a Git server that stores object data in S3 and one replicated log of refs and layers per repository. Under Multi-Raft every repository had its own Raft group with its own heartbeats and elections. At 2,048 concurrent writers across 100,000 repositories, late heartbeats set off thousands of elections and the 99th percentile push time reached 83 seconds.",
+          "The new design uses failover from Vertical Paxos: a single root log runs Raft and assigns a sequencer to each repository’s log, so timers and elections run only in the root log. The root log leader also places each repository’s three replicas in distinct zones. The protocol is checked with Stateright against the real implementation and with a Jepsen suite. At 300,000 repositories the team measured up to 24,000 pushes per second.",
+          "Accelerating development for massive Git repositories (The Android ABFS Team, Google Developers Blog) announces the open-sourcing of ABFS, the system Android uses for checkouts and builds. Android 17’s open source release has 1,084 Git repositories and 1.62 million files. A repo sync took around 36 minutes and a full build around 80.",
+          "ABFS replaces the checkout with CASFS, a Linux kernel filesystem that exposes Git object hashes as extended attributes and fetches file contents on first read. Server-side processes ingest Git objects from Gerrit into a content-addressable store. Ninja-go records which files each build step read and reuses cached results only when those files still match. Checkouts now take under 8 seconds and full builds just over 2 minutes, and a Bazel integration exists as a proof of concept.",
+          "Releases",
+          "delta 0.21.1 adds a TUI based on a fork of gitu. It can browse git diff, git show and git log output, stage directly from delta-rendered diffs including side-by-side view, fold diffs, and reorder and fixup commits from the log. A new min-width option switches side-by-side mode on or off depending on terminal width. 0.21.2 lets the TUI open terminal editors such as vim and emacs -nw, and shows when a submodule is dirty.",
+          "GitButler 0.23.5 is now on Flathub as an official, verified package. Pushing the rest of a stack after several of its branches have merged now succeeds, and loading a large project far behind its upstream no longer uses gigabytes of memory. The CLI adds but worktree recycle, which reuses a clean archived worktree, including its build output and dependencies, for a new branch.",
+          "gt 2.0.0 (bircni, Gitea Blog), the Gitea command-line client, comes just over two weeks after 1.0.0. Its flags now match gh’s, so gt pr merge accepts --squash, --subject and --body. --json now requires a field list, and absent values are always null. Logs of a failed Actions run dropped from about 46,800 tokens to about 11,600, because the output drops timestamps and --failed prints only the failed steps.",
+          "Commands now run with a GITEA_TOKEN that lacks the read:user scope, so a token limited to read:repository can clone through gt’s credential helper in CI. Keyring entries are stored under gitea-cli:HOST. Local extensions now run only if the executable is owned by the user or root and is not world-writable.",
+          "GitLab 19.6 makes Rapid Diffs generally available as the replacement for the classic merge request diff view. Diffs are rendered on the server and streamed to the browser, which cuts the time to the first file from about 4.5 seconds to 1.5. Fine-grained personal access tokens can now read more through the GraphQL API, including blame, CODEOWNERS validation and deploy keys. Every action taken through the GitLab MCP server now creates an audit event.",
+          "Also out: forges v0.4.0.",
+          "Security",
+          "Forgejo 17.0.2 and 15.0.12 are security releases. The fixes:",
+          "With the internal SSH server on SQLite, public keys were matched with a case-insensitive SQL LIKE. A crafted key matching a target user’s key case-insensitively could authenticate as that user through a custom client. Matching is now by exact fingerprint and key content.",
+          "The endpoint that sets a primary email address accepted unverified addresses. An external service using Forgejo for sign-in could be tricked into granting access to the wrong account.",
+          "Commit headers were accepted in any order, so a crafted commit could display an incorrect diff.",
+          "The /tree-list and /find endpoints listed a repository’s files to users who lacked code read access.",
+          "The /activities/feeds and /heatmap APIs returned data outside the limits of repository-scoped and public-only access tokens.",
+          "On 16 November malicious JavaScript was served through Optimizely Web to visitors of 178 organisations, Report URI found (Scott Helme). The attacker added code to the customer-written Project JavaScript field of each snippet, and the modified snippets were served from cdn.optimizely.com. The payload swapped cryptocurrency wallet addresses and skimmed payment cards. It also stole cookies and screenshots. Report URI lists gitlab.com and about.gitlab.com among the affected sites.",
+          "GitHub",
+          "GitHub Desktop 3.7.0 supports more than one signed-in account on the same host. Each repository is associated with one account, which is used for clone, publish and other Git operations. Existing repositories are migrated to the account previously associated with them. On the web, the new dashboard has a Favorite repositories section that syncs with pinned repositories in GitHub Mobile, up to 25 across both.",
+          "gh v2.105.0 adds gh event listen, which subscribes to a pull request through Event Streams, covered last week, and prints each event as a line of JSON. By default it exits after the first event, and --count, --follow and --timeout change that. gh pr view, gh run watch and gh api now print a hint pointing to it in place of polling. It requires access to the Event Streams preview.",
+          "In the latest changes to the pull request Overview preview, a mergeable pull request with failed optional checks now shows as mergeable. Force-push entries in the activity link to the old and new commits, commit entries show timestamps, and resolved review threads collapse.",
+          "The GitHub Enterprise Server 3.23 release candidate adds OAuth app access tokens that expire after eight hours, with refresh tokens. Expiry is the default for new OAuth apps and opt-in for existing ones. Enterprise Live Migrations from Azure DevOps is generally available for GitHub Enterprise Cloud with data residency. It syncs Git history, branches, tags and pull requests continuously until cutover, and converts branch policies to rulesets.",
+          "Security advisory permissions, in Saturday’s roundup, let custom repository roles manage and publish advisories, which previously required admin access. Seth Larson writes that the Python Security Response Team tested it in a private beta, and that several more PSRT members now take part in triage, work that had fallen to repository admins.",
+          "The microsoft/onnxruntime repository disappeared on 17 November, first noticed on Hacker News when CI pipelines started failing, and returns a 404 at the time of writing. The StableBuild blog reports that it was removed with no prior announcement. The PyPI packages were still available, but builds that fetched source or release files from GitHub failed.",
+          "Elsewhere",
+          "Codeberg posted a post-mortem of the 18 November domain suspension covered last week. NameSilo had placed codeberg.org on client hold over two abuse cases without contacting Codeberg. One was a 2022 report that Codeberg disputes, about a repository archived since 2023. The other was malware in an account created on 16 November, reported only to the registrar, not to Codeberg’s abuse address.",
+          "Codeberg removed both repositories and is evaluating offers from other registrars. It moved its nameservers from NameSilo to deSEC in July. A switch to its spare codeberg.eu domain would affect two-factor authentication and every existing Git remote, and Codeberg is working with Forgejo on multi-domain support.",
+          "Announcing jj-musubi (Bryan O’Sullivan) introduces jj-musubi, which syncs copies of a Jujutsu repository across machines each time jj snapshots the working copy. One machine runs a hub and the others exchange history with it over SSH. Each machine’s workspaces appear prefixed with its name, so jj diff -r devbox/agent-1@ shows another machine’s work. Temporary VMs can lease membership, and a repository whose lease is not renewed is forgotten.",
+          "Syncs leave the files in each working copy alone, so new history can arrive while a build runs. O’Sullivan started the project that became Sapling and Mononoke at Meta, and cites Sapling’s Commit Cloud as the model. Key properties of the sync protocol are proved in Lean, and tests compare the Rust code against the Lean model.",
+          "Jujutsu Primer (Ethan Lowman) introduces jj to Git users in a colocated repository. It covers changes and commits, revsets, automatic rebasing, conflicts, the op log, the squash workflow, bookmarks, and stacked pull requests.",
+          "TODOs JJ Style (Ben C) describes keeping a to-do list as empty jj changes with descriptions, rebased onto real work when started. A git.private-commits setting of description('private:*') excludes them from pushes.",
+          "Send links for next week to @[email protected]."
+        ]
+      }
+    },
+    {
+      "slug": "e257e736c9a18902",
+      "title": "Have You Tried Using Your Agent?",
+      "titleZh": "Have You Tried Using Your Agent?",
+      "link": "https://blog.jim-nielsen.com/2026/have-you-tried-your-agent/",
+      "sourceName": "blog.jim-nielsen.com",
+      "sourceUrl": "https://blog.jim-nielsen.com",
+      "pubDate": "2026-11-25T19:00:00.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "Have You Tried Using Your Agent?",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Jim Nielsen",
+        "siteName": "Jim Nielsen’s Blog",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "In 2025, I wrote down some thoughts on “AX”. My fear was that AX would end up becoming the top priority for people building software. (I’m not against AX, I would simply prefer a priority of constituencies where the human experience is top.)"
+          },
+          {
+            "type": "p",
+            "text": "So where are we today?"
+          },
+          {
+            "type": "p",
+            "text": "I feel like we’re building things that are increasingly accessible to robots while remaining inaccessible to people."
+          },
+          {
+            "type": "p",
+            "text": "And I’m nervous that the collective posture of technologists towards this trend is not, “We should make this more accessible to our fellow humans.” But rather, “Humans should use their agents to access our thing.”"
+          },
+          {
+            "type": "p",
+            "text": "In other words: instead of making things for each other, we’re spending our time and attention making things for machines."
+          },
+          {
+            "type": "p",
+            "text": "“Is it accessible?” sometimes feels as though it colloquially means, “Can an AI agent access it?” And since the agent’s work is purportedly on our behalf, making something accessible to a machine counts as making it accessible to a human."
+          },
+          {
+            "type": "p",
+            "text": "I’m afraid of conversations by software makers increasingly going like this:"
+          },
+          {
+            "type": "p",
+            "text": "“Are we ready to ship? Does it work for the AI?”"
+          },
+          {
+            "type": "p",
+            "text": "“Yes — but you can’t really use it yourself.”"
+          },
+          {
+            "type": "p",
+            "text": "“That’s ok, ship it. We can always fix that later — but also, who even does things themselves anymore? lol.”"
+          },
+          {
+            "type": "p",
+            "text": "I’m nervous of my interactions with organizations increasingly being along the lines of, “Your thing isn’t working for me.” And their default response being, “Did you try using your AI agent?”"
+          },
+          {
+            "type": "p",
+            "text": "We already built a world that increasingly sidelines people without smartphones. My parents struggle with everything from flying, to using grocery store coupons, to verifying their identity because they don’t have a smartphone."
+          },
+          {
+            "type": "p",
+            "text": "In another 10-20 years, will the same be true but with AI agents?"
+          },
+          {
+            "type": "p",
+            "text": "The question, “Have you tried downloading our app?” will transform into, “Have you tried using your agent with ours?”"
+          }
+        ],
+        "translations": [
+          "In 2025, I wrote down some thoughts on “AX”. My fear was that AX would end up becoming the top priority for people building software. (I’m not against AX, I would simply prefer a priority of constituencies where the human experience is top.)",
+          "So where are we today?",
+          "I feel like we’re building things that are increasingly accessible to robots while remaining inaccessible to people.",
+          "And I’m nervous that the collective posture of technologists towards this trend is not, “We should make this more accessible to our fellow humans.” But rather, “Humans should use their agents to access our thing.”",
+          "In other words: instead of making things for each other, we’re spending our time and attention making things for machines.",
+          "“Is it accessible?” sometimes feels as though it colloquially means, “Can an AI agent access it?” And since the agent’s work is purportedly on our behalf, making something accessible to a machine counts as making it accessible to a human.",
+          "I’m afraid of conversations by software makers increasingly going like this:",
+          "“Are we ready to ship? Does it work for the AI?”",
+          "“Yes — but you can’t really use it yourself.”",
+          "“That’s ok, ship it. We can always fix that later — but also, who even does things themselves anymore? lol.”",
+          "I’m nervous of my interactions with organizations increasingly being along the lines of, “Your thing isn’t working for me.” And their default response being, “Did you try using your AI agent?”",
+          "We already built a world that increasingly sidelines people without smartphones. My parents struggle with everything from flying, to using grocery store coupons, to verifying their identity because they don’t have a smartphone.",
+          "In another 10-20 years, will the same be true but with AI agents?",
+          "The question, “Have you tried downloading our app?” will transform into, “Have you tried using your agent with ours?”"
+        ]
+      }
+    },
+    {
+      "slug": "980891732453170e",
+      "title": "How the Tandy 2000 doomed Tandy computers",
+      "titleZh": "How the Tandy 2000 doomed Tandy computers",
+      "link": "https://dfarq.homeip.net/how-the-tandy-2000-doomed-tandy-computers/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=how-the-tandy-2000-doomed-tandy-computers",
+      "sourceName": "dfarq.homeip.net",
+      "sourceUrl": "https://dfarq.homeip.net",
+      "pubDate": "2026-11-25T12:00:25.000Z",
+      "category": "other",
+      "keywords": [],
+      "score": {
+        "relevance": 5,
+        "quality": 5,
+        "timeliness": 5,
+        "total": 15
+      },
+      "summary": "How the Tandy 2000 doomed Tandy computers",
+      "summaryEn": "",
+      "reason": "",
+      "fullTextStatus": "ok",
+      "fullText": {
+        "byline": "Dave Farquhar",
+        "siteName": "The Silicon Underground",
+        "partial": false,
+        "blocks": [
+          {
+            "type": "p",
+            "text": "The Tandy 2000 was aptly named. It was twice as good as the Tandy 1000 in nearly every way. But it wasn’t even half as successful. In this blog post, I will explain how the Tandy 2000’s commercial failure and its reliance on Microsoft Windows set the tone for subsequent Tandy computers and perhaps even doomed the whole product line."
+          },
+          {
+            "type": "h2",
+            "text": "Tandy 2000: Clearly too good to be true"
+          },
+          {
+            "type": "p",
+            "text": "Introduced in September 1983 and released November 28, 1983, the Tandy 2000 was a halfway point between the IBM PC/XT and the not-yet-released IBM PC/AT. It featured the Intel 80186 CPU running at 8 MHz. It also included 720k quad density 5.25 inch floppy drives, and high resolution 640×400 color graphics with a choice of eight colors from a palette of 16."
+          },
+          {
+            "type": "p",
+            "text": "The result was twice as fast as an IBM PC while preempting IBM’s improved PC/AT by nearly a year. When it hit the market in the fall of 1983, it was the fastest PC-like computer on the market. And when IBM did get around to releasing something faster, Tandy could position the 2000 as a sensible halfway choice. If the IBM PC or XT was too slow, and the AT was too expensive, Tandy was right there with something just right."
+          },
+          {
+            "type": "p",
+            "text": "Not only that, Tandy was in a position to do the same thing to Apple. If the IBM PC was too old-fashioned, but the Apple Macintosh was too expensive, a Tandy 2000 running Microsoft Windows 1.0 might have been just what you were looking for."
+          },
+          {
+            "type": "p",
+            "text": "If everything had gone right, the Tandy 2000 should have done to IBM what the Compaq Deskpro 386 did a few years later. But as you’ve probably guessed, everything did not in fact go right."
+          },
+          {
+            "type": "p",
+            "text": "Let’s dig into what went wrong."
+          },
+          {
+            "type": "h2",
+            "text": "Limited compatibility"
+          },
+          {
+            "type": "p",
+            "text": "The first problem for the Tandy 2000 was its lackluster IBM PC compatibility. It ran MS-DOS, but it was a special version exclusive to the Tandy 2000. This wasn’t necessarily unusual at the time. IBM PC clones did exist, but it wasn’t clear in 1983 exactly what degree of IBM compatibility was going to be necessary to succeed. And with the Tandy 2000, Tandy got it wrong."
+          },
+          {
+            "type": "p",
+            "text": "It’s easy to criticize Tandy’s design decisions, but it wasn’t all Tandy’s decision. The 186 CPU was key to the design, providing double performance at a bargain price. The secret was that Intel integrated several other chips onto the CPU, helping to simplify the design and reduce the component count. The problem was that Intel didn’t integrate those components in such a way as to accommodate a fully IBM PC-compatible design. The components were all present, but not necessarily at the addresses IBM had put them. That meant software that went around documented BIOS or DOS routines and addressed those components directly would fail."
+          },
+          {
+            "type": "p",
+            "text": "Today we can get around such issues with device drivers, but not so much in the early days of DOS."
+          },
+          {
+            "type": "p",
+            "text": "It’s tempting to blame Intel, but when Intel started designing the 186, the IBM PC wasn’t finalized yet. The target market for the 186 wasn’t IBM PC compatibles. The market didn’t exist yet."
+          },
+          {
+            "type": "p",
+            "text": "And before we go and say this was a shortsighted move on Intel’s part, early reviews for the Tandy 2000 stated the machine was in short supply because Intel couldn’t keep up with demand for the 80186. The 186 remains an unheralded success for Intel, remaining in production 25 years, until 2007. It wasn’t a great PC clone chip, but it excelled in other applications."
+          },
+          {
+            "type": "h3",
+            "text": "Why Tandy thought they could get away with it"
+          },
+          {
+            "type": "p",
+            "text": "This situation was not completely unprecedented. The predecessor to MS-DOS, CP/M, had a similar situation. Dozens, if not hundreds, of CP/M machines existed, but their degree of compatibility with each other varied. Software publishers had to make a decision how they wanted to handle that situation. Sometimes that meant publishing special versions of the software for specific machines."
+          },
+          {
+            "type": "p",
+            "text": "Publishers took that approach with the Tandy 2000, at least at first. Within a few months of release, Tandy had arranged for special versions of the most popular IBM PC applications to be produced for the Tandy 2000. You couldn’t necessarily walk into every Radio Shack store and expect to see all of the titles on the shelf to buy that day, but the store could order them for you."
+          },
+          {
+            "type": "p",
+            "text": "Realistically, any productivity title you wanted circa 1984 had a Tandy 2000 version. But the fear of someday not being able to get that one title you really wanted must have lingered in the back of potential buyers’ minds."
+          },
+          {
+            "type": "p",
+            "text": "But there was more trouble in paradise with this too-good-to-be-true wonder PC."
+          },
+          {
+            "type": "h2",
+            "text": "Hardware compatibility"
+          },
+          {
+            "type": "p",
+            "text": "The lack of compatibility didn’t stop with the software. The Tandy 2000 was not hardware compatible with the IBM PC either. Rather than implement what we today call ISA expansion slots, Tandy went with their own 96-pin bus. They produced a selection of expansion options for the 2000, but reviewers noted that the add-ons were not as aggressively priced as the machine itself."
+          },
+          {
+            "type": "p",
+            "text": "Third parties who produced popular expansion options for the IBM PC took a wait-and-see attitude toward the 2000. They had no reason to tie up capital producing Tandy 2000 products until they’d had a chance to see if the machine was going to catch on. This left the 2000 in the lurch. Part of the reason the IBM PC was so successful was because it quickly fostered an ecosystem of third party add-ons."
+          },
+          {
+            "type": "p",
+            "text": "While it’s hard to blame Tandy or Intel for the software compatibility issues, not using the same ISA bus seems like an oversight. Because it was a 16-bit CPU, implementing their own 16-bit bus is understandable. But including at least a small selection of standard 8-bit ISA slots would have been a smart move."
+          },
+          {
+            "type": "p",
+            "text": "You may have also read or heard about problems with the disk drives. Contrary to what you may have seen or read elsewhere, the disk drives weren’t incompatible with PC 360K drives. According to the December 1984 issue of Byte, the Mitsubishi M4853 drives Tandy used could read and write 360K PC floppies, they just couldn’t format them at first. Tandy fixed this in 1984 with a software update."
+          },
+          {
+            "type": "h2",
+            "text": "What the critics said"
+          },
+          {
+            "type": "p",
+            "text": "Reviewers had mixed feelings about the 2000. They liked the higher performance, and they liked the price point Tandy reached. They were less happy about the compatibility, noting that Tandy didn’t always deliver updated software titles as quickly as they said they would."
+          },
+          {
+            "type": "p",
+            "text": "In December 1984, Byte magazine published a comprehensive 8-page review by Mark S. Jennings that was fair. He noted several positive things about the system, while also noting the compatibility problems and the availability problems. Reading it 39 years later, I thought it was a positive review. But positive enough to convince me to buy one? No, if I’m honest."
+          },
+          {
+            "type": "p",
+            "text": "Infoworld was less positive. Just short of a year after the machine’s release, they were down on the 2000 and didn’t hold back. An article in the August 20, 1984 issue straight up called the Tandy 2000 bad technology at a bad price."
+          },
+          {
+            "type": "h2",
+            "text": "Enter Microsoft Windows"
+          },
+          {
+            "type": "p",
+            "text": "But Tandy had one more thing up its sleeve: Microsoft Windows."
+          },
+          {
+            "type": "p",
+            "text": "In 1984, the pitchman for the Tandy 2000 was none other than Bill Gates. The ad pictured Gates sitting in front of a Tandy 2000 running an early version of Microsoft Windows. In the very copy-heavy ad, Gates gushed about how the Tandy 2000’s graphics capabilities made Windows look better and how the 186 CPU ran it faster than anything else available at the time."
+          },
+          {
+            "type": "p",
+            "text": "If everything had gone right, the Tandy 2000 running Microsoft Windows could have been a great combination. In 1984, everyone was talking about the Mac, but it was expensive, and it wasn’t IBM compatible. If a PC running Windows could give a similar experience at a lower price, along with the ability to run popular PC software, who wouldn’t be interested?"
+          },
+          {
+            "type": "p",
+            "text": "The problem was, Microsoft Windows 1.0 didn’t reach the market until November 20, 1985, more than 2 years after the Tandy 2000 reached the market. Furthermore, by November 1985, Intel 80286-based PCs with EGA were on the market. Those machines ran Windows better than Tandy 2000 did, and they were also compatible with off the shelf IBM PC software when running MS-DOS. Tandy’s window of opportunity closed before the Tandy 2000 ever had a chance to catch on."
+          },
+          {
+            "type": "p",
+            "text": "So while getting Bill Gates to endorse so their computer was a coup, nothing he talked about in the ad was available for you to buy when the ad ran. It all arrived more than a year later."
+          },
+          {
+            "type": "p",
+            "text": "If Windows 1.0 had been a little less late and a little less bad, maybe things would have been different. Instead, Tandy kept cutting the price to try to move the inventory. Ultimately, the unsold machines ended up acting as terminals, helping to run the store locations."
+          },
+          {
+            "type": "h2",
+            "text": "Some bitter vindication"
+          },
+          {
+            "type": "p",
+            "text": "A small bit of vindication came in the form of the HP 200LX, a palmtop computer introduced a decade later that could be described as a Tandy 2000 shrunken down to fit in the palm of your hand. With a enough built-in software to be useful, it didn’t need 100% compatibility, and was very successful. It proved the Tandy 2000 wasn’t an altogether bad idea. It’s just that Tandy’s timing wasn’t quite right and its execution could have been better."
+          },
+          {
+            "type": "p",
+            "text": "While the Tandy 2000 floundered, the Tandy 1000 went on to become the best selling computer in the United States for a few years, knocking the Commodore 64 off that pedestal. But I still argue Tandy’s 1983 mistake doomed the computer line."
+          },
+          {
+            "type": "p",
+            "text": "That’s because from that time forward, Tandy played it safe. Tandy did produce other PCs. But it led with some iteration of the Tandy 1000, even as the design aged poorly."
+          },
+          {
+            "type": "p",
+            "text": "In 1990, Microsoft finally got Windows right, or at least right enough that people were willing to buy it. Who was ready for Windows 3.0? Everyone but Tandy. It was the exact opposite of 1983, when Tandy was the only one in a position to sell a Windows PC. In 1990, everyone had an affordable 386SX-based PC on the market with VGA graphics. But while everyone else pushed those, Tandy was still pushing three different Tandy 1000 models. Its 386SX was an afterthought."
+          },
+          {
+            "type": "p",
+            "text": "Even in 1991, Tandy was still pushing Tandy 1000s for home use. It had 386SX and 386DX PCs, but pushed them as business PCs while the growing consumer electronics chains pushed other brands of PCs, preloaded with Windows, at consumers."
+          },
+          {
+            "type": "p",
+            "text": "When Windows 3.1 came out in 1992, Tandy responded with something called the Tandy Sensation, but it was only sensational compared to other Tandy PCs. A cynical take was it was the machine Tandy should have been producing all along. By then, Tandy was losing money on its computers and pulled the plug soon after."
+          },
+          {
+            "type": "p",
+            "text": "I think Tandy missed the boat on Windows 3.x because Windows 1.0 burned them in 1983 and 84."
+          },
+          {
+            "type": "p",
+            "text": "This blog post is part of my series about Tandy and Radio Shack. Click or tap for the index."
+          },
+          {
+            "type": "p",
+            "text": "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+          }
+        ],
+        "translations": [
+          "The Tandy 2000 was aptly named. It was twice as good as the Tandy 1000 in nearly every way. But it wasn’t even half as successful. In this blog post, I will explain how the Tandy 2000’s commercial failure and its reliance on Microsoft Windows set the tone for subsequent Tandy computers and perhaps even doomed the whole product line.",
+          "Tandy 2000: Clearly too good to be true",
+          "Introduced in September 1983 and released November 28, 1983, the Tandy 2000 was a halfway point between the IBM PC/XT and the not-yet-released IBM PC/AT. It featured the Intel 80186 CPU running at 8 MHz. It also included 720k quad density 5.25 inch floppy drives, and high resolution 640×400 color graphics with a choice of eight colors from a palette of 16.",
+          "The result was twice as fast as an IBM PC while preempting IBM’s improved PC/AT by nearly a year. When it hit the market in the fall of 1983, it was the fastest PC-like computer on the market. And when IBM did get around to releasing something faster, Tandy could position the 2000 as a sensible halfway choice. If the IBM PC or XT was too slow, and the AT was too expensive, Tandy was right there with something just right.",
+          "Not only that, Tandy was in a position to do the same thing to Apple. If the IBM PC was too old-fashioned, but the Apple Macintosh was too expensive, a Tandy 2000 running Microsoft Windows 1.0 might have been just what you were looking for.",
+          "If everything had gone right, the Tandy 2000 should have done to IBM what the Compaq Deskpro 386 did a few years later. But as you’ve probably guessed, everything did not in fact go right.",
+          "Let’s dig into what went wrong.",
+          "Limited compatibility",
+          "The first problem for the Tandy 2000 was its lackluster IBM PC compatibility. It ran MS-DOS, but it was a special version exclusive to the Tandy 2000. This wasn’t necessarily unusual at the time. IBM PC clones did exist, but it wasn’t clear in 1983 exactly what degree of IBM compatibility was going to be necessary to succeed. And with the Tandy 2000, Tandy got it wrong.",
+          "It’s easy to criticize Tandy’s design decisions, but it wasn’t all Tandy’s decision. The 186 CPU was key to the design, providing double performance at a bargain price. The secret was that Intel integrated several other chips onto the CPU, helping to simplify the design and reduce the component count. The problem was that Intel didn’t integrate those components in such a way as to accommodate a fully IBM PC-compatible design. The components were all present, but not necessarily at the addresses IBM had put them. That meant software that went around documented BIOS or DOS routines and addressed those components directly would fail.",
+          "Today we can get around such issues with device drivers, but not so much in the early days of DOS.",
+          "It’s tempting to blame Intel, but when Intel started designing the 186, the IBM PC wasn’t finalized yet. The target market for the 186 wasn’t IBM PC compatibles. The market didn’t exist yet.",
+          "And before we go and say this was a shortsighted move on Intel’s part, early reviews for the Tandy 2000 stated the machine was in short supply because Intel couldn’t keep up with demand for the 80186. The 186 remains an unheralded success for Intel, remaining in production 25 years, until 2007. It wasn’t a great PC clone chip, but it excelled in other applications.",
+          "Why Tandy thought they could get away with it",
+          "This situation was not completely unprecedented. The predecessor to MS-DOS, CP/M, had a similar situation. Dozens, if not hundreds, of CP/M machines existed, but their degree of compatibility with each other varied. Software publishers had to make a decision how they wanted to handle that situation. Sometimes that meant publishing special versions of the software for specific machines.",
+          "Publishers took that approach with the Tandy 2000, at least at first. Within a few months of release, Tandy had arranged for special versions of the most popular IBM PC applications to be produced for the Tandy 2000. You couldn’t necessarily walk into every Radio Shack store and expect to see all of the titles on the shelf to buy that day, but the store could order them for you.",
+          "Realistically, any productivity title you wanted circa 1984 had a Tandy 2000 version. But the fear of someday not being able to get that one title you really wanted must have lingered in the back of potential buyers’ minds.",
+          "But there was more trouble in paradise with this too-good-to-be-true wonder PC.",
+          "Hardware compatibility",
+          "The lack of compatibility didn’t stop with the software. The Tandy 2000 was not hardware compatible with the IBM PC either. Rather than implement what we today call ISA expansion slots, Tandy went with their own 96-pin bus. They produced a selection of expansion options for the 2000, but reviewers noted that the add-ons were not as aggressively priced as the machine itself.",
+          "Third parties who produced popular expansion options for the IBM PC took a wait-and-see attitude toward the 2000. They had no reason to tie up capital producing Tandy 2000 products until they’d had a chance to see if the machine was going to catch on. This left the 2000 in the lurch. Part of the reason the IBM PC was so successful was because it quickly fostered an ecosystem of third party add-ons.",
+          "While it’s hard to blame Tandy or Intel for the software compatibility issues, not using the same ISA bus seems like an oversight. Because it was a 16-bit CPU, implementing their own 16-bit bus is understandable. But including at least a small selection of standard 8-bit ISA slots would have been a smart move.",
+          "You may have also read or heard about problems with the disk drives. Contrary to what you may have seen or read elsewhere, the disk drives weren’t incompatible with PC 360K drives. According to the December 1984 issue of Byte, the Mitsubishi M4853 drives Tandy used could read and write 360K PC floppies, they just couldn’t format them at first. Tandy fixed this in 1984 with a software update.",
+          "What the critics said",
+          "Reviewers had mixed feelings about the 2000. They liked the higher performance, and they liked the price point Tandy reached. They were less happy about the compatibility, noting that Tandy didn’t always deliver updated software titles as quickly as they said they would.",
+          "In December 1984, Byte magazine published a comprehensive 8-page review by Mark S. Jennings that was fair. He noted several positive things about the system, while also noting the compatibility problems and the availability problems. Reading it 39 years later, I thought it was a positive review. But positive enough to convince me to buy one? No, if I’m honest.",
+          "Infoworld was less positive. Just short of a year after the machine’s release, they were down on the 2000 and didn’t hold back. An article in the August 20, 1984 issue straight up called the Tandy 2000 bad technology at a bad price.",
+          "Enter Microsoft Windows",
+          "But Tandy had one more thing up its sleeve: Microsoft Windows.",
+          "In 1984, the pitchman for the Tandy 2000 was none other than Bill Gates. The ad pictured Gates sitting in front of a Tandy 2000 running an early version of Microsoft Windows. In the very copy-heavy ad, Gates gushed about how the Tandy 2000’s graphics capabilities made Windows look better and how the 186 CPU ran it faster than anything else available at the time.",
+          "If everything had gone right, the Tandy 2000 running Microsoft Windows could have been a great combination. In 1984, everyone was talking about the Mac, but it was expensive, and it wasn’t IBM compatible. If a PC running Windows could give a similar experience at a lower price, along with the ability to run popular PC software, who wouldn’t be interested?",
+          "The problem was, Microsoft Windows 1.0 didn’t reach the market until November 20, 1985, more than 2 years after the Tandy 2000 reached the market. Furthermore, by November 1985, Intel 80286-based PCs with EGA were on the market. Those machines ran Windows better than Tandy 2000 did, and they were also compatible with off the shelf IBM PC software when running MS-DOS. Tandy’s window of opportunity closed before the Tandy 2000 ever had a chance to catch on.",
+          "So while getting Bill Gates to endorse so their computer was a coup, nothing he talked about in the ad was available for you to buy when the ad ran. It all arrived more than a year later.",
+          "If Windows 1.0 had been a little less late and a little less bad, maybe things would have been different. Instead, Tandy kept cutting the price to try to move the inventory. Ultimately, the unsold machines ended up acting as terminals, helping to run the store locations.",
+          "Some bitter vindication",
+          "A small bit of vindication came in the form of the HP 200LX, a palmtop computer introduced a decade later that could be described as a Tandy 2000 shrunken down to fit in the palm of your hand. With a enough built-in software to be useful, it didn’t need 100% compatibility, and was very successful. It proved the Tandy 2000 wasn’t an altogether bad idea. It’s just that Tandy’s timing wasn’t quite right and its execution could have been better.",
+          "While the Tandy 2000 floundered, the Tandy 1000 went on to become the best selling computer in the United States for a few years, knocking the Commodore 64 off that pedestal. But I still argue Tandy’s 1983 mistake doomed the computer line.",
+          "That’s because from that time forward, Tandy played it safe. Tandy did produce other PCs. But it led with some iteration of the Tandy 1000, even as the design aged poorly.",
+          "In 1990, Microsoft finally got Windows right, or at least right enough that people were willing to buy it. Who was ready for Windows 3.0? Everyone but Tandy. It was the exact opposite of 1983, when Tandy was the only one in a position to sell a Windows PC. In 1990, everyone had an affordable 386SX-based PC on the market with VGA graphics. But while everyone else pushed those, Tandy was still pushing three different Tandy 1000 models. Its 386SX was an afterthought.",
+          "Even in 1991, Tandy was still pushing Tandy 1000s for home use. It had 386SX and 386DX PCs, but pushed them as business PCs while the growing consumer electronics chains pushed other brands of PCs, preloaded with Windows, at consumers.",
+          "When Windows 3.1 came out in 1992, Tandy responded with something called the Tandy Sensation, but it was only sensational compared to other Tandy PCs. A cynical take was it was the machine Tandy should have been producing all along. By then, Tandy was losing money on its computers and pulled the plug soon after.",
+          "I think Tandy missed the boat on Windows 3.x because Windows 1.0 burned them in 1983 and 84.",
+          "This blog post is part of my series about Tandy and Radio Shack. Click or tap for the index.",
+          "David Farquhar is a computer security professional, entrepreneur, and author. He has written professionally about computers since 1991, so he was writing about retro computers when they were still new. He has been working in IT professionally since 1994 and has specialized in vulnerability management since 2013. He holds Security+ and CISSP certifications. Today he blogs five times a week, mostly about retro computers and retro gaming covering the time period from 1975 to 2000."
+        ]
+      }
+    }
+  ]
+}
